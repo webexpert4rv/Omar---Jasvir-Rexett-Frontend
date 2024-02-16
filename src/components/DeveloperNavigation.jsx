@@ -8,7 +8,7 @@ const DeveloperNavigation = ({onClick}) => {
             <header className="mb-4">
                 <div className="d-flex align-items-center justify-content-between gap-3">
                     <div className="">
-                        <button onClick={onClick} className="bars-btn"><HiBars3 /></button>
+                        {/* <button onClick={onClick} className="bars-btn"><HiBars3 /></button> */}
                     </div>
                     <div className="d-flex gap-3">
                         <button className="notification-btn"><FaBell /></button>

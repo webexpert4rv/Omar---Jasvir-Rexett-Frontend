@@ -134,7 +134,7 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="text-center mt-3">
-                <Link to={"#"} className="link-text-dark">See All</Link>
+                <Link to={"/hired-developers"} className="link-text-dark">See All</Link>
             </div>
         </>
     )
