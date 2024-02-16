@@ -44,7 +44,7 @@ const Sidebar = ({sideBarActive}) => {
                     </div>
                     <div className="w-100 px-3">
                         <div>
-                            <NavLink to={"/sign-out"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
+                            <NavLink to={"/"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>

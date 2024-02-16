@@ -8,7 +8,7 @@ const Navigation = ({handleSidebar}) => {
             <header className="mb-4">
                 <div className="d-flex align-items-center justify-content-between gap-3">
                     <div>
-                        <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button>
+                        {/* <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button> */}
                     </div>
                     <div className="d-flex gap-3">
                         <Dropdown className="notification-dropdown">

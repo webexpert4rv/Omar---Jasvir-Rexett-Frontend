@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import { Form, Button } from "react-bootstrap";
 import developerImg from '../../assets/img/user-img.jpg'
 const TimeReporting = () => {
+    const [selectedPeriod, setSelectedPeriod] = useState("weekly-period");
+
+    const handlePeriodChange = (e) => {
+        setSelectedPeriod(e.target.value);
+    };
     return (
         <>
             <section>
@@ -19,10 +24,10 @@ const TimeReporting = () => {
                         </div>
                         <div className="flex-none">
                             <Form.Label className="common-label">Select Period</Form.Label>
-                            <Form.Select className="filter-select shadow-none">
-                                <option value="1">Weekly</option>
-                                <option value="2">Monthly</option>
-                                <option value="3">Yearly</option>
+                            <Form.Select className="filter-select shadow-none" onChange={handlePeriodChange} value={selectedPeriod}>
+                                <option value="weekly-period">Weekly</option>
+                                <option value="monthly-period">Monthly</option>
+                                <option value="yearly-period">Yearly</option>
                             </Form.Select>
                         </div>
                     </div>
@@ -46,7 +51,7 @@ const TimeReporting = () => {
                         <Button variant="transparent" className="main-btn px-5">Edit Time Report</Button>
                     </div>
                 </div>
-                <div className="weekly-report-table">
+                <div className={`weekly-report-table ${selectedPeriod === "weekly-period" ? '' : 'd-none'}`}>
                     <div className="table-responsive">
                         <table className="table time-table table-bordered">
                             <thead>
@@ -215,7 +220,7 @@ const TimeReporting = () => {
                         </table>
                     </div>
                 </div>
-                <div className="monthly-report-table">
+                <div className={`monthly-report-table ${selectedPeriod === "monthly-period" ? '' : 'd-none'}`}>
                     <div className="table-responsive">
                         <table className="table time-table table-bordered">
                             <thead>
@@ -447,7 +452,7 @@ const TimeReporting = () => {
                         </table>
                     </div>
                 </div>
-                <div className="yearly-report-table">
+                <div className={`yearly-report-table ${selectedPeriod === "yearly-period" ? '' : 'd-none'}`}>
                     <div className="table-responsive">
                         <table className="table time-table table-bordered">
                             <thead>

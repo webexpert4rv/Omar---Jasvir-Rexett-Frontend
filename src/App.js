@@ -27,6 +27,8 @@ import EditDeveloperProfile from './pages/developer/DeveloperEditProfile';
 import DeveloperDocuments from './pages/developer/DeveloperDocuments';
 import DeveloperTimeReporting from './pages/developer/DeveloperTimeReporting';
 import DeveloperCV from './pages/developer/DeveloperCV';
+import AgencyLogin from './pages/Authentication/AdminLogin';
+import DeveloperLogin from './pages/Authentication/DeveloperLogin';
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
@@ -37,6 +39,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" exact element={<Login/>} />
+          <Route path="/agency-login" exact element={<AgencyLogin/>} />
+          <Route path="/developer-login" exact element={<DeveloperLogin/>} />
           
           <Route path="/dashboard" exact element={<DashboardLayout><Dashboard /></DashboardLayout>} />
           <Route path="/hired-developers" exact element={<DashboardLayout><HiredDevelopers /></DashboardLayout>} />

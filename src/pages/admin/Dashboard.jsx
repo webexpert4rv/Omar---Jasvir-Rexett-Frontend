@@ -32,7 +32,7 @@ const AdminDashboard = () => {
                     <div className="d-flex justify-content-between mb-4 align-items-center">
                         <h2 className="section-head-sub">List of clients</h2>
                         <div>
-                            <Link to={"#"} className="link-text-dark">See more</Link>
+                            <Link to={"/list-clients"} className="link-text-dark">See more</Link>
                         </div>
                     </div>
                     <div className="developers-list">
@@ -180,7 +180,7 @@ const AdminDashboard = () => {
                 </div>
             </div>
             <div className="text-center mt-3">
-                <Link to={"#"} className="link-text-dark">See All</Link>
+                <Link to={"/developer-list"} className="link-text-dark">See All</Link>
             </div>
         </>
     )

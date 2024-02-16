@@ -17,7 +17,14 @@ const Login = () => {
                                         <img src={logoWhite} className="logo-white" />
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4">
-                                        <Link to={"#"} className="link-text text-decoration-none">Client Login</Link>
+                                        <Form.Group>
+                                            <Form.Select className="p-0 border-0 bg-transparent text-white">
+                                                <option value="client_login">Client Login</option>
+                                                <option value="agency_login">Agency Login</option>
+                                                <option value="developer_login">Developer Login</option>
+                                            </Form.Select>
+                                        </Form.Group>
+                                        {/* <Link to={"#"} className="link-text text-decoration-none">Client Login</Link> */}
                                         <Link to={"#"} className="link-text">Register</Link>
                                     </div>
                                     <Form>
@@ -41,7 +48,7 @@ const Login = () => {
                                             />
                                             <Link className="link-text">Forgot Password</Link>
                                         </div>
-                                        <Button variant="transparent" className="auth-btn">Login</Button>
+                                        <Link to={'/dashboard'} variant="transparent" className="auth-btn d-block text-decoration-none">Login</Link>
                                     </Form>
                                 </div>
                             </div>
