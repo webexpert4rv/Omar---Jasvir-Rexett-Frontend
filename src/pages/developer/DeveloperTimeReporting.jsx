@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import developerImg from '../../assets/img/user-img.jpg'
+import AddTimingModal from "./Modals/AddTiming";
 const DeveloperTimeReporting = () => {
+    const [showAddTimingModal, setShowAddTimingModal] = useState(false);
+    const handleShowAddTimingModal = () => {
+        setShowAddTimingModal(true);
+    };
+
+    const handleCloseAddTimingModal = () => {
+        setShowAddTimingModal(false);
+    };
     return (
         <>
             <section>
@@ -43,7 +52,7 @@ const DeveloperTimeReporting = () => {
                         <button className="main-btn px-5">Filter</button>
                     </div>
                     <div>
-                        <Button variant="transparent" className="main-btn px-5">Add Time</Button>
+                        <Button variant="transparent" onClick={handleShowAddTimingModal} className="main-btn px-5">Add Time</Button>
                     </div>
                 </div>
                 <div>
@@ -105,6 +114,7 @@ const DeveloperTimeReporting = () => {
                     </div>
                 </div>
             </section>
+            <AddTimingModal show={showAddTimingModal} handleClose={handleCloseAddTimingModal} />
         </>
     )
 }
