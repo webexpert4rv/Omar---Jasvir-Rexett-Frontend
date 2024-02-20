@@ -4,6 +4,12 @@
     font-family: 'Poppins';
     box-sizing: border-box;
 }
+:root
+{
+    --primary-color: #180049;
+    --white: #fff;
+    --grey: #ccc;
+}
 body
 {
     margin: 0;
@@ -30,7 +36,7 @@ ul
 }
 .inner-auth-wrapper
 {
-    background-color: #180049;
+    background-color: var(--primary-color);
     padding: 40px;
 }
 .logo-white
@@ -39,13 +45,13 @@ ul
 }
 .link-text
 {
-    color: #fff;
+    color: var(--white);
     font-weight: 400;
 }
 .label-form
 {
     font-size: 16px;
-    color: #fff;
+    color: var(--white);
     font-family: 'Roboto';
     margin-bottom: 3px;
 }
@@ -58,7 +64,7 @@ ul
 }
 .remeber-check
 {
-    color: #fff;
+    color: var(--white);
 }
 .remeber-check input
 {
@@ -90,7 +96,7 @@ ul
 {
     width: 100%;
     text-align: center;
-    color: #fff;
+    color: var(--white);
     background-color: #502779;
     border-color: #502779;
     padding: 12px 10px;
@@ -101,8 +107,8 @@ ul
 }
 .auth-btn:hover
 {
-    color: #fff;
-    border-color: #fff;
+    color: var(--white);
+    border-color: var(--white);
 }
 .eye-btn
 {
@@ -144,8 +150,8 @@ ul
     gap: 30px;
     width: 100%;
     padding: 15px;
-    background-color: #180049;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--white);
     text-decoration: none;
     border-radius: 10px;
     font-size: 16px;
@@ -159,7 +165,7 @@ ul
 .sidebar-listing
 {
     padding: 15px;
-    background-color: #180049;
+    background-color: var(--primary-color);
     border-radius: 10px;
 }
 .sidebar-item
@@ -182,7 +188,7 @@ ul
     gap: 30px;
     font-size: 16px;
     font-weight: 500;
-    color: #fff;
+    color: var(--white);
     text-decoration: none;
     margin: 10px 0;
     padding: 10px 0;
@@ -205,7 +211,7 @@ ul
     gap: 30px;
     margin-bottom: 20px;
     text-decoration: none;
-    color: #180049;
+    color: var(--primary-color);
 }
 .bottom-link svg
 {
@@ -216,18 +222,18 @@ ul
 {
     display: inline-block;
     padding: 10px;
-    color: #fff;
-    background-color: #180049;
+    color: var(--white);
+    background-color: var(--primary-color);
     border-radius: 8px;
     font-size: 16px;
     font-weight: 400;
-    border: 1px solid #180049;
+    border: 1px solid var(--primary-color);
     outline: none;
     transition: .4s ease;
 }
 .main-btn:hover
 {
-    color: #180049;
+    color: var(--primary-color);
     background-color: transparent;
 }
 .notification-btn
@@ -251,7 +257,7 @@ ul
     right: 8px;
     width: 10px;
     height: 10px;
-    border: 1px solid #fff;
+    border: 1px solid var(--white);
     background-color: #f00;
     border-radius: 50%;
 }
@@ -273,8 +279,8 @@ ul
 }
 .overview-card
 {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: var(--white);
+    border: 1px solid var(--grey);
     border-radius: 10px;
     min-width: 300px;
     padding: 20px 15px;
@@ -285,8 +291,8 @@ ul
 .overview-card:hover,
 .overview-card.active
 {
-    background-color: #180049;
-    border: 1px solid #180049;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
 }
 .overview-card-subhead
 {
@@ -298,7 +304,7 @@ ul
 .overview-card:hover .overview-card-subhead,
 .overview-card.active .overview-card-subhead
 {
-    color: #fff;
+    color: var(--white);
 }
 .overview-card-heading
 {
@@ -309,7 +315,7 @@ ul
 .overview-card:hover .overview-card-heading,
 .overview-card.active .overview-card-heading
 {
-    color: #fff;
+    color: var(--white);
 }
 .over-icon
 {
@@ -337,7 +343,7 @@ ul
 {
     position: relative;
     padding: 40px 20px;
-    background-color: #180049;
+    background-color: var(--primary-color);
     border-radius: 20px;
 }
 .user-imgbx
@@ -359,19 +365,19 @@ ul
 .user-name
 {
     font-size: 20px;
-    color: #fff;
+    color: var(--white);
     margin-bottom: 18px;
 }
 .designation-user
 {
     font-size: 16px;
-    color: #fff;
+    color: var(--white);
     margin-bottom: 5px;
 }
 .email-user
 {
     font-size: 16px;
-    color: #fff;
+    color: var(--white);
 }
 .social-icons
 {
@@ -379,12 +385,12 @@ ul
     justify-content: center;
     align-items: center;
     gap: 20px;
-    color: #fff;
+    color: var(--white);
 }
 .social-icons svg
 {
     width: 20px;
-    color: #fff;
+    color: var(--white);
     height: 20px;
 }
 .link-text-dark
@@ -393,16 +399,16 @@ ul
     text-decoration: none;
     display: inline-block;
     padding: 5px 17px;
-    color: #fff;
+    color: var(--white);
     border-radius: 5px;
-    background-color: #180049;
+    background-color: var(--primary-color);
     transition: .4s ease;
-    border: 1px solid #180049;
+    border: 1px solid var(--primary-color);
 }
 .link-text-dark:hover
 {
     background-color: transparent;
-    color: #180049;
+    color: var(--primary-color);
 }
 .common-label
 {
@@ -465,13 +471,13 @@ ul
     position: absolute;
     bottom: 50px;
     left: 30px;
-    color: #fff;
+    color: var(--white);
     transition: .4s ease;
     font-weight: 600;
 }
 .folder-list:hover span
 {
-    color: #180049;
+    color: var(--primary-color);
 }
 .folder-list svg
 {
@@ -513,7 +519,7 @@ ul
     position: relative;
     padding: 10px;
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: var(--white);
     border: 1px solid #f2f5f7;
     overflow: hidden;
 }
@@ -534,7 +540,7 @@ ul
     height: 35px;
     align-items: center;
     justify-content: center;
-    background-color: #fff3f3;
+    background-color: var(--white)3f3;
     color: #f00;
     border-radius: 5px;
 }
@@ -551,7 +557,7 @@ ul
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    background-color: #fff3f3;
+    background-color: var(--white)3f3;
     margin-bottom: 10px;
     color: #f00;
 }
@@ -577,8 +583,8 @@ ul
 }
 .time-table-head
 {
-    background-color: #180049;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--white);
     font-size: 16px;
     padding: 16px 10px;
     border-color: #000;
@@ -617,15 +623,15 @@ ul
 }
 .outline-main-btn
 {
-    border: 1px solid #180049;
-    color: #180049;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
     padding: 10px 15px;
     font-size: 15px;
     font-weight: 500;
 }
 .outline-main-btn:hover
 {
-    border: 1px solid #180049;
+    border: 1px solid var(--primary-color);
 }
 .stats-chart-wrapper canvas
 {
@@ -650,7 +656,7 @@ ul
 }
 .upload-invoice-label
 {
-    color: #180049;
+    color: var(--primary-color);
     cursor: pointer;
 }
 .upload-image-label
@@ -664,27 +670,27 @@ ul
 }
 .filter-select
 {
-    background-color: #180049;
-    color: #fff;
-    --bs-form-select-bg-img: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/%3e%3c/svg%3e');
+    background-color: var(--primary-color);
+    color: var(--white);
+    --bs-form-select-bg-img: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%2var(--white)%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/%3e%3c/svg%3e');
 }
 .filter-section
 {
     padding: 10px;
     background: #f2f5f7;
-    border: 1px solid #ccc;
+    border: 1px solid var(--grey);
     border-radius: 13px;
 }
 .filter-field-customize
 {
-    background-color: #180049;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--white);
     color-scheme: dark;
 }
 .filter-field-customize:focus
 {
-    background-color: #180049;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--white);
     color-scheme: dark;
 }
 .notification-dropdown-toggle
@@ -708,14 +714,14 @@ ul
 }
 .no-notification
 {
-    background-color: #fff;
+    background-color: var(--white);
     pointer-events: none;
     color: #f00;
     font-size: 14px;
 }
 .no-notification:hover
 {
-    background-color: #fff;
+    background-color: var(--white);
 }
 .doc-action
 {
@@ -785,19 +791,19 @@ ul
 {
     text-transform: uppercase;
     font-weight: 600;
-    color: #180049;
+    color: var(--primary-color);
 }
 .resume-designation
 {
     text-transform: uppercase;
     font-weight: 500;
     font-size: 17px;
-    color: #180049;
+    color: var(--primary-color);
 }
 .resume-basic-info
 {
     padding-bottom: 30px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--grey);
 }
 .connect-social-media
 {
@@ -807,7 +813,7 @@ ul
 {
     font-size: 20px;
     font-weight: 600;
-    color: #180049;
+    color: var(--primary-color);
 }
 .social-media
 {
@@ -820,18 +826,18 @@ ul
 .social-media-link
 {
     font-size: 20px;
-    color: #180049;
+    color: var(--primary-color);
 }
 .about-info
 {
-    border-left: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border-left: 1px solid var(--grey);
+    border-bottom: 1px solid var(--grey);
     padding-bottom: 30px;
 }
 .mainheading-resume
 {
     font-size: 30px;
-    color: #180049;
+    color: var(--primary-color);
     font-weight: 600;
 }
 .resume-text
@@ -856,7 +862,7 @@ ul
 }
 .connect-social-media
 {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--grey);
     padding-bottom: 30px;
 }
 .skills-pill li
@@ -869,16 +875,16 @@ ul
 {
     display: inline-block;
     padding: 5px 14px;
-    color: #fff;
-    background-color: #180049;
+    color: var(--white);
+    background-color: var(--primary-color);
     border-radius: 6px;
 }
 .bars-btn
 {
-    border: 1px solid #180049;
-    background-color: #180049;
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
     outline: none;
-    color: #fff;
+    color: var(--white);
     width: 40px;
     height: 40px;
     display: flex;
@@ -891,7 +897,7 @@ ul
 .bars-btn:hover
 {
     background: transparent;
-    color: #180049;
+    color: var(--primary-color);
 }
 .error-message{
     color:red;
@@ -918,4 +924,241 @@ ul
     {
         width: 100%;
     }
+}
+.cv-section
+{
+    padding: 15px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--grey);
+}
+.cv-section h2
+{
+    font-size: 17px;
+    margin-bottom: 0px;
+}
+.cv-template-option
+{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.flex-none
+{
+    flex: none;
+}
+.cv-template
+{
+    position: relative;
+    padding: 10px;
+    border: 1px solid var(--grey);
+    width: 260px;
+    height: 300px;
+    flex: none;
+    transition: .4s ease;
+    cursor: pointer;
+}
+.cv-template:before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .6);
+    background-image: url('../img/check-icon.svg');
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    background-position: center;
+    display: none;
+}
+.cv-template img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+.cv-radio
+{
+    display: none;
+}
+.cv-radio:checked + .cv-template
+{
+    background-color: #180049;
+}
+.cv-radio:checked + .cv-template::before
+{
+    display: block;
+}
+.personal-info
+{
+    padding: 40px 20px;
+    background-color: var(--primary-color);
+}
+.dev-imgbx
+{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.dev-imgbx .dev-img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.cv-template1 .cv-heading
+{
+    color: #fff;
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    border-bottom: 1px solid #fff;
+}
+.contact-dev-info
+{
+    padding-left: 30px;
+}
+.cv-template1 .cv-subheading
+{
+    font-size: 17px;
+    color: #fff;
+    font-weight: 500;
+}
+.cv-template1 .cv-text
+{
+    font-size: 16px;
+    color: #e8e8e8;
+    font-weight: 400;
+}
+.cv-template1 .cv-listing
+{
+    list-style: disc;
+    padding-left: 20px;
+    color: #e8e8e8;
+}
+.cv-template1 .skills-item
+{
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+.personal-info > div
+{
+    margin-bottom: 30px;
+}
+.personal-info > div:last-child
+{
+    margin-bottom: 0px;
+}
+.cv-template1 .cv-heading.cv-dark-text
+{
+    color: #121212;
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    border-bottom: 1px solid #121212;
+}
+.cv-template1 .personal-details
+{
+    padding: 40px 0;
+}
+.cv-template1 .developer-name
+{
+    font-size: 32px;
+    font-weight: 400;
+    color: #121212;
+}
+.cv-template1 .developer-position
+{
+    color: #383838;
+    font-size: 20px;
+}
+.about-bio-text
+{
+    font-size: 16px;
+    color: #121212;
+}
+.profession-section > div:not(.personal-details)
+{
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+.profession-section > div:not(.personal-details):last-child
+{
+    margin-bottom: 0px;
+}
+.connect-listing
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.connect-listing a
+{
+    font-size: 20px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+.experience-timeline
+{
+    position: relative;
+    padding-left: 40px;
+}
+.experience-timeline .exper-year
+{
+    margin-bottom: 6px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: normal;
+}
+.experience-timeline .company-name-text
+{
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.experience-timeline .exper-timeline-item
+{
+    position: relative;
+    margin-bottom: 35px;
+}
+.experience-timeline .exper-timeline-item:before
+{
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 50%;
+    background-color: var(--white);
+    left: -30px;
+    top: 6px;
+}
+.experience-timeline:before
+{
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    width: 1px;
+    height: calc(100% - 100px);
+    background-color: var(--primary-color);
+}
+.cv-template1 .cv-subheading.cv-dark-text
+{
+    color: #121212;
 }
