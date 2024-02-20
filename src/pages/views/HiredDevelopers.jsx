@@ -1,207 +1,35 @@
-import React from "react";
-import userImg from  '../../assets/img/user-img.jpg'
-import { FaGithub } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import { IoTrendingUpSharp } from "react-icons/io5";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { developerAssignList } from "../../redux/slices/clientDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Cards from "../../components/atomic/Cards";
+import { SeeMore } from "../../components/atomic/SeeMore";
 const HiredDevelopers = () => {
+    const dispatch =useDispatch();
+    const [count,setCount]=useState(1)
+    const {assignedDeveloperList}=useSelector(state=>state.clientData)
+
+    useEffect(()=>{
+        dispatch(developerAssignList(count));
+       },[dispatch,count])
+
     return(
         <>
             <h2 className="section-head-sub mb-5">List of assigned developers</h2>
             <div className="developers-list">
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div><div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+   {
+                    assignedDeveloperList?.map((item,index)=>{
+                        return(
+                            <>
+                            <Cards item={item}/>
+                            </>
+                        )
+                    })
+                }
             </div>
-            <div className="text-center mt-3">
-                <Link to={"#"} className="link-text-dark">See All</Link>
-            </div>
+            {assignedDeveloperList.length>5?<div className="text-center mt-3">
+                <SeeMore setCount={setCount}/>
+            </div>:""}
         </>
     )
 }

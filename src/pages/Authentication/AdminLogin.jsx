@@ -4,10 +4,11 @@ import logoWhite from '../../assets/img/logo-white.png'
 import authLoginImg from '../../assets/img/login-img.png'
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
+import RexetLogin from "../../components/common/RexetLogin/RexetLogin";
 const AgencyLogin = () => {
     return (
         <>
-            <section className="auth-wrapper">
+            {/* <section className="auth-wrapper">
                 <div className="h-100">
                     <Row className="mx-0 h-100">
                         <Col md={5} className="px-0">
@@ -53,7 +54,8 @@ const AgencyLogin = () => {
                         </Col>
                     </Row>
                 </div>
-            </section>
+            </section> */}
+            <RexetLogin userType="admin"/>
         </>
     )
 }

@@ -115,6 +115,7 @@ ul
     color: #ad53a6;
     outline: none;
     font-size: 25px;
+    cursor: pointer;
 }
 .sidebar
 {
@@ -891,6 +892,11 @@ ul
 {
     background: transparent;
     color: #180049;
+}
+.error-message{
+    color:red;
+    font-size: 12px;
+    font-weight: 300;
 }
 @media only screen and (max-width: 992px)
 {

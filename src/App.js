@@ -3,8 +3,9 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
 import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import DashboardLayout from './pages/DashboardLayout';
-import AdminDashboardLayout from './pages/AdminDashboardLayout';
+import { Suspense, lazy } from "react";
+import DashboardLayout from '../src/layout/DashboardLayout';
+import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
 import Login from './pages/Authentication/Login';
 import Dashboard from './pages/views/Dashboard';
 import HiredDevelopers from './pages/views/HiredDevelopers';
@@ -22,13 +23,19 @@ import AdminTimeReporting from './pages/admin/AdminTimeReporting';
 import AdminInvoice from './pages/admin/AdminInvoice';
 import Revenue from './pages/admin/Revenue';
 import DeveloperDashboard from './pages/developer/DeveloperDashboard';
-import DeveloperDashboardLayout from './pages/DeveloperDashboardLayout';
+import DeveloperDashboardLayout from '../src/layout/DeveloperDashboardLayout';
 import EditDeveloperProfile from './pages/developer/DeveloperEditProfile';
 import DeveloperDocuments from './pages/developer/DeveloperDocuments';
 import DeveloperTimeReporting from './pages/developer/DeveloperTimeReporting';
 import DeveloperCV from './pages/developer/DeveloperCV';
 import AgencyLogin from './pages/Authentication/AdminLogin';
 import DeveloperLogin from './pages/Authentication/DeveloperLogin';
+import { route } from './router';
+import { ToastContainer } from 'react-toastify';
+import PublicLayout from '../src/layout/PublicLayout';
+import "react-toastify/dist/ReactToastify.css";
+import DeveloperPublicLayout from './layout/DeveloperPublicLayout';
+
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
@@ -36,12 +43,23 @@ Chart.register(BarElement);
 function App() {
   return (
     <>
+      <ToastContainer
+        className="custom-toast-container"
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Router>
         <Routes>
-          <Route path="/" exact element={<Login/>} />
+          <Route path="/" exact element={<PublicLayout><Login/></PublicLayout> } />
           <Route path="/agency-login" exact element={<AgencyLogin/>} />
-          <Route path="/developer-login" exact element={<DeveloperLogin/>} />
-          
+          <Route path="/developer-login" exact element={<DeveloperPublicLayout><DeveloperLogin/></DeveloperPublicLayout> } />
           <Route path="/dashboard" exact element={<DashboardLayout><Dashboard /></DashboardLayout>} />
           <Route path="/hired-developers" exact element={<DashboardLayout><HiredDevelopers /></DashboardLayout>} />
           <Route path="/edit-profile" exact element={<DashboardLayout><EditProfile /></DashboardLayout>} />
@@ -64,6 +82,36 @@ function App() {
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
         </Routes>
       </Router>
+     
+      {/* <Suspense fallback={<Loader />}>
+        <Router>
+          <Routes>
+            {route?.map((item, index) =>
+              item.private ? (
+                <Route key={index} element={<DashboardLayout />}>
+                  <Route path={item.path} element={item.element} />
+                </Route>
+              ) : !item.private && item.notAccess ? (
+                <Route key={index} element={<AuthLayout />}>
+                  <Route path={item.path} element={item.element} />
+                </Route>
+              ) : item.isSuperAdmin && item.isSuperAdminPrivate ? (
+                <Route key={index} element={<AdminSuperLayout />}>
+                  <Route path={item.path} element={item.element} />
+                </Route>
+              ) : item.isSuperAdmin && !item.isSuperAdminPrivate ? (
+                <Route key={index} element={<SuperAdminPublicLayout />}>
+                  <Route path={item.path} element={item.element} />
+                </Route>
+              )
+                : <Route key={index} element={<PublicLayout />}>
+                  <Route path={item.path} element={item.element} />
+                </Route>
+            )}
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </Router>
+      </Suspense> */}
     </>
   );
 }
