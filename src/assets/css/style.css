@@ -540,7 +540,7 @@ ul
     height: 35px;
     align-items: center;
     justify-content: center;
-    background-color: var(--white)3f3;
+    background-color: #fff3f3;
     color: #f00;
     border-radius: 5px;
 }
@@ -557,7 +557,7 @@ ul
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    background-color: var(--white)3f3;
+    background-color: #fff3f3;
     margin-bottom: 10px;
     color: #f00;
 }
@@ -1281,4 +1281,8 @@ ul
 .cv-template2 .connect-listing
 {
     gap: 10px;
+}
+.cv-field
+{
+    box-shadow: none;
 }
