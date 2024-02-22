@@ -10,6 +10,8 @@ import { PiCoinsFill } from "react-icons/pi";
 import { FaFileInvoice } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { IoBriefcase } from "react-icons/io5";
+import { FaListUl } from "react-icons/fa6";
 
 const Sidebar = ({sideBarActive}) => {
     return(
@@ -33,6 +35,12 @@ const Sidebar = ({sideBarActive}) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/job-post'} className="side-link" activeClassName="active"><IoBriefcase /> Job Post</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/job-posted'} className="side-link" activeClassName="active"><FaListUl /> Job Posted</NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/earned-back'} className="side-link" activeClassName="active"><PiCoinsFill /> Earned Back</NavLink>

@@ -51,6 +51,16 @@ const DeveloperDocuments = () => {
                                 </div>
                             </div>
                         </Form>
+                        <div className="d-flex align-items-center gap-3 mb-4">
+                            <div>
+                                <Form.Control type="file" className="d-none" id="upload_file" />
+                                <Form.Label htmlFor="upload_file" className="main-btn px-5 cursor-pointer">+ Upload File</Form.Label>
+                            </div>
+                            <div>
+                                <Form.Control type="file" className="d-none" id="upload_file" />
+                                <Form.Label htmlFor="upload_file" className="main-btn px-5 cursor-pointer">+ Upload Folder</Form.Label>
+                            </div>
+                        </div>
                         <h3 className="section-head-sub">Documents</h3>
                         <div className="folder-listing">
                             <div className="folder-list" onDoubleClick={toggleFolderView}>
