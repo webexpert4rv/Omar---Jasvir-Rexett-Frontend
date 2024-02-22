@@ -1,12 +1,26 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Form, Button } from "react-bootstrap";
 import developerImg from '../../assets/img/user-img.jpg'
+import { useDispatch, useSelector } from "react-redux";
+import { timeReporting } from "../../redux/slices/clientDataSlice";
+import RexettTable from "../../components/clients/TimeReporiting/RexettTable";
+import { TABLE_HEADER } from "../../components/clients/TimeReporiting/constant";
 const TimeReporting = () => {
-    const [selectedPeriod, setSelectedPeriod] = useState("weekly-period");
+    const dispatch =useDispatch()
+    const [selectedPeriod, setSelectedPeriod] = useState("weekly");
+    const {timeReportingData}=useSelector(state=>state.clientData)
+console.log(timeReportingData,"timeReportingData")
+console.log(TABLE_HEADER[0][selectedPeriod],"TABLE_HEADER[0][selectedPeriod]")
+
+    useEffect(()=>{
+        dispatch(timeReporting(selectedPeriod))
+    },[dispatch,selectedPeriod])
 
     const handlePeriodChange = (e) => {
         setSelectedPeriod(e.target.value);
     };
+
+    console.log(TABLE_HEADER,"TABLE_HEADER")
     return (
         <>
             <section>
@@ -25,9 +39,9 @@ const TimeReporting = () => {
                         <div className="flex-none">
                             <Form.Label className="common-label">Select Period</Form.Label>
                             <Form.Select className="filter-select shadow-none" onChange={handlePeriodChange} value={selectedPeriod}>
-                                <option value="weekly-period">Weekly</option>
-                                <option value="monthly-period">Monthly</option>
-                                <option value="yearly-period">Yearly</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="yearly">Yearly</option>
                             </Form.Select>
                         </div>
                     </div>
@@ -51,7 +65,8 @@ const TimeReporting = () => {
                         <Button variant="transparent" className="main-btn px-5">Edit Time Report</Button>
                     </div>
                 </div>
-                <div className={`weekly-report-table ${selectedPeriod === "weekly-period" ? '' : 'd-none'}`}>
+                <RexettTable headerColumn={TABLE_HEADER[0][selectedPeriod]} selectedPeriod={selectedPeriod} data={timeReportingData}/>
+                {/* <div className={`weekly-report-table ${selectedPeriod === "weekly-period" ? '' : 'd-none'}`}>
                     <div className="table-responsive">
                         <table className="table time-table table-bordered">
                             <thead>
@@ -219,8 +234,8 @@ const TimeReporting = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div className={`monthly-report-table ${selectedPeriod === "monthly-period" ? '' : 'd-none'}`}>
+                </div> */}
+                {/* <div className={`monthly-report-table ${selectedPeriod === "monthly-period" ? '' : 'd-none'}`}>
                     <div className="table-responsive">
                         <table className="table time-table table-bordered">
                             <thead>
@@ -288,7 +303,7 @@ const TimeReporting = () => {
                                     <td className="time-table-data">30 hrs</td>
                                     <td className="time-table-data">30 hrs</td>
                                     <td className="time-table-data">30 hrs</td>
-                                    <td className="time-table-data">30 hrs</td>
+                                    <td className="time-table-data offday-data">30 hrs</td>
                                     <td className="time-table-data">30 hrs</td>
                                     <td className="time-table-data">30 hrs</td>
                                     <td className="time-table-data">30 hrs</td>
@@ -451,8 +466,8 @@ const TimeReporting = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div className={`yearly-report-table ${selectedPeriod === "yearly-period" ? '' : 'd-none'}`}>
+                </div> */}
+                {/* <div className={`yearly-report-table ${selectedPeriod === "yearly-period" ? '' : 'd-none'}`}>
                     <div className="table-responsive">
                         <table className="table time-table table-bordered">
                             <thead>
@@ -620,7 +635,7 @@ const TimeReporting = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> */}
             </section>
         </>
     )

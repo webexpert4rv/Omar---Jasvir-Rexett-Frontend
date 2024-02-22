@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import resumeImg from '../../assets/img/user-img.jpg'
 import AboutCV from "./Modals/AboutCVModal";
@@ -15,8 +15,13 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { FaGitlab } from "react-icons/fa6";
 import { FaPinterest } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 const DeveloperCV = () => {
+    const dispatch =useDispatch()
+    const {developerCvData}=useSelector(state=>state.developerData)
     const [showModal, setShowModal] = useState(false);
+    console.log(developerCvData,"developerCvData")
     const handleShowModal = () => {
         setShowModal(true);
     };
@@ -59,6 +64,10 @@ const DeveloperCV = () => {
     const handleCloseSocialMediaModal = () => {
         setShowSocialMediaModal(false);
     };
+
+    useEffect(()=>{
+        dispatch(fetchDeveloperCv())
+    },[dispatch])
     return(
         <>
             <section className="overview-cv">
@@ -155,7 +164,7 @@ const DeveloperCV = () => {
                         <Col md="8">
                             <div className="profession-section">
                                 <div className="personal-details">
-                                    <h2 className="developer-name"><b>Mariana</b> Anderson</h2>
+                                    <h2 className="developer-name"><b>{developerCvData.name}</b></h2>
                                     <h4 className="developer-position">Frontend Developer</h4>
                                     <p className="about-bio-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
                                 </div>

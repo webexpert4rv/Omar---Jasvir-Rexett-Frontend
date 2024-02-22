@@ -62,8 +62,14 @@ export function loginUser(payload, callback) {
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailAuthData())
+            if(error.response.status===401){
+                toast.error(error.response.data.message, { position: "top-center" }) 
+                dispatch(setFailAuthData())
+            }else{
+                toast.error(message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            }
+         
         }
     };
 }
