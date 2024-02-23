@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -7,7 +7,15 @@ import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import clientLogo from '../../assets/img/amazon.png'
+import { useDispatch, useSelector } from "react-redux";
+import { getDeveloperDashboard } from "../../redux/slices/developerDataSlice";
 const DeveloperDashboard = () => {
+    const {developerDashboard}=useSelector(state=>state.developerData)
+    console.log(developerDashboard,"developerDashboard")
+    const dispatch=useDispatch()
+    useEffect(()=>{
+     dispatch(getDeveloperDashboard())
+    },[])
     return (
         <>
             <h2 className="section-head mb-4">Overview</h2>
@@ -15,7 +23,7 @@ const DeveloperDashboard = () => {
                 <div className="overview-card active">
                     <div>
                         <h4 className="overview-card-subhead">Total hours</h4>
-                        <h3 className="overview-card-heading mb-0">100 hrs</h3>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours} hrs</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
@@ -25,18 +33,18 @@ const DeveloperDashboard = () => {
                     <div className="developers-list">
                         <div className="developer-card">
                             <div className="user-imgbx">
-                                <img src={userImg} className="user-img" />
+                                <img src={developerDashboard?.developerDetails?.profile_picture} className="user-img" />
                             </div>
                             <div className="text-center">
-                                <h3 className="user-name">Affredo</h3>
-                                <p className="designation-user">Front End Designer</p>
-                                <p className="email-user">affredo@rexett.com</p>
+                                <h3 className="user-name">{developerDashboard?.developerDetails?.name}</h3>
+                                <p className="designation-user">{developerDashboard?.developerDetails?.developer_detail?.professional_title}</p>
+                                <p className="email-user">{developerDashboard?.developerDetails?.email}</p>
                                 <ul className="social-icons">
                                     <li>
-                                        <Link to={"#"}><FaGithub /></Link>
+                                        <Link to={developerDashboard?.developerDetails?.developer_detail?.github_url}><FaGithub /></Link>
                                     </li>
                                     <li>
-                                        <Link to={"#"}><FaLinkedin /></Link>
+                                        <Link to={developerDashboard?.developerDetails?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                                     </li>
                                     <li>
                                         <Link to={"#"}><MdEmail /></Link>

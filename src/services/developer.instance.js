@@ -29,10 +29,11 @@ developerInstance.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        let refreshToken = getRefreshToken();
+        let refreshToken = getRefreshToken("developerRefreshToken");
+        console.log(refreshToken,"refreshToken")
         const response = await developerInstance.post('auth/refresh-token', { refresh_token
           : refreshToken });
-        let refreshTokn = updateLocalAccessToken(response.data.access_token)
+        let refreshTokn = updateLocalAccessToken("developerToken",response.data.access_token)
         originalRequest.headers["Authorization"] = `${refreshTokn}`;
         return developerInstance(originalRequest);
       } catch (error) {

@@ -15,21 +15,20 @@ const EditProfile = () => {
     } = useForm({});
     const dispatch = useDispatch();
     const {smallLoader,clientProfileDetails}=useSelector(state=>state.clientData)
-console.log(clientProfileDetails,"clientProfileDetails")
 
     useEffect(()=>{
        dispatch(getClientProfile())
     },[dispatch])
 
     useEffect(()=>{
-        setValue("name",clientProfileDetails?.name)
-        setValue("email",clientProfileDetails?.email)
-        setValue("phone_number",clientProfileDetails?.phone_number)
-        setValue("address",clientProfileDetails?.address)
-        setValue("address_2",clientProfileDetails?.address_2)
-        setValue("city",clientProfileDetails?.city)
-        setValue("country",clientProfileDetails?.country)
-        setValue("passcode",clientProfileDetails?.passcode)
+        setValue("name",clientProfileDetails?.data?.name)
+        setValue("email",clientProfileDetails?.data?.email)
+        setValue("phone_number",clientProfileDetails?.data?.phone_number)
+        setValue("address",clientProfileDetails?.data?.address)
+        setValue("address_2",clientProfileDetails?.data?.address_2)
+        setValue("city",clientProfileDetails?.data?.city)
+        setValue("country",clientProfileDetails?.data?.country)
+        setValue("passcode",clientProfileDetails?.data?.passcode)
         
         
     },[clientProfileDetails])
