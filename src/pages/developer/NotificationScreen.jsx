@@ -42,7 +42,7 @@ const NotificationDeveloper = () => {
                                     </span>
                                     <div className="d-flex gap-4 justify-content-between">
                                         <div>
-                                            <h3 className="notification-heading">You are Shortlisted for Amazon project <span className="new-notify">New</span></h3>
+                                            <h3 className="notification-heading">Selected for Interview for Amazon project <span className="new-notify">New</span></h3>
                                             <p className="notification-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                                         </div>
                                         <div className="notify-recieve">
@@ -57,12 +57,42 @@ const NotificationDeveloper = () => {
                                     </span>
                                     <div className="d-flex gap-4 justify-content-between">
                                         <div>
-                                            <h3 className="notification-heading">You are Shortlisted for Amazon project <span className="new-notify">New</span></h3>
+                                            <h3 className="notification-heading">You are Rejected for Amazon project <span className="new-notify">New</span></h3>
                                             <p className="notification-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                                         </div>
                                         <div className="notify-recieve">
                                             <span className="notify-date">10-02-2023</span>
                                             <span className="notify-time">Just Now</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="notification-wrapper">
+                                    <span className="bell-icon">
+                                        <FaBell />
+                                    </span>
+                                    <div className="d-flex gap-4 justify-content-between">
+                                        <div>
+                                            <h3 className="notification-heading">You are Hired for Amazon project</h3>
+                                            <p className="notification-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                        </div>
+                                        <div className="notify-recieve">
+                                            <span className="notify-date">10-02-2023</span>
+                                            <span className="notify-time">11:30 AM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="notification-wrapper">
+                                    <span className="bell-icon">
+                                        <FaBell />
+                                    </span>
+                                    <div className="d-flex gap-4 justify-content-between">
+                                        <div>
+                                            <h3 className="notification-heading">Rexett has suggested you for Amazon project</h3>
+                                            <p className="notification-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                        </div>
+                                        <div className="notify-recieve">
+                                            <span className="notify-date">10-02-2023</span>
+                                            <span className="notify-time">12:10 PM</span>
                                         </div>
                                     </div>
                                 </div>
@@ -76,38 +106,8 @@ const NotificationDeveloper = () => {
                                             <p className="notification-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                                         </div>
                                         <div className="notify-recieve">
-                                            <span className="notify-date">10-02-2023</span>
-                                            <span className="notify-time">Just Now</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="notification-wrapper">
-                                    <span className="bell-icon">
-                                        <FaBell />
-                                    </span>
-                                    <div className="d-flex gap-4 justify-content-between">
-                                        <div>
-                                            <h3 className="notification-heading">You are Shortlisted for Amazon project</h3>
-                                            <p className="notification-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        </div>
-                                        <div className="notify-recieve">
-                                            <span className="notify-date">10-02-2023</span>
-                                            <span className="notify-time">Just Now</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="notification-wrapper">
-                                    <span className="bell-icon">
-                                        <FaBell />
-                                    </span>
-                                    <div className="d-flex gap-4 justify-content-between">
-                                        <div>
-                                            <h3 className="notification-heading">You are Shortlisted for Amazon project</h3>
-                                            <p className="notification-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        </div>
-                                        <div className="notify-recieve">
-                                            <span className="notify-date">10-02-2023</span>
-                                            <span className="notify-time">Just Now</span>
+                                            <span className="notify-date">03-02-2023</span>
+                                            <span className="notify-time">02:30 PM</span>
                                         </div>
                                     </div>
                                 </div>
