@@ -35,6 +35,9 @@ import { ToastContainer } from 'react-toastify';
 import PublicLayout from '../src/layout/PublicLayout';
 import "react-toastify/dist/ReactToastify.css";
 import DeveloperPublicLayout from './layout/DeveloperPublicLayout';
+import JobPost from './pages/views/JobPost';
+import JobListing from './pages/views/JobListing';
+import NotificationDeveloper from './pages/developer/NotificationScreen';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -80,6 +83,9 @@ function App() {
           <Route path="/developer-documents" exact element={<DeveloperDashboardLayout><DeveloperDocuments /></DeveloperDashboardLayout>} />
           <Route path="/developer-time-reporting" exact element={<DeveloperDashboardLayout><DeveloperTimeReporting /></DeveloperDashboardLayout>} />
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
+          <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
+          <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
+          <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
         </Routes>
       </Router>
      
