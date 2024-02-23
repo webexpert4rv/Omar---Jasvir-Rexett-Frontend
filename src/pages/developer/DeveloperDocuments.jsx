@@ -8,12 +8,22 @@ import { FaDownload } from "react-icons/fa6";
 import { FaImage } from "react-icons/fa6";
 import { MdPictureAsPdf } from "react-icons/md";
 import userImage from '../../assets/img/user-img.jpg'
+import UploadFileModal from "./Modals/UploadFile";
 
 const DeveloperDocuments = () => {
     const [showFolderView, setShowFolderView] = useState(false);
 
     const toggleFolderView = () => {
         setShowFolderView(!showFolderView);
+    };
+
+    const [showUploadFileModal, setShowUploadFileModal] = useState(false);
+    const handleShowUploadFileModal = () => {
+        setShowUploadFileModal(true);
+    };
+
+    const handleCloseUploadFileModal = () => {
+        setShowUploadFileModal(false);
     };
 
     return (
@@ -53,8 +63,7 @@ const DeveloperDocuments = () => {
                         </Form>
                         <div className="d-flex align-items-center gap-3 mb-4">
                             <div>
-                                <Form.Control type="file" className="d-none" id="upload_file" />
-                                <Form.Label htmlFor="upload_file" className="main-btn px-5 cursor-pointer">+ Upload File</Form.Label>
+                                <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-5 cursor-pointer">+ Upload File</Form.Label>
                             </div>
                             <div>
                                 <Form.Control type="file" className="d-none" id="upload_file" />
@@ -125,6 +134,7 @@ const DeveloperDocuments = () => {
                     {/* Add other pdf-list items */}
                 </div>
             </section>
+            <UploadFileModal show={showUploadFileModal} handleClose={handleCloseUploadFileModal} />
         </>
     );
 };
