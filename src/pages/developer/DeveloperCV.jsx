@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import resumeImg from '../../assets/img/user-img.jpg'
 import AboutCV from "./Modals/AboutCVModal";
@@ -15,8 +15,14 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { FaGitlab } from "react-icons/fa6";
 import { FaPinterest } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 const DeveloperCV = () => {
+    const dispatch =useDispatch()
+    const {developerCvData}=useSelector(state=>state.developerData)
+    const [selectedTemplate,setSelectedTemplate]=useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
+    console.log(developerCvData,"developerCvData")
     const handleShowModal = () => {
         setShowModal(true);
     };
@@ -59,12 +65,21 @@ const DeveloperCV = () => {
     const handleCloseSocialMediaModal = () => {
         setShowSocialMediaModal(false);
     };
-    const [selectedTemplate, setSelectedTemplate] = useState(null);
 
-    const handleTemplateChange = (templateName) => {
-        setSelectedTemplate(templateName);
-    };
-    return (
+    useEffect(()=>{
+        dispatch(fetchDeveloperCv())
+    },[dispatch])
+
+    const splitSkills=(data)=>{
+      let skills=  data?.skills?.split(",")
+      return skills
+
+    }
+
+    const handleTemplateChange=(data)=>{
+        setSelectedTemplate(data)
+    }
+    return(
         <>
             <section className="overview-cv">
                 <div className="cv-template-option mt-4 mb-2">
@@ -99,57 +114,50 @@ const DeveloperCV = () => {
                                     <ul className="cv-listing">
                                         <li className="cv-side-link">
                                             <h4 className="cv-subheading">Phone</h4>
-                                            <p className="cv-text">1234567890</p>
+                                            <p className="cv-text">{developerCvData?.phone_number}</p>
                                         </li>
                                         <li className="cv-side-link">
                                             <h4 className="cv-subheading">Email</h4>
-                                            <p className="cv-text">loremipsum2798@gmail.com</p>
+                                            <p className="cv-text">{developerCvData?.email}</p>
                                         </li>
                                         <li className="cv-side-link">
                                             <h4 className="cv-subheading">Address</h4>
-                                            <p className="cv-text">123 Anywhere St.. Any City</p>
+                                            <p className="cv-text">{developerCvData?.address}</p>
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="contact-dev-info">
                                     <h3 className="cv-heading">Education</h3>
                                     <ul className="cv-listing">
-                                        <li className="cv-education-link">
-                                            <p className="cv-text education-year mb-1">2008</p>
-                                            <h4 className="cv-subheading mb-1">Enter your Degree</h4>
-                                            <p className="cv-text">University/College</p>
+                                      { developerCvData?.developer_educations?.map((item,index)=>{
+                                        return (
+                                            <React.Fragment key={index}>
+                                            <li className="cv-education-link">
+                                            <p className="cv-text education-year mb-1">{item?.graduation_date?.slice(0,4)}</p>
+                                            <h4 className="cv-subheading mb-1">{item?.Degree?.title}</h4>
+                                            <p className="cv-text">{item?.school_name}</p>
+                                            <p className="cv-text">{item?.FieldOfStudy?.title}</p>
                                         </li>
-                                        <li className="cv-education-link">
-                                            <p className="cv-text education-year mb-1">2008</p>
-                                            <h4 className="cv-subheading mb-1">Enter your Degree</h4>
-                                            <p className="cv-text">University/College</p>
-                                        </li>
+                                            </React.Fragment>
+                                        )
+                                      })
+                                    }
+                                       
                                     </ul>
                                 </div>
                                 <div className="contact-dev-info">
                                     <h3 className="cv-heading">Skills</h3>
                                     <ul className="cv-listing cv-skills-listing">
-                                        <li className="skills-item">HTML</li>
-                                        <li className="skills-item">CSS</li>
-                                        <li className="skills-item">JavaScript</li>
-                                        <li className="skills-item">jQuery</li>
-                                        <li className="skills-item">ReactJS</li>
-                                        <li className="skills-item">VueJS</li>
-                                        <li className="skills-item">Adobe Photoshop</li>
-                                        <li className="skills-item">Adobe Illustrator</li>
-                                        <li className="skills-item">Adobe After Effects</li>
-                                        <li className="skills-item">Adobe XD</li>
-                                        <li className="skills-item">Figma</li>
-                                        <li className="skills-item">Blender</li>
-                                        <li className="skills-item">Webflow</li>
-                                        <li className="skills-item">Unbounce</li>
-                                        <li className="skills-item">Sass</li>
-                                        <li className="skills-item">Less</li>
-                                        <li className="skills-item">Tailwind CSS</li>
-                                        <li className="skills-item">Bootstrap</li>
-                                        <li className="skills-item">Material UI</li>
-                                        <li className="skills-item">Shopify</li>
-                                        <li className="skills-item">Wordpress</li>
+                                        {
+                                          splitSkills(developerCvData?.developer_skills)?.map((item,index)=>{
+                                                return (
+                                                    <>
+                                                      <li className="skills-item" key={index}>{item}</li>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                      
                                     </ul>
                                 </div>
                             </div>
@@ -157,9 +165,9 @@ const DeveloperCV = () => {
                         <Col md="8">
                             <div className="profession-section">
                                 <div className="personal-details">
-                                    <h2 className="developer-name"><b>Mariana</b> Anderson</h2>
-                                    <h4 className="developer-position">Frontend Developer</h4>
-                                    <p className="about-bio-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+                                    <h2 className="developer-name"><b>{developerCvData?.name}</b></h2>
+                                    <h4 className="developer-position">{developerCvData?.developer_detail?.professional_title}</h4>
+                                    <p className="about-bio-text">{developerCvData?.developer_detail?.bio}</p>
                                 </div>
                                 <div className="connect-details">
                                     <h2 className="cv-heading cv-dark-text">Connect with me</h2>
@@ -180,7 +188,7 @@ const DeveloperCV = () => {
                                             </Link>
                                         </li>
                                         <li className="connect-list-item">
-                                            <Link to="www.linkedin.com" target="__blank">
+                                            <Link to={developerCvData?.developer_detail?.linkedin_url} target="__blank">
                                                 <FaLinkedinIn />
                                             </Link>
                                         </li>
@@ -190,7 +198,7 @@ const DeveloperCV = () => {
                                             </Link>
                                         </li>
                                         <li className="connect-list-item">
-                                            <Link to="www.gitlab.com" target="__blank">
+                                            <Link to={developerCvData?.developer_detail?.github_url} target="__blank">
                                                 <FaGitlab />
                                             </Link>
                                         </li>
@@ -204,31 +212,17 @@ const DeveloperCV = () => {
                                 <div className="experience-detiails">
                                     <h3 className="cv-heading cv-dark-text">Experience</h3>
                                     <ul className="experience-timeline">
-                                        <li className="exper-timeline-item">
-                                            <p className="exper-year">2019 - 2022</p>
-                                            <p className="company-name-text">Company Name | <span>123 Anywhere St... Any City</span></p>
-                                            <h3 className="cv-subheading cv-dark-text">React Js Developer</h3>
-                                        </li>
-                                        <li className="exper-timeline-item">
-                                            <p className="exper-year">2019 - 2022</p>
-                                            <p className="company-name-text">Company Name | <span>123 Anywhere St... Any City</span></p>
-                                            <h3 className="cv-subheading cv-dark-text">React Js Developer</h3>
-                                        </li>
-                                        <li className="exper-timeline-item">
-                                            <p className="exper-year">2019 - 2022</p>
-                                            <p className="company-name-text">Company Name | <span>123 Anywhere St... Any City</span></p>
-                                            <h3 className="cv-subheading cv-dark-text">React Js Developer</h3>
-                                        </li>
-                                        <li className="exper-timeline-item">
-                                            <p className="exper-year">2019 - 2022</p>
-                                            <p className="company-name-text">Company Name | <span>123 Anywhere St... Any City</span></p>
-                                            <h3 className="cv-subheading cv-dark-text">React Js Developer</h3>
-                                        </li>
-                                        <li className="exper-timeline-item">
-                                            <p className="exper-year">2019 - 2022</p>
-                                            <p className="company-name-text">Company Name | <span>123 Anywhere St... Any City</span></p>
-                                            <h3 className="cv-subheading cv-dark-text">React Js Developer</h3>
-                                        </li>
+                                        {developerCvData?.developer_experiences?.map((item,index)=>{
+                                            return (
+                                                <>
+                                                <li className="exper-timeline-item">
+                                                <p className="exper-year">{`${item?.start_date?.slice(0,4)}-${item?.end_date ? item?.end_date?.slice(0,4):"FullTime"}`}</p>
+                                                <p className="company-name-text">{item?.company_name} | <span>{item?.description}</span></p>
+                                                <h3 className="cv-subheading cv-dark-text">{item?.job_title}r</h3>
+                                            </li>
+                                            </>
+                                            )
+                                        })}
                                     </ul>
                                 </div>
                             </div>
