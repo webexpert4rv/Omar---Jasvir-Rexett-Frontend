@@ -10,6 +10,7 @@ import { PiCoinsFill } from "react-icons/pi";
 import { FaFileInvoice } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { FaListUl } from "react-icons/fa6";
 
 const AdminSidebar = ({ sideBarActive }) => {
     return(
@@ -33,6 +34,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/admin-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> Job Listing</NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> Revenue</NavLink>

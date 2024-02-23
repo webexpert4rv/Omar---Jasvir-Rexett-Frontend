@@ -40,6 +40,8 @@ import JobListing from './pages/views/JobListing';
 import NotificationDeveloper from './pages/developer/NotificationScreen';
 import SingleJob from './pages/views/SingleJob';
 import NotificationClient from './pages/views/NotificationClient';
+import AdminJobListing from './pages/admin/AdminJobListing';
+import AdminSingleJob from './pages/admin/AdminSingleJob';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -90,6 +92,8 @@ function App() {
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
           <Route path="/single-job" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
+          <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
+          <Route path="/admin-single-job" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
         </Routes>
       </Router>
      
