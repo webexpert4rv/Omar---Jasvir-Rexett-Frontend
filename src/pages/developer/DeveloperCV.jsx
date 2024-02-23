@@ -20,7 +20,7 @@ import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 const DeveloperCV = () => {
     const dispatch =useDispatch()
     const {developerCvData}=useSelector(state=>state.developerData)
-    const [selectedTemplate,setSelectedTemplate]=useState('')
+    const [selectedTemplate,setSelectedTemplate]=useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
     console.log(developerCvData,"developerCvData")
     const handleShowModal = () => {
