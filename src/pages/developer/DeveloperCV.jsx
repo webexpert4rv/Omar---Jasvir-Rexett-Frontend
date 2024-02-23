@@ -20,6 +20,7 @@ import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 const DeveloperCV = () => {
     const dispatch =useDispatch()
     const {developerCvData}=useSelector(state=>state.developerData)
+    const [selectedTemplate,setSelectedTemplate]=useState('')
     const [showModal, setShowModal] = useState(false);
     console.log(developerCvData,"developerCvData")
     const handleShowModal = () => {
@@ -73,6 +74,10 @@ const DeveloperCV = () => {
       let skills=  data?.skills?.split(",")
       return skills
 
+    }
+
+    const handleTemplateChange=(data)=>{
+        setSelectedTemplate(data)
     }
     return(
         <>
