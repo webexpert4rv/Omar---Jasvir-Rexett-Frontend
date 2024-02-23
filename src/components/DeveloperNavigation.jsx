@@ -17,6 +17,30 @@ const DeveloperNavigation = ({ onClick }) => {
                                 <button className="notification-btn"><FaBell /></button>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className="notification-dropdown-menu">
+                                <div className="dropdown-notify-wrapper">
+                                    <div className="dropdown-notify-item">
+                                        <h4 className="dropdown-notifyheading">You are shortlisted for Amazon project</h4>
+                                        <p className="dropdown-notifytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                        <div className="text-end mt-2">
+                                            <span className="dropdown-notify-time">Just now</span>
+                                        </div>
+                                    </div>
+                                    <div className="dropdown-notify-item">
+                                        <h4 className="dropdown-notifyheading">You are shortlisted for Amazon project</h4>
+                                        <p className="dropdown-notifytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                        <div className="text-end mt-2">
+                                            <span className="dropdown-notify-time">10:10 AM</span>
+                                        </div>
+                                    </div>
+                                    <div className="dropdown-notify-item">
+                                        <h4 className="dropdown-notifyheading">You are shortlisted for Amazon project</h4>
+                                        <p className="dropdown-notifytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                        <div className="text-end mt-2">
+                                            <span className="dropdown-notify-time">02:30 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Dropdown.Item href="/notification-developer" className="see-all-notify mt-4"> See All</Dropdown.Item>
                                 <Dropdown.Item href="#" className="text-center no-notification">You have no notification</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
