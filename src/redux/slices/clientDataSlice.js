@@ -6,7 +6,9 @@ const initialClientData = {
     screenLoader: false,
     smallLoader: false,
     assignedDeveloperList:[],
-    clientProfileDetails:{}
+    clientProfileDetails:{},
+    timeReportingData:[],
+    folderData:[]
 }
 
 export const clientDataSlice = createSlice({
@@ -35,11 +37,19 @@ export const clientDataSlice = createSlice({
 
         setClientProfileDetails:(state,action)=>{
             state.clientProfileDetails=action.payload
+        },
+
+        setTimeReporting:(state,action)=>{
+            state.timeReportingData=action.payload
+        },
+        setFolderData:(state,action)=>{
+            state.folderData=action.payload
         }
+
     }
 })
 
-export const { setScreenLoader, setFailClientData,setAssignDeveloperList,setSmallLoader,setActionSuccessFully,setClientProfileDetails } = clientDataSlice.actions
+export const { setScreenLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -99,5 +109,42 @@ export function getClientProfile(payload, callback) {
 }
 
 
+export function timeReporting(payload, callback) {
+    return async (dispatch) => {
+
+        // dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`client/time-reports?filter=${payload}`)
+            if (result.status === 200) {
+                console.log(result,"redd")
+                dispatch(setTimeReporting(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+
+export function getFolderData(payload, callback) {
+    return async (dispatch) => {
+
+        // dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`client/documents?parent_id=`)
+            if (result.status === 200) {
+                console.log(result,"redd")
+                // dispatch(setTimeReporting(result.data.data))
+                dispatch(setFolderData(result.data.data.files))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
 
  

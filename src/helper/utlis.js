@@ -3,13 +3,13 @@ export function getToken(tokenKey) {
     return token
   }
   
-  export function getRefreshToken() {
-    let refreshToken = localStorage.getItem("refreshToken");
+  export function getRefreshToken(tokn) {
+    let refreshToken = localStorage.getItem(tokn);
     return refreshToken
   }
   
-  export function updateLocalAccessToken(token) {
+  export function updateLocalAccessToken(key,token) {
   
-    localStorage.setItem("token", token);
+    localStorage.setItem(key, token);
   }
   

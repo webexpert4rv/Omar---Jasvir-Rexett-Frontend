@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { FaFolder } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -8,13 +8,22 @@ import { FaTrashCan } from "react-icons/fa6";
 import { FaDownload } from "react-icons/fa6";
 import { FaImage } from "react-icons/fa6";
 import userImage from '../../assets/img/user-img.jpg'
+import { useDispatch, useSelector } from "react-redux";
+import { getFolderData } from "../../redux/slices/clientDataSlice";
 
 const Documents = () => {
+    const dispatch =useDispatch();
+    const {folderData}=useSelector(state=>state.clientData)
     const [showFolderView, setShowFolderView] = useState(false);
 
     const toggleFolderView = () => {
         setShowFolderView(!showFolderView);
     };
+
+    useEffect(()=>{
+        dispatch(getFolderData())
+    },[dispatch])
+
 
     return (
         <>
@@ -44,11 +53,34 @@ const Documents = () => {
                         </Form>
                         <h3 className="section-head-sub">Contracts</h3>
                         <div className="folder-listing">
-                            <div className="folder-list" onDoubleClick={toggleFolderView}>
-                                <FaFolder /> <span>Document 1</span>
+                       { folderData?.map((item)=>{
+                        return (
+                            <>
+                            {
+                                item.file_type===0?<>
+                                <div className="folder-list" onDoubleClick={toggleFolderView}>
+                                <FaFolder /><span>Document 1</span>
                             </div>
-                            {/* Add other folder-list items */}
+                                </>:<>
+                                <div className="pdf-list">
+                        <div className="pdf-icon">
+                            <MdPictureAsPdf/>
                         </div>
+                        <p><span><MdPictureAsPdf/></span> PDF Document 1.pdf</p>
+                        <div className="doc-action">
+                            <button className="view-btn doc-action-btn"><FaEye/></button>
+                            <button className="download-btn doc-action-btn"><FaDownload/></button>
+                            <button className="trash-btn doc-action-btn"><FaTrashCan/></button>
+                        </div>
+                    </div>
+                                </>
+                            }
+                            
+                            </>
+                        )
+                       })
+                        }
+                         </div>
                     </div>
                 </div>
             </section>
