@@ -16,12 +16,13 @@ const Documents = () => {
     const {folderData}=useSelector(state=>state.clientData)
     const [showFolderView, setShowFolderView] = useState(false);
 
-    const toggleFolderView = () => {
-        setShowFolderView(!showFolderView);
+    const toggleFolderView = (id) => {
+        // setShowFolderView(!showFolderView);
+        dispatch(getFolderData(id))
     };
 
     useEffect(()=>{
-        dispatch(getFolderData())
+        dispatch(getFolderData("0"))
     },[dispatch])
 
 
@@ -58,7 +59,7 @@ const Documents = () => {
                             <>
                             {
                                 item.file_type===0?<>
-                                <div className="folder-list" onDoubleClick={toggleFolderView}>
+                                <div className="folder-list" onDoubleClick={()=>toggleFolderView(item.id)}>
                                 <FaFolder /><span>Document 1</span>
                             </div>
                                 </>:<>

@@ -118,4 +118,20 @@ export function getDeveloperDashboard(payload, callback) {
     };
 }
 
+export function updateDeveloperCvBio(payload, callback) {
+    return async (dispatch) => {
+        try {
+            let result = await developerInstance.get('developer/update-bio')
+            if (result.status === 200) {
+                console.log(result,"redd")
+                dispatch(setDeveloperDashboard(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
 

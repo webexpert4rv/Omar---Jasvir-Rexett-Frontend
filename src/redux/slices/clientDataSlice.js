@@ -133,7 +133,7 @@ export function getFolderData(payload, callback) {
 
         // dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`client/documents?parent_id=`)
+            let result = await clientInstance.get(`client/documents?parent_id=${payload}`)
             if (result.status === 200) {
                 console.log(result,"redd")
                 // dispatch(setTimeReporting(result.data.data))

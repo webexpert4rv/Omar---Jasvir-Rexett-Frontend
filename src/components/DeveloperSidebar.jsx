@@ -1,6 +1,6 @@
 import React from "react";
 import sidebarLogo from '../assets/img/logo-main.png'
-import { NavLink } from "react-router-dom"; // Import NavLink instead of Link
+import { Link, NavLink, useNavigate } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
@@ -10,6 +10,11 @@ import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 
 const AdminSidebar = ({sideBarActive}) => {
+    const logout=()=>{
+        localStorage.removeItem("developerToken")
+        localStorage.removeItem("developerRefreshToken")
+        window.location.href="/developer-login"
+    }
     return(
         <>
             <aside className="sidebar">
@@ -36,7 +41,7 @@ const AdminSidebar = ({sideBarActive}) => {
                     </div>
                     <div className="w-100 px-3">
                         <div>
-                            <NavLink to={"/developer-login"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
+                            <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>

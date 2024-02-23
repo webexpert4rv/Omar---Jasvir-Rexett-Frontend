@@ -14,6 +14,11 @@ import { IoBriefcase } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 
 const Sidebar = ({sideBarActive}) => {
+    const logout=()=>{
+        localStorage.removeItem("token")
+        localStorage.removeItem("refreshToken")
+        window.location.href="/"
+    }
     return(
         <>
             <aside className="sidebar">
@@ -52,7 +57,7 @@ const Sidebar = ({sideBarActive}) => {
                     </div>
                     <div className="w-100 px-3">
                         <div>
-                            <NavLink to={"/"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
+                            <NavLink onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>

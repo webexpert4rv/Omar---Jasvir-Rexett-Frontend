@@ -29,7 +29,7 @@ clientInstance.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        let refreshToken = getRefreshToken("token");
+        let refreshToken = getRefreshToken("refreshToken");
         const response = await clientInstance.post('auth/refresh-token', { refresh_token
           : refreshToken });
         let refreshTokn = updateLocalAccessToken("token",response.data.access_token)

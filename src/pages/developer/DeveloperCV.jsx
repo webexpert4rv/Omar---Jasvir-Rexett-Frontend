@@ -493,7 +493,7 @@ const DeveloperCV = () => {
                     </div>
                 </div>
             </section>
-            <AboutCV show={showModal} handleClose={handleCloseModal} />
+            <AboutCV show={showModal} handleClose={handleCloseModal} data={developerCvData?.developer_detail?.bio} />
             <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} />
             <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} />
             <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} />
