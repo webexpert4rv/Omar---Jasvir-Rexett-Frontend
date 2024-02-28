@@ -42,6 +42,18 @@ import SingleJob from './pages/views/SingleJob';
 import NotificationClient from './pages/views/NotificationClient';
 import AdminJobListing from './pages/admin/AdminJobListing';
 import AdminSingleJob from './pages/admin/AdminSingleJob';
+import NotificationAdmin from './pages/admin/NotificationAdmin';
+import VendorDashboardLayout from './layout/VendorDashboardLayout';
+import VendorDashboard from './pages/vendor/Dashboard';
+import VendorDocuments from './pages/vendor/VendorDocuments';
+import VendorRevenue from './pages/vendor/VendorRevenue';
+import VendorUploadInvoice from './pages/vendor/UploadInvoice';
+import VendorTimeReporting from './pages/vendor/TimeReporting';
+import EditVendorProfile from './pages/vendor/EditProfile';
+import AllDeveloperList from './pages/vendor/ListAllDeveloper';
+import RentedDevelopers from './pages/vendor/RentedDevelopers';
+import NotificationVendor from './pages/vendor/NotificationVendor';
+import RegisterDeveloper from './pages/vendor/RegisterDeveloper';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -94,6 +106,17 @@ function App() {
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
+          <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
+          <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
+          <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
+          <Route path="/vendor-revenue" exact element={<VendorDashboardLayout><VendorRevenue /></VendorDashboardLayout>} />
+          <Route path="/vendor-upload-invoice" exact element={<VendorDashboardLayout><VendorUploadInvoice /></VendorDashboardLayout>} />
+          <Route path="/vendor-time-reporting" exact element={<VendorDashboardLayout><VendorTimeReporting /></VendorDashboardLayout>} />
+          <Route path="/edit-vendor-profile" exact element={<VendorDashboardLayout><EditVendorProfile /></VendorDashboardLayout>} />
+          <Route path="/list-all-developers" exact element={<VendorDashboardLayout><AllDeveloperList /></VendorDashboardLayout>} />
+          <Route path="/all-rented-developers" exact element={<VendorDashboardLayout><RentedDevelopers /></VendorDashboardLayout>} />
+          <Route path="/notification-vendor" exact element={<VendorDashboardLayout><NotificationVendor /></VendorDashboardLayout>} />
+          <Route path="/register-developer" exact element={<VendorDashboardLayout><RegisterDeveloper /></VendorDashboardLayout>} />
         </Routes>
       </Router>
      
