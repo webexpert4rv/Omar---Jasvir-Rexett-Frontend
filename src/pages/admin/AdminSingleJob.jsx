@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import EndJobModal from "./Modals/EndJob";
-const AdminSingleJob = () => {
+import EndJobModal from "./Modals/EndJobs";
+import amazonImg from '../../assets/img/amazon.png'
+const SingleJob = () => {
 
     const [showEndJobModal, setShowEndJobModal] = useState(false);
     const handleShowEndJobModal = () => {
@@ -27,12 +28,12 @@ const AdminSingleJob = () => {
                 <Tab eventKey="application" title="Application">
                     <section className="single-job-section">
                         <div className="single-job-card job-information-wrapper">
+                            <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2>
                             <div className="d-flex justify-content-between align-items-center">
                                 <h2 className="single-job-title mb-0">Want to Convert Figma to HTML</h2>
                                 <div className="d-flex gap-3 align-items-center">
                                     <p className="mb-0">Status <span className="status-text inprogress status-info">In progress</span></p>
                                     <Button variant="transparent" onClick={handleShowEndJobModal} className="px-5 closed-job-btn">End Job</Button>
-                                    <Button variant="transparent" className="px-5 unpublish-btn">Unpublish</Button>
                                 </div>
                             </div>
                             <h4 className="single-job-category">Website Design</h4>
@@ -69,6 +70,9 @@ const AdminSingleJob = () => {
                     </section>
                 </Tab>
                 <Tab eventKey="suggested" title="Suggestions">
+                    <div className="text-center mb-3">
+                        <Button className="main-btn px-5">+ Suggest Developers</Button>
+                    </div>
                     <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Suggested</div>
@@ -199,4 +203,4 @@ const AdminSingleJob = () => {
         </>
     )
 }
-export default AdminSingleJob;
+export default SingleJob;

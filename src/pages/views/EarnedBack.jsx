@@ -1,16 +1,16 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Pagination } from "react-bootstrap";
 import { Doughnut } from 'react-chartjs-2';
 const data = {
     labels: ['Earned Back', 'Developers'],
     datasets: [
-      {
-        data: [95, 5],
-        backgroundColor: ['#180049', '#00cadc'],
-        hoverBackgroundColor: ['#060012', '#005d65'],
-      },
+        {
+            data: [95, 5],
+            backgroundColor: ['#180049', '#00cadc'],
+            hoverBackgroundColor: ['#060012', '#005d65'],
+        },
     ],
-  };
+};
 const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -19,21 +19,21 @@ const options = {
         display: true,
         position: 'top',
         labels: {
-          fontColor: '#000',
-          fontSize: 16,
+            fontColor: '#000',
+            fontSize: 16,
         },
     },
     plugins: {
-      tooltip: {
-        enabled: true,
-        bodyFontSize: 14,
-        bodyFontColor: '#fff',
-        backgroundColor: '#000',
-        borderColor: '#ddd',
-        cornerRadius: 5,
-      },
+        tooltip: {
+            enabled: true,
+            bodyFontSize: 14,
+            bodyFontColor: '#fff',
+            backgroundColor: '#000',
+            borderColor: '#ddd',
+            cornerRadius: 5,
+        },
     },
-  };
+};
 const EarnedBack = () => {
     return (
         <>
@@ -61,7 +61,7 @@ const EarnedBack = () => {
                     </Form>
                 </div>
                 <p className="mb-3">To hire a rexett developers for more than 500 hours Rexett will return you 5% of your investment</p>
-                <div className="table-responsiv mb-4">
+                <div className="table-responsiv mb-3">
                     <table className="table time-table table-bordered">
                         <thead>
                             <th className="time-table-head">
@@ -158,6 +158,20 @@ const EarnedBack = () => {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <p className="showing-result">Showing 1 - 10 results</p>
+                    <Pagination className="custom-pagination">
+                        <Pagination.Prev className="custom-pagination-item custom-pagination-arrow" />
+                        <Pagination.Item className="custom-pagination-item" active>{1}</Pagination.Item>
+                        <Pagination.Item className="custom-pagination-item">{2}</Pagination.Item>
+                        <Pagination.Item className="custom-pagination-item">{3}</Pagination.Item>
+                        <Pagination.Ellipsis className="custom-pagination-item" />
+                        <Pagination.Item className="custom-pagination-item">{8}</Pagination.Item>
+                        <Pagination.Item className="custom-pagination-item">{9}</Pagination.Item>
+                        <Pagination.Item className="custom-pagination-item">{10}</Pagination.Item>
+                        <Pagination.Next className="custom-pagination-item custom-pagination-arrow" />
+                    </Pagination>
                 </div>
                 <h5 className="section-head-sub">Statistic Earned Back</h5>
             </section>

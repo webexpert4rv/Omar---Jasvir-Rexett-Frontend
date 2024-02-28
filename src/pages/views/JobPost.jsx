@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { clientJobPost, getJobCategoryList, getSkillList, jobCategoryList, skillList } from "../../redux/slices/clientDataSlice";
+import { useNavigate } from "react-router";
 
 const options = [
     { value: 'html', label: 'HTML' },
@@ -18,6 +19,7 @@ const options = [
 ];
 const JobPost = () => {
     const [selectedOption, setSelectedOption] = useState([]);
+    const navigate=useNavigate()
     const {skillList,jobCategoryList,smallLoader}=useSelector(state=>state.clientData)
     const dispatch =useDispatch()
     const {
@@ -43,11 +45,12 @@ const JobPost = () => {
             ...values,
             skills:convertArr.toString()
         }
-        dispatch(clientJobPost(data))
+        dispatch(clientJobPost(data,()=>{
+            navigate("/job-posted")
+        }))
       }
 
       const onChangeSelect=(val)=>{
-        console.log(val,"l;")
         setSelectedOption(val)
 
       }

@@ -1,12 +1,31 @@
-import React from "react";
+import React, {useState} from "react";
 import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
+import EditTimeReport from "./Modals/EditTimeReportModal";
+import UploadInvoice from "./Modals/UploadInvoice";
 const AdminTimeReporting = () => {
+    const [showEditTimeModal, setShowEditTimeModal] = useState(false);
+    const handleShowEditTimeModal = () => {
+        setShowEditTimeModal(true);
+    };
+
+    const handleCloseEditTimeModal = () => {
+        setShowEditTimeModal(false);
+    };
+
+    const [showUploadInvoice, setShowUploadInvoice] = useState(false);
+    const handleShowUploadInvoice = () => {
+        setShowUploadInvoice(true);
+    };
+
+    const handleCloseUploadInvoice = () => {
+        setShowUploadInvoice(false);
+    };
     return (
         <>
             <section>
                 <Form className="mb-4">
-                    <div className="d-flex gap-3 justify-content-between">
+                    <div className="d-flex gap-3 justify-content-between align-items-end">
                         <div className="d-flex gap-3">
                             <div>
                                 <Form.Label className="common-label">Filter By Date</Form.Label>
@@ -21,6 +40,9 @@ const AdminTimeReporting = () => {
                                     <option value="amazon">Amazon</option>
                                 </Form.Select>
                             </div>
+                        </div>
+                        <div>
+                            <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>Edit Time Report</Button>
                         </div>
                     </div>
                 </Form>
@@ -70,8 +92,7 @@ const AdminTimeReporting = () => {
                                     <td className="time-table-data">Remote</td>
                                     <td className="time-table-data">N/A</td>
                                     <td className="time-table-data">
-                                        <input type="file" id="upload-invoice" className="d-none" />
-                                        <label htmlFor="upload-invoice" className="upload-invoice-label">Upload Invoice <HiUpload /></label>
+                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
                                     </td>
                                     <td className="time-table-data">Hourly</td>
                                 </tr>
@@ -91,8 +112,7 @@ const AdminTimeReporting = () => {
                                     <td className="time-table-data">Remote</td>
                                     <td className="time-table-data">N/A</td>
                                     <td className="time-table-data">
-                                        <input type="file" id="upload-invoice2" className="d-none" />
-                                        <label htmlFor="upload-invoice2" className="upload-invoice-label">Upload Invoice <HiUpload /></label>
+                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
                                     </td>
                                     <td className="time-table-data">Hourly</td>
                                 </tr>
@@ -112,8 +132,7 @@ const AdminTimeReporting = () => {
                                     <td className="time-table-data">Remote</td>
                                     <td className="time-table-data">28 hrs</td>
                                     <td className="time-table-data">
-                                        <input type="file" id="upload-invoice3" className="d-none" />
-                                        <label htmlFor="upload-invoice3" className="upload-invoice-label">Upload Invoice <HiUpload /></label>
+                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
                                     </td>
                                     <td className="time-table-data">Hourly</td>
                                 </tr>
@@ -133,8 +152,7 @@ const AdminTimeReporting = () => {
                                     <td className="time-table-data">Remote</td>
                                     <td className="time-table-data">N/A</td>
                                     <td className="time-table-data">
-                                        <input type="file" id="upload-invoice4" className="d-none" />
-                                        <label htmlFor="upload-invoice4" className="upload-invoice-label">Upload Invoice <HiUpload /></label>
+                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
                                     </td>
                                     <td className="time-table-data">Hourly</td>
                                 </tr>
@@ -143,6 +161,8 @@ const AdminTimeReporting = () => {
                     </div>
                 </div>
             </section>
+            <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} />
+            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} />
         </>
     )
 }

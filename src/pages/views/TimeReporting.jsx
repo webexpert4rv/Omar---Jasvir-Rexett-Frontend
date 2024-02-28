@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { timeReporting } from "../../redux/slices/clientDataSlice";
 import RexettTable from "../../components/clients/TimeReporiting/RexettTable";
 import { TABLE_HEADER } from "../../components/clients/TimeReporiting/constant";
+import EditTimeModal from "./Modals/EditTimeModal";
 const TimeReporting = () => {
     const dispatch =useDispatch()
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
@@ -18,6 +19,15 @@ console.log(TABLE_HEADER[0][selectedPeriod],"TABLE_HEADER[0][selectedPeriod]")
 
     const handlePeriodChange = (e) => {
         setSelectedPeriod(e.target.value);
+    };
+
+    const [showEditTimeModal, setShowEditTimeModal] = useState(false);
+    const handleShowEditTimeModal = () => {
+        setShowEditTimeModal(true);
+    };
+
+    const handleCloseEditTimeModal = () => {
+        setShowEditTimeModal(false);
     };
 
     console.log(TABLE_HEADER,"TABLE_HEADER")
@@ -62,7 +72,7 @@ console.log(TABLE_HEADER[0][selectedPeriod],"TABLE_HEADER[0][selectedPeriod]")
                         <button className="main-btn px-5">Filter</button>
                     </div>
                     <div>
-                        <Button variant="transparent" className="main-btn px-5">Edit Time Report</Button>
+                        <Button variant="transparent" onClick={handleShowEditTimeModal} className="main-btn px-5">Edit Time Report</Button>
                     </div>
                 </div>
                 <RexettTable headerColumn={TABLE_HEADER[0][selectedPeriod]} selectedPeriod={selectedPeriod} data={timeReportingData}/>
@@ -637,6 +647,7 @@ console.log(TABLE_HEADER[0][selectedPeriod],"TABLE_HEADER[0][selectedPeriod]")
                     </div>
                 </div> */}
             </section>
+            <EditTimeModal show={showEditTimeModal} handleClose={handleCloseEditTimeModal} />
         </>
     )
 }

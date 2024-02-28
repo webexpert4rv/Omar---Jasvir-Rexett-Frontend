@@ -165,11 +165,10 @@ export function clientJobPost(payload, callback) {
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.post(`client/post-job`,{...payload})
-            if (result.status === 200) {
-                toast.error("Job successfully Posted", { position: "top-center" })
+                toast.success("Job successfully Posted", { position: "top-center" })  
                 dispatch(setActionSuccessFully())
-                // dispatch(setFolderData(result.data.data.files))
-            }
+                return callback()
+            
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
