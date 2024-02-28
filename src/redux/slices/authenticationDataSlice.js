@@ -39,7 +39,7 @@ export function loginUser(payload, callback) {
         dispatch(setScreenLoader())
         try {
             let result = await authInstance.post('auth/login/', { ...payload })
-            if (result.status === 200) {
+            if (result?.status === 200) {
                 if(payload.role==="client"){
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
@@ -62,7 +62,7 @@ export function loginUser(payload, callback) {
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
-            if(error.response.status===401){
+            if(error?.response?.status===401){
                 toast.error(error.response.data.message, { position: "top-center" }) 
                 dispatch(setFailAuthData())
             }else{

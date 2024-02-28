@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
-import { updateDeveloperCvBio } from "../../../redux/slices/developerDataSlice";
-import { useDispatch } from "react-redux";
+import { fetchDeveloperCv, updateDeveloperCvBio } from "../../../redux/slices/developerDataSlice";
+import { useDispatch, useSelector } from "react-redux";
  
 const AboutCV = ({ show, handleClose,data }) => {
     const dispatch =useDispatch();
+    const {smallLoader}=useSelector(state=>state.developerData)
     const {
         register,
         setValue,
@@ -19,7 +20,10 @@ const AboutCV = ({ show, handleClose,data }) => {
       },[data])
 
       const onSubmit=(values)=>{
-       dispatch(updateDeveloperCvBio(values))
+       dispatch(updateDeveloperCvBio(values,()=>{
+        dispatch(fetchDeveloperCv())
+        handleClose()
+       }))
       }
 
     return(
@@ -50,7 +54,7 @@ const AboutCV = ({ show, handleClose,data }) => {
                          text="Submit"
                          className="main-btn px-4"
                          variant="transparent"
-                         isLoading={false}
+                         isLoading={smallLoader}
                         />
                     </div>
                 </form>

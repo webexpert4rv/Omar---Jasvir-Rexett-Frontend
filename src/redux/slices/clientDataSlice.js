@@ -8,7 +8,10 @@ const initialClientData = {
     assignedDeveloperList:[],
     clientProfileDetails:{},
     timeReportingData:[],
-    folderData:[]
+    folderData:[],
+    jobCategoryList:[],
+    skillList:[],
+    allJobPostedList:[]
 }
 
 export const clientDataSlice = createSlice({
@@ -44,12 +47,21 @@ export const clientDataSlice = createSlice({
         },
         setFolderData:(state,action)=>{
             state.folderData=action.payload
+        },
+        setJobCategory:(state,action)=>{
+            state.jobCategoryList=action.payload
+        },
+        setSkillList:(state,action)=>{
+            state.skillList=action.payload
+        },
+        setAllJobPostedList:(state,action)=>{
+            state.allJobPostedList=action.payload
         }
 
     }
 })
 
-export const { setScreenLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList,setScreenLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -147,4 +159,76 @@ export function getFolderData(payload, callback) {
     };
 }
 
+export function clientJobPost(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`client/post-job`,{...payload})
+            if (result.status === 200) {
+                toast.error("Job successfully Posted", { position: "top-center" })
+                dispatch(setActionSuccessFully())
+                // dispatch(setFolderData(result.data.data.files))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+
+export function getSkillList(payload, callback) {
+    return async (dispatch) => {
+
+        // dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`client/skill-list`)
+            if (result.status === 200) {
+                console.log(result,"redd")
+                dispatch(setSkillList(result.data.data))
+                // dispatch(setFolderData(result.data.data.files))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function getJobCategoryList(payload, callback) {
+    return async (dispatch) => {
+
+        // dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`client/job-category-list`)
+            if (result.status === 200) {
+                dispatch(setJobCategory(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function getAllJobPostedList(payload, callback) {
+    return async (dispatch) => {
+
+        // dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`client/job-list`)
+            if (result.status === 200) {
+                dispatch(setAllJobPostedList(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
  

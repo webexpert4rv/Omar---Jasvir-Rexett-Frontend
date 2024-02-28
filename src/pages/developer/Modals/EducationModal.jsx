@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { deleteEducationCv, updateDeveloperCvEducation } from "../../../redux/slices/developerDataSlice";
+import RexettButton from "../../../components/atomic/RexettButton";
 
-const EducationCV = ({ show, handleClose }) => {
+const EducationCV = ({ show, handleClose,data }) => {
+    const dispatch =useDispatch()
     const [educationFields, setEducationFields] = useState([
-        { id: 1, university: '', degree: '', address: '', startYear: '', endYear: '', currentlyAttending: false }
+        { university: '', degree: '', address: '', startYear: '', endYear: '', currentlyAttending: false }
     ]);
 
     const handleAddMore = () => {
         const newEducationField = {
-            id: educationFields.length + 1,
             university: '',
             degree: '',
             address: '',
@@ -19,9 +22,19 @@ const EducationCV = ({ show, handleClose }) => {
         setEducationFields([...educationFields, newEducationField]);
     };
 
+    useEffect(()=>{
+        if(data){
+            setEducationFields(data) 
+        }
+
+    },[data])
+
     const handleDeleteField = (id) => {
-        const updatedEducationFields = educationFields.filter(field => field.id !== id);
-        setEducationFields(updatedEducationFields);
+        dispatch(deleteEducationCv(id,()=>{
+            const updatedEducationFields = educationFields.filter(field => field.id !== id);
+            setEducationFields(updatedEducationFields);
+        }))
+        
     };
 
     const handleChange = (id, field, value) => {
@@ -34,6 +47,11 @@ const EducationCV = ({ show, handleClose }) => {
         setEducationFields(updatedEducationFields);
     };
 
+    const handleSubmit=(e)=>{
+       e.preventDefault();
+       dispatch(updateDeveloperCvEducation(educationFields))
+    }
+
     return (
         <Modal show={show} onHide={handleClose} centered scrollable animation size="lg">
             <Modal.Header closeButton>
@@ -41,19 +59,19 @@ const EducationCV = ({ show, handleClose }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <Form>
-                    {educationFields.map(({ id, university, degree, address, startYear, endYear, currentlyAttending }) => (
+                <form onSubmit={handleSubmit}>
+                    {educationFields.map(({ id, university_name, Degree, address, startYear, endYear, currently_attending }) => (
                         <div className="experience-container mb-3" key={id}>
                             <Row>
                                 <Col md="12">
                                     <Form.Group className="mb-4">
-                                        <Form.Label>University Name</Form.Label>
+                                        <Form.Label>University Name Name</Form.Label>
                                         <Form.Control
                                             type="text"
                                             className="cv-field"
-                                            placeholder="Enter University Name"
-                                            value={university}
-                                            onChange={(e) => handleChange(id, 'university', e.target.value)}
+                                            placeholder="Enter University  Name"
+                                            value={university_name}
+                                            onChange={(e) => handleChange(id, 'university_name', e.target.value)}
                                         />
                                     </Form.Group>
                                 </Col>
@@ -64,7 +82,7 @@ const EducationCV = ({ show, handleClose }) => {
                                             type="text"
                                             className="cv-field"
                                             placeholder="Enter Degree Name"
-                                            value={degree}
+                                            value={Degree?.title}
                                             onChange={(e) => handleChange(id, 'degree', e.target.value)}
                                         />
                                     </Form.Group>
@@ -110,8 +128,8 @@ const EducationCV = ({ show, handleClose }) => {
                                         <Form.Check
                                             type="checkbox"
                                             className="cv-field"
-                                            checked={currentlyAttending}
-                                            onChange={(e) => handleChange(id, 'currentlyAttending', e.target.checked)}
+                                            checked={currently_attending}
+                                            onChange={(e) => handleChange(id, 'currently_attending', e.target.checked)}
                                         />
                                         <Form.Label className="mb-0">Currently Attending</Form.Label>
                                     </Form.Group>
@@ -126,9 +144,15 @@ const EducationCV = ({ show, handleClose }) => {
                         <Button className="main-btn py-2 px-3" onClick={handleAddMore}>Add More</Button>
                     </div>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4">Submit</Button>
+                        <RexettButton 
+                                        type="submit" 
+                                        text="Submit"
+                                        className="main-btn px-4"
+                                        variant="transparent"
+                                        isLoading={false}
+                                        />
                     </div>
-                </Form>
+                </form>
             </Modal.Body>
         </Modal>
     );

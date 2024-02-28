@@ -1,28 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import RexettButton from "../../../components/atomic/RexettButton";
+import { useDispatch } from "react-redux";
+import { addDeveloperCvExperience, deleteExperience, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 
-const ExperienceCV = ({ show, handleClose }) => {
+const ExperienceCV = ({ show, handleClose, data }) => {
+    const dispatch = useDispatch()
     const [experienceFields, setExperienceFields] = useState([
-        { id: 1, company: '', jobPosition: '', jobDescription: '', startDate: '', endDate: '', currentlyWorking: false }
+        { company_name: "", job_title: "", description: "", start_date: "", end_date: "", is_still_working: false }
     ]);
+
+    useEffect(() => {
+        if (data) {
+            setExperienceFields(data)
+        }
+    }, [data])
 
     const handleAddMore = () => {
         const newExperienceField = {
-            id: experienceFields.length + 1,
-            company: '',
-            jobPosition: '',
-            jobDescription: '',
-            startDate: '',
-            endDate: '',
-            currentlyWorking: false
+            company_name: '',
+            job_title: '',
+            description: '',
+            start_date: '',
+            end_ate: '',
+            is_still_working: false
         };
         setExperienceFields([...experienceFields, newExperienceField]);
     };
 
-    const handleDeleteField = (id) => {
-        const updatedExperienceFields = experienceFields.filter(field => field.id !== id);
-        setExperienceFields(updatedExperienceFields);
-    };
+    // const handleDeleteField = (id) => {
+    //     const updatedExperienceFields = experienceFields.filter(field => field.id !== id);
+    //     setExperienceFields(updatedExperienceFields);
+    // };
 
     const handleChange = (id, field, value) => {
         const updatedExperienceFields = experienceFields.map(item => {
@@ -34,6 +43,34 @@ const ExperienceCV = ({ show, handleClose }) => {
         setExperienceFields(updatedExperienceFields);
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let addExp = experienceFields.map((item) => {
+            if (!item.id) {
+                return { ...item }
+            }
+        }).filter((item) => item)
+        if (addExp.length > 0) {
+            dispatch(addDeveloperCvExperience(addExp))
+        } else {
+            experienceFields.forEach((item) => {
+                if (item.id) {
+                    dispatch(updateDeveloperCvExperience(item, item.id, () => {
+
+                    }))
+
+                }
+            })
+        }
+    }
+
+    const deleteDeveloperExperience = (id) => {
+        dispatch(deleteExperience(id, () => {
+            const updatedExperienceFields = experienceFields.filter(field => field.id !== id);
+            setExperienceFields(updatedExperienceFields);
+        }))
+
+    }
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg" scrollable>
             <Modal.Header closeButton>
@@ -41,8 +78,8 @@ const ExperienceCV = ({ show, handleClose }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <Form>
-                    {experienceFields.map(({ id, company, jobPosition, jobDescription, startDate, endDate, currentlyWorking }, index) => (
+                <Form onSubmit={handleSubmit}>
+                    {experienceFields.map(({ id, company_name, job_title, description, start_date, end_date, is_still_working }, index) => (
                         <div className="experience-container mb-3" key={id}>
                             <Row>
                                 <Col md="12">
@@ -51,9 +88,10 @@ const ExperienceCV = ({ show, handleClose }) => {
                                         <Form.Control
                                             type="text"
                                             className="cv-field"
+                                            name="company_name"
                                             placeholder="Enter Company Name"
-                                            value={company}
-                                            onChange={(e) => handleChange(id, 'company', e.target.value)}
+                                            value={company_name}
+                                            onChange={(e) => handleChange(id, 'company_name', e.target.value)}
                                         />
                                     </Form.Group>
                                 </Col>
@@ -63,9 +101,10 @@ const ExperienceCV = ({ show, handleClose }) => {
                                         <Form.Control
                                             type="text"
                                             className="cv-field"
+                                            name="job_title"
                                             placeholder="Enter Job Position"
-                                            value={jobPosition}
-                                            onChange={(e) => handleChange(id, 'jobPosition', e.target.value)}
+                                            value={job_title}
+                                            onChange={(e) => handleChange(id, 'job_title', e.target.value)}
                                         />
                                     </Form.Group>
                                 </Col>
@@ -76,8 +115,8 @@ const ExperienceCV = ({ show, handleClose }) => {
                                             type="text"
                                             className="cv-field"
                                             placeholder="Enter Job Description"
-                                            value={jobDescription}
-                                            onChange={(e) => handleChange(id, 'jobDescription', e.target.value)}
+                                            value={description}
+                                            onChange={(e) => handleChange(id, 'description', e.target.value)}
                                         />
                                     </Form.Group>
                                 </Col>
@@ -88,8 +127,8 @@ const ExperienceCV = ({ show, handleClose }) => {
                                             type="date"
                                             className="cv-field"
                                             placeholder="Enter Start Date"
-                                            value={startDate}
-                                            onChange={(e) => handleChange(id, 'startDate', e.target.value)}
+                                            value={start_date?.slice(0, 10)}
+                                            onChange={(e) => handleChange(id, 'start_date', e.target.value)}
                                         />
                                     </Form.Group>
                                 </Col>
@@ -100,8 +139,8 @@ const ExperienceCV = ({ show, handleClose }) => {
                                             type="date"
                                             className="cv-field"
                                             placeholder="Enter End Date"
-                                            value={endDate}
-                                            onChange={(e) => handleChange(id, 'endDate', e.target.value)}
+                                            value={end_date?.slice(0, 10)}
+                                            onChange={(e) => handleChange(id, 'end_date', e.target.value)}
                                         />
                                     </Form.Group>
                                 </Col>
@@ -110,15 +149,15 @@ const ExperienceCV = ({ show, handleClose }) => {
                                         <Form.Check
                                             type="checkbox"
                                             className="cv-field"
-                                            checked={currentlyWorking}
-                                            onChange={(e) => handleChange(id, 'currentlyWorking', e.target.checked)}
+                                            checked={is_still_working}
+                                            onChange={(e) => handleChange(id, 'is_still_working', e.target.checked)}
                                         />
                                         <Form.Label className="mb-0">Currently Working</Form.Label>
                                     </Form.Group>
                                 </Col>
                                 {index !== 0 && (
                                     <Col md="12" className="d-flex justify-content-end">
-                                        <Button variant="danger" onClick={() => handleDeleteField(id)}>Delete</Button>
+                                        <Button variant="danger" onClick={() => deleteDeveloperExperience(id)}>Delete</Button>
                                     </Col>
                                 )}
                             </Row>
@@ -128,7 +167,13 @@ const ExperienceCV = ({ show, handleClose }) => {
                         <Button className="main-btn py-2 px-3" onClick={handleAddMore}>Add More</Button>
                     </div>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4">Submit</Button>
+                        <RexettButton
+                            type="submit"
+                            text="Submit"
+                            className="main-btn px-4"
+                            variant="transparent"
+                            isLoading={false}
+                        />
                     </div>
                 </Form>
             </Modal.Body>

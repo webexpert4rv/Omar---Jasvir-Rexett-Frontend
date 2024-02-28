@@ -17,6 +17,9 @@ export const developerDataSlice = createSlice({
     reducers: {
 
         setScreenLoader: (state, action) => {
+            state.screenLoader = true;
+        },
+        setSmallLoader: (state, action) => {
             state.smallLoader = true;
         },
 
@@ -26,6 +29,10 @@ export const developerDataSlice = createSlice({
         },
         setSuccessProfileData: (state, action) => {
             state.developerProfileData=action.payload
+        },
+
+        setSuccessActionData: (state, action) => {
+            state.smallLoader = false;
         },
 
         setFailDeveloperData: (state, action) => {
@@ -41,14 +48,14 @@ export const developerDataSlice = createSlice({
     }
 })
 
-export const { setScreenLoader, setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader,setScreenLoader,setSuccessActionData, setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
 export function fetchDeveloperCv(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await developerInstance.get('developer/cv')
             if (result.status === 200) {
@@ -65,7 +72,7 @@ export function fetchDeveloperCv(payload, callback) {
 export function updateDeveloperProfile(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await developerInstance.post('developer/update-profile/',{...payload})
             if (result.status === 200) {
@@ -107,7 +114,6 @@ export function getDeveloperDashboard(payload, callback) {
             let result = await developerInstance.get('developer/dashboard')
             if (result.status === 200) {
                 console.log(result,"redd")
-
                 dispatch(setDeveloperDashboard(result.data.data))
             }
         } catch (error) {
@@ -120,11 +126,71 @@ export function getDeveloperDashboard(payload, callback) {
 
 export function updateDeveloperCvBio(payload, callback) {
     return async (dispatch) => {
+         dispatch(setSmallLoader())
         try {
-            let result = await developerInstance.get('developer/update-bio')
+            let result = await developerInstance.post('developer/update-bio',{...payload})
             if (result.status === 200) {
                 console.log(result,"redd")
-                dispatch(setDeveloperDashboard(result.data.data))
+                toast.success("Bio is Updated", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function updateDeveloperCvExperience(payload,id, callback) {
+    return async (dispatch) => {
+         dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.put(`developer/update-experience/${id}`,{...payload})
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Experience is Updated", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function addDeveloperCvExperience(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.post('developer/add-experience',[...payload])
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Experience is Updated", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function deleteExperience(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.delete(`developer/delete-experience/${payload}`)
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Experience is deleted", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -135,3 +201,59 @@ export function updateDeveloperCvBio(payload, callback) {
 }
 
 
+export function updateDeveloperCvEducation(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.post('developer/add-education',[...payload])
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Education is Updated", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function deleteEducationCv(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.delete(`developer/delete-education/${payload}`)
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Education is Deleted", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function updateDeveloperSkills(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.post(`developer/update-developer-skills`,{skills:payload})
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Skills updated successfully", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}

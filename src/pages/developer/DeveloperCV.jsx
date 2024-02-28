@@ -107,7 +107,7 @@ const DeveloperCV = () => {
                         <Col md="4">
                             <div className="personal-info">
                                 <div className="dev-imgbx mb-4">
-                                    <img src={resumeImg} className="dev-img" />
+                                    <img src={developerCvData?.profile_picture} className="dev-img" />
                                 </div>
                                 <div className="contact-dev-info">
                                     <h3 className="cv-heading">Contact</h3>
@@ -494,9 +494,9 @@ const DeveloperCV = () => {
                 </div>
             </section>
             <AboutCV show={showModal} handleClose={handleCloseModal} data={developerCvData?.developer_detail?.bio} />
-            <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} />
-            <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} />
-            <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} />
+            <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={developerCvData?.developer_experiences} />
+            <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations} />
+           {developerCvData?.developer_skills?.skills&& <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} />}
             <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} />
         </>
     )

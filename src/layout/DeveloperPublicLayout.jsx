@@ -6,7 +6,6 @@ const DeveloperPublicLayout = ({ children }) => {
     const token=getToken("developerToken")
     return (
         <>
-            
         {!token?children:<Navigate to="/developer-dashboard"/>}
              
         </>
