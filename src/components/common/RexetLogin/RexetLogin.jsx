@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Row, Col, Form, Button } from "react-bootstrap";
@@ -11,14 +11,27 @@ import { loginUser } from "../../../redux/slices/authenticationDataSlice";
 
 const RexetLogin = ({userType}) => {
     const dispatch =useDispatch();
+    const navigate=useNavigate()
     const {smallLoader}=useSelector(state=>state.authData);
+    const [isRemember,setRemember]=useState(false)
+    const [email,setEmail]=useState("")
     const [isPassword,setPassword]=useState(false)
     const {
         register,
         setValue,
         handleSubmit,
+
         formState: { errors, isDirty, isValid, isSubmitting },
       } = useForm({});
+
+      useEffect(()=>{
+        let email=localStorage.getItem("email")
+        if(email){
+            setValue("email",email)
+            setRemember(true)
+        }
+
+      },[])
      
       const onSubmit=(values)=>{
         let allRoles={
@@ -33,6 +46,21 @@ const RexetLogin = ({userType}) => {
         }
         dispatch(loginUser(data))
       }
+    
+
+      const handleRoles=(e)=>{
+     navigate(`/${e.target.value}`)
+      }
+
+     const handleRemember=(e)=>{
+        if(e.target.checked){
+            localStorage.setItem("email",email)
+            setRemember(true)
+        }else{
+            localStorage.removeItem("email")
+            setRemember(false)
+        }
+     } 
 
     return (
         <>
@@ -47,16 +75,16 @@ const RexetLogin = ({userType}) => {
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                        { userType==="client"? <Form.Group>
-                                            <Form.Select className="p-0 border-0 bg-transparent text-white">
-                                                <option value="client_login">Client Login</option>
-                                                <option value="agency_login">Agency Login</option>
-                                                <option value="developer_login">Developer Login</option>
+                                            <Form.Select className="p-0 border-0" onChange={handleRoles}>
+                                                <option value="/">Client Login</option>
+                                                <option value="agency-login">Agency Login</option>
+                                                <option value="developer-login">Developer Login</option>
                                             </Form.Select>
                                         </Form.Group>:
                                         <Link to={"#"} className="link-text text-decoration-none">{ userType=== "developer"?"Developer Login": "Agency Login"}</Link>
                                         }
                                         {/* <Link to={"#"} className="link-text text-decoration-none">Client Login</Link> */}
-                                        <Link to={"#"} className="link-text">Register</Link>
+                                        {/* <Link to={"#"} className="link-text">Register</Link> */}
                                     </div>
                                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
                                         <Form.Group className="mb-3">
@@ -64,10 +92,15 @@ const RexetLogin = ({userType}) => {
                                             <Form.Control type="email" className="auth-field"
                                             name="email"
                                             {...register("email", {
+                                                onChange:(e)=>setEmail(e.target.value),
                                                 required: {
                                                   value: true,
                                                   message: "Email is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message: 'Invalid email format',
+                                                  },
                                               })}
                                             />
                                              <p className="error-message">
@@ -84,6 +117,7 @@ const RexetLogin = ({userType}) => {
                                                       value: true,
                                                       message: "Password is required",
                                                     },
+                                                    
                                                   })}
                                                 />
                                                 <span className="eye-btn" onClick={()=>setPassword(!isPassword)}><FaEye /></span>
@@ -97,9 +131,11 @@ const RexetLogin = ({userType}) => {
                                                 type="checkbox"
                                                 id="remember_me"
                                                 label="Remember Me"
+                                                onChange={handleRemember}
+                                                checked={isRemember}
                                                 className="remeber-check"
                                             />
-                                            <Link className="link-text">Forgot Password</Link>
+                                            <Link to={"/forgot-password"} className="link-text" >Forgot Password</Link>
                                         </div>
                                         <RexettButton 
                                         type="submit" 

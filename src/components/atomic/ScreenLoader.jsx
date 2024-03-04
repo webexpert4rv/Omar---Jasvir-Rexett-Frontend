@@ -1,9 +1,7 @@
-import React from 'react'
+import Spinner from 'react-bootstrap/Spinner';
 
-const ScreenLoader = () => {
-  return (
-    <div>ScreenLoader</div>
-  )
+function ScreenLoader() {
+  return <Spinner animation="border" />;
 }
 
-export default ScreenLoader
+export default ScreenLoader;

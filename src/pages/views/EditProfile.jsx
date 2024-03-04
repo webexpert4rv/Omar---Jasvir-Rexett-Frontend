@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getClientProfile, updateClientProfile } from "../../redux/slices/clientDataSlice";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 const EditProfile = () => {
     const {
@@ -14,7 +15,11 @@ const EditProfile = () => {
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
     const dispatch = useDispatch();
-    const {smallLoader,clientProfileDetails}=useSelector(state=>state.clientData)
+    const [isPassword,setPassword]=useState({
+        firstPass:false,
+        secondPass:false
+    })
+    const {smallLoader,clientProfileDetails,screenLoader}=useSelector(state=>state.clientData)
 
     useEffect(()=>{
        dispatch(getClientProfile())
@@ -34,14 +39,32 @@ const EditProfile = () => {
     },[clientProfileDetails])
 
     const onSubmit = (values) => {
-     dispatch(updateClientProfile(values))
+        let formData={
+            ...values,
+            password:values.password?values.password:null,
+            previous_password:values.previous_password?values.previous_password:null
+        }
+     dispatch(updateClientProfile(formData))
     }
+
+    const validatePassword = (value) => {
+        if (value === "") {
+            return true; // Password is not required, so return true if empty
+        } else {
+            // Check if password matches the pattern
+            const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            if (!pattern.test(value)) {
+                return "Password must contain at least a symbol, upper and lower case letters and a number";
+            }
+        }
+        return true; // Password meets the criteria
+    };
     return (
         <>
             <section>
                 <h2 className="section-head mb-4">Update your Profile</h2>
                 <div>
-                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                  {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-4">
                             <Col md="6">
                                 <div className="inner-form">
@@ -68,6 +91,10 @@ const EditProfile = () => {
                                                     value: true,
                                                     message: "Email is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message: 'Invalid email format',
+                                                  },
                                             })}
                                         />
                                         <p className="error-message">
@@ -75,13 +102,17 @@ const EditProfile = () => {
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Phone</Form.Label>
-                                        <Form.Control type="text" className="common-field"
+                                        <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
                                                 required: {
                                                     value: true,
                                                     message: "Phone Number is required",
                                                 },
+                                                pattern: {
+                                                    value:  /^[0-9]{10}$/,
+                                                    message: "Please enter a valid phone number"
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -90,16 +121,13 @@ const EditProfile = () => {
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Previous Password</Form.Label>
                                         <div className="position-relative">
-                                            <Form.Control type="password" className="common-field"
+                                            <Form.Control type={isPassword.firstPass?"text":"password"} className="common-field"
                                                 name="previous_password"
                                                 {...register("previous_password", {
-                                                    required: {
-                                                        value: false,
-                                                        message: "Previous Password is required",
-                                                    },
+                                                    validate: validatePassword
                                                 })}
                                             />
-                                            <span className="eye-btn"><FaEye /></span>
+                                            <span className="eye-btn"onClick={()=>setPassword({...isPassword,firstPass:!isPassword.firstPass})}  ><FaEye /></span>
                                         </div>
                                         <p className="error-message">
                                             {errors.previous_password?.message} </p>
@@ -107,16 +135,13 @@ const EditProfile = () => {
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">New Password</Form.Label>
                                         <div className="position-relative">
-                                            <Form.Control type="password" className="common-field"
+                                            <Form.Control  type={isPassword.secondPass?"text":"password"}  className="common-field"
                                                 name="password"
                                                 {...register("password", {
-                                                    required: {
-                                                        value: false,
-                                                        message: "Password is required",
-                                                    },
+                                                    validate: validatePassword
                                                 })}
                                             />
-                                            <span className="eye-btn"><FaEye /></span>
+                                             <span className="eye-btn" onClick={()=>setPassword({...isPassword,secondPass:!isPassword.secondPass})}><FaEye /></span>
                                         </div>
                                         <p className="error-message">
                                             {errors.password?.message} </p>
@@ -208,7 +233,7 @@ const EditProfile = () => {
                                 isLoading={smallLoader}
                             />
                         </div>
-                    </form>
+                    </form>}
                 </div>
             </section>
         </>

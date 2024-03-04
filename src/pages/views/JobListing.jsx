@@ -3,9 +3,11 @@ import { Button, Col, Pagination, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllJobPostedList, getJobCategoryList } from "../../redux/slices/clientDataSlice";
+import RexettPagination from "../../components/atomic/RexettPagination";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 const JobListing = () => {
     const dispatch=useDispatch();
-    const {allJobPostedList,jobCategoryList}=useSelector(state=>state.clientData)
+    const {allJobPostedList,jobCategoryList,screenLoader}=useSelector(state=>state.clientData)
     useEffect(()=>{
         dispatch(getAllJobPostedList())
         dispatch(getJobCategoryList())
@@ -13,11 +15,9 @@ const JobListing = () => {
 
     const getCategory=(cat)=>{
        let data= jobCategoryList.find((item)=>item.id==cat)
-       console.log(data,"ppppp")
        return data?.title
     }
 
-    console.log(allJobPostedList,"allJobPostedList")
 
     const convertToArray=(arr)=>{
         const skillsArray = arr.split(", ");
@@ -25,6 +25,9 @@ const JobListing = () => {
     }
     return(
         <>
+            {screenLoader? 
+            <ScreenLoader/>:
+            <>
             <section className="job-posted-section">
                 <div className="job-posted-wrapper">
                    {allJobPostedList?.map((item)=>{
@@ -66,7 +69,7 @@ const JobListing = () => {
                                 <p className="status-text inprogress">{item.status}</p>
                             </div>
                             <p className="font-15">Posted Date: <strong>{item.created_at.slice(0,10)}</strong></p>
-                            <Link to={'/single-job'} className="px-5 mb-2 main-btn text-decoration-none">View Details</Link>
+                            <Link to={`/single-job/${item.id}`} className="px-5 mb-2 main-btn text-decoration-none">View Details</Link>
                         </div>
                     </div>
                         </>
@@ -75,20 +78,9 @@ const JobListing = () => {
                     
                 </div>
             </section>
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <p className="showing-result">Showing 1 - 10 results</p>
-                <Pagination className="custom-pagination">
-                    <Pagination.Prev className="custom-pagination-item custom-pagination-arrow" />
-                    <Pagination.Item className="custom-pagination-item" active>{1}</Pagination.Item>
-                    <Pagination.Item className="custom-pagination-item">{2}</Pagination.Item>
-                    <Pagination.Item className="custom-pagination-item">{3}</Pagination.Item>
-                    <Pagination.Ellipsis className="custom-pagination-item" />
-                    <Pagination.Item className="custom-pagination-item">{8}</Pagination.Item>
-                    <Pagination.Item className="custom-pagination-item">{9}</Pagination.Item>
-                    <Pagination.Item className="custom-pagination-item">{10}</Pagination.Item>
-                    <Pagination.Next className="custom-pagination-item custom-pagination-arrow" />
-                </Pagination>
-            </div>
+           <RexettPagination/>
+            </>
+            }
         </>
     )
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-const ConfirmationModal = ({ show, handleClose }) => {
+import RexettButton from "../../../components/atomic/RexettButton";
+const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader}) => {
     return(
         <Modal show={show} onHide={handleClose} centered animation size="lg">
             <Modal.Header closeButton>
@@ -10,10 +11,17 @@ const ConfirmationModal = ({ show, handleClose }) => {
             <Modal.Body>
                 <Form>
                     <Form.Group className="mb-4">
-                        <Form.Label className="d-block text-center font-18">Want to shortlist this developer?</Form.Label>
+                        <Form.Label className="d-block text-center font-18">{text}</Form.Label>
                     </Form.Group>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4 me-3">Yes</Button>
+                        <RexettButton
+                            type="submit"
+                            text="Yes"
+                            onClick={onClick}
+                            className="main-btn px-4 me-3"
+                            variant="transparent"
+                            isLoading={smallLoader}
+                        />
                         <Button variant="transparent" onClick={handleClose} className="main-btn bg-transparent border-black text-black px-4">No</Button>
                     </div>
                 </Form>

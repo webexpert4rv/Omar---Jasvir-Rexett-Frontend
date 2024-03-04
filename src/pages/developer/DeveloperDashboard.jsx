@@ -79,13 +79,22 @@ const DeveloperDashboard = () => {
                                         </th>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td className="time-table-data">Facebook</td>
-                                            <td className="time-table-data">Hourly</td>
-                                            <td className="time-table-data">100</td>
-                                            <td className="time-table-data">Remote</td>
-                                            <td className="time-table-data">Finished</td>
-                                        </tr>
+                                       
+                                            {
+                                                developerDashboard?.clientList?.map((item,index)=>{
+                                                    return(
+                                                        <React.Fragment key={index}>
+                                                             <tr>
+                                                        <td className="time-table-data">{item.clientName}</td>
+                                                        <td className="time-table-data">{item.contractType}</td>
+                                                        <td className="time-table-data">{item.totalHours}</td>
+                                                        <td className="time-table-data">{item.location}</td>
+                                                        <td className="time-table-data">Finished</td>
+                                                        </tr></React.Fragment>
+                                                    )
+                                                })
+
+                                            }
                                     </tbody>
                                 </table>
                             </div>

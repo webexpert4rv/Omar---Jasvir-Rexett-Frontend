@@ -13,3 +13,15 @@ export function getToken(tokenKey) {
     localStorage.setItem(key, token);
   }
   
+
+  export const generateApiUrl = (filters, endpointName) => {
+    const queryParams = [];
+  console.log(filters,"filters")
+    for (const key in filters) {
+      if (filters[key]) {
+        queryParams.push(`${key}=${encodeURIComponent(filters[key])}`);
+      }
+    }
+    const apiUrl = `/${endpointName}?${queryParams.join("&")}`;
+    return apiUrl;
+  };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
@@ -6,7 +6,9 @@ import { HiUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getDeveloperProfileDetails, updateDeveloperProfile } from "../../redux/slices/developerDataSlice";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 const EditDeveloperProfile = () => {
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const {
         register,
@@ -15,44 +17,73 @@ const EditDeveloperProfile = () => {
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
     const dispatch = useDispatch();
-    const {smallLoader,developerProfileData}=useSelector(state=>state.developerData)
-   
-    useEffect(()=>{
+    const [isPassword, setPassword] = useState({
+        firstPass: false,
+        secondPass: false
+    })
+    const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
+
+    useEffect(() => {
         dispatch(getDeveloperProfileDetails())
-     },[dispatch])
+    }, [dispatch])
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        setValue("name",developerProfileData?.data?.name)
-        setValue("email",developerProfileData?.data?.email)
-        setValue("phone_number",developerProfileData?.data?.phone_number)
-        setValue("address",developerProfileData?.data?.address)
-        setValue("address_2",developerProfileData?.data?.address_2)
-        setValue("city",developerProfileData?.data?.city)
-        setValue("country",developerProfileData?.data?.country)
-        setValue("passcode",developerProfileData?.data?.passcode)
-        
-    },[developerProfileData])
+        setValue("name", developerProfileData?.data?.name)
+        setValue("email", developerProfileData?.data?.email)
+        setValue("phone_number", developerProfileData?.data?.phone_number)
+        setValue("address", developerProfileData?.data?.address)
+        setValue("address_2", developerProfileData?.data?.address_2)
+        setValue("city", developerProfileData?.data?.city)
+        setValue("country", developerProfileData?.data?.country)
+        setValue("passcode", developerProfileData?.data?.passcode)
 
-    const onSubmit=(values)=>{
-      let formData=new FormData()
-      for(const key in values){
-        formData.append(key,values[key])
-      }
-      dispatch(updateDeveloperProfile(formData))
+    }, [developerProfileData])
+
+    const onSubmit = (values) => {
+        let formData = new FormData()
+        for (const key in values) {
+            formData.append(key, values[key])
+        }
+        dispatch(updateDeveloperProfile(formData))
     }
-    
+
+    const validatePassword = (value) => {
+        if (value === "") {
+            return true; // Password is not required, so return true if empty
+        } else {
+            // Check if password matches the pattern
+            const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            if (!pattern.test(value)) {
+                return "Password must contain at least a symbol, upper and lower case letters and a number";
+            }
+        }
+        return true; // Password meets the criteria
+    };
+
+    const handleFileChange = (event) => {
+        console.log(event,";;;")
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <>
             <section>
                 <h2 className="section-head mb-4">Update your Profile</h2>
                 <div>
-                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                    {screenLoader ? <ScreenLoader /> : <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-4">
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Developer Name</Form.Label>
+                                        <Form.Label className="common-label">Client Name</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {
@@ -74,6 +105,10 @@ const EditDeveloperProfile = () => {
                                                     value: true,
                                                     message: "Email is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message: 'Invalid email format',
+                                                },
                                             })}
                                         />
                                         <p className="error-message">
@@ -81,13 +116,17 @@ const EditDeveloperProfile = () => {
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Phone</Form.Label>
-                                        <Form.Control type="text" className="common-field"
+                                        <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
                                                 required: {
                                                     value: true,
                                                     message: "Phone Number is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[0-9]{10}$/,
+                                                    message: "Please enter a valid phone number"
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -96,16 +135,13 @@ const EditDeveloperProfile = () => {
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Previous Password</Form.Label>
                                         <div className="position-relative">
-                                            <Form.Control type="password" className="common-field"
+                                            <Form.Control type={isPassword.firstPass ? "text" : "password"} className="common-field"
                                                 name="previous_password"
                                                 {...register("previous_password", {
-                                                    required: {
-                                                        value: false,
-                                                        message: "Previous Password is required",
-                                                    },
+                                                    validate: validatePassword
                                                 })}
                                             />
-                                            <span className="eye-btn"><FaEye /></span>
+                                            <span className="eye-btn" onClick={() => setPassword({ ...isPassword, firstPass: !isPassword.firstPass })}  ><FaEye /></span>
                                         </div>
                                         <p className="error-message">
                                             {errors.previous_password?.message} </p>
@@ -113,16 +149,13 @@ const EditDeveloperProfile = () => {
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">New Password</Form.Label>
                                         <div className="position-relative">
-                                            <Form.Control type="password" className="common-field"
+                                            <Form.Control type={isPassword.secondPass ? "text" : "password"} className="common-field"
                                                 name="password"
                                                 {...register("password", {
-                                                    required: {
-                                                        value: false,
-                                                        message: "Password is required",
-                                                    },
+                                                    validate: validatePassword
                                                 })}
                                             />
-                                            <span className="eye-btn"><FaEye /></span>
+                                            <span className="eye-btn" onClick={() => setPassword({ ...isPassword, secondPass: !isPassword.secondPass })}><FaEye /></span>
                                         </div>
                                         <p className="error-message">
                                             {errors.password?.message} </p>
@@ -202,20 +235,25 @@ const EditDeveloperProfile = () => {
                                         <p className="error-message">
                                             {errors.country?.message} </p>
                                     </Form.Group>
-
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Image</Form.Label>
                                         <Form.Control type="file" id="developer-image"
-                                         name="profile_picture"
-                                         {...register("profile_picture", {
-                                             required: {
-                                                 value: true,
-                                                 message: "Profile Picture is required",
-                                             },
-                                         })}
-                                        className="d-none" />
-                                        <Form.Label htmlFor="developer-image" className="upload-image-label d-block"><HiUpload/> Upload Image, Image must be jpg or png</Form.Label>
+                                            name="profile_picture"
+                                            {...register("profile_picture", {
+                                                onChange:(e)=>handleFileChange(e), 
+                                                required: {
+                                                    value: true,
+                                                    message: "Profile Picture is required",
+                                                },
+                                            })}
+                                            className="d-none" />
+                                        <Form.Label htmlFor="developer-image" className="upload-image-label d-block"><HiUpload /> Upload Image, Image must be jpg or png</Form.Label>
                                     </Form.Group>
+
+                                        <div>
+                                            <img src={selectedImage?selectedImage:developerProfileData?.data?.profile_picture} alt="Selected" style={{ maxWidth: "100%", maxHeight: "400px" }} />
+                                        </div>
+                                    
                                 </div>
                             </Col>
                         </Row>
@@ -228,7 +266,7 @@ const EditDeveloperProfile = () => {
                                 isLoading={smallLoader}
                             />
                         </div>
-                    </form>
+                    </form>}
                 </div>
             </section>
         </>

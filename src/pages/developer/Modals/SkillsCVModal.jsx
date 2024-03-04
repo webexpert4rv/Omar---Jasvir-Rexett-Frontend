@@ -3,7 +3,7 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import Select from 'react-select';
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
-import { updateDeveloperSkills } from "../../../redux/slices/developerDataSlice";
+import { fetchDeveloperCv, updateDeveloperSkills } from "../../../redux/slices/developerDataSlice";
 const options = [
     { value: 'HTML', label: 'HTML' },
     { value: 'CSS', label: 'CSS' },
@@ -34,6 +34,8 @@ const SkillsModal = ({ show, handleClose,data }) => {
         e.preventDefault()
        let convertString= selectedOption.map((item)=>item.label)
         dispatch(updateDeveloperSkills(convertString.toString(),()=>{
+            dispatch(fetchDeveloperCv())
+        handleClose()
 
         }))
     }

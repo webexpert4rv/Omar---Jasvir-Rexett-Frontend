@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import clientInstance from '../../services/client.instance';
+import { generateApiUrl } from '../../helper/utlis';
 
 const initialClientData = {
     screenLoader: false,
+    approvedLoader:false,
     smallLoader: false,
     assignedDeveloperList:[],
     clientProfileDetails:{},
@@ -25,28 +27,39 @@ export const clientDataSlice = createSlice({
         setSmallLoader: (state, action) => {
             state.smallLoader = true;
         },
+        setApprovedLoader: (state, action) => {
+            state.approvedLoader = true;
+        },
 
         setAssignDeveloperList: (state, action) => {
             state.assignedDeveloperList=action.payload
+            state.screenLoader = false;
         },
 
         setFailClientData: (state, action) => {
             state.smallLoader = false;
+            state.approvedLoader = false;
         },
 
         setActionSuccessFully:(state, action) => {
             state.smallLoader = false;
+            state.approvedLoader = false;
         },
 
         setClientProfileDetails:(state,action)=>{
-            state.clientProfileDetails=action.payload
+            state.clientProfileDetails=action.payload;
+            state.screenLoader = false;
         },
 
         setTimeReporting:(state,action)=>{
             state.timeReportingData=action.payload
+            state.smallLoader = false;
+            
+
         },
         setFolderData:(state,action)=>{
-            state.folderData=action.payload
+            state.folderData=action.payload;
+            state.screenLoader = false;
         },
         setJobCategory:(state,action)=>{
             state.jobCategoryList=action.payload
@@ -56,12 +69,13 @@ export const clientDataSlice = createSlice({
         },
         setAllJobPostedList:(state,action)=>{
             state.allJobPostedList=action.payload
+            state.screenLoader = false;
         }
 
     }
 })
 
-export const { setAllJobPostedList,setScreenLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList,setScreenLoader,setApprovedLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -104,8 +118,7 @@ export function updateClientProfile(payload, callback) {
 
 export function getClientProfile(payload, callback) {
     return async (dispatch) => {
-
-        // dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get('client/get-profile')
             if (result.status === 200) {
@@ -124,11 +137,10 @@ export function getClientProfile(payload, callback) {
 export function timeReporting(payload, callback) {
     return async (dispatch) => {
 
-        // dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`client/time-reports?filter=${payload}`)
+            let result = await clientInstance.get(generateApiUrl(payload,`client/time-reports`))
             if (result.status === 200) {
-                console.log(result,"redd")
                 dispatch(setTimeReporting(result.data.data))
             }
         } catch (error) {
@@ -143,9 +155,9 @@ export function timeReporting(payload, callback) {
 export function getFolderData(payload, callback) {
     return async (dispatch) => {
 
-        // dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`client/documents?parent_id=${payload}`)
+            let result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
             if (result.status === 200) {
                 console.log(result,"redd")
                 // dispatch(setTimeReporting(result.data.data))
@@ -217,7 +229,7 @@ export function getJobCategoryList(payload, callback) {
 export function getAllJobPostedList(payload, callback) {
     return async (dispatch) => {
 
-        // dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`client/job-list`)
             if (result.status === 200) {
@@ -231,3 +243,111 @@ export function getAllJobPostedList(payload, callback) {
     };
 }
  
+export function publishedPost(payload,status) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`client/jobs/${payload}/unpublish`)
+            if (result.status === 200) {
+                dispatch(setActionSuccessFully())
+                toast.success("Job unpublished successfully", { position: "top-center" })
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+ 
+export function approvedClient(payload,status) {
+    return async (dispatch) => {
+
+        dispatch(setApprovedLoader())
+        try {
+            let result = await clientInstance.post(`client/approve-time-reports/${payload}`)
+            if (result.status === 200) {
+                dispatch(setActionSuccessFully())
+                toast.success("Time reports approved successfully", { position: "top-center" })
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+ 
+export function editTimeReportOfDev(payload,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`client/edit-time-report-request`,{...payload})
+                dispatch(setActionSuccessFully())
+                toast.success("Developer Time reports Updated successfully", { position: "top-center" })
+                return callback()
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function filePreassignedUrlGenerate(payload,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`client//generate-presigned-url`,{...payload})
+                dispatch(setActionSuccessFully())
+                // toast.success("Folder Created successfully", { position: "top-center" })
+                return callback(result?.data?.preSignedUrl.split('?')[0])
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function createNewFolderAndFile(payload,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`client/create-folder-or-file`,{...payload})
+                dispatch(setActionSuccessFully())
+                toast.success("Folder Created successfully", { position: "top-center" })
+                console.log(result,"rrr")
+                return callback(result?.data?.data?.parent_id)
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function _deleteFileAndFolder(payload,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.delete(`client/delete-folder-or-file/${payload}`)
+                dispatch(setActionSuccessFully())
+                toast.success("File is Deleted successfully", { position: "top-center" })
+                return callback()
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}

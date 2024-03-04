@@ -833,6 +833,12 @@ ul
     border-left: 1px solid var(--grey);
     border-bottom: 1px solid var(--grey);
     padding-bottom: 30px;
+    position: relative;
+}
+.add_more_section_education{
+    position: absolute;
+    top:1;
+    right:0
 }
 .mainheading-resume
 {
@@ -864,6 +870,13 @@ ul
 {
     border-bottom: 1px solid var(--grey);
     padding-bottom: 30px;
+    position: relative;
+}
+.add_more_section{
+    position: absolute;
+    right: 19px;
+    top: 12px;
+    cursor: pointer;
 }
 .skills-pill li
 {
@@ -1289,6 +1302,7 @@ ul
 .job-posted-list
 {
     display: flex;
+    justify-content: space-between;
     background-color: #fff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, .16);
     border-radius: 20px;

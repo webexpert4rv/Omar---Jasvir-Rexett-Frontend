@@ -113,6 +113,9 @@ const ExperienceCV = ({ show, handleClose, data }) => {
                                         <Form.Label>Job Description</Form.Label>
                                         <Form.Control
                                             type="text"
+                                            as="textarea"
+                                            rows={3} // Number of visible rows
+
                                             className="cv-field"
                                             placeholder="Enter Job Description"
                                             value={description}

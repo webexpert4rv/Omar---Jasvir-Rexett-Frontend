@@ -54,6 +54,8 @@ import AllDeveloperList from './pages/vendor/ListAllDeveloper';
 import RentedDevelopers from './pages/vendor/RentedDevelopers';
 import NotificationVendor from './pages/vendor/NotificationVendor';
 import RegisterDeveloper from './pages/vendor/RegisterDeveloper';
+import ForgotPassword from './pages/Authentication/ForgotPassword';
+import ResetPassword from './pages/Authentication/ResetPassword';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -78,6 +80,8 @@ function App() {
         <Routes>
           <Route path="/" exact element={<PublicLayout><Login/></PublicLayout> } />
           <Route path="/agency-login" exact element={<AgencyLogin/>} />
+          <Route path="/forgot-password" exact element={<ForgotPassword/>} />
+          <Route path="/reset-password" exact element={<ResetPassword/>} />
           <Route path="/developer-login" exact element={<DeveloperPublicLayout><DeveloperLogin/></DeveloperPublicLayout> } />
           <Route path="/dashboard" exact element={<DashboardLayout><Dashboard /></DashboardLayout>} />
           <Route path="/hired-developers" exact element={<DashboardLayout><HiredDevelopers /></DashboardLayout>} />
@@ -102,7 +106,7 @@ function App() {
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
-          <Route path="/single-job" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
+          <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />

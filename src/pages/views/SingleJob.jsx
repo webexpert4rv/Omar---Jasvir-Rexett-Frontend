@@ -1,15 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
 import userImg from '../../assets/img/user-img.jpg'
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import RejectModal from "./Modals/RejectModal";
 import EndJobModal from "./Modals/EndJob";
 import ConfirmationModal from "./Modals/ConfirmationModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllJobPostedList, getJobCategoryList, publishedPost } from "../../redux/slices/clientDataSlice";
 const SingleJob = () => {
     const [showRejectModal, setShowRejectModal] = useState(false);
+    const [showEndJobModal, setShowEndJobModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [singleJobDescription,setSingleJobDescription]=useState({})
+    const dispatch =useDispatch()
+    const location=useLocation();
+    let id=location.pathname.split("/")[2]
+    const {allJobPostedList,jobCategoryList}=useSelector(state=>state.clientData)
+
+    useEffect(()=>{
+        dispatch(getAllJobPostedList())
+        dispatch(getJobCategoryList())
+    },[dispatch])
+
+
+    useEffect(()=>{
+    if(id){
+       let selectedJobs= allJobPostedList.find((item)=>item.id==id)
+       console.log(selectedJobs,"selectedJobs")
+       setSingleJobDescription(selectedJobs)
+    }
+    },[allJobPostedList])
+
+    const getCategory=(cat)=>{
+        let data= jobCategoryList.find((item)=>item.id==cat)
+        return data?.title
+     }
+
     const handleShowRejectModal = () => {
         setShowRejectModal(true);
     };
@@ -18,7 +47,6 @@ const SingleJob = () => {
         setShowRejectModal(false);
     };
 
-    const [showEndJobModal, setShowEndJobModal] = useState(false);
     const handleShowEndJobModal = () => {
         setShowEndJobModal(true);
     };
@@ -27,7 +55,6 @@ const SingleJob = () => {
         setShowEndJobModal(false);
     };
 
-    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => {
         setShowConfirmationModal(true);
     };
@@ -35,6 +62,14 @@ const SingleJob = () => {
     const handleCloseConfirmationModal = () => {
         setShowConfirmationModal(false);
     };
+    const convertToArray=(arr)=>{
+        const skillsArray = arr?.split(",");
+        return skillsArray
+    }
+    const handleUnpublished=(id,status)=>{
+        dispatch(publishedPost(id,status))
+
+    }
     return (
         <>
             <Tabs
@@ -47,42 +82,44 @@ const SingleJob = () => {
                     <section className="single-job-section">
                         <div className="single-job-card job-information-wrapper">
                             <div className="d-flex justify-content-between align-items-center">
-                                <h2 className="single-job-title mb-0">Want to Convert Figma to HTML</h2>
+                                <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
                                 <div className="d-flex gap-3 align-items-center">
-                                    <p className="mb-0">Status <span className="status-text inprogress status-info">In progress</span></p>
+                                    <p className="mb-0">Status <span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                     <Button variant="transparent" onClick={handleShowEndJobModal} className="px-5 closed-job-btn">End Job</Button>
-                                    <Button variant="transparent" className="px-5 unpublish-btn">Unpublish</Button>
+                                    <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>handleUnpublished(singleJobDescription?.id,singleJobDescription?.status)}>Unpublish</Button>
                                 </div>
                             </div>
-                            <h4 className="single-job-category">Website Design</h4>
-                            <p className="single-job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                            <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>
+                            <p className="single-job-description">{singleJobDescription?.description}</p>
                         </div>
                         <div className="single-job-card">
                             <Row>
                                 <Col md="4">
                                     <h3 className="req-heading">Experience Requirements</h3>
-                                    <p className="req-text">1 - 2 years</p>
+                                    <p className="req-text">{singleJobDescription?.experience}</p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">Contract</h3>
-                                    <p className="req-text">Hourly</p>
+                                    <p className="req-text">{singleJobDescription?.contract_type}</p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">Location</h3>
-                                    <p className="req-text">Remote</p>
+                                    <p className="req-text">{singleJobDescription?.job_type}</p>
                                 </Col>
                             </Row>
                         </div>
                         <div className="single-job-card">
                             <h3 className="req-heading">Skills</h3>
                             <ul className="skills-listing mb-0">
-                                <li>HTML</li>
-                                <li>CSS</li>
-                                <li>Bootstrap</li>
-                                <li>JavaScript</li>
-                                <li>jQuery</li>
-                                <li>Tailwind CSS</li>
-                                <li>Sass</li>
+                            {
+                                                convertToArray(singleJobDescription?.skills)?.map((item,index)=>{
+                                                    return (
+                                                        <>
+                                                         <li key={index}>{item}</li>
+                                                        </>
+                                                    )
+                                                })
+                                            }
                             </ul>
                         </div>
                     </section>

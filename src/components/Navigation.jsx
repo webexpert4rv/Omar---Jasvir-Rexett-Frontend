@@ -2,7 +2,9 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { FaBell } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
+import { useNavigate } from "react-router";
 const Navigation = ({handleSidebar}) => {
+    const navigate=useNavigate()
     return(
         <>
             <header className="mb-4">
@@ -43,7 +45,7 @@ const Navigation = ({handleSidebar}) => {
                                 <Dropdown.Item href="#" className="text-center no-notification">You have no notification</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                        <button className="main-btn">+ Add new developer to Team</button>
+                        <button className="main-btn" onClick={()=>navigate("/job-post")}>+ Add new Job</button>
                     </div>
                 </div>
             </header>

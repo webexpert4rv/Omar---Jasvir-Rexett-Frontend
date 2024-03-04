@@ -5,12 +5,15 @@ import { deleteEducationCv, updateDeveloperCvEducation } from "../../../redux/sl
 import RexettButton from "../../../components/atomic/RexettButton";
 
 const EducationCV = ({ show, handleClose,data }) => {
-    const dispatch =useDispatch()
+    const dispatch =useDispatch();
+    const [formErrors, setFormErrors] = useState([]);
     const [educationFields, setEducationFields] = useState([
         { university: '', degree: '', address: '', startYear: '', endYear: '', currentlyAttending: false }
     ]);
 
     const handleAddMore = () => {
+        // const errors = validateForm();
+        // console.log(errors,"eee")
         const newEducationField = {
             university: '',
             degree: '',
@@ -52,6 +55,16 @@ const EducationCV = ({ show, handleClose,data }) => {
        dispatch(updateDeveloperCvEducation(educationFields))
     }
 
+    // const validateForm = () => {
+    //     const errors = [];
+    //     educationFields.forEach(field => {
+    //         if (!field.university || !field.degree || !field.address || !field.startYear || !field.endYear) {
+    //             errors.push("All fields are required.");
+    //         }
+    //     });
+    //     return errors;
+    // };
+
     return (
         <Modal show={show} onHide={handleClose} centered scrollable animation size="lg">
             <Modal.Header closeButton>
@@ -65,7 +78,7 @@ const EducationCV = ({ show, handleClose,data }) => {
                             <Row>
                                 <Col md="12">
                                     <Form.Group className="mb-4">
-                                        <Form.Label>University Name Name</Form.Label>
+                                        <Form.Label>University Name </Form.Label>
                                         <Form.Control
                                             type="text"
                                             className="cv-field"

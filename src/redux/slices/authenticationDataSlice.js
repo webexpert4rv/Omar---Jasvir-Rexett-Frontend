@@ -17,7 +17,7 @@ export const authenticationDataSlice = createSlice({
         },
 
         setSuccessAuthData: (state, action) => {
-            state.smallLoader = true;
+            state.smallLoader = false;
         },
 
         setFailAuthData: (state, action) => {
@@ -74,3 +74,58 @@ export function loginUser(payload, callback) {
     };
 }
  
+
+export function forgotPassword(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setScreenLoader())
+        try {
+            let result = await authInstance.post(`auth/forgot-password`,{...payload})
+            if (result.status === 200) {
+                toast.success(result?.data.message, { position: "top-center" })
+                dispatch(setSuccessAuthData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            if(error?.response?.status===404){
+                toast.error(error?.response.data.message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            }else{
+                toast.error(message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            }
+           
+        }
+    };
+}
+
+export function resetPassword(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setScreenLoader())
+        try {
+            let result = await authInstance.post(`auth/reset-password`,{...payload})
+            if (result.status === 200) {
+                toast.success(result?.data.message, { position: "top-center" })
+                dispatch(setSuccessAuthData())
+                if(result?.data?.data?.role==="developer"){
+                    window.location.href="/developer-login"
+                }else if(result?.data?.data?.role==="client"){
+                    window.location.href="/"
+                }else{
+                    window.location.href="/agency-login"
+                }
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            if(error?.response?.status===404){
+                toast.error(error?.response.data.message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            }else{
+                toast.error(message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            }
+           
+        }
+    };
+}

@@ -39,7 +39,6 @@ const JobPost = () => {
       console.log(skillListMapped,jobCategoryList,"skillList")
 
       const onSubmit=(values)=>{
-        console.log(values,"op")
         let convertArr=selectedOption.map((item)=>item.label)
         let data={
             ...values,

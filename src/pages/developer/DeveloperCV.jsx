@@ -15,6 +15,7 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { FaGitlab } from "react-icons/fa6";
 import { FaPinterest } from "react-icons/fa6";
+import { IoIosAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 const DeveloperCV = () => {
@@ -82,7 +83,7 @@ const DeveloperCV = () => {
     return(
         <>
             <section className="overview-cv">
-                <div className="cv-template-option mt-4 mb-2">
+                {/* <div className="cv-template-option mt-4 mb-2">
                     <div className="flex-none">
                         <input type="radio" className="cv-radio" name="cv-template" id="cv-template1" onChange={() => handleTemplateChange('cv-template1')} />
                         <label htmlFor="cv-template1" className="cv-template">
@@ -101,8 +102,8 @@ const DeveloperCV = () => {
                             <img src={cvTemplate1} />
                         </label>
                     </div>
-                </div>
-                <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template1' : 'cv-template-section cv-template1 d-none'}>
+                </div> */}
+                {/* <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template1' : 'cv-template-section cv-template1 d-none'}>
                     <Row>
                         <Col md="4">
                             <div className="personal-info">
@@ -379,8 +380,8 @@ const DeveloperCV = () => {
                             </div>
                         </Col>
                     </Row>
-                </div>
-                <div className={selectedTemplate === 'cv-template3' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
+                </div> */}
+                <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="section-head mb-0">Overview</h2>
@@ -390,39 +391,30 @@ const DeveloperCV = () => {
                         <Col lg={6} className="px-0">
                             <div className="resume-basic-info text-center">
                                 <div className="resume-imgbx mx-auto mb-4">
-                                    <img src={resumeImg} className="resume-img" />
+                                    <img src={developerCvData?.profile_picture} className="resume-img" />
                                 </div>
-                                <h3 className="resume-name">Alfredo Smith</h3>
-                                <p className="resume-designation">Software Developer</p>
+                                <h3 className="resume-name">{developerCvData?.name}</h3>
+                                <p className="resume-designation">{developerCvData?.developer_detail?.professional_title}</p>
                             </div>
                             <div className="connect-social-media">
                                 <h3 className="subheading-resume text-center mb-3">Skills</h3>
+                                <div className="add_more_section" onClick={handleShowSkillsModal}><IoIosAddCircle size={25}/></div>
                                 <ul className="skills-pill text-center">
-                                    <li>
-                                        <span>HTML</span>
-                                    </li>
-                                    <li>
-                                        <span>HTML</span>
-                                    </li>
-                                    <li>
-                                        <span>HTML</span>
-                                    </li>
-                                    <li>
-                                        <span>HTML</span>
-                                    </li>
-                                    <li>
-                                        <span>HTML</span>
-                                    </li>
-                                    <li>
-                                        <span>HTML</span>
-                                    </li>
-                                    <li>
-                                        <span>HTML</span>
-                                    </li>
+                                 
+                                    {
+                                          splitSkills(developerCvData?.developer_skills)?.map((item,index)=>{
+                                                return (
+                                                    <>
+                                                      <li key={index}><span>{item}</span> </li>
+                                                    </>
+                                                )
+                                            })
+                                        }
                                 </ul>
                             </div>
                             <div className="connect-social-media">
                                 <h3 className="subheading-resume text-center mb-3">Connect With Me</h3>
+                                <div className="add_more_section" onClick={handleShowSocialMediaModal}><IoIosAddCircle size={25}/></div>
                                 <ul className="social-media">
                                     <li>
                                         <Link to={'#'} className="social-media-link">
@@ -430,7 +422,7 @@ const DeveloperCV = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to={'#'} className="social-media-link">
+                                        <Link to={developerCvData?.developer_detail?.linkedin_url} className="social-media-link">
                                             <FaLinkedinIn />
                                         </Link>
                                     </li>
@@ -451,31 +443,44 @@ const DeveloperCV = () => {
                             <div className="about-info px-4">
                                 <h3 className="subheading-resume mb-4">About Me</h3>
                                 <h2 className="mainheading-resume">Art Changes Us</h2>
-                                <p className="resume-text">Experienced software developer with a passion for creating efficient and innovative solutions. Seeking a challenging position where I can contribute my technical skills and creativity to develop cutting-edge software applications.</p>
+                                <div className="add_more_section" onClick={handleShowModal}><IoIosAddCircle size={25}/></div>
+                                <p className="resume-text">{developerCvData?.developer_detail?.bio}</p>
                             </div>
                             <div className="about-info px-4 pt-4">
+                            <div className="add_more_section" onClick={handleShowExperienceModal}><IoIosAddCircle size={25}/></div>
                                 <h3 className="subheading-resume mb-4">Experience</h3>
-                                <div className="exp-wrapper">
-                                    <p className="exp-year">2018 - 2023 Software Developer Google</p>
+                                {developerCvData?.developer_experiences?.map((item)=>{
+                                    return (
+                                        <>
+                                        <div className="exp-wrapper">
+                                    <p className="exp-year">{`${item?.start_date?.slice(0,4)}-${item?.end_date ? item?.end_date?.slice(0,4):"FullTime"}`} {item?.job_title} </p>
                                     <ul className="exp-role">
-                                        <li className="resume-text">Collaborated with cross-functional teams to design, develop, and deploy software solutions.</li>
-                                        <li className="resume-text">Collaborated with cross-functional teams to design, develop, and deploy software solutions.</li>
-                                        <li className="resume-text">Collaborated with cross-functional teams to design, develop, and deploy software solutions.</li>
+                                        <li className="resume-text">{item?.company_name} | <span>{item?.description}</span></li>
                                     </ul>
                                 </div>
+                                        </>
+                                    )
+                                })}
                                 <h3 className="subheading-resume mb-4">Education</h3>
-                                <div className="exp-wrapper">
-                                    <p className="exp-year">2006 Bachelor of Science in Computer Science</p>
+                                <div className="add_more_section_education" onClick={handleShowEducationModal}><IoIosAddCircle size={25}/></div>
+                               {developerCvData?.developer_educations?.map((item)=>{
+                                return(
+                                    <React.Fragment key={item.id}>
+                                    <div className="exp-wrapper">
+                                    <p className="exp-year">{item?.start_year} - {item?.end_year} | {item?.Degree?.title}</p>
                                     <ul className="exp-role">
-                                        <li className="resume-text">Tresswood University</li>
-                                        <li className="resume-text">Phyllis Schwaiger Memorial Award</li>
+                                        <li className="resume-text">{item?.university_name}</li>
+                                        <li className="resume-text">{item?.Degree?.description}</li>
                                     </ul>
                                 </div>
+                                    </React.Fragment>
+                                )
+                               }) }
                             </div>
                         </Col>
                     </Row>
                 </div>
-                <div className="create-cv-section">
+                {/* <div className="create-cv-section">
                     <div className="cv-section about-section" onClick={handleShowModal}>
                         <h2 className="d-flex justify-content-between align-items-center"><span>Add About Section</span><span>+</span></h2>
                     </div>
@@ -491,7 +496,7 @@ const DeveloperCV = () => {
                     <div className="cv-section social-media-section" onClick={handleShowSocialMediaModal}>
                         <h2 className="d-flex justify-content-between align-items-center"><span>Add Social Media Section</span><span>+</span></h2>
                     </div>
-                </div>
+                </div> */}
             </section>
             <AboutCV show={showModal} handleClose={handleCloseModal} data={developerCvData?.developer_detail?.bio} />
             <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={developerCvData?.developer_experiences} />
