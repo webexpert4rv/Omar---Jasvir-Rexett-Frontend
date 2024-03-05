@@ -9,59 +9,36 @@ import RejectModal from "./Modals/RejectModal";
 import EndJobModal from "./Modals/EndJob";
 import ConfirmationModal from "./Modals/ConfirmationModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllJobPostedList, getJobCategoryList, publishedPost } from "../../redux/slices/clientDataSlice";
+import { changeJobStatus, getAllJobPostedList, getJobCategoryList, publishedPost, singleJobPostData } from "../../redux/slices/clientDataSlice";
+import JobCard from "../../components/common/SingleJob/JobCard";
 const SingleJob = () => {
-    const [showRejectModal, setShowRejectModal] = useState(false);
-    const [showEndJobModal, setShowEndJobModal] = useState(false);
-    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [selectedTabsData,setSelectedTabsData]=useState([])
+    const [currentTab,setCurrentTab]=useState("application")
+    const [statusModal,setStatusModal]=useState({
+        isTrue:false,
+        id:null
+    })
     const [singleJobDescription,setSingleJobDescription]=useState({})
     const dispatch =useDispatch()
     const location=useLocation();
     let id=location.pathname.split("/")[2]
-    const {allJobPostedList,jobCategoryList}=useSelector(state=>state.clientData)
-
-    useEffect(()=>{
-        dispatch(getAllJobPostedList())
-        dispatch(getJobCategoryList())
-    },[dispatch])
-
-
+    const {allJobPostedList,jobCategoryList,jobPostedData}=useSelector(state=>state.clientData)
+   
     useEffect(()=>{
     if(id){
-       let selectedJobs= allJobPostedList.find((item)=>item.id==id)
-       console.log(selectedJobs,"selectedJobs")
-       setSingleJobDescription(selectedJobs)
+        dispatch(singleJobPostData(id))
     }
-    },[allJobPostedList])
+    },[])
+
+    useEffect(()=>{
+        setSingleJobDescription(jobPostedData?.data)
+    },[jobPostedData])
 
     const getCategory=(cat)=>{
         let data= jobCategoryList.find((item)=>item.id==cat)
         return data?.title
      }
 
-    const handleShowRejectModal = () => {
-        setShowRejectModal(true);
-    };
-
-    const handleCloseRejectModal = () => {
-        setShowRejectModal(false);
-    };
-
-    const handleShowEndJobModal = () => {
-        setShowEndJobModal(true);
-    };
-
-    const handleCloseEndJobModal = () => {
-        setShowEndJobModal(false);
-    };
-
-    const handleShowConfirmationModal = () => {
-        setShowConfirmationModal(true);
-    };
-
-    const handleCloseConfirmationModal = () => {
-        setShowConfirmationModal(false);
-    };
     const convertToArray=(arr)=>{
         const skillsArray = arr?.split(",");
         return skillsArray
@@ -70,6 +47,24 @@ const SingleJob = () => {
         dispatch(publishedPost(id,status))
 
     }
+    const handleSelect=(key)=>{
+        setCurrentTab(key)
+        setSelectedTabsData(jobPostedData[key])
+    }
+    const handleJobStatusAction= (e,data) => {
+        e.preventDefault()
+            dispatch(changeJobStatus(statusModal?.id,data, () => {    
+                setStatusModal({})
+            }))
+    }
+
+    const handleJobStatusModal=(id,status)=>{
+        setStatusModal({
+            [status]:!statusModal.isTrue,
+            id:id
+        })
+    }
+    console.log(statusModal,"statusModal")
     return (
         <>
             <Tabs
@@ -77,6 +72,7 @@ const SingleJob = () => {
                 id="fill-tab-example"
                 className="mb-3 job-tabs"
                 fill
+                onSelect={handleSelect}
             >
                 <Tab eventKey="application" title="Application">
                     <section className="single-job-section">
@@ -85,7 +81,7 @@ const SingleJob = () => {
                                 <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
                                 <div className="d-flex gap-3 align-items-center">
                                     <p className="mb-0">Status <span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
-                                    <Button variant="transparent" onClick={handleShowEndJobModal} className="px-5 closed-job-btn">End Job</Button>
+                                    <Button variant="transparent" onClick={handleJobStatusModal} className="px-5 closed-job-btn">End Job</Button>
                                     <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>handleUnpublished(singleJobDescription?.id,singleJobDescription?.status)}>Unpublish</Button>
                                 </div>
                             </div>
@@ -125,35 +121,10 @@ const SingleJob = () => {
                     </section>
                 </Tab>
                 <Tab eventKey="suggested" title="Suggestions">
-                    <div className="developers-list job-card">
-                        <div className="developer-card">
-                            <div className="tag-developer">Suggested</div>
-                            <div className="user-imgbx">
-                                <img src={userImg} className="user-img" />
-                            </div>
-                            <div className="text-center">
-                                <h3 className="user-name">Test dev</h3>
-                                <p className="designation-user">Software Developer</p>
-                                <p className="email-user">dev@rexett.com</p>
-                                <ul className="social-icons">
-                                    <li>
-                                        <Link to="#"><FaGithub /></Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#"><FaLinkedin /></Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#"><MdEmail /></Link>
-                                    </li>
-                                </ul>
-                                <Button variant="danger" onClick={handleShowConfirmationModal} className="w-100 bg-white text-black border-white mt-3">Shortlist</Button>
-                                <Button variant="danger" onClick={handleShowRejectModal} className="w-100 mt-2">Reject</Button>
-                            </div>
-                        </div>
-                    </div>
+                <JobCard handleJobStatusModal={handleJobStatusModal} type="Suggested" data={selectedTabsData}/>
                 </Tab>
                 <Tab eventKey="shortlisted" title="Shortlisted">
-                    <div className="developers-list job-card">
+                    {/* <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Shortlisted</div>
                             <div className="user-imgbx">
@@ -174,13 +145,15 @@ const SingleJob = () => {
                                         <Link to="#"><MdEmail /></Link>
                                     </li>
                                 </ul>
-                                <Button variant="danger" onClick={handleShowRejectModal} className="w-100 mt-3">Reject</Button>
+                                <Button variant="danger" onClick= className="w-100 mt-3">Reject</Button>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Shortlisted"  data={selectedTabsData}/>
                 </Tab>
                 <Tab eventKey="interviewing" title="Interviewing">
-                    <div className="developers-list job-card">
+                <JobCard handleJobStatusModal={handleJobStatusModal}  type="Interviewing"  data={selectedTabsData}/>
+                    {/* <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Interviewing</div>
                             <div className="user-imgbx">
@@ -201,14 +174,14 @@ const SingleJob = () => {
                                         <Link to="#"><MdEmail /></Link>
                                     </li>
                                 </ul>
-                                <Button variant="danger" onClick={handleShowConfirmationModal} className="w-100 bg-white text-black border-white mt-3">Hire</Button>
-                                <Button variant="danger" onClick={handleShowRejectModal} className="w-100 mt-2">Reject</Button>
+                                <Button variant="danger" onClick={handleJobStatusModal} className="w-100 bg-white text-black border-white mt-3">Hire</Button>
+                                <Button variant="danger" onClick= className="w-100 mt-2">Reject</Button>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </Tab>
                 <Tab eventKey="hired" title="Hired">
-                    <div className="developers-list job-card">
+                    {/* <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Hired</div>
                             <div className="user-imgbx">
@@ -229,7 +202,7 @@ const SingleJob = () => {
                                         <Link to="#"><MdEmail /></Link>
                                     </li>
                                 </ul>
-                                <Button variant="danger" onClick={handleShowRejectModal} className="w-100 mt-3">Remove</Button>
+                                <Button variant="danger" onClick= className="w-100 mt-3">Remove</Button>
                             </div>
                         </div>
                         <div className="developer-card">
@@ -254,12 +227,13 @@ const SingleJob = () => {
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}/>
                 </Tab>
             </Tabs>
-            <RejectModal show={showRejectModal} handleClose={handleCloseRejectModal} />
-            <EndJobModal show={showEndJobModal} handleClose={handleCloseEndJobModal} />
-            <ConfirmationModal show={showConfirmationModal} handleClose={handleCloseConfirmationModal} />
+            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab}/>
+            {/* <EndJobModal show={false} handleClose={handleClose} /> */}
+            <ConfirmationModal text={`Want to shortlist this developer?`} show={statusModal?.Shortlisted || statusModal?.Interviewing }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} />
         </>
     )
 }

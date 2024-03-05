@@ -150,7 +150,7 @@ export function updateDeveloperCvExperience(payload,id, callback) {
             let result = await developerInstance.put(`developer/update-experience/${id}`,{...payload})
             if (result.status === 200) {
                 console.log(result,"redd")
-                toast.success("Experience is Updated", { position: "top-center" })
+                // toast.success("Experience is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
             }
@@ -207,7 +207,6 @@ export function updateDeveloperCvEducation(payload, callback) {
         try {
             let result = await developerInstance.post('developer/add-education',[...payload])
             if (result.status === 200) {
-                console.log(result,"redd")
                 toast.success("Education is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
@@ -226,7 +225,6 @@ export function deleteEducationCv(payload, callback) {
         try {
             let result = await developerInstance.delete(`developer/delete-education/${payload}`)
             if (result.status === 200) {
-                console.log(result,"redd")
                 toast.success("Education is Deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()

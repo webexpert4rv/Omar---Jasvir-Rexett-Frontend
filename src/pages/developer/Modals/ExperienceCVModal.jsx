@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch } from "react-redux";
-import { addDeveloperCvExperience, deleteExperience, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
+import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 
 const ExperienceCV = ({ show, handleClose, data }) => {
     const dispatch = useDispatch()
@@ -51,12 +51,16 @@ const ExperienceCV = ({ show, handleClose, data }) => {
             }
         }).filter((item) => item)
         if (addExp.length > 0) {
-            dispatch(addDeveloperCvExperience(addExp))
+            dispatch(addDeveloperCvExperience(addExp,()=>{
+                dispatch(fetchDeveloperCv())
+                handleClose()
+            }))
         } else {
             experienceFields.forEach((item) => {
                 if (item.id) {
                     dispatch(updateDeveloperCvExperience(item, item.id, () => {
-
+                        dispatch(fetchDeveloperCv())
+                        handleClose()
                     }))
 
                 }
@@ -144,6 +148,7 @@ const ExperienceCV = ({ show, handleClose, data }) => {
                                             placeholder="Enter End Date"
                                             value={end_date?.slice(0, 10)}
                                             onChange={(e) => handleChange(id, 'end_date', e.target.value)}
+                                            max={new Date().toISOString().split("T")[0]}
                                         />
                                     </Form.Group>
                                 </Col>

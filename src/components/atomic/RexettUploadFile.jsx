@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { createNewFolderAndFile, filePreassignedUrlGenerate, getFolderData } from "../../redux/slices/clientDataSlice";
+import { callPreSignedUrlResponse, createNewFolderAndFile, filePreassignedUrlGenerate, getFolderData } from "../../redux/slices/clientDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "./RexettButton";
 import { useForm } from "react-hook-form";
@@ -14,22 +14,39 @@ const RexettUploadFile = ({ show, handleClose,currentFolderDetails }) => {
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
    
-
-         const onSubmit=(values)=>{
-            console.log(values,"opo")
-            dispatch(filePreassignedUrlGenerate({file_name:values.file_name[0].name},(url)=>{
-                let fileData= {
-                    "contract_id":currentFolderDetails.contract_id,
-                    "file_type": 1,
-                    "parent_id":currentFolderDetails.id ,
-                    "added_by": "client",
-                    "type":+values.category,
-                    "s3_path": url,
-                  }
-               dispatch(createNewFolderAndFile(fileData,(parent_id)=>{
-                handleClose()
-                dispatch(getFolderData(parent_id))
-               }))
+    function convertImageToBinary(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const arrayBuffer = reader.result;
+            resolve(arrayBuffer);
+          };
+          reader.onerror = () => {
+            reject(new Error("Failed to read the image file."));
+          };
+      
+          reader.readAsArrayBuffer(file);
+        });
+      }
+         const onSubmit=async(values)=>{
+            const binaryData = await convertImageToBinary(values.file_name[0]);
+            console.log(binaryData,"ppp")
+            dispatch(filePreassignedUrlGenerate({file_name:values.file_name[0].name},(url)=>{  
+                dispatch(callPreSignedUrlResponse(url?.preSignedUrl,binaryData,()=>{
+                //     let fileData= {
+                //         "contract_id":currentFolderDetails.contract_id,
+                //         "file_type": 1,
+                //         "parent_id":currentFolderDetails.id ,
+                //         "added_by": "client",
+                //         "type":+values.category,
+                //         "s3_path": url,
+                //       }
+                //    dispatch(createNewFolderAndFile(fileData,(parent_id)=>{
+                //     handleClose()
+                //     dispatch(getFolderData(parent_id))
+                //    }))
+                }))
+               
                }))
          }
     return(

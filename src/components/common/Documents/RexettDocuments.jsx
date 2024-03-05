@@ -104,7 +104,8 @@ const RexettDocuments = () => {
 
     }
 
-    const handleDelete = () => {
+    const handleDelete = (e) => {
+        e.preventDefault()
         dispatch(_deleteFileAndFolder(isDelete?.id, () => {
             setDelete({ isDelete: false, id: "" })
             dispatch(getFolderData("0"))

@@ -13,7 +13,8 @@ const initialClientData = {
     folderData:[],
     jobCategoryList:[],
     skillList:[],
-    allJobPostedList:[]
+    allJobPostedList:[],
+    jobPostedData:{}
 }
 
 export const clientDataSlice = createSlice({
@@ -70,12 +71,16 @@ export const clientDataSlice = createSlice({
         setAllJobPostedList:(state,action)=>{
             state.allJobPostedList=action.payload
             state.screenLoader = false;
+        },
+        setJobPostedData:(state,action)=>{
+            state.jobPostedData=action.payload
+            state.screenLoader = false;
         }
 
     }
 })
 
-export const { setAllJobPostedList,setScreenLoader,setApprovedLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList,setScreenLoader,setJobPostedData,setApprovedLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -189,6 +194,24 @@ export function clientJobPost(payload, callback) {
     };
 }
 
+export function singleJobPostData(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`client/job-detail/2`)
+                // toast.success("Job successfully Posted", { position: "top-center" })  
+                dispatch(setJobPostedData(result.data))
+                dispatch(setActionSuccessFully())
+                // return callback()
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
 
 export function getSkillList(payload, callback) {
     return async (dispatch) => {
@@ -305,7 +328,26 @@ export function filePreassignedUrlGenerate(payload,callback) {
             let result = await clientInstance.post(`client//generate-presigned-url`,{...payload})
                 dispatch(setActionSuccessFully())
                 // toast.success("Folder Created successfully", { position: "top-center" })
-                return callback(result?.data?.preSignedUrl.split('?')[0])
+                return callback(result?.data)
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function callPreSignedUrlResponse(payload,binary,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(payload,binary)
+            console.log(result,"rr")
+                dispatch(setActionSuccessFully())
+                // toast.success("Folder Created successfully", { position: "top-center" })
+                // return callback(result?.data)
             
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -342,6 +384,24 @@ export function _deleteFileAndFolder(payload,callback) {
             let result = await clientInstance.delete(`client/delete-folder-or-file/${payload}`)
                 dispatch(setActionSuccessFully())
                 toast.success("File is Deleted successfully", { position: "top-center" })
+                return callback()
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function changeJobStatus(payload,data,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`client/jobs/${payload}/change-job-status`,{...data})
+                // dispatch(setActionSuccessFully())
+                toast.success("Job is Updated", { position: "top-center" })
                 return callback()
             
         } catch (error) {

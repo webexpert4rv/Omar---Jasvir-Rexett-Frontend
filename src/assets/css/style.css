@@ -236,6 +236,23 @@ ul
     color: var(--primary-color);
     background-color: transparent;
 }
+.no-data {
+    background: #ffe0e0;
+    padding: 10px 20px;
+    color: #f00;
+    border-left: 4px solid #f00;
+    font-size: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    width: 600px;
+}
+
+.no-data img {
+    width: 40px;
+}
 .notification-btn
 {
     position: relative;

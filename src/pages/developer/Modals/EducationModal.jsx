@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { deleteEducationCv, updateDeveloperCvEducation } from "../../../redux/slices/developerDataSlice";
+import { deleteEducationCv, fetchDeveloperCv, updateDeveloperCvEducation } from "../../../redux/slices/developerDataSlice";
 import RexettButton from "../../../components/atomic/RexettButton";
 
 const EducationCV = ({ show, handleClose,data }) => {
@@ -36,6 +36,9 @@ const EducationCV = ({ show, handleClose,data }) => {
         dispatch(deleteEducationCv(id,()=>{
             const updatedEducationFields = educationFields.filter(field => field.id !== id);
             setEducationFields(updatedEducationFields);
+            
+            dispatch(fetchDeveloperCv())
+
         }))
         
     };
@@ -52,7 +55,12 @@ const EducationCV = ({ show, handleClose,data }) => {
 
     const handleSubmit=(e)=>{
        e.preventDefault();
-       dispatch(updateDeveloperCvEducation(educationFields))
+       dispatch(updateDeveloperCvEducation(educationFields,()=>{
+        handleClose()
+        dispatch(fetchDeveloperCv())
+
+
+       }))
     }
 
     // const validateForm = () => {
@@ -133,6 +141,7 @@ const EducationCV = ({ show, handleClose,data }) => {
                                             placeholder="Enter End Year"
                                             value={endYear}
                                             onChange={(e) => handleChange(id, 'endYear', e.target.value)}
+                                            max={new Date().toISOString().split("T")[0]}
                                         />
                                     </Form.Group>
                                 </Col>
