@@ -383,7 +383,7 @@ ul
     border-radius: 20px;
     z-index: 1;
 }
-.developer-card:before
+.developer-card:after
 {
     content: '';
     position: absolute;

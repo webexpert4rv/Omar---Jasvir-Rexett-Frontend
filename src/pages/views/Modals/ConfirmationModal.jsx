@@ -1,10 +1,10 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
-const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader}) => {
+const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type}) => {
     const callBackBtn=(e)=>{
         let data={
-            status:"shortlisted"
+            status:type==="interviewing"?"hired":"shortlisted"
         }
         onClick(e,data)
     }

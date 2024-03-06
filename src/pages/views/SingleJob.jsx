@@ -55,9 +55,10 @@ const SingleJob = () => {
         e.preventDefault()
             dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
                 dispatch(singleJobPostData(id,()=>{
-                    let prevData=[...jobPostedData[currentTab]]
-                   let d= prevData?.filter(item=>item.id!==statusModal?.id)
-                   prevData=d
+                    setStatusModal({})
+                    let prevData={...jobPostedData}
+                   let d= prevData[currentTab]?.filter(item=>item.id!==statusModal?.id)
+                   prevData[currentTab]=d
                    setSelectedTabsData(prevData[currentTab])
                 }))
             }))
@@ -89,8 +90,8 @@ const SingleJob = () => {
                                 <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
                                 <div className="d-flex gap-3 align-items-center">
                                     <p className="mb-0">Status <span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
-                                    <Button variant="transparent" onClick={handleJobStatusModal} className="px-5 closed-job-btn">End Job</Button>
-                                    <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>handleUnpublished(singleJobDescription?.id,singleJobDescription?.status)}>Unpublish</Button>
+                                    <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-5 closed-job-btn">End Job</Button>
+                                  {  <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>handleUnpublished(singleJobDescription?.id,singleJobDescription?.status=="published"?"Unpublished":"published")}>{singleJobDescription?.status=="published"?"Unpublish":"Publish"}</Button>}
                                 </div>
                             </div>
                             <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>
@@ -240,8 +241,8 @@ const SingleJob = () => {
                 </Tab>
             </Tabs>
             <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab}/>
-            {/* <EndJobModal show={false} handleClose={handleClose} /> */}
-            <ConfirmationModal text={`Want to shortlist this developer?`} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} />
+            <EndJobModal show={statusModal?.ended} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} />
+            <ConfirmationModal text={`Want to shortlist this developer?`} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} type={currentTab} />
         </>
     )
 }
