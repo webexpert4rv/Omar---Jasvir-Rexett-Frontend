@@ -20,7 +20,7 @@ const RejectModal = ({ show, handleClose,onClick,type }) => {
                     <div className="text-center">
                         <Button variant="transparent" className="main-btn px-4" onClick={(e)=>{
                             let data={
-                                status:type,
+                                status:"rejected",
                                 rejection_reason:feedback
                             }
                             onClick(e,data)

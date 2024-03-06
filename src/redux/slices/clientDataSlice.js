@@ -75,7 +75,12 @@ export const clientDataSlice = createSlice({
         setJobPostedData:(state,action)=>{
             state.jobPostedData=action.payload
             state.screenLoader = false;
-        }
+        },
+        // setCurrentJobStatusChnage:(state,action)=>{
+        //     console.log(state.allJobPostedList,"llll")
+        //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
+        //    console.log(d,"ppp")
+        // }
 
     }
 })
@@ -199,11 +204,11 @@ export function singleJobPostData(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`client/job-detail/2`)
+            let result = await clientInstance.get(`client/job-detail/${payload}`)
                 // toast.success("Job successfully Posted", { position: "top-center" })  
                 dispatch(setJobPostedData(result.data))
                 dispatch(setActionSuccessFully())
-                // return callback()
+                return callback()
             
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -338,12 +343,16 @@ export function filePreassignedUrlGenerate(payload,callback) {
     };
 }
 
-export function callPreSignedUrlResponse(payload,binary,callback) {
+export function callPreSignedUrlResponse(payload,file,callback) {
     return async (dispatch) => {
-
+         console.log(file,"ppp")
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(payload,binary)
+            let result=await clientInstance.put(payload, file, {
+                headers: {
+                  'Content-Type': file.type, // Set the content type based on the file type
+                },
+              })
             console.log(result,"rr")
                 dispatch(setActionSuccessFully())
                 // toast.success("Folder Created successfully", { position: "top-center" })
@@ -394,14 +403,17 @@ export function _deleteFileAndFolder(payload,callback) {
     };
 }
 
-export function changeJobStatus(payload,data,callback) {
+
+
+export function changeJobStatus(currentTb,payload,data,callback) {
     return async (dispatch) => {
+      
 
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.put(`client/jobs/${payload}/change-job-status`,{...data})
-                // dispatch(setActionSuccessFully())
-                toast.success("Job is Updated", { position: "top-center" })
+            dispatch(setActionSuccessFully())
+                toast.success("Job status is Updated", { position: "top-center" })
                 return callback()
             
         } catch (error) {

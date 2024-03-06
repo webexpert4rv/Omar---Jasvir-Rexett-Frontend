@@ -24,15 +24,14 @@ const RexettUploadFile = ({ show, handleClose,currentFolderDetails }) => {
           reader.onerror = () => {
             reject(new Error("Failed to read the image file."));
           };
-      
           reader.readAsArrayBuffer(file);
         });
       }
          const onSubmit=async(values)=>{
-            const binaryData = await convertImageToBinary(values.file_name[0]);
-            console.log(binaryData,"ppp")
+            // const binaryData = await convertImageToBinary(values.file_name[0]);
+            // console.log(binaryData,"ppp")
             dispatch(filePreassignedUrlGenerate({file_name:values.file_name[0].name},(url)=>{  
-                dispatch(callPreSignedUrlResponse(url?.preSignedUrl,binaryData,()=>{
+                dispatch(callPreSignedUrlResponse(url?.preSignedUrl,values.file_name[0],()=>{
                 //     let fileData= {
                 //         "contract_id":currentFolderDetails.contract_id,
                 //         "file_type": 1,

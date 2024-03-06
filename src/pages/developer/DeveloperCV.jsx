@@ -23,7 +23,6 @@ const DeveloperCV = () => {
     const {developerCvData}=useSelector(state=>state.developerData)
     const [selectedTemplate,setSelectedTemplate]=useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
-    console.log(developerCvData,"developerCvData")
     const handleShowModal = () => {
         setShowModal(true);
     };
@@ -502,7 +501,7 @@ const DeveloperCV = () => {
             <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={developerCvData?.developer_experiences} />
             <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations} />
            {developerCvData?.developer_skills?.skills&& <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} />}
-            <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} />
+            <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={developerCvData?.developer_skills?.skills}/>
         </>
     )
 }

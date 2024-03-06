@@ -25,8 +25,11 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails }) => {
             "s3_path": values.s3_path,
           }
         dispatch(createNewFolderAndFile(folderData,(parent_id)=>{
+            let filterData={
+                parent_id:parent_id
+            }
             handleClose()
-            dispatch(getFolderData(parent_id))
+            dispatch(getFolderData(filterData))
         }))
     }
     return (

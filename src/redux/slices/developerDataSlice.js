@@ -8,7 +8,8 @@ const initialDeveloperData = {
     smallLoader: false,
     developerCvData:{},
     developerProfileData:{},
-    developerDashboard:{}
+    developerDashboard:{},
+    degreeList:[]
 }
 
 export const developerDataSlice = createSlice({
@@ -44,11 +45,15 @@ export const developerDataSlice = createSlice({
         setDeveloperDashboard:(state, action) => {
             state.developerDashboard = action.payload;
         },
+        setDegreeList:(state, action) => {
+            let data=action?.payload?.map((item)=>{return{label:item.title,value:item.id}});
+            state.degreeList = data;
+        },
 
     }
 })
 
-export const { setSmallLoader,setScreenLoader,setSuccessActionData, setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader,setScreenLoader,setSuccessActionData, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
@@ -167,12 +172,10 @@ export function addDeveloperCvExperience(payload, callback) {
          dispatch(setSmallLoader())
         try {
             let result = await developerInstance.post('developer/add-experience',[...payload])
-            if (result.status === 200) {
-                console.log(result,"redd")
-                toast.success("Experience is Updated", { position: "top-center" })
+                toast.success("Experience is Added", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
-            }
+            
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -201,16 +204,51 @@ export function deleteExperience(payload, callback) {
 }
 
 
-export function updateDeveloperCvEducation(payload, callback) {
+export function addDeveloperCvEducation(payload, callback) {
     return async (dispatch) => {
          dispatch(setSmallLoader())
         try {
             let result = await developerInstance.post('developer/add-education',[...payload])
+        
+                toast.success("Education is Added", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function updateDeveloperCvEducation(payload,id, callback) {
+    return async (dispatch) => {
+         dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.put(`developer/update-education/${id}`,[...payload])
             if (result.status === 200) {
-                toast.success("Education is Updated", { position: "top-center" })
+                // toast.success("Education is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
             }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function getDegreeList(payload,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.get(`developer/degree-list`)
+                dispatch(setDegreeList(result.data.data))
+                // return callback()
+            
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })

@@ -10,7 +10,7 @@ import { MdPictureAsPdf } from "react-icons/md";
 import { FaFileAlt } from "react-icons/fa";
 import userImage from '../../../assets/img/user-img.jpg'
 import { useDispatch, useSelector } from "react-redux";
-import { _deleteFileAndFolder, createNewFolderAndFile, filePreassignedUrlGenerate, getFolderData } from "../../../redux/slices/clientDataSlice";
+import {_deleteFileAndFolder, createNewFolderAndFile, filePreassignedUrlGenerate, getFolderData } from "../../../redux/slices/clientDataSlice";
 import CreateFolder from "../../atomic/CreateFolder";
 import RexettUploadFile from "../../atomic/RexettUploadFile";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
@@ -107,8 +107,11 @@ const RexettDocuments = () => {
     const handleDelete = (e) => {
         e.preventDefault()
         dispatch(_deleteFileAndFolder(isDelete?.id, () => {
+            let filterData={
+                parent_id:"0"
+            }
             setDelete({ isDelete: false, id: "" })
-            dispatch(getFolderData("0"))
+            dispatch(getFolderData(filterData))
         }))
     }
 

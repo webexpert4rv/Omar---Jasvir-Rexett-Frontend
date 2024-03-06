@@ -22,11 +22,11 @@ const SingleJob = () => {
     const dispatch =useDispatch()
     const location=useLocation();
     let id=location.pathname.split("/")[2]
-    const {allJobPostedList,jobCategoryList,jobPostedData}=useSelector(state=>state.clientData)
+    const {allJobPostedList,jobCategoryList,jobPostedData,smallLoader}=useSelector(state=>state.clientData)
    
     useEffect(()=>{
     if(id){
-        dispatch(singleJobPostData(id))
+        dispatch(singleJobPostData(id,()=>{}))
     }
     },[])
 
@@ -53,10 +53,16 @@ const SingleJob = () => {
     }
     const handleJobStatusAction= (e,data) => {
         e.preventDefault()
-            dispatch(changeJobStatus(statusModal?.id,data, () => {    
-                setStatusModal({})
+            dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
+                dispatch(singleJobPostData(id,()=>{
+                    let prevData=[...jobPostedData[currentTab]]
+                   let d= prevData?.filter(item=>item.id!==statusModal?.id)
+                   prevData=d
+                   setSelectedTabsData(prevData[currentTab])
+                }))
             }))
     }
+    
 
     const handleJobStatusModal=(id,status)=>{
         setStatusModal({
@@ -64,7 +70,9 @@ const SingleJob = () => {
             id:id
         })
     }
-    console.log(statusModal,"statusModal")
+    console.log(jobPostedData,"jobPostedData")
+    console.log(selectedTabsData,"selectedTabsData")
+    console.log(currentTab,"currentTab")
     return (
         <>
             <Tabs
@@ -233,7 +241,7 @@ const SingleJob = () => {
             </Tabs>
             <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab}/>
             {/* <EndJobModal show={false} handleClose={handleClose} /> */}
-            <ConfirmationModal text={`Want to shortlist this developer?`} show={statusModal?.Shortlisted || statusModal?.Interviewing }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} />
+            <ConfirmationModal text={`Want to shortlist this developer?`} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} />
         </>
     )
 }

@@ -2,6 +2,12 @@ import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader}) => {
+    const callBackBtn=(e)=>{
+        let data={
+            status:"shortlisted"
+        }
+        onClick(e,data)
+    }
     return(
         <Modal show={show} onHide={handleClose} centered animation size="lg">
             <Modal.Header closeButton>
@@ -17,7 +23,7 @@ const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader}) => {
                         <RexettButton
                             type="submit"
                             text="Yes"
-                            onClick={onClick}
+                            onClick={callBackBtn}
                             className="main-btn px-4 me-3"
                             variant="transparent"
                             isLoading={smallLoader}
