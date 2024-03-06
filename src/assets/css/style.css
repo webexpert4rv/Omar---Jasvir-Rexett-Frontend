@@ -6,7 +6,7 @@
 }
 :root
 {
-    --primary-color: #180049;
+    --primary-color: linear-gradient(93.07deg, #11998E 4.54%, #38EF7D 95.98%);
     --white: #fff;
     --grey: #ccc;
 }
@@ -31,17 +31,36 @@ ul
 }
 .auth-img
 {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
     height: 100%;
     object-fit: contain;
 }
 .inner-auth-wrapper
 {
-    background-color: var(--primary-color);
+    position: relative;
+    background: linear-gradient(93.07deg, #11998E 4.54%, #38EF7D 95.98%);
     padding: 40px;
+    z-index: 1;
+}
+.inner-auth-wrapper:before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/bg-pattern.png');
+    background-size: cover;
+    background-position: top;
+    mix-blend-mode: multiply;
+    z-index: -1;
 }
 .logo-white
 {
-    max-width: 100px;
+    max-width: 200px;
 }
 .link-text
 {
@@ -96,9 +115,9 @@ ul
 {
     width: 100%;
     text-align: center;
-    color: var(--white);
-    background-color: #502779;
-    border-color: #502779;
+    color: #000;
+    background-color: #fff;
+    border-color: #fff;
     padding: 12px 10px;
     font-size: 18px;
     border-radius: 10px;
@@ -107,8 +126,8 @@ ul
 }
 .auth-btn:hover
 {
-    color: var(--white);
-    border-color: var(--white);
+    color: #000;
+    border-color: #000;
 }
 .eye-btn
 {
@@ -118,7 +137,7 @@ ul
     right: 10px;
     background: transparent;
     border: none;
-    color: #ad53a6;
+    color: #000;
     outline: none;
     font-size: 25px;
     cursor: pointer;
@@ -150,7 +169,7 @@ ul
     gap: 30px;
     width: 100%;
     padding: 15px;
-    background-color: var(--primary-color);
+    background: #11998E;
     color: var(--white);
     text-decoration: none;
     border-radius: 10px;
@@ -165,7 +184,7 @@ ul
 .sidebar-listing
 {
     padding: 15px;
-    background-color: var(--primary-color);
+    background: #11998E;
     border-radius: 10px;
 }
 .sidebar-item
@@ -196,7 +215,7 @@ ul
 }
 .side-link.active
 {
-    color: #ac53a6;
+    color: #38EF7D;
 }
 .side-link svg
 {
@@ -211,7 +230,7 @@ ul
     gap: 30px;
     margin-bottom: 20px;
     text-decoration: none;
-    color: var(--primary-color);
+    color: #11998E;
 }
 .bottom-link svg
 {
@@ -223,7 +242,7 @@ ul
     display: inline-block;
     padding: 10px;
     color: var(--white);
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     border-radius: 8px;
     font-size: 16px;
     font-weight: 400;
@@ -308,7 +327,7 @@ ul
 .overview-card:hover,
 .overview-card.active
 {
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     border: 1px solid var(--primary-color);
 }
 .overview-card-subhead
@@ -360,7 +379,23 @@ ul
 {
     position: relative;
     padding: 40px 20px;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
+    border-radius: 20px;
+    z-index: 1;
+}
+.developer-card:before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../img/bg-pattern.png');
+    background-size: cover;
+    background-position: top;
+    z-index: -1;
+    mix-blend-mode: multiply;
     border-radius: 20px;
 }
 .user-imgbx
@@ -418,7 +453,7 @@ ul
     padding: 5px 17px;
     color: var(--white);
     border-radius: 5px;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     transition: .4s ease;
     border: 1px solid var(--primary-color);
 }
@@ -471,7 +506,7 @@ ul
     position: relative;
     /* padding: 12px 20px;
     background-color: #deeaff; */
-    color: #003ba1;
+    color: #11998E;
     /* border-radius: 12px;
     display: flex;
     align-items: center; */
@@ -481,12 +516,12 @@ ul
 }
 .folder-list:hover
 {
-    color: #deeaff;
+    color: #38EF7D;
 }
 .folder-list span
 {
     position: absolute;
-    bottom: 50px;
+    bottom: 73px;
     left: 30px;
     color: var(--white);
     transition: .4s ease;
@@ -496,7 +531,7 @@ ul
 {
     color: var(--primary-color);
 }
-.folder-list svg
+.folder-list .folder-icon
 {
     width: 100%;
     height: 230px;
@@ -600,7 +635,7 @@ ul
 }
 .time-table-head
 {
-    background-color: var(--primary-color);
+    background: #11998E;
     color: var(--white);
     font-size: 16px;
     padding: 16px 10px;
@@ -687,7 +722,7 @@ ul
 }
 .filter-select
 {
-    background-color: var(--primary-color);
+    background: #11998E;
     color: var(--white);
     --bs-form-select-bg-img: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%2var(--white)%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/%3e%3c/svg%3e');
 }
@@ -700,13 +735,13 @@ ul
 }
 .filter-field-customize
 {
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: var(--white);
     color-scheme: dark;
 }
 .filter-field-customize:focus
 {
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: var(--white);
     color-scheme: dark;
 }
@@ -906,13 +941,13 @@ ul
     display: inline-block;
     padding: 5px 14px;
     color: var(--white);
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     border-radius: 6px;
 }
 .bars-btn
 {
     border: 1px solid var(--primary-color);
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     outline: none;
     color: var(--white);
     width: 40px;
@@ -1024,7 +1059,7 @@ ul
 .personal-info
 {
     padding: 40px 20px;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
 }
 .dev-imgbx
 {
@@ -1134,7 +1169,7 @@ ul
 .connect-listing a
 {
     font-size: 20px;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: var(--white);
     display: inline-flex;
     justify-content: center;
@@ -1186,7 +1221,7 @@ ul
     left: 15px;
     width: 1px;
     height: calc(100% - 100px);
-    background-color: var(--primary-color);
+    background: var(--primary-color);
 }
 .cv-template1 .cv-subheading.cv-dark-text
 {
@@ -1394,7 +1429,7 @@ ul
     display: inline-block;
     padding: 10px;
     color: var(--primary-color);
-    background-color: #e9ecff;
+    background-color: #e9fffd;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 400;
@@ -1422,7 +1457,7 @@ ul
 }
 .notification-tabs li .nav-link.active
 {
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: var(--white);
 }
 .notification-wrapper
@@ -1439,8 +1474,8 @@ ul
     border-radius: 10px;
     width: 50px;
     height: 50px;
-    background-color: #ede4ff;
-    color: var(--primary-color);
+    background-color: #11998E;
+    color: var(--white);
 }
 .notification-heading
 {
@@ -1480,8 +1515,8 @@ ul
 {
     display: inline-block;
     padding: 4px 9px;
-    background-color: #ede4ff;
-    color: var(--primary-color);
+    background-color: #11998E;
+    color: var(--white);
     font-size: 14px;
     border-radius: 5px;
     font-weight: 500;
@@ -1563,7 +1598,7 @@ ul
     display: block;
     margin-left: auto;
     margin-right: auto;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: var(--white);
     border-radius: 10px;
     font-size: 15px;
@@ -1582,7 +1617,7 @@ ul
 .dropdown-notify-wrapper::-webkit-scrollbar-thumb
 {
     width: 5px;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     border-radius: 10px;
 }
 .dropdown-notify-wrapper::-webkit-scrollbar-track
@@ -1629,7 +1664,7 @@ ul
 }
 .single-job-card .skills-listing li
 {
-    background-color: var(--primary-color);
+    background: #11998E;
     color: var(--white);
 }
 .closed-job-btn
@@ -1669,7 +1704,7 @@ ul
 }
 .job-tabs li .nav-link.active
 {
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: var(--white);
 }
 .profile-req
@@ -1764,7 +1799,7 @@ ul
 .custom-pagination-item.active .page-link
 {
     border-color: var(--primary-color);
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: var(--white);
 }
 .job-posted-section .notification-tabs li .nav-link
@@ -1832,7 +1867,7 @@ ul
     width: 60px;
     display: none;
     height: 1px;
-    background-color: var(--primary-color);
+    background: var(--primary-color);
 }
 .step-counts .count.active:before
 {
@@ -1844,7 +1879,7 @@ ul
 }
 .step-counts .count.active
 {
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: #fff;
 }
 .step-counts .count.current

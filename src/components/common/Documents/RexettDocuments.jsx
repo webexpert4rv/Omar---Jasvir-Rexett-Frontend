@@ -183,8 +183,8 @@ const RexettDocuments = () => {
                                         {
                                             item.file_type === 0 ? <>
                                                 <div className="folder-list" onDoubleClick={() => toggleFolderView(item)}>
-                                                    <div>
-                                                        <FaFolder /><span>{item?.s3_path}</span>
+                                                    <div className="position-relative">
+                                                        <FaFolder className="folder-icon" /><span>{item?.s3_path}</span>
                                                         <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id)}><FaTrashCan /></button>
 
                                                     </div>

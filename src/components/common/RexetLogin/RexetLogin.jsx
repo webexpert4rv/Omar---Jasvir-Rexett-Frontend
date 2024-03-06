@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Row, Col, Form, Button } from "react-bootstrap";
-import logoWhite from '../../../assets/img/logo-white.png'
-import authLoginImg from '../../../assets/img/login-img.png'
+import logoWhite from '../../../assets/img/logo-white-new.png'
+import authLoginImg from '../../../assets/img/login-img-new.png'
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/slices/authenticationDataSlice";
@@ -73,14 +73,8 @@ const RexetLogin = ({userType}) => {
                                     <div className="text-center mb-5 logo-auth-wrapper">
                                         <img src={logoWhite} className="logo-white" />
                                     </div>
-                                    <div className="d-flex justify-content-between align-items-center mb-4">
-                                       { userType==="client"? <Form.Group>
-                                            <Form.Select className="p-0 border-0" onChange={handleRoles}>
-                                                <option value="/">Client Login</option>
-                                                <option value="agency-login">Agency Login</option>
-                                                <option value="developer-login">Developer Login</option>
-                                            </Form.Select>
-                                        </Form.Group>:
+                                    <div className="d-flex justify-content-between align-items-center mb-4 text-white">
+                                       { userType==="client"? "Client Login":
                                         <Link to={"#"} className="link-text text-decoration-none">{ userType=== "developer"?"Developer Login": "Agency Login"}</Link>
                                         }
                                         {/* <Link to={"#"} className="link-text text-decoration-none">Client Login</Link> */}
@@ -148,8 +142,8 @@ const RexetLogin = ({userType}) => {
                                 </div>
                             </div>
                         </Col>
-                        <Col md={7} className="h-100">
-                            <div className="h-100">
+                        <Col md={7} className="h-100 d-md-block d-none">
+                            <div className="h-100 text-center">
                                 <img src={authLoginImg} className="auth-img" />
                             </div>
                         </Col>
