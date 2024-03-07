@@ -34,7 +34,7 @@ const JobCard = ({ handleJobStatusModal, type, data }) => {
                                                 <Link to="#"><MdEmail /></Link>
                                             </li>
                                         </ul>
-                                        {(type !== "Shortlisted" || type === "Interviewing") && type!=="Hired" ? <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 bg-white text-black border-white mt-3">{type === "Interviewing" ? "Hire" : "Shortlist"}</Button> : ""}
+                                        {(type === "Shortlisted" ||type === "Suggested" || type === "Interviewing") && type!=="Hired" ? <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 bg-white text-black border-white mt-3">{type === "Interviewing"?"Hire": type === "Shortlisted" ? "Interview" : "Shortlist"}</Button> : ""}
                                         <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, "rejected")} className="w-100 mt-2">Reject</Button>
                                     </div>
                                 </div>

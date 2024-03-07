@@ -271,15 +271,16 @@ export function getAllJobPostedList(payload, callback) {
     };
 }
  
-export function publishedPost(payload,status) {
+export function publishedPost(payload,status,callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        dispatch(setApprovedLoader())
         try {
-            let result = await clientInstance.put(`client/jobs/${payload}/unpublish`)
+            let result = await clientInstance.put(`client/jobs/${payload}/unpublish`,{...status})
             if (result.status === 200) {
                 dispatch(setActionSuccessFully())
-                toast.success("Job unpublished successfully", { position: "top-center" })
+                toast.success("Job status is changed", { position: "top-center" })
+                return callback()
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -330,10 +331,10 @@ export function filePreassignedUrlGenerate(payload,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`client//generate-presigned-url`,{...payload})
+            let result = await clientInstance.post(`common/upload-file`,payload)
                 dispatch(setActionSuccessFully())
                 // toast.success("Folder Created successfully", { position: "top-center" })
-                return callback(result?.data)
+                return callback(result?.data?.data.Location)
             
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -374,6 +375,24 @@ export function createNewFolderAndFile(payload,callback) {
             let result = await clientInstance.post(`client/create-folder-or-file`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Created successfully", { position: "top-center" })
+                console.log(result,"rrr")
+                return callback(result?.data?.data?.parent_id)
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+export function renameFolderAndFile(payload,id,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`common/documents/${id}/rename-folder`,{...payload})
+                dispatch(setActionSuccessFully())
+                toast.success("Folder Updated successfully", { position: "top-center" })
                 console.log(result,"rrr")
                 return callback(result?.data?.data?.parent_id)
             

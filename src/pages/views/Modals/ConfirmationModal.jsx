@@ -4,7 +4,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type}) => {
     const callBackBtn=(e)=>{
         let data={
-            status:type==="interviewing"?"hired":"shortlisted"
+            status: type
         }
         onClick(e,data)
     }

@@ -180,7 +180,7 @@ const EditDeveloperProfile = () => {
                                             name="address_2"
                                             {...register("address_2", {
                                                 required: {
-                                                    value: true,
+                                                    value: false,
                                                     message: "Address 2 is required",
                                                 },
                                             })}
@@ -197,6 +197,10 @@ const EditDeveloperProfile = () => {
                                                     value: true,
                                                     message: "City is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: "Country should not contain numbers or special character",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -216,6 +220,10 @@ const EditDeveloperProfile = () => {
                                                     value: true,
                                                     message: "Plan Name is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[0-9]+$/,
+                                                    message: "Passcode should only contain numbers",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -230,6 +238,10 @@ const EditDeveloperProfile = () => {
                                                     value: true,
                                                     message: "Country is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: "Country should not contain numbers or special character",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">

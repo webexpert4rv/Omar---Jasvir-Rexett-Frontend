@@ -7,6 +7,7 @@ import Select from 'react-select';
 
 const EducationCV = ({ show, handleClose,data }) => {
     const dispatch =useDispatch();
+    const [selectedOption, setSelectedOption] = useState([]);
     const {degreeList}=useSelector(state=>state.developerData)
     const [formErrors, setFormErrors] = useState([]);
     const [educationFields, setEducationFields] = useState([
@@ -109,6 +110,7 @@ const EducationCV = ({ show, handleClose,data }) => {
     //     });
     //     return errors;
     // };
+    
 
     return (
         <Modal show={show} onHide={handleClose} centered scrollable animation size="lg">
@@ -118,7 +120,7 @@ const EducationCV = ({ show, handleClose,data }) => {
 
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
-                    {educationFields.map(({ id, university_name, Degree, address, start_year, end_year, currently_attending }) => (
+                    {educationFields.map(({ id, university_name, degree_id, address, start_year, end_year, currently_attending }) => (
                         <div className="experience-container mb-3" key={id}>
                             <Row>
                                 <Col md="12">
@@ -145,7 +147,10 @@ const EducationCV = ({ show, handleClose,data }) => {
                                         /> */}
                                              <Select
                                     options={degreeList}
-                                    onChange={(val) => handleChange(id, 'degree_id', val.value)}
+                                    onChange={(val) =>{
+                                        setSelectedOption(val)
+                                        handleChange(id, 'degree_id', val.value)}
+                                    } 
                                    
                                     
                                 />
@@ -173,12 +178,12 @@ const EducationCV = ({ show, handleClose,data }) => {
                                             value={start_year}
                                             onChange={(e) => handleChange(id, 'start_year', e.target.value)}
                                         /> */}
-                                        <Form.Select   onChange={(e) => handleChange(id, 'start_year', e.target.value)}>
+                                        <Form.Select value={start_year}   onChange={(e) => handleChange(id, 'start_year', e.target.value)}>
                                         <option disabled selected>Please select year</option>
                                          {yearsArray?.map((item)=>{
                                             return(
                                                 <>
-                                                <option>{item}</option>
+                                                <option  value={item} >{item}</option>
                                                 </>
                                             )
                                         })}
@@ -196,12 +201,12 @@ const EducationCV = ({ show, handleClose,data }) => {
                                             onChange={(e) => handleChange(id, 'end_year', e.target.value)}
                                             max={new Date().toISOString().split("T")[0]}
                                         /> */}
-                                         <Form.Select  onChange={(e) => handleChange(id, 'end_year', e.target.value)}>
+                                         <Form.Select value={end_year}   onChange={(e) => handleChange(id, 'end_year', e.target.value)}>
                                          <option disabled selected>Please select year</option>
                                          {yearsArray?.map((item)=>{
                                             return(
                                                 <>
-                                                <option>{item}</option>
+                                                <option  value={end_year}   >{item}</option>
                                                 </>
                                             )
                                         })}

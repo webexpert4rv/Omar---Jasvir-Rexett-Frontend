@@ -4,54 +4,45 @@ import { callPreSignedUrlResponse, createNewFolderAndFile, filePreassignedUrlGen
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "./RexettButton";
 import { useForm } from "react-hook-form";
-const RexettUploadFile = ({ show, handleClose,currentFolderDetails }) => {
-    const dispatch=useDispatch()
-    const {smallLoader}=useSelector(state=>state.clientData);
+const RexettUploadFile = ({ show, handleClose, currentFolderDetails }) => {
+    const [selectedFile, setSelectedFile] = useState(null)
+    const dispatch = useDispatch()
+    const { smallLoader } = useSelector(state => state.clientData);
     const {
         register,
         setValue,
         handleSubmit,
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
-   
-    function convertImageToBinary(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const arrayBuffer = reader.result;
-            resolve(arrayBuffer);
-          };
-          reader.onerror = () => {
-            reject(new Error("Failed to read the image file."));
-          };
-          reader.readAsArrayBuffer(file);
-        });
-      }
-         const onSubmit=async(values)=>{
-            // const binaryData = await convertImageToBinary(values.file_name[0]);
-            // console.log(binaryData,"ppp")
-            dispatch(filePreassignedUrlGenerate({file_name:values.file_name[0].name},(url)=>{  
-                dispatch(callPreSignedUrlResponse(url?.preSignedUrl,values.file_name[0],()=>{
-                //     let fileData= {
-                //         "contract_id":currentFolderDetails.contract_id,
-                //         "file_type": 1,
-                //         "parent_id":currentFolderDetails.id ,
-                //         "added_by": "client",
-                //         "type":+values.category,
-                //         "s3_path": url,
-                //       }
-                //    dispatch(createNewFolderAndFile(fileData,(parent_id)=>{
-                //     handleClose()
-                //     dispatch(getFolderData(parent_id))
-                //    }))
-                }))
-               
-               }))
-         }
-    return(
+
+
+    const onSubmit = async (values) => {
+        let formData = new FormData()
+        formData.append("file", values.file_name[0])
+        dispatch(filePreassignedUrlGenerate(formData, (url) => {
+            let fileData = {
+                "contract_id": currentFolderDetails.contract_id,
+                "file_type": 1,
+                "parent_id": currentFolderDetails.id,
+                "added_by": "client",
+                "type": +values.category,
+                "s3_path": url,
+            }
+            dispatch(createNewFolderAndFile(fileData, (parent_id) => {
+                let data = {
+                    parent_id: parent_id
+                }
+                handleClose()
+                dispatch(getFolderData(data))
+            }))
+
+
+        }))
+    }
+    return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
             <Modal.Header closeButton>
-            <Modal.Title>Upload File</Modal.Title>
+                <Modal.Title>Upload File</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -61,8 +52,8 @@ const RexettUploadFile = ({ show, handleClose,currentFolderDetails }) => {
                             <Col md="12">
                                 <Form.Group className="mb-4">
                                     <Form.Label>Select Category</Form.Label>
-                                    <Form.Select 
-                                     {...register("category", { required: "Please select a Category" })}
+                                    <Form.Select
+                                        {...register("category", { required: "Please select a Category" })}
                                     >
                                         <option value="" selected disabled>Select Category</option>
                                         <option value="3">Invoices</option>
@@ -71,20 +62,21 @@ const RexettUploadFile = ({ show, handleClose,currentFolderDetails }) => {
                                         <option value="4">Others</option>
                                     </Form.Select>
                                     <Form.Control type="file" className="d-none" id="upload-file"
-                                     name="file_name"
-                                     {...register("file_name", {
-                                         required: {
-                                             value: true,
-                                         },
-                                     })}
+                                        name="file_name"
+                                        {...register("file_name", {
+                                            onChange: (e) => setSelectedFile(e.target.files[0]),
+                                            required: {
+                                                value: true,
+                                            },
+                                        })}
                                     />
                                     <Form.Label htmlFor="upload-file" className="upload-file-label">Upload File</Form.Label>
                                 </Form.Group>
+                                {selectedFile ? <div>Selected File:<span className="fs-6">{selectedFile?.name}</span></div> : ""}
                             </Col>
                         </Row>
                     </div>
                     <div className="text-center">
-                        {/* <Button variant="transparent" className="main-btn px-4">Submit</Button> */}
                         <RexettButton
                             type="submit"
                             text="Create"

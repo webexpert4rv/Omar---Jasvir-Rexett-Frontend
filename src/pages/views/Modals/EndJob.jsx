@@ -21,7 +21,7 @@ const RejectModal = ({ show, handleClose,onClick,type }) => {
                         <Button variant="transparent" className="main-btn px-4" onClick={(e)=>{
                             let data={
                                 status:"ended",
-                                rejection_reason:feedback
+                                end_reason:feedback
                             }
                             onClick(e,data)
                             }}>Request</Button>
