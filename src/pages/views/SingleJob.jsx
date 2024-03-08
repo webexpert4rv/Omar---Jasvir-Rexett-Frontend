@@ -89,9 +89,7 @@ const SingleJob = () => {
             id:id
         })
     }
-    console.log(jobPostedData,"jobPostedData")
-    console.log(selectedTabsData,"selectedTabsData")
-    console.log(currentTab,"currentTab")
+
     return (
         <>
             <Tabs
@@ -150,7 +148,7 @@ const SingleJob = () => {
                     </section>
                 </Tab>
                 <Tab eventKey="suggested" title="Suggestions">
-                <JobCard handleJobStatusModal={handleJobStatusModal} type="Suggested" data={selectedTabsData}/>
+                <JobCard handleJobStatusModal={handleJobStatusModal} type="Suggested" data={selectedTabsData}  jobStatus={singleJobDescription?.status}/>
                 </Tab>
                 <Tab eventKey="shortlisted" title="Shortlisted">
                     {/* <div className="developers-list job-card">
@@ -178,10 +176,10 @@ const SingleJob = () => {
                             </div>
                         </div>
                     </div> */}
-                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Shortlisted"  data={selectedTabsData}/>
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Shortlisted"  data={selectedTabsData} jobStatus={singleJobDescription?.status}/>
                 </Tab>
                 <Tab eventKey="interviewing" title="Interviewing">
-                <JobCard handleJobStatusModal={handleJobStatusModal}  type="Interviewing"  data={selectedTabsData}/>
+                <JobCard handleJobStatusModal={handleJobStatusModal}  type="Interviewing"  data={selectedTabsData}   jobStatus={singleJobDescription?.status}/>
                     {/* <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Interviewing</div>
@@ -257,7 +255,7 @@ const SingleJob = () => {
                             </div>
                         </div>
                     </div> */}
-                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}/>
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}  jobStatus={singleJobDescription?.status}/>
                 </Tab>
             </Tabs>
             <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab}/>

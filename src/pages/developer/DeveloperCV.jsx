@@ -15,7 +15,7 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { FaGitlab } from "react-icons/fa6";
 import { FaPinterest } from "react-icons/fa6";
-import { IoIosAddCircle } from "react-icons/io";
+import { MdEditNote } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 const DeveloperCV = () => {
@@ -94,6 +94,16 @@ const DeveloperCV = () => {
             default:
         }
     }
+
+    const downloadResume = (url) => {
+        const newTab = window.open(url, '_blank');
+        if (newTab) {
+            newTab.focus();
+        } else {
+            // If the popup blocker prevents opening the new tab
+            alert('Please allow pop-ups for this site to download the file in a new tab.');
+        }
+    };
     return(
         <>
             <section className="overview-cv">
@@ -101,7 +111,7 @@ const DeveloperCV = () => {
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="section-head mb-0">Overview</h2>
-                        <button className="main-btn px-5">Download Resume</button>
+                        <button className="main-btn px-5" onClick={()=>downloadResume(developerCvData?.developer_detail?.resume)}>Download Resume</button>
                     </div>
                     <Row>
                         <Col lg={6} className="px-0">
@@ -114,7 +124,7 @@ const DeveloperCV = () => {
                             </div>
                             <div className="connect-social-media">
                                 <h3 className="subheading-resume text-center mb-3">Skills</h3>
-                                <div className="add_more_section" onClick={handleShowSkillsModal}><IoIosAddCircle size={25}/></div>
+                                <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25}/></div>
                                 <ul className="skills-pill text-center">
                                  
                                     {
@@ -130,14 +140,14 @@ const DeveloperCV = () => {
                             </div>
                             <div className="connect-social-media">
                                 <h3 className="subheading-resume text-center mb-3">Connect With Me</h3>
-                                <div className="add_more_section" onClick={handleShowSocialMediaModal}><IoIosAddCircle size={25}/></div>
+                                <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25}/></div>
                                 <ul className="social-media">
                                     {developerCvData?.social_links?.map((item)=>{
                                         return(
                                             <>
                                              <li>
                                         <Link to={item.url} className="social-media-link">
-                                            {generateSocailLinks(item.name)}
+                                            {generateSocailLinks(item.slug)}
                                         </Link>
                                     </li>
                                             </>
@@ -152,11 +162,11 @@ const DeveloperCV = () => {
                             <div className="about-info px-4">
                                 <h3 className="subheading-resume mb-4">About Me</h3>
                                 <h2 className="mainheading-resume">Art Changes Us</h2>
-                                <div className="add_more_section" onClick={handleShowModal}><IoIosAddCircle size={25}/></div>
+                                <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25}/></div>
                                 <p className="resume-text">{developerCvData?.developer_detail?.bio}</p>
                             </div>
                             <div className="about-info px-4 pt-4">
-                            <div className="add_more_section" onClick={handleShowExperienceModal}><IoIosAddCircle size={25}/></div>
+                            <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25}/></div>
                                 <h3 className="subheading-resume mb-4">Experience</h3>
                                 {developerCvData?.developer_experiences?.map((item)=>{
                                     return (
@@ -171,7 +181,7 @@ const DeveloperCV = () => {
                                     )
                                 })}
                                 <h3 className="subheading-resume mb-4">Education</h3>
-                                <div className="add_more_section_education" onClick={handleShowEducationModal}><IoIosAddCircle size={25}/></div>
+                                <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div>
                                {developerCvData?.developer_educations?.map((item)=>{
                                 return(
                                     <React.Fragment key={item.id}>
@@ -192,9 +202,9 @@ const DeveloperCV = () => {
             </section>
             <AboutCV show={showModal} handleClose={handleCloseModal} data={developerCvData?.developer_detail?.bio} />
            {showExperienceModal? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={developerCvData?.developer_experiences} />:""}
-            <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations} />
-           {developerCvData?.developer_skills?.skills&& <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} />}
-            <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={developerCvData?.social_links}/>
+            {showEducationModal?<EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations} />:""}
+           {showSkillsModal? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} />:""}
+            {showSocialMediaModal?<SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={developerCvData?.social_links}/>:""}
         </>
     )
 }

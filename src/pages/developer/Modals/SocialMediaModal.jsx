@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useFieldArray, useForm } from "react-hook-form";
+import { addDeveloperSocialMedia, deleteDeveloperSocialMedia, fetchDeveloperCv, updateDeveloperSocialMedia } from "../../../redux/slices/developerDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import RexettButton from "../../../components/atomic/RexettButton";
 
 const socialMediaOptions = [
     { value: "facebook", label: "Facebook" },
@@ -13,6 +16,9 @@ const socialMediaOptions = [
   ];
 
 const SocialMediaModal = ({ show, handleClose,data }) => {
+  const dispatch=useDispatch()
+  const [renderModalData,setRenderModalData]=useState(data)
+  const {smallLoader,btnLoader}=useSelector(state=>state.developerData)
     const {
         register,
         control,
@@ -21,7 +27,7 @@ const SocialMediaModal = ({ show, handleClose,data }) => {
         handleSubmit,
         reset,
         trigger,
-        setError,
+        // setError,
         formState: { errors },
       } = useForm();
       const { fields, append, remove, replace } = useFieldArray({
@@ -29,49 +35,34 @@ const SocialMediaModal = ({ show, handleClose,data }) => {
         name: "test",
       });
 
-    const [socialMediaRows, setSocialMediaRows] = useState(fields);
 
     useEffect(() => {
         if (data) {
           data?.forEach((item, index) => {
             append({
+             new_id:item.id, 
              url:item.url,
-             name:item.name
-    
+             name:item.name,
+             slug:item.slug
             });
           });
         }
-        setSocialMediaRows(fields)
-      }, [data]);
-    const handleAddMore = () => {
-        
-    };
+      }, [renderModalData]);
 
-    console.log(fields,"fields")
-    console.log(socialMediaRows,"socialMediaRows")
+  
 
-    // const handleDeleteRow = (id) => {
-    //     const updatedRows = socialMediaRows.filter(row => row.id !== id);
-    //     setSocialMediaRows(updatedRows);
-    // };
 
-    const handleSocialMediaChange = (e) => {
-        console.log(e.target.value,"lll")
-      let d=  fields?.some((item)=>item.name===e.target.value)
-      console.log(d,"lll")
+    const onSubmit = (value) => {
+      let {test}=value
 
-    };
+          dispatch(addDeveloperSocialMedia(test,()=>{
+              dispatch(fetchDeveloperCv())
+              handleClose()
+          }))
+      } 
 
-    // const handleUrlChange = (index, value) => {
-    //     const updatedRows = [...socialMediaRows];
-    //     updatedRows[index].url = value;
-    //     setSocialMediaRows(updatedRows);
-    // };
-    const onSubmit=(data)=>{
-
-    }
-
-    console.log(socialMediaRows,"socialMediaRows")
+      
+    
 
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
@@ -81,46 +72,46 @@ const SocialMediaModal = ({ show, handleClose,data }) => {
 
             <Modal.Body>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-
-                    <Form.Select className="mb-2" onChange={handleSocialMediaChange}>
-                                            <option selected disabled>Please Select media</option>
-                                           {
-                                            socialMediaOptions?.map((item)=>{
-                                                return (
-                                                    <>
-                                                      <option value={item.label}>{item.label}</option>
-                                                    </>
-                                                )
-                                            })
-                                           }
-                                        </Form.Select>
-                                        <div className="text-end mb-3">
-                        <Button className="main-btn py-2 px-3" onClick={handleAddMore}>Add More</Button>
-                    </div>
+                    
                     {fields?.map((row, index) => (
                         <div className="experience-container" key={row.id}>
                             <Row>
                                 <Col md="12">
                                     <Form.Group className="mb-4">
-                                        <div className="d-flex justify-content-between align-items-center">
-                                            {/* <Form.Label>Add Social Media</Form.Label> */}
-                                            {index > 0 && <Button type="button" variant="danger" className="mb-3">Delete</Button>}
-                                        </div>
                                        
-                                        <Form.Label>{row.name}</Form.Label>
+                                        <Form.Label>{row.slug}</Form.Label>
                                         <Form.Control type="text" className="cv-field" placeholder="Enter Url" 
                                          {...register(`test[${index}].url`, {
-                                            required: "Url is required",
+                                          required: {
+                                            value: true,
+                                            message: "Url can't blank",
+                                          },
+                                          pattern: {
+                                            value: /^(https?:\/\/)?(www\.)?(facebook|twitter|instagram|linkedin|github)\.com\/\S*$/,
+                                            message: "Please enter a valid social media URL",
+                                        }
                                           })}
                                         ></Form.Control>
+                                           {errors && errors.test && errors.test[index] && errors.test[index].url && (
+                                            <p className="error-message">{errors.test[index].url.message}</p>
+                                        )}
                                     </Form.Group>
                                 </Col>
                             </Row>
                         </div>
                     ))}
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4">Submit</Button>
+                        {/* <Button variant="transparent" className="main-btn px-4" type="submit">Submit</Button> */}
+
+                        <RexettButton
+                                type="submit"
+                                text="Update Profile"
+                                className="main-btn px-4"
+                                variant="transparent"
+                                isLoading={btnLoader}
+                            />
                     </div>
+
                 </form>
             </Modal.Body>
         </Modal>

@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 
 const ExperienceCVModal = ({ show, handleClose, data }) => {
+  const [renderModalData,setRenderModalData]=useState(data)
+  const [disabledEndDates, setDisabledEndDates] = useState([]);
     const dispatch=useDispatch()
   const {
     register,
@@ -36,11 +38,26 @@ const ExperienceCVModal = ({ show, handleClose, data }) => {
           newId:item.id
 
         });
+        setDisabledEndDates(prevState => [...prevState, item.is_still_working]);
       });
     }
-  }, [data]);
+  }, [renderModalData]);
 
-
+  const handleCurrentlyWorkingChange = (e,index) => {
+    if(e.target.checked){
+      const isChecked = watch(`test[${index}].is_still_working`);
+      const updatedDisabledEndDates = [...disabledEndDates];
+      updatedDisabledEndDates[index] = true;
+      setDisabledEndDates(updatedDisabledEndDates);
+      setValue(`test[${index}].end_date`, "");
+    }else{
+      const isChecked = watch(`test[${index}].is_still_working`);
+      const updatedDisabledEndDates = [...disabledEndDates];
+      updatedDisabledEndDates[index] = false;
+      setDisabledEndDates(updatedDisabledEndDates);
+    }
+    
+}
 
   const onSubmit = (value) => {
     let {test}=value
@@ -69,28 +86,33 @@ const ExperienceCVModal = ({ show, handleClose, data }) => {
     
   };
 
-  const handleAppend = () => {
-    append({
-      company_name: "",
-      job_title: "",
-      description: "",
-      start_date: "",
-      end_date: "",
-      is_still_working: false,
-    });
+  const handleAppend = async () => {
+    // Trigger validation for all fields
+    const isValid = await trigger();
+  
+    // Check if all fields are valid
+    if (isValid) {
+      append({
+        company_name: "",
+        job_title: "",
+        description: "",
+        start_date: "",
+        end_date: "",
+        is_still_working: false,
+      });
+    }
   };
 
   const deleteDeveloperExperience = (id,index) => {     
     remove(index)
     if(id){
       dispatch(deleteExperience(id, () => {
-        const updatedExperienceFields = data?.filter(field => field.id !== id);
         dispatch(fetchDeveloperCv())
     }))
     }
 }
 
-  console.log(fields, "fields");
+  console.log(disabledEndDates, "vdisabledEndDates");
 
   return (
     <Modal
@@ -157,8 +179,8 @@ const ExperienceCVModal = ({ show, handleClose, data }) => {
                         required: "Description name is required",
                       })}
                     />
-                    {errors?.test?.[index]?.company_name && (
-                      <p className="error-message">{errors.test[index].company_name.message}</p>
+                    {errors?.test?.[index]?.description && (
+                      <p className="error-message">{errors.test[index].description.message}</p>
                     )}
                   </Form.Group>
                 </Col>
@@ -197,8 +219,12 @@ const ExperienceCVModal = ({ show, handleClose, data }) => {
                       placeholder="Enter End Date"
                       max={new Date().toISOString().split("T")[0]}
                       {...register(`test[${index}].end_date`, {
-                        required: "End Date is required",
+                        required: {
+                          value: disabledEndDates[index]?false:true,
+                          message: "End Date is required",
+                        },
                       })}
+                      disabled={disabledEndDates[index]}
                     />
                     {errors?.test?.[index]?.end_date && (
                       <p className="error-message">{errors.test[index].end_date.message}</p>
@@ -213,6 +239,7 @@ const ExperienceCVModal = ({ show, handleClose, data }) => {
                       {...register(`test[${index}].is_still_working`, {
                         required: false,
                       })}
+                      onChange={(e) => handleCurrentlyWorkingChange(e,index)}
                     />
                     <Form.Label className="mb-0">Currently Working</Form.Label>
                   </Form.Group>
@@ -226,7 +253,7 @@ const ExperienceCVModal = ({ show, handleClose, data }) => {
             </div>
           ))}
           <div className="text-end mb-3">
-            <Button className="main-btn py-2 px-3" type="submit" onClick={handleAppend}>
+            <Button className="main-btn py-2 px-3" onClick={handleAppend}>
               Add More
             </Button>
           </div>
