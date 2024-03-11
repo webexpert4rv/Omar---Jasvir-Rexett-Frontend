@@ -40,7 +40,7 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,c
                 "type": 1,
                 "s3_path": values.s3_path,
               }
-            dispatch(createNewFolderAndFile(folderData,currentRole, (parent_id)=>{
+            dispatch(createNewFolderAndFile(folderData, (parent_id)=>{
                 let filterData={
                     parent_id:parent_id
                 }

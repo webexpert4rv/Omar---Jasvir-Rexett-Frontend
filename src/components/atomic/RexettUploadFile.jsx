@@ -4,7 +4,7 @@ import { callPreSignedUrlResponse, createNewFolderAndFile, filePreassignedUrlGen
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "./RexettButton";
 import { useForm } from "react-hook-form";
-const RexettUploadFile = ({ show, handleClose, currentFolderDetails }) => {
+const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole }) => {
     const [selectedFile, setSelectedFile] = useState(null)
     const dispatch = useDispatch()
     const { smallLoader } = useSelector(state => state.clientData);
@@ -24,7 +24,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails }) => {
                 "contract_id": currentFolderDetails.contract_id,
                 "file_type": 1,
                 "parent_id": currentFolderDetails.id,
-                "added_by": "client",
+                "added_by": currentRole==="client"?"client":"developer",
                 "type": +values.category,
                 "s3_path": url,
             }
@@ -33,7 +33,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails }) => {
                     parent_id: parent_id
                 }
                 handleClose()
-                dispatch(getFolderData(data))
+                dispatch(getFolderData(data,currentRole))
             }))
 
 

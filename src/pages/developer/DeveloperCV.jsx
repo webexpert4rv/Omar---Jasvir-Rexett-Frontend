@@ -121,6 +121,7 @@ const DeveloperCV = () => {
                                 </div>
                                 <h3 className="resume-name">{developerCvData?.name}</h3>
                                 <p className="resume-designation">{developerCvData?.developer_detail?.professional_title}</p>
+                                <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25}/></div>
                             </div>
                             <div className="connect-social-media">
                                 <h3 className="subheading-resume text-center mb-3">Skills</h3>

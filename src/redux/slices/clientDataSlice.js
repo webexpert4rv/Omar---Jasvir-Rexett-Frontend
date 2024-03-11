@@ -359,7 +359,6 @@ export function filePreassignedUrlGenerate(payload,callback) {
 
 export function callPreSignedUrlResponse(payload,file,callback) {
     return async (dispatch) => {
-         console.log(file,"ppp")
         dispatch(setSmallLoader())
         try {
             let result=await clientInstance.put(payload, file, {
@@ -380,7 +379,7 @@ export function callPreSignedUrlResponse(payload,file,callback) {
     };
 }
 
-export function createNewFolderAndFile(payload,role,callback) {
+export function createNewFolderAndFile(payload,callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
