@@ -13,6 +13,14 @@ export function getToken(tokenKey) {
     localStorage.setItem(key, token);
   }
   
+  export function getCurrentRole() {
+  
+   let role= localStorage.getItem("role");
+ let token= role==="client"? getToken("token") : getToken("developerToken")
+
+   return token
+  }
+  
 
   export const generateApiUrl = (filters, endpointName) => {
     const queryParams = [];

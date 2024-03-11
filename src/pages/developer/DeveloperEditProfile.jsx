@@ -22,6 +22,7 @@ const EditDeveloperProfile = () => {
         firstPass: false,
         secondPass: false
     })
+    const [file,setFile]=useState(null)
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
 
     useEffect(() => {
@@ -38,6 +39,7 @@ const EditDeveloperProfile = () => {
         setValue("city", developerProfileData?.data?.city)
         setValue("country", developerProfileData?.data?.country)
         setValue("passcode", developerProfileData?.data?.passcode)
+        setValue("profile_picture", developerProfileData?.data?.profile_picture)
 
     }, [developerProfileData])
 
@@ -47,20 +49,21 @@ const EditDeveloperProfile = () => {
         for (const key in values) {
             formData.append(key, values[key]);
         }
-        dispatch(updateDeveloperProfile(formData));
-    
-        fileData.append("file", values.file_name[0]);
-        dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-            let fileData = {
-                "s3_path": url,
-            };
-            dispatch(createNewFolderAndFile(fileData, (parent_id) => {
+      
+        fileData.append("file",file);
+        if(file==null){
+            dispatch(updateDeveloperProfile(values)); 
+        }else{
+            dispatch(filePreassignedUrlGenerate(fileData, (url) => {
                 let data = {
-                    parent_id: parent_id
+                    ...values,
+                    "profile_picture": url,
                 };
-
+                // formData.append("file",data.s3_path);
+                dispatch(updateDeveloperProfile(data));
             }));
-        }));
+        }
+      
     };
     
 
@@ -80,6 +83,7 @@ const EditDeveloperProfile = () => {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
+        setFile(file)
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -270,7 +274,7 @@ const EditDeveloperProfile = () => {
                                             {...register("profile_picture", {
                                                 onChange:(e)=>handleFileChange(e), 
                                                 required: {
-                                                    value: true,
+                                                    value: false,
                                                     message: "Profile Picture is required",
                                                 },
                                             })}

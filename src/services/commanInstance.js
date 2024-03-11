@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
+import {getCurrentRole, getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
 const commanInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -9,7 +9,7 @@ const commanInstance = axios.create({
 // Request Interceptor
 commanInstance.interceptors.request.use(
   (config) => {
-    config.headers["Authorization"] = `${getToken("developerToken")}`;
+    config.headers["Authorization"] = `${getCurrentRole()}`;
     return config;
   },
   (error) => {
@@ -40,7 +40,9 @@ commanInstance.interceptors.response.use(
         console.error("Error refreshing token:", error);
         return Promise.reject(error);
       }
-
+    }
+    if(error.response.status === 403){
+        window.location.href="/"
     }
     return Promise.reject(error);
   }

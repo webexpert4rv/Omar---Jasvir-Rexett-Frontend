@@ -2,6 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
+
+
 const developerInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 
@@ -10,7 +12,8 @@ const developerInstance = axios.create({
 // Request Interceptor
 developerInstance.interceptors.request.use(
   (config) => {
-    config.headers["Authorization"] = `${getToken("developerToken")}`;
+    localStorage.setItem("role", "developer");
+    config.headers["Authorization"] =  `${getToken("developerToken")}`;
     return config;
   },
   (error) => {

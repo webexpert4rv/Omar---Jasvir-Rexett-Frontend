@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import clientInstance from '../../services/client.instance';
 import { generateApiUrl } from '../../helper/utlis';
 import developerInstance from '../../services/developer.instance';
+import commanInstance from '../../services/commanInstance';
 
 const initialClientData = {
     screenLoader: false,
@@ -343,7 +344,7 @@ export function filePreassignedUrlGenerate(payload,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`common/upload-file`,payload)
+            let result = await commanInstance.post(`common/upload-file`,payload)
                 dispatch(setActionSuccessFully())
                 // toast.success("Folder Created successfully", { position: "top-center" })
                 return callback(result?.data?.data.Location)
@@ -385,12 +386,8 @@ export function createNewFolderAndFile(payload,role,callback) {
         dispatch(setSmallLoader())
         try {
             let result;
-            if(role==="client"){
-                 result = await clientInstance.post(`common/documents/create-folder-or-file`,{...payload})
-            }else{
-                result = await developerInstance.post(`common/documents/create-folder-or-file`,{...payload})
-            }
-           
+
+                result = await commanInstance.post(`common/documents/create-folder-or-file`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Created successfully", { position: "top-center" })
                 console.log(result,"rrr")
@@ -408,7 +405,7 @@ export function renameFolderAndFile(payload,id,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`common/documents/${id}/rename-folder`,{...payload})
+            let result = await commanInstance.put(`common/documents/${id}/rename-folder`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Updated successfully", { position: "top-center" })
                 console.log(result,"rrr")
@@ -427,7 +424,7 @@ export function _deleteFileAndFolder(payload,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`client/delete-folder-or-file/${payload}`)
+            let result = await clientInstance.delete(`common/documents/delete-folder-or-file/${payload}`)
                 dispatch(setActionSuccessFully())
                 toast.success("File is Deleted successfully", { position: "top-center" })
                 return callback()
