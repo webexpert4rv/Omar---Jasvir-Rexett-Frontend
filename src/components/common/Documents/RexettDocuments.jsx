@@ -18,7 +18,7 @@ import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import NoDataFound from "../../atomic/NoDataFound";
 
-const RexettDocuments = () => {
+const RexettDocuments = ({currentRole}) => {
     const [bradCrump, setBradCrum] = useState([])
     const [allFilterValue, setAllCurrentFilterValue] = useState({});
     const [editFolderName, setEditFolderName] = useState({})
@@ -30,11 +30,7 @@ const RexettDocuments = () => {
     const dispatch = useDispatch();
     const { folderData, smallLoader, screenLoader } = useSelector(state => state.clientData)
 
-    // const toggleFolderView = () => {
-    //     setShowFolderView(!showFolderView);
-    // };
-    console.log(currentFolderDetails, "currentFolderDetails")
-
+console.log(folderData,"folderData")
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
     const handleShowUploadFileModal = (id, name) => {
         if (id) {
@@ -67,7 +63,7 @@ const RexettDocuments = () => {
             parent_id: item.id
         }
 
-        dispatch(getFolderData(filterData))
+        dispatch(getFolderData(filterData,currentRole))
 
     };
 
@@ -75,7 +71,7 @@ const RexettDocuments = () => {
         let filterData = {
             parent_id: "0"
         }
-        dispatch(getFolderData(filterData))
+        dispatch(getFolderData(filterData,currentRole))
     }, [dispatch])
 
     console.log(bradCrump, "bradCrump")
@@ -132,7 +128,7 @@ const RexettDocuments = () => {
                 parent_id: currentFolderDetails?.id
             }
             setDelete({ isDelete: false, id: "" })
-            dispatch(getFolderData(filterData))
+            dispatch(getFolderData(filterData,currentRole))
         }))
     }
 
@@ -141,7 +137,7 @@ const RexettDocuments = () => {
             let filterData = {
                 parent_id: "0"
             }
-            dispatch(getFolderData(filterData))
+            dispatch(getFolderData(filterData,currentRole))
             setAllCurrentFilterValue({
                 [filter]: e.target.value,
             })
@@ -153,7 +149,7 @@ const RexettDocuments = () => {
             setAllCurrentFilterValue({
                 [filter]: e.target.value,
             })
-            dispatch(getFolderData(filterData))
+            dispatch(getFolderData(filterData,currentRole))
         }
 
     }
@@ -166,7 +162,7 @@ const RexettDocuments = () => {
         let filterData = {
             parent_id: "0"
         }
-        dispatch(getFolderData(filterData))
+        dispatch(getFolderData(filterData,currentRole))
     }
 
     const handleSearchChange = (e) => {
@@ -177,7 +173,7 @@ const RexettDocuments = () => {
                 parent_id: "0",
                 search: e.target.value
             }
-            dispatch(getFolderData(filterData))
+            dispatch(getFolderData(filterData,currentRole))
         }, 500);
         setTimerValue(timer);
 
@@ -192,7 +188,7 @@ const RexettDocuments = () => {
             parent_id: id,
         }
        
-        dispatch(getFolderData(filterData))
+        dispatch(getFolderData(filterData,currentRole))
         if(id=="0"){
             setBradCrum([])
             setShowFolderView(false)
@@ -300,8 +296,8 @@ const RexettDocuments = () => {
                     </div>
                 </div>
             </section>
-            <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} />
-            <RexettUploadFile show={show} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} />
+            <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} currentRole={currentRole} />
+            <RexettUploadFile show={show} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} currentRole={currentRole}/>
             <ConfirmationModal
                 text={isDelete?.name == "folder" ? `Deleting this folder will also delete all the files and subfolders contained within it` : `Are you sure to delete this ${isDelete?.name}?`}
                 show={isDelete?.isDelete} handleClose={handleCloseUploadFileModal} onClick={handleDelete}

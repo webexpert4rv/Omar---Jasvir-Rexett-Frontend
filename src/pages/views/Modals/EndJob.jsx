@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-const RejectModal = ({ show, handleClose,onClick,type }) => {
+import RexettSpinner from "../../../components/atomic/RexettSpinner";
+const RejectModal = ({ show, handleClose,onClick,smallLoader }) => {
     const [feedback,setFeedback]=useState("")
     const handleFeedback=(e)=>{
         setFeedback(e.target.value)
@@ -24,7 +25,7 @@ const RejectModal = ({ show, handleClose,onClick,type }) => {
                                 end_reason:feedback
                             }
                             onClick(e,data)
-                            }}>Request</Button>
+                            }}>{smallLoader?<RexettSpinner/>:"Request"} </Button>
                     </div>
                 </Form>
             </Modal.Body>

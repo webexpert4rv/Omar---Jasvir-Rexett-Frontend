@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
+localStorage.setItem("role", "client");
 const clientInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeJobStatus, getAllJobPostedList, getJobCategoryList, publishedPost, singleJobPostData } from "../../redux/slices/clientDataSlice";
 import JobCard from "../../components/common/SingleJob/JobCard";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
+import { jobPostConfirmMessage } from "../../helper/utlis";
 const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
     const [currentTabsStatus,setCurrnetTabsStatus]=useState(null)
@@ -258,9 +259,9 @@ const SingleJob = () => {
                     <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}  jobStatus={singleJobDescription?.status}/>
                 </Tab>
             </Tabs>
-            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab}/>
-            <EndJobModal show={statusModal?.ended} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} />
-            <ConfirmationModal text={`Want to shortlist this developer?`} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} type={currentTabsStatus} />
+            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab} smallLoader={smallLoader}/>
+            <EndJobModal show={statusModal?.ended} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
+            <ConfirmationModal text={jobPostConfirmMessage(currentTab)} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} type={currentTabsStatus} />
         </>
     )
 }

@@ -5,6 +5,7 @@ import { getToken } from '../helper/utlis';
 import { Navigate } from 'react-router-dom';
 const DashboardLayout = ({ children }) => {
     const [sidebarwrapper , isSidebarWrapper] = useState(false);
+    localStorage.setItem("role", "client");
     const handleSidebar = () => {
         isSidebarWrapper(!sidebarwrapper)
     }

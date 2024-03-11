@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import clientInstance from '../../services/client.instance';
 import { generateApiUrl } from '../../helper/utlis';
+import developerInstance from '../../services/developer.instance';
 
 const initialClientData = {
     screenLoader: false,
@@ -14,7 +15,8 @@ const initialClientData = {
     jobCategoryList:[],
     skillList:[],
     allJobPostedList:[],
-    jobPostedData:{}
+    jobPostedData:{},
+    earnedBack:{}
 }
 
 export const clientDataSlice = createSlice({
@@ -59,7 +61,7 @@ export const clientDataSlice = createSlice({
 
         },
         setFolderData:(state,action)=>{
-            state.folderData=action.payload;
+            state.folderData=action.payload.files;
             state.screenLoader = false;
         },
         setJobCategory:(state,action)=>{
@@ -76,6 +78,10 @@ export const clientDataSlice = createSlice({
             state.jobPostedData=action.payload
             state.screenLoader = false;
         },
+        setEarnedBackData:(state,action)=>{
+            state.earnedBack=action.payload
+            state.screenLoader = false;
+        },
         // setCurrentJobStatusChnage:(state,action)=>{
         //     console.log(state.allJobPostedList,"llll")
         //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
@@ -85,7 +91,7 @@ export const clientDataSlice = createSlice({
     }
 })
 
-export const { setAllJobPostedList,setScreenLoader,setJobPostedData,setApprovedLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList,setScreenLoader,setJobPostedData,setApprovedLoader,setEarnedBackData, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -162,16 +168,22 @@ export function timeReporting(payload, callback) {
 }
 
 
-export function getFolderData(payload, callback) {
+export function getFolderData(payload, role, callback) {
     return async (dispatch) => {
 
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
+            let result
+            console.log(role,"rii")
+            if(role=="developer"){
+                result = await developerInstance.get(generateApiUrl(payload,`developer/documents`))
+            }else{
+                result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
+            }
             if (result.status === 200) {
                 console.log(result,"redd")
                 // dispatch(setTimeReporting(result.data.data))
-                dispatch(setFolderData(result.data.data.files))
+                dispatch(setFolderData(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -367,12 +379,18 @@ export function callPreSignedUrlResponse(payload,file,callback) {
     };
 }
 
-export function createNewFolderAndFile(payload,callback) {
+export function createNewFolderAndFile(payload,role,callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`client/create-folder-or-file`,{...payload})
+            let result;
+            if(role==="client"){
+                 result = await clientInstance.post(`common/documents/create-folder-or-file`,{...payload})
+            }else{
+                result = await developerInstance.post(`common/documents/create-folder-or-file`,{...payload})
+            }
+           
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Created successfully", { position: "top-center" })
                 console.log(result,"rrr")
@@ -434,6 +452,23 @@ export function changeJobStatus(currentTb,payload,data,callback) {
             dispatch(setActionSuccessFully())
                 toast.success("Job status is Updated", { position: "top-center" })
                 return callback()
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function earnedBackOfDeveloper(paylaod) {
+    return async (dispatch) => {
+       dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`client/earned-back`)
+            console.log(result,"re")
+            dispatch(setEarnedBackData(result.data.data))
+                // toast.success("Job status is Updated", { position: "top-center" })
             
         } catch (error) {
             const message = error.message || "Something went wrong";

@@ -6,13 +6,13 @@ import { useDispatch } from "react-redux";
 const DeveloperDocuments = () => {
     const dispatch =useDispatch();
 
-    useEffect(()=>{
-        dispatch(getFolderData("0"))
-    },[dispatch])
+    // useEffect(()=>{
+    //     dispatch(getFolderData("0"))
+    // },[dispatch])
 
     return (
         <>
-         <RexettDocuments/>
+         <RexettDocuments currentRole="developer"/>
         </>
     );
 };

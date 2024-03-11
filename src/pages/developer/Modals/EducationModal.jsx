@@ -50,17 +50,19 @@ const EducationCV = ({ show, handleClose, data }) => {
 
     const handleCurrentlyWorkingChange = (e,index) => {
         if(e.target.checked){
-          const isChecked = watch(`educations[${index}].currently_attending`);
+          const end_year = watch(`educations[${index}].end_year`);
+          console.log(end_year,"end_year")
           const updatedDisabledEndDates = [...disbaleYear];
           updatedDisabledEndDates[index] = true;
           setDisbaleYear(updatedDisabledEndDates);
           setValue(`educations[${index}].end_year`, null);
         }else{
-          const isChecked = watch(`educations[${index}].currently_attending`);
+          const end_year = watch(`educations[${index}].end_year`);
+          console.log(end_year,"end_year33")
           const updatedDisabledEndDates = [...disbaleYear];
           updatedDisabledEndDates[index] = false;
           setDisbaleYear(updatedDisabledEndDates);
-          setValue(`educations[${index}].end_year`, "2024");
+          setValue(`educations[${index}].end_year`, end_year);
         }
         
     }
@@ -200,7 +202,7 @@ const EducationCV = ({ show, handleClose, data }) => {
 
                                     </Form.Group>
                                 </Col>
-                                <Col md="6">
+                                {!disbaleYear[index]?<Col md="6">
                                     <Form.Group className="mb-4">
                                         <Form.Label>End Year</Form.Label>
                                         <Form.Select
@@ -223,7 +225,7 @@ const EducationCV = ({ show, handleClose, data }) => {
                                         )}
 
                                     </Form.Group>
-                                </Col>
+                                </Col>:""}
                                 <Col md="12">
                                     <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                                         <Form.Check

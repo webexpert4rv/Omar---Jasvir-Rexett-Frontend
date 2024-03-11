@@ -4,7 +4,7 @@ import RexettButton from "./RexettButton";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {createNewFolderAndFile, getFolderData, renameFolderAndFile } from "../../redux/slices/clientDataSlice";
-const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData }) => {
+const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,currentRole }) => {
     const {smallLoader}=useSelector(state=>state.clientData);
     const dispatch=useDispatch()
     const {
@@ -29,35 +29,34 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData }
                 }
                 handleClose()
                 setValue("s3_path","")
-                dispatch(getFolderData(filterData))
+                dispatch(getFolderData(filterData,currentRole))
             }))
           }else{
             let folderData= {
                 "contract_id": currentFolderDetails?.contract_id,
                 "file_type": 0,
                 "parent_id": currentFolderDetails?.id,
-                "added_by": "client",
+                "added_by": currentRole=="client"? "client":"developer",
                 "type": 1,
                 "s3_path": values.s3_path,
               }
-            dispatch(createNewFolderAndFile(folderData,(parent_id)=>{
+            dispatch(createNewFolderAndFile(folderData,currentRole, (parent_id)=>{
                 let filterData={
                     parent_id:parent_id
                 }
                 handleClose()
                 setValue("s3_path","")
-                dispatch(getFolderData(filterData))
+                dispatch(getFolderData(filterData,currentRole))
             }))
           }
        
     }
 
     const isFolderAlreadyExists = (folderName) => {
-        return folderData.some(existingFolder => existingFolder.s3_path === folderName);
+        return folderData?.some(existingFolder => existingFolder.s3_path === folderName);
     };
 
     const validateFolderName = (folderName) => {
-        console.log(folderName,"kk")
         if (!folderName) {
             return "Please Enter Folder Name";
         } else if (isFolderAlreadyExists(folderName)) {

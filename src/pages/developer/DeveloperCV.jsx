@@ -161,7 +161,7 @@ const DeveloperCV = () => {
                         <Col lg={6} className="px-0 h-100">
                             <div className="about-info px-4">
                                 <h3 className="subheading-resume mb-4">About Me</h3>
-                                <h2 className="mainheading-resume">Art Changes Us</h2>
+                                {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
                                 <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25}/></div>
                                 <p className="resume-text">{developerCvData?.developer_detail?.bio}</p>
                             </div>

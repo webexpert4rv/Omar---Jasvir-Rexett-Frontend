@@ -43,6 +43,7 @@ export function loginUser(payload, callback) {
                 if(payload.role==="client"){
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
+                  
                       window.location.href="/dashboard"
                 }
 

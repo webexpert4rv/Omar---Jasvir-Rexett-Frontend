@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getDeveloperProfileDetails, updateDeveloperProfile } from "../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { createNewFolderAndFile, filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 const EditDeveloperProfile = () => {
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -41,12 +42,28 @@ const EditDeveloperProfile = () => {
     }, [developerProfileData])
 
     const onSubmit = (values) => {
-        let formData = new FormData()
+        let formData = new FormData();
+        let fileData = new FormData();
         for (const key in values) {
-            formData.append(key, values[key])
+            formData.append(key, values[key]);
         }
-        dispatch(updateDeveloperProfile(formData))
-    }
+        dispatch(updateDeveloperProfile(formData));
+    
+        fileData.append("file", values.file_name[0]);
+        dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+            let fileData = {
+                "s3_path": url,
+            };
+            dispatch(createNewFolderAndFile(fileData, (parent_id) => {
+                let data = {
+                    parent_id: parent_id
+                };
+
+            }));
+        }));
+    };
+    
+
 
     const validatePassword = (value) => {
         if (value === "") {
@@ -62,7 +79,6 @@ const EditDeveloperProfile = () => {
     };
 
     const handleFileChange = (event) => {
-        console.log(event,";;;")
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();

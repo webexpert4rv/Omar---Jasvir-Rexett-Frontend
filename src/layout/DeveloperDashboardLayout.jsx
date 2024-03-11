@@ -5,6 +5,8 @@ import { getToken } from '../helper/utlis';
 import { Navigate } from 'react-router-dom';
 const DeveloperDashboardLayout = ({ children }) => {
     const [sidebarwrapper , isSidebarWrapper] = useState(false);
+    localStorage.setItem("role", "developer");
+
     const handleSidebar = () => {
         isSidebarWrapper(!sidebarwrapper)
     }
