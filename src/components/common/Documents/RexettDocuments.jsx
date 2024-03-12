@@ -118,7 +118,6 @@ console.log(allFilterValue,"allFilterValue")
         setDelete({ isDelete: true, id: id, name: name })
     }
 
-
     const handleDelete = (e) => {
         e.preventDefault()
         dispatch(_deleteFileAndFolder(isDelete?.id, () => {
