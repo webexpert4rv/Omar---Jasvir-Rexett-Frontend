@@ -78,7 +78,7 @@ const JobListing = () => {
                     
                 </div>
             </section>
-           <RexettPagination/>
+           {/* <RexettPagination/> */}
             </>
             }
         </>

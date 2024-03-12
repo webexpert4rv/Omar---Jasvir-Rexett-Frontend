@@ -2,6 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import clientInstance from '../../services/client.instance';
 import { generateApiUrl } from '../../helper/utlis';
+import developerInstance from '../../services/developer.instance';
+import commanInstance from '../../services/commanInstance';
+import adminInstance from '../../services/admin.instance';
 
 const initialClientData = {
     screenLoader: false,
@@ -14,7 +17,8 @@ const initialClientData = {
     jobCategoryList:[],
     skillList:[],
     allJobPostedList:[],
-    jobPostedData:{}
+    jobPostedData:{},
+    earnedBack:{}
 }
 
 export const clientDataSlice = createSlice({
@@ -59,7 +63,7 @@ export const clientDataSlice = createSlice({
 
         },
         setFolderData:(state,action)=>{
-            state.folderData=action.payload;
+            state.folderData=action.payload.files;
             state.screenLoader = false;
         },
         setJobCategory:(state,action)=>{
@@ -76,6 +80,10 @@ export const clientDataSlice = createSlice({
             state.jobPostedData=action.payload
             state.screenLoader = false;
         },
+        setEarnedBackData:(state,action)=>{
+            state.earnedBack=action.payload
+            state.screenLoader = false;
+        },
         // setCurrentJobStatusChnage:(state,action)=>{
         //     console.log(state.allJobPostedList,"llll")
         //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
@@ -85,7 +93,7 @@ export const clientDataSlice = createSlice({
     }
 })
 
-export const { setAllJobPostedList,setScreenLoader,setJobPostedData,setApprovedLoader, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList,setScreenLoader,setJobPostedData,setApprovedLoader,setEarnedBackData, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -162,16 +170,24 @@ export function timeReporting(payload, callback) {
 }
 
 
-export function getFolderData(payload, callback) {
+export function getFolderData(payload, role, callback) {
     return async (dispatch) => {
 
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
+            let result
+            
+            if(role=="developer"){
+                result = await developerInstance.get(generateApiUrl(payload,`developer/documents`))
+            }else if(role=="client"){
+                result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
+            }else{
+                result = await adminInstance.get(generateApiUrl(payload,`admin/documents`))  
+            }
             if (result.status === 200) {
                 console.log(result,"redd")
                 // dispatch(setTimeReporting(result.data.data))
-                dispatch(setFolderData(result.data.data.files))
+                dispatch(setFolderData(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -271,15 +287,16 @@ export function getAllJobPostedList(payload, callback) {
     };
 }
  
-export function publishedPost(payload,status) {
+export function publishedPost(payload,status,callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        dispatch(setApprovedLoader())
         try {
-            let result = await clientInstance.put(`client/jobs/${payload}/unpublish`)
+            let result = await clientInstance.put(`client/jobs/${payload}/unpublish`,{...status})
             if (result.status === 200) {
                 dispatch(setActionSuccessFully())
-                toast.success("Job unpublished successfully", { position: "top-center" })
+                toast.success("Job status is changed", { position: "top-center" })
+                return callback()
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -330,10 +347,10 @@ export function filePreassignedUrlGenerate(payload,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`client//generate-presigned-url`,{...payload})
+            let result = await commanInstance.post(`common/upload-file`,payload)
                 dispatch(setActionSuccessFully())
                 // toast.success("Folder Created successfully", { position: "top-center" })
-                return callback(result?.data)
+                return callback(result?.data?.data.Location)
             
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -345,7 +362,6 @@ export function filePreassignedUrlGenerate(payload,callback) {
 
 export function callPreSignedUrlResponse(payload,file,callback) {
     return async (dispatch) => {
-         console.log(file,"ppp")
         dispatch(setSmallLoader())
         try {
             let result=await clientInstance.put(payload, file, {
@@ -371,9 +387,29 @@ export function createNewFolderAndFile(payload,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`client/create-folder-or-file`,{...payload})
+            let result;
+
+                result = await commanInstance.post(`common/documents/create-folder-or-file`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Created successfully", { position: "top-center" })
+                console.log(result,"rrr")
+                return callback(result?.data?.data?.parent_id)
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+export function renameFolderAndFile(payload,id,callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await commanInstance.put(`common/documents/${id}/rename-folder`,{...payload})
+                dispatch(setActionSuccessFully())
+                toast.success("Folder Updated successfully", { position: "top-center" })
                 console.log(result,"rrr")
                 return callback(result?.data?.data?.parent_id)
             
@@ -390,7 +426,7 @@ export function _deleteFileAndFolder(payload,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`client/delete-folder-or-file/${payload}`)
+            let result = await clientInstance.delete(`common/documents/delete-folder-or-file/${payload}`)
                 dispatch(setActionSuccessFully())
                 toast.success("File is Deleted successfully", { position: "top-center" })
                 return callback()
@@ -415,6 +451,23 @@ export function changeJobStatus(currentTb,payload,data,callback) {
             dispatch(setActionSuccessFully())
                 toast.success("Job status is Updated", { position: "top-center" })
                 return callback()
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+export function earnedBackOfDeveloper(paylaod) {
+    return async (dispatch) => {
+       dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`client/earned-back`)
+            console.log(result,"re")
+            dispatch(setEarnedBackData(result.data.data))
+                // toast.success("Job status is Updated", { position: "top-center" })
             
         } catch (error) {
             const message = error.message || "Something went wrong";

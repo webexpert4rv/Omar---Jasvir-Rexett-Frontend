@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { FaFolder } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { MdPictureAsPdf } from "react-icons/md";
+import RexettDocuments from "../../components/common/Documents/RexettDocuments";
 
 const AdminDocuments = () => {
     const [showFolderView, setShowFolderView] = useState(false);
@@ -13,7 +14,7 @@ const AdminDocuments = () => {
 
     return (
         <>
-            <section style={{ display: showFolderView ? 'none' : 'block' }}>
+            {/* <section style={{ display: showFolderView ? 'none' : 'block' }}>
                 <div>
                     <Form className="mb-4">
                         <Form.Control type="text" placeholder="Search" className="search-field"></Form.Control>
@@ -60,7 +61,6 @@ const AdminDocuments = () => {
                             <div className="folder-list" onDoubleClick={toggleFolderView}>
                                 <FaFolder /> Document 1
                             </div>
-                            {/* Add other folder-list items */}
                         </div>
                     </div>
                 </div>
@@ -78,9 +78,9 @@ const AdminDocuments = () => {
                             <MdPictureAsPdf/>
                         </div>
                     </div>
-                    {/* Add other pdf-list items */}
                 </div>
-            </section>
+            </section> */}
+            <RexettDocuments currentRole="admin"/>
         </>
     );
 };

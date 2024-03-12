@@ -13,6 +13,14 @@ export function getToken(tokenKey) {
     localStorage.setItem(key, token);
   }
   
+  export function getCurrentRole() {
+  
+   let role= localStorage.getItem("role");
+ let token= role==="client"? getToken("token") :role=="admin"?getToken("adminToken"): getToken("developerToken")
+
+   return token
+  }
+  
 
   export const generateApiUrl = (filters, endpointName) => {
     const queryParams = [];
@@ -25,3 +33,13 @@ export function getToken(tokenKey) {
     const apiUrl = `/${endpointName}?${queryParams.join("&")}`;
     return apiUrl;
   };
+
+  export const jobPostConfirmMessage=(key)=>{
+   let message={
+    "suggested":"Want to shortlist this developer?",
+    "shortlisted":"Want to interview this developer?",
+    "interviewing":"Want to hire this developer?",
+   }
+   return message[key]
+
+  }

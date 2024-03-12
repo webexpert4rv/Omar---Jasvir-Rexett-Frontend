@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import developerInstance from '../../services/developer.instance';
 
 const initialDeveloperData = {
+    btnLoader:false,
     screenLoader: false,
     smallLoader: false,
     developerCvData:{},
@@ -20,6 +21,9 @@ export const developerDataSlice = createSlice({
         setScreenLoader: (state, action) => {
             state.screenLoader = true;
         },
+        setBtnLoader: (state, action) => {
+            state.btnLoader = true;
+        },
         setSmallLoader: (state, action) => {
             state.smallLoader = true;
         },
@@ -34,10 +38,12 @@ export const developerDataSlice = createSlice({
 
         setSuccessActionData: (state, action) => {
             state.smallLoader = false;
+            state.btnLoader=false
         },
 
         setFailDeveloperData: (state, action) => {
             state.smallLoader = false;
+            state.btnLoader = false
         },
         setActionSuccessFully:(state, action) => {
             state.smallLoader = false;
@@ -53,7 +59,7 @@ export const developerDataSlice = createSlice({
     }
 })
 
-export const { setSmallLoader,setScreenLoader,setSuccessActionData, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader,setScreenLoader,setSuccessActionData,setBtnLoader, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
@@ -226,7 +232,7 @@ export function updateDeveloperCvEducation(payload,id, callback) {
     return async (dispatch) => {
          dispatch(setSmallLoader())
         try {
-            let result = await developerInstance.put(`developer/update-education/${id}`,[...payload])
+            let result = await developerInstance.put(`developer/update-education/${id}`,{...payload})
             if (result.status === 200) {
                 // toast.success("Education is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -293,3 +299,45 @@ export function updateDeveloperSkills(payload, callback) {
         }
     };
 }
+
+
+
+export function addDeveloperSocialMedia(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setBtnLoader())
+        try {
+            let result = await developerInstance.post(`developer/add-social-links`,[...payload])
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Media is updated successfully", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function updateDeveloperCvDetails(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setBtnLoader())
+        try {
+            let result = await developerInstance.put(`developer/update-cv-profile`,{...payload})
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Media is updated successfully", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+

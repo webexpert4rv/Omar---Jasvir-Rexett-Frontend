@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -6,8 +6,15 @@ import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import clientLogo from '../../assets/img/amazon.png'
+import { adminListAssignedDeveloper, adminListClients } from "../../redux/slices/adminDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 const AdminDashboard = () => {
+    const dispatch = useDispatch()
+    const { listOfClients, assignedDeveloper } = useSelector(state => state.adminData)
+    useEffect(() => {
+        dispatch(adminListClients())
+        dispatch(adminListAssignedDeveloper())
+    }, [])
     return (
         <>
             <h2 className="section-head mb-4">Overview</h2>
@@ -31,153 +38,65 @@ const AdminDashboard = () => {
                 <Col md={8}>
                     <div className="d-flex justify-content-between mb-4 align-items-center">
                         <h2 className="section-head-sub">List of clients</h2>
-                        <div>
+                        {/* <div>
                             <Link to={"/list-clients"} className="link-text-dark">See more</Link>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="developers-list">
-                        <div className="client-card">
-                            <div className="client-imgbx mb-3 text-center">
-                                <img src={clientLogo} className="client-img" />
-                            </div>
-                            <div className="text-center">
-                                <h3 className="user-name text-black">Amazon</h3>
-                            </div>
-                        </div>
-                        <div className="client-card">
-                            <div className="client-imgbx mb-3 text-center">
-                                <img src={clientLogo} className="client-img" />
-                            </div>
-                            <div className="text-center">
-                                <h3 className="user-name text-black">Amazon</h3>
-                            </div>
-                        </div>
-                        <div className="client-card">
-                            <div className="client-imgbx mb-3 text-center">
-                                <img src={clientLogo} className="client-img" />
-                            </div>
-                            <div className="text-center">
-                                <h3 className="user-name text-black">Amazon</h3>
-                            </div>
-                        </div>
-                        <div className="client-card">
-                            <div className="client-imgbx mb-3 text-center">
-                                <img src={clientLogo} className="client-img" />
-                            </div>
-                            <div className="text-center">
-                                <h3 className="user-name text-black">Amazon</h3>
-                            </div>
-                        </div>
+                        {
+                            listOfClients?.map((item, index) => {
+                                return (
+                                    <>
+                                        <div className="client-card">
+                                            <div className="client-imgbx mb-3 text-center">
+                                                <img src={item?.profile_picture} className="client-img" />
+                                            </div>
+                                            <div className="text-center">
+                                                <h3 className="user-name text-black">{item?.name}</h3>
+                                            </div>
+                                        </div>
+
+                                    </>
+                                )
+                            })
+                        }
+
                     </div>
                 </Col>
             </Row>
             <h2 className="section-head-sub mb-4">List of assigned developers</h2>
             <div className="developers-list">
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={userImg} className="user-img" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Affredo</h3>
-                        <p className="designation-user">Front End Designer</p>
-                        <p className="email-user">affredo@rexett.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                {
+                    assignedDeveloper.map((item, index) => {
+                        return (
+                            <>
+                                <div className="developer-card">
+                                    <div className="user-imgbx">
+                                        <img src={item?.profile_picture} className="user-img" />
+                                    </div>
+                                    <div className="text-center">
+                                        <h3 className="user-name">{item?.name}</h3>
+                                        <p className="designation-user">Front End Designer</p>
+                                        <p className="email-user">{item?.email}</p>
+                                        <ul className="social-icons">
+                                            <li>
+                                                <Link to={"#"}><FaGithub /></Link>
+                                            </li>
+                                            <li>
+                                                <Link to={"#"}><FaLinkedin /></Link>
+                                            </li>
+                                            <li>
+                                                <Link to={"#"}><MdEmail /></Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </>
+                        )
+                    })
+                }
+
+
             </div>
             <div className="text-center mt-3">
                 <Link to={"/developer-list"} className="link-text-dark">See All</Link>

@@ -3,15 +3,17 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addDeveloperCvEducation, deleteEducationCv, fetchDeveloperCv, getDegreeList, updateDeveloperCvEducation } from "../../../redux/slices/developerDataSlice";
 import RexettButton from "../../../components/atomic/RexettButton";
+import { useForm, useFieldArray } from "react-hook-form";
 import Select from 'react-select';
 
-const EducationCV = ({ show, handleClose,data }) => {
-    const dispatch =useDispatch();
-    const {degreeList}=useSelector(state=>state.developerData)
-    const [formErrors, setFormErrors] = useState([]);
-    const [educationFields, setEducationFields] = useState([
-        { university_name: '', degree_id: '', address: '', start_year: '', end_year: '', currently_attending: false }
-    ]);
+const EducationCV = ({ show, handleClose, data }) => {
+    const dispatch = useDispatch();
+    const [disbaleYear, setDisbaleYear] = useState([]);
+    const [renderModalData,setRenderModalData]=useState(data)
+    const { degreeList } = useSelector(state => state.developerData)
+    const { register, control, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm();
+    const { fields, append, remove } = useFieldArray({ control, name: "educations" });
+
     function generateYears() {
         const currentYear = new Date().getFullYear();
         const years = [];
@@ -20,96 +22,104 @@ const EducationCV = ({ show, handleClose,data }) => {
         }
         return years;
     }
-    
+
     // Example usage:
     const yearsArray = generateYears();
 
-    const handleAddMore = () => {
-        // const errors = validateForm();
-        // console.log(errors,"eee")
-        const newEducationField = {
-            university_name: '',
-            degree_id: '',
-            address: '',
-            start_year: '',
-            end_year: '',
-            currently_attending: false
-        };
-        setEducationFields([...educationFields, newEducationField]);
-    };
-    useEffect(()=>{
-    dispatch(getDegreeList())
-    },[])
-
-    useEffect(()=>{
-        if(data){
-            setEducationFields(data) 
+    useEffect(() => {
+        if (data) {
+            data.forEach((item) => {
+                append({
+                    new_id: item.id,
+                    university_name: item.university_name,
+                    degree_id: item.degree_id,
+                    address: item.address,
+                    start_year: item.start_year,
+                    end_year: item.end_year,
+                    currently_attending: item.currently_attending
+                });
+                setDisbaleYear(prevState => [...prevState, item.currently_attending]);
+            });
         }
+    }, [renderModalData]);
 
-    },[data])
+    console.log(degreeList, "degreeList")
+    useEffect(() => {
+        dispatch(getDegreeList())
+    }, [])
 
-    const handleDeleteField = (id) => {
-        dispatch(deleteEducationCv(id,()=>{
-            const updatedEducationFields = educationFields.filter(field => field.id !== id);
-            setEducationFields(updatedEducationFields);
-            
-            dispatch(fetchDeveloperCv())
-
-        }))
+    const handleCurrentlyWorkingChange = (e,index) => {
+        if(e.target.checked){
+          const end_year = watch(`educations[${index}].end_year`);
+          console.log(end_year,"end_year")
+          const updatedDisabledEndDates = [...disbaleYear];
+          updatedDisabledEndDates[index] = true;
+          setDisbaleYear(updatedDisabledEndDates);
+          setValue(`educations[${index}].end_year`, null);
+        }else{
+          const end_year = watch(`educations[${index}].end_year`);
+          console.log(end_year,"end_year33")
+          const updatedDisabledEndDates = [...disbaleYear];
+          updatedDisabledEndDates[index] = false;
+          setDisbaleYear(updatedDisabledEndDates);
+          setValue(`educations[${index}].end_year`, end_year);
+        }
         
-    };
+    }
 
-    const handleChange = (id, field, value) => {
-        const updatedEducationFields = educationFields.map(item => {
-            if (item.id === id) {
-                return { ...item, [field]: value };
-            }
-            return item;
-        });
-        setEducationFields(updatedEducationFields);
-    };
-
-    const handleSubmit=(e)=>{
-       e.preventDefault();
-    //    dispatch(addDeveloperCvEducation(educationFields,()=>{
-    //     handleClose()
-    //     dispatch(fetchDeveloperCv())
-    //    }))
-
-
-       let addEdu = educationFields.map((item) => {
-        if (!item.id) {
-            return { ...item }
+    const handleAddMore = async () => {
+        const isValid = await trigger();
+        if (isValid) {
+            append({
+                university_name: '',
+                degree_id: '',
+                address: '',
+                start_year: '',
+                end_year: '',
+                currently_attending: false
+            });
         }
-    }).filter((item) => item)
-    if (addEdu.length > 0) {
-        dispatch(addDeveloperCvEducation(addEdu,()=>{
-            dispatch(fetchDeveloperCv())
-            handleClose()
-        }))
-    } else {
-        educationFields.forEach((item) => {
-            if (item.id) {
-                dispatch(updateDeveloperCvEducation(item, item.id, () => {
-                    dispatch(fetchDeveloperCv())
-                    handleClose()
-                }))
+    };
 
+   
+  const deleteDeveloperExperience = (id,index) => {     
+    remove(index)
+    if(id){
+      dispatch(deleteEducationCv(id, () => {
+        dispatch(fetchDeveloperCv())
+    }))
+    }
+}
+  
+
+
+    const onSubmit = (value) => {
+        let {educations}=value
+        let addEdu = educations?.map((item) => {
+            if (!item.new_id) {
+                return { ...item }
             }
-        })
-    }
-    }
-
-    // const validateForm = () => {
-    //     const errors = [];
-    //     educationFields.forEach(field => {
-    //         if (!field.university || !field.degree || !field.address || !field.start_year || !field.end_year) {
-    //             errors.push("All fields are required.");
-    //         }
-    //     });
-    //     return errors;
-    // };
-
+        }).filter((item) => item)
+        console.log(addEdu,"addedu")
+        if (addEdu.length > 0) {
+            dispatch(addDeveloperCvEducation(addEdu,()=>{
+                dispatch(fetchDeveloperCv())
+                handleClose()
+            }))
+        } 
+    
+        educations?.forEach((item) => {
+            if (item.new_id) {
+                dispatch(updateDeveloperCvEducation(item, item.new_id, () => {
+                    dispatch(fetchDeveloperCv())
+                handleClose()
+                    }))
+    
+                }
+            })
+        
+      };
+    console.log(errors, "errors")
     return (
         <Modal show={show} onHide={handleClose} centered scrollable animation size="lg">
             <Modal.Header closeButton>
@@ -117,39 +127,37 @@ const EducationCV = ({ show, handleClose,data }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <form onSubmit={handleSubmit}>
-                    {educationFields.map(({ id, university_name, Degree, address, start_year, end_year, currently_attending }) => (
-                        <div className="experience-container mb-3" key={id}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    {fields.map((item, index) => (
+                        <div className="experience-container mb-3" key={item.id}>
                             <Row>
                                 <Col md="12">
                                     <Form.Group className="mb-4">
-                                        <Form.Label>University Name </Form.Label>
+                                        <Form.Label>University Name</Form.Label>
                                         <Form.Control
                                             type="text"
                                             className="cv-field"
-                                            placeholder="Enter University  Name"
-                                            value={university_name}
-                                            onChange={(e) => handleChange(id, 'university_name', e.target.value)}
+                                            placeholder="Enter University Name"
+                                            {...register(`educations.${index}.university_name`, { required: true })}
+                                            defaultValue={item.university_name}
                                         />
+                                        {errors && errors.educations && errors.educations[index] && errors.educations[index].university_name && (
+                                            <p className="error-message">University name is required</p>
+                                        )}
                                     </Form.Group>
                                 </Col>
                                 <Col md="6">
                                     <Form.Group className="mb-4">
                                         <Form.Label>Degree Name</Form.Label>
-                                        {/* <Form.Control
-                                            type="text"
-                                            className="cv-field"
-                                            placeholder="Enter Degree Name"
-                                            value={Degree?.title}
-                                            onChange={(e) => handleChange(id, 'degree', e.target.value)}
-                                        /> */}
-                                             <Select
-                                    options={degreeList}
-                                    onChange={(val) => handleChange(id, 'degree_id', val.value)}
-                                   
-                                    
-                                />
+                                        <Select
+                                            options={degreeList}
+                                            onChange={(val) => setValue(`educations.${index}.degree_id`, val ? val.value : '')}
+                                            defaultValue={degreeList.find(option => option.value === item.degree_id)}
+                                          
+                                        />
+                                        
                                     </Form.Group>
+
                                 </Col>
                                 <Col md="6">
                                     <Form.Group className="mb-4">
@@ -158,84 +166,99 @@ const EducationCV = ({ show, handleClose,data }) => {
                                             type="text"
                                             className="cv-field"
                                             placeholder="Enter Address"
-                                            value={address}
-                                            onChange={(e) => handleChange(id, 'address', e.target.value)}
+                                            {...register(`educations.${index}.address`, { required: true })}
+                                            defaultValue={item.address}
                                         />
+                                        {errors && errors.educations && errors.educations[index] && errors.educations[index].address && (
+                                            <p className="error-message">Address is required</p>
+                                        )}
                                     </Form.Group>
                                 </Col>
                                 <Col md="6">
                                     <Form.Group className="mb-4">
                                         <Form.Label>Start Year</Form.Label>
-                                        {/* <Form.Control
-                                            type="date"
-                                            className="cv-field"
-                                            placeholder="Enter Start Year"
-                                            value={start_year}
-                                            onChange={(e) => handleChange(id, 'start_year', e.target.value)}
-                                        /> */}
-                                        <Form.Select   onChange={(e) => handleChange(id, 'start_year', e.target.value)}>
-                                        <option disabled selected>Please select year</option>
-                                         {yearsArray?.map((item)=>{
-                                            return(
-                                                <>
-                                                <option>{item}</option>
-                                                </>
-                                            )
-                                        })}
-                                         </Form.Select>
+                                        <Form.Select
+                                            {...register(`educations.${index}.start_year`, {
+                                                required: 'Start Year is required',
+                                                validate: {
+                                                    lessThanEndYear: value => {
+                                                        const endYear = watch(`educations.${index}.end_year`);
+                                                        if (!endYear || parseInt(value) < parseInt(endYear)) {
+                                                            return true;
+                                                        }
+                                                        return 'Start Year must be less than End Year';
+                                                    }
+                                                }
+                                            })}
+                                        >
+                                            <option disabled selected>Please select year</option>
+                                            {yearsArray?.map((item) => (
+                                                <option key={item} value={item}>{item}</option>
+                                            ))}
+                                        </Form.Select>
+                                        {errors && errors.educations && errors.educations[index] && errors.educations[index].start_year && (
+                                            <p className="error-message">{errors.educations[index].start_year.message}</p>
+                                        )}
+
                                     </Form.Group>
                                 </Col>
-                                <Col md="6">
+                                {!disbaleYear[index]?<Col md="6">
                                     <Form.Group className="mb-4">
                                         <Form.Label>End Year</Form.Label>
-                                        {/* <Form.Control
-                                            type="date"
-                                            className="cv-field"
-                                            placeholder="Enter End Year"
-                                            value={end_year}
-                                            onChange={(e) => handleChange(id, 'end_year', e.target.value)}
-                                            max={new Date().toISOString().split("T")[0]}
-                                        /> */}
-                                         <Form.Select  onChange={(e) => handleChange(id, 'end_year', e.target.value)}>
-                                         <option disabled selected>Please select year</option>
-                                         {yearsArray?.map((item)=>{
-                                            return(
-                                                <>
-                                                <option>{item}</option>
-                                                </>
-                                            )
-                                        })}
-                                         </Form.Select>
+                                        <Form.Select
+                                            {...register(`educations.${index}.end_year`, {
+                                                required: {
+                                                    value: disbaleYear[index]?false:true,
+                                                    message: "End Date is required",
+                                                  },
+                                             
+                                            })}
+                                            disabled={disbaleYear[index]}  
+                                        >
+                                            <option disabled selected>Please select year</option>
+                                            {yearsArray?.map((item) => (
+                                                <option key={item} value={item}>{item}</option>
+                                            ))}
+                                        </Form.Select>
+                                        {errors && errors.educations && errors.educations[index] && errors.educations[index].end_year && (
+                                            <p className="error-message">{errors.educations[index].end_year.message}</p>
+                                        )}
+
                                     </Form.Group>
-                                </Col>
+                                </Col>:""}
                                 <Col md="12">
                                     <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                                         <Form.Check
                                             type="checkbox"
                                             className="cv-field"
-                                            checked={currently_attending}
-                                            onChange={(e) => handleChange(id, 'currently_attending', e.target.checked)}
+                                            id={`currently_attending_${index}`}
+                                            {...register(`educations.${index}.currently_attending`)}
+                                            defaultChecked={item.currently_attending}
+                                            onChange={(e) => handleCurrentlyWorkingChange(e,index)}
                                         />
-                                        <Form.Label className="mb-0">Currently Attending</Form.Label>
+                                        <Form.Label htmlFor={`currently_attending_${index}`} className="mb-0">Currently Attending</Form.Label>
                                     </Form.Group>
                                 </Col>
-                                <Col md="12" className="d-flex justify-content-end">
-                                    <Button variant="danger" onClick={() => handleDeleteField(id)}>Delete</Button>
-                                </Col>
+                                {index !== 0 && (
+                    <Col md="12" className="d-flex justify-content-end">
+                        <Button variant="danger" onClick={() =>deleteDeveloperExperience(item.new_id,index) }>Delete</Button>
+                    </Col>
+                )}
                             </Row>
                         </div>
                     ))}
                     <div className="text-end mb-3">
-                        <Button className="main-btn py-2 px-3" onClick={handleAddMore}>Add More</Button>
+                        <Button className="main-btn
+                        py-2 px-3" onClick={handleAddMore}>Add More</Button>
                     </div>
                     <div className="text-center">
-                        <RexettButton 
-                                        type="submit" 
-                                        text="Submit"
-                                        className="main-btn px-4"
-                                        variant="transparent"
-                                        isLoading={false}
-                                        />
+                        <RexettButton
+                            type="submit"
+                            text="Submit"
+                            className="main-btn px-4"
+                            variant="transparent"
+                            isLoading={false}
+                        />
                     </div>
                 </form>
             </Modal.Body>

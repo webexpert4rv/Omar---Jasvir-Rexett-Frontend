@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
@@ -14,6 +14,16 @@ const AboutCV = ({ show, handleClose,data }) => {
         handleSubmit,
         formState: { errors, isDirty, isValid, isSubmitting },
       } = useForm({});
+      const [charCount, setCharCount] = useState(0);
+  const maxChars = 1000;
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 1000) {
+      setCharCount(value.length);
+      setValue("bio", value.slice(0, maxChars)); 
+    } 
+  };
 
       useEffect(()=>{
         setValue("bio",data)
@@ -42,11 +52,17 @@ const AboutCV = ({ show, handleClose,data }) => {
                               value: true,
                               message: "Please Enter Bio Data",
                             },
+                            validate: (value) =>
+                            value.length <= maxChars || "Maximum character limit reached",
+                         
                           })}
+                        
+                          onChange={handleChange}
                         ></Form.Control>
                             <p className="error-message">
                                 {errors.bio?.message}
                             </p>
+                            <p>{maxChars - charCount} characters remaining</p>
                     </Form.Group>
                     <div className="text-center">
                         <RexettButton

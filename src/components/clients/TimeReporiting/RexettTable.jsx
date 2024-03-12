@@ -38,9 +38,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                                 )
                             })
                         }
-                        {role==="developer"? <th className="time-table-head">
+                         <th className="time-table-head">
                             Total Hours
-                        </th>:""}
+                        </th>
                         <th className="time-table-head">
                             Contract
                         </th>
@@ -83,6 +83,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
 
                                                 })
                                             }
+                                            <td className='time-table-data'>200 hrs</td>
                                             <td className="time-table-data">{item?.contractDetails?.employment_type}</td>
                                             <td className="time-table-data">
                                                 <span>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>

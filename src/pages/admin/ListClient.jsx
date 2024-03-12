@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -7,7 +7,14 @@ import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import clientLogo from '../../assets/img/facebook.png'
+import { adminListClients } from "../../redux/slices/adminDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 const ListClient = () => {
+    const dispatch = useDispatch()
+    const { listOfClients, assignedDeveloper } = useSelector(state => state.adminData)
+    useEffect(() => {
+        dispatch(adminListClients())
+    }, [])
     return (
         <>
             <h2 className="section-head mb-4">Overview</h2>
@@ -29,13 +36,15 @@ const ListClient = () => {
             </div>
             <h2 className="section-head-sub mb-4">List of clients who hire developers from Rexett</h2>
             <div className="developers-list">
-                <div className="developer-card">
+                {listOfClients?.map((item,index)=>{
+                    return(<>
+                    <div className="developer-card">
                     <div className="user-imgbx">
-                        <img src={clientLogo} className="user-img client-logo" />
+                        <img src={item.profile_picture} className="user-img client-logo" />
                     </div>
                     <div className="text-center">
-                        <h3 className="user-name">Facebook</h3>
-                        <p className="email-user">claudia@facebook.com</p>
+                        <h3 className="user-name">{item.name}</h3>
+                        <p className="email-user">{item?.email}</p>
                         <ul className="social-icons">
                             <li>
                                 <Link to={"#"}><FaGithub /></Link>
@@ -49,86 +58,8 @@ const ListClient = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={clientLogo} className="user-img client-logo" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Facebook</h3>
-                        <p className="email-user">claudia@facebook.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={clientLogo} className="user-img client-logo" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Facebook</h3>
-                        <p className="email-user">claudia@facebook.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={clientLogo} className="user-img client-logo" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Facebook</h3>
-                        <p className="email-user">claudia@facebook.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={clientLogo} className="user-img client-logo" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">Facebook</h3>
-                        <p className="email-user">claudia@facebook.com</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                    </>)
+                })}
             </div>
             <div className="text-center mt-3">
                 <Link to={"#"} className="link-text-dark">See All</Link>

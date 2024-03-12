@@ -1,32 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { useFieldArray, useForm } from "react-hook-form";
+import { addDeveloperSocialMedia, deleteDeveloperSocialMedia, fetchDeveloperCv, updateDeveloperSocialMedia } from "../../../redux/slices/developerDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import RexettButton from "../../../components/atomic/RexettButton";
 
-const SocialMediaModal = ({ show, handleClose }) => {
-    const [socialMediaRows, setSocialMediaRows] = useState([
-        { id: 1, socialMedia: '', url: '' } // Initial row
-    ]);
+const socialMediaOptions = [
+    { value: "facebook", label: "Facebook" },
+    { value: "linkedin", label: "Linkedin" },
+    { value: "twitter", label: "Twitter" },
+    { value: "github", label: "Github" },
+    { value: "instagram", label: "Instagram" },
+    { value: "gitlab", label: "Gitlab" },
+    { value: "pinterest", label: "Pinterest" }
+  ];
 
-    const handleAddMore = () => {
-        const newRow = { id: socialMediaRows.length + 1, socialMedia: '', url: '' };
-        setSocialMediaRows([...socialMediaRows, newRow]);
-    };
+const SocialMediaModal = ({ show, handleClose,data }) => {
+  const dispatch=useDispatch()
+  const [renderModalData,setRenderModalData]=useState(data)
+  const {smallLoader,btnLoader}=useSelector(state=>state.developerData)
+    const {
+        register,
+        control,
+        setValue,
+        watch,
+        handleSubmit,
+        reset,
+        trigger,
+        // setError,
+        formState: { errors },
+      } = useForm();
+      const { fields, append, remove, replace } = useFieldArray({
+        control,
+        name: "test",
+      });
 
-    const handleDeleteRow = (id) => {
-        const updatedRows = socialMediaRows.filter(row => row.id !== id);
-        setSocialMediaRows(updatedRows);
-    };
 
-    const handleSocialMediaChange = (index, value) => {
-        const updatedRows = [...socialMediaRows];
-        updatedRows[index].socialMedia = value;
-        setSocialMediaRows(updatedRows);
-    };
+    useEffect(() => {
+        if (data) {
+          data?.forEach((item, index) => {
+            append({
+             new_id:item.id, 
+             url:item.url,
+             name:item.name,
+             slug:item.slug
+            });
+          });
+        }
+      }, [renderModalData]);
 
-    const handleUrlChange = (index, value) => {
-        const updatedRows = [...socialMediaRows];
-        updatedRows[index].url = value;
-        setSocialMediaRows(updatedRows);
-    };
+  
+
+
+    const onSubmit = (value) => {
+      let {test}=value
+
+          dispatch(addDeveloperSocialMedia(test,()=>{
+              dispatch(fetchDeveloperCv())
+              handleClose()
+          }))
+      } 
+
+      
+    
 
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
@@ -35,38 +71,48 @@ const SocialMediaModal = ({ show, handleClose }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <Form>
-                    {socialMediaRows.map((row, index) => (
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                    
+                    {fields?.map((row, index) => (
                         <div className="experience-container" key={row.id}>
                             <Row>
                                 <Col md="12">
                                     <Form.Group className="mb-4">
-                                        <div className="d-flex justify-content-between align-items-center">
-                                            <Form.Label>Add Social Media</Form.Label>
-                                            {index > 0 && <Button type="button" variant="danger" className="mb-3" onClick={() => handleDeleteRow(row.id)}>Delete</Button>}
-                                        </div>
-                                        <Form.Select className="mb-2" onChange={(e) => handleSocialMediaChange(index, e.target.value)}>
-                                            <option value="facebook">Facebook</option>
-                                            <option value="linkedin">Linkedin</option>
-                                            <option value="twitter">Twitter</option>
-                                            <option value="github">Github</option>
-                                            <option value="instagram">Instagram</option>
-                                            <option value="gitlab">Gitlab</option>
-                                            <option value="pinterest">Pinterest</option>
-                                        </Form.Select>
-                                        <Form.Control type="text" className="cv-field" placeholder="Enter Url" onChange={(e) => handleUrlChange(index, e.target.value)}></Form.Control>
+                                       
+                                        <Form.Label>{row.slug}</Form.Label>
+                                        <Form.Control type="text" className="cv-field" placeholder="Enter Url" 
+                                         {...register(`test[${index}].url`, {
+                                          required: {
+                                            value: true,
+                                            message: "Url can't blank",
+                                          },
+                                          pattern: {
+                                            value: /^(https?:\/\/)?(www\.)?(facebook|twitter|instagram|linkedin|github)\.com\/\S*$/,
+                                            message: "Please enter a valid social media URL",
+                                        }
+                                          })}
+                                        ></Form.Control>
+                                           {errors && errors.test && errors.test[index] && errors.test[index].url && (
+                                            <p className="error-message">{errors.test[index].url.message}</p>
+                                        )}
                                     </Form.Group>
                                 </Col>
                             </Row>
                         </div>
                     ))}
-                    <div className="text-end mb-3">
-                        <Button className="main-btn py-2 px-3" onClick={handleAddMore}>Add More</Button>
-                    </div>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4">Submit</Button>
+                        {/* <Button variant="transparent" className="main-btn px-4" type="submit">Submit</Button> */}
+
+                        <RexettButton
+                                type="submit"
+                                text="Update Profile"
+                                className="main-btn px-4"
+                                variant="transparent"
+                                isLoading={btnLoader}
+                            />
                     </div>
-                </Form>
+
+                </form>
             </Modal.Body>
         </Modal>
     )

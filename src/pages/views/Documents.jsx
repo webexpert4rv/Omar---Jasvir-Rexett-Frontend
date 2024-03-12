@@ -13,16 +13,9 @@ import { getFolderData } from "../../redux/slices/clientDataSlice";
 import RexettDocuments from "../../components/common/Documents/RexettDocuments";
 
 const Documents = () => {
-    const dispatch =useDispatch();
-
-    useEffect(()=>{
-        dispatch(getFolderData("0"))
-    },[dispatch])
-
-
     return (
         <>
-            <RexettDocuments/>
+            <RexettDocuments currentRole="client"/>
         </>
     );
 };
