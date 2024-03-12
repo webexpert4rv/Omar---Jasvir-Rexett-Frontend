@@ -23,7 +23,7 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
             setSelectedPeriod(getCurrentPeriodFromAPi(timeReportingData[0]?.timeReports))
         }
     }, [timeReportingData])
-    
+
 
     const handlePeriodChange = (e) => {
         setSelectedPeriod(e.target.value);
@@ -106,18 +106,7 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
                 <Form className="mb-4">
                     <div className="d-flex gap-3 justify-content-between">
                         <div className="d-flex gap-3">
-                            {/* <div>
-                                <Form.Label className="common-label">From</Form.Label>
-                                <Form.Control type="date" className="filter-field shadow-none" value={selectedFilter?.startDate} name="startDate" onChange={handleDate}
-                                    max={new Date().toISOString().split("T")[0]}
-                                ></Form.Control>
-                            </div>
-                            <div>
-                                <Form.Label className="common-label">To</Form.Label>
-                                <Form.Control type="date" className="filter-field shadow-none" value={selectedFilter?.endDate} name="endDate" onChange={handleDate}
-                                    max={new Date().toISOString().split("T")[0]}
-                                ></Form.Control>
-                            </div> */}
+                           
                             <div>
                                 <Form.Label className="common-label">Select Year</Form.Label>
                                 <Form.Select className="shadow-none">
