@@ -129,8 +129,8 @@ const RexettDocuments = () => {
                     <div>
                         <h3 className="section-head-sub">Filter By</h3>
                         <Form className="mb-4">
-                            <div className="d-flex filter-section gap-3">
-                                <div className="flex-none">
+                            <div className="d-md-flex filter-section gap-3">
+                                <div className="flex-none mb-md-0 mb-3">
                                     <Form.Label className="common-label">Select Category</Form.Label>
                                     <Form.Select className="filter-select shadow-none"  onChange={(e)=>handleFilterData(e,"category")}>
                                         <option value="0">All</option>
@@ -138,7 +138,7 @@ const RexettDocuments = () => {
                                         <option value="2">Invoices</option>
                                     </Form.Select>
                                 </div>
-                                <div className="flex-none">
+                                <div className="flex-none mb-md-0 mb-3">
                                     <Form.Label className="common-label">Select File Type</Form.Label>
                                     <Form.Select className="filter-select shadow-none" onChange={(e)=>handleFilterData(e,"file_type")}>
                                         <option value="0">All</option>
@@ -148,13 +148,13 @@ const RexettDocuments = () => {
                                         <option value="others">Others</option>
                                     </Form.Select>
                                 </div>
-                                <div>
+                                {/* <div>
                                     <Form.Label className="common-label">Filter by Date</Form.Label>
                                     <Form.Control type="date" className="filter-field shadow-none"  onChange={(e)=>handleFilterData(e,"date")}></Form.Control>
-                                </div>
+                                </div> */}
                             </div>
                         </Form>
-                        <div className="d-flex align-items-center gap-3 mb-4">
+                        <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
                             <div>
                                 <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-5 cursor-pointer">+ Create Folder</Form.Label>
                             </div>
@@ -182,7 +182,9 @@ const RexettDocuments = () => {
                                                 <div className="folder-list" onDoubleClick={() => toggleFolderView(item)}>
                                                     <div className="position-relative">
                                                         <FaFolder className="folder-icon" /><span>{item?.s3_path}</span>
-                                                        <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id)}><FaTrashCan /></button>
+                                                        <div className="doc-action">
+                                                            <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id)}><FaTrashCan /></button>
+                                                        </div>
 
                                                     </div>
                                                 </div>

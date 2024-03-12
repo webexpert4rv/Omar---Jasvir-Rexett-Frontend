@@ -40,8 +40,8 @@ const EarnedBack = () => {
             <section>
                 <div>
                     <Form className="mb-4">
-                        <div className="d-flex gap-3 justify-content-between">
-                            <div className="d-flex gap-3">
+                        <div className="d-flex flex-wrap gap-3 justify-content-between">
+                            <div className="d-flex flex-wrap gap-3">
                                 <div>
                                     <Form.Label className="common-label">From</Form.Label>
                                     <Form.Control type="date" className="filter-field shadow-none"></Form.Control>
@@ -61,7 +61,7 @@ const EarnedBack = () => {
                     </Form>
                 </div>
                 <p className="mb-3">To hire a rexett developers for more than 500 hours Rexett will return you 5% of your investment</p>
-                <div className="table-responsiv mb-3">
+                <div className="table-responsive mb-3">
                     <table className="table time-table table-bordered">
                         <thead>
                             <th className="time-table-head">
@@ -159,8 +159,8 @@ const EarnedBack = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                    <p className="showing-result">Showing 1 - 10 results</p>
+                <div className="d-md-flex justify-content-between align-items-center mb-4">
+                    <p className="showing-result mb-md-0 mb-2">Showing 1 - 10 results</p>
                     <Pagination className="custom-pagination">
                         <Pagination.Prev className="custom-pagination-item custom-pagination-arrow" />
                         <Pagination.Item className="custom-pagination-item" active>{1}</Pagination.Item>
