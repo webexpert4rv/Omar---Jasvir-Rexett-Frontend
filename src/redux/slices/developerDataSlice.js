@@ -321,3 +321,23 @@ export function addDeveloperSocialMedia(payload, callback) {
     };
 }
 
+export function updateDeveloperCvDetails(payload, callback) {
+    return async (dispatch) => {
+         dispatch(setBtnLoader())
+        try {
+            let result = await developerInstance.put(`developer/update-cv-profile`,{...payload})
+            if (result.status === 200) {
+                console.log(result,"redd")
+                toast.success("Media is updated successfully", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+

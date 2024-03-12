@@ -857,6 +857,7 @@ ul
 {
     padding-bottom: 30px;
     border-bottom: 1px solid var(--grey);
+    position: relative;
 }
 .connect-social-media
 {

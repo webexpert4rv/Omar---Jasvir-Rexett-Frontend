@@ -18,11 +18,14 @@ import { FaPinterest } from "react-icons/fa6";
 import { MdEditNote } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
+import DeveloperDetails from "./Modals/DeveloperDetails";
 const DeveloperCV = () => {
     const dispatch =useDispatch()
-    const {developerCvData}=useSelector(state=>state.developerData)
+    const {developerCvData,smallLoader}=useSelector(state=>state.developerData)
     const [selectedTemplate,setSelectedTemplate]=useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
+    const [developerDetails, setDeveloperDetails] = useState(false);
+   
     const handleShowModal = () => {
         setShowModal(true);
     };
@@ -65,6 +68,13 @@ const DeveloperCV = () => {
     const handleCloseSocialMediaModal = () => {
         setShowSocialMediaModal(false);
     };
+
+    const handleDeveloperDetails=()=>{
+        setDeveloperDetails(true)
+    }
+    const handleClosDeveloperDetails=()=>{
+        setDeveloperDetails(false)
+    }
 
     useEffect(()=>{
         dispatch(fetchDeveloperCv())
@@ -121,7 +131,7 @@ const DeveloperCV = () => {
                                 </div>
                                 <h3 className="resume-name">{developerCvData?.name}</h3>
                                 <p className="resume-designation">{developerCvData?.developer_detail?.professional_title}</p>
-                                <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25}/></div>
+                                <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25}/></div>
                             </div>
                             <div className="connect-social-media">
                                 <h3 className="subheading-resume text-center mb-3">Skills</h3>
@@ -206,6 +216,7 @@ const DeveloperCV = () => {
             {showEducationModal?<EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations} />:""}
            {showSkillsModal? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} />:""}
             {showSocialMediaModal?<SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={developerCvData?.social_links}/>:""}
+            <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={developerCvData?.developer_detail?.professional_title} name={developerCvData?.name} profile={developerCvData?.profile_picture} smallLoader={smallLoader} />
         </>
     )
 }

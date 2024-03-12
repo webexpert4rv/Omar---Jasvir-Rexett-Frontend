@@ -34,8 +34,7 @@ const EditProfile = () => {
         setValue("city",clientProfileDetails?.data?.city)
         setValue("country",clientProfileDetails?.data?.country)
         setValue("passcode",clientProfileDetails?.data?.passcode)
-        
-        
+         
     },[clientProfileDetails])
 
     const onSubmit = (values) => {
@@ -57,7 +56,7 @@ const EditProfile = () => {
                 return "Password must contain at least a symbol, upper and lower case letters and a number";
             }
         }
-        return true; // Password meets the criteria
+        return true;
     };
     return (
         <>

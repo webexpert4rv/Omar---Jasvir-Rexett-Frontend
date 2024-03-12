@@ -4,6 +4,7 @@ import clientInstance from '../../services/client.instance';
 import { generateApiUrl } from '../../helper/utlis';
 import developerInstance from '../../services/developer.instance';
 import commanInstance from '../../services/commanInstance';
+import adminInstance from '../../services/admin.instance';
 
 const initialClientData = {
     screenLoader: false,
@@ -175,11 +176,13 @@ export function getFolderData(payload, role, callback) {
         dispatch(setScreenLoader())
         try {
             let result
-            console.log(role,"rii")
+            
             if(role=="developer"){
                 result = await developerInstance.get(generateApiUrl(payload,`developer/documents`))
-            }else{
+            }else if(role=="client"){
                 result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
+            }else{
+                result = await adminInstance.get(generateApiUrl(payload,`admin/documents`))  
             }
             if (result.status === 200) {
                 console.log(result,"redd")

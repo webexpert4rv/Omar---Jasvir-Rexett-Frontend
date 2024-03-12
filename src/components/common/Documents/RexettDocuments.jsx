@@ -201,10 +201,7 @@ console.log(folderData,"folderData")
                 <div>
 
                     <div>
-                        <Form className="mb-4">
-                            <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} className="search-field"></Form.Control>
-                        </Form>
-                        <h3 className="section-head-sub">Filter By</h3>
+                        <h3 className="section-head-sub">Filter</h3>
                         <Form className="mb-4">
                             <div className="d-flex filter-section gap-3 align-items-end">
                                 <div className="flex-none">
@@ -225,6 +222,12 @@ console.log(folderData,"folderData")
                                         <option value="other">Others</option>
                                     </Form.Select>
                                 </div>
+                                <div>
+                                <Form.Label className="common-label">Search</Form.Label>
+                            <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} className="search-field"></Form.Control>
+                                </div>
+                     
+                        
                                 <div>
                                     <Button variant="transparent" className="main-btn px-3 py-2" onClick={clearAllFilter}>Clear</Button>
                                 </div>
