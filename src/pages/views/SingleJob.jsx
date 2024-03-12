@@ -11,8 +11,11 @@ import ConfirmationModal from "./Modals/ConfirmationModal";
 import { useDispatch, useSelector } from "react-redux";
 import { changeJobStatus, getAllJobPostedList, getJobCategoryList, publishedPost, singleJobPostData } from "../../redux/slices/clientDataSlice";
 import JobCard from "../../components/common/SingleJob/JobCard";
+import RexettSpinner from "../../components/atomic/RexettSpinner";
+import { jobPostConfirmMessage } from "../../helper/utlis";
 const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
+    const [currentTabsStatus,setCurrnetTabsStatus]=useState(null)
     const [currentTab,setCurrentTab]=useState("application")
     const [statusModal,setStatusModal]=useState({
         isTrue:false,
@@ -22,11 +25,11 @@ const SingleJob = () => {
     const dispatch =useDispatch()
     const location=useLocation();
     let id=location.pathname.split("/")[2]
-    const {allJobPostedList,jobCategoryList,jobPostedData}=useSelector(state=>state.clientData)
+    const {allJobPostedList,jobCategoryList,jobPostedData,approvedLoader,smallLoader}=useSelector(state=>state.clientData)
    
     useEffect(()=>{
     if(id){
-        dispatch(singleJobPostData(id))
+        dispatch(singleJobPostData(id,()=>{}))
     }
     },[])
 
@@ -44,19 +47,42 @@ const SingleJob = () => {
         return skillsArray
     }
     const handleUnpublished=(id,status)=>{
-        dispatch(publishedPost(id,status))
+        let data={
+            status:status
+        }
+        dispatch(publishedPost(id,data,()=>{
+            dispatch(singleJobPostData(id,()=>{})) 
+        }
+        ))
 
     }
     const handleSelect=(key)=>{
         setCurrentTab(key)
         setSelectedTabsData(jobPostedData[key])
+        if(key=="suggested"){
+            setCurrnetTabsStatus("shortlisted")
+        }
+        if(key=="shortlisted"){
+            setCurrnetTabsStatus("interviewing") 
+        }
+        if(key=="interviewing"){
+            setCurrnetTabsStatus("hired") 
+        }
+       
     }
     const handleJobStatusAction= (e,data) => {
         e.preventDefault()
-            dispatch(changeJobStatus(statusModal?.id,data, () => {    
-                setStatusModal({})
+            dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
+                dispatch(singleJobPostData(id,()=>{
+                    setStatusModal({})
+                    let prevData={...jobPostedData}
+                   let d= prevData[currentTab]?.filter(item=>item.id!==statusModal?.id)
+                   prevData[currentTab]=d
+                   setSelectedTabsData(prevData[currentTab])
+                }))
             }))
     }
+    
 
     const handleJobStatusModal=(id,status)=>{
         setStatusModal({
@@ -64,7 +90,7 @@ const SingleJob = () => {
             id:id
         })
     }
-    console.log(statusModal,"statusModal")
+
     return (
         <>
             <Tabs
@@ -74,15 +100,17 @@ const SingleJob = () => {
                 fill
                 onSelect={handleSelect}
             >
-                <Tab eventKey="application" title="Application">
+                <Tab eventKey="application" title="Job Details">
                     <section className="single-job-section">
                         <div className="single-job-card job-information-wrapper">
                             <div className="d-flex justify-content-between align-items-center">
                                 <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
                                 <div className="d-flex gap-3 align-items-center">
                                     <p className="mb-0">Status <span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
-                                    <Button variant="transparent" onClick={handleJobStatusModal} className="px-5 closed-job-btn">End Job</Button>
-                                    <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>handleUnpublished(singleJobDescription?.id,singleJobDescription?.status)}>Unpublish</Button>
+                                   { singleJobDescription?.status!=="Ended"?<>
+                                   <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-5 closed-job-btn">End Job</Button>
+                                    <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>handleUnpublished(singleJobDescription?.id,singleJobDescription?.status=="published"?"Unpublished":"published")}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?"Unpublish":"Publish"}</Button>
+                                   </>:"" }
                                 </div>
                             </div>
                             <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>
@@ -121,7 +149,7 @@ const SingleJob = () => {
                     </section>
                 </Tab>
                 <Tab eventKey="suggested" title="Suggestions">
-                <JobCard handleJobStatusModal={handleJobStatusModal} type="Suggested" data={selectedTabsData}/>
+                <JobCard handleJobStatusModal={handleJobStatusModal} type="Suggested" data={selectedTabsData}  jobStatus={singleJobDescription?.status}/>
                 </Tab>
                 <Tab eventKey="shortlisted" title="Shortlisted">
                     {/* <div className="developers-list job-card">
@@ -149,10 +177,10 @@ const SingleJob = () => {
                             </div>
                         </div>
                     </div> */}
-                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Shortlisted"  data={selectedTabsData}/>
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Shortlisted"  data={selectedTabsData} jobStatus={singleJobDescription?.status}/>
                 </Tab>
                 <Tab eventKey="interviewing" title="Interviewing">
-                <JobCard handleJobStatusModal={handleJobStatusModal}  type="Interviewing"  data={selectedTabsData}/>
+                <JobCard handleJobStatusModal={handleJobStatusModal}  type="Interviewing"  data={selectedTabsData}   jobStatus={singleJobDescription?.status}/>
                     {/* <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Interviewing</div>
@@ -228,12 +256,12 @@ const SingleJob = () => {
                             </div>
                         </div>
                     </div> */}
-                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}/>
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}  jobStatus={singleJobDescription?.status}/>
                 </Tab>
             </Tabs>
-            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab}/>
-            {/* <EndJobModal show={false} handleClose={handleClose} /> */}
-            <ConfirmationModal text={`Want to shortlist this developer?`} show={statusModal?.Shortlisted || statusModal?.Interviewing }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} />
+            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab} smallLoader={smallLoader}/>
+            <EndJobModal show={statusModal?.ended} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
+            <ConfirmationModal text={jobPostConfirmMessage(currentTab)} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} type={currentTabsStatus} />
         </>
     )
 }

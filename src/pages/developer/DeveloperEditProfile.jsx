@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getDeveloperProfileDetails, updateDeveloperProfile } from "../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { createNewFolderAndFile, filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 const EditDeveloperProfile = () => {
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -21,6 +22,7 @@ const EditDeveloperProfile = () => {
         firstPass: false,
         secondPass: false
     })
+    const [file,setFile]=useState(null)
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
 
     useEffect(() => {
@@ -37,16 +39,34 @@ const EditDeveloperProfile = () => {
         setValue("city", developerProfileData?.data?.city)
         setValue("country", developerProfileData?.data?.country)
         setValue("passcode", developerProfileData?.data?.passcode)
+        setValue("profile_picture", developerProfileData?.data?.profile_picture)
 
     }, [developerProfileData])
 
     const onSubmit = (values) => {
-        let formData = new FormData()
+        let formData = new FormData();
+        let fileData = new FormData();
         for (const key in values) {
-            formData.append(key, values[key])
+            formData.append(key, values[key]);
         }
-        dispatch(updateDeveloperProfile(formData))
-    }
+      
+        fileData.append("file",file);
+        if(file==null){
+            dispatch(updateDeveloperProfile(values)); 
+        }else{
+            dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+                let data = {
+                    ...values,
+                    "profile_picture": url,
+                };
+                // formData.append("file",data.s3_path);
+                dispatch(updateDeveloperProfile(data));
+            }));
+        }
+      
+    };
+    
+
 
     const validatePassword = (value) => {
         if (value === "") {
@@ -62,8 +82,8 @@ const EditDeveloperProfile = () => {
     };
 
     const handleFileChange = (event) => {
-        console.log(event,";;;")
         const file = event.target.files[0];
+        setFile(file)
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -180,7 +200,7 @@ const EditDeveloperProfile = () => {
                                             name="address_2"
                                             {...register("address_2", {
                                                 required: {
-                                                    value: true,
+                                                    value: false,
                                                     message: "Address 2 is required",
                                                 },
                                             })}
@@ -197,6 +217,10 @@ const EditDeveloperProfile = () => {
                                                     value: true,
                                                     message: "City is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: "Country should not contain numbers or special character",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -216,6 +240,10 @@ const EditDeveloperProfile = () => {
                                                     value: true,
                                                     message: "Plan Name is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[0-9]+$/,
+                                                    message: "Passcode should only contain numbers",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -230,6 +258,10 @@ const EditDeveloperProfile = () => {
                                                     value: true,
                                                     message: "Country is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: "Country should not contain numbers or special character",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -242,7 +274,7 @@ const EditDeveloperProfile = () => {
                                             {...register("profile_picture", {
                                                 onChange:(e)=>handleFileChange(e), 
                                                 required: {
-                                                    value: true,
+                                                    value: false,
                                                     message: "Profile Picture is required",
                                                 },
                                             })}

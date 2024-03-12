@@ -24,7 +24,7 @@ const Cards = (cardDetails) => {
                             <Link to={cardDetails?.item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                         </li>
                         <li>
-                            <Link to={cardDetails?.item?.developer?.developer_detail?.resume}><MdEmail /></Link>
+                            <Link to={cardDetails?.item?.developer?.developer_detail?.email}><MdEmail /></Link>
                         </li>
                     </ul>
                 </div>

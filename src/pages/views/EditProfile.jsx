@@ -166,7 +166,7 @@ const EditProfile = () => {
                                             name="address_2"
                                             {...register("address_2", {
                                                 required: {
-                                                    value: true,
+                                                    value: false,
                                                     message: "Address 2 is required",
                                                 },
                                             })}
@@ -183,6 +183,10 @@ const EditProfile = () => {
                                                     value: true,
                                                     message: "City is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: "Country should not contain numbers or special character",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">
@@ -195,13 +199,17 @@ const EditProfile = () => {
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Postcode</Form.Label>
                                         <Form.Control type="text" className="common-field"
-
                                             name="passcode"
                                             {...register("passcode", {
                                                 required: {
                                                     value: true,
-                                                    message: "Plan Name is required",
+                                                    message: "Pass code is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[0-9]+$/,
+                                                    message: "Passcode should only contain numbers",
+                                                }
+                                                
                                             })}
                                         />
                                         <p className="error-message">
@@ -216,6 +224,10 @@ const EditProfile = () => {
                                                     value: true,
                                                     message: "Country is required",
                                                 },
+                                                pattern: {
+                                                    value: /^[A-Za-z\s]+$/,
+                                                    message: "Country should not contain numbers or special character",
+                                                }
                                             })}
                                         />
                                         <p className="error-message">

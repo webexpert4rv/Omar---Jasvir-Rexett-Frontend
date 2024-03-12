@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Button, Pagination } from "react-bootstrap";
 import { Doughnut } from 'react-chartjs-2';
+import { useDispatch, useSelector } from "react-redux";
+import { earnedBackOfDeveloper } from "../../redux/slices/clientDataSlice";
 const data = {
     labels: ['Earned Back', 'Developers'],
     datasets: [
@@ -34,7 +36,13 @@ const options = {
         },
     },
 };
+
 const EarnedBack = () => {
+    const dispatch =useDispatch()
+    const {earnedBack,screenLoader}=useSelector(state=>state.clientData)
+    useEffect(()=>{
+     dispatch(earnedBackOfDeveloper())
+    },[])
     return (
         <>
             <section>
@@ -82,9 +90,9 @@ const EarnedBack = () => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td className="time-table-data">5</td>
-                                <td className="time-table-data">800 hrs</td>
-                                <td className="time-table-data">40 hrs</td>
+                                <td className="time-table-data">{earnedBack?.totalContracts}</td>
+                                <td className="time-table-data">{earnedBack?.totalHours}</td>
+                                <td className="time-table-data">{earnedBack?.earnedBackHours} hrs</td>
                                 <td className="time-table-data">
                                     <Form.Select className="status-select shadow-none">
                                         <option value="finished">Yes</option>
@@ -96,71 +104,12 @@ const EarnedBack = () => {
                                     <Button variant="transparent" className="outline-main-btn">Submit</Button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td className="time-table-data">5</td>
-                                <td className="time-table-data">800 hrs</td>
-                                <td className="time-table-data">40 hrs</td>
-                                <td className="time-table-data">
-                                    <Form.Select className="status-select shadow-none">
-                                        <option value="finished">Yes</option>
-                                        <option value="progress">No</option>
-                                        <option value="progress">No</option>
-                                    </Form.Select>
-                                </td>
-                                <td className="time-table-data">
-                                    <Button variant="transparent" className="outline-main-btn">Submit</Button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="time-table-data">5</td>
-                                <td className="time-table-data">800 hrs</td>
-                                <td className="time-table-data">40 hrs</td>
-                                <td className="time-table-data">
-                                    <Form.Select className="status-select shadow-none">
-                                        <option value="finished">Yes</option>
-                                        <option value="progress">No</option>
-                                        <option value="progress">No</option>
-                                    </Form.Select>
-                                </td>
-                                <td className="time-table-data">
-                                    <Button variant="transparent" className="outline-main-btn">Submit</Button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="time-table-data">5</td>
-                                <td className="time-table-data">800 hrs</td>
-                                <td className="time-table-data">40 hrs</td>
-                                <td className="time-table-data">
-                                    <Form.Select className="status-select shadow-none">
-                                        <option value="finished">Yes</option>
-                                        <option value="progress">No</option>
-                                        <option value="progress">No</option>
-                                    </Form.Select>
-                                </td>
-                                <td className="time-table-data">
-                                    <Button variant="transparent" className="outline-main-btn">Submit</Button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="time-table-data">5</td>
-                                <td className="time-table-data">800 hrs</td>
-                                <td className="time-table-data">40 hrs</td>
-                                <td className="time-table-data">
-                                    <Form.Select className="status-select shadow-none">
-                                        <option value="finished">Yes</option>
-                                        <option value="progress">No</option>
-                                        <option value="progress">No</option>
-                                    </Form.Select>
-                                </td>
-                                <td className="time-table-data">
-                                    <Button variant="transparent" className="outline-main-btn">Submit</Button>
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
-                <div className="d-md-flex justify-content-between align-items-center mb-4">
-                    <p className="showing-result mb-md-0 mb-2">Showing 1 - 10 results</p>
+                {/* <div className="d-flex justify-content-between align-items-center mb-4">
+                    <p className="showing-result">Showing 1 - 10 results</p>
                     <Pagination className="custom-pagination">
                         <Pagination.Prev className="custom-pagination-item custom-pagination-arrow" />
                         <Pagination.Item className="custom-pagination-item" active>{1}</Pagination.Item>
@@ -172,7 +121,7 @@ const EarnedBack = () => {
                         <Pagination.Item className="custom-pagination-item">{10}</Pagination.Item>
                         <Pagination.Next className="custom-pagination-item custom-pagination-arrow" />
                     </Pagination>
-                </div>
+                </div> */}
                 <h5 className="section-head-sub">Statistic Earned Back</h5>
             </section>
             <div className="stats-chart-wrapper">

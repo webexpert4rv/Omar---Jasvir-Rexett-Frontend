@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
+
 const clientInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 
@@ -10,6 +11,7 @@ const clientInstance = axios.create({
 // Request Interceptor
 clientInstance.interceptors.request.use(
   (config) => {
+    localStorage.setItem("role", "client");
     config.headers["Authorization"] = `${getToken("token")}`;
     return config;
   },
