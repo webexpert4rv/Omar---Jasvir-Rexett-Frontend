@@ -117,6 +117,7 @@ console.log(allFilterValue,"allFilterValue")
     const deleteFileAndFolder = (id, name) => {
         setDelete({ isDelete: true, id: id, name: name })
     }
+    
 
     const handleDelete = (e) => {
         e.preventDefault()
