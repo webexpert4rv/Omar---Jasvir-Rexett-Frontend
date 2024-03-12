@@ -23,6 +23,7 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
             setSelectedPeriod(getCurrentPeriodFromAPi(timeReportingData[0]?.timeReports))
         }
     }, [timeReportingData])
+    
 
     const handlePeriodChange = (e) => {
         setSelectedPeriod(e.target.value);
