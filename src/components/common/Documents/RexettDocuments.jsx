@@ -27,10 +27,10 @@ const RexettDocuments = ({currentRole}) => {
     const [show, setShow] = useState(false)
     const [isDelete, setDelete] = useState({ isDelete: false, id: "" })
     const [timerValue, setTimerValue] = useState("");
+    const [search,setSearch]=useState('')
     const dispatch = useDispatch();
     const { folderData, smallLoader, screenLoader } = useSelector(state => state.clientData)
 
-console.log(folderData,"folderData")
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
     const handleShowUploadFileModal = (id, name) => {
         if (id) {
@@ -49,8 +49,7 @@ console.log(folderData,"folderData")
         setDelete({ isDelete: false, id: "" })
     };
 
-
-
+console.log(allFilterValue,"allFilterValue")
     const toggleFolderView = (item) => {
         let data={
            name: item?.s3_path,
@@ -119,7 +118,6 @@ console.log(folderData,"folderData")
         setDelete({ isDelete: true, id: id, name: name })
     }
 
-    console.log(isDelete, "isDelete")
 
     const handleDelete = (e) => {
         e.preventDefault()
@@ -143,6 +141,7 @@ console.log(folderData,"folderData")
             })
         } else {
             let filterData = {
+                ...allFilterValue,
                 [filter]: e.target.value,
                 parent_id: "0"
             }
@@ -157,8 +156,10 @@ console.log(folderData,"folderData")
         setAllCurrentFilterValue({
             date: "dd-mm-yyyy",
             category: "All",
-            file_extension: "All"
+            file_extension: "All",
         })
+        setShowFolderView(false)
+        setSearch('')
         let filterData = {
             parent_id: "0"
         }
@@ -166,11 +167,11 @@ console.log(folderData,"folderData")
     }
 
     const handleSearchChange = (e) => {
-
+        setSearch(e.target.value)
         clearTimeout(timerValue);
         const timer = setTimeout(() => {
             let filterData = {
-                parent_id: "0",
+                parent_id:currentFolderDetails?.id,
                 search: e.target.value
             }
             dispatch(getFolderData(filterData,currentRole))
@@ -203,7 +204,7 @@ console.log(folderData,"folderData")
                     <div>
                         <h3 className="section-head-sub">Filter</h3>
                         <Form className="mb-4">
-                            <div className="d-md-flex filter-section gap-3">
+                            <div className="d-md-flex filter-section gap-3 align-items-center">
                                 <div className="flex-none mb-md-0 mb-3">
                                     <Form.Label className="common-label">Select Category</Form.Label>
                                     <Form.Select className="filter-select shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
@@ -224,10 +225,10 @@ console.log(folderData,"folderData")
                                 </div>
                                 <div>
                                 <Form.Label className="common-label">Search</Form.Label>
-                            <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} className="search-field"></Form.Control>
+                            <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} value={search} className="search-field"></Form.Control>
                                 </div>
-                                <div>
-                                    <Button variant="transparent" className="main-btn px-3 py-2" onClick={clearAllFilter}>Clear</Button>
+                                <div className="mt-4">
+                                    <Button variant="transparent" className="main-btn px-3 py-2 " onClick={clearAllFilter}>Clear</Button>
                                 </div>
                             </div>
                         </Form>
@@ -242,7 +243,7 @@ console.log(folderData,"folderData")
                         </div>
                         <h3 className="section-head-sub">Contracts</h3>
 
-                        {showFolderView ? <section className="folder-view">
+                        {showFolderView && search=='' ? <section className="folder-view">
                             <div className="breadcrumb">
                                 {bradCrump?.map((item) => {
                                     return (<>

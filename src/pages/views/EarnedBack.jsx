@@ -47,7 +47,7 @@ const EarnedBack = () => {
         <>
             <section>
                 <div>
-                    <Form className="mb-4">
+                    {/* <Form className="mb-4">
                         <div className="d-flex flex-wrap gap-3 justify-content-between">
                             <div className="d-flex flex-wrap gap-3">
                                 <div>
@@ -66,7 +66,7 @@ const EarnedBack = () => {
                                 </div>
                             </div>
                         </div>
-                    </Form>
+                    </Form> */}
                 </div>
                 <p className="mb-3">To hire a rexett developers for more than 500 hours Rexett will return you 5% of your investment</p>
                 <div className="table-responsive mb-3">

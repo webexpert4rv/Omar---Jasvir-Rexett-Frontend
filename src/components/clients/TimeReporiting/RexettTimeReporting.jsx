@@ -26,9 +26,12 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
 
     const handlePeriodChange = (e) => {
         setSelectedPeriod(e.target.value);
-        if(selectedFilter.startDate ||  selectedFilter.endDate){
-            setSelectedFilter({ startDate: "", endDate: "" })
+        let filterData = {
+            ...selectedFilter,
+            filter:e.target.value
         }
+        dispatch(timeReporting(filterData))
+
         setError({ isTrue: false, message: "" })
 
     };
@@ -167,14 +170,14 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="flex-none">
-                            <Form.Label className="common-label">Select Period</Form.Label>
+                        <div className="flex-none">
+                            <Form.Label className="common-label">Select View</Form.Label>
                             <Form.Select className="filter-select shadow-none" onChange={handlePeriodChange} value={selectedPeriod}>
                                 <option value="weekly">Weekly</option>
                                 <option value="monthly">Monthly</option>
                                 <option value="yearly">Yearly</option>
                             </Form.Select>
-                        </div> */}
+                        </div>
                     </div>
                     <div className="error-message">{error.isTrue ? error?.message : ""}</div>
                 </Form>

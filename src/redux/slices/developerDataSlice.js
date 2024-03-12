@@ -285,7 +285,7 @@ export function updateDeveloperSkills(payload, callback) {
     return async (dispatch) => {
          dispatch(setSmallLoader())
         try {
-            let result = await developerInstance.post(`developer/add-social-links`,{skills:payload})
+            let result = await developerInstance.post(`developer/update-developer-skills`,{skills:payload})
             if (result.status === 200) {
                 console.log(result,"redd")
                 toast.success("Skills updated successfully", { position: "top-center" })

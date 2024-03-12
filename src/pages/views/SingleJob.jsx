@@ -46,10 +46,8 @@ const SingleJob = () => {
         const skillsArray = arr?.split(",");
         return skillsArray
     }
-    const handleUnpublished=(id,status)=>{
-        let data={
-            status:status
-        }
+    const handleUnpublished=(id,data)=>{
+        
         dispatch(publishedPost(id,data,()=>{
             dispatch(singleJobPostData(id,()=>{})) 
         }
@@ -72,6 +70,15 @@ const SingleJob = () => {
     }
     const handleJobStatusAction= (e,data) => {
         e.preventDefault()
+        if(data.status=="ended"){
+            dispatch(publishedPost(singleJobDescription?.id,data,()=>{
+                setStatusModal({})
+                dispatch(singleJobPostData(id,()=>{
+
+                })) 
+            }
+            ))
+        }else{
             dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
                 dispatch(singleJobPostData(id,()=>{
                     setStatusModal({})
@@ -81,6 +88,8 @@ const SingleJob = () => {
                    setSelectedTabsData(prevData[currentTab])
                 }))
             }))
+        }
+           
     }
     
 
@@ -107,9 +116,14 @@ const SingleJob = () => {
                                 <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
                                 <div className="d-flex gap-3 align-items-center">
                                     <p className="mb-0">Status <span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
-                                   { singleJobDescription?.status!=="Ended"?<>
+                                   { singleJobDescription?.status!=="ended"?<>
                                    <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-5 closed-job-btn">End Job</Button>
-                                    <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>handleUnpublished(singleJobDescription?.id,singleJobDescription?.status=="published"?"Unpublished":"published")}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?"Unpublish":"Publish"}</Button>
+                                    <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>{
+                                        let data={
+                                            status:singleJobDescription?.status=="published"?"Unpublished":"published"
+                                        }
+                                        handleUnpublished(singleJobDescription?.id,data)
+                                        }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?"Unpublish":"Publish"}</Button>
                                    </>:"" }
                                 </div>
                             </div>

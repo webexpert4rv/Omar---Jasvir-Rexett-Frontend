@@ -18,12 +18,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                 {smallLoader?<ScreenLoader/>:
                     <table className="table time-table table-bordered">
                     <thead>
-                        {/* <th className="time-table-head">
+                        <th className="time-table-head">
                             Developer Name
-                        </th> */}
-                        {/* <th className="time-table-head">
+                        </th>
+                        <th className="time-table-head">
                             Image of Developer
-                        </th> */}
+                        </th>
                         {role==="developer" ?<th className="time-table-head">
                            Client Name
                         </th>:""}
@@ -38,9 +38,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                                 )
                             })
                         }
-                        {role==="developer"? <th className="time-table-head">
+                         <th className="time-table-head">
                             Total Hours
-                        </th>:""}
+                        </th>
                         <th className="time-table-head">
                             Contract
                         </th>
@@ -58,7 +58,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                                     <>
                                         <tr>
                                             <td className="time-table-data">{item?.contractDetails?.developer_details?.name}</td>
-                                            {/* <td className="time-table-data"><img src={item?.contractDetails?.developer_details?.profile_picture} className="developer-img" alt="" /></td> */}
+                                            <td className="time-table-data"><img src={item?.contractDetails?.developer_details?.profile_picture} className="developer-img" alt="" /></td>
                                             {
                                                 item?.timeReports?.map((reprt) => {
                                                     if (reprt.report_date) {
