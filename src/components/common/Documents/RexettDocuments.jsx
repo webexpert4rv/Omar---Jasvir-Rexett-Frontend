@@ -203,8 +203,8 @@ console.log(folderData,"folderData")
                     <div>
                         <h3 className="section-head-sub">Filter</h3>
                         <Form className="mb-4">
-                            <div className="d-flex filter-section gap-3 align-items-end">
-                                <div className="flex-none">
+                            <div className="d-md-flex filter-section gap-3">
+                                <div className="flex-none mb-md-0 mb-3">
                                     <Form.Label className="common-label">Select Category</Form.Label>
                                     <Form.Select className="filter-select shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
                                         <option value="All">All</option>
@@ -212,7 +212,7 @@ console.log(folderData,"folderData")
                                         <option value="3">Invoices</option>
                                     </Form.Select>
                                 </div>
-                                <div className="flex-none">
+                                <div className="flex-none mb-md-0 mb-3">
                                     <Form.Label className="common-label">Select File Type</Form.Label>
                                     <Form.Select className="filter-select shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
                                         <option value="All">All</option>
@@ -226,14 +226,12 @@ console.log(folderData,"folderData")
                                 <Form.Label className="common-label">Search</Form.Label>
                             <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} className="search-field"></Form.Control>
                                 </div>
-                     
-                        
                                 <div>
                                     <Button variant="transparent" className="main-btn px-3 py-2" onClick={clearAllFilter}>Clear</Button>
                                 </div>
                             </div>
                         </Form>
-                        <div className="d-flex align-items-center gap-3 mb-4">
+                        <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
                             <div>
                                 <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-5 cursor-pointer upload-btn">+ Create Folder</Form.Label>
                             </div>

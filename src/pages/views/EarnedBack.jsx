@@ -48,8 +48,8 @@ const EarnedBack = () => {
             <section>
                 <div>
                     <Form className="mb-4">
-                        <div className="d-flex gap-3 justify-content-between">
-                            <div className="d-flex gap-3">
+                        <div className="d-flex flex-wrap gap-3 justify-content-between">
+                            <div className="d-flex flex-wrap gap-3">
                                 <div>
                                     <Form.Label className="common-label">From</Form.Label>
                                     <Form.Control type="date" className="filter-field shadow-none"></Form.Control>
@@ -69,7 +69,7 @@ const EarnedBack = () => {
                     </Form>
                 </div>
                 <p className="mb-3">To hire a rexett developers for more than 500 hours Rexett will return you 5% of your investment</p>
-                <div className="table-responsiv mb-3">
+                <div className="table-responsive mb-3">
                     <table className="table time-table table-bordered">
                         <thead>
                             <th className="time-table-head">
