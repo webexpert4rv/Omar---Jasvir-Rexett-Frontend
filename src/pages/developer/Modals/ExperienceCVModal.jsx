@@ -5,7 +5,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch } from "react-redux";
 import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 
-const ExperienceCVModal = ({ show, handleClose, data }) => {
+const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
   const [renderModalData,setRenderModalData]=useState(data)
   const [disabledEndDates, setDisabledEndDates] = useState([]);
     const dispatch=useDispatch()
@@ -263,7 +263,7 @@ const ExperienceCVModal = ({ show, handleClose, data }) => {
               text="Submit"
               className="main-btn px-4"
               variant="transparent"
-              isLoading={false}
+              isLoading={smallLoader}
             />
           </div>
         </form>
