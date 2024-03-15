@@ -95,7 +95,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                                 <Form.Group className="">
                                     <Form.Label className="d-block">Select Day</Form.Label>
                                     <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
+                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Holiday Day" onChange={() => handleDayChange('off-day')} />
                                 </Form.Group>
                                 <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
                                     <Row>
@@ -113,6 +113,10 @@ const AddTimingModal = ({ show, handleClose }) => {
                                         </Col>
                                     </Row>
                                 </div>
+                                <Form.Group className="mb-4">
+                                                <Form.Label>Memo</Form.Label>
+                                                <Form.Control type="text" className="cv-field" placeholder="Add Memo"></Form.Control>
+                                            </Form.Group>
                             </Col>
                             <Col md={3} className="border-bottom mb-2 pb-2">
                                 <Form.Label>Tue 02, 2024</Form.Label>
@@ -121,7 +125,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                                 <Form.Group className="">
                                     <Form.Label className="d-block">Select Day</Form.Label>
                                     <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
+                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Holiday Day" onChange={() => handleDayChange('off-day')} />
                                 </Form.Group>
                                 <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
                                     <Row>
@@ -147,7 +151,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                                 <Form.Group className="">
                                     <Form.Label className="d-block">Select Day</Form.Label>
                                     <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
+                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day"  label="Holiday Day" onChange={() => handleDayChange('off-day')} />
                                 </Form.Group>
                                 <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
                                     <Row>
@@ -173,7 +177,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                                 <Form.Group className="">
                                     <Form.Label className="d-block">Select Day</Form.Label>
                                     <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
+                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day"  label="Holiday Day" onChange={() => handleDayChange('off-day')} />
                                 </Form.Group>
                                 <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
                                     <Row>

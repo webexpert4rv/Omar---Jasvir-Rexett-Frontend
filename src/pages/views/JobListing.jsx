@@ -9,7 +9,7 @@ const JobListing = () => {
     const dispatch=useDispatch();
     const {allJobPostedList,jobCategoryList,screenLoader}=useSelector(state=>state.clientData)
     useEffect(()=>{
-        dispatch(getAllJobPostedList())
+        dispatch(getAllJobPostedList("3"))
         dispatch(getJobCategoryList())
     },[dispatch])
 
@@ -78,7 +78,7 @@ const JobListing = () => {
                     
                 </div>
             </section>
-           {/* <RexettPagination/> */}
+           <RexettPagination/>
             </>
             }
         </>

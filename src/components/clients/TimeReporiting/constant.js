@@ -21,7 +21,6 @@ export function weeklyTimeReports(data, currentPeriod) {
   if (currentPeriod === "weekly") {
      let start_date = new Date(data?.startDate);
      var dayIndex = start_date.getDay();
-     console.log(dayIndex,"dayIndex")
      let end_date = new Date(data?.end_date);
     let dayWithDate = [];
     let dayName = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -34,9 +33,9 @@ export function weeklyTimeReports(data, currentPeriod) {
     });
     return dayWithDate;
   }
-  if (currentPeriod === "monthly") {
+  if (currentPeriod === "yearly") {
     let start_date = new Date(data?.startDate);
-    var monthIndex = start_date.getMonth();
+    var yearlyIndex = start_date.getMonth();
     let dateWithMonth = [];
     let monthName = [
       "Jan",
@@ -53,15 +52,15 @@ export function weeklyTimeReports(data, currentPeriod) {
       "Dec",
     ];
     data?.timeReports?.map((item, index) => {
-      dateWithMonth.push(monthName[(monthIndex + index) % 12] + data?.startDate.slice(2, 4));
+      dateWithMonth.push(monthName[(yearlyIndex + index) % 12] + data?.startDate.slice(2, 4));
     });
     return dateWithMonth;
   }
 
-  if(currentPeriod === "yearly"){
+  if(currentPeriod === "monthly"){
     let dateWithYearly = [];
     data?.timeReports?.map((item, index) => {
-      dateWithYearly.push(item.year);
+      dateWithYearly.push(item.week);
     });
     return dateWithYearly
   }

@@ -43,7 +43,6 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
         }
     }, [renderModalData]);
 
-    console.log(degreeList, "degreeList")
     useEffect(() => {
         dispatch(getDegreeList())
     }, [])
@@ -119,7 +118,6 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
             })
         
       };
-    console.log(errors, "errors")
     return (
         <Modal show={show} onHide={handleClose} centered scrollable animation size="lg">
             <Modal.Header closeButton>

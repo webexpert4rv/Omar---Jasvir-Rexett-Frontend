@@ -18,11 +18,11 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
     const {smallLoader } = useSelector(state => state.clientData)
 
 
-    useEffect(() => {
-        if (timeReportingData[0]?.timeReports) {
-            setSelectedPeriod(getCurrentPeriodFromAPi(timeReportingData[0]?.timeReports))
-        }
-    }, [timeReportingData])
+    // useEffect(() => {
+    //     if (timeReportingData[0]?.timeReports) {
+    //         setSelectedPeriod(getCurrentPeriodFromAPi(timeReportingData[0]?.timeReports))
+    //     }
+    // }, [timeReportingData])
 
 
     const handlePeriodChange = (e) => {
@@ -31,7 +31,7 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
             ...selectedFilter,
             filter:e.target.value
         }
-        dispatch(timeReporting(filterData))
+        dispatch(timeReporting(filterData,role))
 
         setError({ isTrue: false, message: "" })
 
@@ -83,23 +83,23 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
         }));
     }
 
-    const handleSearchChange = (e) => {
-        setError({ isTrue: false, message: "" })
-        setSelectedFilter(prevState => ({
-            ...prevState,
-            search: e.target.value
-        }));
-        clearTimeout(timerValue);
-        const timer = setTimeout(() => {
-            let filterData = {
-                ...selectedFilter,
-                search: e.target.value
-            }
-            dispatch(timeReporting(filterData))
-        }, 500);
-        setTimerValue(timer);
+    // const handleSearchChange = (e) => {
+    //     setError({ isTrue: false, message: "" })
+    //     setSelectedFilter(prevState => ({
+    //         ...prevState,
+    //         search: e.target.value
+    //     }));
+    //     clearTimeout(timerValue);
+    //     const timer = setTimeout(() => {
+    //         let filterData = {
+    //             ...selectedFilter,
+    //             search: e.target.value
+    //         }
+    //         dispatch(timeReporting(filterData))
+    //     }, 500);
+    //     setTimerValue(timer);
 
-    }
+    // }
     return (
         <>
             <section>
@@ -173,7 +173,7 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
                 </Form>
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <div className="d-flex gap-3 w-50">
-                        <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control>
+                        {/* <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control> */}
                         <RexettButton
                             text="Filter"
                             className="main-btn px-5"

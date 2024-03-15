@@ -109,7 +109,7 @@ function App() {
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
-          <Route path="/admin-single-job" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
+          <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
           <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
           <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
