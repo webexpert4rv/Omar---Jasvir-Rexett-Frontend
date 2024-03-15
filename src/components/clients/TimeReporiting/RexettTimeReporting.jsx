@@ -104,7 +104,7 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
         <>
             <section>
                 <Form className="mb-4">
-                    <div className="d-flex gap-3 justify-content-between">
+                    <div className="d-flex gap-3 justify-content-between filter-section">
                         <div className="d-flex gap-3">
                            
                             <div>

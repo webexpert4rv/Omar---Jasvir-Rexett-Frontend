@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
 import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
 import Login from './pages/Authentication/Login';
