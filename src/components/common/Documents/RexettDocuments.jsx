@@ -207,14 +207,14 @@ const RexettDocuments = ({ currentRole }) => {
 
                     <Row className="d-flex">
                         <Col md={3}>
-                            <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+                            <div className="d-flex flex-wrap align-items-center gap-2 mb-4">
                                 {/* <Button onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>+ New</Button> */}
                                 <div>
-                                    <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-4 cursor-pointer upload-btn">+ Create Folder</Form.Label>
+                                    <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-4 cursor-pointer upload-btn mb-0">+ Create Folder</Form.Label>
                                 </div>
                                 <div>
                                     {/* <Form.Control type="file" className="d-none" id="upload_file" onChange={handleFileUpload} /> */}
-                                    <Form.Label className="main-btn px-4 cursor-pointer upload-btn" onClick={() => setShow(true)}>+ Upload File</Form.Label>
+                                    <Form.Label className="main-btn px-4 cursor-pointer upload-btn mb-0" onClick={() => setShow(true)}>+ Upload File</Form.Label>
                                 </div>
                             </div>
                             <h3 className="section-head-sub">Filter</h3>
@@ -226,7 +226,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     </div>
                                     <div className="flex-none mb-2">
                                         <Form.Label className="common-label">Select Category</Form.Label>
-                                        <Form.Select className="filter-select shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
+                                        <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
                                             <option value="All">All</option>
                                             <option value="1">Contracts</option>
                                             <option value="3">Invoices</option>
@@ -234,7 +234,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     </div>
                                     <div className="flex-none mb-2">
                                         <Form.Label className="common-label">Select File Type</Form.Label>
-                                        <Form.Select className="filter-select shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
+                                        <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
                                             <option value="All">All</option>
                                             <option value="pdf">PDFs</option>
                                             <option value="doc">Documents</option>
@@ -244,7 +244,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     </div>
                                     <div className="flex-none mb-2">
                                         <Form.Label className="common-label">Shared By</Form.Label>
-                                        <Form.Select className="filter-select shadow-none">
+                                        <Form.Select className="filter-select width-full shadow-none">
                                             <option value="">Select</option>
                                             <option value="amazon">Amazon</option>
                                             <option value="volvo">Volvo</option>
@@ -341,8 +341,8 @@ const RexettDocuments = ({ currentRole }) => {
                                                     <thead>
                                                         <th className="document-th filename-th">Name</th>
                                                         <th className="document-th owner-th">Owner</th>
-                                                        <th className="document-th">Location</th>
-                                                        <th className="document-th">Action</th>
+                                                        <th className="document-th location-th">Location</th>
+                                                        <th className="document-th action-th">Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>

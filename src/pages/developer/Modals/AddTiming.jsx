@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col, Collapse } from "react-bootstrap";
+import { useFieldArray, useForm } from "react-hook-form";
 const AddTimingModal = ({ show, handleClose }) => {
     const [selectDay, setDaySelection] = useState(null);
     const [open, setOpen] = useState(false);
+    const { register, control, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm();
+    const { fields, append, remove } = useFieldArray({ control, name: "addTime" });
     const handleDayChange = (selectDayName) => {
         setDaySelection(selectDayName);
     };
@@ -22,6 +25,26 @@ const AddTimingModal = ({ show, handleClose }) => {
         return weekDates;
     };
 
+    console.log(getCurrentWeekDates(),"gh")
+
+    useEffect(() => {
+            getCurrentWeekDates()?.forEach((item) => {
+                console.log()
+                append({
+                    "report_date": "2024-02-23",
+                    "is_off_day": false,
+                    "start_time": "09:00",
+                    "end_time": "17:00",
+                    "memo": "Completed tasks A, B, and C. Encountered issue X but resolved it with solution Y."
+                });
+            });
+        
+    }, []);
+
+    const onSubmit=(values)=>{
+console.log(values)
+    }
+console.log(fields,"fields")
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg" scrollable>
             <Modal.Header closeButton>
@@ -29,7 +52,7 @@ const AddTimingModal = ({ show, handleClose }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <Form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="experience-container">
                         <div className="mb-3">
                             <Button variant="transparent" className="main-btn px-3" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open} >
@@ -100,19 +123,16 @@ const AddTimingModal = ({ show, handleClose }) => {
                                     </Form.Select>
                                 </Form.Group>
                             </Col>
-
-
-
                         </Row>
                         {
-                            getCurrentWeekDates()?.map((item, index) => {
-                                let date = item.toLocaleString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric', hour12: false });
+                            fields?.map((item, index) => {
+                                
                                 return (
                                     <>
                                         <div className="time-row">
                                             <Row>
                                                 <Col md={3}>
-                                                    <Form.Label>{date}</Form.Label>
+                                                    <Form.Label>{item?.report_date}</Form.Label>
                                                 </Col>
                                                 <Col md={9}>
                                                     <Form.Group className="">
@@ -138,7 +158,11 @@ const AddTimingModal = ({ show, handleClose }) => {
                                                     </div>
                                                     <Form.Group className="mb-4">
                                                         <Form.Label className="font-13">Memo</Form.Label>
-                                                        <Form.Control type="text" className="cv-field font-13" placeholder="Add Memo"></Form.Control>
+                                                        <Form.Control type="text" className="cv-field font-13" placeholder="Add Memo"
+                                                         {...register(`addTime.${index}.memo`, { required: true })}
+                                                         defaultValue={item.memo}
+                                                        
+                                                        ></Form.Control>
                                                     </Form.Group>
                                                 </Col>
                                             </Row>
@@ -147,11 +171,12 @@ const AddTimingModal = ({ show, handleClose }) => {
                                 )
                             })
                         }
+
                     </div>
                     <div className="text-center mt-2">
-                        <Button variant="transparent" className="main-btn px-4">Submit</Button>
+                        <Button variant="transparent" type="submit" className="main-btn px-4">Submit</Button>
                     </div>
-                </Form>
+                </form>
             </Modal.Body>
         </Modal>
     )
