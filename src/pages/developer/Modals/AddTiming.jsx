@@ -83,142 +83,162 @@ const AddTimingModal = ({ show, handleClose }) => {
                                         <option value="asus">Asus</option>
                                     </Form.Select>
                                 </Form.Group>
-                                {/* <Form.Group className="mb-4">
+                                {/* <Form.Group>
                                     <Form.Label>Date</Form.Label>
                                     <Form.Control type="date" className="cv-field"></Form.Control>
                                 </Form.Group> */}
                             </Col>
-                            <Col md={3} className="border-bottom mb-2 pb-2">
-                                <Form.Label>Mon 01, 2024</Form.Label>
-                            </Col>
-                            <Col md={9} className="border-bottom mb-2 pb-2">
-                                <Form.Group className="">
-                                    <Form.Label className="d-block">Select Day</Form.Label>
-                                    <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
-                                </Form.Group>
-                                <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
-                                    <Row>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>Start Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>End Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Col>
-                            <Col md={3} className="border-bottom mb-2 pb-2">
-                                <Form.Label>Tue 02, 2024</Form.Label>
-                            </Col>
-                            <Col md={9} className="border-bottom mb-2 pb-2">
-                                <Form.Group className="">
-                                    <Form.Label className="d-block">Select Day</Form.Label>
-                                    <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
-                                </Form.Group>
-                                <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
-                                    <Row>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>Start Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>End Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Col>
-                            <Col md={3} className="border-bottom mb-2 pb-2">
-                                <Form.Label>Wed 03, 2024</Form.Label>
-                            </Col>
-                            <Col md={9} className="border-bottom mb-2 pb-2">
-                                <Form.Group className="">
-                                    <Form.Label className="d-block">Select Day</Form.Label>
-                                    <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
-                                </Form.Group>
-                                <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
-                                    <Row>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>Start Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>End Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Col>
-                            <Col md={3} className="border-bottom mb-2 pb-2">
-                                <Form.Label>Thu 04, 2024</Form.Label>
-                            </Col>
-                            <Col md={9} className="border-bottom mb-2 pb-2">
-                                <Form.Group className="">
-                                    <Form.Label className="d-block">Select Day</Form.Label>
-                                    <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
-                                </Form.Group>
-                                <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
-                                    <Row>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>Start Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>End Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Col>
-                            <Col md={3} className="border-bottom mb-2 pb-2">
-                                <Form.Label>Fri 05, 2024</Form.Label>
-                            </Col>
-                            <Col md={9} className="border-bottom mb-2 pb-2">
-                                <Form.Group className="">
-                                    <Form.Label className="d-block">Select Day</Form.Label>
-                                    <Form.Check inline type="radio" value="work-day" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
-                                    <Form.Check inline type="radio" value="off-day" name="day-select" id="off-day" label="Off Day" onChange={() => handleDayChange('off-day')} />
-                                </Form.Group>
-                                <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
-                                    <Row>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>Start Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col md="6">
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>End Time</Form.Label>
-                                                <Form.Control type="time" className="cv-field"></Form.Control>
-                                            </Form.Group>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Col>
                         </Row>
+                        <div className="time-row">
+                            <Row>
+                                <Col md={3}>
+                                    <Form.Label>Mon 01, 2024</Form.Label>
+                                </Col>
+                                <Col md={9}>
+                                    <Form.Group className="">
+                                        <Form.Label className="d-block font-15 mb-1">Select Day</Form.Label>
+                                        <Form.Check inline type="radio" value="work-day" className="font-15" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
+                                        <Form.Check inline type="radio" value="off-day" className="font-15" name="day-select" id="off-day" label="Holiday" onChange={() => handleDayChange('off-day')} />
+                                    </Form.Group>
+                                    <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
+                                        <Row className="mt-0">
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">Start Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">End Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div className="time-row">
+                            <Row>
+                                <Col md={3}>
+                                    <Form.Label>Tue 02, 2024</Form.Label>
+                                </Col>
+                                <Col md={9}>
+                                    <Form.Group className="">
+                                        <Form.Label className="d-block font-15 mb-1">Select Day</Form.Label>
+                                        <Form.Check inline type="radio" value="work-day" className="font-15" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
+                                        <Form.Check inline type="radio" value="off-day" className="font-15" name="day-select" id="off-day" label="Holiday" onChange={() => handleDayChange('off-day')} />
+                                    </Form.Group>
+                                    <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
+                                        <Row className="mt-0">
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">Start Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">End Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div className="time-row">
+                            <Row>
+                                <Col md={3}>
+                                    <Form.Label>Wed 03, 2024</Form.Label>
+                                </Col>
+                                <Col md={9}>
+                                    <Form.Group className="">
+                                        <Form.Label className="d-block font-15 mb-1">Select Day</Form.Label>
+                                        <Form.Check inline type="radio" value="work-day" className="font-15" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
+                                        <Form.Check inline type="radio" value="off-day" className="font-15" name="day-select" id="off-day" label="Holiday" onChange={() => handleDayChange('off-day')} />
+                                    </Form.Group>
+                                    <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
+                                        <Row className="mt-0">
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">Start Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">End Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div className="time-row">
+                            <Row>
+                                <Col md={3}>
+                                    <Form.Label>Thu 04, 2024</Form.Label>
+                                </Col>
+                                <Col md={9}>
+                                    <Form.Group className="">
+                                        <Form.Label className="d-block font-15 mb-1">Select Day</Form.Label>
+                                        <Form.Check inline type="radio" value="work-day" className="font-15" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
+                                        <Form.Check inline type="radio" value="off-day" className="font-15" name="day-select" id="off-day" label="Holiday" onChange={() => handleDayChange('off-day')} />
+                                    </Form.Group>
+                                    <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
+                                        <Row className="mt-0">
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">Start Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">End Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div className="time-row">
+                            <Row>
+                                <Col md={3}>
+                                    <Form.Label>Fri 05, 2024</Form.Label>
+                                </Col>
+                                <Col md={9}>
+                                    <Form.Group className="">
+                                        <Form.Label className="d-block font-15 mb-1">Select Day</Form.Label>
+                                        <Form.Check inline type="radio" value="work-day" className="font-15" name="day-select" id="work-day" label="Work Day" onChange={() => handleDayChange('work-day')} />
+                                        <Form.Check inline type="radio" value="off-day" className="font-15" name="day-select" id="off-day" label="Holiday" onChange={() => handleDayChange('off-day')} />
+                                    </Form.Group>
+                                    <div className={selectDay === 'work-day' ? '' : 'cv-template-section cv-template1 d-none'}>
+                                        <Row className="mt-0">
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">Start Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md="6">
+                                                <Form.Group>
+                                                    <Form.Label className="font-13">End Time</Form.Label>
+                                                    <Form.Control type="time" className="cv-field font-13"></Form.Control>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
                     </div>
                     <div className="text-center mt-2">
                         <Button variant="transparent" className="main-btn px-4">Submit</Button>

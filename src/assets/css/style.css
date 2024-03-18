@@ -255,6 +255,14 @@ ul
     color: var(--primary-color);
     background-color: transparent;
 }
+.main-btn.border-danger
+{
+    border: 1px solid #cc0000;
+}
+.main-btn.bg-transparent
+{
+    background: transparent;
+}
 .no-data {
     background: #ffe0e0;
     padding: 10px 20px;
@@ -524,11 +532,13 @@ ul
 {
     transform: translateX(0);
 }
-.folder-list span
+.folder-list .name-folder
 {
     position: absolute;
     bottom: 50px;
     left: 50%;
+    width: 100%;
+    text-align: center;
     transform: translateX(-50%);
     color: var(--white);
     transition: .4s ease;
@@ -1979,7 +1989,127 @@ ul
     color: #333;
     border-radius: 5px;
 }
-
+.shared-text
+{
+    font-size: 12px;
+    padding: 3px 10px;
+    background-color: rgba(255, 255, 255, .5);
+    color: #000;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    display: inline-block;
+    border-radius: 30px;
+    font-weight: 400;
+}
+.modal-backdrop
+{
+    background-color: rgba(0, 0, 0, .2);
+    opacity: 1 !important;
+    backdrop-filter: blur(8px);
+}
+.modal-content
+{
+    border: none;
+    border-radius: 0px;
+    box-shadow: 0 0 18px rgba(0, 0, 0, .1);
+}
+.time-row
+{
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f7f8f9;
+}
+.font-13
+{
+    font-size: 13px;
+}
+input[type="radio"]:checked
+{
+    background-color: #11998E;
+    border-color: #11998E;
+    box-shadow: none;
+}
+.engagement-table th
+{
+    padding: 12px 15px;
+    background-color: #11998E;
+    color: #fff;
+    white-space: nowrap;
+}
+.engagement-table thead th:first-child
+{
+    border-top-left-radius: 10px;
+}
+.engagement-table thead th:last-child
+{
+    border-top-right-radius: 10px;
+}
+.engagement-table td
+{
+    vertical-align: middle;
+    padding: 12px 15px;
+}
+.engagement-table td a
+{
+    text-decoration: none;
+    color: #11998E;
+}
+.engagement-table td a:hover
+{
+    text-decoration: underline;
+}
+.white-nowrap
+{
+    white-space: nowrap;
+}
+.join-as
+{
+    font-size: 13px;
+    color: #fff;
+    background-color: #11998E;
+    padding: 5px 15px;
+    border-radius: 30px;
+}
+.application-mail
+{
+    display: block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.application-item .application-link
+{
+    color: #11998E;
+}
+.application-item .application-link.active
+{
+    border-color: #11998E;
+    background-color: #11998E;
+}
+.new-app
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    border-radius: 50%;
+    background-color: #11998E;
+    font-size: 13px;
+    margin-left: 5px;
+}
+.font-green
+{
+    color: #11998E !important;
+}
+.application-link.active .new-app
+{
+    background-color: #fff;
+    color: #11998E;
+}
 @media only screen and (max-width: 992px)
 {
     .about-info

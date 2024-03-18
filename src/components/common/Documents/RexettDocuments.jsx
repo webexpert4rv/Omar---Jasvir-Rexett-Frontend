@@ -260,7 +260,7 @@ const RexettDocuments = ({ currentRole }) => {
                         </Col>
                         <Col md={9}>
                             <Tab.Container defaultActiveKey="grid-view">
-                                <div className="d-flex justify-content-between">
+                                <div className="d-flex justify-content-between mb-3">
                                     <h3 className="section-head-sub">Documents</h3>
                                     <Nav variant="pills" className="document-view-pill">
                                         <Nav.Item className="document-view-item">
@@ -294,7 +294,13 @@ const RexettDocuments = ({ currentRole }) => {
                                                             item.file_type === 0 ? <>
                                                                 <div className="folder-list" onDoubleClick={() => toggleFolderView(item)}>
                                                                     <div className="position-relative">
-                                                                        <FaFolder className="folder-icon" /><span>{item?.s3_path}</span>
+                                                                        <FaFolder className="folder-icon" />
+                                                                        <div className="name-folder">
+                                                                            <span>{item?.s3_path}</span>
+                                                                            <div className="shared-doc">
+                                                                                <p className="shared-text">Shared by Amazon</p>
+                                                                            </div>
+                                                                        </div>
                                                                         <div className="doc-action">
                                                                             <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "folder")}><FaTrashCan /></button>
                                                                             <button className="view-btn doc-action-btn" onClick={() => handleShowUploadFileModal(item.id, item?.s3_path)}><MdEdit /></button>
@@ -308,9 +314,11 @@ const RexettDocuments = ({ currentRole }) => {
                                                                         {generateFileImage(item?.s3_path)}
 
                                                                     </div>
-                                                                    <p><span>{generateFileImage(item?.s3_path)}
-                                                                    </span>{getFileName(item?.s3_path)}</p>
+                                                                    <p>
+                                                                        <span>{generateFileImage(item?.s3_path)}
+                                                                        </span>{getFileName(item?.s3_path)}
 
+                                                                    </p>
                                                                     <div className="doc-action">
                                                                         {/* <button className="view-btn doc-action-btn"><MdEdit /></button> */}
                                                                         <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload /></button>

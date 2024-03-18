@@ -56,6 +56,8 @@ import NotificationVendor from './pages/vendor/NotificationVendor';
 import RegisterDeveloper from './pages/vendor/RegisterDeveloper';
 import ForgotPassword from './pages/Authentication/ForgotPassword';
 import ResetPassword from './pages/Authentication/ResetPassword';
+import Engagements from './pages/admin/Engagements';
+import Applications from './pages/admin/Applications';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -111,6 +113,8 @@ function App() {
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
+          <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} />
+          <Route path="/applications" exact element={<AdminDashboardLayout><Applications /></AdminDashboardLayout>} />
           <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
           <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
           <Route path="/vendor-revenue" exact element={<VendorDashboardLayout><VendorRevenue /></VendorDashboardLayout>} />

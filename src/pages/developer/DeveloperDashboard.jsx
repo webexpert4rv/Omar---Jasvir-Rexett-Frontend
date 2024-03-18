@@ -20,6 +20,27 @@ const DeveloperDashboard = () => {
         <>
             <h2 className="section-head mb-4">Overview</h2>
             <div className="overview-card-wrapper mb-5">
+                <div className="overview-card">
+                    <div>
+                        <h4 className="overview-card-subhead">This Week Hours</h4>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours} hrs</h3>
+                    </div>
+                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                </div>
+                <div className="overview-card">
+                    <div>
+                        <h4 className="overview-card-subhead">Active Projects</h4>
+                        <h3 className="overview-card-heading mb-0">10</h3>
+                    </div>
+                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                </div>
+                <div className="overview-card">
+                    <div>
+                        <h4 className="overview-card-subhead">This Month Hours</h4>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours} hrs</h3>
+                    </div>
+                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                </div>
                 <div className="overview-card active">
                     <div>
                         <h4 className="overview-card-subhead">Total hours</h4>
