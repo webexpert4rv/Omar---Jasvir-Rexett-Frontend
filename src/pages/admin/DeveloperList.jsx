@@ -10,9 +10,9 @@ const DeveloperList = () => {
     return (
         <>
             <h2 className="section-head mb-4">Overview</h2>
-            <div>
+            <div className="mb-4 filter-section">
                 <h3 className="section-head-sub">Filter By</h3>
-                <Form className="mb-4">
+                <Form>
                     <div className="d-flex gap-3">
                         <div className="flex-none">
                             <Form.Label className="common-label">Category</Form.Label>

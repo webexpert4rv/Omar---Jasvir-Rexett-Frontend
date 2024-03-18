@@ -39,7 +39,7 @@ const AdminSidebar = ({sideBarActive}) => {
                             </li>
                         </ul>
                     </div>
-                    <div className="w-100 px-3">
+                    <div className="w-100 px-3 mt-3">
                         <div>
                             <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
                         </div>
