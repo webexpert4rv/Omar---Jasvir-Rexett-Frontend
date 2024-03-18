@@ -7,7 +7,7 @@ import RexettTable from "../../../components/clients/TimeReporiting/RexettTable"
 import { TABLE_HEADER, getCurrentPeriodFromAPi, weeklyTimeReports } from "../../../components/clients/TimeReporiting/constant";
 // import EditTimeModal from "./Modals/EditTimeModal";
 import RexettButton from "../../../components/atomic/RexettButton";
-const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
+const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const dispatch = useDispatch()
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({});
@@ -15,23 +15,23 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
     const [timerValue, setTimerValue] = useState("");
     const [error, setError] = useState({ isTrue: false, message: "" })
 
-    const {smallLoader } = useSelector(state => state.clientData)
+    const { smallLoader } = useSelector(state => state.clientData)
 
 
-    useEffect(() => {
-        if (timeReportingData[0]?.timeReports) {
-            setSelectedPeriod(getCurrentPeriodFromAPi(timeReportingData[0]?.timeReports))
-        }
-    }, [timeReportingData])
+    // useEffect(() => {
+    //     if (timeReportingData[0]?.timeReports) {
+    //         setSelectedPeriod(getCurrentPeriodFromAPi(timeReportingData[0]?.timeReports))
+    //     }
+    // }, [timeReportingData])
 
 
     const handlePeriodChange = (e) => {
         setSelectedPeriod(e.target.value);
         let filterData = {
             ...selectedFilter,
-            filter:e.target.value
+            filter: e.target.value
         }
-        dispatch(timeReporting(filterData))
+        dispatch(timeReporting(filterData, role))
 
         setError({ isTrue: false, message: "" })
 
@@ -49,14 +49,14 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
     }
     const handleFilter = () => {
         if ((Object.keys(selectedFilter).length > 0)) {
-            if ((!selectedFilter.startDate && !selectedFilter.work_day &&  !selectedFilter.off_day)
-             || (!selectedFilter.endDate && !selectedFilter.work_day && !selectedFilter.off_day )
-             || (selectedFilter.startDate && !selectedFilter.endDate && selectedFilter.work_day ) 
-             || (!selectedFilter.startDate && selectedFilter.endDate && selectedFilter.work_day ) 
-             || (selectedFilter.startDate && !selectedFilter.endDate && selectedFilter.off_day ) 
-             || (!selectedFilter.startDate && selectedFilter.endDate && selectedFilter.off_day )
-             ) {
-                
+            if ((!selectedFilter.startDate && !selectedFilter.work_day && !selectedFilter.off_day)
+                || (!selectedFilter.endDate && !selectedFilter.work_day && !selectedFilter.off_day)
+                || (selectedFilter.startDate && !selectedFilter.endDate && selectedFilter.work_day)
+                || (!selectedFilter.startDate && selectedFilter.endDate && selectedFilter.work_day)
+                || (selectedFilter.startDate && !selectedFilter.endDate && selectedFilter.off_day)
+                || (!selectedFilter.startDate && selectedFilter.endDate && selectedFilter.off_day)
+            ) {
+
                 setError({ isTrue: true, message: "Start date and End Date Required" })
 
             } else if (selectedFilter.startDate > selectedFilter.endDate) {
@@ -83,23 +83,23 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
         }));
     }
 
-    const handleSearchChange = (e) => {
-        setError({ isTrue: false, message: "" })
-        setSelectedFilter(prevState => ({
-            ...prevState,
-            search: e.target.value
-        }));
-        clearTimeout(timerValue);
-        const timer = setTimeout(() => {
-            let filterData = {
-                ...selectedFilter,
-                search: e.target.value
-            }
-            dispatch(timeReporting(filterData))
-        }, 500);
-        setTimerValue(timer);
+    // const handleSearchChange = (e) => {
+    //     setError({ isTrue: false, message: "" })
+    //     setSelectedFilter(prevState => ({
+    //         ...prevState,
+    //         search: e.target.value
+    //     }));
+    //     clearTimeout(timerValue);
+    //     const timer = setTimeout(() => {
+    //         let filterData = {
+    //             ...selectedFilter,
+    //             search: e.target.value
+    //         }
+    //         dispatch(timeReporting(filterData))
+    //     }, 500);
+    //     setTimerValue(timer);
 
-    }
+    // }
     return (
         <>
             <section>
@@ -107,7 +107,7 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
                     <Form className="mb-4">
                         <div className="d-flex gap-3 justify-content-between filter-section">
                             <div className="d-flex gap-3">
-                            
+
                                 <div>
                                     <Form.Label className="common-label">Select Year</Form.Label>
                                     <Form.Select className="shadow-none">
@@ -171,22 +171,29 @@ const RexettTimeReporting = ({timeReportingData,handleShowModal,role}) => {
                             </div>
                         </div>
                         <div className="error-message">{error.isTrue ? error?.message : ""}</div>
+                        <div className="d-flex justify-content-between align-items-center mb-4">
+                            <div className="d-flex gap-3 w-50">
+                                <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control>
+                                <RexettButton
+                                    text="Filter"
+                                    className="main-btn px-5"
+                                    variant="transparent"
+                                    onClick={handleFilter}
+                                    isLoading={Object.keys(selectedFilter).length > 0 ? smallLoader : false}
+                                />
+                            </div>
+                            <div>
+                                <Button variant="transparent" onClick={handleShowModal} className="main-btn px-5">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
+                            </div>
+                            <div className="error-message">{error.isTrue ? error?.message : ""}</div>
+                            </div>
                     </Form>
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                        <div className="d-flex gap-3 w-50">
-                            <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control>
-                            <RexettButton
-                                text="Filter"
-                                className="main-btn px-5"
-                                variant="transparent"
-                                onClick={handleFilter}
-                                isLoading={Object.keys(selectedFilter).length > 0?smallLoader:false}
-                            />
-                        </div>
                         <div>
-                            <Button variant="transparent" onClick={handleShowModal} className="main-btn px-5">{role==="client"?`Edit Time Report`:"Add Bulk Time"}</Button>
+                            <Button variant="transparent" onClick={handleShowModal} className="main-btn px-5">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
                         </div>
                     </div>
+
                 </div>
                 <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
 

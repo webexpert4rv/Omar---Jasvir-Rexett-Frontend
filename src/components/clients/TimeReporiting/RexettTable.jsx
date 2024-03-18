@@ -19,14 +19,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                     <table className="table time-table table-bordered">
                     <thead>
                         <th className="time-table-head">
-                            Developer Name
+                            {role!=="developer"?"Developer Name":"Client Name"}
                         </th>
                         <th className="time-table-head">
-                            Image of Developer
+                            {role!=="developer"? "Image of Developer":"Image of Client"}
                         </th>
-                        {role==="developer" ?<th className="time-table-head">
-                           Client Name
-                        </th>:""}
+                        
                         {
                             headerColumn?.map((item, index) => {
                                 return (
@@ -47,9 +45,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                         <th className="time-table-head">
                             Status
                         </th>
-                        <th className="time-table-head">
+                       {selectedPeriod=="weekly"? <th className="time-table-head">
                             Time Report Submit
-                        </th>
+                        </th>:""}
                     </thead>
                     <tbody>
                         {
@@ -57,8 +55,8 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                                 return (
                                     <>
                                         <tr>
-                                            <td className="time-table-data">{item?.contractDetails?.developer_details?.name}</td>
-                                            <td className="time-table-data"><img src={item?.contractDetails?.developer_details?.profile_picture} className="developer-img" alt="" /></td>
+                                            <td className="time-table-data">{item?.contractDetails?.user_details?.name}</td>
+                                            <td className="time-table-data"><img src={item?.contractDetails?.user_details?.profile_picture} className="developer-img" alt="" /></td>
                                             {
                                                 item?.timeReports?.map((reprt) => {
                                                     if (reprt.report_date) {
@@ -83,12 +81,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
 
                                                 })
                                             }
-                                            <td className='time-table-data'>200 hrs</td>
+                                            <td className='time-table-data'></td>
                                             <td className="time-table-data">{item?.contractDetails?.employment_type}</td>
                                             <td className="time-table-data">
                                                 <span>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>
                                             </td>
-                                            <td className="time-table-data">
+                                            {selectedPeriod=="weekly"?<td className="time-table-data">
                                                 <RexettButton
                                                     type="submit"
                                                     text="Submit & Approved"
@@ -97,7 +95,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data,role }) => {
                                                     onClick={() => submitApproved(item?.contractDetails?.client_id,index)}
                                                     isLoading={selectedApprovedBtn===index?approvedLoader:false}
                                                 />
-                                            </td>
+                                            </td>:""}
                                         </tr>
                                     </>
                                 )
