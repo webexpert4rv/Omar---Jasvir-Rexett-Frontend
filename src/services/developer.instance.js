@@ -12,7 +12,6 @@ const developerInstance = axios.create({
 // Request Interceptor
 developerInstance.interceptors.request.use(
   (config) => {
-    localStorage.setItem("role", "developer");
     config.headers["Authorization"] =  `${getToken("developerToken")}`;
     return config;
   },

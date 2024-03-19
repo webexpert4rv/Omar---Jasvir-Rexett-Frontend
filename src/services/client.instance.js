@@ -11,7 +11,6 @@ const clientInstance = axios.create({
 // Request Interceptor
 clientInstance.interceptors.request.use(
   (config) => {
-    localStorage.setItem("role", "client");
     config.headers["Authorization"] = `${getToken("token")}`;
     return config;
   },

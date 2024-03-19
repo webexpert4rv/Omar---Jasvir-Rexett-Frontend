@@ -21,6 +21,7 @@ import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
 import { HiMiniUser } from "react-icons/hi2";
+import DocumentListView from "./DocumentListView";
 import { IoIosShareAlt } from "react-icons/io";
 import ShareModal from "./ShareModal";
 
@@ -64,7 +65,6 @@ const RexettDocuments = ({ currentRole }) => {
         setDelete({ isDelete: false, id: "" })
     };
 
-    console.log(allFilterValue, "allFilterValue")
     const toggleFolderView = (item) => {
         let data = {
             name: item?.s3_path,
@@ -88,7 +88,6 @@ const RexettDocuments = ({ currentRole }) => {
         dispatch(getFolderData(filterData, currentRole))
     }, [dispatch])
 
-    console.log(bradCrump, "bradCrump")
 
     const handleDownload = (url) => {
         const newTab = window.open(url, '_blank');
@@ -217,14 +216,14 @@ const RexettDocuments = ({ currentRole }) => {
 
                     <Row className="d-flex">
                         <Col md={3}>
-                            <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+                            <div className="d-flex flex-wrap align-items-center gap-2 mb-4">
                                 {/* <Button onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>+ New</Button> */}
                                 <div>
-                                    <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-4 cursor-pointer upload-btn">+ Create Folder</Form.Label>
+                                    <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-4 cursor-pointer upload-btn mb-0">+ Create Folder</Form.Label>
                                 </div>
                                 <div>
                                     {/* <Form.Control type="file" className="d-none" id="upload_file" onChange={handleFileUpload} /> */}
-                                    <Form.Label className="main-btn px-4 cursor-pointer upload-btn" onClick={() => setShow(true)}>+ Upload File</Form.Label>
+                                    <Form.Label className="main-btn px-4 cursor-pointer upload-btn mb-0" onClick={() => setShow(true)}>+ Upload File</Form.Label>
                                 </div>
                             </div>
                             <h3 className="section-head-sub">Filter</h3>
@@ -236,7 +235,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     </div>
                                     <div className="flex-none mb-2">
                                         <Form.Label className="common-label">Select Category</Form.Label>
-                                        <Form.Select className="filter-select shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
+                                        <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
                                             <option value="All">All</option>
                                             <option value="1">Contracts</option>
                                             <option value="3">Invoices</option>
@@ -244,7 +243,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     </div>
                                     <div className="flex-none mb-2">
                                         <Form.Label className="common-label">Select File Type</Form.Label>
-                                        <Form.Select className="filter-select shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
+                                        <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
                                             <option value="All">All</option>
                                             <option value="pdf">PDFs</option>
                                             <option value="doc">Documents</option>
@@ -254,7 +253,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     </div>
                                     <div className="flex-none mb-2">
                                         <Form.Label className="common-label">Shared By</Form.Label>
-                                        <Form.Select className="filter-select shadow-none">
+                                        <Form.Select className="filter-select width-full shadow-none">
                                             <option value="">Select</option>
                                             <option value="amazon">Amazon</option>
                                             <option value="volvo">Volvo</option>
@@ -285,7 +284,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     <Tab.Pane eventKey="grid-view">
                                         {showFolderView && search == '' ? <section className="folder-view">
                                             <div className="breadcrumb">
-                                                {bradCrump?.map((item) => {
+                                                {bradCrump?.map((item,index) => {
                                                     return (<>
                                                         <Link className="bread-link" onClick={() => bradCrumpHandle(item.parent_id)}>{item.name}</Link>
                                                         <span className="divider"> &gt; </span>
@@ -346,89 +345,7 @@ const RexettDocuments = ({ currentRole }) => {
                                         </div>}
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="list-view">
-                                        <div>
-                                            <div className="table-responsive">
-                                                <table className="table document-table">
-                                                    <thead>
-                                                        <th className="document-th filename-th">Name</th>
-                                                        <th className="document-th owner-th">Owner</th>
-                                                        <th className="document-th">Location</th>
-                                                        <th className="document-th">Action</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td className="document-data filename-data">
-                                                                <div className="d-flex gap-2 align-items-center">
-                                                                    <div className="file-icon">
-                                                                        <FaFilePdf />
-                                                                    </div>
-                                                                    PDF Presentation
-                                                                </div>
-                                                            </td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex align-items-center owner-icon gap-1">
-                                                                    <span className="me-icon"><HiMiniUser /></span><p className="mb-0">Me</p>
-                                                                </div>        
-                                                            </td>
-                                                            <td className="document-data">My Documents</td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex gap-3">
-                                                                    <button className="download-btn doc-action-btn"><FaDownload />
-                                                                    </button>
-                                                                    <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td className="document-data filename-data">
-                                                                <div className="d-flex gap-2 align-items-center">
-                                                                    <div className="file-icon">
-                                                                        <FaFilePdf />
-                                                                    </div>
-                                                                    PDF Presentation
-                                                                </div>
-                                                            </td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex align-items-center owner-icon gap-1">
-                                                                    <span className="share-user-icon">C</span><p className="mb-0 owner-email">client123@gmail.com</p>
-                                                                </div>        
-                                                            </td>
-                                                            <td className="document-data">Shared with me</td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex gap-3">
-                                                                    <button className="download-btn doc-action-btn"><FaDownload />
-                                                                    </button>
-                                                                    <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td className="document-data filename-data">
-                                                                <div className="d-flex gap-2 align-items-center">
-                                                                    <div className="folder-icon">
-                                                                        <FaFolder />
-                                                                    </div>
-                                                                    New Folder
-                                                                </div>
-                                                            </td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex align-items-center owner-icon gap-1">
-                                                                    <span className="me-icon"><HiMiniUser /></span><p className="mb-0">Me</p>
-                                                                </div>      
-                                                            </td>
-                                                            <td className="document-data">My Documents</td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex gap-3">
-                                                                    <button className="download-btn doc-action-btn"><FaDownload />
-                                                                    </button>
-                                                                    <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                     <DocumentListView/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Tab.Container>

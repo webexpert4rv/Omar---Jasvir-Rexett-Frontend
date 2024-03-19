@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
-import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import clientLogo from '../../assets/img/amazon.png'
 import { useDispatch, useSelector } from "react-redux";
 import { getDeveloperDashboard } from "../../redux/slices/developerDataSlice";
 const DeveloperDashboard = () => {
     const {developerDashboard}=useSelector(state=>state.developerData)
-    console.log(developerDashboard,"developerDashboard")
     const dispatch=useDispatch()
     useEffect(()=>{
      dispatch(getDeveloperDashboard())
@@ -77,7 +74,7 @@ const DeveloperDashboard = () => {
                 </Col>
                 <Col md={9}>
                     <div>
-                        <h2 className="section-head-sub mb-4">List of Clients who assigned Alfredo</h2>
+                        <h2 className="section-head-sub mb-4">List of Clients</h2>
 
                         <div>
                             <div className="table-responsive">
