@@ -6,7 +6,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm, useFieldArray } from "react-hook-form";
 import Select from 'react-select';
 
-const EducationCV = ({ show, handleClose, data }) => {
+const EducationCV = ({ show, handleClose, data,smallLoader }) => {
     const dispatch = useDispatch();
     const [disbaleYear, setDisbaleYear] = useState([]);
     const [renderModalData,setRenderModalData]=useState(data)
@@ -43,7 +43,6 @@ const EducationCV = ({ show, handleClose, data }) => {
         }
     }, [renderModalData]);
 
-    console.log(degreeList, "degreeList")
     useEffect(() => {
         dispatch(getDegreeList())
     }, [])
@@ -119,7 +118,6 @@ const EducationCV = ({ show, handleClose, data }) => {
             })
         
       };
-    console.log(errors, "errors")
     return (
         <Modal show={show} onHide={handleClose} centered scrollable animation size="lg">
             <Modal.Header closeButton>
@@ -257,7 +255,7 @@ const EducationCV = ({ show, handleClose, data }) => {
                             text="Submit"
                             className="main-btn px-4"
                             variant="transparent"
-                            isLoading={false}
+                            isLoading={smallLoader}
                         />
                     </div>
                 </form>

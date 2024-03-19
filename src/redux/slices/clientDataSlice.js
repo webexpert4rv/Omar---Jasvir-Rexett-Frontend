@@ -152,12 +152,17 @@ export function getClientProfile(payload, callback) {
 }
 
 
-export function timeReporting(payload, callback) {
+export function timeReporting(payload,role, callback) {
     return async (dispatch) => {
-
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload,`client/time-reports`))
+            let result
+            if(role==="client"){
+                 result = await clientInstance.get(generateApiUrl(payload,`client/time-reports`))
+            }else{
+                 result = await developerInstance.get(generateApiUrl(payload,`developer/time-reports`)) 
+            }
+           
             if (result.status === 200) {
                 dispatch(setTimeReporting(result.data.data))
             }
@@ -239,7 +244,7 @@ export function getSkillList(payload, callback) {
 
         // dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`client/skill-list`)
+            let result = await commanInstance.get(`common/skill-list`)
             if (result.status === 200) {
                 console.log(result,"redd")
                 dispatch(setSkillList(result.data.data))
@@ -258,7 +263,7 @@ export function getJobCategoryList(payload, callback) {
 
         // dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`client/job-category-list`)
+            let result = await commanInstance.get(`common/job-category-list`)
             if (result.status === 200) {
                 dispatch(setJobCategory(result.data.data))
             }
@@ -275,7 +280,7 @@ export function getAllJobPostedList(payload, callback) {
 
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`client/job-list`)
+            let result = await clientInstance.get(`client/job-list?page=${payload}`)
             if (result.status === 200) {
                 dispatch(setAllJobPostedList(result.data.data))
             }

@@ -11,7 +11,6 @@ const adminInstance = axios.create({
 // Request Interceptor
 adminInstance.interceptors.request.use(
   (config) => {
-    localStorage.setItem("role", "admin");
     config.headers["Authorization"] =  `${getToken("adminToken")}`;
     return config;
   },

@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
 import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
 import Login from './pages/Authentication/Login';
@@ -56,6 +56,8 @@ import NotificationVendor from './pages/vendor/NotificationVendor';
 import RegisterDeveloper from './pages/vendor/RegisterDeveloper';
 import ForgotPassword from './pages/Authentication/ForgotPassword';
 import ResetPassword from './pages/Authentication/ResetPassword';
+import Engagements from './pages/admin/Engagements';
+import Applications from './pages/admin/Applications';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -109,8 +111,10 @@ function App() {
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
-          <Route path="/admin-single-job" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
+          <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
+          <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} />
+          <Route path="/applications" exact element={<AdminDashboardLayout><Applications /></AdminDashboardLayout>} />
           <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
           <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
           <Route path="/vendor-revenue" exact element={<VendorDashboardLayout><VendorRevenue /></VendorDashboardLayout>} />

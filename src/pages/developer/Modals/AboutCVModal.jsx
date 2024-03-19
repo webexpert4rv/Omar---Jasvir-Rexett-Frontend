@@ -62,7 +62,7 @@ const AboutCV = ({ show, handleClose,data }) => {
                             <p className="error-message">
                                 {errors.bio?.message}
                             </p>
-                            <p>{maxChars - charCount} characters remaining</p>
+                            <p className="font-13 text-end">{maxChars - charCount} characters remaining</p>
                     </Form.Group>
                     <div className="text-center">
                         <RexettButton

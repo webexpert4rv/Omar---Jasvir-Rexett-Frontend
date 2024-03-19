@@ -1,358 +1,60 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row, Pagination, Tabs, Tab } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import amazonImg from '../../assets/img/amazon.png'
 import facebookImg from '../../assets/img/facebook.png'
+import { useDispatch, useSelector } from "react-redux";
+import { adminJobListing } from "../../redux/slices/adminDataSlice";
+import { getJobCategoryList } from "../../redux/slices/clientDataSlice";
+import JobTabs from "../../components/atomic/JobTabs";
 const AdminJobListing = () => {
+    const dispatch =useDispatch()
+    const {jobListing}=useSelector(state=>state.adminData)
+    const {jobCategoryList}=useSelector(state=>state.clientData)
+
+    useEffect(()=>{
+        dispatch(adminJobListing("1"))
+        dispatch(getJobCategoryList())
+    },[])
+
+    const handleSelect=(key)=>{
+
+        let filter={
+            type:key,
+            page:1
+        }
+        dispatch(adminJobListing(filter))
+    }
+
     return (
         <>
             <section className="job-posted-section">
                 <Tabs
-                    defaultActiveKey="all_job"
+                    defaultActiveKey="all"
                     id="justify-tab-example"
                     className="mb-3 notification-tabs"
                     justify
+                    onSelect={handleSelect}
                 >
-                    <Tab eventKey="all_job" title="All">
-                        <div className="job-posted-wrapper">
-                            <div className="job-posted-list">
-                                <div>
-                                    <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2>
-                                    <div>
-                                        <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                        <h4 className="job-category">Website Design</h4>
-                                        <div className="profile-req">
-                                            <p className="grid-text">1 - 2 years of exp</p>
-                                            <p className="grid-text">Hourly</p>
-                                            <p className="grid-text">Remote</p>
-                                        </div>
-                                        <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <Row>
-                                            <Col md="12">
-                                                <div className="info-grid">
-                                                    <h4 className="grid-heading">Skills Req.</h4>
-                                                    <ul className="skills-listing">
-                                                        <li>HTML</li>
-                                                        <li>CSS</li>
-                                                        <li>Bootstrap</li>
-                                                        <li>JavaScript</li>
-                                                        <li>jQuery</li>
-                                                        <li>Tailwind CSS</li>
-                                                        <li>Sass</li>
-                                                    </ul>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div className="status-wrapper">
-                                    <div>
-                                        <p className="newjob-status">New Job Post</p>
-                                    </div>
-                                    <p className="font-15">Posted Date: <strong>20-02-2023</strong></p>
-
-                                    <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                </div>
-                            </div>
-                            <div className="job-posted-list">
-                                <div>
-                                    <h2 className="jobclient-name"><img src={facebookImg} /> Facebook</h2>
-                                    <div>
-                                        <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                        <h4 className="job-category">Website Design</h4>
-                                        <div className="profile-req">
-                                            <p className="grid-text">1 - 2 years of exp</p>
-                                            <p className="grid-text">Hourly</p>
-                                            <p className="grid-text">Remote</p>
-                                        </div>
-                                        <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <Row>
-                                            <Col md="12">
-                                                <div className="info-grid">
-                                                    <h4 className="grid-heading">Skills Req.</h4>
-                                                    <ul className="skills-listing">
-                                                        <li>HTML</li>
-                                                        <li>CSS</li>
-                                                        <li>Bootstrap</li>
-                                                        <li>JavaScript</li>
-                                                        <li>jQuery</li>
-                                                        <li>Tailwind CSS</li>
-                                                        <li>Sass</li>
-                                                    </ul>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div className="status-wrapper">
-                                    <div>
-                                        <h3 className="status-heading">Status</h3>
-                                        <p className="status-text completed">Completed</p>
-                                    </div>
-
-                                    <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                </div>
-                            </div>
-                            <div className="job-posted-list">
-                                <div>
-                                    <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2>
-                                    <div>
-                                        <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                        <h4 className="job-category">Website Design</h4>
-                                        <div className="profile-req">
-                                            <p className="grid-text">1 - 2 years of exp</p>
-                                            <p className="grid-text">Hourly</p>
-                                            <p className="grid-text">Remote</p>
-                                        </div>
-                                        <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <Row>
-                                            <Col md="12">
-                                                <div className="info-grid">
-                                                    <h4 className="grid-heading">Skills Req.</h4>
-                                                    <ul className="skills-listing">
-                                                        <li>HTML</li>
-                                                        <li>CSS</li>
-                                                        <li>Bootstrap</li>
-                                                        <li>JavaScript</li>
-                                                        <li>jQuery</li>
-                                                        <li>Tailwind CSS</li>
-                                                        <li>Sass</li>
-                                                    </ul>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div className="status-wrapper">
-                                    <div>
-                                        <h3 className="status-heading">Status</h3>
-                                        <p className="status-text endcontract">End Job</p>
-                                    </div>
-
-                                    <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                </div>
-                            </div>
-                            <div className="job-posted-wrapper">
-                                <div className="job-posted-list">
-                                    <div>
-                                        <h2 className="jobclient-name"><img src={facebookImg} /> Facebook</h2>
-                                        <div>
-                                            <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                            <h4 className="job-category">Website Design</h4>
-                                            <div className="profile-req">
-                                                <p className="grid-text">1 - 2 years of exp</p>
-                                                <p className="grid-text">Hourly</p>
-                                                <p className="grid-text">Remote</p>
-                                            </div>
-                                            <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                            <Row>
-                                                <Col md="12">
-                                                    <div className="info-grid">
-                                                        <h4 className="grid-heading">Skills Req.</h4>
-                                                        <ul className="skills-listing">
-                                                            <li>HTML</li>
-                                                            <li>CSS</li>
-                                                            <li>Bootstrap</li>
-                                                            <li>JavaScript</li>
-                                                            <li>jQuery</li>
-                                                            <li>Tailwind CSS</li>
-                                                            <li>Sass</li>
-                                                        </ul>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </div>
-                                    <div className="status-wrapper">
-                                        <div>
-                                            <h3 className="status-heading">Status</h3>
-                                            <p className="status-text inprogress">In Progress</p>
-                                        </div>
-                                        <p className="font-15">Posted Date: <strong>20-02-2023</strong></p>
-
-                                        <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <Tab eventKey="all" title="All">
+                       <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
                     </Tab>
-                    <Tab eventKey="new_post_job" title="New Job Posts">
-                        <div className="job-posted-wrapper">
-                            <div className="job-posted-list">
-                                <div>
-                                    <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2>
-                                    <div>
-                                        <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                        <h4 className="job-category">Website Design</h4>
-                                        <div className="profile-req">
-                                            <p className="grid-text">1 - 2 years of exp</p>
-                                            <p className="grid-text">Hourly</p>
-                                            <p className="grid-text">Remote</p>
-                                        </div>
-                                        <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <Row>
-                                            <Col md="12">
-                                                <div className="info-grid">
-                                                    <h4 className="grid-heading">Skills Req.</h4>
-                                                    <ul className="skills-listing">
-                                                        <li>HTML</li>
-                                                        <li>CSS</li>
-                                                        <li>Bootstrap</li>
-                                                        <li>JavaScript</li>
-                                                        <li>jQuery</li>
-                                                        <li>Tailwind CSS</li>
-                                                        <li>Sass</li>
-                                                    </ul>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div className="status-wrapper">
-                                    <div>
-                                        <p className="newjob-status">New Job Post</p>
-                                    </div>
-                                    <p className="font-15">Posted Date: <strong>20-02-2023</strong></p>
-
-                                    <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                </div>
-                            </div>
-                        </div>
+                    <Tab eventKey="new" title="New Job Posts">
+                    <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
                     </Tab>
-                    <Tab eventKey="inprogress_job" title="In Progress">
-                        <div className="job-posted-wrapper">
-                            <div className="job-posted-list">
-                                <div>
-                                    <h2 className="jobclient-name"><img src={facebookImg} /> Facebook</h2>
-                                    <div>
-                                        <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                        <h4 className="job-category">Website Design</h4>
-                                        <div className="profile-req">
-                                            <p className="grid-text">1 - 2 years of exp</p>
-                                            <p className="grid-text">Hourly</p>
-                                            <p className="grid-text">Remote</p>
-                                        </div>
-                                        <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <Row>
-                                            <Col md="12">
-                                                <div className="info-grid">
-                                                    <h4 className="grid-heading">Skills Req.</h4>
-                                                    <ul className="skills-listing">
-                                                        <li>HTML</li>
-                                                        <li>CSS</li>
-                                                        <li>Bootstrap</li>
-                                                        <li>JavaScript</li>
-                                                        <li>jQuery</li>
-                                                        <li>Tailwind CSS</li>
-                                                        <li>Sass</li>
-                                                    </ul>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div className="status-wrapper">
-                                    <div>
-                                        <h3 className="status-heading">Status</h3>
-                                        <p className="status-text inprogress">In Progress</p>
-                                    </div>
-                                    <p className="font-15">Posted Date: <strong>20-02-2023</strong></p>
-
-                                    <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                </div>
-                            </div>
-                        </div>
+                    <Tab eventKey="in-progress" title="In Progress">
+                    <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
                     </Tab>
-                    <Tab eventKey="completed_jobs" title="Completed">
-                        <div className="job-posted-wrapper">
-                            <div className="job-posted-list">
-                                <div>
-                                    <h2 className="jobclient-name"><img src={facebookImg} /> Facebook</h2>
-                                    <div>
-                                        <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                        <h4 className="job-category">Website Design</h4>
-                                        <div className="profile-req">
-                                            <p className="grid-text">1 - 2 years of exp</p>
-                                            <p className="grid-text">Hourly</p>
-                                            <p className="grid-text">Remote</p>
-                                        </div>
-                                        <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <Row>
-                                            <Col md="12">
-                                                <div className="info-grid">
-                                                    <h4 className="grid-heading">Skills Req.</h4>
-                                                    <ul className="skills-listing">
-                                                        <li>HTML</li>
-                                                        <li>CSS</li>
-                                                        <li>Bootstrap</li>
-                                                        <li>JavaScript</li>
-                                                        <li>jQuery</li>
-                                                        <li>Tailwind CSS</li>
-                                                        <li>Sass</li>
-                                                    </ul>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div className="status-wrapper">
-                                    <div>
-                                        <h3 className="status-heading">Status</h3>
-                                        <p className="status-text completed">Completed</p>
-                                    </div>
-
-                                    <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                </div>
-                            </div>
-                        </div>
+                    <Tab eventKey="completed" title="Completed">
+                    <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
                     </Tab>
-                    <Tab eventKey="end_jobs" title="End Jobs">
-                        <div className="job-posted-wrapper">
-                            <div className="job-posted-list">
-                                <div>
-                                    <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2>
-                                    <div>
-                                        <h2 className="job-title">Want to Convert Figma to HTML</h2>
-                                        <h4 className="job-category">Website Design</h4>
-                                        <div className="profile-req">
-                                            <p className="grid-text">1 - 2 years of exp</p>
-                                            <p className="grid-text">Hourly</p>
-                                            <p className="grid-text">Remote</p>
-                                        </div>
-                                        <p className="job-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <Row>
-                                            <Col md="12">
-                                                <div className="info-grid">
-                                                    <h4 className="grid-heading">Skills Req.</h4>
-                                                    <ul className="skills-listing">
-                                                        <li>HTML</li>
-                                                        <li>CSS</li>
-                                                        <li>Bootstrap</li>
-                                                        <li>JavaScript</li>
-                                                        <li>jQuery</li>
-                                                        <li>Tailwind CSS</li>
-                                                        <li>Sass</li>
-                                                    </ul>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div className="status-wrapper">
-                                    <div>
-                                        <h3 className="status-heading">Status</h3>
-                                        <p className="status-text endcontract">End Job</p>
-                                    </div>
-
-                                    <Link to={'/admin-single-job'} className="px-3 mb-2 main-btn text-decoration-none"><FaEye /></Link>
-                                </div>
-                            </div>
-                        </div>
+                    <Tab eventKey="ended" title="End Jobs">
+                    <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
                     </Tab>
                 </Tabs>
             </section>
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            {/* <div className="d-flex justify-content-between align-items-center mb-4">
                 <p className="showing-result">Showing 1 - 10 results</p>
                 <Pagination className="custom-pagination">
                     <Pagination.Prev className="custom-pagination-item custom-pagination-arrow" />
@@ -365,7 +67,7 @@ const AdminJobListing = () => {
                     <Pagination.Item className="custom-pagination-item">{10}</Pagination.Item>
                     <Pagination.Next className="custom-pagination-item custom-pagination-arrow" />
                 </Pagination>
-            </div>
+            </div> */}
         </>
     )
 }

@@ -41,7 +41,7 @@ const EditTimeModal = ({ show, handleClose, data ,smallLoader}) => {
                                     data?.map((item) => {
                                         return (
                                             <React.Fragment key={item?.contractDetails?.contract_id}>
-                                                <option value={item?.contractDetails?.contract_id}>{item?.contractDetails?.developer_details?.name}</option>
+                                                <option value={item?.contractDetails?.contract_id}>{item?.contractDetails?.user_details?.name}</option>
                                             </React.Fragment>
                                         )
                                     })

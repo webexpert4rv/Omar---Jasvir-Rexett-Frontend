@@ -33,6 +33,27 @@ const AdminDashboard = () => {
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
+                <div className="overview-card">
+                    <div>
+                        <h4 className="overview-card-subhead">Client Joined</h4>
+                        <h3 className="overview-card-heading mb-0">100</h3>
+                    </div>
+                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                </div>
+                <div className="overview-card">
+                    <div>
+                        <h4 className="overview-card-subhead">Vendor Joined</h4>
+                        <h3 className="overview-card-heading mb-0">50</h3>
+                    </div>
+                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                </div>
+                <div className="overview-card">
+                    <div>
+                        <h4 className="overview-card-subhead">Total Jobs Posted</h4>
+                        <h3 className="overview-card-heading mb-0">500</h3>
+                    </div>
+                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                </div>
             </div>
             <Row className="mb-5">
                 <Col md={8}>

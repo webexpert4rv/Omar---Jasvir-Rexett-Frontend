@@ -11,6 +11,8 @@ import { FaFileInvoice } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { FaListUl } from "react-icons/fa6";
+import { PiUsersFourFill } from "react-icons/pi";
+import { RiFileCopy2Fill } from "react-icons/ri";
 
 const AdminSidebar = ({ sideBarActive }) => {
     return(
@@ -27,6 +29,15 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> List of clients</NavLink>
                             </li>
                             <li className="sidebar-item">
+                                <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">Applications <span className="new-app bg-white font-green">20</span></span></NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={"/engagements"} className="side-link" activeClassName="active"><PiUsersFourFill /> Engagements</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> Job Listing</NavLink>
+                            </li>
+                            <li className="sidebar-item">
                                 <NavLink to={"/edit-admin-profile"} className="side-link" activeClassName="active"><IoIosSettings /> Edit Profile</NavLink>
                             </li>
                             <li className="sidebar-item">
@@ -36,14 +47,11 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/admin-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> Job Listing</NavLink>
-                            </li>
-                            <li className="sidebar-item">
                                 <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> Revenue</NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/admin-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                     <div className="w-100 px-3">
