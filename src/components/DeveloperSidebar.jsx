@@ -11,8 +11,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 
 const AdminSidebar = ({sideBarActive}) => {
     const logout=()=>{
-        localStorage.removeItem("developerToken")
-        localStorage.removeItem("developerRefreshToken")
+       localStorage.clear()
         window.location.href="/developer-login"
     }
     return(

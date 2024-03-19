@@ -15,8 +15,7 @@ export function getToken(tokenKey) {
   
   export function getCurrentRole() {
   
-   let role= localStorage.getItem("role");
- let token= role==="client"? getToken("token") :role=="admin"?getToken("adminToken"): getToken("developerToken")
+   let token= getToken("token")
 
    return token
   }

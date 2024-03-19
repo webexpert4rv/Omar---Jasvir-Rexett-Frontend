@@ -21,6 +21,7 @@ import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
 import { HiMiniUser } from "react-icons/hi2";
+import DocumentListView from "./DocumentListView";
 
 const RexettDocuments = ({ currentRole }) => {
     const [open, setOpen] = useState(false);
@@ -54,7 +55,6 @@ const RexettDocuments = ({ currentRole }) => {
         setDelete({ isDelete: false, id: "" })
     };
 
-    console.log(allFilterValue, "allFilterValue")
     const toggleFolderView = (item) => {
         let data = {
             name: item?.s3_path,
@@ -78,7 +78,6 @@ const RexettDocuments = ({ currentRole }) => {
         dispatch(getFolderData(filterData, currentRole))
     }, [dispatch])
 
-    console.log(bradCrump, "bradCrump")
 
     const handleDownload = (url) => {
         const newTab = window.open(url, '_blank');
@@ -275,7 +274,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     <Tab.Pane eventKey="grid-view">
                                         {showFolderView && search == '' ? <section className="folder-view">
                                             <div className="breadcrumb">
-                                                {bradCrump?.map((item) => {
+                                                {bradCrump?.map((item,index) => {
                                                     return (<>
                                                         <Link className="bread-link" onClick={() => bradCrumpHandle(item.parent_id)}>{item.name}</Link>
                                                         <span className="divider"> &gt; </span>
@@ -335,89 +334,7 @@ const RexettDocuments = ({ currentRole }) => {
                                         </div>}
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="list-view">
-                                        <div>
-                                            <div className="table-responsive">
-                                                <table className="table document-table">
-                                                    <thead>
-                                                        <th className="document-th filename-th">Name</th>
-                                                        <th className="document-th owner-th">Owner</th>
-                                                        <th className="document-th location-th">Location</th>
-                                                        <th className="document-th action-th">Action</th>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td className="document-data filename-data">
-                                                                <div className="d-flex gap-2 align-items-center">
-                                                                    <div className="file-icon">
-                                                                        <FaFilePdf />
-                                                                    </div>
-                                                                    PDF Presentation
-                                                                </div>
-                                                            </td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex align-items-center owner-icon gap-1">
-                                                                    <span className="me-icon"><HiMiniUser /></span><p className="mb-0">Me</p>
-                                                                </div>        
-                                                            </td>
-                                                            <td className="document-data">My Documents</td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex gap-3">
-                                                                    <button className="download-btn doc-action-btn"><FaDownload />
-                                                                    </button>
-                                                                    <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td className="document-data filename-data">
-                                                                <div className="d-flex gap-2 align-items-center">
-                                                                    <div className="file-icon">
-                                                                        <FaFilePdf />
-                                                                    </div>
-                                                                    PDF Presentation
-                                                                </div>
-                                                            </td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex align-items-center owner-icon gap-1">
-                                                                    <span className="share-user-icon">C</span><p className="mb-0 owner-email">client123@gmail.com</p>
-                                                                </div>        
-                                                            </td>
-                                                            <td className="document-data">Shared with me</td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex gap-3">
-                                                                    <button className="download-btn doc-action-btn"><FaDownload />
-                                                                    </button>
-                                                                    <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td className="document-data filename-data">
-                                                                <div className="d-flex gap-2 align-items-center">
-                                                                    <div className="folder-icon">
-                                                                        <FaFolder />
-                                                                    </div>
-                                                                    New Folder
-                                                                </div>
-                                                            </td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex align-items-center owner-icon gap-1">
-                                                                    <span className="me-icon"><HiMiniUser /></span><p className="mb-0">Me</p>
-                                                                </div>      
-                                                            </td>
-                                                            <td className="document-data">My Documents</td>
-                                                            <td className="document-data">
-                                                                <div className="d-flex gap-3">
-                                                                    <button className="download-btn doc-action-btn"><FaDownload />
-                                                                    </button>
-                                                                    <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                     <DocumentListView/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Tab.Container>

@@ -64,7 +64,6 @@ const AddTimingModal = ({ show, handleClose }) => {
         
     }, [timeReportingData]);
 
-console.log(timeReportingData,"timeReportingData")
 
 const handleWorkDaysChange = (e,index,state) => {
     if(state){
@@ -78,10 +77,8 @@ const handleWorkDaysChange = (e,index,state) => {
     }
     
 }
-console.log(disabledWorkDay,"disabledWorkDay")
 
     const onSubmit=(values)=>{
-console.log(values,"hhhh")
 let payloadData={
     contract_id:+selectedFilter?.contract_id,
      reports:values?.addTime
