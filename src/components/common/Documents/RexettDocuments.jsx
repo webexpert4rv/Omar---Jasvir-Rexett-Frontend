@@ -21,9 +21,9 @@ import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
 import { HiMiniUser } from "react-icons/hi2";
+import DocumentListView from "./DocumentListView";
 import { IoIosShareAlt } from "react-icons/io";
 import ShareModal from "./ShareModal";
-import DocumentListView from "./DocumentListView";
 
 const RexettDocuments = ({ currentRole }) => {
     const [open, setOpen] = useState(false);
