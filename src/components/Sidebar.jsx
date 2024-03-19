@@ -15,8 +15,7 @@ import { FaListUl } from "react-icons/fa6";
 
 const Sidebar = ({sideBarActive}) => {
     const logout=()=>{
-        localStorage.removeItem("token")
-        localStorage.removeItem("refreshToken")
+     localStorage.clear()
         window.location.href="/"
     }
     return(

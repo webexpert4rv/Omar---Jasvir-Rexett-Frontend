@@ -16,7 +16,7 @@ const DeveloperTimeReporting = () => {
             ...selectedFilter,
             filter: selectedPeriod
         }
-        dispatch(timeReporting(filterData))
+        dispatch(timeReporting(filterData,"developer"))
     }, [dispatch])
 
     const handleShowModal = () => {
@@ -30,7 +30,7 @@ const DeveloperTimeReporting = () => {
     return (
         <>
             <RexettTimeReporting  timeReportingData={timeReportingData} handleShowModal={handleShowModal} role="developer"/>
-            <AddTimingModal show={showModal} handleClose={handleCloseAddTimingModal} />
+            {showModal?<AddTimingModal show={showModal} handleClose={handleCloseAddTimingModal} />:""}
         </>
     )
 }

@@ -244,7 +244,7 @@ export function getSkillList(payload, callback) {
 
         // dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`client/skill-list`)
+            let result = await commanInstance.get(`common/skill-list`)
             if (result.status === 200) {
                 console.log(result,"redd")
                 dispatch(setSkillList(result.data.data))

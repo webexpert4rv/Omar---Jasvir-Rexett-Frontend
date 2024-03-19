@@ -12,7 +12,9 @@ const initialDeveloperData = {
     developerProfileData:{},
     developerDashboard:{},
     degreeList:[],
-    developerTimeReports:[]
+    developerTimeReports:[],
+    addTimeReports:[],
+    allContracts:[]
 }
 
 export const developerDataSlice = createSlice({
@@ -34,6 +36,10 @@ export const developerDataSlice = createSlice({
             state.developerCvData=action.payload
             state.smallLoader = false;
         },
+        setAddTimeReports: (state, action) => {
+            state.addTimeReports=action.payload
+            state.smallLoader = false;
+        },
         setSuccessProfileData: (state, action) => {
             state.developerProfileData=action.payload
         },
@@ -46,7 +52,11 @@ export const developerDataSlice = createSlice({
             state.smallLoader = false;
             state.developerTimeReports=action.payload
         },
-
+        setAllContracts: (state, action) => {
+            state.smallLoader = false;
+            state.allContracts=action.payload
+        },
+    
         setFailDeveloperData: (state, action) => {
             state.smallLoader = false;
             state.btnLoader = false
@@ -66,7 +76,7 @@ export const developerDataSlice = createSlice({
     }
 })
 
-export const { setSmallLoader,setScreenLoader,setDeveloperTimeReports,setSuccessActionData,setBtnLoader, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader,setScreenLoader,setAllContracts,setDeveloperTimeReports,setAddTimeReports,setSuccessActionData,setBtnLoader, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
@@ -355,6 +365,58 @@ export function developertimeReporting(payload, callback) {
             let result = await developerInstance.get(generateApiUrl(payload,`developer/time-reports`))
             if (result.status === 200) {
                 dispatch(setDeveloperTimeReports(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function getPreviousTimeReports(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.get(generateApiUrl(payload,`developer/get-previous-report`))
+            if (result.status === 200) {
+                dispatch(setAddTimeReports(result.data.data.timeReports))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+
+export function getAllContracts(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.get(`developer/contracts`)
+            if (result.status === 200) {
+               dispatch(setAllContracts(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function saveTimeReports(payload) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.post(`developer/add-time-reports`,{...payload})
+            if (result.status === 200) {
+            //    dispatch(setAllContracts(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
