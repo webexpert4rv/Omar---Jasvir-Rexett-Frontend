@@ -2130,6 +2130,57 @@ input[type="radio"]:checked
     background-color: #fff;
     color: #11998E;
 }
+.access-list li
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.access-list li:last-child
+{
+    margin-bottom: 0px;
+}
+.letter-indicator
+{
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #11998E;
+    color: #fff;
+    font-size: 13px;
+}
+.img-profile img
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.access-heading
+{
+    font-size: 20px;
+}
+.owner-name
+{
+    display: block;
+    font-weight: 500;
+}
+.owner-email
+{
+    color: #333;
+    line-height: normal;
+    margin-bottom: 0px;
+}
+.owner-text
+{
+    font-size: 15px;
+    color: #aaa;
+
+}
 @media only screen and (max-width: 992px)
 {
     .about-info
