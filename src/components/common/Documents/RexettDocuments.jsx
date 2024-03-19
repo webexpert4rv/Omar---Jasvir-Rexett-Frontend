@@ -21,6 +21,8 @@ import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
 import { HiMiniUser } from "react-icons/hi2";
+import { IoIosShareAlt } from "react-icons/io";
+import ShareModal from "./ShareModal";
 import DocumentListView from "./DocumentListView";
 
 const RexettDocuments = ({ currentRole }) => {
@@ -30,6 +32,7 @@ const RexettDocuments = ({ currentRole }) => {
     const [editFolderName, setEditFolderName] = useState({})
     const [showFolderView, setShowFolderView] = useState(false);
     const [currentFolderDetails, setCurrentFolderDetails] = useState({})
+    const [sharefileModal , setShareFileModal] = useState(false);
     const [show, setShow] = useState(false)
     const [isDelete, setDelete] = useState({ isDelete: false, id: "" })
     const [timerValue, setTimerValue] = useState("");
@@ -48,6 +51,13 @@ const RexettDocuments = ({ currentRole }) => {
 
         }
     };
+    
+    const handleShowShareFileModal = () => {
+        setShareFileModal(true);
+    }
+    const handleCloseShareFileModal = () => {
+        setShareFileModal(false)
+    }
 
     const handleCloseUploadFileModal = () => {
         setShowUploadFileModal(false);
@@ -303,6 +313,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                         <div className="doc-action">
                                                                             <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "folder")}><FaTrashCan /></button>
                                                                             <button className="view-btn doc-action-btn" onClick={() => handleShowUploadFileModal(item.id, item?.s3_path)}><MdEdit /></button>
+                                                                            <button onClick={handleShowShareFileModal} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
                                                                         </div>
 
                                                                     </div>
@@ -344,6 +355,7 @@ const RexettDocuments = ({ currentRole }) => {
             </section>
             <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} currentRole={currentRole} />
             <RexettUploadFile show={show} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} currentRole={currentRole} />
+            <ShareModal show={sharefileModal} handleClose={handleCloseShareFileModal} />
             <ConfirmationModal
                 text={isDelete?.name == "folder" ? `Deleting this folder will also delete all the files and subfolders contained within it` : `Are you sure to delete this ${isDelete?.name}?`}
                 show={isDelete?.isDelete} handleClose={handleCloseUploadFileModal} onClick={handleDelete}
