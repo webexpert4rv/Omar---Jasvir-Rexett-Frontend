@@ -9,13 +9,14 @@ const DashboardLayout = ({ children }) => {
         isSidebarWrapper(!sidebarwrapper)
     }
     let token=getToken("token");
+    const role=localStorage.getItem("role")
     return (
         <>
             <div className="dashboard-layout">
                 <Sidebar sidebarwrapper={sidebarwrapper} />
                 <main className='main-wrapper'>
                     <Navigation onClick={handleSidebar} />
-                    {token?children:<Navigate to="/"/> }
+                    {token && role=="client"?children:<Navigate to="/"/> }
                 </main>
             </div>
         </>

@@ -160,7 +160,7 @@ export function timeReporting(payload,role, callback) {
             if(role==="client"){
                  result = await clientInstance.get(generateApiUrl(payload,`client/time-reports`))
             }else{
-                 result = await developerInstance.get(generateApiUrl(payload,`developer/time-reports`)) 
+                 result = await clientInstance.get(generateApiUrl(payload,`developer/time-reports`)) 
             }
            
             if (result.status === 200) {
@@ -187,7 +187,7 @@ export function getFolderData(payload, role, callback) {
             }else if(role=="client"){
                 result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
             }else{
-                result = await adminInstance.get(generateApiUrl(payload,`admin/documents`))  
+                result = await clientInstance.get(generateApiUrl(payload,`admin/documents`))  
             }
             if (result.status === 200) {
                 console.log(result,"redd")
@@ -244,7 +244,7 @@ export function getSkillList(payload, callback) {
 
         // dispatch(setSmallLoader())
         try {
-            let result = await commanInstance.get(`common/skill-list`)
+            let result = await clientInstance.get(`common/skill-list`)
             if (result.status === 200) {
                 console.log(result,"redd")
                 dispatch(setSkillList(result.data.data))
@@ -263,7 +263,7 @@ export function getJobCategoryList(payload, callback) {
 
         // dispatch(setSmallLoader())
         try {
-            let result = await commanInstance.get(`common/job-category-list`)
+            let result = await clientInstance.get(`common/job-category-list`)
             if (result.status === 200) {
                 dispatch(setJobCategory(result.data.data))
             }
@@ -352,7 +352,7 @@ export function filePreassignedUrlGenerate(payload,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await commanInstance.post(`common/upload-file`,payload)
+            let result = await clientInstance.post(`common/upload-file`,payload)
                 dispatch(setActionSuccessFully())
                 // toast.success("Folder Created successfully", { position: "top-center" })
                 return callback(result?.data?.data.Location)
@@ -394,7 +394,7 @@ export function createNewFolderAndFile(payload,callback) {
         try {
             let result;
 
-                result = await commanInstance.post(`common/documents/create-folder-or-file`,{...payload})
+                result = await clientInstance.post(`common/documents/create-folder-or-file`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Created successfully", { position: "top-center" })
                 console.log(result,"rrr")
@@ -412,7 +412,7 @@ export function renameFolderAndFile(payload,id,callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await commanInstance.put(`common/documents/${id}/rename-folder`,{...payload})
+            let result = await clientInstance.put(`common/documents/${id}/rename-folder`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Updated successfully", { position: "top-center" })
                 console.log(result,"rrr")

@@ -3,6 +3,7 @@ import authInstance from '../../services/auth.instance';
 import { toast } from 'react-toastify';
 import adminInstance from '../../services/admin.instance';
 import { generateApiUrl } from '../../helper/utlis';
+import clientInstance from '../../services/client.instance';
 
 const initialAdminData = {
     screenLoader: false,
@@ -71,7 +72,7 @@ export function adminListClients(payload, callback) {
 
         dispatch(setScreenLoader())
         try {
-            let result = await adminInstance.get(`admin/clients`,{...payload})
+            let result = await clientInstance.get(`admin/clients`,{...payload})
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
                 dispatch(setSuccessAdminListClient(result.data.data.clients))
@@ -96,7 +97,7 @@ export function adminListAssignedDeveloper(payload, callback) {
 
         dispatch(setScreenLoader())
         try {
-            let result = await adminInstance.get(`admin/developers`,{...payload})
+            let result = await clientInstance.get(`admin/developers`,{...payload})
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
                 dispatch(setSuccessAdminAssignedDeveloper(result.data.data.developers))
@@ -120,7 +121,7 @@ export function getAdminProfile(payload, callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await adminInstance.get('admin/profile')
+            let result = await clientInstance.get('admin/profile')
             if (result.status === 200) {
                 console.log(result,"redd")
                 dispatch(setSuccessProfileData(result.data))
@@ -136,7 +137,7 @@ export function updateAdminProfile(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await adminInstance.post('admin/update-profile/',{...payload})
+            let result = await clientInstance.post('admin/update-profile/',{...payload})
             if (result.status === 200) {
                 toast.success("Profile is Updated Successfully", { position: "top-center" })
                 dispatch(setSuccessAdminData())
@@ -153,7 +154,7 @@ export function adminJobListing(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await adminInstance.get(generateApiUrl(payload,`admin/job-list`))
+            let result = await clientInstance.get(generateApiUrl(payload,`admin/job-list`))
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successfully", { position: "top-center" })
                 dispatch(setSuccessAdminJobListing(result.data.data))
@@ -170,7 +171,7 @@ export function adminSingleJob(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await adminInstance.get(`admin/job-detail/${payload}`)
+            let result = await clientInstance.get(`admin/job-detail/${payload}`)
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSingleJobListing(result.data))

@@ -97,7 +97,7 @@ const RexettDocuments = ({ currentRole }) => {
         }
     }
 
-    const generateFileImage = (url) => {
+     const generateFileImage = (url) => {
         let fileName = url?.split("/")
         let splitWithDot = fileName[fileName.length - 1]
         let fileExtWithDot = splitWithDot.split(".")
@@ -334,7 +334,7 @@ const RexettDocuments = ({ currentRole }) => {
                                         </div>}
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="list-view">
-                                     <DocumentListView/>
+                                     <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Tab.Container>
