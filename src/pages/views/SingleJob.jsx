@@ -33,6 +33,7 @@ const SingleJob = () => {
     }
     },[])
 
+
     useEffect(()=>{
         setSingleJobDescription(jobPostedData?.data)
     },[jobPostedData])
@@ -61,7 +62,7 @@ const SingleJob = () => {
             setCurrnetTabsStatus("shortlisted")
         }
         if(key=="shortlisted"){
-            setCurrnetTabsStatus("interviewing") 
+            setCurrnetTabsStatus("interviewing")
         }
         if(key=="interviewing"){
             setCurrnetTabsStatus("hired") 

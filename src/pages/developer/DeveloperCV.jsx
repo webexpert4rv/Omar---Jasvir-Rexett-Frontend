@@ -212,8 +212,8 @@ const DeveloperCV = () => {
                 </div>
             </section>
             <AboutCV show={showModal} handleClose={handleCloseModal} data={developerCvData?.developer_detail?.bio} />
-           {showExperienceModal? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={developerCvData?.developer_experiences} />:""}
-            {showEducationModal?<EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations} />:""}
+           {showExperienceModal? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={developerCvData?.developer_experiences} smallLoader={smallLoader} />:""}
+            {showEducationModal?<EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations}  smallLoader={smallLoader}/>:""}
            {showSkillsModal? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} />:""}
             {showSocialMediaModal?<SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={developerCvData?.social_links}/>:""}
             <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={developerCvData?.developer_detail?.professional_title} name={developerCvData?.name} profile={developerCvData?.profile_picture} smallLoader={smallLoader} />

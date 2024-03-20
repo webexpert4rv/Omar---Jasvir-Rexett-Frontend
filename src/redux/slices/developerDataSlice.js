@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import authInstance from '../../services/auth.instance';
 import { toast } from 'react-toastify';
 import developerInstance from '../../services/developer.instance';
+import { generateApiUrl } from '../../helper/utlis';
 
 const initialDeveloperData = {
     btnLoader:false,
@@ -10,7 +11,10 @@ const initialDeveloperData = {
     developerCvData:{},
     developerProfileData:{},
     developerDashboard:{},
-    degreeList:[]
+    degreeList:[],
+    developerTimeReports:[],
+    addTimeReports:[],
+    allContracts:[]
 }
 
 export const developerDataSlice = createSlice({
@@ -32,6 +36,10 @@ export const developerDataSlice = createSlice({
             state.developerCvData=action.payload
             state.smallLoader = false;
         },
+        setAddTimeReports: (state, action) => {
+            state.addTimeReports=action.payload
+            state.smallLoader = false;
+        },
         setSuccessProfileData: (state, action) => {
             state.developerProfileData=action.payload
         },
@@ -40,7 +48,15 @@ export const developerDataSlice = createSlice({
             state.smallLoader = false;
             state.btnLoader=false
         },
-
+        setDeveloperTimeReports: (state, action) => {
+            state.smallLoader = false;
+            state.developerTimeReports=action.payload
+        },
+        setAllContracts: (state, action) => {
+            state.smallLoader = false;
+            state.allContracts=action.payload
+        },
+    
         setFailDeveloperData: (state, action) => {
             state.smallLoader = false;
             state.btnLoader = false
@@ -54,12 +70,13 @@ export const developerDataSlice = createSlice({
         setDegreeList:(state, action) => {
             let data=action?.payload?.map((item)=>{return{label:item.title,value:item.id}});
             state.degreeList = data;
+            state.smallLoader = false;
         },
 
     }
 })
 
-export const { setSmallLoader,setScreenLoader,setSuccessActionData,setBtnLoader, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader,setScreenLoader,setAllContracts,setDeveloperTimeReports,setAddTimeReports,setSuccessActionData,setBtnLoader, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
@@ -192,7 +209,7 @@ export function addDeveloperCvExperience(payload, callback) {
 
 export function deleteExperience(payload, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        //  dispatch(setSmallLoader())
         try {
             let result = await developerInstance.delete(`developer/delete-experience/${payload}`)
             if (result.status === 200) {
@@ -265,7 +282,7 @@ export function getDegreeList(payload,callback) {
 
 export function deleteEducationCv(payload, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        //  dispatch(setSmallLoader())
         try {
             let result = await developerInstance.delete(`developer/delete-education/${payload}`)
             if (result.status === 200) {
@@ -340,4 +357,71 @@ export function updateDeveloperCvDetails(payload, callback) {
     };
 }
 
+export function developertimeReporting(payload, callback) {
+    return async (dispatch) => {
 
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.get(generateApiUrl(payload,`developer/time-reports`))
+            if (result.status === 200) {
+                dispatch(setDeveloperTimeReports(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function getPreviousTimeReports(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.get(generateApiUrl(payload,`developer/get-previous-report`))
+            if (result.status === 200) {
+                dispatch(setAddTimeReports(result.data.data.timeReports))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+
+export function getAllContracts(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.get(`developer/contracts`)
+            if (result.status === 200) {
+               dispatch(setAllContracts(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+export function saveTimeReports(payload) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await developerInstance.post(`developer/add-time-reports`,{...payload})
+            if (result.status === 200) {
+            //    dispatch(setAllContracts(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}

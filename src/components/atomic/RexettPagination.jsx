@@ -1,23 +1,32 @@
-import React from 'react'
-import { Pagination } from 'react-bootstrap'
+import React from "react";
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 
 const RexettPagination = () => {
+
+  //  const handlePageClick = (value) => {
+  //   const updatedFilter = {
+  //     ...activeFilter,
+  //     pageNumber: value,
+  //     page:value, // Update the pageNumber here
+  //   };
+  //   setActiveFilter(updatedFilter);
+  // };
+
   return (
     <div className="d-flex justify-content-between align-items-center mb-4">
-    <p className="showing-result">Showing 1 - 10 results</p>
-    <Pagination className="custom-pagination">
-        <Pagination.Prev className="custom-pagination-item custom-pagination-arrow" />
-        <Pagination.Item className="custom-pagination-item" active>{1}</Pagination.Item>
-        <Pagination.Item className="custom-pagination-item">{2}</Pagination.Item>
-        <Pagination.Item className="custom-pagination-item">{3}</Pagination.Item>
-        <Pagination.Ellipsis className="custom-pagination-item" />
-        <Pagination.Item className="custom-pagination-item">{8}</Pagination.Item>
-        <Pagination.Item className="custom-pagination-item">{9}</Pagination.Item>
-        <Pagination.Item className="custom-pagination-item">{10}</Pagination.Item>
-        <Pagination.Next className="custom-pagination-item custom-pagination-arrow" />
-    </Pagination>
-</div>
-  )
-}
+      <div className="className="custom-pagination>
 
-export default RexettPagination
+      {" "}
+      <ResponsivePagination
+      current={1}
+      total={10}
+      // onPageChange={handlePageClick}
+    />
+      </div>
+
+    </div>
+  );
+};
+
+export default RexettPagination;
