@@ -9,16 +9,16 @@ const DocumentListView = () => {
   return (
     <div>
     <div className="table-responsive">
-        <table className="table document-table">
+        <table className="table document-table table-ui-custom">
             <thead>
-                <th className="document-th filename-th">Name</th>
+                <th className="document-th filename-th px-3">Name</th>
                 <th className="document-th owner-th">Owner</th>
                 <th className="document-th location-th">Location</th>
                 <th className="document-th action-th">Action</th>
             </thead>
             <tbody>
                 <tr>
-                    <td className="document-data filename-data">
+                    <td className="document-data filename-data px-3">
                         <div className="d-flex gap-2 align-items-center">
                             <div className="file-icon">
                                 <FaFilePdf />
@@ -41,7 +41,7 @@ const DocumentListView = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="document-data filename-data">
+                    <td className="document-data filename-data px-3">
                         <div className="d-flex gap-2 align-items-center">
                             <div className="file-icon">
                                 <FaFilePdf />
@@ -64,7 +64,7 @@ const DocumentListView = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="document-data filename-data">
+                    <td className="document-data filename-data px-3">
                         <div className="d-flex gap-2 align-items-center">
                             <div className="folder-icon">
                                 <FaFolder />

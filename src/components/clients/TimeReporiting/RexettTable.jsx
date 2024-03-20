@@ -90,7 +90,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                     <RexettButton
                                                         type="submit"
                                                         text="Submit & Approved"
-                                                        className="outline-main-btn"
+                                                        className="outline-main-btn px-3 font-13"
                                                         variant="transparent"
                                                         onClick={() => submitApproved(item?.contractDetails?.client_id, index)}
                                                         isLoading={selectedApprovedBtn === index ? approvedLoader : false}
