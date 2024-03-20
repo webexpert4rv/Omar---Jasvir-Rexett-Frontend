@@ -62,7 +62,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                         if (reprt.report_date) {
                                                             return (
                                                                 <>
-                                                                    <td className={`time-table-data ${reprt.is_off_day ? "offday-data" : ""}`} >{reprt.start_time && reprt?.end_time ? `${reprt?.start_time} - ${reprt?.end_time} ` : "-"}</td>
+                                                                    <td className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : ""}`} >{reprt.start_time && reprt?.end_time ? `${reprt?.start_time} - ${reprt?.end_time} ` : "-"}</td>
                                                                 </>
                                                             )
                                                         } else if (reprt.month) {
@@ -82,15 +82,15 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                     })
                                                 }
                                                 <td className='time-table-data'></td>
-                                                <td className="time-table-data">{item?.contractDetails?.employment_type}</td>
+                                                <td className="time-table-data white-nowrap">{item?.contractDetails?.employment_type}</td>
                                                 <td className="time-table-data">
-                                                    <span>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>
+                                                    <span className={item?.contractDetails?.status ? "status-progress" : "status-finished"}>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>
                                                 </td>
                                                 {selectedPeriod == "weekly" ? <td className="time-table-data">
                                                     <RexettButton
                                                         type="submit"
                                                         text="Submit & Approved"
-                                                        className="outline-main-btn px-3 font-13"
+                                                        className="outline-main-btn white-nowrap px-2 font-13"
                                                         variant="transparent"
                                                         onClick={() => submitApproved(item?.contractDetails?.client_id, index)}
                                                         isLoading={selectedApprovedBtn === index ? approvedLoader : false}

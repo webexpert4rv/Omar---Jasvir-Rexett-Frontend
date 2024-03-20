@@ -108,9 +108,11 @@ const handleChange=(e,select)=>{
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="experience-container">
                         <div className="mb-3">
-                            <Button variant="transparent" className="main-btn px-3" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open} >
-                                Update Previous Time Report
-                            </Button>
+                            <div className="text-end">
+                                <Button variant="transparent" className="main-btn px-3" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open} >
+                                    Want to update previous time?
+                                </Button>
+                            </div>
                             <Collapse in={open}>
                                 <div className="mt-2">
                                     <Row>
@@ -207,47 +209,41 @@ const handleChange=(e,select)=>{
                                     <>
                                         <div className="time-row">
                                             <Row>
-                                                <Col md={3}>
-                                                    <Form.Label>{item?.report_date}</Form.Label>
+                                                <Col md={12}>
+                                                    <Form.Label className="date-text">{item?.report_date}</Form.Label>
                                                 </Col>
-                                                <Col md={9}>
-                                                    <Form.Group className="">
-                                                        <Form.Label className="d-block font-15 mb-1">Select Day</Form.Label>
+                                                <Col md={12}>
+                                                    <Form.Group className="d-flex gap-3">
+                                                        <Form.Label className="d-block mb-1 fw-semibold">Select Day</Form.Label>
                                                         <Form.Check inline type="radio" value="work-day" name="day-select"   onChange={(e) => handleWorkDaysChange(e,index,true)} className="font-15" id="work-day" label="Work Day" />
                                                         <Form.Check inline type="radio" value="off-day" name="day-select"     onChange={(e) => handleWorkDaysChange(e,index,false)} className="font-15" id="off-day" label="Holiday Day"/>
                                                     </Form.Group>
-                                                    <div className={disabledWorkDay[index]  ? '' : 'cv-template-section cv-template1 d-none'}>
-                                                        <Row className="mt-0">
-                                                            <Col md="6">
-                                                                <Form.Group>
-                                                                    <Form.Label className="font-13">Start Time</Form.Label>
-                                                                    <Form.Control type="time" className="cv-field font-13"
-                                                                    {...register(`addTime.${index}.start_time`, { required: false })}
-                                                                    defaultValue={item.start_time}
-                                                                  
-                                                                    ></Form.Control>
-                                                                </Form.Group>
-                                                            </Col>
-                                                            <Col md="6">
-                                                                <Form.Group>
-                                                                    <Form.Label className="font-13">End Time</Form.Label>
-                                                                    <Form.Control type="time" className="cv-field font-13"
-                                                                      {...register(`addTime.${index}.end_time`, { required: false })}
-                                                                      defaultValue={item.end_time}
-                                                                  
-                                                                    ></Form.Control>
-                                                                </Form.Group>
-                                                            </Col>
-                                                        </Row>
+                                                    <div className={disabledWorkDay[index]  ? 'd-flex gap-3' : 'cv-template-section cv-template1 d-none'}>
+                                                        <Form.Group>
+                                                            <Form.Label className="font-13">Start Time</Form.Label>
+                                                            <Form.Control type="time" className="cv-field font-13"
+                                                            {...register(`addTime.${index}.start_time`, { required: false })}
+                                                            defaultValue={item.start_time}
+                                                            
+                                                            ></Form.Control>
+                                                        </Form.Group>
+                                                        <Form.Group>
+                                                            <Form.Label className="font-13">End Time</Form.Label>
+                                                            <Form.Control type="time" className="cv-field font-13"
+                                                                {...register(`addTime.${index}.end_time`, { required: false })}
+                                                                defaultValue={item.end_time}
+                                                            
+                                                            ></Form.Control>
+                                                        </Form.Group>
+                                                        <Form.Group className="w-100">
+                                                            <Form.Label className="font-13">Memo</Form.Label>
+                                                            <Form.Control type="text" className="cv-field font-13" placeholder="Add Memo"
+                                                            {...register(`addTime.${index}.memo`, { required: false })}
+                                                            defaultValue={item.memo}
+                                                            
+                                                            ></Form.Control>
+                                                        </Form.Group>
                                                     </div>
-                                                    <Form.Group className="mb-4">
-                                                        <Form.Label className="font-13">Memo</Form.Label>
-                                                        <Form.Control type="text" className="cv-field font-13" placeholder="Add Memo"
-                                                         {...register(`addTime.${index}.memo`, { required: false })}
-                                                         defaultValue={item.memo}
-                                                        
-                                                        ></Form.Control>
-                                                    </Form.Group>
                                                 </Col>
                                             </Row>
                                         </div>

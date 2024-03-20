@@ -185,6 +185,12 @@ ul
     width: calc(100% - 350px);
     margin-left: auto;
     padding: 20px;
+    transition: .4s ease;
+}
+.main-wrapper.right-active
+{
+    width: calc(100% - 650px);
+    margin-right: 300px;
 }
 .dashboard-link
 {
@@ -594,7 +600,8 @@ ul
     gap: 10px;
     align-items: center;
     padding: 10px;
-    background: #f2f5f7;
+    background: #fff;
+    border: 1px solid #ccc;
     border-radius: 16px;
 }
 .breadcrumb .bread-link
@@ -1688,7 +1695,7 @@ ul
 {
     padding: 30px;
     border-radius: 10px;
-    background-color: #f2f5f7;
+    background-color: #fff;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, .2);
     margin-bottom: 20px;
 }
@@ -1779,6 +1786,10 @@ ul
 .job-description
 {
     font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
 }
 .single-job-description
 {
@@ -1905,6 +1916,10 @@ ul
     align-items: center;
     background-color: #f2f2f2;
 }
+.font-14
+{
+    font-size: 14px !important;
+}
 .step-counts .count:before
 {
     content: '';
@@ -1966,7 +1981,7 @@ ul
     box-shadow: none;
     border-bottom: 1px solid #ccc;
 }
-.filename-th
+/* .filename-th
 {
     width: 400px;
 }
@@ -1981,13 +1996,17 @@ ul
 .action-th
 {
     width: 120px;
-}
+} */
 .owner-email
 {
     white-space: nowrap;
-    max-width: 160px;
+    max-width: 210px;
     text-overflow: ellipsis;
     overflow: hidden;
+    color: #333;
+    line-height: normal;
+    margin-bottom: 0px;
+    padding-right: 10px;
 }
 .document-table .document-data.filename-data
 {
@@ -2021,11 +2040,37 @@ ul
     border-radius: 50%;
     background-color: #00a1a9;
     color: #fff;
+    flex: none;
+}
+.document-view-pill
+{
+    border: 1px solid #037563;
+    border-radius: 30px;
 }
 .document-view-item .document-view-link
 {
-    padding: 8px 12px;
+    padding: 0px;
+    width: 50px;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #11998E;
+}
+.document-view-pill .document-view-item:first-child .document-view-link
+{
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.document-view-pill .document-view-item:last-child .document-view-link
+{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
 .document-view-item .document-view-link.active
 {
@@ -2064,7 +2109,7 @@ ul
 .modal-content
 {
     border: none;
-    border-radius: 0px;
+    border-radius: 20px;
     box-shadow: 0 0 18px rgba(0, 0, 0, .1);
 }
 .time-row
@@ -2203,12 +2248,6 @@ input[type="radio"]:checked
     display: block;
     font-weight: 500;
 }
-.owner-email
-{
-    color: #333;
-    line-height: normal;
-    margin-bottom: 0px;
-}
 .owner-text
 {
     font-size: 15px;
@@ -2265,24 +2304,26 @@ input[type="radio"]:checked
     width: 100%;
     padding: 15px 15px;
 }
-.table-ui-custom th
+.developer-table tbody tr td:first-child
 {
-    background-color: transparent;
-    padding: 0px;
-    padding-bottom: 10px;
-    border: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.developer-table tbody tr td:last-child
+{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 .table-ui-custom th span
 {
     background-color: #037563;
     color: #fff;
     display: block;
-    width: 100%;
-    padding: 15px 15px;
+    padding: 0px;
 }
 .table-ui-custom tbody td
 {
-    border-color: #ccc;
+    border: none;
 }
 .table-ui-custom th:first-child span
 {
@@ -2325,7 +2366,6 @@ input[type="radio"]:checked
 {
     background-color: #037563;
     color: #fff;
-    width: 100%;
     padding: 15px 15px;
 }
 .table-ui-custom thead th:first-child
@@ -2350,7 +2390,26 @@ input[type="radio"]:checked
 }
 .table-ui-custom tr td
 {
+    padding: 15px 15px;
     border-bottom: none !important;
+}
+.status-finished
+{
+    font-size: 13px;
+    border-radius: 30px;
+    padding: 5px 17px;
+    display: inline-block;
+    background-color: #d1fff8;
+    color: #037563;
+}
+.status-progress
+{
+    font-size: 13px;
+    border-radius: 30px;
+    padding: 5px 17px;
+    display: inline-block;
+    background-color: #fffdd1;
+    color: #756f03;
 }
 .developer-table tbody tr
 {
@@ -2376,6 +2435,10 @@ input[type="radio"]:checked
 {
     color: #fff !important;
 }
+.developer-table tr td
+{
+    vertical-align: middle;
+}
 .color-121212
 {
     color: #121212 !important;
@@ -2397,6 +2460,123 @@ input[type="radio"]:checked
     border-radius: 20px;
     box-shadow: 0px 0px 10px rgba(90, 0, 0, .05);
 }
+.uploaded-image
+{
+    width: 190px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+.date-text
+{
+    color: #037563;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.fw-semibold
+{
+    font-weight: 600 !important;
+}
+.zIndex3
+{
+    z-index: 3;
+}
+.right-sidebar
+{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 300px;
+    background: #fff;
+    transform-origin: right;
+    white-space: nowrap;
+    transition: .4s ease;
+    overflow: hidden;
+    padding: 40px 20px 20px;
+    visibility: visible;
+    opacity: 1;
+}
+.right-sidebar.hide
+{
+    width: 0px;
+    visibility: hidden;
+    opacity: 0;
+}
+.rightside-link
+{
+    text-align: center;
+    color: #121212;
+    font-weight: 700;
+    text-decoration: none;
+}
+.rightside-link span
+{
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 10px;
+    color: #037563;
+    background-color: #e2fffb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.right-sidebar-heading
+{
+    font-size: 20px;
+    text-align: center;
+}
+.growth-chart canvas
+{
+    height: 200px !important;
+    width: 100%;
+}
+.earned-chart canvas
+{
+    height: 300px !important;
+}
+.right-btn
+{
+    background-color: #f2f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    transition: .4s ease;
+}
+.right-btn svg
+{
+    transition: .4s ease;
+}
+.right-btn.active svg
+{
+    transform: rotate(180deg);
+}
+/* .client-wrapper
+{
+    padding-top: 90px;
+}
+.client-wrapper header
+{
+    position: fixed;
+    width: calc(100% - 350px);
+    top: 0;
+    right: 0;
+    padding: 20px;
+} */
+.filename-data span
+{
+    display: block;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 @media only screen and (max-width: 1440px)
 {
     .sidebar-logo img
@@ -2406,7 +2586,18 @@ input[type="radio"]:checked
     .sidebar
     {
         width: 280px;
-        padding: 10px 10px;
+        padding: 10px 0px 10px 30px;
+    }
+    .dashboard-link
+    {
+        padding: 10px 15px;
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+    .side-link
+    {
+        font-size: 14px;
+        padding: 10px 15px;
     }
     .main-wrapper
     {
@@ -2417,14 +2608,6 @@ input[type="radio"]:checked
         width: 19px;
         height: 19px;
     }
-    .side-link
-    {
-        font-size: 15px;
-    }
-    .dashboard-link
-    {
-        font-size: 15px;
-    }
     .dashboard-link svg
     {
         width: 19px;
@@ -2432,12 +2615,176 @@ input[type="radio"]:checked
     }
     .bottom-link
     {
+        padding: 9px 0px;
+        margin-bottom: 0px;
         font-size: 15px;
     }
     .bottom-link svg
     {
         width: 19px;
         height: 19px;
+    }
+    .main-wrapper.right-active
+    {
+        width: calc(100% - 580px);
+        margin-right: 300px;
+    }
+    .card-box
+    {
+        padding: 25px;
+    }
+    .section-head
+    {
+        font-size: 22px;
+    }
+    .common-field
+    {
+        padding: 8px 14px;
+        font-size: 14px;
+        border-radius: 7px;
+    }
+    .overview-card
+    {
+        min-width: 230px;
+    }
+    .overview-card-subhead
+    {
+        font-size: 14px;
+    }
+    .time-filter-select
+    {
+        font-size: 14px;
+    }
+    .table-ui-custom th
+    {
+        font-size: 14px;
+    }
+    .main-btn
+    {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+    .right-btn
+    {
+        width: 39px;
+        height: 39px;
+    }
+    .user-name
+    {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+    .designation-user
+    {
+        font-size: 14px;
+    }
+    .email-user
+    {
+        font-size: 14px;
+    }
+    .developer-card
+    {
+        padding: 30px 20px;
+    }
+    .developers-list
+    {
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    }
+    .developer-table .user-name
+    {
+        font-size: 15px;
+    }
+    .req-heading
+    {
+        font-size: 18px;
+    }
+    .single-job-card
+    {
+        padding: 20px;
+    }
+    .req-text
+    {
+        font-size: 15px;
+    }
+    .skills-listing li
+    {
+        font-size: 14px;
+    }
+    .single-job-title
+    {
+        font-size: 22px;
+    }
+    .job-tabs li .nav-link
+    {
+        font-size: 14px;
+    }
+    .single-job-category
+    {
+        font-size: 16px;
+    }
+    .closed-job-btn
+    {
+        font-size: 14px;
+    }
+    .outline-main-btn
+    {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+    .table-ui-custom tr td
+    {
+        font-size: 14px;
+    }
+    .form-label
+    {
+        font-size: 14px;
+    }
+    .resume-imgbx
+    {
+        width: 140px;
+        height: 140px;
+    }
+    .resume-name
+    {
+        font-size: 22px;
+    }
+    .resume-designation
+    {
+        font-size: 14px;
+    }
+    .skills-pill li span
+    {
+        font-size: 14px;
+    }
+    .subheading-resume
+    {
+        font-size: 18px;
+    }
+    .resume-text
+    {
+        font-size: 15px;
+    }
+    .exp-wrapper .exp-year
+    {
+        font-size: 16px;
+        margin-bottom: 7px;
+    }
+    .add_more_section
+    {
+        top: 7px;
+        right: 9px;
+    }
+    .form-check-label
+    {
+        font-size: 14px;
+    }
+    .modal-header
+    {
+        padding: 10px 15px !important;
+    }
+    .modal-title
+    {
+        font-size: 18px !important;
     }
 }
 @media only screen and (max-width: 992px)

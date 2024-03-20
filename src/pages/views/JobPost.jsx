@@ -105,22 +105,6 @@ const JobPost = () => {
                                 {errors.category?.message}
                             </p>
                         </Col>
-                        <Col md="12" className="mb-4">
-                            <Form.Group>
-                                <Form.Label>Job Description</Form.Label>
-                                <Form.Control as="textarea" className="common-field" rows="5" placeholder="Enter Job Description"
-                                {...register("description", {
-                                    required: {
-                                      value: true,
-                                      message: "Description is required",
-                                    },
-                                  })}
-                                />
-                            </Form.Group>
-                            <p className="error-message d-none">
-                                {errors.description?.message}
-                            </p>
-                        </Col>
                         <Col md="6" className="mb-4">
                             <Form.Group>
                                 <Form.Label>Experience Required</Form.Label>
@@ -196,7 +180,7 @@ const JobPost = () => {
                             </p>
                         </Col>
                         <Col md="6" className="mb-4">
-                            <Form.Group className="mb-4">
+                            <Form.Group>
                                 <Form.Label>Skills</Form.Label>
                                 <Select
                                     options={skillListMapped}
@@ -215,6 +199,22 @@ const JobPost = () => {
                             {/* <p className="error-message d-none">
                                 {errors.skills?.message}
                             </p> */}
+                        </Col>
+                        <Col md="12" className="mb-4">
+                            <Form.Group>
+                                <Form.Label>Job Description</Form.Label>
+                                <Form.Control as="textarea" className="common-field" rows="5" placeholder="Enter Job Description"
+                                {...register("description", {
+                                    required: {
+                                      value: true,
+                                      message: "Description is required",
+                                    },
+                                  })}
+                                />
+                            </Form.Group>
+                            <p className="error-message d-none">
+                                {errors.description?.message}
+                            </p>
                         </Col>
                     </Row>
                     <div className="text-center">

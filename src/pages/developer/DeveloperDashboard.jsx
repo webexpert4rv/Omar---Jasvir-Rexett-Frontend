@@ -17,6 +17,13 @@ const DeveloperDashboard = () => {
         <>
             <h2 className="section-head mb-4">Overview</h2>
             <div className="overview-card-wrapper mb-5">
+                <div className="overview-card active">
+                    <div>
+                        <h4 className="overview-card-subhead">Total hours</h4>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours} hrs</h3>
+                    </div>
+                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                </div>
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">This Week Hours</h4>
@@ -34,13 +41,6 @@ const DeveloperDashboard = () => {
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">This Month Hours</h4>
-                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours} hrs</h3>
-                    </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
-                </div>
-                <div className="overview-card active">
-                    <div>
-                        <h4 className="overview-card-subhead">Total hours</h4>
                         <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours} hrs</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
@@ -78,7 +78,7 @@ const DeveloperDashboard = () => {
 
                         <div>
                             <div className="table-responsive">
-                                <table className="table time-table table-bordered">
+                                <table className="table time-table table-bordered table-ui-custom">
                                     <thead>
                                         <th className="time-table-head">
                                             Client Name
@@ -107,7 +107,7 @@ const DeveloperDashboard = () => {
                                                         <td className="time-table-data">{item.contractType}</td>
                                                         <td className="time-table-data">{item.totalHours}</td>
                                                         <td className="time-table-data">{item.location}</td>
-                                                        <td className="time-table-data">Finished</td>
+                                                        <td className="time-table-data"><span className="status-finished">Finished</span></td>
                                                         </tr></React.Fragment>
                                                     )
                                                 })

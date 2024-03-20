@@ -41,13 +41,13 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     return (
         <>
             <section>
-                <div className="filter-section">
+                <div className="filter-section d-flex justify-content-between align-items-center flex-wrap gap-3">
                     <Form>
-                        <div className="d-flex gap-3 align-items-end">
-                            <div className="d-flex gap-3">
+                        <div className="">
+                            <div className="d-flex gap-3 flex-wrap align-items-end">
                                 <div className="flex-none">
                                     <Form.Label className="common-label">Select View</Form.Label>
-                                    <Form.Select className="filter-select shadow-none" onChange={handlePeriodChange} value={selectedPeriod}>
+                                    <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} value={selectedPeriod}>
                                         <option value="weekly">Weekly</option>
                                         <option value="monthly">Monthly</option>
                                         <option value="yearly">Yearly</option>
@@ -55,7 +55,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div>
                                 <div>
                                     <Form.Label className="common-label">Select Year</Form.Label>
-                                    <Form.Select className="shadow-none" onChange={(e)=>handleChange(e,"year")}>
+                                    <Form.Select className="time-filter-select shadow-none" onChange={(e)=>handleChange(e,"year")}>
                                     <option disabled selected >Select Year</option>
                                         <option value="2024">2024</option>
                                         <option value="2023">2023</option>
@@ -69,7 +69,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div>
                                { selectedPeriod!=="yearly"? <div>
                                     <Form.Label className="common-label">Select Month</Form.Label>
-                                    <Form.Select className="shadow-none"  onChange={(e)=>handleChange(e,"month")}>
+                                    <Form.Select className="time-filter-select shadow-none"  onChange={(e)=>handleChange(e,"month")}>
                                     <option disabled selected >Select Month</option>
                                         <option value="january">January</option>
                                         <option value="feburary">Feburary</option>
@@ -87,7 +87,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div>:""}
                               { selectedPeriod!=="yearly" && selectedPeriod!=="monthly"  ? <div>
                                     <Form.Label className="common-label">Select Week</Form.Label>
-                                    <Form.Select className="shadow-none" onChange={(e)=>handleChange(e,"week")}>
+                                    <Form.Select className="time-filter-select shadow-none" onChange={(e)=>handleChange(e,"week")}>
                                     <option disabled selected >Select Week</option>
                                         <option value="week1">Week 1</option>
                                         <option value="week2">Week 2</option>
@@ -108,21 +108,23 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                         </div>
                                     </div>
                                 </div> */}
-                            </div>
-                            <div className="d-flex gap-3">
-                                {/* <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control> */}
-                                <RexettButton
-                                    type="submit"
-                                    text="Filter"
-                                    className="main-btn py-2 px-5"
-                                    variant="transparent"
-                                    onClick={handlePrevTimeReporting}
-                                    isLoading={Object.keys(selectedFilter).length > 0 ? smallLoader : false}
-                                />
+                                <div className="d-flex gap-3">
+                                    {/* <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control> */}
+                                    <RexettButton
+                                        type="submit"
+                                        text="Filter"
+                                        className="main-btn py-2 px-5"
+                                        variant="transparent"
+                                        onClick={handlePrevTimeReporting}
+                                        isLoading={Object.keys(selectedFilter).length > 0 ? smallLoader : false}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </Form>
-
+                    <div>
+                        <Button variant="transparent" onClick={handleShowModal} className="main-btn px-xxl-5 px-3">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
+                    </div>
 
                 </div>
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
@@ -137,9 +139,6 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 <span>Work Day</span>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <Button variant="transparent" onClick={handleShowModal} className="main-btn px-5">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
                     </div>
                 </div>
                 <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />

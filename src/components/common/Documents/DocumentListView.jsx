@@ -19,11 +19,11 @@ const DocumentListView = () => {
             <tbody>
                 <tr>
                     <td className="document-data filename-data px-3">
-                        <div className="d-flex gap-2 align-items-center">
+                        <div className="d-flex gap-2 align-items-center filename-data">
                             <div className="file-icon">
                                 <FaFilePdf />
                             </div>
-                            PDF Presentation
+                            <span>PDF Presentation</span>
                         </div>
                     </td>
                     <td className="document-data">
@@ -42,11 +42,11 @@ const DocumentListView = () => {
                 </tr>
                 <tr>
                     <td className="document-data filename-data px-3">
-                        <div className="d-flex gap-2 align-items-center">
+                        <div className="d-flex gap-2 align-items-center filename-data">
                             <div className="file-icon">
                                 <FaFilePdf />
                             </div>
-                            PDF Presentation
+                            <span>PDF Presentation</span>
                         </div>
                     </td>
                     <td className="document-data">
@@ -65,11 +65,11 @@ const DocumentListView = () => {
                 </tr>
                 <tr>
                     <td className="document-data filename-data px-3">
-                        <div className="d-flex gap-2 align-items-center">
+                        <div className="d-flex gap-2 align-items-center filename-data">
                             <div className="folder-icon">
                                 <FaFolder />
                             </div>
-                            New Folder
+                            <span>New Folder</span>
                         </div>
                     </td>
                     <td className="document-data">
