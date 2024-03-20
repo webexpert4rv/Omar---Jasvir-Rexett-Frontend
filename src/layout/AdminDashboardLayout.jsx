@@ -8,14 +8,15 @@ const AdminDashboardLayout = ({ children }) => {
     const handleSidebar = () => {
         isSidebarWrapper(!sidebarwrapper)
     }
-    const token=getToken("adminToken")
+    const token=getToken("token")
+    const role=localStorage.getItem("role")
     return (
         <>
             <div className="dashboard-layout">
                 <Sidebar sidebarwrapper={sidebarwrapper} />
                 <main className='main-wrapper'>
                     <Navigation onClick={handleSidebar} />
-                    {token?children:<Navigate to="/agency-login"/>}
+                    {token && role=="admin"?children:<Navigate to="/agency-login"/>}
                 </main>
             </div>
         </>

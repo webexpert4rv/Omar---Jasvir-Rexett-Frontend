@@ -4,9 +4,8 @@ import developerImg from '../../../assets/img/user-img.jpg'
 import { useDispatch, useSelector } from "react-redux";
 import { timeReporting } from "../../../redux/slices/clientDataSlice";
 import RexettTable from "../../../components/clients/TimeReporiting/RexettTable";
-import { TABLE_HEADER, getCurrentPeriodFromAPi, weeklyTimeReports } from "../../../components/clients/TimeReporiting/constant";
+import { weeklyTimeReports } from "../../../components/clients/TimeReporiting/constant";
 import RexettButton from "../../../components/atomic/RexettButton";
-import { getPreviousTimeReports } from "../../../redux/slices/developerDataSlice";
 const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const dispatch = useDispatch()
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
@@ -31,7 +30,6 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         })
      }
 
-     console.log(selectedFilter,"selectedFilter")
 
     const handlePrevTimeReporting=(e)=>{
         e.preventDefault()
