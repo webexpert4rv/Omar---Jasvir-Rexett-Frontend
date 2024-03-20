@@ -55,14 +55,14 @@ const JobPost = () => {
       }
     return (
         <>
-            <section className="job-post-section">
-                <h2 className="overview-card-heading mb-4">Job Post</h2>
+            <section className="job-post-section card-box">
+                <h2 className="mb-4 section-head">Job Post</h2>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Row>
                         <Col md="6" className="mb-4">
                             <Form.Group>
                                 <Form.Label>Job Name</Form.Label>
-                                <Form.Control type="text" placeholder="Enter Job Name" 
+                                <Form.Control type="text" className="common-field" placeholder="Enter Job Name" 
                                 {...register("title", {
                                     required: {
                                       value: true,
@@ -72,7 +72,7 @@ const JobPost = () => {
                                 
                                 />
                             </Form.Group>
-                            <p className="error-message">
+                            <p className="error-message d-none">
                                 {errors.title?.message}
                             </p>
                         </Col>
@@ -80,6 +80,7 @@ const JobPost = () => {
                             <Form.Group>
                                 <Form.Label>Job Category</Form.Label>
                                 <Form.Select
+                                className="common-field"
                                  {...register("category", {
                                     required: {
                                       value: true,
@@ -100,14 +101,14 @@ const JobPost = () => {
                                     }
                                 </Form.Select>
                             </Form.Group>
-                            <p className="error-message">
+                            <p className="error-message d-none">
                                 {errors.category?.message}
                             </p>
                         </Col>
                         <Col md="12" className="mb-4">
                             <Form.Group>
                                 <Form.Label>Job Description</Form.Label>
-                                <Form.Control as="textarea" rows="5" placeholder="Enter Job Description"
+                                <Form.Control as="textarea" className="common-field" rows="5" placeholder="Enter Job Description"
                                 {...register("description", {
                                     required: {
                                       value: true,
@@ -116,7 +117,7 @@ const JobPost = () => {
                                   })}
                                 />
                             </Form.Group>
-                            <p className="error-message">
+                            <p className="error-message d-none">
                                 {errors.description?.message}
                             </p>
                         </Col>
@@ -124,6 +125,7 @@ const JobPost = () => {
                             <Form.Group>
                                 <Form.Label>Experience Required</Form.Label>
                                 <Form.Select 
+                                className="common-field"
                                  {...register("experience", {
                                     required: {
                                       value: true,
@@ -140,7 +142,7 @@ const JobPost = () => {
                                     <option value="5 more">5+ years</option>
                                 </Form.Select>
                             </Form.Group>
-                            <p className="error-message">
+                            <p className="error-message d-none">
                                 {errors.experience?.message}
                             </p>
                         </Col>
@@ -165,7 +167,7 @@ const JobPost = () => {
                                       })}
                                     />
                                 </div>
-                                <p className="error-message">
+                                <p className="error-message d-none">
                                 {errors.job_type?.message}
                             </p>
                             </Form.Group>
@@ -174,6 +176,7 @@ const JobPost = () => {
                             <Form.Group>
                                 <Form.Label>Contract</Form.Label>
                                 <Form.Select
+                                className="common-field"
                                  {...register("contract_type", {
                                     required: {
                                       value: true,
@@ -188,7 +191,7 @@ const JobPost = () => {
                                     <option value="one Year Contract">1 year contract</option>
                                 </Form.Select>
                             </Form.Group>
-                            <p className="error-message">
+                            <p className="error-message d-none">
                                 {errors.contract_type?.message}
                             </p>
                         </Col>
@@ -209,7 +212,7 @@ const JobPost = () => {
                                     
                                 />
                             </Form.Group>
-                            {/* <p className="error-message">
+                            {/* <p className="error-message d-none">
                                 {errors.skills?.message}
                             </p> */}
                         </Col>

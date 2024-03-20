@@ -139,7 +139,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                         </div>
                     </div>
                     <div>
-                        <Button variant="transparent" onClick={handleShowModal} className="main-btn px-5">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
+                        <Button variant="transparent" onClick={handleShowModal} className="main-btn px-4">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
                     </div>
                 </div>
                 <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
