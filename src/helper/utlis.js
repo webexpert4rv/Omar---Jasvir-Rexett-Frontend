@@ -23,7 +23,6 @@ export function getToken(tokenKey) {
 
   export const generateApiUrl = (filters, endpointName) => {
     const queryParams = [];
-  console.log(filters,"filters")
     for (const key in filters) {
       if (filters[key]) {
         queryParams.push(`${key}=${encodeURIComponent(filters[key])}`);

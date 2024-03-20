@@ -60,7 +60,7 @@ const EditProfile = () => {
     };
     return (
         <>
-            <section>
+            <section className="card-box">
                 <h2 className="section-head mb-4">Update your Profile</h2>
                 <div>
                   {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -145,6 +145,10 @@ const EditProfile = () => {
                                         <p className="error-message">
                                             {errors.password?.message} </p>
                                     </Form.Group>
+                                </div>
+                            </Col>
+                            <Col md="6">
+                                <div>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Address</Form.Label>
                                         <Form.Control type="text" className="common-field"
@@ -191,10 +195,6 @@ const EditProfile = () => {
                                         <p className="error-message">
                                             {errors.city?.message} </p>
                                     </Form.Group>
-                                </div>
-                            </Col>
-                            <Col md="6">
-                                <div>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Postcode</Form.Label>
                                         <Form.Control type="text" className="common-field"

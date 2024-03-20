@@ -14,6 +14,7 @@ body
 {
     margin: 0;
     padding: 0;
+    background: #f6f4f4;
 }
 img
 {
@@ -137,9 +138,9 @@ ul
     right: 10px;
     background: transparent;
     border: none;
-    color: #000;
+    color: #121212;
     outline: none;
-    font-size: 25px;
+    font-size: 18px;
     cursor: pointer;
 }
 .sidebar
@@ -149,9 +150,12 @@ ul
     top: 0;
     left: 0;
     height: 100vh;
-    padding: 10px 30px;
+    padding: 20px 0px 10px 30px;
     transition: .4s ease;
+    background: linear-gradient(to bottom , #5ed074 , #037563);
     overflow: auto;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
 }
 ::-webkit-scrollbar
 {
@@ -189,12 +193,19 @@ ul
     gap: 30px;
     width: 100%;
     padding: 15px;
-    background: #11998E;
     color: var(--white);
     text-decoration: none;
-    border-radius: 10px;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
     font-size: 16px;
     font-weight: 500;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.dashboard-link.active
+{
+    color: #5ed074;
+    background-color: var(--white);
 }
 .dashboard-link svg
 {
@@ -203,8 +214,7 @@ ul
 }
 .sidebar-listing
 {
-    padding: 15px;
-    background: #11998E;
+    padding: 15px 0;
     border-radius: 10px;
 }
 .sidebar-item
@@ -229,13 +239,16 @@ ul
     font-weight: 500;
     color: var(--white);
     text-decoration: none;
-    /* margin: 10px 0; */
-    padding: 10px 0;
+    margin: 6px 0;
+    padding: 15px;
     transition: .4s ease;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
 }
 .side-link.active
 {
-    color: #38EF7D;
+    color: #5ed074;
+    background-color: var(--white);
 }
 .side-link svg
 {
@@ -250,7 +263,7 @@ ul
     gap: 30px;
     margin-bottom: 20px;
     text-decoration: none;
-    color: #11998E;
+    color: var(--white);
 }
 .bottom-link svg
 {
@@ -262,17 +275,17 @@ ul
     display: inline-block;
     padding: 10px;
     color: var(--white);
-    background: var(--primary-color);
+    background: #037563;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 400;
-    border: 1px solid var(--primary-color);
+    border: 1px solid #037563 !important;
     outline: none;
     transition: .4s ease;
 }
 .main-btn:hover
 {
-    color: var(--primary-color);
+    color: #037563;
     background-color: transparent;
 }
 .main-btn.border-danger
@@ -344,15 +357,15 @@ ul
 .overview-card
 {
     background-color: var(--white);
-    border: 1px solid var(--grey);
-    border-radius: 10px;
-    min-width: 300px;
+    /* border: 1px solid var(--grey); */
+    border-radius: 20px;
+    min-width: 270px;
     padding: 20px 15px;
     display: flex;
     justify-content: space-between;
     transition: .4s ease;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, .05);
 }
-.overview-card:hover,
 .overview-card.active
 {
     background: var(--primary-color);
@@ -365,7 +378,6 @@ ul
     font-size: 16px;
     transition: .4s ease;
 }
-.overview-card:hover .overview-card-subhead,
 .overview-card.active .overview-card-subhead
 {
     color: var(--white);
@@ -376,7 +388,6 @@ ul
     color: #000;
     transition: .4s ease;
 }
-.overview-card:hover .overview-card-heading,
 .overview-card.active .overview-card-heading
 {
     color: var(--white);
@@ -386,7 +397,6 @@ ul
     color: #000;
     transition: .4s ease;
 }
-.overview-card:hover .over-icon,
 .overview-card.active .over-icon
 {
     color: #b4ffdb;
@@ -499,14 +509,14 @@ ul
 {
     border: none;
     padding: 12px 17px;
-    border-radius: 8px;
-    background-color: #e8e8e8;
+    border-radius: 10px;
+    background-color: #f5f5f5;
     transition: .4s ease;
 }
 .common-field:focus
 {
     box-shadow: none;
-    background-color: #e8e8e8;
+    background-color: #f5f5f5;
 }
 .filter-select
 {
@@ -627,7 +637,7 @@ ul
     align-items: center;
     gap: 10px;
 }
-.pdf-list p span
+.pdf-list p .file-icon
 {
     display: inline-flex;
     width: 35px;
@@ -637,8 +647,18 @@ ul
     background-color: #fff3f3;
     color: #f00;
     border-radius: 5px;
+    flex: none;
 }
-.pdf-list p span svg
+.pdf-list p .filename-single
+{
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+.pdf-list p .file-icon svg
 {
     width: 20px;
     height: 20px;
@@ -717,8 +737,9 @@ ul
 }
 .outline-main-btn
 {
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+    border: 1px solid #037563;
+    background-color: transparent;
+    color: #037563;
     padding: 10px 15px;
     font-size: 15px;
     font-weight: 500;
@@ -770,7 +791,7 @@ ul
 .filter-section
 {
     padding: 10px;
-    background: #f2f5f7;
+    background: #fff;
     border: 1px solid var(--grey);
     border-radius: 13px;
 }
@@ -1836,11 +1857,6 @@ ul
 {
     min-width: 180px;
 }
-.outline-main-btn
-{
-    background-color: transparent;
-    color: var(--primary-color);
-}
 .status-text.unpublishcontract
 {
     background-color: #ccc;
@@ -2197,7 +2213,149 @@ input[type="radio"]:checked
     font-size: 15px;
     color: #aaa;
 }
-
+.side-filter
+{
+    width: 0px;
+    flex: none;
+    white-space: nowrap;
+    transition: .4s ease;
+    overflow: hidden;
+}
+.side-filter.active
+{
+    width: 280px;
+}
+.new-doc-collapse
+{
+    position: absolute;
+    bottom: 0;
+    transform: translateY(110%);
+    left: 0;
+    width: 200px;
+    z-index: 2;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,.1);
+    border-radius: 7px;
+}
+.developer-table td img
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.developer-table th
+{
+    background-color: transparent;
+    padding: 0px;
+    padding-bottom: 10px;
+    border: none;
+}
+.developer-table th span
+{
+    background-color: #037563;
+    color: #fff;
+    display: block;
+    width: 100%;
+    padding: 15px 15px;
+}
+.table-ui-custom th
+{
+    background-color: transparent;
+    padding: 0px;
+    padding-bottom: 10px;
+    border: none;
+}
+.table-ui-custom th span
+{
+    background-color: #037563;
+    color: #fff;
+    display: block;
+    width: 100%;
+    padding: 15px 15px;
+}
+.table-ui-custom tbody td
+{
+    border-color: #ccc;
+}
+.table-ui-custom th:first-child span
+{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.table-ui-custom th:last-child span
+{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.developer-table th:first-child span
+{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.developer-table th:last-child span
+{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.developer-table .user-name
+{
+    font-size: 17px;
+}
+.developer-table td
+{
+    padding: 10px 15px;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+    transition: .4s ease;
+}
+.developer-table tbody tr
+{
+    background: #fff;
+    transition: .4s ease;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.developer-table tbody tr:hover
+{
+    background: linear-gradient(to right, #11998E 4.54%, #38EF7D 95.98%);
+}   
+.developer-table td span
+{
+    padding: 0px;
+    display: block;
+    background: transparent;
+    color: #121212;
+}
+.developer-table tr:hover td .user-name,
+.developer-table tr:hover td .designation-user,
+.developer-table tr:hover td .email-user
+{
+    color: #fff !important;
+}
+.color-121212
+{
+    color: #121212 !important;
+    transition: .4s ease;
+}
+.developer-table .social-icons svg
+{
+    color: #121212;
+    transition: .4s ease;
+}
+.developer-table tbody tr:hover .social-icons svg
+{
+    color: #fff;
+}
+.card-box
+{
+    padding: 30px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(90, 0, 0, .05);
+}
 @media only screen and (max-width: 1440px)
 {
     .sidebar-logo img
