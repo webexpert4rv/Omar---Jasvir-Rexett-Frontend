@@ -25,7 +25,6 @@ const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFile
                     <td className="document-data filename-data">
                         <div className="d-flex gap-2 align-items-center">
 
-
                             {
                                 item.file_type!==0?<>
                                 <div className="file-icon">
