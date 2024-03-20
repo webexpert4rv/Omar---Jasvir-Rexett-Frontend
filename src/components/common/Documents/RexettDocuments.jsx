@@ -24,9 +24,9 @@ import { HiMiniUser } from "react-icons/hi2";
 import DocumentListView from "./DocumentListView";
 import { IoIosShareAlt } from "react-icons/io";
 import ShareModal from "./ShareModal";
+import { FaFilter } from "react-icons/fa";
 
 const RexettDocuments = ({ currentRole }) => {
-    const [open, setOpen] = useState(false);
     const [bradCrump, setBradCrum] = useState([])
     const [allFilterValue, setAllCurrentFilterValue] = useState({});
     const [editFolderName, setEditFolderName] = useState({})
@@ -210,146 +210,173 @@ const RexettDocuments = ({ currentRole }) => {
         }
     }
 
+    const [showFilterMenu , setShowFilterMenu] = useState(false);
+
+    const handleShowFilterMenu = () => {
+        setShowFilterMenu(!showFilterMenu);
+    }
+    const [open, setOpen] = useState(false);
     return (
         <>
             <section>
                 <div>
 
-                    <Row className="d-flex">
-                        <Col md={3}>
+                    <Row>
+                        <Col md={12}>
                             <div className="d-flex flex-wrap align-items-center gap-2 mb-4">
                                 {/* <Button onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>+ New</Button> */}
-                                <div>
-                                    <Form.Label onClick={handleShowUploadFileModal} className="main-btn px-4 cursor-pointer upload-btn mb-0">+ Create Folder</Form.Label>
+                                <div className="position-relative">
+                                    <Button
+                                        onClick={() => setOpen(!open)}
+                                        className="main-btn px-4 cursor-pointer upload-btn mb-0"
+                                        aria-controls="example-collapse-text"
+                                        aria-expanded={open}
+                                    >
+                                        + New
+                                    </Button>
+                                    <Collapse in={open} className="new-doc-collapse">
+                                        <div>
+                                            <Form.Label onClick={handleShowUploadFileModal} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-0 w-100">+ Create Folder</Form.Label>
+                                        </div>
+                                    </Collapse>
                                 </div>
+                                    <div>
+                                        <Form.Label className="main-btn px-4 cursor-pointer upload-btn mb-0" onClick={() => setShow(true)}>+ Upload File</Form.Label>
+                                    </div>
                                 <div>
-                                    {/* <Form.Control type="file" className="d-none" id="upload_file" onChange={handleFileUpload} /> */}
-                                    <Form.Label className="main-btn px-4 cursor-pointer upload-btn mb-0" onClick={() => setShow(true)}>+ Upload File</Form.Label>
+                                    <Button variant="transparent" onClick={handleShowFilterMenu} className="main-btn outline-main-btn px-4"><FaFilter /> Filter</Button>
                                 </div>
                             </div>
-                            <h3 className="section-head-sub">Filter</h3>
-                            <Form className="mb-4">
-                                <div className="filter-section gap-3 align-items-center">
-                                    <div className="mb-2">
-                                        <Form.Label className="common-label">Search</Form.Label>
-                                        <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} value={search} className="search-field"></Form.Control>
-                                    </div>
-                                    <div className="flex-none mb-2">
-                                        <Form.Label className="common-label">Select Category</Form.Label>
-                                        <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
-                                            <option value="All">All</option>
-                                            <option value="1">Contracts</option>
-                                            <option value="3">Invoices</option>
-                                        </Form.Select>
-                                    </div>
-                                    <div className="flex-none mb-2">
-                                        <Form.Label className="common-label">Select File Type</Form.Label>
-                                        <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
-                                            <option value="All">All</option>
-                                            <option value="pdf">PDFs</option>
-                                            <option value="doc">Documents</option>
-                                            <option value="img">Images</option>
-                                            <option value="other">Others</option>
-                                        </Form.Select>
-                                    </div>
-                                    <div className="flex-none mb-2">
-                                        <Form.Label className="common-label">Shared By</Form.Label>
-                                        <Form.Select className="filter-select width-full shadow-none">
-                                            <option value="">Select</option>
-                                            <option value="amazon">Amazon</option>
-                                            <option value="volvo">Volvo</option>
-                                            <option value="google">Google</option>
-                                            <option value="bmw">BMW</option>
-                                        </Form.Select>
-                                    </div>
-                                    <div className="mt-4">
-                                        <Button variant="transparent" className="main-btn px-3 py-2 " onClick={clearAllFilter}>Clear</Button>
-                                    </div>
-                                </div>
-                            </Form>
                         </Col>
-                        <Col md={9}>
-                            <Tab.Container defaultActiveKey="grid-view">
-                                <div className="d-flex justify-content-between mb-3">
-                                    <h3 className="section-head-sub">Documents</h3>
-                                    <Nav variant="pills" className="document-view-pill">
-                                        <Nav.Item className="document-view-item">
-                                            <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item className="document-view-item">
-                                            <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
-                                        </Nav.Item>
-                                    </Nav>
-                                </div>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="grid-view">
-                                        {showFolderView && search == '' ? <section className="folder-view">
-                                            <div className="breadcrumb">
-                                                {bradCrump?.map((item,index) => {
-                                                    return (<>
-                                                        <Link className="bread-link" onClick={() => bradCrumpHandle(item.parent_id)}>{item.name}</Link>
-                                                        <span className="divider"> &gt; </span>
-                                                    </>)
-                                                })
-                                                }
-
+                        <Col md={12}>
+                            <div className="d-flex gap-3">
+                                <div className={ showFilterMenu ? "side-filter active" : "side-filter"}>
+                                    <h3 className="section-head-sub">Filter</h3>
+                                    <Form className="mb-4">
+                                        <div className="filter-section gap-3 align-items-center">
+                                            <div className="mb-2">
+                                                <Form.Label className="common-label">Search</Form.Label>
+                                                <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} value={search} className="search-field"></Form.Control>
                                             </div>
-
-                                        </section> : ""}
-                                        {screenLoader ? <ScreenLoader /> : <div className="folder-listing">
-                                            {folderData?.length > 0 ? folderData?.map((item) => {
-                                                return (
-                                                    <>
-                                                        {
-                                                            item.file_type === 0 ? <>
-                                                                <div className="folder-list" onDoubleClick={() => toggleFolderView(item)}>
-                                                                    <div className="position-relative">
-                                                                        <FaFolder className="folder-icon" />
-                                                                        <div className="name-folder">
-                                                                            <span>{item?.s3_path}</span>
-                                                                            <div className="shared-doc">
-                                                                                <p className="shared-text">Shared by Amazon</p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="doc-action">
-                                                                            <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "folder")}><FaTrashCan /></button>
-                                                                            <button className="view-btn doc-action-btn" onClick={() => handleShowUploadFileModal(item.id, item?.s3_path)}><MdEdit /></button>
-                                                                            <button onClick={handleShowShareFileModal} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </> : <>
-                                                                <div className="pdf-list">
-                                                                    <div className="pdf-icon">
-                                                                        {generateFileImage(item?.s3_path)}
-
-                                                                    </div>
-                                                                    <p>
-                                                                        <span>{generateFileImage(item?.s3_path)}
-                                                                        </span>{getFileName(item?.s3_path)}
-
-                                                                    </p>
-                                                                    <div className="doc-action">
-                                                                        {/* <button className="view-btn doc-action-btn"><MdEdit /></button> */}
-                                                                        <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload /></button>
-                                                                        <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "file")}><FaTrashCan /></button>
-                                                                    </div>
-                                                                </div>
-                                                            </>
+                                            <div className="flex-none mb-2">
+                                                <Form.Label className="common-label">Select Category</Form.Label>
+                                                <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
+                                                    <option value="All">All</option>
+                                                    <option value="1">Contracts</option>
+                                                    <option value="3">Invoices</option>
+                                                </Form.Select>
+                                            </div>
+                                            <div className="flex-none mb-2">
+                                                <Form.Label className="common-label">Select File Type</Form.Label>
+                                                <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
+                                                    <option value="All">All</option>
+                                                    <option value="pdf">PDFs</option>
+                                                    <option value="doc">Documents</option>
+                                                    <option value="img">Images</option>
+                                                    <option value="other">Others</option>
+                                                </Form.Select>
+                                            </div>
+                                            <div className="flex-none mb-2">
+                                                <Form.Label className="common-label">Shared By</Form.Label>
+                                                <Form.Select className="filter-select width-full shadow-none">
+                                                    <option value="">Select</option>
+                                                    <option value="amazon">Amazon</option>
+                                                    <option value="volvo">Volvo</option>
+                                                    <option value="google">Google</option>
+                                                    <option value="bmw">BMW</option>
+                                                </Form.Select>
+                                            </div>
+                                            <div className="mt-4">
+                                                <Button variant="transparent" className="main-btn px-3 py-2 " onClick={clearAllFilter}>Clear</Button>
+                                            </div>
+                                        </div>
+                                    </Form>
+                                </div>
+                                <div className="w-100">
+                                    <Tab.Container className="w-100" defaultActiveKey="grid-view">
+                                        <div className="d-flex justify-content-between mb-3">
+                                            <h3 className="section-head-sub">Documents</h3>
+                                            <Nav variant="pills" className="document-view-pill">
+                                                <Nav.Item className="document-view-item">
+                                                    <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
+                                                </Nav.Item>
+                                                <Nav.Item className="document-view-item">
+                                                    <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
+                                                </Nav.Item>
+                                            </Nav>
+                                        </div>
+                                        <Tab.Content>
+                                            <Tab.Pane eventKey="grid-view">
+                                                {showFolderView && search == '' ? <section className="folder-view">
+                                                    <div className="breadcrumb">
+                                                        {bradCrump?.map((item,index) => {
+                                                            return (<>
+                                                                <Link className="bread-link" onClick={() => bradCrumpHandle(item.parent_id)}>{item.name}</Link>
+                                                                <span className="divider"> &gt; </span>
+                                                            </>)
+                                                        })
                                                         }
 
-                                                    </>
-                                                )
-                                            })
-                                                : <NoDataFound />}
-                                        </div>}
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="list-view">
-                                     <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage}/>
-                                    </Tab.Pane>
-                                </Tab.Content>
-                            </Tab.Container>
+                                                    </div>
+
+                                                </section> : ""}
+                                                {screenLoader ? <ScreenLoader /> : <div className="folder-listing">
+                                                    {folderData?.length > 0 ? folderData?.map((item) => {
+                                                        return (
+                                                            <>
+                                                                {
+                                                                    item.file_type === 0 ? <>
+                                                                        <div className="folder-list" onDoubleClick={() => toggleFolderView(item)}>
+                                                                            <div className="position-relative">
+                                                                                <FaFolder className="folder-icon" />
+                                                                                <div className="name-folder">
+                                                                                    <span>{item?.s3_path}</span>
+                                                                                    <div className="shared-doc">
+                                                                                        <p className="shared-text">Shared by Amazon</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="doc-action">
+                                                                                    <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "folder")}><FaTrashCan /></button>
+                                                                                    <button className="view-btn doc-action-btn" onClick={() => handleShowUploadFileModal(item.id, item?.s3_path)}><MdEdit /></button>
+                                                                                    <button onClick={handleShowShareFileModal} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </> : <>
+                                                                        <div className="pdf-list">
+                                                                            <div className="pdf-icon">
+                                                                                {generateFileImage(item?.s3_path)}
+
+                                                                            </div>
+                                                                            <p>
+                                                                                <span className="file-icon">{generateFileImage(item?.s3_path)}
+                                                                                </span>
+                                                                                <span className="filename-single">{getFileName(item?.s3_path)}</span>
+
+                                                                            </p>
+                                                                            <div className="doc-action">
+                                                                                {/* <button className="view-btn doc-action-btn"><MdEdit /></button> */}
+                                                                                <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload /></button>
+                                                                                <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "file")}><FaTrashCan /></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </>
+                                                                }
+
+                                                            </>
+                                                        )
+                                                    })
+                                                        : <NoDataFound />}
+                                                </div>}
+                                            </Tab.Pane>
+                                            <Tab.Pane eventKey="list-view">
+                                            <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage}/>
+                                            </Tab.Pane>
+                                        </Tab.Content>
+                                    </Tab.Container>
+                                </div>
+                            </div>
                         </Col>
                     </Row>
                 </div>

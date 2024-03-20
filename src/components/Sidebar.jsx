@@ -1,5 +1,5 @@
 import React from "react";
-import sidebarLogo from '../assets/img/logo-main.png'
+import sidebarLogo from '../assets/img/logo-white-new.png'
 import { NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
@@ -15,7 +15,8 @@ import { FaListUl } from "react-icons/fa6";
 
 const Sidebar = ({sideBarActive}) => {
     const logout=()=>{
-     localStorage.clear()
+        localStorage.removeItem("token")
+        localStorage.removeItem("refreshToken")
         window.location.href="/"
     }
     return(
@@ -23,11 +24,11 @@ const Sidebar = ({sideBarActive}) => {
             <aside className="sidebar">
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
-                        <div className="sidebar-logo text-center">
+                        <div className="sidebar-logo mb-3">
                             <img src={sidebarLogo} alt="Sidebar Logo" />
                         </div>
-                        <NavLink to={"/dashboard"} className="dashboard-link mb-4" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
-                        <ul className="sidebar-listing">
+                        <NavLink to={"/dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
+                        <ul className="sidebar-listing py-0">
                             <li className="sidebar-item">
                                 <NavLink to={"/hired-developers"} className="side-link" activeClassName="active"><FaUserLarge /> Hired Developers</NavLink>
                             </li>
@@ -54,7 +55,7 @@ const Sidebar = ({sideBarActive}) => {
                             </li> */}
                         </ul>
                     </div>
-                    <div className="w-100 px-3">
+                    <div className="w-100 px-3 mt-3">
                         <div>
                             <NavLink onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
                         </div>

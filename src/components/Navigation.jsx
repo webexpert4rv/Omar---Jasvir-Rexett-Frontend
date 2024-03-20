@@ -12,7 +12,7 @@ const Navigation = ({handleSidebar}) => {
                     <div>
                         {/* <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button> */}
                     </div>
-                    <div className="d-flex gap-3">
+                    <div className="d-flex align-items-center gap-3">
                     <Dropdown className="notification-dropdown">
                             <Dropdown.Toggle variant="transparent" id="dropdown-basic" className="notification-dropdown-toggle p-0">
                                 <button className="notification-btn"><FaBell /></button>

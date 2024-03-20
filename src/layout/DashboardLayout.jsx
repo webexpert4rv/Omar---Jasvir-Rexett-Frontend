@@ -18,6 +18,9 @@ const DashboardLayout = ({ children }) => {
                     <Navigation onClick={handleSidebar} />
                     {token && role=="client"?children:<Navigate to="/"/> }
                 </main>
+                <div className='right-sidebar'>
+
+                </div>
             </div>
         </>
     );
