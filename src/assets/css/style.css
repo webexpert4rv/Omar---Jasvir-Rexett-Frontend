@@ -2530,12 +2530,12 @@ input[type="radio"]:checked
 }
 .growth-chart canvas
 {
-    height: 200px !important;
+    height: 140px !important;
     width: 100%;
 }
 .earned-chart canvas
 {
-    height: 300px !important;
+    height: 180px !important;
 }
 .right-btn
 {

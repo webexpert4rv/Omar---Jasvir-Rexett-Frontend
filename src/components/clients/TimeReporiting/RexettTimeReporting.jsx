@@ -9,7 +9,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const dispatch = useDispatch()
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
-    const [selectedFilter, setSelectedFilter] = useState({});
+    const [selectedFilter, setSelectedFilter] = useState({filter:"weekly"});
 
     const { smallLoader } = useSelector(state => state.clientData)
 
@@ -30,7 +30,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         })
      }
 
-
+console.log(selectedFilter,"selectedFilter")
     const handlePrevTimeReporting=(e)=>{
         e.preventDefault()
         dispatch(timeReporting(selectedFilter, role))
@@ -69,28 +69,28 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     <Form.Label className="common-label">Select Month</Form.Label>
                                     <Form.Select className="time-filter-select shadow-none"  onChange={(e)=>handleChange(e,"month")}>
                                     <option disabled selected >Select Month</option>
-                                        <option value="january">January</option>
-                                        <option value="feburary">Feburary</option>
-                                        <option value="march">March</option>
-                                        <option value="april">April</option>
-                                        <option value="may">May</option>
-                                        <option value="june">June</option>
-                                        <option value="july">July</option>
-                                        <option value="august">August</option>
-                                        <option value="september">September</option>
-                                        <option value="october">October</option>
-                                        <option value="november">November</option>
-                                        <option value="december">December</option>
+                                        <option value="1">January</option>
+                                        <option value="2">Feburary</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
                                     </Form.Select>
                                 </div>:""}
                               { selectedPeriod!=="yearly" && selectedPeriod!=="monthly"  ? <div>
                                     <Form.Label className="common-label">Select Week</Form.Label>
                                     <Form.Select className="time-filter-select shadow-none" onChange={(e)=>handleChange(e,"week")}>
                                     <option disabled selected >Select Week</option>
-                                        <option value="week1">Week 1</option>
-                                        <option value="week2">Week 2</option>
-                                        <option value="week3">Week 3</option>
-                                        <option value="week4">Week 4</option>
+                                        <option value="1">Week 1</option>
+                                        <option value="2">Week 2</option>
+                                        <option value="3">Week 3</option>
+                                        <option value="4">Week 4</option>
                                     </Form.Select>
                                 </div>:""}
                                 {/* <div>
