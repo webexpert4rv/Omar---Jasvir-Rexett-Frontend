@@ -6,7 +6,7 @@ import { FaDownload } from "react-icons/fa6";
 import { FaFolder } from "react-icons/fa";
 import NoDataFound from '../../atomic/NoDataFound';
 
-const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFileName,generateFileImage}) => {
+const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFileName,generateFileImage,toggleFolderView}) => {
   return (
     <div>
     <div className="table-responsive">
@@ -34,7 +34,7 @@ const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFile
                                 </>
                                 :
                                 <>
-                                      <div className="folder-icon">
+                                      <div className="folder-icon" onDoubleClick={()=>toggleFolderView(item)}>
                                 <FaFolder />
                             </div>
                             {item.s3_path}
