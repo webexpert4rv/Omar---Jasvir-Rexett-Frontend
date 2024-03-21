@@ -1,19 +1,20 @@
 import React from "react";
-import { Dropdown } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import { FaBell } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 import { useNavigate } from "react-router";
-const Navigation = ({handleSidebar}) => {
-    const navigate=useNavigate()
-    return(
+import { PiArrowLineRight } from "react-icons/pi";
+const Navigation = ({ handleSidebar , sidebaractive }) => {
+    const navigate = useNavigate()
+    return (
         <>
-            <header className="mb-4">
-                <div className="d-flex align-items-center justify-content-between gap-3">
+            <header className="mb-4 zIndex3">
+                <div className="d-flex align-items-center justify-content-end gap-3">
                     <div>
                         {/* <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button> */}
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                    <Dropdown className="notification-dropdown">
+                        <Dropdown className="notification-dropdown">
                             <Dropdown.Toggle variant="transparent" id="dropdown-basic" className="notification-dropdown-toggle p-0">
                                 <button className="notification-btn"><FaBell /></button>
                             </Dropdown.Toggle>
@@ -45,7 +46,10 @@ const Navigation = ({handleSidebar}) => {
                                 <Dropdown.Item href="#" className="text-center no-notification">You have no notification</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                        <button className="main-btn" onClick={()=>navigate("/job-post")}>+ Add new Job</button>
+                        <button className="main-btn" onClick={() => navigate("/job-post")}>+ Add new Job</button>
+                    </div>
+                    <div>
+                        <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button>
                     </div>
                 </div>
             </header>

@@ -70,7 +70,7 @@ const EarnedBack = () => {
                 </div>
                 <p className="mb-3">To hire a rexett developers for more than 500 hours Rexett will return you 5% of your investment</p>
                 <div className="table-responsive mb-3">
-                    <table className="table time-table table-bordered">
+                    <table className="table time-table table-ui-custom">
                         <thead>
                             <th className="time-table-head">
                                 Total Number of Developers Hired
@@ -101,7 +101,7 @@ const EarnedBack = () => {
                                     </Form.Select>
                                 </td>
                                 <td className="time-table-data">
-                                    <Button variant="transparent" className="outline-main-btn">Submit</Button>
+                                    <Button variant="transparent" className="outline-main-btn font-14">Submit</Button>
                                 </td>
                             </tr>
 

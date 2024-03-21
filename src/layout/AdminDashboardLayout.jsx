@@ -16,7 +16,7 @@ const AdminDashboardLayout = ({ children }) => {
                 <Sidebar sidebarwrapper={sidebarwrapper} />
                 <main className='main-wrapper'>
                     <Navigation onClick={handleSidebar} />
-                    {token && role=="admin"?children:<Navigate to="/agency-login"/>}
+                    {token && role=="admin"?children:<Navigate to="/admin-login"/>}
                 </main>
             </div>
         </>

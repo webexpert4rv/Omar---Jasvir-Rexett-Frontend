@@ -116,12 +116,12 @@ const DeveloperCV = () => {
     };
     return(
         <>
-            <section className="overview-cv">
+            <section className="overview-cv card-box">
                 <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="section-head mb-0">Overview</h2>
-                        <button className="main-btn px-5" onClick={()=>downloadResume(developerCvData?.developer_detail?.resume)}>Download Resume</button>
+                        <button className="main-btn px-xxl-5 px-4" onClick={()=>downloadResume(developerCvData?.developer_detail?.resume)}>Download Resume</button>
                     </div>
                     <Row>
                         <Col lg={6} className="px-0">
@@ -171,14 +171,14 @@ const DeveloperCV = () => {
                         </Col>
                         <Col lg={6} className="px-0 h-100">
                             <div className="about-info px-4">
-                                <h3 className="subheading-resume mb-4">About Me</h3>
+                                <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
                                 {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
                                 <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25}/></div>
                                 <p className="resume-text">{developerCvData?.developer_detail?.bio}</p>
                             </div>
                             <div className="about-info px-4 pt-4">
                             <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25}/></div>
-                                <h3 className="subheading-resume mb-4">Experience</h3>
+                                <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>
                                 {developerCvData?.developer_experiences?.map((item)=>{
                                     return (
                                         <>
@@ -191,7 +191,7 @@ const DeveloperCV = () => {
                                         </>
                                     )
                                 })}
-                                <h3 className="subheading-resume mb-4">Education</h3>
+                                <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
                                 <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div>
                                {developerCvData?.developer_educations?.map((item)=>{
                                 return(

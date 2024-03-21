@@ -95,7 +95,7 @@ const EditDeveloperProfile = () => {
 
     return (
         <>
-            <section>
+            <section className="card-box">
                 <h2 className="section-head mb-4">Update your Profile</h2>
                 <div>
                     {screenLoader ? <ScreenLoader /> : <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -194,6 +194,10 @@ const EditDeveloperProfile = () => {
                                         <p className="error-message">
                                             {errors.address?.message} </p>
                                     </Form.Group>
+                                </div>
+                            </Col>
+                            <Col md="6">
+                                <div>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Address 2</Form.Label>
                                         <Form.Control type="text" className="common-field"
@@ -226,10 +230,6 @@ const EditDeveloperProfile = () => {
                                         <p className="error-message">
                                             {errors.city?.message} </p>
                                     </Form.Group>
-                                </div>
-                            </Col>
-                            <Col md="6">
-                                <div>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">Postcode</Form.Label>
                                         <Form.Control type="text" className="common-field"
@@ -283,7 +283,7 @@ const EditDeveloperProfile = () => {
                                     </Form.Group>
 
                                         <div>
-                                            <img src={selectedImage?selectedImage:developerProfileData?.data?.profile_picture} alt="Selected" style={{ maxWidth: "100%", maxHeight: "400px" }} />
+                                            <img src={selectedImage?selectedImage:developerProfileData?.data?.profile_picture} alt="Selected" className="uploaded-image"/>
                                         </div>
                                     
                                 </div>

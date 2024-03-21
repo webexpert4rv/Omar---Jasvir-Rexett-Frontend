@@ -81,7 +81,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" exact element={<PublicLayout><Login/></PublicLayout> } />
-          <Route path="/agency-login" exact element={<AgencyLogin/>} />
+          <Route path="/admin-login" exact element={<AgencyLogin/>} />
           <Route path="/forgot-password" exact element={<ForgotPassword/>} />
           <Route path="/reset-password" exact element={<ResetPassword/>} />
           <Route path="/developer-login" exact element={<DeveloperPublicLayout><DeveloperLogin/></DeveloperPublicLayout> } />

@@ -55,7 +55,7 @@ const Sidebar = ({sideBarActive}) => {
                             </li> */}
                         </ul>
                     </div>
-                    <div className="w-100 px-3 mt-3">
+                    <div className="w-100 px-3 mt-xxl-3">
                         <div>
                             <NavLink onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
                         </div>

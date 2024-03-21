@@ -1,5 +1,5 @@
 import React from "react";
-import sidebarLogo from '../assets/img/logo-main.png'
+import sidebarLogo from '../assets/img/logo-white-new.png'
 import { Link, NavLink, useNavigate } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
@@ -19,11 +19,11 @@ const AdminSidebar = ({sideBarActive}) => {
             <aside className="sidebar">
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
-                        <div className="sidebar-logo text-center">
+                    <div className="sidebar-logo mb-3">
                             <img src={sidebarLogo} alt="Sidebar Logo" />
                         </div>
-                        <NavLink to={"/developer-dashboard"} className="dashboard-link mb-4" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
-                        <ul className="sidebar-listing">
+                        <NavLink to={"/developer-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
+                        <ul className="sidebar-listing py-0">
                             <li className="sidebar-item">
                                 <NavLink to={"/developer-cv"} className="side-link" activeClassName="active"><FaUserLarge /> CV</NavLink>
                             </li>

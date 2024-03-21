@@ -56,7 +56,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                     </div>
                     <div className="w-100 px-3">
                         <div>
-                            <NavLink to={"/agency-login"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
+                            <NavLink to={"/admin-login"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>

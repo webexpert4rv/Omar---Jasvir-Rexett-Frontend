@@ -118,8 +118,8 @@ const SingleJob = () => {
                                 <div className="d-flex gap-3 align-items-center">
                                     <p className="mb-0">Status <span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                    { singleJobDescription?.status!=="ended"?<>
-                                   <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-5 closed-job-btn">End Job</Button>
-                                    <Button variant="transparent" className="px-5 unpublish-btn" onClick={()=>{
+                                   <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-xxl-5 px-4 closed-job-btn">End Job</Button>
+                                    <Button variant="transparent" className="px-xxl-5 px-4 py-2 outline-main-btn" onClick={()=>{
                                         let data={
                                             status:singleJobDescription?.status=="published"?"Unpublished":"published"
                                         }

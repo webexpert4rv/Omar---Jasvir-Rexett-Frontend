@@ -117,7 +117,7 @@ export function resetPassword(payload, callback) {
                 }else if(result?.data?.data?.role==="client"){
                     window.location.href="/"
                 }else{
-                    window.location.href="/agency-login"
+                    window.location.href="/admin-login"
                 }
             }
         } catch (error) {

@@ -14,7 +14,7 @@ const AddTimingModal = ({ show, handleClose }) => {
   const [disabledWorkDay, setDisabledWorkDay] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState();
   const [open, setOpen] = useState(false);
-  const [error,setError]=useState({})
+  const [error, setError] = useState({});
   const [timeReportingData, setTimeReportingData] = useState([]);
   const {
     register,
@@ -29,7 +29,7 @@ const AddTimingModal = ({ show, handleClose }) => {
     control,
     name: "addTime",
   });
-  const { allContracts, addTimeReports,smallLoader } = useSelector(
+  const { allContracts, addTimeReports, smallLoader } = useSelector(
     (state) => state.developerData
   );
 
@@ -112,27 +112,26 @@ const AddTimingModal = ({ show, handleClose }) => {
       reports: values?.addTime,
     };
     if (selectedFilter?.contract_id) {
-        setError({})
-      dispatch(saveTimeReports(payloadData,()=>{
-        handleClose()
-      }));
-    }else{
-        setError({message:"Please select client name"})
+      setError({});
+      dispatch(
+        saveTimeReports(payloadData, () => {
+          handleClose();
+        })
+      );
+    } else {
+      setError({ message: "Please select client name" });
     }
   };
   const handleChange = (e, select) => {
-    setError({})
+    setError({});
     setSelectedFilter({
       ...selectedFilter,
       [select]: e.target.value,
     });
   };
 
-
   const handlePrevTimeReporting = () => {
-    dispatch(getPreviousTimeReports(selectedFilter,()=>{
-    
-    }));
+    dispatch(getPreviousTimeReports(selectedFilter, () => {}));
     remove();
   };
 
@@ -150,18 +149,20 @@ const AddTimingModal = ({ show, handleClose }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="experience-container">
             <div className="mb-3">
-              <Button
-                variant="transparent"
-                className="main-btn px-3"
-                onClick={() => setOpen(!open)}
-                aria-controls="example-collapse-text"
-                aria-expanded={open}
-              >
-                Update Previous Time Report
-              </Button>
+              <div className="text-end">
+                <Button
+                  variant="transparent"
+                  className="main-btn px-3"
+                  onClick={() => setOpen(!open)}
+                  aria-controls="example-collapse-text"
+                  aria-expanded={open}
+                >
+                  Want to update previous time?
+                </Button>
+              </div>
               <Collapse in={open}>
                 <div className="mt-2">
                   <Row>
@@ -246,11 +247,18 @@ const AddTimingModal = ({ show, handleClose }) => {
                   <Form.Select
                     className="shadow-none"
                     onChange={(e) => handleChange(e, "contract_id")}
-                    //  {...register('contract_id', { required:true })}
                   >
                     <option disabled selected>
                       Select Client Name
                     </option>
+
+                    {allContracts?.map((item) => {
+                      return (
+                        <>
+                          <option value={item?.id}>{item?.client?.name}</option>
+                        </>
+                      );
+                    })}
 
                     {allContracts?.map((item) => {
                       return (
@@ -283,12 +291,14 @@ const AddTimingModal = ({ show, handleClose }) => {
                 <>
                   <div className="time-row">
                     <Row>
-                      <Col md={3}>
-                        <Form.Label>{item?.report_date}</Form.Label>
+                      <Col md={12}>
+                        <Form.Label className="date-text">
+                          {item?.report_date}
+                        </Form.Label>
                       </Col>
-                      <Col md={9}>
-                        <Form.Group className="">
-                          <Form.Label className="d-block font-15 mb-1">
+                      <Col md={12}>
+                        <Form.Group className="d-flex gap-3">
+                          <Form.Label className="d-block mb-1 fw-semibold">
                             Select Day
                           </Form.Label>
                           <Form.Check
@@ -319,91 +329,82 @@ const AddTimingModal = ({ show, handleClose }) => {
                         <div
                           className={
                             disabledWorkDay[index]
-                              ? ""
+                              ? "d-flex gap-3"
                               : "cv-template-section cv-template1 d-none"
                           }
                         >
-                          <Row className="mt-0">
-                            <Col md="6">
-                              <Form.Group>
-                                <Form.Label className="font-13">
-                                  Start Time
-                                </Form.Label>
-                                <Form.Control
-                                  type="time"
-                                  className="cv-field font-13"
-                                  {...register(`addTime.${index}.start_time`, {
-                                    required:   disabledWorkDay[index]?"Please Enter Time":false,
-                                    validate: {
+                          <Form.Group>
+                            <Form.Label className="font-13">
+                              Start Time
+                            </Form.Label>
+                            <Form.Control
+                              type="time"
+                              className="cv-field font-13"
+                              {...register(`addTime.${index}.start_time`, {
+                                required: disabledWorkDay[index]?"Please Enter Time":false,
+                                validate: {
                                             
-                                            lessThanEndTime: value => {
-                                                const watchEndTime = watch(`addTime.${index}.end_time`);
-                                              if (!watchEndTime || parseInt(value) < parseInt(watchEndTime)) {
-                                                return true;
-                                              }
-                                              return 'Start time must be less than End Time';
-                                            }
-                                          }
-                                    
-                                  })}
-                                  defaultValue={item.start_time}
-                                ></Form.Control>
-                                {errors && errors.addTime && errors.addTime[index] && errors.addTime[index].start_time && (
+                                  lessThanEndTime: value => {
+                                      const watchEndTime = watch(`addTime.${index}.end_time`);
+                                    if (!watchEndTime || parseInt(value) < parseInt(watchEndTime)) {
+                                      return true;
+                                    }
+                                    return 'Start time must be less than End Time';
+                                  }
+                                }
+                              })}
+                              defaultValue={item.start_time}
+                            ></Form.Control>
+                              {errors && errors.addTime && errors.addTime[index] && errors.addTime[index].start_time && (
                                             <p className="error-message">{errors.addTime[index].start_time.message}</p>
                                         )}
-                              </Form.Group>
-                            </Col>
-                            <Col md="6">
-                              <Form.Group>
-                                <Form.Label className="font-13">
-                                  End Time
-                                </Form.Label>
-                                <Form.Control
-                                  type="time"
-                                  className="cv-field font-13"
-                                  {...register(`addTime.${index}.end_time`, {
-                                    required:  disabledWorkDay[index]?"Please Enter Time":false,
-                                  })}
-                                  defaultValue={item.end_time}
-                                ></Form.Control>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </div>
-                        {disabledWorkDay[index] ? (
-                          <Form.Group className="mb-4">
-                            <Form.Label className="font-13">Memo</Form.Label>
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label className="font-13">
+                              End Time
+                            </Form.Label>
                             <Form.Control
-                              type="text"
-                              as="textarea"
-                              rows={3}
+                              type="time"
                               className="cv-field font-13"
-                              placeholder="Add Memo"
-                              {...register(`addTime.${index}.memo`, {
-                                required: false,
+                              {...register(`addTime.${index}.end_time`, {
+                                required:  disabledWorkDay[index]?"Please Enter Time":false,
                               })}
-                              defaultValue={item.memo}
+                              defaultValue={item.end_time}
                             ></Form.Control>
                           </Form.Group>
-                        ) : (
-                          ""
-                        )}
+                          {disabledWorkDay[index] ? (
+                            <Form.Group className="w-100">
+                              <Form.Label className="font-13">Memo</Form.Label>
+                              <Form.Control
+                                type="text"
+                                as="textarea"
+                                rows={3}
+                                className="cv-field font-13"
+                                placeholder="Add Memo"
+                                {...register(`addTime.${index}.memo`, {
+                                  required: false,
+                                })}
+                                defaultValue={item.memo}
+                              ></Form.Control>
+                            </Form.Group>
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </Col>
                     </Row>
                   </div>
                 </>
               );
             })}
-          </div>
-          <div className="text-center mt-2">
 
             <RexettButton
-                                    type="submit"
-                                    text="Submit"
-                                    className="main-btn py-2 px-5"
-                                    variant="transparent"
-                                    isLoading={smallLoader}
-                                />
+              type="submit"
+              text="Submit"
+              className="main-btn py-2 px-5"
+              variant="transparent"
+              isLoading={smallLoader}
+            />
           </div>
         </form>
       </Modal.Body>
