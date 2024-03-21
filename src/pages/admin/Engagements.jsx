@@ -14,7 +14,7 @@ const Engagements = () => {
                 </Col>
             </Row>
             <div className="table-responsive">
-                <table className="table w-100 engagement-table">
+                <table className="table w-100 engagement-table table-ui-custom">
                     <thead>
                         <th>Client Name</th>
                         <th>Developer Name</th>
