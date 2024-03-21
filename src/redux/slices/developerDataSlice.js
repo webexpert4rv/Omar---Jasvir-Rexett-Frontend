@@ -378,7 +378,7 @@ export function developertimeReporting(payload, callback) {
 export function getPreviousTimeReports(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        // dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload,`developer/get-previous-report`))
             if (result.status === 200) {

@@ -22,7 +22,7 @@ const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFile
                 return (
                   <>
                   <tr>
-                    <td className="document-data filename-data">
+                    <td className="document-data filename-data px-3">
                         <div className="d-flex gap-2 align-items-center filename-data">
 
                             {

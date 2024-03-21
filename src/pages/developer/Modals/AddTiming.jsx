@@ -131,8 +131,16 @@ const AddTimingModal = ({ show, handleClose }) => {
   };
 
   const handlePrevTimeReporting = () => {
-    dispatch(getPreviousTimeReports(selectedFilter, () => {}));
-    remove();
+    if(selectedFilter?.contract_id){
+    
+      dispatch(getPreviousTimeReports(selectedFilter, () => {
+        setOpen(false)
+      }));
+      remove();
+    }else{
+      setError({ message: "Please select client name" });
+    }
+   
   };
 
   return (
@@ -286,7 +294,7 @@ const AddTimingModal = ({ show, handleClose }) => {
               </Col>
             </Row>
 
-            {fields?.map((item, index) => {
+            {!open? fields?.map((item, index) => {
               return (
                 <>
                   <div className="time-row">
@@ -396,7 +404,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                   </div>
                 </>
               );
-            })}
+            }):""}
 
             <RexettButton
               type="submit"

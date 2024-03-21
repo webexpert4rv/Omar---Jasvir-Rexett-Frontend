@@ -1,6 +1,6 @@
 import React from "react";
 import sidebarLogo from '../assets/img/logo-main.png'
-import { NavLink } from "react-router-dom"; // Import NavLink instead of Link
+import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
@@ -15,6 +15,10 @@ import { PiUsersFourFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
 
 const AdminSidebar = ({ sideBarActive }) => {
+    const logout=()=>{
+        localStorage.clear()
+         window.location.href="/admin-login"
+     }
     return(
         <>
             <aside className={sideBarActive ? "sidebar active" : "sidebar"}>
@@ -56,7 +60,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                     </div>
                     <div className="w-100 px-3">
                         <div>
-                            <NavLink to={"/admin-login"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
+                        <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>
