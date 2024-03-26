@@ -41,11 +41,11 @@ const Sidebar = ({sideBarActive}) => {
                             <li className="sidebar-item">
                                 <NavLink to={'/time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/job-post'} className="side-link" activeClassName="active"><IoBriefcase /> Job Post</NavLink>
-                            </li>
+                            </li> */}
                             <li className="sidebar-item">
-                                <NavLink to={'/job-posted'} className="side-link" activeClassName="active"><FaListUl /> Job Posted</NavLink>
+                                <NavLink to={'/job-posted'} className="side-link" activeClassName="active"><FaListUl /> Jobs</NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/earned-back'} className="side-link" activeClassName="active"><PiCoinsFill /> Earned Back</NavLink>

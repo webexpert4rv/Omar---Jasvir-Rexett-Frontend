@@ -40,7 +40,7 @@ const Revenue = () => {
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
             </div>
-            <Form className="mb-4 d-block">
+            <Form className="mb-4 d-block filter-section">
                 <div className="d-flex gap-3">
                     <div className="d-flex gap-3">
                         <div>
@@ -56,20 +56,22 @@ const Revenue = () => {
                     </div>
                 </div>
             </Form>
-            <Row>
-                <Col md={6}>
-                    <div>
-                        <h2 className="section-head-sub">Statistic Revenue</h2>
-                        <Bar data={data} />
-                    </div>
-                </Col>
-                <Col md={6}>
-                    <div>
-                        <h2 className="section-head-sub">Statistic Income Earned</h2>
-                        <Bar data={incomeData} options={options} />
-                    </div>
-                </Col>
-            </Row>
+            <div className="card-box">
+                <Row>
+                    <Col md={6}>
+                        <div>
+                            <h2 className="section-head-sub">Statistic Revenue</h2>
+                            <Bar data={data} />
+                        </div>
+                    </Col>
+                    <Col md={6}>
+                        <div>
+                            <h2 className="section-head-sub">Statistic Income Earned</h2>
+                            <Bar data={incomeData} options={options} />
+                        </div>
+                    </Col>
+                </Row>
+            </div>
         </>
     )
 }

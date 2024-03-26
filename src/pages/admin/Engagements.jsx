@@ -5,14 +5,14 @@ const Engagements = () => {
     return(
         <>
             <h2 className="section-head mb-4">Engagements</h2>
-            <Row className="mb-3">
+            {/* <Row className="mb-3">
                 <Col xl={6} lg={7}>
                     <div className="d-flex gap-3">
                         <Form.Control type="text" className="cv-field" placeholder="Enter Search Keywords"></Form.Control>
                         <Button variant="transparent" className="main-btn px-4">Search</Button>
                     </div>
                 </Col>
-            </Row>
+            </Row> */}
             <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
                     <thead>

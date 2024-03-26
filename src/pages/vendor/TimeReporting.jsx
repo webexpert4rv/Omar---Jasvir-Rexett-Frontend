@@ -6,15 +6,13 @@ const VendorTimeReporting = () => {
     return (
         <>
             <section>
-                <Form className="mb-4">
+                <Form className="mb-4 filter-section">
                     <div className="d-flex gap-3 justify-content-between align-items-end">
                         <div className="d-flex gap-3">
                             <div>
-                                <Form.Label className="common-label">Filter By Date</Form.Label>
                                 <Form.Control type="date" className="filter-field shadow-none"></Form.Control>
                             </div>
                             <div>
-                                <Form.Label className="common-label">Clients</Form.Label>
                                 <Form.Select className="filter-select shadow-none">
                                     <option value="" selected disabled>Select Clients</option>
                                     <option value="bmw">BMW</option>
@@ -27,7 +25,7 @@ const VendorTimeReporting = () => {
                 </Form>
                 <div>
                     <div className="table-responsive">
-                        <table className="table time-table table-bordered">
+                        <table className="table time-table table-bordered table-ui-custom">
                             <thead>
                                 <th className="time-table-head">
                                     Client Name

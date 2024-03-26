@@ -56,7 +56,7 @@ const AdminDashboard = () => {
                 </div>
             </div>
             <Row className="mb-5">
-                <Col md={8}>
+                <Col md={12}>
                     <div className="d-flex justify-content-between mb-4 align-items-center">
                         <h2 className="section-head-sub">List of clients</h2>
                         {/* <div>

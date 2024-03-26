@@ -70,7 +70,7 @@ const JobTabs = ({jobListing,jobCategoryList}) => {
             <div>
                 {/* <p className="newjob-status">New Job Post</p> */}
 
-                <h3 className="status-heading">Status</h3>
+                {/* <h3 className="status-heading">Status</h3> */}
                 <p className={`status-text ${currentStatusCssClass(item?.status)}`}>{item?.status}</p>
             </div>
             <p className="font-15">Posted Date:<strong>{item.created_at.slice(0,10)}</strong></p>

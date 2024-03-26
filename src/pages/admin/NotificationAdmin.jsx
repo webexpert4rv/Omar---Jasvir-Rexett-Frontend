@@ -4,7 +4,7 @@ import { FaBell } from "react-icons/fa6";
 const NotificationAdmin = () => {
     return (
         <>
-            <section className="notification-screen">
+            <section className="notification-screen card-box">
                 <div className="d-flex justify-content-between align-items-start">
                     <div>
                         <h2 className="overview-card-heading fw-bold">Notification</h2>

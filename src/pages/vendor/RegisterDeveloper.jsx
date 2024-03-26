@@ -27,7 +27,7 @@ const RegisterDeveloper = () => {
 
     return (
         <>
-            <section className="register-developer">
+            <section className="register-developer card-box">
                 <div className="step-counts">
                     {steps.map((step, index) => (
                         <span

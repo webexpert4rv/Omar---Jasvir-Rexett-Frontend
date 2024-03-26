@@ -23,7 +23,7 @@ const StepFour = () => {
                         <Row>
                             <Col md="12">
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Skills</Form.Label>
+                                    {/* <Form.Label>Skills</Form.Label> */}
                                     <Select
                                         defaultValue={selectedOption}
                                         onChange={setSelectedOption}

@@ -18,7 +18,7 @@ const VendorDashboard = () => {
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
             </div>
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom-grey">
                 <h2 className="section-head-sub">List of all register developers</h2>
                 <div className="text-center">
                     <Link to={"/list-all-developers"} className="link-text-dark">See All</Link>
@@ -131,7 +131,7 @@ const VendorDashboard = () => {
                     </div>
                 </div>
             </div>
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom-grey">
                 <h2 className="section-head-sub">List of rented developers</h2>
                 <div className="text-center">
                     <Link to={"/all-rented-developers"} className="link-text-dark">See All</Link>

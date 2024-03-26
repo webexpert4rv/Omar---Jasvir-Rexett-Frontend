@@ -18,7 +18,7 @@ const StepFive = () => {
     return (
         <>
             <section className="step-container">
-                <h2 className="overview-card-heading">Enter Skills</h2>
+                <h2 className="overview-card-heading">Add Social Links</h2>
                 <Form>
                     <div className="inner-form">
                         {socialMediaRows.map((row, index) => (
@@ -26,9 +26,6 @@ const StepFive = () => {
                                 <Row>
                                     <Col md="12">
                                         <Form.Group className="mb-4">
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                <Form.Label>Add Social Media</Form.Label>
-                                            </div>
                                             <Form.Select className="mb-2">
                                                 <option value="facebook">Facebook</option>
                                                 <option value="linkedin">Linkedin</option>

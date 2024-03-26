@@ -122,7 +122,7 @@ const EarnedBack = () => {
                         <Pagination.Next className="custom-pagination-item custom-pagination-arrow" />
                     </Pagination>
                 </div> */}
-                <h5 className="section-head-sub">Statistic Earned Back</h5>
+                <h5 className="section-head-sub border-bottom-grey pb-2 mb-4">Statistic Earned Back</h5>
             </section>
             <div className="stats-chart-wrapper">
                 <Doughnut data={data} options={options} />

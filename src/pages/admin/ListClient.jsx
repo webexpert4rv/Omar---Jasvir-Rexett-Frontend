@@ -5,8 +5,10 @@ import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
+import { Col, Nav, Row, Tab } from "react-bootstrap";
 import clientLogo from '../../assets/img/facebook.png'
+import { IoGrid } from "react-icons/io5";
+import { FaListUl } from "react-icons/fa6";
 import { adminListClients } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 const ListClient = () => {
@@ -34,33 +36,116 @@ const ListClient = () => {
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
             </div>
-            <h2 className="section-head-sub mb-4">List of clients who hire developers from Rexett</h2>
-            <div className="developers-list">
-                {listOfClients?.map((item,index)=>{
-                    return(<>
-                    <div className="developer-card">
-                    <div className="user-imgbx">
-                        <img src={item.profile_picture} className="user-img client-logo" />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="user-name">{item.name}</h3>
-                        <p className="email-user">{item?.email}</p>
-                        <ul className="social-icons">
-                            <li>
-                                <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                                <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                        </ul>
-                    </div>
+            <Tab.Container className="w-100" defaultActiveKey="grid-view">
+                <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
+                    <h2 className="section-head-sub mb-0">List of clients who hire developers from Rexett</h2>
+                    <Nav variant="pills" className="document-view-pill">
+                        <Nav.Item className="document-view-item">
+                            <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item className="document-view-item">
+                            <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
+                        </Nav.Item>
+                    </Nav>
                 </div>
-                    </>)
-                })}
-            </div>
+                <Tab.Content>
+                    <Tab.Pane eventKey="grid-view">
+                        <div className="developers-list">
+                            {listOfClients?.map((item, index) => {
+                                return (<>
+                                    <div className="developer-card">
+                                        <div className="user-imgbx">
+                                            <img src={item.profile_picture} className="user-img client-logo" />
+                                        </div>
+                                        <div className="text-center">
+                                            <h3 className="user-name">{item.name}</h3>
+                                            <p className="email-user">{item?.email}</p>
+                                            <ul className="social-icons">
+                                                <li>
+                                                    <Link to={"#"}><FaGithub /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><FaLinkedin /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><MdEmail /></Link>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </>)
+                            })}
+                        </div>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="list-view">
+                        <div className="table-responsive">
+                            <table className="table developer-table">
+                                <thead>
+                                    <tr>
+                                        <th><span>Client Name</span></th>
+                                        <th><span>Email</span></th>
+                                        <th><span>Connects</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span className="d-flex align-items-center gap-3">
+                                                <img src={userImg} />
+                                                <h3 className="user-name color-121212 mb-0">John Doe</h3>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                <p className="designation-user color-121212 mb-0">Full stack developer</p>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <ul className="social-icons mb-0 justify-content-start">
+                                                <li>
+                                                    <Link to={"#"}><FaGithub /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><FaLinkedin /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><MdEmail /></Link>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span className="d-flex align-items-center gap-3">
+                                                <img src={userImg} />
+                                                <h3 className="user-name color-121212 mb-0">John Doe</h3>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                <p className="designation-user color-121212 mb-0">Full stack developer</p>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <ul className="social-icons mb-0 justify-content-start">
+                                                <li>
+                                                    <Link to={"#"}><FaGithub /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><FaLinkedin /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><MdEmail /></Link>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </Tab.Pane>
+                </Tab.Content>
+            </Tab.Container>
             <div className="text-center mt-3">
                 <Link to={"#"} className="link-text-dark">See All</Link>
             </div>

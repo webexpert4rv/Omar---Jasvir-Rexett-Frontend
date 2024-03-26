@@ -32,16 +32,18 @@ const RexettDocuments = ({ currentRole }) => {
     const [editFolderName, setEditFolderName] = useState({})
     const [showFolderView, setShowFolderView] = useState(false);
     const [currentFolderDetails, setCurrentFolderDetails] = useState({})
-    const [sharefileModal , setShareFileModal] = useState(false);
+    const [sharefileModal, setShareFileModal] = useState(false);
     const [show, setShow] = useState(false)
     const [isDelete, setDelete] = useState({ isDelete: false, id: "" })
     const [timerValue, setTimerValue] = useState("");
     const [search, setSearch] = useState('')
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
     const { folderData, smallLoader, screenLoader } = useSelector(state => state.clientData)
 
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
     const handleShowUploadFileModal = (id, name) => {
+        setOpen(!open)
         if (id) {
             setShowUploadFileModal(true);
             setEditFolderName({ id: id, name: name })
@@ -51,7 +53,7 @@ const RexettDocuments = ({ currentRole }) => {
 
         }
     };
-    
+
     const handleShowShareFileModal = () => {
         setShareFileModal(true);
     }
@@ -209,12 +211,11 @@ const RexettDocuments = ({ currentRole }) => {
         }
     }
 
-    const [showFilterMenu , setShowFilterMenu] = useState(false);
+    const [showFilterMenu, setShowFilterMenu] = useState(false);
 
     const handleShowFilterMenu = () => {
         setShowFilterMenu(!showFilterMenu);
     }
-    const [open, setOpen] = useState(false);
     return (
         <>
             <section>
@@ -224,32 +225,31 @@ const RexettDocuments = ({ currentRole }) => {
                         <Col md={12}>
                             <div className="d-flex flex-wrap align-items-center gap-2 mb-4">
                                 {/* <Button onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>+ New</Button> */}
-                                <div className="position-relative">
-                                    <Button
-                                        onClick={() => setOpen(!open)}
-                                        className="main-btn px-4 cursor-pointer upload-btn mb-0"
-                                        aria-controls="example-collapse-text"
-                                        aria-expanded={open}
-                                    >
-                                        + New
-                                    </Button>
-                                    <Collapse in={open} className="new-doc-collapse">
-                                        <div>
-                                            <Form.Label onClick={handleShowUploadFileModal} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-0 w-100">+ Create Folder</Form.Label>
-                                        </div>
-                                    </Collapse>
-                                </div>
-                                    <div>
-                                        <Form.Label className="main-btn px-4 cursor-pointer upload-btn mb-0" onClick={() => setShow(true)}>+ Upload File</Form.Label>
-                                    </div>
+                                {/* <div>
+                                    <Form.Label className="main-btn px-4 cursor-pointer upload-btn mb-0" onClick={() => setShow(true)}>+ Upload File</Form.Label>
+                                </div> */}
                                 <div>
                                     <Button variant="transparent" onClick={handleShowFilterMenu} className="main-btn outline-main-btn px-4"><FaFilter /> Filter</Button>
                                 </div>
                             </div>
                         </Col>
+
+                        {showFolderView && search == '' ? <Col md={12}><section className="folder-view">
+                            <div className="breadcrumb">
+                                {bradCrump?.map((item, index) => {
+                                    return (<>
+                                        <Link className="bread-link" onClick={() => bradCrumpHandle(item.parent_id)}>{item.name}</Link>
+                                        <span className="divider"> &gt; </span>
+                                    </>)
+                                })
+                                }
+
+                            </div>
+
+                        </section> </Col> : ""}
                         <Col md={12}>
                             <div className="d-flex gap-3">
-                                <div className={ showFilterMenu ? "side-filter active" : "side-filter"}>
+                                <div className={showFilterMenu ? "side-filter active" : "side-filter"}>
                                     <h3 className="section-head-sub">Filter</h3>
                                     <Form className="mb-4">
                                         <div className="filter-section gap-3 align-items-center">
@@ -293,8 +293,28 @@ const RexettDocuments = ({ currentRole }) => {
                                 </div>
                                 <div className="w-100">
                                     <Tab.Container className="w-100" defaultActiveKey="grid-view">
-                                        <div className="d-flex justify-content-between mb-3">
-                                            <h3 className="section-head-sub">Documents</h3>
+                                        <div className="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom-grey">
+                                            <div className="d-flex align-items-center gap-3">
+                                                <div className="d-flex align-items-center gap-3">
+                                                    <h3 className="section-head-sub mb-0">Documents</h3>
+                                                    <div className="position-relative">
+                                                        <Button
+                                                            onClick={() => setOpen(!open)}
+                                                            className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0"
+                                                            aria-controls="example-collapse-text"
+                                                            aria-expanded={open}
+                                                        >
+                                                            +
+                                                        </Button>
+                                                        <Collapse in={open} className="new-doc-collapse">
+                                                            <div>
+                                                                <Form.Label onClick={handleShowUploadFileModal} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-2 w-100">+ Create Folder</Form.Label>
+                                                                <Form.Label onClick={() => setShow(true)} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-0 w-100">+ Upload File</Form.Label>
+                                                            </div>
+                                                        </Collapse>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <Nav variant="pills" className="document-view-pill">
                                                 <Nav.Item className="document-view-item">
                                                     <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
@@ -306,19 +326,6 @@ const RexettDocuments = ({ currentRole }) => {
                                         </div>
                                         <Tab.Content>
                                             <Tab.Pane eventKey="grid-view">
-                                                {showFolderView && search == '' ? <section className="folder-view">
-                                                    <div className="breadcrumb">
-                                                        {bradCrump?.map((item,index) => {
-                                                            return (<>
-                                                                <Link className="bread-link" onClick={() => bradCrumpHandle(item.parent_id)}>{item.name}</Link>
-                                                                <span className="divider"> &gt; </span>
-                                                            </>)
-                                                        })
-                                                        }
-
-                                                    </div>
-
-                                                </section> : ""}
                                                 {screenLoader ? <ScreenLoader /> : <div className="folder-listing">
                                                     {folderData?.length > 0 ? folderData?.map((item) => {
                                                         return (
@@ -370,7 +377,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                 </div>}
                                             </Tab.Pane>
                                             <Tab.Pane eventKey="list-view">
-                                            <DocumentListView/>
+                                                <DocumentListView />
                                             </Tab.Pane>
                                         </Tab.Content>
                                     </Tab.Container>

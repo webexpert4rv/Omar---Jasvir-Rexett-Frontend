@@ -1,5 +1,5 @@
 import React from "react";
-import sidebarLogo from '../assets/img/logo-main.png'
+import sidebarLogo from '../assets/img/logo-white-new.png'
 import { NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { IoIosSettings } from "react-icons/io";
@@ -16,11 +16,11 @@ const VendorSidebar = ({ sideBarActive }) => {
             <aside className={sideBarActive ? "sidebar active" : "sidebar"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
-                        <div className="sidebar-logo text-center">
+                        <div className="sidebar-logo mb-3">
                             <img src={sidebarLogo} alt="Sidebar Logo" />
                         </div>
-                        <NavLink to={"/vendor-dashboard"} className="dashboard-link mb-4" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
-                        <ul className="sidebar-listing">
+                        <NavLink to={"/vendor-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
+                        <ul className="sidebar-listing py-0">
                             <li className="sidebar-item">
                                 <NavLink to={"/edit-vendor-profile"} className="side-link" activeClassName="active"><IoIosSettings /> Edit Profile</NavLink>
                             </li>
@@ -34,7 +34,7 @@ const VendorSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/vendor-upload-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Upload Invoice</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/vendor-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting of rented developers</NavLink>
+                                <NavLink to={'/vendor-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
                             </li>
                         </ul>
                     </div>

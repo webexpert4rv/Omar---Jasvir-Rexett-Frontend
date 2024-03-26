@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 const VendorUploadInvoice = () =>{
     return(
         <>
-            <section className="upload-invoice-section">
+            <section className="upload-invoice-section card-box">
                 <h2 className="overview-card-heading mb-4">Upload Invoice</h2>
                 <Form>
                     <div className="experience-container">

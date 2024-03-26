@@ -24,31 +24,28 @@ const AdminTimeReporting = () => {
     return (
         <>
             <section>
-                <Form className="mb-4">
-                    <div className="d-flex gap-3 justify-content-between align-items-end">
-                        <div className="d-flex gap-3">
-                            <div>
-                                <Form.Label className="common-label">Filter By Date</Form.Label>
-                                <Form.Control type="date" className="filter-field shadow-none"></Form.Control>
+                <div className="filter-section mb-4">
+                    <Form>
+                        <div className="d-flex gap-3 justify-content-between align-items-end">
+                            <div className="d-flex gap-3">
+                                <div>
+                                    <Form.Select className="filter-select shadow-none">
+                                        <option value="" selected disabled>Select Clients</option>
+                                        <option value="bmw">BMW</option>
+                                        <option value="volvo">Volvo</option>
+                                        <option value="amazon">Amazon</option>
+                                    </Form.Select>
+                                </div>
                             </div>
                             <div>
-                                <Form.Label className="common-label">Clients</Form.Label>
-                                <Form.Select className="filter-select shadow-none">
-                                    <option value="" selected disabled>Select Clients</option>
-                                    <option value="bmw">BMW</option>
-                                    <option value="volvo">Volvo</option>
-                                    <option value="amazon">Amazon</option>
-                                </Form.Select>
+                                <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>Edit Time Report</Button>
                             </div>
                         </div>
-                        <div>
-                            <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>Edit Time Report</Button>
-                        </div>
-                    </div>
-                </Form>
+                    </Form>
+                </div>
                 <div>
                     <div className="table-responsive">
-                        <table className="table time-table table-bordered">
+                        <table className="table time-table table-bordered table-ui-custom">
                             <thead>
                                 <th className="time-table-head">
                                     Client Name
