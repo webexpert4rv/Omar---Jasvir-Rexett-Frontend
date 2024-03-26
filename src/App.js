@@ -58,6 +58,7 @@ import ForgotPassword from './pages/Authentication/ForgotPassword';
 import ResetPassword from './pages/Authentication/ResetPassword';
 import Engagements from './pages/admin/Engagements';
 import Applications from './pages/admin/Applications';
+import AdminPublicLayout from './layout/AdminPublicLayout';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -81,7 +82,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" exact element={<PublicLayout><Login/></PublicLayout> } />
-          <Route path="/admin-login" exact element={<AgencyLogin/>} />
+          <Route path="/admin-login" exact element={<AdminPublicLayout><AgencyLogin/></AdminPublicLayout>} />
           <Route path="/forgot-password" exact element={<ForgotPassword/>} />
           <Route path="/reset-password" exact element={<ResetPassword/>} />
           <Route path="/developer-login" exact element={<DeveloperPublicLayout><DeveloperLogin/></DeveloperPublicLayout> } />

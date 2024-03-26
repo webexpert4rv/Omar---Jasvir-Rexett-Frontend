@@ -6,9 +6,10 @@ import { getToken } from '../helper/utlis';
 const PublicLayout = ({ children }) => {
 
     const token=getToken("token")
+    const role=localStorage.getItem("role")
     return (
         <>
-              {!token? children :<Navigate to="/dashboard"/>}
+              {role!=="client"? children :<Navigate to="/dashboard"/>}
         </>
     );
 };

@@ -3,10 +3,10 @@ import { getToken } from '../helper/utlis';
 import { Navigate } from 'react-router-dom';
 const DeveloperPublicLayout = ({ children }) => {
 
-    const token=getToken("developerToken")
+    const role=localStorage.getItem("role")
     return (
         <>
-        {!token?children:<Navigate to="/developer-dashboard"/>}
+        {role!=="developer"?children:<Navigate to="/developer-dashboard"/>}
              
         </>
     );

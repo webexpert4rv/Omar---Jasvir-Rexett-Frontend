@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { getToken } from '../helper/utlis';
 import { Navigate } from 'react-router-dom';
-const DeveloperPublicLayout = ({ children }) => {
+const AdminPublicLayout = ({ children }) => {
 
-    const token=getToken("adminToken")
+    const role=localStorage.getItem("role")
     return (
         <>
             
-        {!token?children:<Navigate to="/agency-dashboard"/>}
+        {role!=="admin"?children:<Navigate to="/admin-dashboard"/>}
              
         </>
     );
 };
 
-export default DeveloperPublicLayout;
+export default AdminPublicLayout;
