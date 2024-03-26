@@ -109,7 +109,7 @@ const RexettDocuments = ({ currentRole }) => {
         }
     }
 
-    const generateFileImage = (url) => {
+     const generateFileImage = (url) => {
         let fileName = url?.split("/")
         let splitWithDot = fileName[fileName.length - 1]
         let fileExtWithDot = splitWithDot.split(".")
@@ -133,6 +133,7 @@ const RexettDocuments = ({ currentRole }) => {
     const deleteFileAndFolder = (id, name) => {
         setDelete({ isDelete: true, id: id, name: name })
     }
+    
 
     const handleDelete = (e) => {
         e.preventDefault()
@@ -365,6 +366,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 {/* <button className="view-btn doc-action-btn"><MdEdit /></button> */}
                                                                                 <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload /></button>
                                                                                 <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "file")}><FaTrashCan /></button>
+                                                                                <button onClick={handleShowShareFileModal} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
                                                                             </div>
                                                                         </div>
                                                                     </>
@@ -377,7 +379,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                 </div>}
                                             </Tab.Pane>
                                             <Tab.Pane eventKey="list-view">
-                                                <DocumentListView />
+                                            <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage} toggleFolderView={toggleFolderView}/>
                                             </Tab.Pane>
                                         </Tab.Content>
                                     </Tab.Container>

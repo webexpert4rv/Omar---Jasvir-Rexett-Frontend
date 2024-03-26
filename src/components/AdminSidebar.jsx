@@ -15,6 +15,10 @@ import { PiUsersFourFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
 
 const AdminSidebar = ({ sideBarActive }) => {
+    const logout=()=>{
+        localStorage.clear()
+         window.location.href="/admin-login"
+     }
     return(
         <>
             <aside className={sideBarActive ? "sidebar active" : "sidebar"}>
@@ -56,7 +60,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                     </div>
                     <div className="w-100 px-3 mt-xxl-3">
                         <div>
-                            <NavLink to={"/agency-login"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
+                        <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>

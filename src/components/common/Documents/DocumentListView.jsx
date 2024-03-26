@@ -4,8 +4,9 @@ import { HiMiniUser } from "react-icons/hi2";
 import { FaTrashCan } from "react-icons/fa6";
 import { FaDownload } from "react-icons/fa6";
 import { FaFolder } from "react-icons/fa";
+import NoDataFound from '../../atomic/NoDataFound';
 
-const DocumentListView = () => {
+const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFileName,generateFileImage,toggleFolderView}) => {
   return (
     <div>
     <div className="table-responsive">
@@ -17,14 +18,30 @@ const DocumentListView = () => {
                 <th className="document-th action-th">Action</th>
             </thead>
             <tbody>
-                <tr>
+               {folderData.length>0?folderData?.map((item,index)=>{
+                return (
+                  <>
+                  <tr>
                     <td className="document-data filename-data px-3">
                         <div className="d-flex gap-2 align-items-center filename-data">
-                            <div className="file-icon">
-                                <FaFilePdf />
+
+                            {
+                                item.file_type!==0?<>
+                                <div className="file-icon">
+                                {generateFileImage(item?.s3_path)}
                             </div>
-                            <span>PDF Presentation</span>
-                        </div>
+                            <span>{getFileName(item?.s3_path)}</span>
+                                </>
+                                :
+                                <>
+                                      <div className="folder-icon" onDoubleClick={()=>toggleFolderView(item)}>
+                                <FaFolder />
+                            </div>
+                            <span>{item.s3_path}</span>
+                                </>
+                            }
+                            </div>
+                        
                     </td>
                     <td className="document-data">
                         <div className="d-flex align-items-center owner-icon gap-1">
@@ -34,15 +51,18 @@ const DocumentListView = () => {
                     <td className="document-data">My Documents</td>
                     <td className="document-data">
                         <div className="d-flex gap-3">
-                            <button className="download-btn doc-action-btn"><FaDownload />
+                            <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload />
                             </button>
-                            <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
+                            <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "file")} ><FaTrashCan /></button>
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td className="document-data filename-data px-3">
-                        <div className="d-flex gap-2 align-items-center filename-data">
+                  </>
+                )
+               }):<NoDataFound/> }
+                {/* <tr>
+                    <td className="document-data filename-data">
+                        <div className="d-flex gap-2 align-items-center">
                             <div className="file-icon">
                                 <FaFilePdf />
                             </div>
@@ -85,7 +105,7 @@ const DocumentListView = () => {
                             <button className="trash-btn doc-action-btn" ><FaTrashCan /></button>
                         </div>
                     </td>
-                </tr>
+                </tr> */}
             </tbody>
         </table>
     </div>

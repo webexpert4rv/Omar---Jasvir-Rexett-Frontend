@@ -43,19 +43,22 @@ export function loginUser(payload, callback) {
                 if(payload.role==="client"){
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
+                    localStorage.setItem("role","client")
                   
                       window.location.href="/dashboard"
                 }
 
                 if(payload.role==="developer"){
-                    localStorage.setItem("developerToken", result.data.access_token);
-                    localStorage.setItem("developerRefreshToken", result.data.refresh_token);
+                    localStorage.setItem("token", result.data.access_token);
+                    localStorage.setItem("refreshToken", result.data.refresh_token);
+                    localStorage.setItem("role","developer")
                       window.location.href="/developer-dashboard"
                 }
 
                 if(payload.role==="admin"){
-                    localStorage.setItem("adminToken", result.data.access_token);
-                    localStorage.setItem("adminRefreshToken", result.data.refresh_token);
+                    localStorage.setItem("token", result.data.access_token);
+                    localStorage.setItem("refreshToken", result.data.refresh_token);
+                    localStorage.setItem("role","admin")
                       window.location.href="/admin-dashboard"
                 }
 
@@ -114,7 +117,7 @@ export function resetPassword(payload, callback) {
                 }else if(result?.data?.data?.role==="client"){
                     window.location.href="/"
                 }else{
-                    window.location.href="/agency-login"
+                    window.location.href="/admin-login"
                 }
             }
         } catch (error) {

@@ -12,7 +12,7 @@ const developerInstance = axios.create({
 // Request Interceptor
 developerInstance.interceptors.request.use(
   (config) => {
-    config.headers["Authorization"] =  `${getToken("developerToken")}`;
+    config.headers["Authorization"] =  `${getToken("token")}`;
     return config;
   },
   (error) => {
@@ -31,11 +31,11 @@ developerInstance.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        let refreshToken = getRefreshToken("developerRefreshToken");
+        let refreshToken = getRefreshToken("refreshToken");
         console.log(refreshToken,"refreshToken")
         const response = await developerInstance.post('auth/refresh-token', { refresh_token
           : refreshToken });
-        let refreshTokn = updateLocalAccessToken("developerToken",response.data.access_token)
+        let refreshTokn = updateLocalAccessToken("token",response.data.access_token)
         originalRequest.headers["Authorization"] = `${refreshTokn}`;
         return developerInstance(originalRequest);
       } catch (error) {

@@ -9,14 +9,15 @@ const DeveloperDashboardLayout = ({ children }) => {
     const handleSidebar = () => {
         isSidebarWrapper(!sidebarwrapper)
     }
-    const token=getToken("developerToken")
+    const token=getToken("token")
+    const role=localStorage.getItem("role")
     return (
         <>
             <div className="dashboard-layout">
                 <Sidebar sidebarwrapper={sidebarwrapper} />
                 <main className='main-wrapper'>
                     <Navigation onClick={handleSidebar} />
-                    {token?children:<Navigate to="/developer-login"/>}
+                    {token && role=="developer"?children:<Navigate to="/developer-login"/>}
                 </main>
             </div>
         </>

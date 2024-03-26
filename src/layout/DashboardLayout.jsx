@@ -56,13 +56,14 @@ const DashboardLayout = ({ children }) => {
         isSidebarWrapper(!sidebarwrapper)
     }
     let token=getToken("token");
+    const role=localStorage.getItem("role")
     return (
         <>
             <div className="dashboard-layout">
                 <Sidebar />
                 <main className={ sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper right-active'}>
                     <Navigation sidebaractive={sidebarwrapper} handleSidebar={handleSidebar} />
-                    {token?children:<Navigate to="/"/> }
+                    {token && role=="client"?children:<Navigate to="/"/>}
                 </main>
                 <div className={ sidebarwrapper ? 'right-sidebar hide' : 'right-sidebar'}>
                     <div className='d-flex justify-content-center gap-3 mb-5'>
