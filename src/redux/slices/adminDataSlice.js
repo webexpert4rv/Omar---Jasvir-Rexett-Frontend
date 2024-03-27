@@ -12,7 +12,10 @@ const initialAdminData = {
     assignedDeveloper:[],
     profileData:{},
     jobListing:[],
-    singleJobListing:{}
+    singleJobListing:{},
+    allApplications:{},
+    adminTimeReportingList:[],
+    engagement:[]
 }
 
 export const adminDataSlice = createSlice({
@@ -31,6 +34,11 @@ export const adminDataSlice = createSlice({
         setSuccessAdminData: (state, action) => {
             state.smallLoader = false;
             state.screenLoader = false;
+        },
+
+        setSuccessApplicationList: (state, action) => {
+            state.smallLoader = false;
+            state.allApplications = action.payload;
         },
         setSuccessProfileData: (state, action) => {
             state.smallLoader = false;
@@ -57,12 +65,18 @@ export const adminDataSlice = createSlice({
         setFailAdminData: (state, action) => {
             state.smallLoader = false;
         },
+        setAdminTimeReporting:(state,action)=>{
+            state.adminTimeReportingList=action.payload
+        },
+        setAdminEngagment:(state,action)=>{
+            state.engagement=action.payload
+        }
 
 
     }
 })
 
-export const { setScreenLoader,setSingleJobListing, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const { setScreenLoader,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -175,6 +189,57 @@ export function adminSingleJob(payload, callback) {
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSingleJobListing(result.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function adminTimeReporting(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.get(`admin/time-reports`)
+            if (result.status === 200) {
+                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
+                dispatch(setAdminTimeReporting(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function allApplicationsList(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.get(`admin/applications`)
+            if (result.status === 200) {
+                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
+                dispatch(setSuccessApplicationList(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function adminEngagementList(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.get(generateApiUrl(payload,`admin/engagements`))
+            if (result.status === 200) {
+                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
+                dispatch(setAdminEngagment(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

@@ -33,7 +33,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> List of clients</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">Applications <span className="new-app">20</span></span></NavLink>
+                                <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">Applications </span></NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={"/engagements"} className="side-link" activeClassName="active"><PiUsersFourFill /> Engagements</NavLink>

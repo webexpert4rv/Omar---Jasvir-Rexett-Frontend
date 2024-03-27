@@ -1,14 +1,18 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
 import EditTimeReport from "./Modals/EditTimeReportModal";
 import UploadInvoice from "./Modals/UploadInvoice";
+import { useDispatch, useSelector } from "react-redux";
+import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 const AdminTimeReporting = () => {
+    const dispatch =useDispatch()
+    const {adminTimeReportingList}=useSelector(state=>state.adminData)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const handleShowEditTimeModal = () => {
         setShowEditTimeModal(true);
     };
-
+console.log(adminTimeReportingList,"|adminTimeReportingList")
     const handleCloseEditTimeModal = () => {
         setShowEditTimeModal(false);
     };
@@ -21,6 +25,9 @@ const AdminTimeReporting = () => {
     const handleCloseUploadInvoice = () => {
         setShowUploadInvoice(false);
     };
+    useEffect(()=>{
+    dispatch(adminTimeReporting())
+    },[])
     return (
         <>
             <section>
@@ -73,9 +80,13 @@ const AdminTimeReporting = () => {
                                 </th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
+                                {
+                                    adminTimeReportingList?.map((item,index)=>{
+                                        return (
+                                            <>
+                                               <tr>
+                                    <td className="time-table-data">{item?.client_details?.name}</td>
+                                    <td className="time-table-data">{item?.contracts.length}</td>
                                     <td className="time-table-data">
                                         <Form.Select className="status-select shadow-none">
                                             <option value="" selected disabled>Developer</option>
@@ -93,66 +104,11 @@ const AdminTimeReporting = () => {
                                     </td>
                                     <td className="time-table-data">Hourly</td>
                                 </tr>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
-                                    <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
-                                    <td className="time-table-data">N/A</td>
-                                    <td className="time-table-data">
-                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
-                                    </td>
-                                    <td className="time-table-data">Hourly</td>
-                                </tr>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
-                                    <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
-                                    <td className="time-table-data">28 hrs</td>
-                                    <td className="time-table-data">
-                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
-                                    </td>
-                                    <td className="time-table-data">Hourly</td>
-                                </tr>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
-                                    <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
-                                    <td className="time-table-data">N/A</td>
-                                    <td className="time-table-data">
-                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
-                                    </td>
-                                    <td className="time-table-data">Hourly</td>
-                                </tr>
+                                            </>
+                                        )
+                                    })
+                                }
+                             
                             </tbody>
                         </table>
                     </div>
