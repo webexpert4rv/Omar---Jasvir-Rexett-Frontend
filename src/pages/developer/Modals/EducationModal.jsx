@@ -192,7 +192,7 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
                                             <option disabled selected>Please select year</option>
                                             {yearsArray?.map((item) => (
                                                 <option key={item} value={item}>{item}</option>
-                                            ))}
+                                            ))} 
                                         </Form.Select>
                                         {errors && errors.educations && errors.educations[index] && errors.educations[index].start_year && (
                                             <p className="error-message">{errors.educations[index].start_year.message}</p>

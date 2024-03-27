@@ -124,7 +124,6 @@ export function getDeveloperProfileDetails(payload, callback) {
         try {
             let result = await clientInstance.get('developer/get-profile')
             if (result.status === 200) {
-                console.log(result,"redd")
                 dispatch(setSuccessProfileData(result.data))
             }
         } catch (error) {
@@ -142,7 +141,6 @@ export function getDeveloperDashboard(payload, callback) {
         try {
             let result = await clientInstance.get('developer/dashboard')
             if (result.status === 200) {
-                console.log(result,"redd")
                 dispatch(setDeveloperDashboard(result.data.data))
             }
         } catch (error) {
@@ -159,7 +157,6 @@ export function updateDeveloperCvBio(payload, callback) {
         try {
             let result = await clientInstance.post('developer/update-bio',{...payload})
             if (result.status === 200) {
-                console.log(result,"redd")
                 toast.success("Bio is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
@@ -178,7 +175,6 @@ export function updateDeveloperCvExperience(payload,id, callback) {
         try {
             let result = await clientInstance.put(`developer/update-experience/${id}`,{...payload})
             if (result.status === 200) {
-                console.log(result,"redd")
                 // toast.success("Experience is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
@@ -214,7 +210,6 @@ export function deleteExperience(payload, callback) {
         try {
             let result = await clientInstance.delete(`developer/delete-experience/${payload}`)
             if (result.status === 200) {
-                console.log(result,"redd")
                 toast.success("Experience is deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
@@ -305,7 +300,6 @@ export function updateDeveloperSkills(payload, callback) {
         try {
             let result = await clientInstance.post(`developer/update-developer-skills`,{skills:payload})
             if (result.status === 200) {
-                console.log(result,"redd")
                 toast.success("Skills updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
@@ -326,7 +320,6 @@ export function addDeveloperSocialMedia(payload, callback) {
         try {
             let result = await clientInstance.post(`developer/add-social-links`,[...payload])
             if (result.status === 200) {
-                console.log(result,"redd")
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
@@ -345,7 +338,6 @@ export function updateDeveloperCvDetails(payload, callback) {
         try {
             let result = await clientInstance.put(`developer/update-cv-profile`,{...payload})
             if (result.status === 200) {
-                console.log(result,"redd")
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form, Row, Col, Collapse } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col, Collapse, CloseButton } from "react-bootstrap";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   getAllContracts,
@@ -8,14 +8,15 @@ import {
 } from "../../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../../components/atomic/RexettButton";
+import { current } from "@reduxjs/toolkit";
 const AddTimingModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();
-  const [selectDay, setDaySelection] = useState(null);
+  // const [selectDay, setDaySelection] = useState(null);
   const [disabledWorkDay, setDisabledWorkDay] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState();
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState({});
   const [timeReportingData, setTimeReportingData] = useState([]);
+  const [details, setDetails] = useState(false)
   const {
     register,
     control,
@@ -33,8 +34,6 @@ const AddTimingModal = ({ show, handleClose }) => {
     (state) => state.developerData
   );
 
-  console.log(addTimeReports, "addTimeReports");
-
   useEffect(() => {
     dispatch(getAllContracts());
   }, []);
@@ -43,6 +42,7 @@ const AddTimingModal = ({ show, handleClose }) => {
     const today = new Date();
     const currentDay = today.getDay();
     const startDate = new Date(today);
+    console.log(startDate, "startDate")
     startDate.setDate(startDate.getDate() - currentDay);
 
     let formattedDate = "";
@@ -62,7 +62,7 @@ const AddTimingModal = ({ show, handleClose }) => {
         weekDates.push({ report_date: formattedDate });
       }
     }
-
+    console.log(formattedDate,"formattedDate")
     setTimeReportingData(weekDates);
   };
 
@@ -73,10 +73,14 @@ const AddTimingModal = ({ show, handleClose }) => {
       getCurrentWeekDates();
     }
   }, [addTimeReports]);
-
-  useEffect(() => {
+  console.log(addTimeReports, "addTimeReports")
+  console.log(timeReportingData, "timeReportingData")
+  console.log(selectedFilter , "selectedFilter")
+  useEffect((formattedDate) => {
     if (timeReportingData?.length > 0) {
       timeReportingData?.forEach((item) => {
+        console.log(item,"------------------item")
+        // const currrentDate = selectedFilter?.length > 0 ? item?.report_date :formattedDate ;
         append({
           report_date: item?.report_date,
           is_off_day: false,
@@ -90,7 +94,8 @@ const AddTimingModal = ({ show, handleClose }) => {
         ]);
       });
     }
-  }, [timeReportingData]);
+  
+  }, [timeReportingData ]);
 
   const handleWorkDaysChange = (e, index, state) => {
     if (state) {
@@ -105,44 +110,42 @@ const AddTimingModal = ({ show, handleClose }) => {
       setValue(`addTime[${index}].is_off_day`, false);
     }
   };
-
   const onSubmit = (values) => {
     let payloadData = {
       contract_id: +selectedFilter?.contract_id,
       reports: values?.addTime,
+
     };
     if (selectedFilter?.contract_id) {
-      setError({});
       dispatch(
         saveTimeReports(payloadData, () => {
           handleClose();
         })
       );
-    } else {
-      setError({ message: "Please select client name" });
     }
   };
   const handleChange = (e, select) => {
-    setError({});
     setSelectedFilter({
       ...selectedFilter,
-      [select]: e.target.value,
+      [select]: e.target.value
     });
   };
-
   const handlePrevTimeReporting = () => {
-    if(selectedFilter?.contract_id){
-    
+    setDetails(true)
+    if (selectedFilter?.contract_id) {
       dispatch(getPreviousTimeReports(selectedFilter, () => {
         setOpen(false)
       }));
       remove();
-    }else{
-      setError({ message: "Please select client name" });
     }
-   
   };
-
+  const handleCloseModal = () => {
+    setSelectedFilter({})
+    handleClose()
+    setTimeReportingData([])
+    getCurrentWeekDates();
+  }
+  console.log(allContracts ,"alllcontracts")
   return (
     <Modal
       show={show}
@@ -152,8 +155,9 @@ const AddTimingModal = ({ show, handleClose }) => {
       size="lg"
       scrollable
     >
-      <Modal.Header closeButton>
+      <Modal.Header >
         <Modal.Title>Add Time</Modal.Title>
+        <CloseButton onClick={handleCloseModal}></CloseButton>
       </Modal.Header>
 
       <Modal.Body>
@@ -180,10 +184,10 @@ const AddTimingModal = ({ show, handleClose }) => {
                           Select Year
                         </Form.Label>
                         <Form.Select
+                          required="true"
                           className="shadow-none"
                           onChange={(e) => handleChange(e, "year")}
                         >
-                          {" "}
                           <option disabled selected>
                             Select Year
                           </option>
@@ -196,6 +200,9 @@ const AddTimingModal = ({ show, handleClose }) => {
                           <option value="2018">2018</option>
                           <option value="2017">2017</option>
                         </Form.Select>
+                        {!selectedFilter?.year?.length > 0 && details ? (
+                          <p style={{ color: 'red' }}>Please select a year</p>
+                        ) : ""}
                       </div>
                     </Col>
                     <Col md={4} className="mb-3">
@@ -204,6 +211,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                           Select Month
                         </Form.Label>
                         <Form.Select
+                          required
                           className="shadow-none"
                           onChange={(e) => handleChange(e, "month")}
                         >
@@ -223,6 +231,9 @@ const AddTimingModal = ({ show, handleClose }) => {
                           <option value="11">November</option>
                           <option value="12">December</option>
                         </Form.Select>
+                        {!selectedFilter?.month?.length > 0 && details ? (
+                          <p style={{ color: 'red' }}>Please select a month</p>
+                        ) : ""}
                       </div>
                     </Col>
                     <Col md={4} className="mb-3">
@@ -242,7 +253,11 @@ const AddTimingModal = ({ show, handleClose }) => {
                           <option value="3">Week 3</option>
                           <option value="4">Week 4</option>
                         </Form.Select>
+
                       </div>
+                      {!selectedFilter?.week?.length > 0 && details ? (
+                        <p style={{ color: 'red' }}>Please select a week</p>
+                      ) : ""}
                     </Col>
                   </Row>
                 </div>
@@ -277,7 +292,9 @@ const AddTimingModal = ({ show, handleClose }) => {
                     })}
                   </Form.Select>
                 </Form.Group>
-                <p className="error-message">{error.message}</p>
+                {!selectedFilter?.contract_id?.length > 0 && details ? (
+                  <p style={{ color: 'red' }}>Please enter client name</p>
+                ) : ""}
                 {open ? (
                   <div className="text-center mt-2">
                     <Button
@@ -293,8 +310,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                 )}
               </Col>
             </Row>
-
-            {!open? fields?.map((item, index) => {
+            {!open ? fields?.map((item, index) => {
               return (
                 <>
                   <div className="time-row">
@@ -331,7 +347,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                             }
                             className="font-15"
                             id="off-day"
-                            label="Holiday Day"
+                            label="Holiday"
                           />
                         </Form.Group>
                         <div
@@ -349,11 +365,11 @@ const AddTimingModal = ({ show, handleClose }) => {
                               type="time"
                               className="cv-field font-13"
                               {...register(`addTime.${index}.start_time`, {
-                                required: disabledWorkDay[index]?"Please Enter Time":false,
+                                required: disabledWorkDay[index] ? "Please Enter Time" : false,
                                 validate: {
-                                            
+
                                   lessThanEndTime: value => {
-                                      const watchEndTime = watch(`addTime.${index}.end_time`);
+                                    const watchEndTime = watch(`addTime.${index}.end_time`);
                                     if (!watchEndTime || parseInt(value) < parseInt(watchEndTime)) {
                                       return true;
                                     }
@@ -363,9 +379,9 @@ const AddTimingModal = ({ show, handleClose }) => {
                               })}
                               defaultValue={item.start_time}
                             ></Form.Control>
-                              {errors && errors.addTime && errors.addTime[index] && errors.addTime[index].start_time && (
-                                            <p className="error-message">{errors.addTime[index].start_time.message}</p>
-                                        )}
+                            {errors && errors.addTime && errors.addTime[index] && errors.addTime[index].start_time && (
+                              <p className="error-message">{errors.addTime[index].start_time.message}</p>
+                            )}
                           </Form.Group>
                           <Form.Group>
                             <Form.Label className="font-13">
@@ -375,10 +391,11 @@ const AddTimingModal = ({ show, handleClose }) => {
                               type="time"
                               className="cv-field font-13"
                               {...register(`addTime.${index}.end_time`, {
-                                required:  disabledWorkDay[index]?"Please Enter Time":false,
+                                required: disabledWorkDay[index] ? "Please Enter Time" : false,
                               })}
                               defaultValue={item.end_time}
-                            ></Form.Control>
+                            >
+                            </Form.Control>
                           </Form.Group>
                           {disabledWorkDay[index] ? (
                             <Form.Group className="w-100">
@@ -393,7 +410,8 @@ const AddTimingModal = ({ show, handleClose }) => {
                                   required: false,
                                 })}
                                 defaultValue={item.memo}
-                              ></Form.Control>
+                              >
+                              </Form.Control>
                             </Form.Group>
                           ) : (
                             ""
@@ -404,15 +422,17 @@ const AddTimingModal = ({ show, handleClose }) => {
                   </div>
                 </>
               );
-            }):""}
-
-            <RexettButton
-              type="submit"
-              text="Submit"
-              className="main-btn py-2 px-5"
-              variant="transparent"
-              isLoading={smallLoader}
-            />
+            }) :
+              ""}
+            <div>
+              {!open ? <RexettButton
+                type="submit"
+                text="Submit"
+                className="main-btn py-2 px-5"
+                variant="transparent"
+                isLoading={smallLoader}
+              /> : ""}
+            </div>
           </div>
         </form>
       </Modal.Body>
