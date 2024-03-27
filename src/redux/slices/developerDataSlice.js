@@ -6,16 +6,17 @@ import { generateApiUrl } from '../../helper/utlis';
 import clientInstance from '../../services/client.instance';
 
 const initialDeveloperData = {
-    btnLoader:false,
+    btnLoader: false,
     screenLoader: false,
     smallLoader: false,
-    developerCvData:{},
-    developerProfileData:{},
-    developerDashboard:{},
-    degreeList:[],
-    developerTimeReports:[],
-    addTimeReports:[],
-    allContracts:[]
+    developerCvData: {},
+    developerProfileData: {},
+    developerDashboard: {},
+    degreeList: [],
+    developerTimeReports: [],
+    addTimeReports: [],
+    allContracts: [],
+    shareDocument: [],
 }
 
 export const developerDataSlice = createSlice({
@@ -34,50 +35,54 @@ export const developerDataSlice = createSlice({
         },
 
         setSuccessDeveloperData: (state, action) => {
-            state.developerCvData=action.payload
+            state.developerCvData = action.payload
             state.smallLoader = false;
         },
         setAddTimeReports: (state, action) => {
-            state.addTimeReports=action.payload
+            state.addTimeReports = action.payload
             state.smallLoader = false;
         },
         setSuccessProfileData: (state, action) => {
-            state.developerProfileData=action.payload
+            state.developerProfileData = action.payload
         },
 
         setSuccessActionData: (state, action) => {
             state.smallLoader = false;
-            state.btnLoader=false
+            state.btnLoader = false
         },
         setDeveloperTimeReports: (state, action) => {
             state.smallLoader = false;
-            state.developerTimeReports=action.payload
+            state.developerTimeReports = action.payload
         },
         setAllContracts: (state, action) => {
             state.smallLoader = false;
-            state.allContracts=action.payload
+            state.allContracts = action.payload
         },
-    
+
         setFailDeveloperData: (state, action) => {
             state.smallLoader = false;
             state.btnLoader = false
         },
-        setActionSuccessFully:(state, action) => {
+        setActionSuccessFully: (state, action) => {
             state.smallLoader = false;
         },
-        setDeveloperDashboard:(state, action) => {
+        setDeveloperDashboard: (state, action) => {
             state.developerDashboard = action.payload;
         },
-        setDegreeList:(state, action) => {
-            let data=action?.payload?.map((item)=>{return{label:item.title,value:item.id}});
+        setDegreeList: (state, action) => {
+            let data = action?.payload?.map((item) => { return { label: item.title, value: item.id } });
             state.degreeList = data;
             state.smallLoader = false;
         },
+        setShareDocument: (state, action) => {
+            state.smallLoader = false;
+            state.shareDocument = action.payload;
+        }
 
     }
 })
 
-export const { setSmallLoader,setScreenLoader,setAllContracts,setDeveloperTimeReports,setAddTimeReports,setSuccessActionData,setBtnLoader, setDegreeList,setFailDeveloperData,setSuccessDeveloperData,setActionSuccessFully,setSuccessProfileData,setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader, setShareDocument, setScreenLoader, setAllContracts, setDeveloperTimeReports, setAddTimeReports, setSuccessActionData, setBtnLoader, setDegreeList, setFailDeveloperData, setSuccessDeveloperData, setActionSuccessFully, setSuccessProfileData, setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
@@ -88,12 +93,12 @@ export function fetchDeveloperCv(payload, callback) {
         try {
             let result = await clientInstance.get('developer/cv')
             if (result.status === 200) {
-             dispatch(setSuccessDeveloperData(result.data.data))
+                dispatch(setSuccessDeveloperData(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
-                toast.error(message, { position: "top-center" })
-                dispatch(setFailDeveloperData())
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
         }
     };
 }
@@ -103,10 +108,10 @@ export function updateDeveloperProfile(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-profile/',{...payload})
+            let result = await clientInstance.post('developer/update-profile/', { ...payload })
             if (result.status === 200) {
-              dispatch(setActionSuccessFully())
-              toast.success("Profile is Updated", { position: "top-center" })
+                dispatch(setActionSuccessFully())
+                toast.success("Profile is Updated", { position: "top-center" })
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -153,9 +158,9 @@ export function getDeveloperDashboard(payload, callback) {
 
 export function updateDeveloperCvBio(payload, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-bio',{...payload})
+            let result = await clientInstance.post('developer/update-bio', { ...payload })
             if (result.status === 200) {
                 toast.success("Bio is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -169,11 +174,11 @@ export function updateDeveloperCvBio(payload, callback) {
     };
 }
 
-export function updateDeveloperCvExperience(payload,id, callback) {
+export function updateDeveloperCvExperience(payload, id, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`developer/update-experience/${id}`,{...payload})
+            let result = await clientInstance.put(`developer/update-experience/${id}`, { ...payload })
             if (result.status === 200) {
                 // toast.success("Experience is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -189,13 +194,13 @@ export function updateDeveloperCvExperience(payload,id, callback) {
 
 export function addDeveloperCvExperience(payload, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/add-experience',[...payload])
-                toast.success("Experience is Added", { position: "top-center" })
-                dispatch(setSuccessActionData())
-                return callback()
-            
+            let result = await clientInstance.post('developer/add-experience', [...payload])
+            toast.success("Experience is Added", { position: "top-center" })
+            dispatch(setSuccessActionData())
+            return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -225,14 +230,14 @@ export function deleteExperience(payload, callback) {
 
 export function addDeveloperCvEducation(payload, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/add-education',[...payload])
-        
-                toast.success("Education is Added", { position: "top-center" })
-                dispatch(setSuccessActionData())
-                return callback()
-            
+            let result = await clientInstance.post('developer/add-education', [...payload])
+
+            toast.success("Education is Added", { position: "top-center" })
+            dispatch(setSuccessActionData())
+            return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -241,11 +246,11 @@ export function addDeveloperCvEducation(payload, callback) {
     };
 }
 
-export function updateDeveloperCvEducation(payload,id, callback) {
+export function updateDeveloperCvEducation(payload, id, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`developer/update-education/${id}`,{...payload})
+            let result = await clientInstance.put(`developer/update-education/${id}`, { ...payload })
             if (result.status === 200) {
                 // toast.success("Education is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -259,15 +264,15 @@ export function updateDeveloperCvEducation(payload,id, callback) {
     };
 }
 
-export function getDegreeList(payload,callback) {
+export function getDegreeList(payload, callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get(`developer/degree-list`)
-                dispatch(setDegreeList(result.data.data))
-                // return callback()
-            
+            dispatch(setDegreeList(result.data.data))
+            // return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -296,9 +301,9 @@ export function deleteEducationCv(payload, callback) {
 
 export function updateDeveloperSkills(payload, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`developer/update-developer-skills`,{skills:payload})
+            let result = await clientInstance.post(`developer/update-developer-skills`, { skills: payload })
             if (result.status === 200) {
                 toast.success("Skills updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -316,9 +321,9 @@ export function updateDeveloperSkills(payload, callback) {
 
 export function addDeveloperSocialMedia(payload, callback) {
     return async (dispatch) => {
-         dispatch(setBtnLoader())
+        dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.post(`developer/add-social-links`,[...payload])
+            let result = await clientInstance.post(`developer/add-social-links`, [...payload])
             if (result.status === 200) {
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -334,9 +339,9 @@ export function addDeveloperSocialMedia(payload, callback) {
 
 export function updateDeveloperCvDetails(payload, callback) {
     return async (dispatch) => {
-         dispatch(setBtnLoader())
+        dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.put(`developer/update-cv-profile`,{...payload})
+            let result = await clientInstance.put(`developer/update-cv-profile`, { ...payload })
             if (result.status === 200) {
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -350,12 +355,12 @@ export function updateDeveloperCvDetails(payload, callback) {
     };
 }
 
-export function developertimeReporting(payload, callback) {
+export function developertimeReporting(payload,) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload,`developer/time-reports`))
+            let result = await clientInstance.get(generateApiUrl(payload, `developer/time-reports`))
             if (result.status === 200) {
                 dispatch(setDeveloperTimeReports(result.data.data))
             }
@@ -372,7 +377,7 @@ export function getPreviousTimeReports(payload, callback) {
 
         // dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload,`developer/get-previous-report`))
+            let result = await clientInstance.get(generateApiUrl(payload, `developer/get-previous-report`))
             if (result.status === 200) {
                 dispatch(setAddTimeReports(result.data.data.timeReports))
                 return callback()
@@ -393,7 +398,7 @@ export function getAllContracts(payload, callback) {
         try {
             let result = await clientInstance.get(`developer/contracts`)
             if (result.status === 200) {
-               dispatch(setAllContracts(result.data.data))
+                dispatch(setAllContracts(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -403,22 +408,35 @@ export function getAllContracts(payload, callback) {
     };
 }
 
-export function saveTimeReports(payload,callback) {
+export function saveTimeReports(payload, callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`developer/add-time-reports`,{...payload})
+            let result = await clientInstance.post(`developer/add-time-reports`, { ...payload })
             if (result.status === 200) {
-            //    dispatch(setAllContracts(result.data.data))
-            dispatch(setSuccessActionData())
-            toast.success("Developer time is Added", { position: "top-center" })
-            return callback()
+                dispatch(setSuccessActionData())
+                toast.success("Developer time is Added", { position: "top-center" })
+                return callback()
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailDeveloperData())
+        }
+    };
+}
+export function getDocumentShare() {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`common/share-file/users`)
+            if (result.status === 200) {
+            dispatch(setShareDocument(result.data))
+            }
+        } catch (error) {
+            console.log(error, "error")
         }
     };
 }

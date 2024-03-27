@@ -25,8 +25,11 @@ import DocumentListView from "./DocumentListView";
 import { IoIosShareAlt } from "react-icons/io";
 import ShareModal from "./ShareModal";
 import { FaFilter } from "react-icons/fa";
+import { getDocumentShare } from "../../../redux/slices/developerDataSlice";
+import {shareDocument } from  "../../../redux/slices/developerDataSlice"
 
 const RexettDocuments = ({ currentRole }) => {
+    const dispatch = useDispatch();
     const [bradCrump, setBradCrum] = useState([])
     const [allFilterValue, setAllCurrentFilterValue] = useState({});
     const [editFolderName, setEditFolderName] = useState({})
@@ -37,11 +40,15 @@ const RexettDocuments = ({ currentRole }) => {
     const [isDelete, setDelete] = useState({ isDelete: false, id: "" })
     const [timerValue, setTimerValue] = useState("");
     const [search, setSearch] = useState('')
-    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const { folderData, smallLoader, screenLoader } = useSelector(state => state.clientData)
-
+    const {shareDocument} =  useSelector(state => state.developerData)
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
+
+
+
+    
+
     const handleShowUploadFileModal = (id, name) => {
         setOpen(!open)
         if (id) {
@@ -56,6 +63,7 @@ const RexettDocuments = ({ currentRole }) => {
 
     const handleShowShareFileModal = () => {
         setShareFileModal(true);
+        dispatch(getDocumentShare())
     }
     const handleCloseShareFileModal = () => {
         setShareFileModal(false)

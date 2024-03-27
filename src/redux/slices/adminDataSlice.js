@@ -137,7 +137,6 @@ export function getAdminProfile(payload, callback) {
         try {
             let result = await clientInstance.get('admin/profile')
             if (result.status === 200) {
-                console.log(result,"redd")
                 dispatch(setSuccessProfileData(result.data))
             }
         } catch (error) {
