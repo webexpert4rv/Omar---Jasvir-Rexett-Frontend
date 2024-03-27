@@ -6,35 +6,91 @@ import { timeReporting } from "../../../redux/slices/clientDataSlice";
 import RexettTable from "../../../components/clients/TimeReporiting/RexettTable";
 import { weeklyTimeReports } from "../../../components/clients/TimeReporiting/constant";
 import RexettButton from "../../../components/atomic/RexettButton";
+
+
+
 const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const dispatch = useDispatch()
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
-    const [selectedFilter, setSelectedFilter] = useState({filter:"weekly"});
-
+    const [selectedFilter, setSelectedFilter] = useState({ filter: "weekly" });
+    const [selectedWeek, setSelectedWeek] = useState("")
+    const [selectedYear, setSelectedYear] = useState("")
+    const [selectedMonth, setSelectedMonth] = useState("")
     const { smallLoader } = useSelector(state => state.clientData)
 
-
     const handlePeriodChange = (e) => {
-        setSelectedPeriod(e.target.value);
+        const selectedPeriodValue = e.target.value;
+        setSelectedPeriod(selectedPeriodValue);
         let filterData = {
             ...selectedFilter,
-            filter: e.target.value
-        }
-        dispatch(timeReporting(filterData, role))
-    };
-    const handleChange=(e,select)=>{
+            filter: selectedPeriodValue
+        };
+        if (selectedPeriodValue === "yearly") {
+            filterData.year = selectedFilter.year;
+            delete filterData.month;
+            delete filterData.week;
+        } else if (selectedPeriodValue === "monthly") {
+            filterData.year = selectedFilter.year;
+            filterData.month = selectedFilter.month;
+            delete filterData.week;
+        } else {
+            filterData.year = selectedFilter.year;
+            filterData.month = selectedFilter.month;
+            filterData.week = selectedFilter.week;
+        };
+        dispatch(timeReporting(filterData, role));
+    }
+
+
+    const handleChange = (e, select) => {
         e.preventDefault()
+        const monthValue = e.target.value
+        let monthName;
+        if (!isNaN(monthValue)) {
+            const monthNumber = parseInt(monthValue);
+            monthName = new Date(2022, monthNumber - 1).toLocaleString('default', { month: 'long' });
+        } else {
+            monthName = monthValue;
+        }
         setSelectedFilter({
             ...selectedFilter,
-            [select]:e.target.value
+            [select]: monthValue
         })
-     }
+        if (select === "week") {
+            setSelectedWeek(e.target.value);
+        } else if (select === "month") {
+            setSelectedMonth(monthName);
+        } else {
+            setSelectedYear(e.target.value)
+        }
+      
+    }
 
-console.log(selectedFilter,"selectedFilter")
-    const handlePrevTimeReporting=(e)=>{
+
+
+    const handlePrevTimeReporting = (e) => {
         e.preventDefault()
-        dispatch(timeReporting(selectedFilter, role))
-     }
+        let filterData = {
+            ...selectedFilter,
+            filter: selectedPeriod
+        }
+        if (selectedPeriod === "yearly") {
+            filterData.year = selectedFilter.year;
+            delete filterData.month;
+            delete filterData.week;
+        } else if (selectedPeriod === "monthly") {
+            filterData.year = selectedFilter.year;
+            filterData.month = selectedFilter.month;
+            delete filterData.week;
+        } else {
+            filterData.year = selectedFilter.year;
+            filterData.month = selectedFilter.month;
+            filterData.week = selectedFilter.week;
+        };
+        dispatch(timeReporting(filterData, role))
+    }
+
+
 
     return (
         <>
@@ -45,7 +101,7 @@ console.log(selectedFilter,"selectedFilter")
                             <div className="d-flex gap-3 flex-wrap align-items-end">
                                 <div className="flex-none">
                                     <Form.Label className="common-label">Select View</Form.Label>
-                                    <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} value={selectedPeriod}>
+                                    <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} >
                                         <option value="weekly">Weekly</option>
                                         <option value="monthly">Monthly</option>
                                         <option value="yearly">Yearly</option>
@@ -53,8 +109,8 @@ console.log(selectedFilter,"selectedFilter")
                                 </div>
                                 <div>
                                     <Form.Label className="common-label">Select Year</Form.Label>
-                                    <Form.Select className="time-filter-select shadow-none" onChange={(e)=>handleChange(e,"year")}>
-                                    <option disabled selected >Select Year</option>
+                                    <Form.Select className="time-filter-select shadow-none" onChange={(e) => handleChange(e, "year")}>
+                                        <option disabled selected >{selectedYear.length > 0 ? selectedYear : "Select Year"}</option>
                                         <option value="2024">2024</option>
                                         <option value="2023">2023</option>
                                         <option value="2022">2022</option>
@@ -65,10 +121,10 @@ console.log(selectedFilter,"selectedFilter")
                                         <option value="2017">2017</option>
                                     </Form.Select>
                                 </div>
-                               { selectedPeriod!=="yearly"? <div>
+                                {selectedPeriod !== "yearly" ? <div>
                                     <Form.Label className="common-label">Select Month</Form.Label>
-                                    <Form.Select className="time-filter-select shadow-none"  onChange={(e)=>handleChange(e,"month")}>
-                                    <option disabled selected >Select Month</option>
+                                    <Form.Select className="time-filter-select shadow-none" onChange={(e) => handleChange(e, "month")}>
+                                        <option disabled selected >{selectedMonth.length > 0 ? selectedMonth: "Select Month"}</option>
                                         <option value="1">January</option>
                                         <option value="2">Feburary</option>
                                         <option value="3">March</option>
@@ -82,17 +138,17 @@ console.log(selectedFilter,"selectedFilter")
                                         <option value="11">November</option>
                                         <option value="12">December</option>
                                     </Form.Select>
-                                </div>:""}
-                              { selectedPeriod!=="yearly" && selectedPeriod!=="monthly"  ? <div>
+                                </div> : ""}
+                                {selectedPeriod !== "yearly" && selectedPeriod !== "monthly" ? <div>
                                     <Form.Label className="common-label">Select Week</Form.Label>
-                                    <Form.Select className="time-filter-select shadow-none" onChange={(e)=>handleChange(e,"week")}>
-                                    <option disabled selected >Select Week</option>
-                                        <option value="1">Week 1</option>
-                                        <option value="2">Week 2</option>
-                                        <option value="3">Week 3</option>
-                                        <option value="4">Week 4</option>
+                                    <Form.Select className="time-filter-select shadow-none" onChange={(e) => handleChange(e, "week")}>
+                                        <option disabled selected >{selectedWeek.length > 0 ? selectedWeek : "Select Week"}</option>
+                                        <option value="Week 1">Week 1</option>
+                                        <option value="Week 2">Week 2</option>
+                                        <option value="Week 3">Week 3</option>
+                                        <option value="Week 4">Week 4</option>
                                     </Form.Select>
-                                </div>:""}
+                                </div> : ""}
                                 {/* <div>
                                     <Form.Label>Select Day</Form.Label>
                                     <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap mb-4">
@@ -114,7 +170,8 @@ console.log(selectedFilter,"selectedFilter")
                                         className="main-btn py-2 px-5"
                                         variant="transparent"
                                         onClick={handlePrevTimeReporting}
-                                        isLoading={Object.keys(selectedFilter).length > 0 ? smallLoader : false}
+                                        isLoading={Object.keys(selectedFilter).length > 0 ?  smallLoader :false}
+                                        disabled={selectedPeriod === "weekly" && Object.keys(selectedFilter).length > 3 ? false : selectedPeriod === "monthly" && Object.keys(selectedFilter).length > 2 ? false : selectedPeriod === "yearly" && Object.keys(selectedFilter).length > 1 ? false : true}
                                     />
                                 </div>
                             </div>
@@ -123,7 +180,6 @@ console.log(selectedFilter,"selectedFilter")
                     <div>
                         <Button variant="transparent" onClick={handleShowModal} className="main-btn px-xxl-5 px-3">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
                     </div>
-
                 </div>
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                     <div>
@@ -140,7 +196,6 @@ console.log(selectedFilter,"selectedFilter")
                     </div>
                 </div>
                 <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
-
             </section>
         </>
     )

@@ -103,9 +103,7 @@ export function developerAssignList(payload) {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`client/assigned-developers?page=${payload}`)
-            console.log(result,"re")
             if (result.status === 200) {
-                console.log(result)
                 dispatch(setAssignDeveloperList(result?.data?.data?.assigned_developers))
             }
         } catch (error) {
@@ -140,7 +138,6 @@ export function getClientProfile(payload, callback) {
         try {
             let result = await clientInstance.get('client/get-profile')
             if (result.status === 200) {
-                console.log(result,"redd")
                 dispatch(setClientProfileDetails(result.data))
             }
         } catch (error) {
@@ -162,7 +159,6 @@ export function timeReporting(payload,role, callback) {
             }else{
                  result = await clientInstance.get(generateApiUrl(payload,`developer/time-reports`)) 
             }
-           
             if (result.status === 200) {
                 dispatch(setTimeReporting(result.data.data))
             }
@@ -190,7 +186,6 @@ export function getFolderData(payload, role, callback) {
                 result = await clientInstance.get(generateApiUrl(payload,`admin/documents`))  
             }
             if (result.status === 200) {
-                console.log(result,"redd")
                 // dispatch(setTimeReporting(result.data.data))
                 dispatch(setFolderData(result.data.data))
             }
@@ -246,7 +241,6 @@ export function getSkillList(payload, callback) {
         try {
             let result = await clientInstance.get(`common/skill-list`)
             if (result.status === 200) {
-                console.log(result,"redd")
                 dispatch(setSkillList(result.data.data))
                 // dispatch(setFolderData(result.data.data.files))
             }
@@ -374,7 +368,6 @@ export function callPreSignedUrlResponse(payload,file,callback) {
                   'Content-Type': file.type, // Set the content type based on the file type
                 },
               })
-            console.log(result,"rr")
                 dispatch(setActionSuccessFully())
                 // toast.success("Folder Created successfully", { position: "top-center" })
                 // return callback(result?.data)
@@ -397,7 +390,6 @@ export function createNewFolderAndFile(payload,callback) {
                 result = await clientInstance.post(`common/documents/create-folder-or-file`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Created successfully", { position: "top-center" })
-                console.log(result,"rrr")
                 return callback(result?.data?.data?.parent_id)
             
         } catch (error) {
@@ -415,7 +407,6 @@ export function renameFolderAndFile(payload,id,callback) {
             let result = await clientInstance.put(`common/documents/${id}/rename-folder`,{...payload})
                 dispatch(setActionSuccessFully())
                 toast.success("Folder Updated successfully", { position: "top-center" })
-                console.log(result,"rrr")
                 return callback(result?.data?.data?.parent_id)
             
         } catch (error) {
@@ -470,7 +461,6 @@ export function earnedBackOfDeveloper(paylaod) {
        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`client/earned-back`)
-            console.log(result,"re")
             dispatch(setEarnedBackData(result.data.data))
                 // toast.success("Job status is Updated", { position: "top-center" })
             
