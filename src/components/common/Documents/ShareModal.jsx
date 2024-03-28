@@ -66,7 +66,7 @@ const ShareModal = ({ show, handleClose }) => {
                                     <ul className="access-list">
                                         <li >
                                             <div className="d-flex gap-3 align-items-center">
-                                                {shareDocument?.data.map((item, index) => {
+                                                {shareDocument?.data?.map((item, index) => {
                                                     return (
                                                         <>
                                                             <span className="no-img letter-indicator">T</span>
