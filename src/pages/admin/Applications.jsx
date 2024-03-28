@@ -28,15 +28,12 @@ const Applications = () => {
     setCurrentTab(key)
     setApplication(allApplications[key]);
   };
-console.log(application,"application0-=------------------------------")
   const convertToArray = (arr) => {
     const skillsArray = arr?.split(",");
     return skillsArray;
   };
 
   const handleClick=(e,clientId,status)=>{
-    console.log(clientId,"id-------------------------")
-    console.log(status,"---------------status--dsds----")
     e.stopPropagation(); 
     let payload={
       
