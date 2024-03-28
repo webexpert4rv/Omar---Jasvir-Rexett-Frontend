@@ -1,6 +1,6 @@
 import React from "react";
 import sidebarLogo from '../assets/img/logo-white-new.png'
-import { NavLink } from "react-router-dom"; // Import NavLink instead of Link
+import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";

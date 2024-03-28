@@ -2662,6 +2662,11 @@ input[type="radio"]:checked
     align-items: center;
     border-radius: 8px;
 }
+.register-developer
+{
+    overflow: auto;
+    height: 80vh;
+}
 @media only screen and (max-width: 1440px)
 {
     .sidebar-logo img

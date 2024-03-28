@@ -58,6 +58,7 @@ import ForgotPassword from './pages/Authentication/ForgotPassword';
 import ResetPassword from './pages/Authentication/ResetPassword';
 import Engagements from './pages/admin/Engagements';
 import Applications from './pages/admin/Applications';
+import SingleDeveloper from './components/common/SingleDeveloper/SingleDeveloper';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -110,6 +111,7 @@ function App() {
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
+          <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper /></DashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
