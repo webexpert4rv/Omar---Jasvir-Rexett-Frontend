@@ -66,10 +66,10 @@ const DashboardLayout = ({ children }) => {
                     {token && role=="client"?children:<Navigate to="/"/>}
                 </main>
                 <div className={ sidebarwrapper ? 'right-sidebar hide' : 'right-sidebar'}>
-                    <div className='d-flex justify-content-center gap-3 mb-5'>
+                    {/* <div className='d-flex justify-content-center gap-3 mb-5'>
                         <Link to={"/hired-developers"} className='rightside-link'><span><FaUser /></span>Developers</Link>
                         <Link to={"/edit-profile"} className='rightside-link'><span><BiSolidPencil/></span>Edit Profile</Link>
-                    </div>
+                    </div> */}
                     <h3 className='right-sidebar-heading mb-3'>Growth per month</h3>
                     <div className='growth-chart'>
                         <Bar data={growthData} />
