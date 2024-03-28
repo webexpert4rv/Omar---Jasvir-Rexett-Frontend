@@ -52,6 +52,7 @@ const ListClient = () => {
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
                             {listOfClients?.map((item, index) => {
+                                console.log(item, "item")
                                 return (<>
                                     <div className="developer-card">
                                         <div className="user-imgbx">
@@ -60,7 +61,7 @@ const ListClient = () => {
                                         <div className="text-center">
                                             <h3 className="user-name">{item.name}</h3>
                                             <p className="email-user">{item?.email}</p>
-                                            <ul className="social-icons">
+                                            {item?.client_detail === null ? <ul className="social-icons">
                                                 <li>
                                                     <Link to={"#"}><FaGithub /></Link>
                                                 </li>
@@ -71,6 +72,17 @@ const ListClient = () => {
                                                     <Link to={"#"}><MdEmail /></Link>
                                                 </li>
                                             </ul>
+                                                : <ul className="social-icons">
+                                                    <li>
+                                                        <Link to={`${item?.client_detail?.github_url}`}><FaGithub /></Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to={`${item?.client_detail?.linkedin_url}`}><FaLinkedin /></Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to={`${item?.email}`}><MdEmail /></Link>
+                                                    </li>
+                                                </ul>}
                                         </div>
                                     </div>
                                 </>)
@@ -83,64 +95,56 @@ const ListClient = () => {
                                 <thead>
                                     <tr>
                                         <th><span>Client Name</span></th>
-                                        <th><span>Email</span></th>
+                                        <th><span>Designation</span></th>
                                         <th><span>Connects</span></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <span className="d-flex align-items-center gap-3">
-                                                <img src={userImg} />
-                                                <h3 className="user-name color-121212 mb-0">John Doe</h3>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span>
-                                                <p className="designation-user color-121212 mb-0">Full stack developer</p>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <ul className="social-icons mb-0 justify-content-start">
-                                                <li>
-                                                    <Link to={"#"}><FaGithub /></Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={"#"}><FaLinkedin /></Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={"#"}><MdEmail /></Link>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span className="d-flex align-items-center gap-3">
-                                                <img src={userImg} />
-                                                <h3 className="user-name color-121212 mb-0">John Doe</h3>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span>
-                                                <p className="designation-user color-121212 mb-0">Full stack developer</p>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <ul className="social-icons mb-0 justify-content-start">
-                                                <li>
-                                                    <Link to={"#"}><FaGithub /></Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={"#"}><FaLinkedin /></Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={"#"}><MdEmail /></Link>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                {listOfClients?.map((val, index) => {
+                                    return (
+                                        <>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span className="d-flex align-items-center gap-3">
+                                                            <img src={val?.profile_picture} />
+                                                            <h3 className="user-name color-121212 mb-0">{val?.name}</h3>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>
+                                                            <p className="designation-user color-121212 mb-0">Full stack developer</p>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {val?.client_detail === null ?
+                                                            <ul className="social-icons mb-0 justify-content-start">
+                                                                <li>
+                                                                    <Link to={"#"}><FaGithub /></Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to={"#"}><FaLinkedin /></Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to={"#"}><MdEmail /></Link>
+                                                                </li>
+                                                            </ul> :
+                                                            <ul className="social-icons mb-0 justify-content-start">
+                                                                <li>
+                                                                    <Link to={`${val?.client_detail?.github_url}`}><FaGithub /></Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to={`${val?.client_detail?.linkedin_url}`}><FaLinkedin /></Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to={`${val?.email}`}><MdEmail /></Link>
+                                                                </li>
+                                                            </ul>}
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </>)
+                                })}
                             </table>
                         </div>
                     </Tab.Pane>

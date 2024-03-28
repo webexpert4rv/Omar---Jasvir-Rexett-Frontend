@@ -15,7 +15,8 @@ const initialAdminData = {
     singleJobListing:{},
     allApplications:{},
     adminTimeReportingList:[],
-    engagement:[]
+    engagement:[],
+    adminApproveReject:[],
 }
 
 export const adminDataSlice = createSlice({
@@ -70,13 +71,16 @@ export const adminDataSlice = createSlice({
         },
         setAdminEngagment:(state,action)=>{
             state.engagement=action.payload
-        }
+        },
+        setApproveReject:(state,action)=>{
+            state.adminApproveReject=action.payload
+        },
 
 
     }
 })
 
-export const { setScreenLoader,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const { setScreenLoader,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -111,7 +115,7 @@ export function adminListAssignedDeveloper(payload, callback) {
 
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`admin/developers`,{...payload})
+            let result = await clientInstance.get(generateApiUrl(payload, "admin/developers"))
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
                 dispatch(setSuccessAdminAssignedDeveloper(result.data.data.developers))
@@ -244,6 +248,20 @@ export function adminEngagementList(payload, callback) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
+        }
+    };
+}
+export function adminApproveReject(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post(`admin/approve-or-reject-account`,{...payload})
+            if (result.status === 200) {
+            toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setApproveReject(result.data.data))
+            }
+        } catch (error) {
+            console.log(error,"error-------------------")
         }
     };
 }

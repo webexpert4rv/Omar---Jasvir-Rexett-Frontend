@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Nav, Row, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { allApplicationsList } from "../../redux/slices/adminDataSlice";
+import { adminApproveReject, allApplicationsList } from "../../redux/slices/adminDataSlice";
 const Applications = () => {
   const dispatch = useDispatch();
   const { allApplications } = useSelector((state) => state.adminData);
@@ -28,11 +28,24 @@ const Applications = () => {
     setCurrentTab(key)
     setApplication(allApplications[key]);
   };
-
+console.log(application,"application0-=------------------------------")
   const convertToArray = (arr) => {
     const skillsArray = arr?.split(",");
     return skillsArray;
   };
+
+  const handleClick=(e,clientId,status)=>{
+    console.log(clientId,"id-------------------------")
+    console.log(status,"---------------status--dsds----")
+    e.stopPropagation(); 
+    let payload={
+      
+        "user_id": clientId,
+        "status": status
+      
+    }
+    dispatch(adminApproveReject(payload))
+  }
   return (
     <>
       <h2 className="section-head mb-4">Applications</h2>
@@ -88,12 +101,15 @@ const Applications = () => {
                             <Button
                               variant="transparent"
                               className="main-btn px-4 py-2 font-13"
+                              onClick={(e)=>handleClick(e,item?.id , "approved")}
                             >
                               Approve
                             </Button>
                             <Button
                               variant="danger"
                               className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
+                              onClick={(e)=>handleClick(e,item?.id , "rejected",)}
+
                             >
                               Reject
                             </Button>
@@ -131,6 +147,7 @@ const Applications = () => {
                                       {convertToArray(
                                           item?.jobs[0]?.skills
                                       )?.map((item, index) => {
+                                        console.log(item,"item")
                                         return (
                                           <>
                                             <li key={index}>{item}</li>
@@ -195,12 +212,14 @@ const Applications = () => {
                             <Button
                               variant="transparent"
                               className="main-btn px-4 py-2 font-13"
+                              onClick={(id)=>handleClick(id,"approve")}
                             >
                               Approve
                             </Button>
                             <Button
                               variant="danger"
                               className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
+                              onClick={(id)=>handleClick(id , "reject")}
                             >
                               Reject
                             </Button>
