@@ -17,6 +17,7 @@ const initialAdminData = {
     adminTimeReportingList:[],
     engagement:[],
     adminApproveReject:[],
+    suggestedDeveloper:[]
 }
 
 export const adminDataSlice = createSlice({
@@ -75,12 +76,18 @@ export const adminDataSlice = createSlice({
         setApproveReject:(state,action)=>{
             state.adminApproveReject=action.payload
         },
+        setSuggestedDeveloper:(state,action)=>{
+            let recomnd=action.payload?.recommended_developers?.map((item)=>{return {...item,recommed:true}})
+            let data=[...recomnd,...action.payload?.other_developers]
+            state.suggestedDeveloper=data
+        },
+
 
 
     }
 })
 
-export const { setScreenLoader,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const { setScreenLoader,setApproveReject,setSuggestedDeveloper,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -259,6 +266,36 @@ export function adminApproveReject(payload) {
             if (result.status === 200) {
             toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setApproveReject(result.data.data))
+            }
+        } catch (error) {
+            console.log(error,"error-------------------")
+        }
+    };
+}
+
+export function getDeveloperSuggestList(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.get(`admin/developers-to-suggest/${payload}`)
+            if (result.status === 200) {
+
+                dispatch(setSuggestedDeveloper(result.data.data))
+            }
+        } catch (error) {
+            console.log(error,"error-------------------")
+        }
+    };
+}
+
+export function suggestDeveloper(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post(`admin/suggest-developer`,{...payload})
+            if (result.status === 200) {
+                toast.success(result.data?.message ?result.data?.message:result?.message,  { position: "top-center" })
+                dispatch(setSuggestedDeveloper(result.data.data))
             }
         } catch (error) {
             console.log(error,"error-------------------")
