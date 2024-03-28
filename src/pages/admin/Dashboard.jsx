@@ -6,14 +6,14 @@ import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { adminListAssignedDeveloper, adminListClients } from "../../redux/slices/adminDataSlice";
+import {  adminListAssignedDeveloper, adminListClients, getAdminDashboard } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 const AdminDashboard = () => {
     const dispatch = useDispatch()
-    const { listOfClients, assignedDeveloper } = useSelector(state => state.adminData)
+    const { listOfClients, adminDashboard } = useSelector(state => state.adminData)
+    console.log(adminDashboard,"admindashboard===================")
     useEffect(() => {
-        dispatch(adminListClients())
-        dispatch(adminListAssignedDeveloper())
+        dispatch(getAdminDashboard())
     }, [])
     return (
         <>
@@ -36,21 +36,21 @@ const AdminDashboard = () => {
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">Client Joined</h4>
-                        <h3 className="overview-card-heading mb-0">100</h3>
+                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfClientsJoined}</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">Vendor Joined</h4>
-                        <h3 className="overview-card-heading mb-0">50</h3>
+                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfVendorsJoined}</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">Total Jobs Posted</h4>
-                        <h3 className="overview-card-heading mb-0">500</h3>
+                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.totalJobsPosted}</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
@@ -65,7 +65,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="developers-list">
                         {
-                            listOfClients?.map((item, index) => {
+                            adminDashboard?.data?.clients.map((item, index) => {
                                 return (
                                     <>
                                         <div className="client-card">
@@ -88,26 +88,26 @@ const AdminDashboard = () => {
             <h2 className="section-head-sub mb-4">List of assigned developers</h2>
             <div className="developers-list">
                 {
-                    assignedDeveloper.map((item, index) => {
+                    adminDashboard?.data?.assignedDevelopers.map((item, index) => {
                         return (
                             <>
                                 <div className="developer-card">
                                     <div className="user-imgbx">
-                                        <img src={item?.profile_picture} className="user-img" />
+                                        <img src={item?.developer?.profile_picture} className="user-img" />
                                     </div>
                                     <div className="text-center">
-                                        <h3 className="user-name">{item?.name}</h3>
-                                        <p className="designation-user">Front End Designer</p>
-                                        <p className="email-user">{item?.email}</p>
+                                        <h3 className="user-name">{item?.developer?.name}</h3>
+                                        <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
+                                        <p className="email-user">{item?.developer?.email}</p>
                                         <ul className="social-icons">
                                             <li>
-                                                <Link to={"#"}><FaGithub /></Link>
+                                                <Link to={`${item?.developer?.developer_detail?.github_url}`}><FaGithub /></Link>
                                             </li>
                                             <li>
-                                                <Link to={"#"}><FaLinkedin /></Link>
+                                                <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                             </li>
                                             <li>
-                                                <Link to={"#"}><MdEmail /></Link>
+                                                <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
                                             </li>
                                         </ul>
                                     </div>

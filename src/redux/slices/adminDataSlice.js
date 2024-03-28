@@ -17,6 +17,7 @@ const initialAdminData = {
     adminTimeReportingList:[],
     engagement:[],
     adminApproveReject:[],
+    adminDashboard:[],
 }
 
 export const adminDataSlice = createSlice({
@@ -75,12 +76,15 @@ export const adminDataSlice = createSlice({
         setApproveReject:(state,action)=>{
             state.adminApproveReject=action.payload
         },
+        setAdminDashboard:(state,action)=>{
+            state.adminDashboard = action.payload
+        },
 
 
     }
 })
 
-export const { setScreenLoader,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const { setScreenLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -104,6 +108,23 @@ export function adminListClients(payload, callback) {
                 toast.error(message, { position: "top-center" })
                 dispatch(setFailAdminData())
             }
+           
+        }
+    };
+}
+
+export function getAdminDashboard() {
+    return async (dispatch) => {
+
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get("admin/dashboard")
+            if (result.status === 200) {
+                toast.success(result?.data.message, { position: "top-center" })
+                dispatch(setAdminDashboard(result.data))
+            }
+        } catch (error) {
+           console.log(error)
            
         }
     };

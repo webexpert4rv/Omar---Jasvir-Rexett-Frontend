@@ -26,7 +26,7 @@ import { IoIosShareAlt } from "react-icons/io";
 import ShareModal from "./ShareModal";
 import { FaFilter } from "react-icons/fa";
 import { getDocumentShare } from "../../../redux/slices/developerDataSlice";
-import {shareDocument } from  "../../../redux/slices/developerDataSlice"
+import { shareDocument } from "../../../redux/slices/developerDataSlice"
 
 const RexettDocuments = ({ currentRole }) => {
     const dispatch = useDispatch();
@@ -42,12 +42,12 @@ const RexettDocuments = ({ currentRole }) => {
     const [search, setSearch] = useState('')
     const [open, setOpen] = useState(false);
     const { folderData, smallLoader, screenLoader } = useSelector(state => state.clientData)
-    const {shareDocument} =  useSelector(state => state.developerData)
+    const { shareDocument } = useSelector(state => state.developerData)
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
 
 
-
-    
+console.log(folderData[0]?.s3_path,"currentFolderDetails")
+// console.log(editFolderName,"editFolderName")
 
     const handleShowUploadFileModal = (id, name) => {
         setOpen(!open)
@@ -117,7 +117,7 @@ const RexettDocuments = ({ currentRole }) => {
         }
     }
 
-     const generateFileImage = (url) => {
+    const generateFileImage = (url) => {
         let fileName = url?.split("/")
         let splitWithDot = fileName[fileName.length - 1]
         let fileExtWithDot = splitWithDot.split(".")
@@ -141,7 +141,7 @@ const RexettDocuments = ({ currentRole }) => {
     const deleteFileAndFolder = (id, name) => {
         setDelete({ isDelete: true, id: id, name: name })
     }
-    
+
 
     const handleDelete = (e) => {
         e.preventDefault()
@@ -387,7 +387,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                 </div>}
                                             </Tab.Pane>
                                             <Tab.Pane eventKey="list-view">
-                                            <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage} toggleFolderView={toggleFolderView}/>
+                                                <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage} toggleFolderView={toggleFolderView} />
                                             </Tab.Pane>
                                         </Tab.Content>
                                     </Tab.Container>
@@ -399,7 +399,7 @@ const RexettDocuments = ({ currentRole }) => {
             </section>
             <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} currentRole={currentRole} />
             <RexettUploadFile show={show} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} currentRole={currentRole} />
-            <ShareModal show={sharefileModal} handleClose={handleCloseShareFileModal} />
+            <ShareModal show={sharefileModal}  handleClose={handleCloseShareFileModal} />
             <ConfirmationModal
                 text={isDelete?.name == "folder" ? `Deleting this folder will also delete all the files and subfolders contained within it` : `Are you sure to delete this ${isDelete?.name}?`}
                 show={isDelete?.isDelete} handleClose={handleCloseUploadFileModal} onClick={handleDelete}

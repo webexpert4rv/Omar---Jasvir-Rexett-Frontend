@@ -17,13 +17,10 @@ const baseTagifySettings = {
 
 const ShareModal = ({ show, handleClose }) => {
     const tagifyRef1 = useRef();
-
     const [tagifySettings, setTagifySettings] = useState(baseTagifySettings);
     const [tagifyProps, setTagifyProps] = useState({});
     const { shareDocument } = useSelector(state => state.developerData)
-    // Define suggested tags
-    const suggestedTags =  shareDocument?.name ? [shareDocument.name] : [];
-    console.log(suggestedTags , "suggestedTags")
+    const suggestedTags =  shareDocument?.data?.map(item => item.name)|| [];
     useEffect(() => {
         setTagifyProps({ loading: true });
 
@@ -34,15 +31,15 @@ const ShareModal = ({ show, handleClose }) => {
             }));
         }, 5000);
     }, []);
-
     const handleChange = (e) => {
         console.log("Tags changed:", e.detail.value);
     };
+        console.log(shareDocument,"shareDocument")
 
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>Share "Test Folder"</Modal.Title>
+                <Modal.Title>Share </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -79,7 +76,8 @@ const ShareModal = ({ show, handleClose }) => {
                                                 </ul>
                                             </>
                                         )})}
-                                    <span className="owner-text">Owner</span>
+                                    {/* <span className="owner-text">Owner</span> */}
+                                    <Button className="align-items-center">Shared</Button>
                                 </div>
                             </Col>
                         </Row>

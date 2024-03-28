@@ -72,7 +72,7 @@ const JobPost = () => {
                                 
                                 />
                             </Form.Group>
-                            <p className="error-message d-none">
+                            <p className="error-message ">
                                 {errors.title?.message}
                             </p>
                         </Col>
@@ -101,7 +101,7 @@ const JobPost = () => {
                                     }
                                 </Form.Select>
                             </Form.Group>
-                            <p className="error-message d-none">
+                            <p className="error-message">
                                 {errors.category?.message}
                             </p>
                         </Col>
@@ -126,7 +126,7 @@ const JobPost = () => {
                                     <option value="5 more">5+ years</option>
                                 </Form.Select>
                             </Form.Group>
-                            <p className="error-message d-none">
+                            <p className="error-message">
                                 {errors.experience?.message}
                             </p>
                         </Col>
@@ -151,7 +151,7 @@ const JobPost = () => {
                                       })}
                                     />
                                 </div>
-                                <p className="error-message d-none">
+                                <p className="error-message ">
                                 {errors.job_type?.message}
                             </p>
                             </Form.Group>
@@ -175,7 +175,7 @@ const JobPost = () => {
                                     <option value="one Year Contract">1 year contract</option>
                                 </Form.Select>
                             </Form.Group>
-                            <p className="error-message d-none">
+                            <p className="error-message ">
                                 {errors.contract_type?.message}
                             </p>
                         </Col>
@@ -187,18 +187,18 @@ const JobPost = () => {
                                     onChange={(val) => onChangeSelect(val)}
                                     name="skills"
                                     isMulti
-                                    // {...register("skills", {
-                                    //     required: {
-                                    //       value: false,
-                                    //       message: "Skills is required",
-                                    //     },
-                                    //   })}
+                                    {...register("skills", {
+                                        required: {
+                                          value: true,
+                                          message: "Skills are required",
+                                        },
+                                      })}
                                     
                                 />
                             </Form.Group>
-                            {/* <p className="error-message d-none">
+                            <p className="error-message ">
                                 {errors.skills?.message}
-                            </p> */}
+                            </p>
                         </Col>
                         <Col md="12" className="mb-4">
                             <Form.Group>
@@ -212,7 +212,7 @@ const JobPost = () => {
                                   })}
                                 />
                             </Form.Group>
-                            <p className="error-message d-none">
+                            <p className="error-message ">
                                 {errors.description?.message}
                             </p>
                         </Col>

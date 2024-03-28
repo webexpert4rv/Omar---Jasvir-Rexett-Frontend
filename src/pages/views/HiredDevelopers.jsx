@@ -67,68 +67,37 @@ const HiredDevelopers = () => {
                       </tr>
                     </thead>
                     <tbody>
+                    { assignedDeveloperList?.map((item, index) => {
+                       return (
+                      <>
                       <tr>
                         <td>
                           <span className="d-flex align-items-center gap-3">
-                            <img src={userImg} />
-                            <h3 className="user-name color-121212 mb-0">John Doe</h3>
+                            <img src={item?.developer?.profile_picture}/>
+                            <h3 className="user-name color-121212 mb-0">{item?.developer?.name}</h3>
                           </span>
                         </td>
                         <td>
                           <span>
-                            <p className="designation-user color-121212 mb-0">Full stack developer</p>
-                          </span>
-                        </td>
-                        <td>
-                          <span>
-                            <p className="email-user color-121212 mb-0">Full stack developer</p>
+                            <p className="designation-user color-121212 mb-0">{item?.developer?.developer_detail?.professional_title}</p>
                           </span>
                         </td>
                         <td>
                           <ul className="social-icons mb-0 justify-content-start">
                             <li>
-                              <Link to={"#"}><FaGithub /></Link>
+                              <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
                             </li>
                             <li>
-                              <Link to={"#"}><FaLinkedin /></Link>
+                              <Link to={item?.developer?.developer_detail?.github_url}><FaLinkedin /></Link>
                             </li>
                             <li>
-                              <Link to={"#"}><MdEmail /></Link>
+                              <Link to={item?.developer?.developer_detail?.github_url}><MdEmail /></Link>
                             </li>
                           </ul>
                         </td>
                       </tr>
-                      <tr>
-                        <td>
-                          <span className="d-flex align-items-center gap-3">
-                            <img src={userImg} />
-                            <h3 className="user-name color-121212 mb-0">John Doe</h3>
-                          </span>
-                        </td>
-                        <td>
-                          <span>
-                            <p className="designation-user color-121212 mb-0">Full stack developer</p>
-                          </span>
-                        </td>
-                        <td>
-                          <span>
-                            <p className="email-user color-121212 mb-0">Full stack developer</p>
-                          </span>
-                        </td>
-                        <td>
-                          <ul className="social-icons mb-0 justify-content-start">
-                            <li>
-                              <Link to={"#"}><FaGithub /></Link>
-                            </li>
-                            <li>
-                              <Link to={"#"}><FaLinkedin /></Link>
-                            </li>
-                            <li>
-                              <Link to={"#"}><MdEmail /></Link>
-                            </li>
-                          </ul>
-                        </td>
-                      </tr>
+                      </>
+                      )})}
                     </tbody>
                   </table>
                 </div>
