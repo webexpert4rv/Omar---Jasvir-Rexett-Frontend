@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import Tags from "@yaireo/tagify/dist/react.tagify";
 import "@yaireo/tagify/dist/tagify.css"; // Import the default tagify styles
+import Tags from "@yaireo/tagify/dist/react.tagify";
 import profileImg from "../../../assets/img/user-img.jpg";
 import { useSelector } from "react-redux";
 
@@ -22,8 +22,8 @@ const ShareModal = ({ show, handleClose }) => {
     const [tagifyProps, setTagifyProps] = useState({});
     const { shareDocument } = useSelector(state => state.developerData)
     // Define suggested tags
-    const suggestedTags = ["react", "javascript", "web development", "react-bootstrap", "tagify"];
-
+    const suggestedTags =  shareDocument?.name ? [shareDocument.name] : [];
+    console.log(suggestedTags , "suggestedTags")
     useEffect(() => {
         setTagifyProps({ loading: true });
 
@@ -63,24 +63,23 @@ const ShareModal = ({ show, handleClose }) => {
                                 </Form.Group>
                                 <div>
                                     <h4 className="access-heading mb-3">People with access</h4>
-                                    <ul className="access-list">
-                                        <li >
-                                            <div className="d-flex gap-3 align-items-center">
-                                                {shareDocument?.data?.map((item, index) => {
-                                                    return (
-                                                        <>
-                                                            <span className="no-img letter-indicator">T</span>
+                                    {shareDocument?.data?.map((item, index) => {
+                                        return (
+                                            <>
+                                                <ul className="access-list">
+                                                    <li >
+                                                        <div className="d-flex gap-3 align-items-center">
+                                                            <span className="no-img letter-indicator">{item?.name.split("")[0]}</span>
                                                             <div>
                                                                 <span className="font-15 owner-name">{item?.name}</span>
                                                                 <span className="font-13 owner-email">loremipsum@amazon.com</span>
                                                             </div>
-                                                        </>
-                                                    )
-                                                })}
-                                            </div>
-                                            <span className="owner-text">Owner</span>
-                                        </li>
-                                    </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </>
+                                        )})}
+                                    <span className="owner-text">Owner</span>
                                 </div>
                             </Col>
                         </Row>

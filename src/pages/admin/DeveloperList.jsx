@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -10,40 +10,73 @@ import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { adminListAssignedDeveloper } from "../../redux/slices/adminDataSlice";
+import NoDataFound from "../../components/atomic/NoDataFound";
 const DeveloperList = () => {
     const dispatch = useDispatch()
+    const [selectedFilter, setSelectedFilter] = useState({});
     const { assignedDeveloper } = useSelector(state => state.adminData)
+    console.log(assignedDeveloper, "designation")
     useEffect(() => {
         dispatch(adminListAssignedDeveloper())
     }, [])
+
+    const handleSkill = (e) => {
+        let filterData = {
+            ...selectedFilter,
+            skill_title: e.target.value
+        }
+        dispatch(adminListAssignedDeveloper(filterData))
+    };
+
+    const handleAssignment = (e) => {
+        let filterData = {
+            ...selectedFilter,
+            assignment_filter: e.target.value
+        }
+        dispatch(adminListAssignedDeveloper(filterData))
+    };
+    const handleExperience = (e) => {
+        let filterData = {
+            ...selectedFilter,
+            experience_years: e.target.value
+        }
+        dispatch(adminListAssignedDeveloper(filterData))
+    };
+    console.log(selectedFilter, "selectedFilter")
+    console.log(assignedDeveloper, "assignedDeveloper")
     return (
         <>
             <h2 className="section-head mb-4">Overview</h2>
-            <div className="mb-4 filter-section">
-                <Form>
+            <div>
+                <h3 className="section-head-sub">Filter By</h3>
+                <Form className="mb-4">
                     <div className="d-flex gap-3">
                         <div className="flex-none">
-                            <Form.Select className="filter-select shadow-none">
-                                <option value="" selected disabled>Select Category</option>
-                                <option value="python">Python</option>
-                                <option value="javascript">JavaScript</option>
-                                <option value="full_stack">Full Stack</option>
-                            </Form.Select>
-                        </div>
-                        <div className="flex-none">
-                            <Form.Select className="filter-select shadow-none">
+                            <Form.Label className="common-label">Category</Form.Label>
+                            <Form.Select className="filter-select shadow-none" onChange={(e) => handleSkill(e)}>
                                 <option value="" selected disabled>Select Developers</option>
-                                <option value="assigned">Assigned</option>
-                                <option value="unassigned">Unassigned</option>
-                                <option value="all_developers">All Developers</option>
+                                <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
+                                <option value="javascript" onClick={(e) => e.stopPropagation()}>JavaScript</option>
+                                <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option>
+
                             </Form.Select>
                         </div>
                         <div className="flex-none">
-                            <Form.Select className="filter-select shadow-none">
+                            <Form.Label className="common-label">Developers</Form.Label>
+                            <Form.Select className="filter-select shadow-none" onChange={(e) => handleAssignment(e)}>
+                                <option value="" selected disabled>Select Developers</option>
+                                <option value="assigned" onClick={(e) => e.stopPropagation()}>Assigned</option>
+                                <option value="unassigned" onClick={(e) => e.stopPropagation()}>Unassigned</option>
+                                <option value="all_developers" onClick={(e) => e.stopPropagation()}>All Developers</option>
+                            </Form.Select>
+                        </div>
+                        <div className="flex-none">
+                            <Form.Label className="common-label">Experience</Form.Label>
+                            <Form.Select className="filter-select shadow-none" onChange={(e) => handleExperience(e)}>
                                 <option value="" selected disabled>Select Experience</option>
-                                <option value="3years">3 years</option>
-                                <option value="5years">5 years</option>
-                                <option value="10years">10 years</option>
+                                <option value="3years" onClick={(e) => e.stopPropagation()}>3 years</option>
+                                <option value="5years" onClick={(e) => e.stopPropagation()}>5 years</option>
+                                <option value="10years" onClick={(e) => e.stopPropagation()}>10 years</option>
                             </Form.Select>
                         </div>
                     </div>
@@ -74,17 +107,17 @@ const DeveloperList = () => {
                                             </div>
                                             <div className="text-center">
                                                 <h3 className="user-name">{item?.name}</h3>
-                                                <p className="designation-user">Front End Designer</p>
+                                                <p className="designation-user">{item?.developer_detail?.professional_title}</p>
                                                 <p className="email-user">{item?.email}</p>
                                                 <ul className="social-icons">
                                                     <li>
-                                                        <Link to={"#"}><FaGithub /></Link>
+                                                        <Link to={`${item?.developer_detail?.github_url}`}><FaGithub /></Link>
                                                     </li>
                                                     <li>
-                                                        <Link to={"#"}><FaLinkedin /></Link>
+                                                        <Link to={`${item?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                                     </li>
                                                     <li>
-                                                        <Link to={"#"}><MdEmail /></Link>
+                                                        <Link to={`${item?.email}`}><MdEmail /></Link>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -105,53 +138,54 @@ const DeveloperList = () => {
                                         <th><span>Connects</span></th>
                                     </tr>
                                 </thead>
-                                {assignedDeveloper.map((item, index) => {
+                                {assignedDeveloper.map((value, index) => {
                                     return (
                                         <>
                                             <tbody>
                                                 <tr>
                                                     <td>
                                                         <span className="d-flex align-items-center gap-3">
-                                                            <img src={item?.profile_picture} />
-                                                            <h3 className="user-name color-121212 mb-0">{item?.name}</h3>
+                                                            <img src={value?.profile_picture} />
+                                                            <h3 className="user-name color-121212 mb-0">{value?.name}</h3>
                                                             <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span>
                                                         </span>
 
                                                     </td>
                                                     <td>
                                                         <span>
-                                                            <p className="designation-user color-121212 mb-0">Full stack developer</p>
+                                                            <p className="designation-user color-121212 mb-0">{value?.developer_detail?.professional_title}</p>
                                                         </span>
                                                     </td>
                                                     <td>
                                                         <span>
-                                                            <p className="email-user color-121212 mb-0">{item?.email}</p>
+                                                            <p className="email-user color-121212 mb-0">{value?.email}</p>
                                                         </span>
                                                     </td>
                                                     <td>
                                                         <ul className="social-icons mb-0 justify-content-start">
                                                             <li>
-                                                                <Link to={"#"}><FaGithub /></Link>
+                                                                <Link to={`${value?.developer_detail?.github_url}`}><FaGithub /></Link>
                                                             </li>
                                                             <li>
-                                                                <Link to={"#"}><FaLinkedin /></Link>
+                                                                <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                                             </li>
                                                             <li>
-                                                                <Link to={"#"}><MdEmail /></Link>
+                                                                <Link to={`${value?.email}`}><MdEmail /></Link>
                                                             </li>
                                                         </ul>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </>
-                                    )})}
+                                    )
+                                })}
                             </table>
                         </div>
                     </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>
             <div className="text-center mt-3">
-                <Link to={"#"} className="link-text-dark">See All</Link>
+                {assignedDeveloper.length === 0 ? <NoDataFound /> : assignedDeveloper.length > 5 ? <Link to={"#"} className="link-text-dark">See All</Link> : ""}
             </div>
         </>
     )
