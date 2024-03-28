@@ -46,9 +46,6 @@ const AdminJobListing = () => {
                     <Tab eventKey="in-progress" title="In Progress">
                     <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
                     </Tab>
-                    <Tab eventKey="completed" title="Completed">
-                    <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
-                    </Tab>
                     <Tab eventKey="ended" title="End Jobs">
                     <JobTabs  jobListing={jobListing} jobCategoryList={jobCategoryList}/>
                     </Tab>

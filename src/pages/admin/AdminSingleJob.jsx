@@ -104,16 +104,16 @@ console.log(singleJobListing,"singleJobListing")
                     <div className="text-center mb-3">
                         <Button className="main-btn px-5">+ Suggest Developers</Button>
                     </div>
-                      <JobCard type="Suggested" data={selectedTabsData}/>
+                      <JobCard type="Suggested" data={selectedTabsData} role="admin"/>
                 </Tab>
                 <Tab eventKey="shortlisted" title="Shortlisted">
-                <JobCard type="Shortlisted" data={selectedTabsData}/>
+                <JobCard type="Shortlisted" data={selectedTabsData} role="admin"/>
                 </Tab>
                 <Tab eventKey="interviewing" title="Interviewing">
-                <JobCard type="Interviewing" data={selectedTabsData}/>
+                <JobCard type="Interviewing" data={selectedTabsData} role="admin"/>
                 </Tab>
                 <Tab eventKey="hired" title="Hired">
-                <JobCard type="Hired" data={selectedTabsData}/>
+                <JobCard type="Hired" data={selectedTabsData} role="admin"/>
                 </Tab>
             </Tabs>
             <EndJobModal show={showEndJobModal} handleClose={handleCloseEndJobModal} />

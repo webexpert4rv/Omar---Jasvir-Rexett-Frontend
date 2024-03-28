@@ -45,7 +45,7 @@ const RexettDocuments = ({ currentRole }) => {
     const {shareDocument} =  useSelector(state => state.developerData)
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
 
-
+console.log(folderData,"folderData")
 
     
 
@@ -347,7 +347,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 <div className="name-folder">
                                                                                     <span>{item?.s3_path}</span>
                                                                                     <div className="shared-doc">
-                                                                                        <p className="shared-text">Shared by Amazon</p>
+                                                                                        {item?.user?<p className="shared-text"> {item?.user ? `Shared by ${item.user?.name}`:""}</p>:""}
                                                                                     </div>
                                                                                 </div>
                                                                                 <div className="doc-action">

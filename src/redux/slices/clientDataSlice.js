@@ -63,7 +63,8 @@ export const clientDataSlice = createSlice({
 
         },
         setFolderData:(state,action)=>{
-            state.folderData=action.payload.files;
+            let comibedFile=[...action.payload.files,...action.payload.shared_files]
+            state.folderData=comibedFile;
             state.screenLoader = false;
         },
         setJobCategory:(state,action)=>{
@@ -179,7 +180,7 @@ export function getFolderData(payload, role, callback) {
             let result
             
             if(role=="developer"){
-                result = await developerInstance.get(generateApiUrl(payload,`developer/documents`))
+                result = await clientInstance.get(generateApiUrl(payload,`developer/documents`))
             }else if(role=="client"){
                 result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
             }else{

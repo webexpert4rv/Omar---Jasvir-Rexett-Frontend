@@ -24,7 +24,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole 
                 "contract_id": currentFolderDetails.contract_id,
                 "file_type": 1,
                 "parent_id": currentFolderDetails.id,
-                "added_by": currentRole==="client"?"client":"developer",
+                "added_by": currentRole,
                 "type": +values.category,
                 "s3_path": url,
             }

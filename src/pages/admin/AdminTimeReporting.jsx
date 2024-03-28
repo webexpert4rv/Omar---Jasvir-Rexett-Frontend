@@ -8,11 +8,23 @@ import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 const AdminTimeReporting = () => {
     const dispatch =useDispatch()
     const {adminTimeReportingList}=useSelector(state=>state.adminData)
+    const [selectedDeveloperIndex,setSelectedDevloperIndex]=useState(0)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
+    const [developerData,setDeveloperData]=useState([])
+
+    useEffect(()=>{
+        let newContacts= [...adminTimeReportingList]
+        newContacts.map((item)=>{
+            
+        })
+        setDeveloperData([...adminTimeReportingList,])
+        
+    },[adminTimeReportingList])
+console.log(developerData,"developerData")
+ 
     const handleShowEditTimeModal = () => {
         setShowEditTimeModal(true);
     };
-console.log(adminTimeReportingList,"|adminTimeReportingList")
     const handleCloseEditTimeModal = () => {
         setShowEditTimeModal(false);
     };
@@ -28,6 +40,19 @@ console.log(adminTimeReportingList,"|adminTimeReportingList")
     useEffect(()=>{
     dispatch(adminTimeReporting())
     },[])
+
+    const contractName=(data)=>{
+        let developerName=data.map((item)=>{
+            return { dev:item?.contractDetails?.developer.name}
+        })
+
+        return developerName
+    }
+
+    const handleDeveloper=(e)=>{
+        console.log(e.target.value)
+        setSelectedDevloperIndex(e.target.value)
+    }
     return (
         <>
             <section>
@@ -86,23 +111,27 @@ console.log(adminTimeReportingList,"|adminTimeReportingList")
                                             <>
                                                <tr>
                                     <td className="time-table-data">{item?.client_details?.name}</td>
-                                    <td className="time-table-data">{item?.contracts.length}</td>
+                                    <td className="time-table-data">{item?.contracts?.length}</td>
                                     <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
+                                        <Form.Select className="status-select shadow-none" onChange={handleDeveloper}>
+                                            {
+                                              contractName(item?.contracts)?.map((el,inx)=>{
+                                                return (
+                                                    <>
+                                                    <option value={inx}>{el?.dev}</option>
+                                                    </>
+                                                )
+                                              }) 
+                                            }
                                         </Form.Select>
                                     </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
+                                   { <td className="time-table-data">{item?.contracts[selectedDeveloperIndex]?.time_report?.totalDuration}hr</td>}
+                                    <td className="time-table-data">{item?.contracts[selectedDeveloperIndex]?.contractDetails?.job_type}</td>
                                     <td className="time-table-data">N/A</td>
                                     <td className="time-table-data">
                                         <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
                                     </td>
-                                    <td className="time-table-data">Hourly</td>
+                                    <td className="time-table-data">{item?.contracts[selectedDeveloperIndex]?.contractDetails?.employment_type}</td>
                                 </tr>
                                             </>
                                         )

@@ -45,10 +45,10 @@ const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFile
                     </td>
                     <td className="document-data">
                         <div className="d-flex align-items-center owner-icon gap-1">
-                            <span className="me-icon"><HiMiniUser /></span><p className="mb-0">Me</p>
+                            <span className="me-icon"><HiMiniUser /></span><p className="mb-0">{item?.user ? item?.user?.name:"Me"}</p>
                         </div>        
                     </td>
-                    <td className="document-data">My Documents</td>
+                    <td className="document-data">{item?.user ? "Shared":"My Documents"}</td>
                     <td className="document-data">
                         <div className="d-flex gap-3">
                             <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload />
