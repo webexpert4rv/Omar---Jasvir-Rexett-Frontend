@@ -3,18 +3,22 @@ import { Button, Col, Nav, Row, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { adminApproveReject, allApplicationsList } from "../../redux/slices/adminDataSlice";
+import RexettButton from "../../components/atomic/RexettButton";
+import NoDataFound from "../../components/atomic/NoDataFound";
 const Applications = () => {
   const dispatch = useDispatch();
-  const { allApplications,approvedLoader } = useSelector((state) => state.adminData);
+  const { allApplications, approvedLoader } = useSelector((state) => state.adminData);
   const [expandedRow, setExpandedRow] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
+  const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
+  const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null)
+
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
 
-  console.log(allApplications, "allApplications");
 
   useEffect(() => {
     dispatch(allApplicationsList());
@@ -33,17 +37,21 @@ const Applications = () => {
     return skillsArray;
   };
 
-  const handleClick=  (e,clientId,status)=>{
-    e.stopPropagation(); 
-    let payload={
-      
-        "user_id": clientId,
-        "status": status
-      
+  const handleClick = (e, clientId, status, index) => {
+    e.stopPropagation();
+    let payload = {
+      "user_id": clientId,
+      "status": status
+    }
+    if (status === "approved") {
+      setSelectedApprovedBtn(index)
+    } else  if(status === "rejected"){
+      setSelectedRejectedBtn(index)
     }
     dispatch(adminApproveReject(payload))
-   dispatch(allApplicationsList());
+    dispatch(allApplicationsList());
   }
+  console.log(application,'application--------------------')
   return (
     <>
       <h2 className="section-head mb-4">Applications</h2>
@@ -80,7 +88,8 @@ const Applications = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentTab=="clients"? application?.map((item, index) => (
+                  {currentTab == "clients"  && application?.length > 0 ? application?.map((item, index) => (
+                   
                     <React.Fragment key={index}>
                       <tr
                         className="application-row"
@@ -96,30 +105,27 @@ const Applications = () => {
                         <td>{item?.jobs[0]?.status}</td>
                         <td>
                           <div className="d-flex gap-3">
-                            <Button 
-                              variant="transparent"
+                            <RexettButton
+                              text="Approve"
                               className="main-btn px-4 py-2 font-13"
-                              onClick={(e)=>handleClick(e,item?.id , "approved")}
-                              isLoading={approvedLoader}
-                            >
-                              Approve
-                            </Button>
-                            <Button
-                              variant="danger"
+                              variant="transparent"
+                              onClick={(e) => handleClick(e, item?.id, "approved", index)}
+                              isLoading={selectedApprovedBtn === index ? approvedLoader : false}
+                            />
+                            <RexettButton
+                              text="Reject"
                               className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
-                              onClick={(e)=>handleClick(e,item?.id , "rejected")}
-                              isLoading={approvedLoader}
-                            >
-                              Reject
-                            </Button>
+                              variant="danger"
+                              onClick={(e) => handleClick(e, item?.id, "rejected", index)}
+                              isLoading={selectedRejectedBtn === index ? approvedLoader : false}
+                            />
                           </div>
                         </td>
                       </tr>
                       {expandedRow === index && (
                         <tr
-                          className={`collapsible-row ${
-                            expandedRow === index ? "open" : ""
-                          }`}
+                          className={`collapsible-row ${expandedRow === index ? "open" : ""
+                            }`}
                         >
                           <td colSpan="8">
                             <div>
@@ -144,9 +150,8 @@ const Applications = () => {
                                     </h3>
                                     <ul className="need-skill-list">
                                       {convertToArray(
-                                          item?.jobs[0]?.skills
+                                        item?.jobs[0]?.skills
                                       )?.map((item, index) => {
-                                        console.log(item,"item")
                                         return (
                                           <>
                                             <li key={index}>{item}</li>
@@ -172,8 +177,8 @@ const Applications = () => {
                         </tr>
                       )}
                     </React.Fragment>
-                  )):""}
-                </tbody>
+                    )) : <NoDataFound/>}
+                </tbody>               
               </table>
             </div>
           </Tab.Pane>
@@ -192,7 +197,8 @@ const Applications = () => {
                   <th></th>
                 </thead>
                 <tbody>
-                  { currentTab ==="vendors"?application?.map((item, index) => (
+                  {currentTab === "vendors"  && application?.length > 0 ? application?.map((item, index) => (
+                      
                     <React.Fragment key={index}>
                       <tr
                         className="application-row"
@@ -208,28 +214,32 @@ const Applications = () => {
                         <td>{item?.company?.yearly_revenue}</td>
                         <td>
                           <div className="d-flex gap-3">
-                            <Button
-                              variant="transparent"
-                              className="main-btn px-4 py-2 font-13"
-                              onClick={(e)=>handleClick(e,item?.id , "approved")}
-
-                            >
-                              Approve
-                            </Button>
-                            <Button
-                              variant="danger"
-                              className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
-                              onClick={(e)=>handleClick(e,item?.id , "rejected")}
-
-                            >
-                              Reject
-                            </Button>
+                            <div className="text-center">
+                              <RexettButton
+                                // type="submit"
+                                text="Approve"
+                                className="main-btn px-4 py-2 font-13"
+                                variant="transparent"
+                                onClick={(e) => handleClick(e, item?.id, "approved", index)}
+                                isLoading={selectedApprovedBtn === index ? approvedLoader : false}
+                              />
+                            </div>
+                            <div className="text-center">
+                              <RexettButton
+                                // type="submit"
+                                text="Reject"
+                                className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
+                                variant="danger"
+                                onClick={(e) => handleClick(e, item?.id, "rejected", index)}
+                                isLoading={selectedApprovedBtn === index ? approvedLoader : false}
+                              />
+                            </div>
                           </div>
                         </td>
                       </tr>
                     </React.Fragment>
-                  )):""}
-                </tbody>
+                  )) :  <NoDataFound/>}
+                   </tbody>
               </table>
             </div>
           </Tab.Pane>
