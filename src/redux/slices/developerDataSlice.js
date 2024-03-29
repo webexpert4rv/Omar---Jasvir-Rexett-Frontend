@@ -429,7 +429,7 @@ export function saveTimeReports(payload, callback) {
 export function getDocumentShare() {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        // dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get(`common/share-file/users`)
             if (result.status === 200) {

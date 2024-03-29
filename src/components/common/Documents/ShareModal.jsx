@@ -36,10 +36,13 @@ const ShareModal = ({ show, handleClose,fileId}) => {
         }, 5000);
     }, []);
     const handleChange = (e) => {
-        console.log("Tags changed:", e.detail.value);
-       let d=  JSON.parse(e.detail.value)
-       setSharedTags(d)
-       console.log(d,"ppppp")
+        if(e.detail.value){
+            let d=  JSON.parse(e.detail.value)
+            setSharedTags(d)
+        }else{
+            setSharedTags([])  
+        }
+      
     };
         console.log(shareDocument,"shareDocument")
 
@@ -50,8 +53,11 @@ const ShareModal = ({ show, handleClose,fileId}) => {
             "file_id": fileId,
             "user_ids":user_id
           }
-        await dispatch(shareBelongisFile(payload))
-        handleClose()
+          if(user_id.length>0){
+            await dispatch(shareBelongisFile(payload))
+            handleClose()
+          }
+        
     }
 
     return (
@@ -77,8 +83,8 @@ const ShareModal = ({ show, handleClose,fileId}) => {
                                     />
                                 </Form.Group>
                                 <div>
-                                    <h4 className="access-heading mb-3">People with access</h4>
-                                    {shareDocument?.data?.map((item, index) => {
+                                    {/* <h4 className="access-heading mb-3">People with access</h4> */}
+                                    {/* {shareDocument?.data?.map((item, index) => {
                                         return (
                                             <>
                                                 <ul className="access-list">
@@ -87,13 +93,12 @@ const ShareModal = ({ show, handleClose,fileId}) => {
                                                             <span className="no-img letter-indicator">{item?.name.split("")[0]}</span>
                                                             <div>
                                                                 <span className="font-15 owner-name">{item?.name}</span>
-                                                                {/* <span className="font-13 owner-email">loremipsum@amazon.com</span> */}
                                                             </div>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </>
-                                        )})}
+                                        )})} */}
                                     {/* <span className="owner-text">Owner</span> */}
                                     <div  className="text-center mt-4">
                                     <RexettButton
