@@ -6,12 +6,12 @@ import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import {  adminListAssignedDeveloper, adminListClients, getAdminDashboard } from "../../redux/slices/adminDataSlice";
+import { adminListAssignedDeveloper, adminListClients, getAdminDashboard } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 const AdminDashboard = () => {
     const dispatch = useDispatch()
-    const { listOfClients, adminDashboard,screenLoader } = useSelector(state => state.adminData)
+    const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
     useEffect(() => {
         dispatch(getAdminDashboard())
     }, [])
@@ -57,68 +57,70 @@ const AdminDashboard = () => {
             </div>
             <Row className="mb-5">
                 <Col md={12}>
-                    <div className="d-flex justify-content-between mb-4 align-items-center">
+                    <div className="d-flex justify-content-between mb-4 ">
                         <h2 className="section-head-sub">List of clients</h2>
-                        {/* <div>
-                            <Link to={"/list-clients"} className="link-text-dark">See more</Link>
-                        </div> */}
                     </div>
                     <div className="developers-list">
-                        {
-                            adminDashboard?.data?.clients.map((item, index) => {
-                                return (
-                                    <>
-                                        <div className="client-card">
-                                            <div className="client-imgbx mb-3 text-center">
-                                                <img src={item?.profile_picture} className="client-img" />
-                                            </div>
-                                            <div className="text-center">
-                                                <h3 className="user-name text-black">{item?.name}</h3>
-                                            </div>
+                        {adminDashboard?.data?.clients.map((item, index) => {
+                            return (
+                                <>
+                                    <div className="developer-card">
+                                        <div className="user-imgbx ">
+                                            <img src={userImg} className="user-img" />
                                         </div>
-
-                                    </>
-                                )
-                            })
-                        }
-
+                                        <div className="text-center">
+                                            <h3 className="user-name ">{item?.name}</h3>
+                                            <p className="designation-user">full stack developer</p>
+                                            <p className="email-user">{item?.email}</p>
+                                            <ul className="social-icons">
+                                                <li>
+                                                    <Link to={"#"}><FaGithub /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><FaLinkedin /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={"#"}><MdEmail /></Link>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </>
+                            )})}
                     </div>
                 </Col>
             </Row>
             <h2 className="section-head-sub mb-4">List of assigned developers</h2>
             <div className="developers-list">
-          
-                {
-                 adminDashboard?.data?.assignedDevelopers.length>0?    adminDashboard?.data?.assignedDevelopers.map((item, index) => {
-                        return (
-                            <>
-                                <div className="developer-card">
-                                    <div className="user-imgbx">
-                                        <img src={item?.developer?.profile_picture} className="user-img" />
-                                    </div>
-                                    <div className="text-center">
-                                        <h3 className="user-name">{item?.developer?.name}</h3>
-                                        <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
-                                        <p className="email-user">{item?.developer?.email}</p>
-                                        <ul className="social-icons">
-                                            <li>
-                                                <Link to={`${item?.developer?.developer_detail?.github_url}`}><FaGithub /></Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
-                                            </li>
-                                            <li>
-                                                <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
-                                            </li>
-                                        </ul>
-                                    </div>
+
+                {adminDashboard?.data?.assignedDevelopers.length > 0 ? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
+                    return (
+                        <>
+                            <div className="developer-card">
+                                <div className="user-imgbx">
+                                    <img src={item?.developer?.profile_picture} className="user-img" />
                                 </div>
-                            </>
-                        )
-                    })
-                : <ScreenLoader/> }
-
-
+                                <div className="text-center">
+                                    <h3 className="user-name">{item?.developer?.name}</h3>
+                                    <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
+                                    <p className="email-user">{item?.developer?.email}</p>
+                                    <ul className="social-icons">
+                                        <li>
+                                            <Link to={`${item?.developer?.developer_detail?.github_url}`}><FaGithub /></Link>
+                                        </li>
+                                        <li>
+                                            <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
+                                        </li>
+                                        <li>
+                                            <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </>
+                    )
+                })
+                    : <ScreenLoader />}
             </div>
             <div className="text-center mt-3">
                 <Link to={"/developer-list"} className="link-text-dark">See All</Link>

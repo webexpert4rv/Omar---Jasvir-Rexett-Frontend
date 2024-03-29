@@ -15,7 +15,7 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 const DeveloperList = () => {
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
-    const { assignedDeveloper,screenLoader } = useSelector(state => state.adminData)
+    const { assignedDeveloper, screenLoader } = useSelector(state => state.adminData)
 
 
     useEffect(() => {
@@ -47,17 +47,14 @@ const DeveloperList = () => {
         setSelectedFilter(filterData)
         dispatch(adminListAssignedDeveloper(filterData))
     };
-    console.log(selectedFilter?.experience_years,"selectedFilter")
 
-    const handleClear=()=>{
+    const handleClear = () => {
         setSelectedFilter({
-            skill_title : "Select Filter",
-            assignment_filter : "Select Developers ",
-            experience_years : "Select Experience",
+            skill_title: "Select Filter",
+            assignment_filter: "Select Developers ",
+            experience_years: "Select Experience",
 
         })
-        
-        console.log(selectedFilter,"selectedfilter")
         dispatch(adminListAssignedDeveloper());
     }
 
@@ -70,35 +67,37 @@ const DeveloperList = () => {
                     <div className="d-flex gap-3">
                         <div className="flex-none">
                             <Form.Label className="common-label">Category</Form.Label>
-                            <Form.Select className="filter-select shadow-none" value ={selectedFilter?.assignment_filter} onChange={(e) => handleSkill(e)}>
-                                <option value="">Select Developers</option>
-                                <option value="python" >Python</option>
-                                <option value="javascript" >JavaScript</option>
-                                <option value="full_stack" >Full Stack</option>
+                            <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
+                                <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
+                                <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
+                                <option value="javascript" onClick={(e) => e.stopPropagation()}>JavaScript</option>
+                                <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option>
 
                             </Form.Select>
                         </div>
                         <div className="flex-none">
                             <Form.Label className="common-label">Developers</Form.Label>
-                            <Form.Select className="filter-select shadow-none" value ={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
-                                <option value="" >Select Developers</option>
-                                <option value="assigned" >Assigned</option>
-                                <option value="unassigned">Unassigned</option>
-                                <option value="all_developers">All Developers</option>
+                            <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
+                                <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
+                                <option value="assigned" onClick={(e) => e.stopPropagation()} >Assigned</option>
+                                <option value="unassigned" onClick={(e) => e.stopPropagation()}>Unassigned</option>
+                                <option value="all_developers" onClick={(e) => e.stopPropagation()}>All Developers</option>
                             </Form.Select>
                         </div>
                         <div className="flex-none">
                             <Form.Label className="common-label">Experience</Form.Label>
-                            <Form.Select className="filter-select shadow-none" value ={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
+                            <Form.Select className="filter-select shadow-none" value={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
                                 <option value="" > Select Experience </option>
-                                <option value="1 years">1 years</option>
-                                <option value="2 years">2 years</option>
-                                <option value="3 years">3 years</option>
-                                <option value="5 years">5 years</option>
-                                <option value="10 years">10 years</option>
+                                <option value="1 years" onClick={(e) => e.stopPropagation()}>1 years</option>
+                                <option value="2 years" onClick={(e) => e.stopPropagation()}>2 years</option>
+                                <option value="3 years" onClick={(e) => e.stopPropagation()}>3 years</option>
+                                <option value="5 years" onClick={(e) => e.stopPropagation()}>5 years</option>
+                                <option value="10 years" onClick={(e) => e.stopPropagation()}>10 years</option>
                             </Form.Select>
                         </div>
-                        <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>Clear</Button>
+                        <div className="mt-4">
+                            <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>Clear</Button>
+                        </div>
                     </div>
                 </Form>
             </div>
@@ -117,7 +116,7 @@ const DeveloperList = () => {
                 <Tab.Content>
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
-                            {assignedDeveloper.length>0? assignedDeveloper.map((item, index) => {
+                            {assignedDeveloper.length > 0 ? assignedDeveloper.map((item, index) => {
                                 return (
                                     <>
                                         <div className="developer-card">
@@ -144,7 +143,7 @@ const DeveloperList = () => {
                                         </div>
                                     </>
                                 )
-                            }): <NoDataFound/> }
+                            }) : <NoDataFound />}
                         </div>
                     </Tab.Pane>
                     <Tab.Pane eventKey="list-view">
@@ -205,7 +204,7 @@ const DeveloperList = () => {
                 </Tab.Content>
             </Tab.Container>
             <div className="text-center mt-3">
-                {assignedDeveloper.length > 5 ? <Link to={"#"} className="link-text-dark">See All</Link>:"" }
+                {assignedDeveloper.length > 5 ? <Link to={"#"} className="link-text-dark">See All</Link> : ""}
             </div>
         </>
     )
