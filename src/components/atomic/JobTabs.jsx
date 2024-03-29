@@ -6,7 +6,7 @@ import amazonImg from '../../assets/img/amazon.png'
 import NoDataFound from './NoDataFound';
 
 const JobTabs = ({jobListing,jobCategoryList}) => {
-    
+    console.log(jobListing,"--------------------------")
     const getCategory=(cat)=>{
         let data= jobCategoryList.find((item)=>item.id==cat)
         return data?.title
@@ -28,10 +28,13 @@ const JobTabs = ({jobListing,jobCategoryList}) => {
             return 
           }
     }
+
+
+    
   return (
     <div className="job-posted-wrapper">
     {
-     jobListing.length>0?  jobListing?.map((item,index)=>{
+     jobListing?.length>0  ?  jobListing.map((item,index)=>{
         return(
             <>
              <div className="job-posted-list">
