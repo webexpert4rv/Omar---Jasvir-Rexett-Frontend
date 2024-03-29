@@ -47,6 +47,9 @@ const RexettDocuments = ({ currentRole }) => {
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
 
 
+console.log(folderData[0]?.s3_path,"currentFolderDetails")
+// console.log(editFolderName,"editFolderName")
+
     const handleShowUploadFileModal = (id, name) => {
         setOpen(!open)
         if (id) {
@@ -348,7 +351,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 <div className="name-folder">
                                                                                     <span>{item?.s3_path}</span>
                                                                                     <div className="shared-doc">
-                                                                                        {item?.user?<p className="shared-text"> {item?.user ? `Shared by ${item.user?.name}`:""}</p>:""}
+                                                                                        <p className="shared-text">Shared by Amazon</p>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div className="doc-action">
