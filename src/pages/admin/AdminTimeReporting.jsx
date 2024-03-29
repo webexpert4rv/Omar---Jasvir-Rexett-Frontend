@@ -11,8 +11,7 @@ const AdminTimeReporting = () => {
     const [contractId,setContractID]=useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData,setDeveloperData]=useState([])
-    const [developerName,setDeveloperName]=useState([])
-    const [clientName,setClientName]=useState([])
+
 
     useEffect(()=>{
         let newContacts= [...adminTimeReportingList]

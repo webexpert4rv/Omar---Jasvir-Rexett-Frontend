@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import RexettButton from "../../../components/atomic/RexettButton";
+import { editTimeReporting } from "../../../redux/slices/adminDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     const [devloperState,setDeveloperState]=useState([])
+    const {smallLoader}=useSelector(state=>state.adminData)
+    const dispatch =useDispatch()
     const [time,setTime]=useState(null)
+    const [hours,setHours]=useState(null)
 
     const handleClient=(e)=>{
      let copyList=[...adminTimeReportingList]
      let findData=copyList.find((item)=>item.client_details.id==e.target.value)
      let devName=findData?.contracts.map((item)=>{
         return { dev:item?.contractDetails?.developer.name,
-        time:item?.time_report?.totalDuration
+        time:item?.time_report?.totalDuration,
+        contract_id:item?.contractDetails?.id
         }
     })
     setDeveloperState(devName)
@@ -17,9 +24,27 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     }
 
     const handleDeveloper=(e)=>{
-        console.log(e.target.value)
-        setTime(e.target.value)
+    let obj=JSON.parse(e.target.value)
+        setTime(obj)
+    }
 
+    const handleEditTime=async (e)=>{
+        e.preventDefault()
+   let paylaod={
+    "contract_id": time?.contract_id,
+    "total_hours": hours
+  }
+  console.log(paylaod,"paylaod")
+  await dispatch(editTimeReporting(paylaod))
+  handleClose()
+    }
+
+    const handleChange=(e)=>{
+        setHours(e.target.value)
+        setTime({
+            ...time,
+            time:e.target.value
+        })
     }
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
@@ -53,7 +78,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                                      {
                                        devloperState?.map((item)=>{
                                         return( <>
-                                          <option value={item.time}>{item?.dev}</option>
+                                          <option value={JSON.stringify(item)}>{item?.dev}</option>
                                         </>)
                                        }) 
                                      }
@@ -63,12 +88,19 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Label>Total Hours</Form.Label>
-                                <Form.Control type="text" value={time} />
+                                <Form.Control type="text" value={time?.time} name="name" onChange={handleChange} />
                             </Form.Group>
                         </Col>
                     </Row>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4">Submit</Button>
+                        <RexettButton
+                            type="submit"
+                            text="Submit"
+                            className="main-btn px-4"
+                            variant="transparent"
+                            onClick={handleEditTime}
+                            isLoading={smallLoader}
+                        />
                     </div>
                 </Form>
             </Modal.Body>

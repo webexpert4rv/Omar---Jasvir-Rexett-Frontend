@@ -241,7 +241,7 @@ export function adminTimeReporting(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.get(`admin/time-reports`)
+            let result = await clientInstance.get(`admin/time-repors`)
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setAdminTimeReporting(result.data.data))
@@ -297,7 +297,9 @@ export function adminApproveReject(payload) {
                 dispatch(setApproveReject(result.data.data))
             }
         } catch (error) {
-            console.log(error,"error-------------------")
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
         }
     };
 }
@@ -312,7 +314,9 @@ export function getDeveloperSuggestList(payload) {
                 dispatch(setSuggestedDeveloper(result.data.data))
             }
         } catch (error) {
-            console.log(error,"error-------------------")
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
         }
     };
 }
@@ -327,7 +331,26 @@ export function suggestDeveloper(payload) {
                 dispatch(setSuggestedDeveloper(result.data.data))
             }
         } catch (error) {
-            console.log(error,"error-------------------")
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function editTimeReporting(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.put(`admin/edit-time-report`,{...payload})
+            if (result.status === 200) {
+                toast.success(result.data?.message ?result.data?.message:result?.message,  { position: "top-center" })
+                dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
         }
     };
 }
