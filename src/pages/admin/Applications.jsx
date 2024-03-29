@@ -33,7 +33,7 @@ const Applications = () => {
     return skillsArray;
   };
 
-  const handleClick= async (e,clientId,status)=>{
+  const handleClick=  (e,clientId,status)=>{
     e.stopPropagation(); 
     let payload={
       
@@ -41,7 +41,7 @@ const Applications = () => {
         "status": status
       
     }
-   await dispatch(adminApproveReject(payload))
+    dispatch(adminApproveReject(payload))
    dispatch(allApplicationsList());
   }
   return (
@@ -96,10 +96,11 @@ const Applications = () => {
                         <td>{item?.jobs[0]?.status}</td>
                         <td>
                           <div className="d-flex gap-3">
-                            <Button
+                            <Button 
                               variant="transparent"
                               className="main-btn px-4 py-2 font-13"
                               onClick={(e)=>handleClick(e,item?.id , "approved")}
+                              isLoading={approvedLoader}
                             >
                               Approve
                             </Button>
@@ -107,7 +108,7 @@ const Applications = () => {
                               variant="danger"
                               className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
                               onClick={(e)=>handleClick(e,item?.id , "rejected")}
-
+                              isLoading={approvedLoader}
                             >
                               Reject
                             </Button>

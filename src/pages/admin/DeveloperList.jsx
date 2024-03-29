@@ -4,7 +4,7 @@ import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { Form, Nav, Tab } from "react-bootstrap";
+import { Button, Form, Nav, Tab } from "react-bootstrap";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
@@ -16,7 +16,8 @@ const DeveloperList = () => {
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
     const { assignedDeveloper,screenLoader } = useSelector(state => state.adminData)
-    console.log(assignedDeveloper, "designation")
+
+
     useEffect(() => {
         dispatch(adminListAssignedDeveloper())
     }, [])
@@ -26,6 +27,7 @@ const DeveloperList = () => {
             ...selectedFilter,
             skill_title: e.target.value
         }
+        setSelectedFilter(filterData)
         dispatch(adminListAssignedDeveloper(filterData))
     };
 
@@ -34,6 +36,7 @@ const DeveloperList = () => {
             ...selectedFilter,
             assignment_filter: e.target.value
         }
+        setSelectedFilter(filterData)
         dispatch(adminListAssignedDeveloper(filterData))
     };
     const handleExperience = (e) => {
@@ -41,8 +44,22 @@ const DeveloperList = () => {
             ...selectedFilter,
             experience_years: e.target.value
         }
+        setSelectedFilter(filterData)
         dispatch(adminListAssignedDeveloper(filterData))
     };
+    console.log(selectedFilter?.experience_years,"selectedFilter")
+
+    const handleClear=()=>{
+        setSelectedFilter({
+            skill_title : "Select Filter",
+            assignment_filter : "Select Developers ",
+            experience_years : "Select Experience",
+
+        })
+        
+        console.log(selectedFilter,"selectedfilter")
+        dispatch(adminListAssignedDeveloper());
+    }
 
     return (
         <>
@@ -53,34 +70,35 @@ const DeveloperList = () => {
                     <div className="d-flex gap-3">
                         <div className="flex-none">
                             <Form.Label className="common-label">Category</Form.Label>
-                            <Form.Select className="filter-select shadow-none" onChange={(e) => handleSkill(e)}>
-                                <option value="" selected disabled>Select Developers</option>
-                                <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
-                                <option value="javascript" onClick={(e) => e.stopPropagation()}>JavaScript</option>
-                                <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option>
+                            <Form.Select className="filter-select shadow-none" value ={selectedFilter?.assignment_filter} onChange={(e) => handleSkill(e)}>
+                                <option value="">Select Developers</option>
+                                <option value="python" >Python</option>
+                                <option value="javascript" >JavaScript</option>
+                                <option value="full_stack" >Full Stack</option>
 
                             </Form.Select>
                         </div>
                         <div className="flex-none">
                             <Form.Label className="common-label">Developers</Form.Label>
-                            <Form.Select className="filter-select shadow-none" onChange={(e) => handleAssignment(e)}>
-                                <option value="" selected disabled>Select Developers</option>
-                                <option value="assigned" onClick={(e) => e.stopPropagation()}>Assigned</option>
-                                <option value="unassigned" onClick={(e) => e.stopPropagation()}>Unassigned</option>
-                                <option value="all_developers" onClick={(e) => e.stopPropagation()}>All Developers</option>
+                            <Form.Select className="filter-select shadow-none" value ={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
+                                <option value="" >Select Developers</option>
+                                <option value="assigned" >Assigned</option>
+                                <option value="unassigned">Unassigned</option>
+                                <option value="all_developers">All Developers</option>
                             </Form.Select>
                         </div>
                         <div className="flex-none">
                             <Form.Label className="common-label">Experience</Form.Label>
-                            <Form.Select className="filter-select shadow-none" onChange={(e) => handleExperience(e)}>
-                                <option value="" selected disabled>Select Experience</option>
-                                <option value="1years" onClick={(e) => e.stopPropagation()}>3 years</option>
-                                <option value="2years" onClick={(e) => e.stopPropagation()}>3 years</option>
-                                <option value="3years" onClick={(e) => e.stopPropagation()}>3 years</option>
-                                <option value="5years" onClick={(e) => e.stopPropagation()}>5 years</option>
-                                <option value="10years" onClick={(e) => e.stopPropagation()}>10 years</option>
+                            <Form.Select className="filter-select shadow-none" value ={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
+                                <option value="" > Select Experience </option>
+                                <option value="1 years">1 years</option>
+                                <option value="2 years">2 years</option>
+                                <option value="3 years">3 years</option>
+                                <option value="5 years">5 years</option>
+                                <option value="10 years">10 years</option>
                             </Form.Select>
                         </div>
+                        <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>Clear</Button>
                     </div>
                 </Form>
             </div>
