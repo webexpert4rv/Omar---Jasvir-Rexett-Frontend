@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import {  adminListAssignedDeveloper, adminListClients, getAdminDashboard } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 const AdminDashboard = () => {
     const dispatch = useDispatch()
-    const { listOfClients, adminDashboard } = useSelector(state => state.adminData)
-    console.log(adminDashboard,"admindashboard===================")
+    const { listOfClients, adminDashboard,screenLoader } = useSelector(state => state.adminData)
     useEffect(() => {
         dispatch(getAdminDashboard())
     }, [])
@@ -87,8 +87,9 @@ const AdminDashboard = () => {
             </Row>
             <h2 className="section-head-sub mb-4">List of assigned developers</h2>
             <div className="developers-list">
+          
                 {
-                    adminDashboard?.data?.assignedDevelopers.map((item, index) => {
+                 adminDashboard?.data?.assignedDevelopers.length>0?    adminDashboard?.data?.assignedDevelopers.map((item, index) => {
                         return (
                             <>
                                 <div className="developer-card">
@@ -115,7 +116,7 @@ const AdminDashboard = () => {
                             </>
                         )
                     })
-                }
+                : <ScreenLoader/> }
 
 
             </div>

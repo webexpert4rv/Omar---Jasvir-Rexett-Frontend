@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createNewFolderAndFile, filePreassignedUrlGenerate } from "../../../redux/slices/clientDataSlice";
 import RexettButton from "../../../components/atomic/RexettButton";
-const UploadInvoice = ({ show, handleClose,currentRole }) => {
+const UploadInvoice = ({ show, handleClose,contractId }) => {
     const [selectedFile, setSelectedFile] = useState(null)
     const dispatch = useDispatch()
     const { smallLoader } = useSelector(state => state.clientData);
@@ -22,15 +22,17 @@ const UploadInvoice = ({ show, handleClose,currentRole }) => {
 
             dispatch(filePreassignedUrlGenerate(fileData, (url) => {
                 let data = {
-                        "contract_id": null,
+                        "contract_id": contractId,
                         "file_type": 0,
                         "parent_id": 0,
-                        "type": 0,
-                        "s3_path": "string",
+                        "type": values?.category,
+                        "s3_path": url,
                         "file_extension": "string"      
                 };
                 // formData.append("file",data.s3_path);
-                dispatch(createNewFolderAndFile(data));
+                dispatch(createNewFolderAndFile(data,()=>{
+                    handleClose()
+                }));
             }));
         
       

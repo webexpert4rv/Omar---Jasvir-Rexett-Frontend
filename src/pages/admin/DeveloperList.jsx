@@ -11,10 +11,11 @@ import { FaListUl } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { adminListAssignedDeveloper } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 const DeveloperList = () => {
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
-    const { assignedDeveloper } = useSelector(state => state.adminData)
+    const { assignedDeveloper,screenLoader } = useSelector(state => state.adminData)
     console.log(assignedDeveloper, "designation")
     useEffect(() => {
         dispatch(adminListAssignedDeveloper())
@@ -42,8 +43,7 @@ const DeveloperList = () => {
         }
         dispatch(adminListAssignedDeveloper(filterData))
     };
-    console.log(selectedFilter, "selectedFilter")
-    console.log(assignedDeveloper, "assignedDeveloper")
+
     return (
         <>
             <h2 className="section-head mb-4">Overview</h2>
@@ -74,6 +74,8 @@ const DeveloperList = () => {
                             <Form.Label className="common-label">Experience</Form.Label>
                             <Form.Select className="filter-select shadow-none" onChange={(e) => handleExperience(e)}>
                                 <option value="" selected disabled>Select Experience</option>
+                                <option value="1years" onClick={(e) => e.stopPropagation()}>3 years</option>
+                                <option value="2years" onClick={(e) => e.stopPropagation()}>3 years</option>
                                 <option value="3years" onClick={(e) => e.stopPropagation()}>3 years</option>
                                 <option value="5years" onClick={(e) => e.stopPropagation()}>5 years</option>
                                 <option value="10years" onClick={(e) => e.stopPropagation()}>10 years</option>
@@ -97,7 +99,7 @@ const DeveloperList = () => {
                 <Tab.Content>
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
-                            {assignedDeveloper.map((item, index) => {
+                            {assignedDeveloper.length>0? assignedDeveloper.map((item, index) => {
                                 return (
                                     <>
                                         <div className="developer-card">
@@ -124,7 +126,7 @@ const DeveloperList = () => {
                                         </div>
                                     </>
                                 )
-                            })}
+                            }): <NoDataFound/> }
                         </div>
                     </Tab.Pane>
                     <Tab.Pane eventKey="list-view">
@@ -185,7 +187,7 @@ const DeveloperList = () => {
                 </Tab.Content>
             </Tab.Container>
             <div className="text-center mt-3">
-                {assignedDeveloper.length === 0 ? <NoDataFound /> : assignedDeveloper.length > 5 ? <Link to={"#"} className="link-text-dark">See All</Link> : ""}
+                {assignedDeveloper.length > 5 ? <Link to={"#"} className="link-text-dark">See All</Link>:"" }
             </div>
         </>
     )

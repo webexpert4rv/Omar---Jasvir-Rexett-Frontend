@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { adminApproveReject, allApplicationsList } from "../../redux/slices/adminDataSlice";
 const Applications = () => {
   const dispatch = useDispatch();
-  const { allApplications } = useSelector((state) => state.adminData);
+  const { allApplications,approvedLoader } = useSelector((state) => state.adminData);
   const [expandedRow, setExpandedRow] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
@@ -33,7 +33,7 @@ const Applications = () => {
     return skillsArray;
   };
 
-  const handleClick=(e,clientId,status)=>{
+  const handleClick= async (e,clientId,status)=>{
     e.stopPropagation(); 
     let payload={
       
@@ -41,7 +41,8 @@ const Applications = () => {
         "status": status
       
     }
-    dispatch(adminApproveReject(payload))
+   await dispatch(adminApproveReject(payload))
+   dispatch(allApplicationsList());
   }
   return (
     <>
@@ -105,7 +106,7 @@ const Applications = () => {
                             <Button
                               variant="danger"
                               className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
-                              onClick={(e)=>handleClick(e,item?.id , "rejected",)}
+                              onClick={(e)=>handleClick(e,item?.id , "rejected")}
 
                             >
                               Reject
@@ -209,14 +210,16 @@ const Applications = () => {
                             <Button
                               variant="transparent"
                               className="main-btn px-4 py-2 font-13"
-                              onClick={(id)=>handleClick(id,"approve")}
+                              onClick={(e)=>handleClick(e,item?.id , "approved")}
+
                             >
                               Approve
                             </Button>
                             <Button
                               variant="danger"
                               className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
-                              onClick={(id)=>handleClick(id , "reject")}
+                              onClick={(e)=>handleClick(e,item?.id , "rejected")}
+
                             >
                               Reject
                             </Button>

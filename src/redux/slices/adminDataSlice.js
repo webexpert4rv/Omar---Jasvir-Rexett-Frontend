@@ -19,6 +19,7 @@ const initialAdminData = {
     adminApproveReject:[],
     suggestedDeveloper:[],
     adminDashboard:[],
+    approvedLoader :false
 }
 
 export const adminDataSlice = createSlice({
@@ -54,6 +55,7 @@ export const adminDataSlice = createSlice({
         },
         setSuccessAdminAssignedDeveloper: (state, action) => {
             state.smallLoader = false;
+            state.screenLoader = false;
             state.assignedDeveloper=action.payload
         },
         setSuccessAdminJobListing: (state, action) => {
@@ -77,6 +79,9 @@ export const adminDataSlice = createSlice({
         setApproveReject:(state,action)=>{
             state.adminApproveReject=action.payload
         },
+        setApprovedLoader: (state, action) => {
+            state.approvedLoader = true;
+        },
         setSuggestedDeveloper:(state,action)=>{
             let recomnd=action.payload?.recommended_developers?.map((item)=>{return {...item,recommed:true}})
             let data=[...recomnd,...action.payload?.other_developers]
@@ -85,13 +90,15 @@ export const adminDataSlice = createSlice({
 
         setAdminDashboard:(state,action)=>{
             state.adminDashboard = action.payload
+            state.smallLoader = false;
+            state.screenLoader = false;
         },
 
 
     }
 })
 
-export const {setSuggestedDeveloper, setScreenLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const {setSuggestedDeveloper, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -132,6 +139,7 @@ export function getAdminDashboard() {
             }
         } catch (error) {
            console.log(error)
+           dispatch(setFailAdminData())
            
         }
     };
@@ -281,7 +289,7 @@ export function adminEngagementList(payload, callback) {
 }
 export function adminApproveReject(payload) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
+        dispatch(setApprovedLoader())
         try {
             let result = await clientInstance.post(`admin/approve-or-reject-account`,{...payload})
             if (result.status === 200) {

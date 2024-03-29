@@ -8,19 +8,23 @@ import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 const AdminTimeReporting = () => {
     const dispatch =useDispatch()
     const {adminTimeReportingList}=useSelector(state=>state.adminData)
-    const [selectedDeveloperIndex,setSelectedDevloperIndex]=useState(0)
+    const [contractId,setContractID]=useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData,setDeveloperData]=useState([])
+    const [developerName,setDeveloperName]=useState([])
+    const [clientName,setClientName]=useState([])
 
     useEffect(()=>{
         let newContacts= [...adminTimeReportingList]
-        newContacts.map((item)=>{
-            
-        })
-        setDeveloperData([...adminTimeReportingList,])
+        let d = newContacts.map((item,index) => {
+            return {...item,
+              newData:  item.contracts[index]?item.contracts[index] :item.contracts[0]};
+        });
+        
+        console.log(d, "opp");
+        setDeveloperData(d)
         
     },[adminTimeReportingList])
-console.log(developerData,"developerData")
  
     const handleShowEditTimeModal = () => {
         setShowEditTimeModal(true);
@@ -30,8 +34,9 @@ console.log(developerData,"developerData")
     };
 
     const [showUploadInvoice, setShowUploadInvoice] = useState(false);
-    const handleShowUploadInvoice = () => {
+    const handleShowUploadInvoice = (id) => {
         setShowUploadInvoice(true);
+        setContractID(id)
     };
 
     const handleCloseUploadInvoice = () => {
@@ -42,16 +47,17 @@ console.log(developerData,"developerData")
     },[])
 
     const contractName=(data)=>{
-        let developerName=data.map((item)=>{
+        let devName=data.map((item)=>{
             return { dev:item?.contractDetails?.developer.name}
         })
-
-        return developerName
+        return devName
     }
 
-    const handleDeveloper=(e)=>{
-        console.log(e.target.value)
-        setSelectedDevloperIndex(e.target.value)
+    const handleDeveloper=(e,inx)=>{
+        let newInx=e.target.value
+        let newDev= [...developerData]
+       newDev[inx].newData=newDev[inx].contracts[newInx]
+       setDeveloperData(newDev)   
     }
     return (
         <>
@@ -63,9 +69,13 @@ console.log(developerData,"developerData")
                                 <div>
                                     <Form.Select className="filter-select shadow-none">
                                         <option value="" selected disabled>Select Clients</option>
-                                        <option value="bmw">BMW</option>
-                                        <option value="volvo">Volvo</option>
-                                        <option value="amazon">Amazon</option>
+                                        {
+                                       adminTimeReportingList?.map((item)=>{
+                                        return( <>
+                                          <option value={item?.client_details?.name}>{item?.client_details?.name}</option>
+                                        </>)
+                                       }) 
+                                     }
                                     </Form.Select>
                                 </div>
                             </div>
@@ -106,14 +116,14 @@ console.log(developerData,"developerData")
                             </thead>
                             <tbody>
                                 {
-                                    adminTimeReportingList?.map((item,index)=>{
+                                    developerData?.map((item,index)=>{
                                         return (
                                             <>
                                                <tr>
                                     <td className="time-table-data">{item?.client_details?.name}</td>
                                     <td className="time-table-data">{item?.contracts?.length}</td>
                                     <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none" onChange={handleDeveloper}>
+                                        <Form.Select className="status-select shadow-none" onChange={(e)=>handleDeveloper(e,index)}>
                                             {
                                               contractName(item?.contracts)?.map((el,inx)=>{
                                                 return (
@@ -125,13 +135,13 @@ console.log(developerData,"developerData")
                                             }
                                         </Form.Select>
                                     </td>
-                                   { <td className="time-table-data">{item?.contracts[selectedDeveloperIndex]?.time_report?.totalDuration}hr</td>}
-                                    <td className="time-table-data">{item?.contracts[selectedDeveloperIndex]?.contractDetails?.job_type}</td>
+                                    <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
+                                    <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
                                     <td className="time-table-data">N/A</td>
                                     <td className="time-table-data">
-                                        <label className="upload-invoice-label" onClick={handleShowUploadInvoice}>Upload Invoice <HiUpload /></label>
+                                        <label className="upload-invoice-label" onClick={()=>handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
                                     </td>
-                                    <td className="time-table-data">{item?.contracts[selectedDeveloperIndex]?.contractDetails?.employment_type}</td>
+                                    <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
                                 </tr>
                                             </>
                                         )
@@ -143,8 +153,8 @@ console.log(developerData,"developerData")
                     </div>
                 </div>
             </section>
-            <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} />
-            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} />
+            <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} adminTimeReportingList={adminTimeReportingList} />
+            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} />
         </>
     )
 }

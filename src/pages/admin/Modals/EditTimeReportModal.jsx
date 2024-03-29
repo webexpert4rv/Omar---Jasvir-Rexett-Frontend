@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-const EditTimeReport = ({ show, handleClose }) => {
+const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
+    const [devloperState,setDeveloperState]=useState([])
+    const [time,setTime]=useState(null)
+
+    const handleClient=(e)=>{
+     let copyList=[...adminTimeReportingList]
+     let findData=copyList.find((item)=>item.client_details.id==e.target.value)
+     let devName=findData?.contracts.map((item)=>{
+        return { dev:item?.contractDetails?.developer.name,
+        time:item?.time_report?.totalDuration
+        }
+    })
+    setDeveloperState(devName)
+     console.log(devName)
+    }
+
+    const handleDeveloper=(e)=>{
+        console.log(e.target.value)
+        setTime(e.target.value)
+
+    }
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
             <Modal.Header closeButton>
@@ -13,31 +33,37 @@ const EditTimeReport = ({ show, handleClose }) => {
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Label>Select Client</Form.Label>
-                                <Form.Select>
-                                    <option value="" selected disabled>Select Client</option>
-                                    <option value="amazon">Amazon</option>
-                                    <option value="volvo">Volvo</option>
-                                    <option value="bmw">BMW</option>
-                                    <option value="google">Google</option>
+                                <Form.Select onChange={handleClient}>
+                                    <option selected disabled>Select Client</option>
+                                     {
+                                       adminTimeReportingList?.map((item)=>{
+                                        return( <>
+                                          <option value={item?.client_details?.id}>{item?.client_details?.name}</option>
+                                        </>)
+                                       }) 
+                                     }
                                 </Form.Select>
                             </Form.Group>
                         </Col>
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Label>Select Developer</Form.Label>
-                                <Form.Select>
-                                    <option value="" selected disabled>Select Developer</option>
-                                    <option value="rohit_sharma">Rohit Sharma</option>
-                                    <option value="john_doe">John Doe</option>
-                                    <option value="rohit_sharma">Rohit Sharma</option>
-                                    <option value="john_doe">John Doe</option>
+                                <Form.Select onChange={handleDeveloper}>
+                                    <option selected disabled>Select Client</option>
+                                     {
+                                       devloperState?.map((item)=>{
+                                        return( <>
+                                          <option value={item.time}>{item?.dev}</option>
+                                        </>)
+                                       }) 
+                                     }
                                 </Form.Select>
                             </Form.Group>
                         </Col>
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Label>Total Hours</Form.Label>
-                                <Form.Control type="text" />
+                                <Form.Control type="text" value={time} />
                             </Form.Group>
                         </Col>
                     </Row>

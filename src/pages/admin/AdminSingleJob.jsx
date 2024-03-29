@@ -35,7 +35,6 @@ console.log(suggestedDeveloper,"suggestedDeveloper")
         setSingleJobDescription(singleJobListing?.data)
     },[singleJobListing])
     const handleShowEndJobModal = (id,status) => {
-        console.log(id,status,"id")
         setSuggestedData({
             developer_id:id,
             status:status
