@@ -440,3 +440,17 @@ export function getDocumentShare() {
         }
     };
 }
+
+export function shareBelongisFile(paylaod) {
+    return async (dispatch) => {
+
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`common/share-file`,{...paylaod})
+            toast.success(result?.data?.message, { position: "top-center" })
+            dispatch(setSuccessActionData())
+        } catch (error) {
+            console.log(error, "error")
+        }
+    };
+}

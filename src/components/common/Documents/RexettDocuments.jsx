@@ -30,6 +30,7 @@ import { shareDocument } from "../../../redux/slices/developerDataSlice"
 
 const RexettDocuments = ({ currentRole }) => {
     const dispatch = useDispatch();
+    const [fileId,setFileID]=useState(null)
     const [bradCrump, setBradCrum] = useState([])
     const [allFilterValue, setAllCurrentFilterValue] = useState({});
     const [editFolderName, setEditFolderName] = useState({})
@@ -58,8 +59,9 @@ const RexettDocuments = ({ currentRole }) => {
         }
     };
 
-    const handleShowShareFileModal = () => {
+    const handleShowShareFileModal = (id) => {
         setShareFileModal(true);
+        setFileID(id)
         dispatch(getDocumentShare())
     }
     const handleCloseShareFileModal = () => {
@@ -69,6 +71,7 @@ const RexettDocuments = ({ currentRole }) => {
     const handleCloseUploadFileModal = () => {
         setShowUploadFileModal(false);
         setShow(false)
+        setOpen(false)
         setDelete({ isDelete: false, id: "" })
     };
 
@@ -120,6 +123,7 @@ const RexettDocuments = ({ currentRole }) => {
         let fileExtWithDot = splitWithDot.split(".")
 
         let fileExt = fileExtWithDot[fileExtWithDot.length - 1]
+        console.log(fileExt,"fileExt")
         switch (fileExt) {
             case "ts":
             case "js":
@@ -281,7 +285,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                     <option value="other">Others</option>
                                                 </Form.Select>
                                             </div>
-                                            <div className="flex-none mb-2">
+                                            {/* <div className="flex-none mb-2">
                                                 <Form.Label className="common-label">Shared By</Form.Label>
                                                 <Form.Select className="filter-select width-full shadow-none">
                                                     <option value="">Select</option>
@@ -290,7 +294,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                     <option value="google">Google</option>
                                                     <option value="bmw">BMW</option>
                                                 </Form.Select>
-                                            </div>
+                                            </div> */}
                                             <div className="mt-4">
                                                 <Button variant="transparent" className="main-btn px-3 py-2 " onClick={clearAllFilter}>Clear</Button>
                                             </div>
@@ -350,7 +354,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 <div className="doc-action">
                                                                                     <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "folder")}><FaTrashCan /></button>
                                                                                     <button className="view-btn doc-action-btn" onClick={() => handleShowUploadFileModal(item.id, item?.s3_path)}><MdEdit /></button>
-                                                                                    <button onClick={handleShowShareFileModal} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
+                                                                                    <button onClick={()=>handleShowShareFileModal(item?.id)} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
                                                                                 </div>
 
                                                                             </div>
@@ -394,9 +398,9 @@ const RexettDocuments = ({ currentRole }) => {
                     </Row>
                 </div>
             </section>
-            <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} currentRole={currentRole} />
-            <RexettUploadFile show={show} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} currentRole={currentRole} />
-            <ShareModal show={sharefileModal}  handleClose={handleCloseShareFileModal} />
+            <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} currentRole={currentRole}  setOpen={setOpen}/>
+            <RexettUploadFile show={show} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} currentRole={currentRole} setOpen={setOpen} />
+            <ShareModal show={sharefileModal}  handleClose={handleCloseShareFileModal} fileId={fileId} />
             <ConfirmationModal
                 text={isDelete?.name == "folder" ? `Deleting this folder will also delete all the files and subfolders contained within it` : `Are you sure to delete this ${isDelete?.name}?`}
                 show={isDelete?.isDelete} handleClose={handleCloseUploadFileModal} onClick={handleDelete}

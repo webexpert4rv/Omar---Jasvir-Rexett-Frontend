@@ -68,7 +68,7 @@ const Dashboard = (cardDetails) => {
                                             <th><span>Developer Name</span></th>
                                             <th><span>Designation</span></th>
                                             <th><span>Email</span></th>
-                                            <th><span>Connects</span></th>
+                                            {/* <th><span>Connects</span></th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -88,7 +88,12 @@ const Dashboard = (cardDetails) => {
                                                 </span>
                                             </td>
                                             <td>
-                                                <ul className="social-icons mb-0 justify-content-start">
+                                                <span>
+                                                    <p className="designation-user color-121212 mb-0">{item?.developer?.email}</p>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <ul className="social-icons mb-0 justify-content-start d-none">
                                                     <li>
                                                         <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
                                                     </li>

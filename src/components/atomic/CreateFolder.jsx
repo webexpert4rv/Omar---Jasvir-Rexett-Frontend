@@ -4,7 +4,7 @@ import RexettButton from "./RexettButton";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {createNewFolderAndFile, getFolderData, renameFolderAndFile } from "../../redux/slices/clientDataSlice";
-const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,currentRole }) => {
+const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,currentRole,setOpen }) => {
     const {smallLoader}=useSelector(state=>state.clientData);
     const dispatch=useDispatch()
     const {
@@ -28,6 +28,7 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,c
                     parent_id:currentFolderDetails?.id
                 }
                 handleClose()
+                setOpen(false)
                 setValue("s3_path","")
                 dispatch(getFolderData(filterData,currentRole))
             }))
@@ -104,7 +105,7 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,c
                     <div className="text-center">
                         <RexettButton
                             type="submit"
-                            text="Create"
+                            text={data?.name ? "Edit":"Create"}
                             className="main-btn px-4"
                             variant="transparent"
                             isLoading={smallLoader}

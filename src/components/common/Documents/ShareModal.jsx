@@ -3,7 +3,9 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import "@yaireo/tagify/dist/tagify.css"; // Import the default tagify styles
 import Tags from "@yaireo/tagify/dist/react.tagify";
 import profileImg from "../../../assets/img/user-img.jpg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import RexettButton from "../../atomic/RexettButton";
+import { shareBelongisFile } from "../../../redux/slices/developerDataSlice";
 
 const baseTagifySettings = {
     blacklist: ["xxx", "yyy", "zzz"],
@@ -15,12 +17,14 @@ const baseTagifySettings = {
     }
 };
 
-const ShareModal = ({ show, handleClose }) => {
+const ShareModal = ({ show, handleClose,fileId}) => {
     const tagifyRef1 = useRef();
+    const dispatch=useDispatch()
     const [tagifySettings, setTagifySettings] = useState(baseTagifySettings);
     const [tagifyProps, setTagifyProps] = useState({});
-    const { shareDocument } = useSelector(state => state.developerData)
-    const suggestedTags =  shareDocument?.data?.map(item => item.name)|| [];
+    const [sharedTags,setSharedTags]=useState([])
+    const { shareDocument,smallLoader } = useSelector(state => state.developerData)
+    const suggestedTags =  shareDocument?.data?.map(item =>{return {value:item.name,label:item.id}})|| [];
     useEffect(() => {
         setTagifyProps({ loading: true });
 
@@ -33,8 +37,22 @@ const ShareModal = ({ show, handleClose }) => {
     }, []);
     const handleChange = (e) => {
         console.log("Tags changed:", e.detail.value);
+       let d=  JSON.parse(e.detail.value)
+       setSharedTags(d)
+       console.log(d,"ppppp")
     };
         console.log(shareDocument,"shareDocument")
+
+    const handleShare=async (e)=>{
+        e.preventDefault()
+        let user_id=sharedTags?.map((item)=>item.label)
+        let payload={
+            "file_id": fileId,
+            "user_ids":user_id
+          }
+        await dispatch(shareBelongisFile(payload))
+        handleClose()
+    }
 
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
@@ -69,7 +87,7 @@ const ShareModal = ({ show, handleClose }) => {
                                                             <span className="no-img letter-indicator">{item?.name.split("")[0]}</span>
                                                             <div>
                                                                 <span className="font-15 owner-name">{item?.name}</span>
-                                                                <span className="font-13 owner-email">loremipsum@amazon.com</span>
+                                                                {/* <span className="font-13 owner-email">loremipsum@amazon.com</span> */}
                                                             </div>
                                                         </div>
                                                     </li>
@@ -77,7 +95,17 @@ const ShareModal = ({ show, handleClose }) => {
                                             </>
                                         )})}
                                     {/* <span className="owner-text">Owner</span> */}
-                                    <Button className="align-items-center">Shared</Button>
+                                    <div  className="text-center mt-4">
+                                    <RexettButton
+                                // type="submit"
+                                text="Share"
+                                className="main-btn px-5"
+                                onClick={handleShare}
+                                variant="success"
+                                isLoading={smallLoader}
+                            />
+
+                                    </div>
                                 </div>
                             </Col>
                         </Row>

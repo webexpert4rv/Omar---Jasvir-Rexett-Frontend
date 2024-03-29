@@ -53,7 +53,7 @@ const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFile
                         <div className="d-flex gap-3">
                             <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload />
                             </button>
-                            <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "file")} ><FaTrashCan /></button>
+                            <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, item.file_type==0?"folder": "file")} ><FaTrashCan /></button>
                         </div>
                     </td>
                 </tr>
