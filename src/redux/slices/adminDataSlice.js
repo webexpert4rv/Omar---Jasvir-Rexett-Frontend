@@ -208,9 +208,10 @@ export function adminJobListing(payload, callback) {
         dispatch(setBtnLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload,`admin/job-list`))
+            console.log(result?.data,"result")
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successfully", { position: "top-center" })
-                dispatch(setSuccessAdminJobListing(result.data.data))
+                dispatch(setSuccessAdminJobListing(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

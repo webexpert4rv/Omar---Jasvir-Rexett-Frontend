@@ -41,32 +41,33 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         dispatch(timeReporting(filterData, role));
     }
 
-
     const handleChange = (e, select) => {
         e.preventDefault()
-        const monthValue = e.target.value
-        let monthName;
-        if (!isNaN(monthValue)) {
-            const monthNumber = parseInt(monthValue);
-            monthName = new Date(2022, monthNumber - 1).toLocaleString('default', { month: 'long' });
-        } else {
-            monthName = monthValue;
-        }
+        // const monthValue = e.target.value
+        // let monthName;
+        // if (!isNaN(monthValue)) {
+        //     const monthNumber = parseInt(monthValue);
+        //     monthName = new Date(2022, monthNumber - 1).toLocaleString('default', { month: 'long' });
+        // } else {
+        //     monthName = monthValue;
+        // }
+        // console.log(monthName,"monthName")
         setSelectedFilter({
             ...selectedFilter,
-            [select]: monthValue
+            [select]: e.target.value
         })
         if (select === "week") {
             setSelectedWeek(e.target.value);
         } else if (select === "month") {
-            setSelectedMonth(monthName);
+            setSelectedMonth(e.target.value);
         } else {
             setSelectedYear(e.target.value)
         }
       
     }
+    console.log(selectedMonth,"selectedmonth")
 
-
+console.log(selectedFilter , "selectedFilter")
 
     const handlePrevTimeReporting = (e) => {
         e.preventDefault()
@@ -108,8 +109,8 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div>
                                 <div>
                                     <Form.Label className="common-label">Select Year</Form.Label>
-                                    <Form.Select className="time-filter-select shadow-none" onChange={(e) => handleChange(e, "year")}>
-                                        <option disabled selected >{selectedYear.length > 0 ? selectedYear : "Select Year"}</option>
+                                    <Form.Select className="time-filter-select shadow-none"  value = { selectedYear } onChange={(e) => handleChange(e, "year")}>
+                                        <option  value = "">Select Year</option>
                                         <option value="2024">2024</option>
                                         <option value="2023">2023</option>
                                         <option value="2022">2022</option>
@@ -122,8 +123,8 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div>
                                 {selectedPeriod !== "yearly" ? <div>
                                     <Form.Label className="common-label">Select Month</Form.Label>
-                                    <Form.Select className="time-filter-select shadow-none" onChange={(e) => handleChange(e, "month")}>
-                                        <option disabled selected >{selectedMonth.length > 0 ? selectedMonth: "Select Month"}</option>
+                                    <Form.Select className="time-filter-select shadow-none"  value = { selectedMonth } onChange={(e) => handleChange(e, "month")}>
+                                        <option value="" >Select Month</option>
                                         <option value="1">January</option>
                                         <option value="2">Feburary</option>
                                         <option value="3">March</option>
@@ -140,12 +141,12 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div> : ""}
                                 {selectedPeriod !== "yearly" && selectedPeriod !== "monthly" ? <div>
                                     <Form.Label className="common-label">Select Week</Form.Label>
-                                    <Form.Select className="time-filter-select shadow-none" onChange={(e) => handleChange(e, "week")}>
-                                        <option disabled selected >{selectedWeek.length > 0 ? selectedWeek : "Select Week"}</option>
-                                        <option value="Week 1">Week 1</option>
-                                        <option value="Week 2">Week 2</option>
-                                        <option value="Week 3">Week 3</option>
-                                        <option value="Week 4">Week 4</option>
+                                    <Form.Select className="time-filter-select shadow-none" value = { selectedWeek } onChange={(e) => handleChange(e, "week")}>
+                                        <option value="">Select Week</option>
+                                        <option value="1">Week 1</option>
+                                        <option value="2">Week 2</option>
+                                        <option value="3">Week 3</option>
+                                        <option value="4">Week 4</option>
                                     </Form.Select>
                                 </div> : ""}
                                 {/* <div>
