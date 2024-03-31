@@ -57,6 +57,7 @@ const DashboardLayout = ({ children }) => {
     }
     let token=getToken("token");
     const role=localStorage.getItem("role")
+    console.log(sidebarwrapper,"sidebarwrapper")
     return (
         <>
             <div className="dashboard-layout">
@@ -64,12 +65,9 @@ const DashboardLayout = ({ children }) => {
                 <main className={ sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper right-active'}>
                     <Navigation sidebaractive={sidebarwrapper} handleSidebar={handleSidebar} />
                     {token && role=="client"?children:<Navigate to="/"/>}
-                </main>
-                <div className={ sidebarwrapper ? 'right-sidebar hide' : 'right-sidebar'}>
-                    {/* <div className='d-flex justify-content-center gap-3 mb-5'>
-                        <Link to={"/hired-developers"} className='rightside-link'><span><FaUser /></span>Developers</Link>
-                        <Link to={"/edit-profile"} className='rightside-link'><span><BiSolidPencil/></span>Edit Profile</Link>
-                    </div> */}
+               
+                {!sidebarwrapper ?<div className={ !sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
+
                     <h3 className='right-sidebar-heading mb-3'>Growth per month</h3>
                     <div className='growth-chart'>
                         <Bar data={growthData} />
@@ -78,7 +76,8 @@ const DashboardLayout = ({ children }) => {
                     <div className='earned-chart'>
                         <Doughnut data={earnedback} options={options} />
                     </div>
-                </div>
+                </div>:""}
+                </main>
             </div>
         </>
     );

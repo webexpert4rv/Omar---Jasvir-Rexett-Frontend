@@ -72,9 +72,9 @@ const HiredDevelopers = () => {
                         <th>
                           <span>Email</span>
                         </th>
-                        {/* <th>
+                        <th>
                           <span>Connects</span>
-                        </th> */}
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -108,7 +108,7 @@ const HiredDevelopers = () => {
                                 </span>
                               </td>
                               <td>
-                                <ul className="social-icons mb-0 justify-content-start d-none">
+                                <ul className="social-icons mb-0 justify-content-start">
                                   <li>
                                     <Link
                                       to={

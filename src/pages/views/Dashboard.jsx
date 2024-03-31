@@ -29,9 +29,9 @@ const Dashboard = (cardDetails) => {
             {screenLoader ? <ScreenLoader /> : <>
                 <div className="overview-card-wrapper mb-5">
                     <OverViewCard head="Fund" value="Spent" />
-                    <OverViewCard head="Earned Back" value="500" />
+                    <OverViewCard head="Earned Back" value="100" />
                     <OverViewCard head="Job Posted" value="5" />
-                    <OverViewCard head="Developer Assigned" value="15" />
+                    <OverViewCard head="Developer Assigned" value="5" />
                 </div>
 
                 <Tab.Container className="w-100" defaultActiveKey="grid-view">
@@ -68,7 +68,7 @@ const Dashboard = (cardDetails) => {
                                             <th><span>Developer Name</span></th>
                                             <th><span>Designation</span></th>
                                             <th><span>Email</span></th>
-                                            {/* <th><span>Connects</span></th> */}
+                                            <th><span>Connects</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -93,7 +93,7 @@ const Dashboard = (cardDetails) => {
                                                 </span>
                                             </td>
                                             <td>
-                                                <ul className="social-icons mb-0 justify-content-start d-none">
+                                                <ul className="social-icons mb-0 justify-content-start">
                                                     <li>
                                                         <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
                                                     </li>

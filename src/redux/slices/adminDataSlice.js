@@ -241,7 +241,7 @@ export function adminTimeReporting(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.get(`admin/time-repors`)
+            let result = await clientInstance.get(`admin/time-reports`)
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setAdminTimeReporting(result.data.data))
