@@ -35,7 +35,7 @@ const AdminJobListing = () => {
 
     return (
         <>
-            {screenLoader ? <ScreenLoader/> :<>
+            
 
             <section className="job-posted-section">
                 <Tabs
@@ -61,7 +61,7 @@ const AdminJobListing = () => {
                 </Tabs>
             </section>
             <RexettPagination />
-            </>}
+            
         </>
     )
 }
