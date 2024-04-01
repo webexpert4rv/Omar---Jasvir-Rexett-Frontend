@@ -36,7 +36,6 @@ const JobPost = () => {
 
       const skillListMapped=skillList.map((item)=>{return {value:item.title,label:item.title}})
 
-      console.log(skillListMapped,jobCategoryList,"skillList")
 
       const onSubmit=(values)=>{
         let convertArr=selectedOption.map((item)=>item.label)
@@ -187,18 +186,18 @@ const JobPost = () => {
                                     onChange={(val) => onChangeSelect(val)}
                                     name="skills"
                                     isMulti
-                                    {...register("skills", {
-                                        required: {
-                                          value: true,
-                                          message: "Skills are required",
-                                        },
-                                      })}
+                                    // {...register("skills", {
+                                    //     required: {
+                                    //       value: true,
+                                    //       message: "Skills are required",
+                                    //     },
+                                    //   })}
                                     
                                 />
                             </Form.Group>
-                            <p className="error-message ">
+                            {/* <p className="error-message ">
                                 {errors.skills?.message}
-                            </p>
+                            </p> */}
                         </Col>
                         <Col md="12" className="mb-4">
                             <Form.Group>

@@ -32,7 +32,6 @@ developerInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         let refreshToken = getRefreshToken("refreshToken");
-        console.log(refreshToken,"refreshToken")
         const response = await developerInstance.post('auth/refresh-token', { refresh_token
           : refreshToken });
         let refreshTokn = updateLocalAccessToken("token",response.data.access_token)

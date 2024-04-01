@@ -69,9 +69,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         }
 
     }
-    console.log(selectedMonth,"selectedmonth")
 
-console.log(selectedFilter , "selectedFilter")
 
     const handlePrevTimeReporting = (e) => {
         e.preventDefault()
@@ -95,7 +93,6 @@ console.log(selectedFilter , "selectedFilter")
         dispatch(timeReporting(filterData, role))
     }
 
-    console.log(selectedFilter,"selectedFilter")
 
 
     return (
@@ -106,7 +103,7 @@ console.log(selectedFilter , "selectedFilter")
                         <Form>
                             <div className="d-flex gap-3 flex-wrap align-items-end">
                                 <div className="flex-none">
-                                    {/* <Form.Label className="common-label">Select View</Form.Label> */}
+                                    <Form.Label className="common-label">Select View</Form.Label>
                                     <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} >
                                         <option value="weekly">Weekly</option>
                                         <option value="monthly">Monthly</option>

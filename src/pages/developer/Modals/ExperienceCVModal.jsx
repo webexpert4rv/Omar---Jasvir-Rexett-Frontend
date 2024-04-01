@@ -66,7 +66,6 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
             return { ...item }
         }
     }).filter((item) => item)
-    console.log(addExp,"addexp")
     if (addExp.length > 0) {
         dispatch(addDeveloperCvExperience(addExp,()=>{
             dispatch(fetchDeveloperCv())
@@ -112,7 +111,6 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
     }
 }
 
-  console.log(disabledEndDates, "vdisabledEndDates");
 
   return (
     <Modal
