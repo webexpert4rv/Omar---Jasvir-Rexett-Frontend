@@ -64,7 +64,7 @@ const AdminDashboard = () => {
                         {adminDashboard?.data?.clients.map((item, index) => {
                             return (
                                 <>
-                                    <div className="developer-card">
+                                    <div className="developer-card client-card">
                                         <div className="user-imgbx ">
                                             <img src={userImg} className="user-img" />
                                         </div>
