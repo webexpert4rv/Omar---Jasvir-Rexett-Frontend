@@ -2747,7 +2747,7 @@ input[type="radio"]:checked
 }
 .client-card
 {
-    background: linear-gradient(#43C4C5, #195d71);
+    background: linear-gradient(to left, #44e0e1, #116e89);
 }
 @media only screen and (max-width: 1550px)
 {
