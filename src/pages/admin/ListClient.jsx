@@ -11,14 +11,23 @@ import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { adminListClients } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
+
+
+
+
 const ListClient = () => {
     const dispatch = useDispatch()
-    const { listOfClients, assignedDeveloper } = useSelector(state => state.adminData)
+    const { listOfClients, assignedDeveloper ,screenLoader} = useSelector(state => state.adminData)
     useEffect(() => {
         dispatch(adminListClients())
     }, [])
+
+
+
     return (
         <>
+        {screenLoader ? <ScreenLoader/> : <div>
             <h2 className="section-head mb-4">Overview</h2>
             <div className="overview-card-wrapper mb-5">
                 {/* <div className="overview-card">
@@ -153,6 +162,7 @@ const ListClient = () => {
             <div className="text-center mt-3">
                 <Link to={"#"} className="link-text-dark">See All</Link>
             </div>
+            </div>}
         </>
     )
 }

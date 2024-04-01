@@ -9,6 +9,9 @@ import { Col, Row } from "react-bootstrap";
 import { adminListAssignedDeveloper, adminListClients, getAdminDashboard } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+
+
+
 const AdminDashboard = () => {
     const dispatch = useDispatch()
     const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
@@ -17,6 +20,7 @@ const AdminDashboard = () => {
     }, [])
     return (
         <>
+        {screenLoader ? <ScreenLoader/> :<div>
             <h2 className="section-head mb-4">Overview</h2>
             <div className="overview-card-wrapper mb-5">
                 {/* <div className="overview-card">
@@ -86,14 +90,15 @@ const AdminDashboard = () => {
                                         </div>
                                     </div>
                                 </>
-                            )})}
+                            )
+                        })}
                     </div>
                 </Col>
             </Row>
             <h2 className="section-head-sub mb-4">List of assigned developers</h2>
             <div className="developers-list">
 
-                {adminDashboard?.data?.assignedDevelopers.length > 0 ? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
+                { adminDashboard?.data?.assignedDevelopers.map((item, index) => {
                     return (
                         <>
                             <div className="developer-card">
@@ -120,11 +125,12 @@ const AdminDashboard = () => {
                         </>
                     )
                 })
-                    : <ScreenLoader />}
+                  }
             </div>
             <div className="text-center mt-3">
                 <Link to={"/developer-list"} className="link-text-dark">See All</Link>
             </div>
+            </div>}
         </>
     )
 }

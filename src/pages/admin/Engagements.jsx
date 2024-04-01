@@ -3,10 +3,13 @@ import { Button, Col, Form, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { adminEngagementList } from "../../redux/slices/adminDataSlice";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
+import NoDataFound from "../../components/atomic/NoDataFound";
 const Engagements = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
-    const { engagement } = useSelector(state => state.adminData)
+    const { engagement, screenLoader } = useSelector(state => state.adminData)
+
     useEffect(() => {
         dispatch(adminEngagementList())
     }, [])
@@ -18,6 +21,7 @@ const Engagements = () => {
         }
         dispatch(adminEngagementList(data))
     }
+    console.log(engagement, "engagement")
     return (
         <>
             <div className="border-bottom-grey pb-3 mb-4 d-flex justify-content-between align-items-center">
@@ -40,25 +44,25 @@ const Engagements = () => {
                         <th>Total Hours</th>
                     </thead>
                     <tbody>
-
-                        {
-                            engagement?.map((item, index) => {
-                                return (
-                                    <>
-                                        <tr>
-                                            <td>{item?.contract?.client?.name}</td>
-                                            <td>{item?.contract?.developer?.name}</td>
-                                            <td>Rexett</td>
-                                            <td>{item?.contract?.job?.title}</td>
-                                            <td>{item?.contract?.employment_type}</td>
-                                            <td>{item?.contract?.job_type}</td>
-                                            <td>{item?.total_duration}</td>
-                                        </tr>
-                                    </>
-                                )
-                            })
-
-                        }
+                        {screenLoader ? <ScreenLoader /> : <>
+                            {engagement.length > 0 ?
+                                engagement?.map((item, index) => {
+                                    return (
+                                        <>
+                                            <tr>
+                                                <td>{item?.contract?.client?.name}</td>
+                                                <td>{item?.contract?.developer?.name}</td>
+                                                <td>Rexett</td>
+                                                <td>{item?.contract?.job?.title}</td>
+                                                <td>{item?.contract?.employment_type}</td>
+                                                <td>{item?.contract?.job_type}</td>
+                                                <td>{item?.total_duration}</td>
+                                            </tr>
+                                        </>
+                                    )
+                                })
+                                : <NoDataFound />}
+                        </>}
                     </tbody>
                 </table>
             </div>

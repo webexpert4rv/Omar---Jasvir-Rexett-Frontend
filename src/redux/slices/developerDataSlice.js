@@ -37,6 +37,7 @@ export const developerDataSlice = createSlice({
         setSuccessDeveloperData: (state, action) => {
             state.developerCvData = action.payload
             state.smallLoader = false;
+            state.screenLoader = false;
         },
         setAddTimeReports: (state, action) => {
             state.addTimeReports = action.payload
@@ -64,12 +65,14 @@ export const developerDataSlice = createSlice({
         setFailDeveloperData: (state, action) => {
             state.smallLoader = false;
             state.btnLoader = false
+            state.screenLoader = false;
         },
         setActionSuccessFully: (state, action) => {
             state.smallLoader = false;
         },
         setDeveloperDashboard: (state, action) => {
             state.developerDashboard = action.payload;
+            state.screenLoader = false;
         },
         setDegreeList: (state, action) => {
             let data = action?.payload?.map((item) => { return { label: item.title, value: item.id } });
@@ -91,7 +94,7 @@ export default developerDataSlice.reducer
 export function fetchDeveloperCv(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get('developer/cv')
             if (result.status === 200) {
@@ -144,7 +147,7 @@ export function getDeveloperProfileDetails(payload, callback) {
 export function getDeveloperDashboard(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get('developer/dashboard')
             if (result.status === 200) {

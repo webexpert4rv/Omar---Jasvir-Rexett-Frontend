@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import adminInstance from '../../services/admin.instance';
 import { generateApiUrl } from '../../helper/utlis';
 import clientInstance from '../../services/client.instance';
+import { setSmallLoader } from './clientDataSlice';
 
 const initialAdminData = {
     screenLoader: false,
@@ -33,8 +34,6 @@ export const adminDataSlice = createSlice({
         setBtnLoader: (state, action) => {
             state.smallLoader = true;
         },
-
-
         setSuccessAdminData: (state, action) => {
             state.smallLoader = false;
             state.screenLoader = false;
@@ -42,6 +41,7 @@ export const adminDataSlice = createSlice({
 
         setSuccessApplicationList: (state, action) => {
             state.smallLoader = false;
+            state.screenLoader = false;
             state.allApplications = action.payload;
         },
         setSuccessProfileData: (state, action) => {
@@ -52,6 +52,7 @@ export const adminDataSlice = createSlice({
         setSuccessAdminListClient: (state, action) => {
             state.smallLoader = false;
             state.listOfClients=action.payload
+            state.screenLoader = false;
         },
         setSuccessAdminAssignedDeveloper: (state, action) => {
             state.smallLoader = false;
@@ -60,7 +61,8 @@ export const adminDataSlice = createSlice({
         },
         setSuccessAdminJobListing: (state, action) => {
             state.smallLoader = false;
-            state.jobListing=action.payload
+            state.jobListing=action.payload;
+            state.screenLoader = false;
         },
         setSingleJobListing: (state, action) => {
             state.smallLoader = false;
@@ -77,6 +79,7 @@ export const adminDataSlice = createSlice({
         },
         setAdminEngagment:(state,action)=>{
             state.engagement=action.payload
+            state.screenLoader = false;
         },
         setApproveReject:(state,action)=>{
             state.adminApproveReject=action.payload;
@@ -110,7 +113,6 @@ export default adminDataSlice.reducer
 
 export function adminListClients(payload, callback) {
     return async (dispatch) => {
-
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`admin/clients`,{...payload})
@@ -211,6 +213,7 @@ export function updateAdminProfile(payload, callback) {
 export function adminJobListing(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload,`admin/job-list`))
             if (result.status === 200) {
@@ -262,6 +265,7 @@ export function adminTimeReporting(payload, callback) {
 export function allApplicationsList(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`admin/applications`)
             if (result.status === 200) {
@@ -279,6 +283,7 @@ export function allApplicationsList(payload, callback) {
 export function adminEngagementList(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload,`admin/engagements`))
             if (result.status === 200) {

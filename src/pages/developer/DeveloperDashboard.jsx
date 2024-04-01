@@ -7,14 +7,21 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getDeveloperDashboard } from "../../redux/slices/developerDataSlice";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
+
+
+
+
+
 const DeveloperDashboard = () => {
-    const {developerDashboard}=useSelector(state=>state.developerData)
+    const {developerDashboard , screenLoader}=useSelector(state=>state.developerData)
     const dispatch=useDispatch()
     useEffect(()=>{
      dispatch(getDeveloperDashboard())
     },[])
     return (
         <>
+       { screenLoader ? <ScreenLoader/> : <div>
             <h2 className="section-head mb-4">Overview</h2>
             <div className="overview-card-wrapper mb-5">
                 <div className="overview-card active">
@@ -120,7 +127,7 @@ const DeveloperDashboard = () => {
                     </div>
                 </Col>
             </Row>
-
+            </div>}
         </>
     )
 }
