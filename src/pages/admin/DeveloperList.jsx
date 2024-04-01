@@ -62,11 +62,11 @@ const DeveloperList = () => {
         <>
             <h2 className="section-head mb-4">Overview</h2>
             <div>
-                <h3 className="section-head-sub">Filter By</h3>
-                <Form className="mb-4">
+                {/* <h3 className="section-head-sub">Filter By</h3> */}
+                <Form className="mb-4 filter-section">
                     <div className="d-flex gap-3">
                         <div className="flex-none">
-                            <Form.Label className="common-label">Category</Form.Label>
+                            {/* <Form.Label className="common-label">Category</Form.Label> */}
                             <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
                                 <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
                                 <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
@@ -76,7 +76,7 @@ const DeveloperList = () => {
                             </Form.Select>
                         </div>
                         <div className="flex-none">
-                            <Form.Label className="common-label">Developers</Form.Label>
+                            {/* <Form.Label className="common-label">Developers</Form.Label> */}
                             <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
                                 <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
                                 <option value="assigned" onClick={(e) => e.stopPropagation()} >Assigned</option>
@@ -85,7 +85,7 @@ const DeveloperList = () => {
                             </Form.Select>
                         </div>
                         <div className="flex-none">
-                            <Form.Label className="common-label">Experience</Form.Label>
+                            {/* <Form.Label className="common-label">Experience</Form.Label> */}
                             <Form.Select className="filter-select shadow-none" value={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
                                 <option value="" > Select Experience </option>
                                 <option value="1 years" onClick={(e) => e.stopPropagation()}>1 years</option>
@@ -95,7 +95,7 @@ const DeveloperList = () => {
                                 <option value="10 years" onClick={(e) => e.stopPropagation()}>10 years</option>
                             </Form.Select>
                         </div>
-                        <div className="mt-4">
+                        <div>
                             <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>Clear</Button>
                         </div>
                     </div>

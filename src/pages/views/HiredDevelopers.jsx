@@ -107,7 +107,7 @@ const HiredDevelopers = () => {
                                   </p>
                                 </span>
                               </td>
-                              <td>
+                              {/* <td>
                                 <ul className="social-icons mb-0 justify-content-start d-none">
                                   <li>
                                     <Link
@@ -140,7 +140,7 @@ const HiredDevelopers = () => {
                                     </Link>
                                   </li>
                                 </ul>
-                              </td>
+                              </td> */}
                             </tr>
                           </>
                         );

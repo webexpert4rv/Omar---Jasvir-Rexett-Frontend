@@ -92,19 +92,6 @@ const Dashboard = (cardDetails) => {
                                                     <p className="designation-user color-121212 mb-0">{item?.developer?.email}</p>
                                                 </span>
                                             </td>
-                                            <td>
-                                                <ul className="social-icons mb-0 justify-content-start d-none">
-                                                    <li>
-                                                        <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link to={item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link to={item?.developer?.email}><MdEmail /></Link>
-                                                    </li>
-                                                </ul>
-                                            </td>
                                         </tr>
                                         </>
                                         )})}
