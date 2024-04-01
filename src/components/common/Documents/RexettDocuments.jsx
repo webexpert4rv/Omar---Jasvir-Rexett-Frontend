@@ -47,8 +47,6 @@ const RexettDocuments = ({ currentRole }) => {
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
 
 
-console.log(folderData[0]?.s3_path,"currentFolderDetails")
-// console.log(editFolderName,"editFolderName")
 
     const handleShowUploadFileModal = (id, name) => {
         setOpen(!open)
@@ -126,7 +124,6 @@ console.log(folderData[0]?.s3_path,"currentFolderDetails")
         let fileExtWithDot = splitWithDot.split(".")
 
         let fileExt = fileExtWithDot[fileExtWithDot.length - 1]
-        console.log(fileExt,"fileExt")
         switch (fileExt) {
             case "ts":
             case "js":

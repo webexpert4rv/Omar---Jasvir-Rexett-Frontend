@@ -51,7 +51,9 @@ const Applications = () => {
     dispatch(adminApproveReject(payload))
     dispatch(allApplicationsList());
   }
-  console.log(application,'application--------------------')
+
+
+  
   return (
     <>
       <h2 className="section-head mb-4">Applications</h2>

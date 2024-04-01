@@ -52,7 +52,7 @@ const ListClient = () => {
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
                             {listOfClients?.map((item, index) => {
-                                console.log(item, "item")
+                                
                                 return (<>
                                     <div className="developer-card">
                                         <div className="user-imgbx">

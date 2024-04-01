@@ -31,7 +31,6 @@ adminInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         let refreshToken = getRefreshToken("adminRefreshToken");
-        console.log(refreshToken,"refreshToken")
         const response = await adminInstance.post('auth/refresh-token', { refresh_token
           : refreshToken });
         let refreshTokn = updateLocalAccessToken("adminToken",response.data.access_token)

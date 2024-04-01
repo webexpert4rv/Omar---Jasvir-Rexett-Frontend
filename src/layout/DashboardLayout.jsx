@@ -57,7 +57,8 @@ const DashboardLayout = ({ children }) => {
     }
     let token=getToken("token");
     const role=localStorage.getItem("role")
-    console.log(sidebarwrapper,"sidebarwrapper")
+
+    
     return (
         <>
             <div className="dashboard-layout">

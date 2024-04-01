@@ -50,14 +50,12 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
     const handleCurrentlyWorkingChange = (e,index) => {
         if(e.target.checked){
           const end_year = watch(`educations[${index}].end_year`);
-          console.log(end_year,"end_year")
           const updatedDisabledEndDates = [...disbaleYear];
           updatedDisabledEndDates[index] = true;
           setDisbaleYear(updatedDisabledEndDates);
           setValue(`educations[${index}].end_year`, null);
         }else{
           const end_year = watch(`educations[${index}].end_year`);
-          console.log(end_year,"end_year33")
           const updatedDisabledEndDates = [...disbaleYear];
           updatedDisabledEndDates[index] = false;
           setDisbaleYear(updatedDisabledEndDates);
@@ -99,7 +97,6 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
                 return { ...item }
             }
         }).filter((item) => item)
-        console.log(addEdu,"addedu")
         if (addEdu.length > 0) {
             dispatch(addDeveloperCvEducation(addEdu,()=>{
                 dispatch(fetchDeveloperCv())
