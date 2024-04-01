@@ -60,6 +60,7 @@ import Engagements from './pages/admin/Engagements';
 import Applications from './pages/admin/Applications';
 import AdminPublicLayout from './layout/AdminPublicLayout';
 import SingleDeveloper from './components/common/SingleDeveloper/SingleDeveloper';
+import SingleClient from './components/common/SingleClient/SingleClient';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -118,6 +119,7 @@ function App() {
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
           <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} />
           <Route path="/applications" exact element={<AdminDashboardLayout><Applications /></AdminDashboardLayout>} />
+          <Route path="/single-client" exact element={<AdminDashboardLayout><SingleClient /></AdminDashboardLayout>} />
           <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
           <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
           <Route path="/vendor-revenue" exact element={<VendorDashboardLayout><VendorRevenue /></VendorDashboardLayout>} />

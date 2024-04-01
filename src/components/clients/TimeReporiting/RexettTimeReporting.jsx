@@ -67,7 +67,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         } else {
             setSelectedYear(e.target.value)
         }
-      
+
     }
     console.log(selectedMonth,"selectedmonth")
 
@@ -101,11 +101,12 @@ console.log(selectedFilter , "selectedFilter")
     return (
         <>
             <section>
-                <div className="filter-section d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <Form>
+                <div className="filter-section">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <Form>
                             <div className="d-flex gap-3 flex-wrap align-items-end">
                                 <div className="flex-none">
-                                    <Form.Label className="common-label">Select View</Form.Label>
+                                    {/* <Form.Label className="common-label">Select View</Form.Label> */}
                                     <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} >
                                         <option value="weekly">Weekly</option>
                                         <option value="monthly">Monthly</option>
@@ -155,18 +156,18 @@ console.log(selectedFilter , "selectedFilter")
                                     </Form.Select>
                                 </div> : ""}
                                 {/* <div>
-                                    <Form.Label>Select Day</Form.Label>
-                                    <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap mb-4">
-                                        <div className="d-inline-flex align-items-center gap-1">
-                                            <input className="slot-indicate offday" type="radio" value="off_day" />
-                                            <span>Off Day</span>
+                                        <Form.Label>Select Day</Form.Label>
+                                        <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap mb-4">
+                                            <div className="d-inline-flex align-items-center gap-1">
+                                                <input className="slot-indicate offday" type="radio" value="off_day" />
+                                                <span>Off Day</span>
+                                            </div>
+                                            <div className="d-inline-flex align-items-center gap-1">
+                                                <input className="slot-indicate workday" type="radio" value="work_day"/>
+                                                <span>Work Day</span>
+                                            </div>
                                         </div>
-                                        <div className="d-inline-flex align-items-center gap-1">
-                                            <input className="slot-indicate workday" type="radio" value="work_day"/>
-                                            <span>Work Day</span>
-                                        </div>
-                                    </div>
-                                </div> */}
+                                    </div> */}
                                 <div className="d-flex gap-3">
                                     {/* <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control> */}
                                     <RexettButton
@@ -175,7 +176,7 @@ console.log(selectedFilter , "selectedFilter")
                                         className="main-btn py-2 px-5"
                                         variant="transparent"
                                         onClick={handlePrevTimeReporting}
-                                        isLoading={Object.keys(selectedFilter).length > 0 ?  smallLoader :false}
+                                        isLoading={Object.keys(selectedFilter).length > 0 ? smallLoader : false}
                                         disabled={selectedPeriod === "weekly" && Object.keys(selectedFilter).length > 3 ? false : selectedPeriod === "monthly" && Object.keys(selectedFilter).length > 2 ? false : selectedPeriod === "yearly" && Object.keys(selectedFilter).length > 1 ? false : true}
                                     />
                                 </div>
@@ -185,22 +186,22 @@ console.log(selectedFilter , "selectedFilter")
                             <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
                         </div>
                     </div>
-                
-                <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                    <div>
-                        <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap">
-                            <div className="d-inline-flex align-items-center gap-1">
-                                <span className="slot-indicate offday"></span>
-                                <span>Off Day</span>
-                            </div>
-                            <div className="d-inline-flex align-items-center gap-1">
-                                <span className="slot-indicate workday"></span>
-                                <span>Work Day</span>
+                    <div className="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap">
+                                <div className="d-inline-flex align-items-center gap-1">
+                                    <span className="slot-indicate offday"></span>
+                                    <span className="font-15 fw-semibold">Off Day</span>
+                                </div>
+                                <div className="d-inline-flex align-items-center gap-1">
+                                    <span className="slot-indicate workday"></span>
+                                    <span className="font-15 fw-semibold">Work Day</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
             </section>
 
