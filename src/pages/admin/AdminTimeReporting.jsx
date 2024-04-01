@@ -21,7 +21,6 @@ const AdminTimeReporting = () => {
               newData:  item.contracts[index]?item.contracts[index] :item.contracts[0]};
         });
         
-        console.log(d, "opp");
         setDeveloperData(d)
         
     },[adminTimeReportingList])

@@ -5,9 +5,14 @@ import { Link } from "react-router-dom";
 import { adminApproveReject, allApplicationsList } from "../../redux/slices/adminDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
+
+
+
 const Applications = () => {
+
   const dispatch = useDispatch();
-  const { allApplications, approvedLoader } = useSelector((state) => state.adminData);
+  const { allApplications, approvedLoader ,screenLoader } = useSelector((state) => state.adminData);
   const [expandedRow, setExpandedRow] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
@@ -24,14 +29,21 @@ const Applications = () => {
     dispatch(allApplicationsList());
   }, []);
 
+
+
+
   useEffect(() => {
     setApplication(allApplications[currentTab]);
   }, [allApplications]);
+
+
 
   const handleSelect = (key) => {
     setCurrentTab(key)
     setApplication(allApplications[key]);
   };
+
+    
   const convertToArray = (arr) => {
     const skillsArray = arr?.split(",");
     return skillsArray;
@@ -51,7 +63,9 @@ const Applications = () => {
     dispatch(adminApproveReject(payload))
     dispatch(allApplicationsList());
   }
-  console.log(application,'application--------------------')
+
+
+  
   return (
     <>
       <h2 className="section-head mb-4">Applications</h2>
@@ -88,8 +102,9 @@ const Applications = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentTab == "clients"  && application?.length > 0 ? application?.map((item, index) => (
-                   
+                {screenLoader ? <ScreenLoader/> :
+                <>
+                   {currentTab == "clients"  && application?.length > 0 ? application?.map((item, index) => (
                     <React.Fragment key={index}>
                       <tr
                         className="application-row"
@@ -178,6 +193,7 @@ const Applications = () => {
                       )}
                     </React.Fragment>
                     )) : <NoDataFound/>}
+               </> }
                 </tbody>               
               </table>
             </div>
@@ -196,7 +212,11 @@ const Applications = () => {
                   <th>Action</th>
                   <th></th>
                 </thead>
-                <tbody>
+                <tbody> 
+
+
+                {screenLoader ? <ScreenLoader/> :<>
+
                   {currentTab === "vendors"  && application?.length > 0 ? application?.map((item, index) => (
                       
                     <React.Fragment key={index}>
@@ -239,6 +259,7 @@ const Applications = () => {
                       </tr>
                     </React.Fragment>
                   )) :  <NoDataFound/>}
+                   </> }
                    </tbody>
               </table>
             </div>

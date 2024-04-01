@@ -15,7 +15,6 @@ function showMonthDates() {
 }
 
 var dates = showMonthDates();
-console.log(dates);
 
 export function weeklyTimeReports(data, currentPeriod) {
   if (currentPeriod === "weekly") {

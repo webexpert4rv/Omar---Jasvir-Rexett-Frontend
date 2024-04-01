@@ -44,7 +44,6 @@ const ShareModal = ({ show, handleClose,fileId}) => {
         }
       
     };
-        console.log(shareDocument,"shareDocument")
 
     const handleShare=async (e)=>{
         e.preventDefault()

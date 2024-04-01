@@ -69,9 +69,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         }
 
     }
-    console.log(selectedMonth,"selectedmonth")
 
-console.log(selectedFilter , "selectedFilter")
 
     const handlePrevTimeReporting = (e) => {
         e.preventDefault()
@@ -95,7 +93,6 @@ console.log(selectedFilter , "selectedFilter")
         dispatch(timeReporting(filterData, role))
     }
 
-    console.log(selectedFilter,"selectedFilter")
 
 
     return (

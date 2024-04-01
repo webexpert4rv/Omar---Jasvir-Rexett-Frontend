@@ -21,7 +21,6 @@ let id=pathname.split("/")[2]
     const [selectedTabsData,setSelectedTabsData]=useState([]);
     const [suggestedData,setSuggestedData]=useState(null)
 
-console.log(suggestedDeveloper,"suggestedDeveloper")
 
     useEffect(()=>{
      if(id){

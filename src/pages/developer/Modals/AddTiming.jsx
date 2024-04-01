@@ -42,7 +42,6 @@ const AddTimingModal = ({ show, handleClose }) => {
     const today = new Date();
     const currentDay = today.getDay();
     const startDate = new Date(today);
-    console.log(startDate, "startDate")
     startDate.setDate(startDate.getDate() - currentDay);
 
     let formattedDate = "";
@@ -62,7 +61,6 @@ const AddTimingModal = ({ show, handleClose }) => {
         weekDates.push({ report_date: formattedDate });
       }
     }
-    console.log(formattedDate,"formattedDate")
     setTimeReportingData(weekDates);
   };
 
@@ -77,7 +75,6 @@ const AddTimingModal = ({ show, handleClose }) => {
   useEffect((formattedDate) => {
     if (timeReportingData?.length > 0) {
       timeReportingData?.forEach((item) => {
-        console.log(item,"------------------item")
         // const currrentDate = selectedFilter?.length > 0 ? item?.report_date :formattedDate ;
         append({
           report_date: item?.report_date,
@@ -143,7 +140,6 @@ const AddTimingModal = ({ show, handleClose }) => {
     setTimeReportingData([])
     getCurrentWeekDates();
   }
-  console.log(allContracts ,"alllcontracts")
   return (
     <Modal
       show={show}
