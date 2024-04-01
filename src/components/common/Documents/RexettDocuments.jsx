@@ -349,7 +349,7 @@ console.log(folderData[0]?.s3_path,"currentFolderDetails")
                                                                             <div className="position-relative">
                                                                                 <FaFolder className="folder-icon" />
                                                                                 <div className="name-folder">
-                                                                                    <span>{item?.s3_path}</span>
+                                                                                    <span className="name_folder_text">{item?.s3_path}</span>
                                                                                    {item?.user? <div className="shared-doc">
                                                                                         <p className="shared-text">Shared by {item?.user?.name}</p>
                                                                                     </div>:""}
