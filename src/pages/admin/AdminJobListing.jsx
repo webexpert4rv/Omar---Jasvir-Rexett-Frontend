@@ -9,12 +9,13 @@ import { adminJobListing } from "../../redux/slices/adminDataSlice";
 import { getJobCategoryList } from "../../redux/slices/clientDataSlice";
 import JobTabs from "../../components/atomic/JobTabs";
 import RexettPagination from "../../components/atomic/RexettPagination";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 
 
 const AdminJobListing = () => {
     const dispatch =useDispatch()
-    const {jobListing}=useSelector(state=>state.adminData)
+    const {jobListing ,screenLoader}=useSelector(state=>state.adminData)
     const {jobCategoryList}=useSelector(state=>state.clientData)
 
 
@@ -34,6 +35,8 @@ const AdminJobListing = () => {
 
     return (
         <>
+            {screenLoader ? <ScreenLoader/> :<>
+
             <section className="job-posted-section">
                 <Tabs
                     defaultActiveKey="all"
@@ -42,6 +45,7 @@ const AdminJobListing = () => {
                     justify
                     onSelect={handleSelect}
                 >
+                   
                     <Tab eventKey="all" title="All">
                        <JobTabs  jobListing={jobListing?.data} jobCategoryList={jobCategoryList}/>
                     </Tab>
@@ -57,6 +61,7 @@ const AdminJobListing = () => {
                 </Tabs>
             </section>
             <RexettPagination />
+            </>}
         </>
     )
 }

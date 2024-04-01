@@ -8,6 +8,8 @@ import RexettButton from "../../components/atomic/RexettButton";
 import { getDeveloperProfileDetails, updateDeveloperProfile } from "../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { createNewFolderAndFile, filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
+
+
 const EditDeveloperProfile = () => {
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -81,6 +83,7 @@ const EditDeveloperProfile = () => {
         return true; // Password meets the criteria
     };
 
+    
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setFile(file)

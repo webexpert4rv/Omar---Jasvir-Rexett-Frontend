@@ -16,7 +16,6 @@ import { FaListUl } from "react-icons/fa6";
 const Dashboard = (cardDetails) => {
     const dispatch = useDispatch();
     const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
-    console.log(assignedDeveloperList,"assignedDeveloperList")
 
     useEffect(() => {
         dispatch(developerAssignList(1));

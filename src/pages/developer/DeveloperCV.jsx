@@ -19,9 +19,10 @@ import { MdEditNote } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 import DeveloperDetails from "./Modals/DeveloperDetails";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 const DeveloperCV = () => {
     const dispatch = useDispatch()
-    const { developerCvData, smallLoader } = useSelector(state => state.developerData)
+    const { developerCvData, smallLoader ,screenLoader} = useSelector(state => state.developerData)
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
     const [developerDetails, setDeveloperDetails] = useState(false);
@@ -116,7 +117,7 @@ const DeveloperCV = () => {
     return (
         <>
             <section className="overview-cv card-box">
-                <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
+               { screenLoader ? <ScreenLoader/>:<div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="section-head mb-0 border-0">Overview</h2>
@@ -208,7 +209,7 @@ const DeveloperCV = () => {
                             </div>
                         </Col>
                     </Row>
-                </div>
+                </div>}
             </section>
             <AboutCV show={showModal} handleClose={handleCloseModal} data={developerCvData?.developer_detail?.bio} />
             {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={developerCvData?.developer_experiences} smallLoader={smallLoader} /> : ""}

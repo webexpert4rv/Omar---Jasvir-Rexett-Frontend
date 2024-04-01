@@ -16,7 +16,6 @@ const EditTimeModal = ({ show, handleClose, data ,smallLoader}) => {
 
 
     const onSubmit = (value) => {
-        console.log(value, "kkk")
         dispatch(editTimeReportOfDev(value,()=>{
             handleClose()
         }))
