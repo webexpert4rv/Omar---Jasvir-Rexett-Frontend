@@ -4,31 +4,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { adminEngagementList } from "../../redux/slices/adminDataSlice";
 const Engagements = () => {
-    const dispatch =useDispatch();
-    const [search,setSearch]=useState('')
-    const {engagement}=useSelector(state=>state.adminData)
-    useEffect(()=>{
+    const dispatch = useDispatch();
+    const [search, setSearch] = useState('')
+    const { engagement } = useSelector(state => state.adminData)
+    useEffect(() => {
         dispatch(adminEngagementList())
-    },[])
+    }, [])
 
-    const handleSearch=()=>{
+    const handleSearch = () => {
 
-     let data={
-        search:search
-     }
-     dispatch(adminEngagementList(data))
+        let data = {
+            search: search
+        }
+        dispatch(adminEngagementList(data))
     }
-    return(
+    return (
         <>
-            <h2 className="section-head mb-4">Engagements</h2>
-            <Row className="mb-3">
-                <Col xl={6} lg={7}>
-                    <div className="d-flex gap-3">
-                        <Form.Control type="text" className="cv-field" placeholder="Enter Search Keywords" onChange={(e)=>setSearch(e.target.value)}></Form.Control>
-                        <Button variant="transparent" className="main-btn px-4" onClick={handleSearch}>Search</Button>
-                    </div>
-                </Col>
-            </Row>
+            <div className="border-bottom-grey pb-3 mb-4 d-flex justify-content-between align-items-center">
+                <h2 className="section-head border-0 mb-0 pb-0">Engagements</h2>
+
+                <div className="d-flex gap-3">
+                    <Form.Control type="text" className="cv-field" placeholder="Enter Search Keywords" onChange={(e) => setSearch(e.target.value)}></Form.Control>
+                    <Button variant="transparent" className="main-btn px-4" onClick={handleSearch}>Search</Button>
+                </div>
+            </div>
             <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
                     <thead>
@@ -41,20 +40,20 @@ const Engagements = () => {
                         <th>Total Hours</th>
                     </thead>
                     <tbody>
-                     
+
                         {
-                            engagement?.map((item,index)=>{
+                            engagement?.map((item, index) => {
                                 return (
                                     <>
-                                       <tr>
-                            <td>{item?.contract?.client?.name}</td>
-                            <td>{item?.contract?.developer?.name}</td>
-                            <td>Rexett</td>
-                            <td>{item?.contract?.job?.title}</td>
-                            <td>{item?.contract?.employment_type}</td>
-                            <td>{item?.contract?.job_type}</td>
-                            <td>{item?.total_duration}</td>
-                        </tr>
+                                        <tr>
+                                            <td>{item?.contract?.client?.name}</td>
+                                            <td>{item?.contract?.developer?.name}</td>
+                                            <td>Rexett</td>
+                                            <td>{item?.contract?.job?.title}</td>
+                                            <td>{item?.contract?.employment_type}</td>
+                                            <td>{item?.contract?.job_type}</td>
+                                            <td>{item?.total_duration}</td>
+                                        </tr>
                                     </>
                                 )
                             })
