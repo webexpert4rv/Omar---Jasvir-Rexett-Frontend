@@ -106,7 +106,7 @@ console.log(selectedFilter , "selectedFilter")
                         <Form>
                             <div className="d-flex gap-3 flex-wrap align-items-end">
                                 <div className="flex-none">
-                                    {/* <Form.Label className="common-label">Select View</Form.Label> */}
+                                    <Form.Label className="common-label">Select View</Form.Label>
                                     <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} >
                                         <option value="weekly">Weekly</option>
                                         <option value="monthly">Monthly</option>
