@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
-import { editTimeReporting } from "../../../redux/slices/adminDataSlice";
+import { adminTimeReporting, editTimeReporting } from "../../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     const [devloperState,setDeveloperState]=useState([])
@@ -20,7 +20,6 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
         }
     })
     setDeveloperState(devName)
-     console.log(devName)
     }
 
     const handleDeveloper=(e)=>{
@@ -30,12 +29,16 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
 
     const handleEditTime=async (e)=>{
         e.preventDefault()
+        if(time==null){
+            return 
+        }
+
    let paylaod={
     "contract_id": time?.contract_id,
     "total_hours": hours
   }
-  console.log(paylaod,"paylaod")
   await dispatch(editTimeReporting(paylaod))
+  dispatch(adminTimeReporting())
   handleClose()
     }
 

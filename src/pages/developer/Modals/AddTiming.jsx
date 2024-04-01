@@ -73,9 +73,7 @@ const AddTimingModal = ({ show, handleClose }) => {
       getCurrentWeekDates();
     }
   }, [addTimeReports]);
-  console.log(addTimeReports, "addTimeReports")
-  console.log(timeReportingData, "timeReportingData")
-  console.log(selectedFilter , "selectedFilter")
+
   useEffect((formattedDate) => {
     if (timeReportingData?.length > 0) {
       timeReportingData?.forEach((item) => {
@@ -164,7 +162,7 @@ const AddTimingModal = ({ show, handleClose }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="experience-container">
             <div className="mb-3">
-              <div className="text-end">
+              {!open ?<div className="text-end">
                 <Button
                   variant="transparent"
                   className="main-btn px-3"
@@ -174,7 +172,7 @@ const AddTimingModal = ({ show, handleClose }) => {
                 >
                   Want to update previous time?
                 </Button>
-              </div>
+              </div>:""}
               <Collapse in={open}>
                 <div className="mt-2">
                   <Row>

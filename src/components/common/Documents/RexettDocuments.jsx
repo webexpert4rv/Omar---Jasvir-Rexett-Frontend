@@ -350,9 +350,9 @@ console.log(folderData[0]?.s3_path,"currentFolderDetails")
                                                                                 <FaFolder className="folder-icon" />
                                                                                 <div className="name-folder">
                                                                                     <span>{item?.s3_path}</span>
-                                                                                    <div className="shared-doc">
-                                                                                        <p className="shared-text">Shared by Amazon</p>
-                                                                                    </div>
+                                                                                   {item?.user? <div className="shared-doc">
+                                                                                        <p className="shared-text">Shared by {item?.user?.name}</p>
+                                                                                    </div>:""}
                                                                                 </div>
                                                                                 <div className="doc-action">
                                                                                     <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "folder")}><FaTrashCan /></button>

@@ -5,9 +5,10 @@ import EditTimeReport from "./Modals/EditTimeReportModal";
 import UploadInvoice from "./Modals/UploadInvoice";
 import { useDispatch, useSelector } from "react-redux";
 import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 const AdminTimeReporting = () => {
     const dispatch =useDispatch()
-    const {adminTimeReportingList}=useSelector(state=>state.adminData)
+    const {adminTimeReportingList,screenLoader}=useSelector(state=>state.adminData)
     const [contractId,setContractID]=useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData,setDeveloperData]=useState([])
@@ -113,7 +114,7 @@ const AdminTimeReporting = () => {
                                     Contract
                                 </th>
                             </thead>
-                            <tbody>
+                           {screenLoader?<ScreenLoader/>: <tbody>
                                 {
                                     developerData?.map((item,index)=>{
                                         return (
@@ -147,7 +148,7 @@ const AdminTimeReporting = () => {
                                     })
                                 }
                              
-                            </tbody>
+                            </tbody>}
                         </table>
                     </div>
                 </div>

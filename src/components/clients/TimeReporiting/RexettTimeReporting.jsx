@@ -38,6 +38,10 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
             filterData.month = selectedFilter.month;
             filterData.week = selectedFilter.week;
         };
+        setSelectedMonth("")
+        setSelectedYear("")
+        setSelectedWeek("")
+        setSelectedFilter({filter:selectedPeriodValue})
         dispatch(timeReporting(filterData, role));
     }
 
@@ -91,6 +95,7 @@ console.log(selectedFilter , "selectedFilter")
         dispatch(timeReporting(filterData, role))
     }
 
+    console.log(selectedFilter,"selectedFilter")
 
 
     return (

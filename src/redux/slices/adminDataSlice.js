@@ -72,12 +72,17 @@ export const adminDataSlice = createSlice({
         },
         setAdminTimeReporting:(state,action)=>{
             state.adminTimeReportingList=action.payload
+            state.smallLoader = false;
+            state.screenLoader = false;
         },
         setAdminEngagment:(state,action)=>{
             state.engagement=action.payload
         },
         setApproveReject:(state,action)=>{
-            state.adminApproveReject=action.payload
+            state.adminApproveReject=action.payload;
+            state.smallLoader = false;
+            state.screenLoader = false;
+            state.approvedLoader = false;
         },
         setApprovedLoader: (state, action) => {
             state.approvedLoader = true;
@@ -240,7 +245,7 @@ export function adminSingleJob(payload, callback) {
 
 export function adminTimeReporting(payload, callback) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`admin/time-reports`)
             if (result.status === 200) {

@@ -25,7 +25,7 @@ const RexettPagination = () => {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center mb-4 ">
-        <p className="showing-result">Showing {jobListing?.totalCount} results </p>
+        <p className="showing-result"></p>
         <Pagination className="justify-content-center mt-4 align-items-center">
           <Pagination.Prev
             className="pagination-arrow me-3"
