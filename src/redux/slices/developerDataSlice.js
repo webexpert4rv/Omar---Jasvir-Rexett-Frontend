@@ -44,6 +44,8 @@ export const developerDataSlice = createSlice({
         },
         setSuccessProfileData: (state, action) => {
             state.developerProfileData = action.payload
+            state.screenLoader = false;
+
         },
 
         setSuccessActionData: (state, action) => {
@@ -125,7 +127,7 @@ export function updateDeveloperProfile(payload, callback) {
 export function getDeveloperProfileDetails(payload, callback) {
     return async (dispatch) => {
 
-        // dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get('developer/get-profile')
             if (result.status === 200) {
@@ -142,7 +144,7 @@ export function getDeveloperProfileDetails(payload, callback) {
 export function getDeveloperDashboard(payload, callback) {
     return async (dispatch) => {
 
-        // dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get('developer/dashboard')
             if (result.status === 200) {
@@ -211,7 +213,7 @@ export function addDeveloperCvExperience(payload, callback) {
 
 export function deleteExperience(payload, callback) {
     return async (dispatch) => {
-        //  dispatch(setSmallLoader())
+         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.delete(`developer/delete-experience/${payload}`)
             if (result.status === 200) {
