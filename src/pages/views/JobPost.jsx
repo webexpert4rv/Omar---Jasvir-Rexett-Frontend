@@ -184,7 +184,7 @@ const JobPost = () => {
                                 <Select
                                     options={skillListMapped}
                                     onChange={(val) => onChangeSelect(val)}
-                                    name="skills"
+                                     name="skills"
                                     isMulti
                                     // {...register("skills", {
                                     //     required: {

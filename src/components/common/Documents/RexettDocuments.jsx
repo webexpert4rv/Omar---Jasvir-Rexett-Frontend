@@ -128,6 +128,7 @@ const RexettDocuments = ({ currentRole }) => {
             case "ts":
             case "js":
             case "txt":
+            case "docx":
                 return <FaFileAlt />
             case "pdf":
                 return <MdPictureAsPdf />
