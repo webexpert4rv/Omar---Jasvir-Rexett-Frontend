@@ -1,6 +1,6 @@
 import React from "react";
 import sidebarLogo from '../assets/img/logo-white-new.png'
-import { NavLink } from "react-router-dom"; // Import NavLink instead of Link
+import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { IoIosSettings } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
@@ -11,6 +11,10 @@ import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 
 const VendorSidebar = ({ sideBarActive }) => {
+    const logout=()=>{
+        localStorage.clear()
+         window.location.href="/vendor-login"
+     }
     return(
         <>
             <aside className={sideBarActive ? "sidebar active" : "sidebar"}>
@@ -40,7 +44,7 @@ const VendorSidebar = ({ sideBarActive }) => {
                     </div>
                     <div className="w-100 px-3">
                         <div>
-                            <NavLink to={"/agency-login"} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</NavLink>
+                            <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>

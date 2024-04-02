@@ -44,6 +44,7 @@ export const clientDataSlice = createSlice({
         setFailClientData: (state, action) => {
             state.smallLoader = false;
             state.approvedLoader = false;
+            state.screenLoader = false;
         },
 
         setActionSuccessFully:(state, action) => {
@@ -177,15 +178,7 @@ export function getFolderData(payload, role, callback) {
 
         dispatch(setScreenLoader())
         try {
-            let result
-            
-            if(role=="developer"){
-                result = await clientInstance.get(generateApiUrl(payload,`developer/documents`))
-            }else if(role=="client"){
-                result = await clientInstance.get(generateApiUrl(payload,`client/documents`))
-            }else{
-                result = await clientInstance.get(generateApiUrl(payload,`admin/documents`))  
-            }
+            let result = await clientInstance.get(generateApiUrl(payload,`${role}/documents`))  
             if (result.status === 200) {
                 // dispatch(setTimeReporting(result.data.data))
                 dispatch(setFolderData(result.data.data))
