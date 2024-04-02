@@ -14,28 +14,27 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 
 const AdminJobListing = () => {
-    const dispatch =useDispatch()
-    const {jobListing ,screenLoader}=useSelector(state=>state.adminData)
-    const {jobCategoryList}=useSelector(state=>state.clientData)
+    const dispatch = useDispatch()
+    const { jobListing, screenLoader } = useSelector(state => state.adminData)
+    const { jobCategoryList } = useSelector(state => state.clientData)
 
-
-    useEffect(()=>{
+    console.log(jobListing?.totalPages,"jobListing")
+    useEffect(() => {
         dispatch(adminJobListing())
         dispatch(getJobCategoryList())
-    },[])
+    }, [])
 
-    const handleSelect=(key)=>{
-        let filter={
-            type:key,
-            page:1
+    const handleSelect = (key) => {
+        let filter = {
+            type: key,
+            page: 1
         }
         dispatch(adminJobListing(filter))
-    }  
-    
+    }
+
 
     return (
         <>
-            
 
             <section className="job-posted-section">
                 <Tabs
@@ -45,23 +44,24 @@ const AdminJobListing = () => {
                     justify
                     onSelect={handleSelect}
                 >
-                   
                     <Tab eventKey="all" title="All">
-                       <JobTabs  jobListing={jobListing?.data} jobCategoryList={jobCategoryList}/>
+                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
                     <Tab eventKey="new" title="New Job Posts">
-                    <JobTabs  jobListing={jobListing?.data} jobCategoryList={jobCategoryList}/>
+                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
                     <Tab eventKey="in-progress" title="In Progress">
-                    <JobTabs  jobListing={jobListing?.data} jobCategoryList={jobCategoryList}/>
+                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
                     <Tab eventKey="ended" title="End Jobs">
-                    <JobTabs  jobListing={jobListing?.data} jobCategoryList={jobCategoryList}/>
+                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
                 </Tabs>
             </section>
-            <RexettPagination />
-            
+            <div className = "d-flex justify-content-between align-items-center mb-4">
+            {jobListing?.totalPages > 5 ?<p className="showing-result">Showing {(jobListing?.data?.length)} results</p> : ""}
+                <RexettPagination number={jobListing?.totalPages} />
+            </div>
         </>
     )
 }

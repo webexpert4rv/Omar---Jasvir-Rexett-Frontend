@@ -276,6 +276,43 @@ ul
     width: 25px;
     height: 25px;
 }
+.showing-result {
+    margin-bottom: 10px;
+    /* background-color: #037563; Change background color */
+    color:#037563 ; /* Change text color */
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagination-arrow {
+    cursor: pointer;
+    color:#037563 !important; ; /* Change text color */
+
+  }
+  .page-item.active .page-link {
+    z-index: 3;
+    color: #fff !important;
+    background-color: #037563 !important;
+  }
+  .pages-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .pages-link .pagination-item {
+    cursor: pointer;
+  }
+  
+  .pagination-item.active {
+    font-weight: bold;
+    background-color: #037563; /* Change background color of active page */
+    color: #037563; /* Change text color of active page */
+  }
 .main-btn
 {
     display: inline-block;

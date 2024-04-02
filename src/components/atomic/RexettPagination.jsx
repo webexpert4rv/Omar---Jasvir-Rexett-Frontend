@@ -5,16 +5,10 @@ import 'react-responsive-pagination/themes/classic.css';
 import { adminJobListing } from "../../redux/slices/adminDataSlice";
 import { Pagination } from "react-bootstrap";
 
-const RexettPagination = () => {
-
+const RexettPagination = ({number }) => {
   const dispatch = useDispatch()
   const [page, setPage] = useState(1)
-  const { jobListing } = useSelector(state => state.adminData)
-
-
-
-
-
+ 
 
   const handlePageChange = (page) => {
     dispatch(adminJobListing({ page: page }))
@@ -24,19 +18,19 @@ const RexettPagination = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center mb-4 ">
-        <p className="showing-result"></p>
-        <Pagination className="justify-content-center mt-4 align-items-center">
+    { number > 5 ?
+        <Pagination className="pagination">
           <Pagination.Prev
             className="pagination-arrow me-3"
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 1}
           />
-          <div className="pages-link d-flex">
+          <div className="pages-link ">
 
-            {Array.from({ length: jobListing?.totalPages }, (_, i) => (
+            {Array.from({ length: number }, (_, i) => (
               <Pagination.Item
                 key={i}
+                className="pagination-item" 
                 active={i + 1 === page}
                 onClick={() => handlePageChange(i + 1)}
               >
@@ -47,10 +41,11 @@ const RexettPagination = () => {
           <Pagination.Next
             className="pagination-arrow next-arrow ms-3"
             onClick={() => handlePageChange(page + 1)}
-            disabled={page === jobListing?.totalPages}
+            disabled={page === number}
           />
-        </Pagination>
-      </div>
+        </Pagination>:
+        ""
+}
     </>
   );
 };

@@ -29,7 +29,6 @@ commanInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         let refreshToken = getRefreshToken("developerRefreshToken");
-        console.log(refreshToken,"refreshToken")
         const response = await commanInstance.post('auth/refresh-token', { refresh_token
           : refreshToken });
         let refreshTokn = updateLocalAccessToken("developerToken",response.data.access_token)

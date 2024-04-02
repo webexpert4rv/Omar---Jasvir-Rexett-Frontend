@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { adminEngagementList } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import RexettPagination from "../../components/atomic/RexettPagination";
 const Engagements = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
@@ -64,6 +65,10 @@ const Engagements = () => {
                         </>}
                     </tbody>
                 </table>
+                {/* <div className="d-flex justify-content-between align-items-center mb-4">
+                            <p className="showing-result">Showing {(engagement?.length)} results</p>
+                            <RexettPagination />
+                        </div> */}
             </div>
         </>
     )
