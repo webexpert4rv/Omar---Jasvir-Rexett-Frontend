@@ -257,7 +257,7 @@ const EditVendorProfile = () => {
                                                     required: "New password is required",
                                                 })}
                                             />
-                                                <button className="eye-btn" onClick={handleClick}><FaEye /></button>
+                                                <button className="eye-btn"><FaEye /></button>
                                             </div>
                                             {errors?.vendor_name && (
                                                 <p className="error-message">{errors.vendor_name.message}</p>

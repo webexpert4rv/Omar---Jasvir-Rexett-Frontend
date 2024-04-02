@@ -61,6 +61,12 @@ export function loginUser(payload, callback) {
                     localStorage.setItem("role","admin")
                       window.location.href="/admin-dashboard"
                 }
+                if(payload.role==="vendor"){
+                    localStorage.setItem("token", result.data.access_token);
+                    localStorage.setItem("refreshToken", result.data.refresh_token);
+                    localStorage.setItem("role","vendor")
+                      window.location.href="/vendor-dashboard"
+                }
 
                 dispatch(setSuccessAuthData())
             }
