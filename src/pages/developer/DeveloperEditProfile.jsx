@@ -24,7 +24,7 @@ const EditDeveloperProfile = () => {
         firstPass: false,
         secondPass: false
     })
-    const [file,setFile]=useState(null)
+    const [file, setFile] = useState(null)
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
 
     useEffect(() => {
@@ -51,11 +51,11 @@ const EditDeveloperProfile = () => {
         for (const key in values) {
             formData.append(key, values[key]);
         }
-      
-        fileData.append("file",file);
-        if(file==null){
-            dispatch(updateDeveloperProfile(values)); 
-        }else{
+
+        fileData.append("file", file);
+        if (file == null) {
+            dispatch(updateDeveloperProfile(values));
+        } else {
             dispatch(filePreassignedUrlGenerate(fileData, (url) => {
                 let data = {
                     ...values,
@@ -65,9 +65,9 @@ const EditDeveloperProfile = () => {
                 dispatch(updateDeveloperProfile(data));
             }));
         }
-      
+
     };
-    
+
 
 
     const validatePassword = (value) => {
@@ -83,7 +83,7 @@ const EditDeveloperProfile = () => {
         return true; // Password meets the criteria
     };
 
-    
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setFile(file)
@@ -275,7 +275,7 @@ const EditDeveloperProfile = () => {
                                         <Form.Control type="file" id="developer-image"
                                             name="profile_picture"
                                             {...register("profile_picture", {
-                                                onChange:(e)=>handleFileChange(e), 
+                                                onChange: (e) => handleFileChange(e),
                                                 required: {
                                                     value: false,
                                                     message: "Profile Picture is required",
@@ -285,10 +285,10 @@ const EditDeveloperProfile = () => {
                                         <Form.Label htmlFor="developer-image" className="upload-image-label d-block"><HiUpload /> Upload Image, Image must be jpg or png</Form.Label>
                                     </Form.Group>
 
-                                        <div>
-                                            <img src={selectedImage?selectedImage:developerProfileData?.data?.profile_picture} alt="Selected" className="uploaded-image"/>
-                                        </div>
-                                    
+                                    <div>
+                                        <img src={selectedImage ? selectedImage : developerProfileData?.data?.profile_picture} alt="Selected" className="uploaded-image" />
+                                    </div>
+
                                 </div>
                             </Col>
                         </Row>

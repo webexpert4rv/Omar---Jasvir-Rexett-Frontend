@@ -6,13 +6,14 @@ import { adminApproveReject, allApplicationsList } from "../../redux/slices/admi
 import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import RexettPagination from "../../components/atomic/RexettPagination";
 
 
 
 const Applications = () => {
 
   const dispatch = useDispatch();
-  const { allApplications, approvedLoader ,screenLoader } = useSelector((state) => state.adminData);
+  const { allApplications, approvedLoader, screenLoader } = useSelector((state) => state.adminData);
   const [expandedRow, setExpandedRow] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
@@ -43,7 +44,7 @@ const Applications = () => {
     setApplication(allApplications[key]);
   };
 
-    
+
   const convertToArray = (arr) => {
     const skillsArray = arr?.split(",");
     return skillsArray;
@@ -57,7 +58,7 @@ const Applications = () => {
     }
     if (status === "approved") {
       setSelectedApprovedBtn(index)
-    } else  if(status === "rejected"){
+    } else if (status === "rejected") {
       setSelectedRejectedBtn(index)
     }
     dispatch(adminApproveReject(payload))
@@ -65,7 +66,7 @@ const Applications = () => {
   }
 
 
-  
+  console.log(allApplications, "allApplications")
   return (
     <>
       <h2 className="section-head mb-4">Applications</h2>
@@ -102,99 +103,99 @@ const Applications = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {screenLoader ? <ScreenLoader/> :
-                <>
-                   {currentTab == "clients"  && application?.length > 0 ? application?.map((item, index) => (
-                    <React.Fragment key={index}>
-                      <tr
-                        className="application-row"
-                        onClick={() => handleRowClick(index)}
-                      >
-                        <td className="white-nowrap">{item?.name}</td>
-                        <td>
-                          <span className="application-mail">{item.email}</span>
-                        </td>
-                        <td>{item?.phone_number}</td>
-                        <td>{item?.jobs[0]?.engagement_type}</td>
-                        <td>{item?.jobs[0]?.project_length}</td>
-                        <td>{item?.jobs[0]?.status}</td>
-                        <td>
-                          <div className="d-flex gap-3">
-                            <RexettButton
-                              text="Approve"
-                              className="main-btn px-4 py-2 font-13"
-                              variant="transparent"
-                              onClick={(e) => handleClick(e, item?.id, "approved", index)}
-                              isLoading={selectedApprovedBtn === index ? approvedLoader : false}
-                            />
-                            <RexettButton
-                              text="Reject"
-                              className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
-                              variant="danger"
-                              onClick={(e) => handleClick(e, item?.id, "rejected", index)}
-                              isLoading={selectedRejectedBtn === index ? approvedLoader : false}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                      {expandedRow === index && (
-                        <tr
-                          className={`collapsible-row ${expandedRow === index ? "open" : ""
-                            }`}
-                        >
-                          <td colSpan="8">
-                            <div>
-                              <Row>
-                                <Col md={4}>
-                                  <div>
-                                    <h3 className="application-heading">
-                                      New Team Member Start{" "}
-                                    </h3>
-                                    <p className="application-text">
-                                      {
-                                        item?.jobs[0]
-                                          ?.development_should_start_in
-                                      }
-                                    </p>
-                                  </div>
-                                </Col>
-                                <Col md={4}>
-                                  <div>
-                                    <h3 className="application-heading">
-                                      Skillset Needed
-                                    </h3>
-                                    <ul className="need-skill-list">
-                                      {convertToArray(
-                                        item?.jobs[0]?.skills
-                                      )?.map((item, index) => {
-                                        return (
-                                          <>
-                                            <li key={index}>{item}</li>
-                                          </>
-                                        );
-                                      })}
-                                    </ul>
-                                  </div>
-                                </Col>
-                                <Col md={4}>
-                                  <div>
-                                    <h3 className="application-heading">
-                                      Applied on
-                                    </h3>
-                                    <p className="application-text">
-                                      {item?.created_at?.slice(0, 11)}
-                                    </p>
-                                  </div>
-                                </Col>
-                              </Row>
-                            </div>
-                          </td>
-                        </tr>
-                      )}
-                    </React.Fragment>
-                    )) : <NoDataFound/>}
-               </> }
-                </tbody>               
+                  {screenLoader ? <ScreenLoader /> :
+                    <>
+                      {currentTab == "clients" && application?.length > 0 ? application?.map((item, index) => (
+                        <React.Fragment key={index}>
+                          <tr
+                            className="application-row"
+                            onClick={() => handleRowClick(index)}
+                          >
+                            <td className="white-nowrap">{item?.name}</td>
+                            <td>
+                              <span className="application-mail">{item.email}</span>
+                            </td>
+                            <td>{item?.phone_number}</td>
+                            <td>{item?.jobs[0]?.engagement_type}</td>
+                            <td>{item?.jobs[0]?.project_length}</td>
+                            <td>{item?.jobs[0]?.status}</td>
+                            <td>
+                              <div className="d-flex gap-3">
+                                <RexettButton
+                                  text="Approve"
+                                  className="main-btn px-4 py-2 font-13"
+                                  variant="transparent"
+                                  onClick={(e) => handleClick(e, item?.id, "approved", index)}
+                                  isLoading={selectedApprovedBtn === index ? approvedLoader : false}
+                                />
+                                <RexettButton
+                                  text="Reject"
+                                  className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
+                                  variant="danger"
+                                  onClick={(e) => handleClick(e, item?.id, "rejected", index)}
+                                  isLoading={selectedRejectedBtn === index ? approvedLoader : false}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                          {expandedRow === index && (
+                            <tr
+                              className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                }`}
+                            >
+                              <td colSpan="8">
+                                <div>
+                                  <Row>
+                                    <Col md={4}>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          New Team Member Start{" "}
+                                        </h3>
+                                        <p className="application-text">
+                                          {
+                                            item?.jobs[0]
+                                              ?.development_should_start_in
+                                          }
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col md={4}>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Skillset Needed
+                                        </h3>
+                                        <ul className="need-skill-list">
+                                          {convertToArray(
+                                            item?.jobs[0]?.skills
+                                          )?.map((item, index) => {
+                                            return (
+                                              <>
+                                                <li key={index}>{item}</li>
+                                              </>
+                                            );
+                                          })}
+                                        </ul>
+                                      </div>
+                                    </Col>
+                                    <Col md={4}>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Applied on
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.created_at?.slice(0, 11)}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      )) : <NoDataFound />}
+                    </>}
+                </tbody>
               </table>
             </div>
           </Tab.Pane>
@@ -212,60 +213,64 @@ const Applications = () => {
                   <th>Action</th>
                   <th></th>
                 </thead>
-                <tbody> 
+                <tbody>
 
 
-                {screenLoader ? <ScreenLoader/> :<>
+                  {screenLoader ? <ScreenLoader /> : <>
 
-                  {currentTab === "vendors"  && application?.length > 0 ? application?.map((item, index) => (
-                      
-                    <React.Fragment key={index}>
-                      <tr
-                        className="application-row"
-                      >
-                        <td className="white-nowrap">{item?.name}</td>
-                        <td>
-                          <span className="application-mail">{item?.email}</span>
-                        </td>
-                        <td>{item?.phone_number}</td>
-                        <td>{item?.company?.type_of_company}</td>
-                        <td>{item?.company?.total_employees}</td>
-                        <td>{item?.company?.website}</td>
-                        <td>{item?.company?.yearly_revenue}</td>
-                        <td>
-                          <div className="d-flex gap-3">
-                            <div className="text-center">
-                              <RexettButton
-                                // type="submit"
-                                text="Approve"
-                                className="main-btn px-4 py-2 font-13"
-                                variant="transparent"
-                                onClick={(e) => handleClick(e, item?.id, "approved", index)}
-                                isLoading={selectedApprovedBtn === index ? approvedLoader : false}
-                              />
+                    {currentTab === "vendors" && application?.length > 0 ? application?.map((item, index) => (
+
+                      <React.Fragment key={index}>
+                        <tr
+                          className="application-row"
+                        >
+                          <td className="white-nowrap">{item?.name}</td>
+                          <td>
+                            <span className="application-mail">{item?.email}</span>
+                          </td>
+                          <td>{item?.phone_number}</td>
+                          <td>{item?.company?.type_of_company}</td>
+                          <td>{item?.company?.total_employees}</td>
+                          <td>{item?.company?.website}</td>
+                          <td>{item?.company?.yearly_revenue}</td>
+                          <td>
+                            <div className="d-flex gap-3">
+                              <div className="text-center">
+                                <RexettButton
+                                  // type="submit"
+                                  text="Approve"
+                                  className="main-btn px-4 py-2 font-13"
+                                  variant="transparent"
+                                  onClick={(e) => handleClick(e, item?.id, "approved", index)}
+                                  isLoading={selectedApprovedBtn === index ? approvedLoader : false}
+                                />
+                              </div>
+                              <div className="text-center">
+                                <RexettButton
+                                  // type="submit"
+                                  text="Reject"
+                                  className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
+                                  variant="danger"
+                                  onClick={(e) => handleClick(e, item?.id, "rejected", index)}
+                                  isLoading={selectedApprovedBtn === index ? approvedLoader : false}
+                                />
+                              </div>
                             </div>
-                            <div className="text-center">
-                              <RexettButton
-                                // type="submit"
-                                text="Reject"
-                                className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
-                                variant="danger"
-                                onClick={(e) => handleClick(e, item?.id, "rejected", index)}
-                                isLoading={selectedApprovedBtn === index ? approvedLoader : false}
-                              />
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </React.Fragment>
-                  )) :  <NoDataFound/>}
-                   </> }
-                   </tbody>
+                          </td>
+                        </tr>
+                      </React.Fragment>
+                    )) : <NoDataFound />}
+                  </>}
+                </tbody>
               </table>
             </div>
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        {/* {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.clients?.length)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>} */}
+        {/* <RexettPagination /> */}
+      </div>
     </>
   );
 };
