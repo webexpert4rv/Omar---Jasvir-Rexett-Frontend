@@ -117,6 +117,8 @@ const AddTimingModal = ({ show, handleClose }) => {
           handleClose();
         })
       );
+    }else{
+      setDetails(true)
     }
   };
   const handleChange = (e, select) => {
@@ -125,9 +127,10 @@ const AddTimingModal = ({ show, handleClose }) => {
       [select]: e.target.value
     });
   };
-  const handlePrevTimeReporting = () => {
+  const handlePrevTimeReporting = (e) => {
+    e.preventDefault()
     setDetails(true)
-    if (selectedFilter?.contract_id) {
+    if (selectedFilter && Object.keys(selectedFilter).length==4) {
       dispatch(getPreviousTimeReports(selectedFilter, () => {
         setOpen(false)
       }));
@@ -140,6 +143,8 @@ const AddTimingModal = ({ show, handleClose }) => {
     setTimeReportingData([])
     getCurrentWeekDates();
   }
+
+  console.log(selectedFilter,"selectedFilter")
   return (
     <Modal
       show={show}
@@ -291,13 +296,15 @@ const AddTimingModal = ({ show, handleClose }) => {
                 ) : ""}
                 {open ? (
                   <div className="text-center mt-2">
-                    <Button
-                      variant="transparent"
-                      onClick={handlePrevTimeReporting}
-                      className="main-btn px-4"
-                    >
-                      Get Previous Time Report
-                    </Button>
+                    <RexettButton
+                            type="submit"
+                            text="Get Previous Time Report"
+                            className="main-btn px-4"
+                            variant="transparent"
+                            onClick={handlePrevTimeReporting}
+                            isLoading={smallLoader}
+                        />
+
                   </div>
                 ) : (
                   ""
