@@ -25,19 +25,11 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
             ...selectedFilter,
             filter: selectedPeriodValue
         };
-        if (selectedPeriodValue === "yearly") {
-            filterData.year = selectedFilter.year;
+    
+            delete filterData.week;
             delete filterData.month;
-            delete filterData.week;
-        } else if (selectedPeriodValue === "monthly") {
-            filterData.year = selectedFilter.year;
-            filterData.month = selectedFilter.month;
-            delete filterData.week;
-        } else {
-            filterData.year = selectedFilter.year;
-            filterData.month = selectedFilter.month;
-            filterData.week = selectedFilter.week;
-        };
+            delete filterData.year;
+    
         setSelectedMonth("")
         setSelectedYear("")
         setSelectedWeek("")
@@ -90,6 +82,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
             filterData.month = selectedFilter.month;
             filterData.week = selectedFilter.week;
         };
+        // setSelectedFilter({filter:''})
         dispatch(timeReporting(filterData, role))
     }
 
@@ -173,7 +166,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                         className="main-btn py-2 px-5"
                                         variant="transparent"
                                         onClick={handlePrevTimeReporting}
-                                        isLoading={Object.keys(selectedFilter).length > 0 ? smallLoader : false}
+                                        isLoading={false}
                                         disabled={selectedPeriod === "weekly" && Object.keys(selectedFilter).length > 3 ? false : selectedPeriod === "monthly" && Object.keys(selectedFilter).length > 2 ? false : selectedPeriod === "yearly" && Object.keys(selectedFilter).length > 1 ? false : true}
                                     />
                                 </div>

@@ -266,16 +266,16 @@ const EditVendorProfile = () => {
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">New Password</Form.Label>
                                             <div className="position-relative">
-                                                <Form.Control
-                                                    type={password.fourthPass ? "text" : "password"}
-                                                    className="cv-field"
-                                                    name="new_password2"
-                                                    placeholder="Enter New password"
-                                                    {...register(`new_password2`, {
-                                                        required: "New password is required",
-                                                    })}
-                                                />
-                                                <span className="eye-btn" onClick={() => setPassword({ ...password, fourthPass: !password.fourthPass })}><FaEye /></span>
+                                            <Form.Control
+                                                type="text"
+                                                className="cv-field"
+                                                name="new_password"
+                                                placeholder="Enter New password"
+                                                {...register(`new_password`, {
+                                                    required: "New password is required",
+                                                })}
+                                            />
+                                                <button className="eye-btn"><FaEye /></button>
                                             </div>
                                             {errors?.new_password2 && (
                                                 <p className="error-message">{errors.new_password2.message}</p>

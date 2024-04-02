@@ -37,7 +37,8 @@ const RexetLogin = ({userType}) => {
         let allRoles={
             client:"client",
             developer:"developer",
-            admin:"admin"
+            admin:"admin",
+            vendor:"vendor"
         }
         let data={
             email:values.email,
@@ -62,6 +63,17 @@ const RexetLogin = ({userType}) => {
         }
      } 
 
+     const currentRoles=(userType)=>{
+        let allRoles={
+            client:"Client Login",
+            developer:"Developer Login",
+            admin:"Admin Login",
+            vendor:"Vendor Login"
+        }
+
+        return allRoles[userType]
+     }
+
     return (
         <>
             <section className="auth-wrapper">
@@ -74,9 +86,9 @@ const RexetLogin = ({userType}) => {
                                         <img src={logoWhite} className="logo-white" />
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
-                                       { userType==="client"? "Client Login":
-                                        <Link to={"#"} className="link-text text-decoration-none">{ userType=== "developer"?"Developer Login": "Agency Login"}</Link>
-                                        }
+                                      
+                                        <Link to={"#"} className="link-text text-decoration-none">{currentRoles(userType)}</Link>
+                                        
                                         {/* <Link to={"#"} className="link-text text-decoration-none">Client Login</Link> */}
                                         {/* <Link to={"#"} className="link-text">Register</Link> */}
                                     </div>
