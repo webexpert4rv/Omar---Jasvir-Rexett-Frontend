@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Button, Tabs, Tab } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
@@ -9,11 +9,6 @@ import { useDispatch } from "react-redux";
 
 const EditVendorProfile = () => {
     const dispatch = useDispatch()
-    const [password , setPassword] = useState({
-        firstpass : false ,
-        secondpass : false , 
-    })
-
     const {
         register,
         control,
@@ -26,9 +21,30 @@ const EditVendorProfile = () => {
         formState: { errors },
     } = useForm();
 
-    // const onSubmit = ()=>{
-    //     dispatch(())
-    // }
+    const [password, setPassword] = useState({
+        firstPass: false,
+        secondPass: false,
+        thirdPass: false,
+        fourthPass: false,
+    })
+
+
+    const [values, setValues] = useState({
+        vendor_name: " ",
+        email: "",
+        password: "",
+        new_password1: "",
+        address: "",
+        address2: "",
+        city: "",
+        postcode: "",
+        country: "",
+        company_email: "",
+    })
+
+    const onSubmit = () => {
+        // setValues(values)
+    }
 
     return (
         <>
@@ -36,8 +52,7 @@ const EditVendorProfile = () => {
                 <div>
                     <div>
                         <h2 className="section-head mb-4">Update Your Profile</h2>
-                        {/* <Form onSubmit={handleSubmit(onSubmit)} noValidate> */}
-                        <Form>
+                        <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                             <Row className="mb-4">
                                 <Col md="6">
                                     <div className="inner-form">
@@ -49,7 +64,7 @@ const EditVendorProfile = () => {
                                                 name="vendor_name"
                                                 placeholder="Enter Vendor Name"
                                                 {...register(`vendor_name`, {
-                                                    required: "Vendor name is required",
+                                                    required: "vendor_name is required",
                                                 })}
                                             />
                                             {errors?.vendor_name && (
@@ -58,54 +73,57 @@ const EditVendorProfile = () => {
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">Email</Form.Label>
+                                           <div>
                                             <Form.Control
                                                 type="text"
                                                 className="cv-field"
                                                 name="email"
-                                                placeholder="Enter Vendor Name"
+                                                placeholder="Enter Email "
                                                 {...register(`email`, {
                                                     required: "Email is required",
                                                 })}
                                             />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.email && (
+                                                <p className="error-message">{errors.email.message}</p>
                                             )}
+                                            </div>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">Previous Password</Form.Label>
                                             <div className="position-relative">
-                                            <Form.Control
-                                                type="text"
-                                                className="cv-field"
-                                                name="password"
-                                                placeholder="Enter password"
-                                                {...register(`password`, {
-                                                    required: "Password is required",
-                                                })}
-                                            />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
-                                            )}
-                                                <button className="eye-btn"><FaEye /></button>
+                                                <Form.Control
+                                                    type={password.firstPass ? "text" : "password"}
+                                                    className="cv-field"
+                                                    name="password1"
+                                                    placeholder="Enter password"
+                                                    {...register(`password1`, {
+                                                        required: "Password is required",
+                                                    })}
+                                                />
+                                                <span className="eye-btn" onClick={() => setPassword({ ...password, firstPass: !password.firstPass })}><FaEye /></span>
                                             </div>
+                                            {errors?.password1 && (
+                                                    <p className="error-message">{errors.password1.message}</p>
+                                                )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">New Password</Form.Label>
                                             <div className="position-relative">
-                                            <Form.Control
-                                                type="text"
-                                                className="cv-field"
-                                                name="new_password"
-                                                placeholder="Enter New password"
-                                                {...register(`new_password`, {
-                                                    required: "New Password is required",
-                                                })}
-                                            />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
-                                            )}
-                                                <button className="eye-btn"><FaEye /></button>
+                                                <Form.Control
+                                                    type={password.secondPass ? "text" : "password"}
+                                                    className="cv-field"
+                                                    name="new_password1"
+                                                    placeholder="Enter New password"
+                                                    {...register(`new_password1`, {
+                                                        required: "New Password is required",
+                                                    })}
+                                                />
+                                                <span className="eye-btn" onClick={() => setPassword({ ...password, secondPass: !password.secondPass })}><FaEye /></span>
+                                            {errors?.new_password1 && (
+                                                    <p className="error-message">{errors.new_password1.message}</p>
+                                                )}
                                             </div>
+
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">Address</Form.Label>
@@ -118,8 +136,8 @@ const EditVendorProfile = () => {
                                                     required: "Address is required",
                                                 })}
                                             />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.address && (
+                                                <p className="error-message">{errors.address.message}</p>
                                             )}
                                         </Form.Group>
                                     </div>
@@ -137,8 +155,8 @@ const EditVendorProfile = () => {
                                                     required: "Address2 is required",
                                                 })}
                                             />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.address2 && (
+                                                <p className="error-message">{errors.address2.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -152,8 +170,8 @@ const EditVendorProfile = () => {
                                                     required: "City is required",
                                                 })}
                                             />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.city && (
+                                                <p className="error-message">{errors.city.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -167,8 +185,8 @@ const EditVendorProfile = () => {
                                                     required: "Postcode is required",
                                                 })}
                                             />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.postcode && (
+                                                <p className="error-message">{errors.postcode.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -182,8 +200,8 @@ const EditVendorProfile = () => {
                                                     required: "Country is required",
                                                 })}
                                             />
-                                             {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.country && (
+                                                <p className="error-message">{errors.country.message}</p>
                                             )}
                                         </Form.Group>
                                     </div>
@@ -208,8 +226,8 @@ const EditVendorProfile = () => {
                                                     required: "Company name is required",
                                                 })}
                                             />
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.company_name && (
+                                                <p className="error-message">{errors.company_name.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -217,50 +235,50 @@ const EditVendorProfile = () => {
                                             <Form.Control
                                                 type="text"
                                                 className="cv-field"
-                                                name="email"
+                                                name="company_email"
                                                 placeholder="Enter Email"
-                                                {...register(`email`, {
+                                                {...register(`company_email`, {
                                                     required: "Email is required",
                                                 })}
                                             />
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.company_email && (
+                                                <p className="error-message">{errors.company_email.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">Previous Password</Form.Label>
                                             <div className="position-relative">
-                                            <Form.Control
-                                                type="text"
-                                                className="cv-field"
-                                                name="password"
-                                                placeholder="Enter password"
-                                                {...register(`password`, {
-                                                    required: "Password is required",
-                                                })}
-                                            />
-                                                <button className="eye-btn"><FaEye /></button>
+                                                <Form.Control
+                                                    type={password.thirdPass ? "text" : "password"}
+                                                    className="cv-field"
+                                                    name="password2"
+                                                    placeholder="Enter password"
+                                                    {...register(`password2`, {
+                                                        required: "Password is required",
+                                                    })}
+                                                />
+                                                <span className="eye-btn" onClick={() => setPassword({ ...password, thirdPass: !password.thirdPass })}><FaEye /></span>
                                             </div>
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.password2 && (
+                                                <p className="error-message">{errors.password2.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">New Password</Form.Label>
                                             <div className="position-relative">
-                                            <Form.Control
-                                                type="text"
-                                                className="cv-field"
-                                                name="new_password"
-                                                placeholder="Enter New password"
-                                                {...register(`new_password`, {
-                                                    required: "New password is required",
-                                                })}
-                                            />
-                                                <button className="eye-btn" onClick={handleClick}><FaEye /></button>
+                                                <Form.Control
+                                                    type={password.fourthPass ? "text" : "password"}
+                                                    className="cv-field"
+                                                    name="new_password2"
+                                                    placeholder="Enter New password"
+                                                    {...register(`new_password2`, {
+                                                        required: "New password is required",
+                                                    })}
+                                                />
+                                                <span className="eye-btn" onClick={() => setPassword({ ...password, fourthPass: !password.fourthPass })}><FaEye /></span>
                                             </div>
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.new_password2 && (
+                                                <p className="error-message">{errors.new_password2.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -274,6 +292,9 @@ const EditVendorProfile = () => {
                                                     required: "Address is required",
                                                 })}
                                             />
+                                            {errors?.address && (
+                                                <p className="error-message">{errors.address.message}</p>
+                                            )}
                                         </Form.Group>
                                     </div>
                                 </Col>
@@ -290,8 +311,8 @@ const EditVendorProfile = () => {
                                                     required: "Address 2 is required",
                                                 })}
                                             />
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.address2 && (
+                                                <p className="error-message">{errors.address2.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -299,14 +320,14 @@ const EditVendorProfile = () => {
                                             <Form.Control
                                                 type="text"
                                                 className="cv-field"
-                                                name="city"
+                                                name="company_city"
                                                 placeholder="Enter city"
-                                                {...register(`city`, {
+                                                {...register(`company_city`, {
                                                     required: "City is required",
                                                 })}
                                             />
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.company_city && (
+                                                <p className="error-message">{errors.company_city.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -314,14 +335,14 @@ const EditVendorProfile = () => {
                                             <Form.Control
                                                 type="text"
                                                 className="cv-field"
-                                                name="postcode"
+                                                name="postcode2"
                                                 placeholder="Enter postcode"
-                                                {...register(`postcode`, {
+                                                {...register(`postcode2`, {
                                                     required: "Postcode is required",
                                                 })}
                                             />
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.postcode2 && (
+                                                <p className="error-message">{errors.postcode2.message}</p>
                                             )}
                                         </Form.Group>
                                         <Form.Group className="mb-3">
@@ -329,14 +350,14 @@ const EditVendorProfile = () => {
                                             <Form.Control
                                                 type="text"
                                                 className="cv-field"
-                                                name="country"
+                                                name="company_country"
                                                 placeholder="Enter Country"
-                                                {...register(`country`, {
+                                                {...register(`company_country`, {
                                                     required: "Country is required",
                                                 })}
                                             />
-                                            {errors?.vendor_name && (
-                                                <p className="error-message">{errors.vendor_name.message}</p>
+                                            {errors?.company_country && (
+                                                <p className="error-message">{errors.company_country.message}</p>
                                             )}
                                         </Form.Group>
                                     </div>
@@ -344,7 +365,7 @@ const EditVendorProfile = () => {
                             </Row>
                             <div className="text-center">
                                 <RexettButton
-                                    type="onSubmit"
+                                    type="submit"
                                     text="Update profile"
                                     className="main-btn px-4"
                                     variant="transparent"
