@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cards from "../../components/atomic/Cards";
 import OverViewCard from "../../components/atomic/OverViewCard";
 import { useDispatch, useSelector } from "react-redux";
-import { developerAssignList } from "../../redux/slices/clientDataSlice";
+import { developerAssignList, getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -16,11 +16,17 @@ import { FaListUl } from "react-icons/fa6";
 const Dashboard = (cardDetails) => {
     const dispatch = useDispatch();
     const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
-
+    const navigate = useNavigate()
     useEffect(() => {
         dispatch(developerAssignList(1));
     }, [dispatch])
 
+  const handleCardClick=(id)=>{
+    console.log(id,"id")
+    dispatch(getDeveloperDetails(id))
+    navigate(`/client-single-developer/${id}`)
+
+  }
     return (
         <>
             <h2 className="section-head">Overview</h2>
@@ -46,13 +52,14 @@ const Dashboard = (cardDetails) => {
                         </Nav>
                     </div>
                     <Tab.Content>
-                        <Tab.Pane eventKey="grid-view">
-                            <div className="developers-list pt-3">
+                        <Tab.Pane eventKey="grid-view" >
+                            <div className="developers-list pt-3" >
                                 {
                                     assignedDeveloperList?.map((item, index) => {
+                                        console.log(item,"item")
                                         return (
                                             <>
-                                                <Cards item={item} />
+                                                <Cards item={item} handleCardClick= {()=>handleCardClick(item?.developer?.id)} />
                                             </>
                                         )
                                     })
