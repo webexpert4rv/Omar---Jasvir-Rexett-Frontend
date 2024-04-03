@@ -60,7 +60,6 @@ const DeveloperList = () => {
 
     return (
         <>
-            <h2 className="section-head mb-4">Overview</h2>
             <div>
                 {/* <h3 className="section-head-sub">Filter By</h3> */}
                 <Form className="mb-4 filter-section">

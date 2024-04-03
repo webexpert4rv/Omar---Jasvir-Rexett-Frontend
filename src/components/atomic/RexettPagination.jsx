@@ -17,13 +17,13 @@ const RexettPagination = ({number,setPage,page }) => {
 
   return (
     <>
-        <Pagination className="pagination">
+        <Pagination className="pagination flex-wrap">
           <Pagination.Prev
             className="pagination-arrow me-3"
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 1}
           />
-          <div className="pages-link ">
+          <div className="pages-link flex-wrap">
 
             {Array.from({ length: number }, (_, i) => (
               <Pagination.Item

@@ -47,8 +47,7 @@ const AdminJobListing = () => {
                 <Tabs
                     defaultActiveKey="all"
                     id="justify-tab-example"
-                    className="mb-3 notification-tabs"
-                    justify
+                    className="mb-3 notification-tabs gap-md-0 gap-3"
                     onSelect={handleSelect}
                 >
                     <Tab eventKey="all" title="All">
@@ -65,7 +64,7 @@ const AdminJobListing = () => {
                     </Tab>
                 </Tabs>
             </section>
-            {jobListing?.totalCount > 5 ? <div className="d-flex justify-content-between align-items-center mb-4">
+            {jobListing?.totalCount > 5 ? <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
                 <p className="showing-result">Showing {(jobListing?.data?.length)} results</p>
                 <RexettPagination number={jobListing?.totalPages} setPage={setPage} page={page} />
             </div> : ""}

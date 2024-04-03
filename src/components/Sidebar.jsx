@@ -12,19 +12,23 @@ import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { IoBriefcase } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
+import { Button } from "react-bootstrap";
 
-const Sidebar = ({sideBarActive}) => {
+const Sidebar = ({sideBarActive , closemainSidebar}) => {
     const logout=()=>{
        localStorage.clear()
         window.location.href="/"
     }
     return(
         <>
-            <aside className="sidebar">
+            <aside className={sideBarActive ? "sidebar active" : "sidebar"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
-                        <div className="sidebar-logo mb-3">
-                            <img src={sidebarLogo} alt="Sidebar Logo" />
+                        <div className="d-flex justify-content-between align-items-center pe-4 mb-3">
+                            <div className="sidebar-logo">
+                                <img src={sidebarLogo} alt="Sidebar Logo" />
+                            </div>
+                            <Button onClick={closemainSidebar} variant="transparent" className="main-btn outline-main-btn px-3 bg-white d-lg-none">&times;</Button>
                         </div>
                         <NavLink to={"/dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
                         <ul className="sidebar-listing py-0">

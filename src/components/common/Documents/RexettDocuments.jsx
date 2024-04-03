@@ -259,7 +259,7 @@ const RexettDocuments = ({ currentRole }) => {
 
                         </section> </Col> : ""}
                         <Col md={12}>
-                            <div className="d-flex gap-3">
+                            <div className="d-md-flex gap-3">
                                 <div className={showFilterMenu ? "side-filter active" : "side-filter"}>
                                     <h3 className="section-head-sub">Filter</h3>
                                     <Form className="mb-4">

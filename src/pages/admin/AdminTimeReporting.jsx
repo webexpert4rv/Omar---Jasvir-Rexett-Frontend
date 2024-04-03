@@ -67,8 +67,8 @@ const AdminTimeReporting = () => {
             <section>
                 <div className="filter-section mb-4">
                     <Form>
-                        <div className="d-flex gap-3 justify-content-between align-items-end">
-                            <div className="d-flex gap-3">
+                        <div className="d-md-flex gap-3 justify-content-between align-items-end">
+                            <div className="mb-md-0 mb-3">
                                 <div>
                                     <Form.Select className="filter-select shadow-none">
                                         <option value="" selected disabled>Select Clients</option>
