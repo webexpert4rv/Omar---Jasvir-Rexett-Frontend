@@ -386,7 +386,7 @@ ul
     width: 30px;
     height: 30px;
 }
-.notification-btn:before
+.notification-btn.active:before
 {
     content: '';
     position: absolute;

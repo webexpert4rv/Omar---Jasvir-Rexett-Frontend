@@ -20,7 +20,8 @@ const initialAdminData = {
     adminApproveReject:[],
     suggestedDeveloper:[],
     adminDashboard:[],
-    approvedLoader :false
+    approvedLoader :false,
+    notificationList:[]
 }
 
 export const adminDataSlice = createSlice({
@@ -102,11 +103,17 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
         },
 
+        setNotificationList:(state,action)=>{
+            state.notificationList = action.payload.data
+            state.smallLoader = false;
+            state.screenLoader = false;
+        },
+
 
     }
 })
 
-export const {setSuggestedDeveloper, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const {setSuggestedDeveloper,setNotificationList, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -356,6 +363,22 @@ export function editTimeReporting(payload) {
             if (result.status === 200) {
                 toast.success(result.data?.message ?result.data?.message:result?.message,  { position: "top-center" })
                 dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function getNotification(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.get(`common/notifications`)
+            if (result.status === 200) {
+                dispatch(setNotificationList(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
