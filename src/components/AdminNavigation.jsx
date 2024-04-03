@@ -1,9 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { HiBars3 } from "react-icons/hi2";
 import { Dropdown } from "react-bootstrap";
+import { NOTIFICATIONBASEURL, getToken } from "../helper/utlis";
+import io from 'socket.io-client';
+import { useDispatch, useSelector } from "react-redux";
+import { getNotification } from "../redux/slices/adminDataSlice";
 const AdminNavigation = ({ handleSidebar }) => {
+ const dispatch =useDispatch()
+ const [nottificationData,setNotificationData]=useState([])
+ const {notificationList}=useSelector(state=>state.adminData)
+ const [newJobPost,setNewJobPost]=useState(null)
+
+    useEffect(()=>{
+        dispatch(getNotification())
+    },[])
+
+    useEffect(()=>{
+        setNotificationData([newJobPost,...notificationList])
+    },[notificationList,newJobPost])
+
+    const token=getToken("token")
+    useEffect(() => {
+        // Connect to the Socket.IO server
+        const socket = io(NOTIFICATIONBASEURL);
+    
+        // Define event handlers
+        socket.on('connect', () => {
+          console.log('Connected to Socket.IO server');
+        });
+    
+        socket.on('newJobPost', (jobPost) => {
+            console.log('New job post received:', jobPost);
+            setNewJobPost(jobPost)
+            // Handle the new job post data here
+          });
+    
+        socket.on('disconnect', () => {
+          console.log('Disconnected from Socket.IO server');
+        });
+    
+        // Clean up the socket connection when the component unmounts
+        return () => {
+          socket.disconnect();
+        };
+      }, []); //
     return (
         <>
             <header className="mb-4">
@@ -14,31 +56,24 @@ const AdminNavigation = ({ handleSidebar }) => {
                     <div className="d-flex align-items-center gap-3">
                         <Dropdown className="notification-dropdown">
                             <Dropdown.Toggle variant="transparent" id="dropdown-basic" className="notification-dropdown-toggle p-0">
-                                <button className="notification-btn"><FaBell /></button>
+                                <button className={`notification-btn ${newJobPost!==null?"active":""} `}><FaBell /></button>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className="notification-dropdown-menu">
                                 <div className="dropdown-notify-wrapper">
-                                    <div className="dropdown-notify-item">
-                                        <h4 className="dropdown-notifyheading">Amazon has been posted job</h4>
-                                        <p className="dropdown-notifytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                   {nottificationData?.map((item)=>{
+                                    return (
+                                        <>
+                                         <div className="dropdown-notify-item">
+                                        <h4 className="dropdown-notifyheading">{item?.title}</h4>
+                                        <p className="dropdown-notifytext">{item?.message}</p>
                                         <div className="text-end mt-2">
                                             <span className="dropdown-notify-time">Just now</span>
                                         </div>
                                     </div>
-                                    <div className="dropdown-notify-item">
-                                        <h4 className="dropdown-notifyheading">You have suggested 5 developers for figma design job</h4>
-                                        <p className="dropdown-notifytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <div className="text-end mt-2">
-                                            <span className="dropdown-notify-time">10:10 AM</span>
-                                        </div>
-                                    </div>
-                                    <div className="dropdown-notify-item">
-                                        <h4 className="dropdown-notifyheading">Amazon wants to end the figma design job</h4>
-                                        <p className="dropdown-notifytext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                        <div className="text-end mt-2">
-                                            <span className="dropdown-notify-time">02:30 PM</span>
-                                        </div>
-                                    </div>
+                                        </>
+                                    )
+                                   })}
+
                                 </div>
                                 <Dropdown.Item href="/notification-admin" className="see-all-notify mt-4"> See All</Dropdown.Item>
                                 <Dropdown.Item href="#" className="text-center no-notification">You have no notification</Dropdown.Item>

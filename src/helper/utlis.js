@@ -1,3 +1,4 @@
+export const NOTIFICATIONBASEURL = "https://rexett-backend.rvtechnologies.info/"
 export function getToken(tokenKey) {
     let token = localStorage.getItem(tokenKey);
     return token
