@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,13 +6,23 @@ import { getAllJobPostedList, getJobCategoryList } from "../../redux/slices/clie
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { FaEye } from "react-icons/fa6";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+
+
+
 const JobListing = () => {
+    const [page, setPage] = useState(1)
     const dispatch = useDispatch();
     const { allJobPostedList, jobCategoryList, screenLoader } = useSelector(state => state.clientData)
+    console.log(jobCategoryList, "jobCategoryList")
+    console.log(allJobPostedList, "allJobPostedList")
+    
     useEffect(() => {
-        dispatch(getAllJobPostedList("3"))
         dispatch(getJobCategoryList())
     }, [dispatch])
+
+    useEffect(() => {
+        dispatch(getAllJobPostedList(page))
+    }, [page])
 
     const getCategory = (cat) => {
         let data = jobCategoryList.find((item) => item.id == cat)
@@ -31,7 +41,7 @@ const JobListing = () => {
                 <>
                     <section className="job-posted-section">
                         <div className="job-posted-wrapper">
-                            {allJobPostedList?.map((item) => {
+                            {allJobPostedList?.data?.map((item) => {
                                 return (
                                     <>
                                         <div className="job-posted-list" key={item.id}>
@@ -75,9 +85,12 @@ const JobListing = () => {
                                     </>
                                 )
                             })}
-
                         </div>
                     </section>
+                   {allJobPostedList?.totalCount>5 ?  <div className="d-flex justify-content-between align-items-center mb-4">
+                   <p className="showing-result">Showing {(allJobPostedList?.data?.length)} results</p> 
+                <RexettPagination number={allJobPostedList?.totalPages} setPage={setPage} page={page}/>
+            </div> : ""}
                 </>
             }
         </>

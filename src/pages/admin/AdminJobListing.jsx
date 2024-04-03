@@ -14,15 +14,21 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 
 const AdminJobListing = () => {
+    const [page, setPage] = useState(1)
+
     const dispatch = useDispatch()
     const { jobListing, screenLoader } = useSelector(state => state.adminData)
     const { jobCategoryList } = useSelector(state => state.clientData)
 
-    console.log(jobListing?.totalPages,"jobListing")
+    console.log(jobListing?.totalPages, "jobListing")
     useEffect(() => {
-        dispatch(adminJobListing())
         dispatch(getJobCategoryList())
     }, [])
+
+    useEffect(() => {
+        dispatch(adminJobListing({page:page}))
+    }, [page])
+
 
     const handleSelect = (key) => {
         let filter = {
@@ -31,6 +37,7 @@ const AdminJobListing = () => {
         }
         dispatch(adminJobListing(filter))
     }
+
 
 
     return (
@@ -58,10 +65,10 @@ const AdminJobListing = () => {
                     </Tab>
                 </Tabs>
             </section>
-            <div className = "d-flex justify-content-between align-items-center mb-4">
-            {jobListing?.totalPages > 5 ?<p className="showing-result">Showing {(jobListing?.data?.length)} results</p> : ""}
-                <RexettPagination number={jobListing?.totalPages} />
-            </div>
+            {jobListing?.totalCount > 5 ? <div className="d-flex justify-content-between align-items-center mb-4">
+                <p className="showing-result">Showing {(jobListing?.data?.length)} results</p>
+                <RexettPagination number={jobListing?.totalPages} setPage={setPage} page={page} />
+            </div> : ""}
         </>
     )
 }

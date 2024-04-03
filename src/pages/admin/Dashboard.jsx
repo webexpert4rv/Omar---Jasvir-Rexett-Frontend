@@ -4,20 +4,28 @@ import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { adminListAssignedDeveloper, adminListClients, getAdminDashboard } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 
 
 
 const AdminDashboard = () => {
     const dispatch = useDispatch()
     const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
+    const {developerDetails} = useSelector(state => state.adminData)
+    const navigate = useNavigate()
     useEffect(() => {
         dispatch(getAdminDashboard())
     }, [])
+
+    const handleCardClick=(id)=>{
+        dispatch(getDeveloperDetails(id))
+        navigate(`/admin-single-developer/${id}`)
+    }
     return (
         <>
         {screenLoader ? <ScreenLoader/> :<div>
@@ -68,7 +76,7 @@ const AdminDashboard = () => {
                         {adminDashboard?.data?.clients.map((item, index) => {
                             return (
                                 <>
-                                    <div className="developer-card client-card">
+                                    <div className="developer-card client-card" >
                                         <div className="user-imgbx ">
                                             <img src={userImg} className="user-img" />
                                         </div>
@@ -101,7 +109,7 @@ const AdminDashboard = () => {
                 { adminDashboard?.data?.assignedDevelopers.map((item, index) => {
                     return (
                         <>
-                            <div className="developer-card">
+                            <div className="developer-card" onClick = {()=>handleCardClick(item?.id)}>
                                 <div className="user-imgbx">
                                     <img src={item?.developer?.profile_picture} className="user-img" />
                                 </div>

@@ -63,6 +63,10 @@ import SingleDeveloper from './components/common/SingleDeveloper/SingleDeveloper
 import SingleClient from './components/common/SingleClient/SingleClient';
 import VendorPublicLayout from './layout/VendorPublicLayout';
 import VendorLogin from './pages/Authentication/VendorLogin';
+import ClientSingleDeveloper from "./pages/views/ClientSingleDeveloper"
+import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
+import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
+
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -116,6 +120,9 @@ function App() {
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
           <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper /></DashboardLayout>} />
+          <Route path="/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
+          <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
+          <Route path="/vendor-single-developer/:id" exact element={<VendorDashboardLayout><VendorSingleDeveloper /></VendorDashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />

@@ -8,17 +8,18 @@ import adminInstance from '../../services/admin.instance';
 
 const initialClientData = {
     screenLoader: false,
-    approvedLoader:false,
+    approvedLoader: false,
     smallLoader: false,
-    assignedDeveloperList:[],
-    clientProfileDetails:{},
-    timeReportingData:[],
-    folderData:[],
-    jobCategoryList:[],
-    skillList:[],
-    allJobPostedList:[],
-    jobPostedData:{},
-    earnedBack:{}
+    assignedDeveloperList: [],
+    clientProfileDetails: {},
+    timeReportingData: [],
+    folderData: [],
+    jobCategoryList: [],
+    skillList: [],
+    allJobPostedList: {},
+    jobPostedData: {},
+    earnedBack: {},
+    developerDetails:{},
 }
 
 export const clientDataSlice = createSlice({
@@ -37,7 +38,7 @@ export const clientDataSlice = createSlice({
         },
 
         setAssignDeveloperList: (state, action) => {
-            state.assignedDeveloperList=action.payload
+            state.assignedDeveloperList = action.payload
             state.screenLoader = false;
         },
 
@@ -47,43 +48,43 @@ export const clientDataSlice = createSlice({
             state.screenLoader = false;
         },
 
-        setActionSuccessFully:(state, action) => {
+        setActionSuccessFully: (state, action) => {
             state.smallLoader = false;
             state.approvedLoader = false;
         },
 
-        setClientProfileDetails:(state,action)=>{
-            state.clientProfileDetails=action.payload;
+        setClientProfileDetails: (state, action) => {
+            state.clientProfileDetails = action.payload;
             state.screenLoader = false;
         },
 
-        setTimeReporting:(state,action)=>{
-            state.timeReportingData=action.payload
+        setTimeReporting: (state, action) => {
+            state.timeReportingData = action.payload
             state.smallLoader = false;
-            
+
 
         },
-        setFolderData:(state,action)=>{
-            let comibedFile=[...action.payload.files,...action.payload.shared_files]
-            state.folderData=comibedFile;
+        setFolderData: (state, action) => {
+            let comibedFile = [...action.payload.files, ...action.payload.shared_files]
+            state.folderData = comibedFile;
             state.screenLoader = false;
         },
-        setJobCategory:(state,action)=>{
-            state.jobCategoryList=action.payload
+        setJobCategory: (state, action) => {
+            state.jobCategoryList = action.payload
         },
-        setSkillList:(state,action)=>{
-            state.skillList=action.payload
+        setSkillList: (state, action) => {
+            state.skillList = action.payload
         },
-        setAllJobPostedList:(state,action)=>{
-            state.allJobPostedList=action.payload
+        setAllJobPostedList: (state, action) => {
+            state.allJobPostedList = action.payload
             state.screenLoader = false;
         },
-        setJobPostedData:(state,action)=>{
-            state.jobPostedData=action.payload
+        setJobPostedData: (state, action) => {
+            state.jobPostedData = action.payload
             state.screenLoader = false;
         },
-        setEarnedBackData:(state,action)=>{
-            state.earnedBack=action.payload
+        setEarnedBackData: (state, action) => {
+            state.earnedBack = action.payload
             state.screenLoader = false;
         },
         // setCurrentJobStatusChnage:(state,action)=>{
@@ -91,11 +92,14 @@ export const clientDataSlice = createSlice({
         //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
         //    console.log(d,"ppp")
         // }
+        setDeveloperDetails:(state,action) =>{
+            state.developerDetails = action.payload
+        }
 
     }
 })
 
-export const { setAllJobPostedList,setScreenLoader,setJobPostedData,setApprovedLoader,setEarnedBackData, setFailClientData,setAssignDeveloperList,setFolderData,setSmallLoader,setJobCategory,setSkillList,setActionSuccessFully,setTimeReporting,setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList, setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -121,10 +125,10 @@ export function updateClientProfile(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('client/update-profile/',{...payload})
+            let result = await clientInstance.post('client/update-profile/', { ...payload })
             if (result.status === 200) {
-              dispatch(setActionSuccessFully())
-              toast.success("Profile is Updated", { position: "top-center" })
+                dispatch(setActionSuccessFully())
+                toast.success("Profile is Updated", { position: "top-center" })
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -151,15 +155,15 @@ export function getClientProfile(payload, callback) {
 }
 
 
-export function timeReporting(payload,role, callback) {
+export function timeReporting(payload, role, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
             let result
-            if(role==="client"){
-                 result = await clientInstance.get(generateApiUrl(payload,`client/time-reports`))
-            }else{
-                 result = await clientInstance.get(generateApiUrl(payload,`developer/time-reports`)) 
+            if (role === "client") {
+                result = await clientInstance.get(generateApiUrl(payload, `client/time-reports`))
+            } else {
+                result = await clientInstance.get(generateApiUrl(payload, `developer/time-reports`))
             }
             if (result.status === 200) {
                 dispatch(setTimeReporting(result.data.data))
@@ -178,7 +182,7 @@ export function getFolderData(payload, role, callback) {
 
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload,`${role}/documents`))  
+            let result = await clientInstance.get(generateApiUrl(payload, `${role}/documents`))
             if (result.status === 200) {
                 // dispatch(setTimeReporting(result.data.data))
                 dispatch(setFolderData(result.data.data))
@@ -196,11 +200,11 @@ export function clientJobPost(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`client/post-job`,{...payload})
-                toast.success("Job successfully Posted", { position: "top-center" })  
-                dispatch(setActionSuccessFully())
-                return callback()
-            
+            let result = await clientInstance.post(`client/post-job`, { ...payload })
+            toast.success("Job successfully Posted", { position: "top-center" })
+            dispatch(setActionSuccessFully())
+            return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -215,11 +219,11 @@ export function singleJobPostData(payload, callback) {
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get(`client/job-detail/${payload}`)
-                // toast.success("Job successfully Posted", { position: "top-center" })  
-                dispatch(setJobPostedData(result.data))
-                dispatch(setActionSuccessFully())
-                return callback()
-            
+            // toast.success("Job successfully Posted", { position: "top-center" })  
+            dispatch(setJobPostedData(result.data))
+            dispatch(setActionSuccessFully())
+            return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -269,8 +273,9 @@ export function getAllJobPostedList(payload, callback) {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`client/job-list?page=${payload}`)
+            console.log(result?.data, "result")
             if (result.status === 200) {
-                dispatch(setAllJobPostedList(result.data.data))
+                dispatch(setAllJobPostedList(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -279,13 +284,13 @@ export function getAllJobPostedList(payload, callback) {
         }
     };
 }
- 
-export function publishedPost(payload,status,callback) {
+
+export function publishedPost(payload, status, callback) {
     return async (dispatch) => {
 
         dispatch(setApprovedLoader())
         try {
-            let result = await clientInstance.put(`client/jobs/${payload}/unpublish`,{...status})
+            let result = await clientInstance.put(`client/jobs/${payload}/unpublish`, { ...status })
             if (result.status === 200) {
                 dispatch(setActionSuccessFully())
                 toast.success("Job status is changed", { position: "top-center" })
@@ -298,8 +303,8 @@ export function publishedPost(payload,status,callback) {
         }
     };
 }
- 
-export function approvedClient(payload,status) {
+
+export function approvedClient(payload, status) {
     return async (dispatch) => {
 
         dispatch(setApprovedLoader())
@@ -316,17 +321,17 @@ export function approvedClient(payload,status) {
         }
     };
 }
- 
-export function editTimeReportOfDev(payload,callback) {
+
+export function editTimeReportOfDev(payload, callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`client/edit-time-report-request`,{...payload})
-                dispatch(setActionSuccessFully())
-                toast.success("Developer Time reports Updated successfully", { position: "top-center" })
-                return callback()
-            
+            let result = await clientInstance.post(`client/edit-time-report-request`, { ...payload })
+            dispatch(setActionSuccessFully())
+            toast.success("Developer Time reports Updated successfully", { position: "top-center" })
+            return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -335,16 +340,16 @@ export function editTimeReportOfDev(payload,callback) {
     };
 }
 
-export function filePreassignedUrlGenerate(payload,callback) {
+export function filePreassignedUrlGenerate(payload, callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`common/upload-file`,payload)
-                dispatch(setActionSuccessFully())
-                // toast.success("Folder Created successfully", { position: "top-center" })
-                return callback(result?.data?.data.Location)
-            
+            let result = await clientInstance.post(`common/upload-file`, payload)
+            dispatch(setActionSuccessFully())
+            // toast.success("Folder Created successfully", { position: "top-center" })
+            return callback(result?.data?.data.Location)
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -353,19 +358,19 @@ export function filePreassignedUrlGenerate(payload,callback) {
     };
 }
 
-export function callPreSignedUrlResponse(payload,file,callback) {
+export function callPreSignedUrlResponse(payload, file, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result=await clientInstance.put(payload, file, {
+            let result = await clientInstance.put(payload, file, {
                 headers: {
-                  'Content-Type': file.type, // Set the content type based on the file type
+                    'Content-Type': file.type, // Set the content type based on the file type
                 },
-              })
-                dispatch(setActionSuccessFully())
-                // toast.success("Folder Created successfully", { position: "top-center" })
-                // return callback(result?.data)
-            
+            })
+            dispatch(setActionSuccessFully())
+            // toast.success("Folder Created successfully", { position: "top-center" })
+            // return callback(result?.data)
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -374,18 +379,18 @@ export function callPreSignedUrlResponse(payload,file,callback) {
     };
 }
 
-export function createNewFolderAndFile(payload,callback) {
+export function createNewFolderAndFile(payload, callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
             let result;
 
-                result = await clientInstance.post(`common/documents/create-folder-or-file`,{...payload})
-                dispatch(setActionSuccessFully())
-                toast.success("Folder Created successfully", { position: "top-center" })
-                return callback(result?.data?.data?.parent_id)
-            
+            result = await clientInstance.post(`common/documents/create-folder-or-file`, { ...payload })
+            dispatch(setActionSuccessFully())
+            toast.success("Folder Created successfully", { position: "top-center" })
+            return callback(result?.data?.data?.parent_id)
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -393,16 +398,16 @@ export function createNewFolderAndFile(payload,callback) {
         }
     };
 }
-export function renameFolderAndFile(payload,id,callback) {
+export function renameFolderAndFile(payload, id, callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`common/documents/${id}/rename-folder`,{...payload})
-                dispatch(setActionSuccessFully())
-                toast.success("Folder Updated successfully", { position: "top-center" })
-                return callback(result?.data?.data?.parent_id)
-            
+            let result = await clientInstance.put(`common/documents/${id}/rename-folder`, { ...payload })
+            dispatch(setActionSuccessFully())
+            toast.success("Folder Updated successfully", { position: "top-center" })
+            return callback(result?.data?.data?.parent_id)
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -411,16 +416,16 @@ export function renameFolderAndFile(payload,id,callback) {
     };
 }
 
-export function _deleteFileAndFolder(payload,callback) {
+export function _deleteFileAndFolder(payload, callback) {
     return async (dispatch) => {
 
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.delete(`common/documents/delete-folder-or-file/${payload}`)
-                dispatch(setActionSuccessFully())
-                toast.success("File is Deleted successfully", { position: "top-center" })
-                return callback()
-            
+            dispatch(setActionSuccessFully())
+            toast.success("File is Deleted successfully", { position: "top-center" })
+            return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -431,17 +436,17 @@ export function _deleteFileAndFolder(payload,callback) {
 
 
 
-export function changeJobStatus(currentTb,payload,data,callback) {
+export function changeJobStatus(currentTb, payload, data, callback) {
     return async (dispatch) => {
-      
+
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`client/jobs/${payload}/change-job-status`,{...data})
+            let result = await clientInstance.put(`client/jobs/${payload}/change-job-status`, { ...data })
             dispatch(setActionSuccessFully())
-                toast.success("Job status is Updated", { position: "top-center" })
-                return callback()
-            
+            toast.success("Job status is Updated", { position: "top-center" })
+            return callback()
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -452,16 +457,28 @@ export function changeJobStatus(currentTb,payload,data,callback) {
 
 export function earnedBackOfDeveloper(paylaod) {
     return async (dispatch) => {
-       dispatch(setScreenLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`client/earned-back`)
             dispatch(setEarnedBackData(result.data.data))
-                // toast.success("Job status is Updated", { position: "top-center" })
-            
+            // toast.success("Job status is Updated", { position: "top-center" })
+
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };
+}
+export function getDeveloperDetails(id) {
+    return async (dispatch) => {
+        try {
+            let result = await clientInstance.get(`/common/developer-details/${id}`)
+            dispatch(setDeveloperDetails(result.data.data))
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    }
 }

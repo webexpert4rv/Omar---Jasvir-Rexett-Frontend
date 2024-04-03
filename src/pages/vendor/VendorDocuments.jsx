@@ -84,7 +84,7 @@ const VendorDocuments = () => {
         //     </section>
         // </>
         <>
-        <RexettDocuments currentRole="client"/>
+        <RexettDocuments currentRole="vendor"/>
        </>
     );
 };

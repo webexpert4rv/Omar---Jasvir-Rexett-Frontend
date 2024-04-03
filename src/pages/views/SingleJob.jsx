@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
-import userImg from '../../assets/img/user-img.jpg'
+// import userImg from '../../assets/img/user-img.jpg'
+
 import { Link, useLocation } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";

@@ -5,20 +5,18 @@ import 'react-responsive-pagination/themes/classic.css';
 import { adminJobListing } from "../../redux/slices/adminDataSlice";
 import { Pagination } from "react-bootstrap";
 
-const RexettPagination = ({number }) => {
+const RexettPagination = ({number,setPage,page }) => {
   const dispatch = useDispatch()
-  const [page, setPage] = useState(1)
+  // const [page, setPage] = useState(1)
  
 
-  const handlePageChange = (page) => {
-    dispatch(adminJobListing({ page: page }))
-    setPage(page)
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber)
 
   }
 
   return (
     <>
-    { number > 5 ?
         <Pagination className="pagination">
           <Pagination.Prev
             className="pagination-arrow me-3"
@@ -44,8 +42,7 @@ const RexettPagination = ({number }) => {
             disabled={page === number}
           />
         </Pagination>:
-        ""
-}
+       
     </>
   );
 };

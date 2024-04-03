@@ -5,26 +5,27 @@ import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import userImg from '../../assets/img/user-img.jpg'
 
-const Cards = (cardDetails) => {
+const Cards = ({item , handleCardClick}) => {
+    console.log(item?.developer?.id,"item")
     return (
         <>
-            <div className="developer-card">
+            <div className="developer-card" onClick={()=>handleCardClick(item?.developer?.id)}>
                 <div className="user-imgbx">
-                    <img src={cardDetails?.item?.developer?.profile_picture} className="user-img" />
+                    <img src={item?.developer?.profile_picture} className="user-img" />
                 </div>
                 <div className="text-center">
-                    <h3 className="user-name">{cardDetails?.item?.developer?.name}</h3>
-                    <p className="designation-user">{cardDetails?.item?.developer?.developer_detail?.professional_title}</p>
-                    <p className="email-user">{cardDetails?.item?.developer?.email}</p>
+                    <h3 className="user-name">{item?.developer?.name}</h3>
+                    <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
+                    <p className="email-user">{item?.developer?.email}</p>
                     <ul className="social-icons ">
                         <li>
-                            <Link to={cardDetails?.item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
+                            <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
                         </li>
                         <li>
-                            <Link to={cardDetails?.item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
+                            <Link to={item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                         </li>
                         <li>
-                            <Link to={cardDetails?.item?.developer?.developer_detail?.email}><MdEmail /></Link>
+                            <Link to={item?.developer?.developer_detail?.email}><MdEmail /></Link>
                         </li>
                     </ul>
                 </div>
