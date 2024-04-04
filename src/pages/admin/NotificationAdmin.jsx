@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const NotificationAdmin = () => {
+<<<<<<< HEAD
     const navigate=useNavigate()
     const [currenTab,setCurrentTabs]=useState('allNotifications')
     const [nottificationData,setNotificationData]=useState([])
@@ -17,6 +18,11 @@ const NotificationAdmin = () => {
 },[notificationList,currenTab])
 
   const handleNotification=(id)=>{
+=======
+  const navigate = useNavigate()
+  const { notificationList } = useSelector((state) => state.adminData);
+  const handleNotification = (id) => {
+>>>>>>> 0841a0a (Fix the functionality issues)
     navigate(`/admin-single-job/${id}`)
   }
 
