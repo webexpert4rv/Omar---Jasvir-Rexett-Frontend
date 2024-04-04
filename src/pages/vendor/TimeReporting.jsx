@@ -1,28 +1,87 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
-const VendorTimeReporting = () => {
+import { useDispatch, useSelector } from "react-redux";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { getVendorTimeReporting } from "../../redux/slices/vendorDataSlice";
 
+
+const VendorTimeReporting = () => {
+    const dispatch = useDispatch()
+    const { vendorTimeReport, screenLoader } = useSelector(state => state.vendorData)
+    const [contractId, setContractID] = useState(null)
+    const [showEditTimeModal, setShowEditTimeModal] = useState(false);
+    const [developerData, setDeveloperData] = useState([])
+
+    useEffect(() => {
+        let newContacts = [...vendorTimeReport]
+        let d = newContacts.map((item, index) => {
+            return {
+                ...item,
+                newData: item.contracts[index] ? item.contracts[index] : item.contracts[0]
+            };
+        });
+
+        setDeveloperData(d)
+
+    }, [vendorTimeReport])
+
+    const handleShowEditTimeModal = () => {
+        setShowEditTimeModal(true);
+    };
+    const handleCloseEditTimeModal = () => {
+        setShowEditTimeModal(false);
+    };
+
+    const [showUploadInvoice, setShowUploadInvoice] = useState(false);
+    const handleShowUploadInvoice = (id) => {
+        setShowUploadInvoice(true);
+        setContractID(id)
+    };
+
+    const handleCloseUploadInvoice = () => {
+        setShowUploadInvoice(false);
+    };
+    useEffect(() => {
+        dispatch(getVendorTimeReporting())
+    }, [])
+
+    const contractName = (data) => {
+        let devName = data.map((item) => {
+            return { dev: item?.contractDetails?.developer.name }
+        })
+        return devName
+    }
+
+    const handleDeveloper = (e, inx) => {
+        let newInx = e.target.value
+        let newDev = [...developerData]
+        newDev[inx].newData = newDev[inx].contracts[newInx]
+        setDeveloperData(newDev)
+    }
     return (
         <>
             <section>
-                <Form className="mb-4 filter-section">
-                    <div className="d-flex gap-3 justify-content-between align-items-end">
-                        <div className="d-flex gap-3">
-                            <div>
-                                <Form.Control type="date" className="filter-field shadow-none"></Form.Control>
-                            </div>
-                            <div>
-                                <Form.Select className="filter-select shadow-none">
-                                    <option value="" selected disabled>Select Clients</option>
-                                    <option value="bmw">BMW</option>
-                                    <option value="volvo">Volvo</option>
-                                    <option value="amazon">Amazon</option>
-                                </Form.Select>
+                <div className="filter-section mb-4">
+                    <Form>
+                        <div className="d-flex gap-3 justify-content-between align-items-end">
+                            <div className="d-flex gap-3">
+                                <div>
+                                    <Form.Select className="filter-select shadow-none">
+                                        <option value="" selected disabled>Select Clients</option>
+                                        {
+                                            (vendorTimeReport)?.map((item) => {
+                                                return (<>
+                                                    <option value={item?.client_details?.name}>{item?.client_details?.name}</option>
+                                                </>)
+                                            })
+                                        }
+                                    </Form.Select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Form>
+                    </Form>
+                </div>
                 <div>
                     <div className="table-responsive">
                         <table className="table time-table table-bordered table-ui-custom">
@@ -46,79 +105,47 @@ const VendorTimeReporting = () => {
                                     Redeem
                                 </th>
                                 <th className="time-table-head">
+                                    Invoice
+                                </th>
+                                <th className="time-table-head">
                                     Contract
                                 </th>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
-                                    <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
-                                    <td className="time-table-data">N/A</td>
-                                    <td className="time-table-data">Hourly</td>
-                                </tr>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
-                                    <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
-                                    <td className="time-table-data">N/A</td>
-                                    <td className="time-table-data">Hourly</td>
-                                </tr>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
-                                    <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
-                                    <td className="time-table-data">28 hrs</td>
-                                    <td className="time-table-data">Hourly</td>
-                                </tr>
-                                <tr>
-                                    <td className="time-table-data">Amazon</td>
-                                    <td className="time-table-data">8</td>
-                                    <td className="time-table-data">
-                                        <Form.Select className="status-select shadow-none">
-                                            <option value="" selected disabled>Developer</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                            <option value="rohit_sharma">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </td>
-                                    <td className="time-table-data">400 hrs</td>
-                                    <td className="time-table-data">Remote</td>
-                                    <td className="time-table-data">N/A</td>
-                                    <td className="time-table-data">Hourly</td>
-                                </tr>
-                            </tbody>
+                            {screenLoader ? <ScreenLoader /> : <tbody>
+                                {
+                                    developerData?.map((item, index) => {
+                                        return (
+                                            <>
+                                                <tr>
+                                                    <td className="time-table-data">{item?.client_details?.name}</td>
+                                                    <td className="time-table-data">{item?.contracts?.length}</td>
+                                                    <td className="time-table-data">
+                                                        <Form.Select className="status-select shadow-none" onChange={(e) => handleDeveloper(e, index)}>
+                                                            {
+                                                                contractName(item?.contracts)?.map((el, inx) => {
+                                                                    return (
+                                                                        <>
+                                                                            <option value={inx}>{el?.dev}</option>
+                                                                        </>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Form.Select>
+                                                    </td>
+                                                    <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
+                                                    <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
+                                                    <td className="time-table-data">N/A</td>
+                                                    <td className="time-table-data">
+                                                        <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
+                                                    </td>
+                                                    <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
+                                                </tr>
+                                            </>
+                                        )
+                                    })
+                                }
+
+                            </tbody>}
                         </table>
                     </div>
                 </div>
