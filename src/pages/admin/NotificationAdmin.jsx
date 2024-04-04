@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Tab, Tabs } from "react-bootstrap";
 import { FaBell } from "react-icons/fa6";
 import { useSelector } from "react-redux";
@@ -7,11 +7,22 @@ import { useNavigate } from "react-router-dom";
 
 
 const NotificationAdmin = () => {
-  const navigate = useNavigate()
+    const navigate=useNavigate()
+    const [currenTab,setCurrentTabs]=useState('allNotifications')
+    const [nottificationData,setNotificationData]=useState([])
   const { notificationList } = useSelector((state) => state.adminData);
-  const handleNotification = (id) => {
+
+  useEffect(()=>{
+    setNotificationData(notificationList[currenTab])   
+},[notificationList,currenTab])
+
+  const handleNotification=(id)=>{
     navigate(`/admin-single-job/${id}`)
   }
+
+  const handleSelect = (key) => {
+    setNotificationData(notificationList[key])   
+}
   return (
     <>
       <section className="notification-screen card-box">
@@ -25,15 +36,16 @@ const NotificationAdmin = () => {
           </Button>
         </div>
         <Tabs
-          defaultActiveKey="all_notify"
+          defaultActiveKey="allNotifications"
           id="justify-tab-example"
           className="mb-3 notification-tabs"
           justify
+          onSelect={handleSelect}
         >
-          <Tab eventKey="all_notify" title="All">
+          <Tab eventKey="allNotifications" title="All">
             <div className="notification-main pt-4">
               <div className="notification-list">
-                {notificationList?.map((item) => {
+                {nottificationData?.map((item) => {
                   return (
                     <>
                       <div className="notification-wrapper" onClick={() => handleNotification(item?.reference_id)}>
@@ -64,7 +76,7 @@ const NotificationAdmin = () => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="new_notify" title="New">
+          <Tab eventKey="readNotifications" title="New">
             <div className="notification-main pt-4">
               <div className="notification-list">
                 <div className="notification-wrapper">
@@ -170,7 +182,7 @@ const NotificationAdmin = () => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="unread_notify" title="Read">
+          <Tab eventKey="unreadNotifications" title="Read">
             <div className="notification-main pt-4">
               <div className="notification-list">
                 <div className="notification-wrapper">
