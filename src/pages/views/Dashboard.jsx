@@ -17,16 +17,16 @@ const Dashboard = (cardDetails) => {
     const dispatch = useDispatch();
     const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
     const navigate = useNavigate()
+
     useEffect(() => {
         dispatch(developerAssignList(1));
     }, [dispatch])
 
-  const handleCardClick=(id)=>{
-    console.log(id,"id")
-    dispatch(getDeveloperDetails(id))
-    navigate(`/client-single-developer/${id}`)
+    const handleCardClick = (id) => {
+        dispatch(getDeveloperDetails(id))
+        navigate(`/client-single-developer/${id}`)
 
-  }
+    }
     return (
         <>
             <h2 className="section-head">Overview</h2>
@@ -56,10 +56,9 @@ const Dashboard = (cardDetails) => {
                             <div className="developers-list pt-3" >
                                 {
                                     assignedDeveloperList?.map((item, index) => {
-                                        console.log(item,"item")
                                         return (
                                             <>
-                                                <Cards item={item} handleCardClick= {()=>handleCardClick(item?.developer?.id)} />
+                                                <Cards item={item} handleCardClick={() => handleCardClick(item?.developer?.id)} />
                                             </>
                                         )
                                     })
@@ -78,50 +77,52 @@ const Dashboard = (cardDetails) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    { assignedDeveloperList?.map((item, index) => {
-                                        return (
-                                            <>
-                                        <tr>
-                                            <td>
-                                                <span className="d-flex align-items-center gap-3">
-                                                    <img src={item?.developer?.profile_picture} />
-                                                    <h3 className="user-name color-121212 mb-0">{item?.developer?.name}</h3>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span>
-                                                    <p className="designation-user color-121212 mb-0">{item?.developer?.developer_detail?.professional_title}</p>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span>
-                                                    <p className="designation-user color-121212 mb-0">{item?.developer?.email}</p>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <ul className="social-icons mb-0 justify-content-start">
-                                                    <li>
-                                                        <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link to={item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link to={item?.developer?.email}><MdEmail /></Link>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        </>
-                                        )})}
+                                        {assignedDeveloperList?.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <tr>
+                                                        <td>
+                                                            <span className="d-flex align-items-center gap-3">
+                                                                <img src={item?.developer?.profile_picture} />
+                                                                <h3 className="user-name color-121212 mb-0">{item?.developer?.name}</h3>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span>
+                                                                <p className="designation-user color-121212 mb-0">{item?.developer?.developer_detail?.professional_title}</p>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span>
+                                                                <p className="designation-user color-121212 mb-0">{item?.developer?.email}</p>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <ul className="social-icons mb-0 justify-content-start">
+                                                                <li>
+                                                                    <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to={item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to={item?.developer?.email}><MdEmail /></Link>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })}
                                     </tbody>
                                 </table>
+                                <div className="text-center mt-3">
+                                    <Link to={"/hired-developers"} className="link-text-dark">See All</Link>
+                                </div>
                             </div>
                         </Tab.Pane>
+
                     </Tab.Content>
-                    <div className="text-center mt-3">
-                        <Link to={"/hired-developers"} className="link-text-dark">See All</Link>
-                    </div>
                 </Tab.Container>
             </>}
         </>

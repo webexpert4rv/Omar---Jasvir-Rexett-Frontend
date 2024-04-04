@@ -16,75 +16,76 @@ import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 const AdminDashboard = () => {
     const dispatch = useDispatch()
     const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
-    const {developerDetails} = useSelector(state => state.adminData)
+    const { developerDetails } = useSelector(state => state.adminData)
     const navigate = useNavigate()
+
     useEffect(() => {
         dispatch(getAdminDashboard())
     }, [])
 
-    const handleCardClick=(id)=>{
+    const handleCardClick = (id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/admin-single-developer/${id}`)
     }
     return (
         <>
-        {screenLoader ? <ScreenLoader/> :<div>
-            <h2 className="section-head mb-4">Overview</h2>
-            <div className="overview-card-wrapper mb-5">
-                {/* <div className="overview-card">
+            {screenLoader ? <ScreenLoader /> : <div>
+                <h2 className="section-head mb-4">Overview</h2>
+                <div className="overview-card-wrapper mb-5">
+                    {/* <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">Fund</h4>
                         <h3 className="overview-card-heading mb-0">Spent</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div> */}
-                <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Income</h4>
-                        <h3 className="overview-card-heading mb-0">Earned</h3>
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Income</h4>
+                            <h3 className="overview-card-heading mb-0">Earned</h3>
+                        </div>
+                        <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Client Joined</h4>
+                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfClientsJoined}</h3>
+                        </div>
+                        <span className="over-icon"><IoTrendingUpSharp /></span>
+                    </div>
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Vendor Joined</h4>
+                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfVendorsJoined}</h3>
+                        </div>
+                        <span className="over-icon"><IoTrendingUpSharp /></span>
+                    </div>
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Total Jobs Posted</h4>
+                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.totalJobsPosted}</h3>
+                        </div>
+                        <span className="over-icon"><IoTrendingUpSharp /></span>
+                    </div>
                 </div>
-                <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Client Joined</h4>
-                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfClientsJoined}</h3>
-                    </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
-                </div>
-                <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Vendor Joined</h4>
-                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfVendorsJoined}</h3>
-                    </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
-                </div>
-                <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Total Jobs Posted</h4>
-                        <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.totalJobsPosted}</h3>
-                    </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
-                </div>
-            </div>
-            <Row className="mb-5">
-                <Col md={12}>
-                    <div className="d-flex justify-content-between mb-4 ">
-                        <h2 className="section-head-sub">List of clients</h2>
-                    </div>
-                    <div className="developers-list">
-                        {adminDashboard?.data?.clients.map((item, index) => {
-                            return (
-                                <>
-                                    <div className="developer-card client-card" >
-                                        <div className="user-imgbx ">
-                                            <img src={userImg} className="user-img" />
-                                        </div>
-                                        <div className="text-center">
-                                            <h3 className="user-name ">{item?.name}</h3>
-                                            {/* <p className="designation-user">full stack developer</p> */}
-                                            <p className="email-user">{item?.email}</p>
-                                            {/* <ul className="social-icons">
+                <Row className="mb-5">
+                    <Col md={12}>
+                        <div className="d-flex justify-content-between mb-4 ">
+                            <h2 className="section-head-sub">List of clients</h2>
+                        </div>
+                        <div className="developers-list">
+                            {adminDashboard?.data?.clients.map((item, index) => {
+                                return (
+                                    <>
+                                        <div className="developer-card client-card" >
+                                            <div className="user-imgbx ">
+                                                <img src={userImg} className="user-img" />
+                                            </div>
+                                            <div className="text-center">
+                                                <h3 className="user-name ">{item?.name}</h3>
+                                                {/* <p className="designation-user">full stack developer</p> */}
+                                                <p className="email-user">{item?.email}</p>
+                                                {/* <ul className="social-icons">
                                                 <li>
                                                     <Link to={"#"}><FaGithub /></Link>
                                                 </li>
@@ -95,49 +96,50 @@ const AdminDashboard = () => {
                                                     <Link to={"#"}><MdEmail /></Link>
                                                 </li>
                                             </ul> */}
+                                            </div>
                                         </div>
-                                    </div>
-                                </>
-                            )
-                        })}
-                    </div>
-                </Col>
-            </Row>
-            <h2 className="section-head-sub mb-4">List of assigned developers</h2>
-            <div className="developers-list">
+                                    </>
+                                )
+                            })}
+                        </div>
+                    </Col>
+                </Row>
+                <h2 className="section-head-sub mb-4">List of assigned developers</h2>
+                <div className="developers-list">
 
-                { adminDashboard?.data?.assignedDevelopers.map((item, index) => {
-                    return (
-                        <>
-                            <div className="developer-card" onClick = {()=>handleCardClick(item?.id)}>
-                                <div className="user-imgbx">
-                                    <img src={item?.developer?.profile_picture} className="user-img" />
+                    {adminDashboard?.data?.assignedDevelopers.map((item, index) => {
+                        console.log(item?.developer_id,"devlopeerrid")
+                        return (
+                            <>
+                                <div className="developer-card" onClick={() => handleCardClick(item?.developer_id)}>
+                                    <div className="user-imgbx">
+                                        <img src={item?.developer?.profile_picture} className="user-img" />
+                                    </div>
+                                    <div className="text-center">
+                                        <h3 className="user-name">{item?.developer?.name}</h3>
+                                        <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
+                                        <p className="email-user">{item?.developer?.email}</p>
+                                        <ul className="social-icons">
+                                            <li>
+                                                <Link to={`${item?.developer?.developer_detail?.github_url}`}><FaGithub /></Link>
+                                            </li>
+                                            <li>
+                                                <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
+                                            </li>
+                                            <li>
+                                                <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div className="text-center">
-                                    <h3 className="user-name">{item?.developer?.name}</h3>
-                                    <p className="designation-user">{item?.developer?.developer_detail?.professional_title}</p>
-                                    <p className="email-user">{item?.developer?.email}</p>
-                                    <ul className="social-icons">
-                                        <li>
-                                            <Link to={`${item?.developer?.developer_detail?.github_url}`}><FaGithub /></Link>
-                                        </li>
-                                        <li>
-                                            <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
-                                        </li>
-                                        <li>
-                                            <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </>
-                    )
-                })
-                  }
-            </div>
-            <div className="text-center mt-3">
-                <Link to={"/developer-list"} className="link-text-dark">See All</Link>
-            </div>
+                            </>
+                        )
+                    })
+                    }
+                </div>
+                <div className="text-center mt-3">
+                    <Link to={"/developer-list"} className="link-text-dark">See All</Link>
+                </div>
             </div>}
         </>
     )

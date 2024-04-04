@@ -3,7 +3,7 @@ import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Form, Nav, Tab } from "react-bootstrap";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
@@ -12,15 +12,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminListAssignedDeveloper } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+
 const DeveloperList = () => {
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
     const { assignedDeveloper, screenLoader } = useSelector(state => state.adminData)
-
+  
 
     useEffect(() => {
         dispatch(adminListAssignedDeveloper())
     }, [])
+    
 
     const handleSkill = (e) => {
         let filterData = {
@@ -57,7 +59,9 @@ const DeveloperList = () => {
         })
         dispatch(adminListAssignedDeveloper());
     }
-
+   
+    
+    
     return (
         <>
             <h2 className="section-head mb-4">Overview</h2>
@@ -119,7 +123,7 @@ const DeveloperList = () => {
                             {assignedDeveloper.length > 0 ? assignedDeveloper.map((item, index) => {
                                 return (
                                     <>
-                                        <div className="developer-card">
+                                        <div className="developer-card" >
                                             <span className="check-icon"><FaCircleCheck /></span>
                                             <div className="user-imgbx">
                                                 <img src={item?.profile_picture} className="user-img" />
