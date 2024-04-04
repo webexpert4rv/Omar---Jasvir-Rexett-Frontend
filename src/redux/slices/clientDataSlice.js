@@ -110,8 +110,9 @@ export function developerAssignList(payload) {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`client/assigned-developers?page=${payload}`)
+            console.log(result.data.data,"result")
             if (result.status === 200) {
-                dispatch(setAssignDeveloperList(result?.data?.data?.assigned_developers))
+                dispatch(setAssignDeveloperList(result?.data?.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -278,7 +279,6 @@ export function getAllJobPostedList(payload, callback) {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`client/job-list?page=${payload}`)
-            console.log(result?.data, "result")
             if (result.status === 200) {
                 dispatch(setAllJobPostedList(result.data))
             }
