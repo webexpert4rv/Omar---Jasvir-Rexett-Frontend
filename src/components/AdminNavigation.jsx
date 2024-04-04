@@ -14,16 +14,17 @@ const AdminNavigation = ({ handleSidebar }) => {
  const {notificationList}=useSelector(state=>state.adminData)
  const [newJobPost,setNewJobPost]=useState(null)
 
+ console.log(notificationList,"notifcti")
     useEffect(()=>{
         dispatch(getNotification())
     },[])
 
     useEffect(()=>{
         if(newJobPost!==null){
-            setNotificationData([newJobPost,...notificationList])
+            setNotificationData([newJobPost,...notificationList['unreadNotifications']])
 
         }else{
-            setNotificationData(notificationList)
+            setNotificationData(notificationList['unreadNotifications'])
         }
     },[notificationList,newJobPost])
     useEffect(() => {
@@ -51,8 +52,12 @@ const AdminNavigation = ({ handleSidebar }) => {
         };
       }, []); 
 
-      const handleNotification=(id)=>{
-        navigate(`/admin-single-job/${id}`)
+      const handleNotification=(id,data)=>{
+        if(data=="Documents"){
+            navigate(`/admin-documents`)
+        }else{
+            navigate(`/admin-single-job/${id}`)          
+        }
       }
 
       const redirectToallScreen=()=>{
@@ -75,7 +80,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                                    {nottificationData?.map((item)=>{
                                     return (
                                         <>
-                                         <div className="dropdown-notify-item" onClick={()=>handleNotification(item?.reference_id)}>
+                                         <div className="dropdown-notify-item" onClick={()=>handleNotification(item?.reference_id,item?.reference_model)}>
                                         <h4 className="dropdown-notifyheading">{item?.title}</h4>
                                         <p className="dropdown-notifytext">{item?.message}</p>
                                         <div className="text-end mt-2">
