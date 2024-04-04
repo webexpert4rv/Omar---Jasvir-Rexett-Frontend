@@ -94,6 +94,7 @@ export const clientDataSlice = createSlice({
         // }
         setDeveloperDetails:(state,action) =>{
             state.developerDetails = action.payload
+            state.screenLoader = false;
         }
 
     }
@@ -472,6 +473,7 @@ export function earnedBackOfDeveloper(paylaod) {
 }
 export function getDeveloperDetails(id) {
     return async (dispatch) => {
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`/common/developer-details/${id}`)
             dispatch(setDeveloperDetails(result.data.data))

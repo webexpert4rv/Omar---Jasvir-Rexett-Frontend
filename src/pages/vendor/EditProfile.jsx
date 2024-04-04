@@ -5,13 +5,13 @@ import { FaEye } from "react-icons/fa";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { getVenderProfile } from "../../redux/slices/vendorDataSlice";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 
 
 const EditVendorProfile = () => {
     const dispatch = useDispatch()
-    const { vendorProfile } = useSelector(state => state.vendorData)
-    console.log(vendorProfile, "vendorprofile")
+    const { vendorProfile ,screenLoader } = useSelector(state => state.vendorData)
     const {
         register,
         control,
@@ -65,6 +65,7 @@ const EditVendorProfile = () => {
 
     return (
         <>
+       {screenLoader ? <ScreenLoader/>: <>
             <section className="card-box">
                 <div>
                     <div>
@@ -422,6 +423,7 @@ const EditVendorProfile = () => {
                     </div>
                 </div>
             </section>
+        </>}
         </>
     )
 }

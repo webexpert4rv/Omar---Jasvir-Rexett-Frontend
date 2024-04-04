@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import vendorInstance from "../../services/vendor.instance";
 import clientInstance from "../../services/client.instance";
 import { toast } from "react-toastify";
 
@@ -23,10 +22,11 @@ export const vendorDataSlice = createSlice({
         },
         setVendorDashboard: (state, action) => {
             state.vendorDashboard = action.payload
-            state.smallLoader = false;
+            state.screenLoader = false;
         },
         setVendorProfile:(state,action) =>{
-            state.vendorProfile = action.payload   
+            state.vendorProfile = action.payload  
+            state.screenLoader = false; 
         },
         setVendorTimeReport:(state , action)=>{
             state.vendorTimeReport = action.payload
@@ -44,10 +44,9 @@ export default vendorDataSlice.reducer
 
 export function getVendorDashboard() {
     return async (dispatch) => {
-        dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get("vendor/dashboard")
-            console.log(result, "result")
             if (result.status == 200) {
                 dispatch(setVendorDashboard(result.data.data))
             }
@@ -59,9 +58,9 @@ export function getVendorDashboard() {
 }
 export function getVenderProfile(){
     return async (dispatch) =>{
+        dispatch(setScreenLoader())
         try{
             let result = await clientInstance.get("/vendor/get-profile")
-            console.log(result.data,"result-----")
             if (result.status==200){
                 dispatch(setVendorProfile(result.data))
             }
@@ -72,10 +71,9 @@ export function getVenderProfile(){
 }
 export function getVendorTimeReporting (){
     return async (dispatch) =>{
-        // dispatch(setScreenLoader())
+        dispatch(setScreenLoader())
         try{
             let result = await clientInstance.get("/vendor/time-reports")
-            console.log(result?.data?.data,"result-------------")
             if (result.status==200){
                 dispatch(setVendorTimeReport(result?.data?.data))
             }

@@ -6,7 +6,7 @@ import { MdEmail } from "react-icons/md";
 import userImg from '../../assets/img/user-img.jpg'
 
 const Cards = ({item , handleCardClick}) => {
-    console.log(item?.developer?.id,"item")
+    
     return (
         <>
             <div className="developer-card" onClick={()=>handleCardClick(item?.developer?.id)}>

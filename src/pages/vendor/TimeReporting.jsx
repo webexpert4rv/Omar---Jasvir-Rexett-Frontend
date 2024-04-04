@@ -13,7 +13,6 @@ const VendorTimeReporting = () => {
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
 
-    console.log(vendorTimeReport, "vendorTimeReport")
     useEffect(() => {
         let newContacts = [...vendorTimeReport]
         let d = newContacts.map((item, index) => {

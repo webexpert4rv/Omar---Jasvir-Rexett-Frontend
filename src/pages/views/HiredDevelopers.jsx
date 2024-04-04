@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { developerAssignList } from "../../redux/slices/clientDataSlice";
+import { developerAssignList, getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Cards from "../../components/atomic/Cards";
 import { SeeMore } from "../../components/atomic/SeeMore";
@@ -11,10 +11,13 @@ import userImg from "../../assets/img/user-img.jpg";
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { Nav, Tab } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+
 const HiredDevelopers = () => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(1);
+  const navigate = useNavigate()
   const { assignedDeveloperList, screenLoader } = useSelector(
     (state) => state.clientData
   );
@@ -22,6 +25,13 @@ const HiredDevelopers = () => {
   useEffect(() => {
     dispatch(developerAssignList(count));
   }, [dispatch, count]);
+
+
+  const handleCardClick=(id)=>{
+    dispatch(getDeveloperDetails(id))
+    navigate(`/client-single-developer/${id}`)
+  }
+
 
   return (
     <>
@@ -52,7 +62,7 @@ const HiredDevelopers = () => {
                   {assignedDeveloperList?.map((item, index) => {
                     return (
                       <>
-                        <Cards item={item} />
+                        <Cards item={item} handleCardClick={()=>handleCardClick(item?.developer_id)} />
                       </>
                     );
                   })}

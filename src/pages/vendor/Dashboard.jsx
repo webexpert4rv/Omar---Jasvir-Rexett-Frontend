@@ -8,21 +8,22 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getVendorDashboard } from "../../redux/slices/vendorDataSlice";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 
 
 
 const VendorDashboard = () => {
     const dispatch = useDispatch()
-    const { vendorDashboard } = useSelector(state => state.vendorData)
-    const navigate= useNavigate()
-    
+    const { vendorDashboard, smallLoader, screenLoader } = useSelector(state => state.vendorData)
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         dispatch(getVendorDashboard())
     }, [])
 
-    const handleCardClick=(id)=>{
+    const handleCardClick = (id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/vendor-single-developer/${id}`)
     }
@@ -31,16 +32,17 @@ const VendorDashboard = () => {
 
     return (
         <>
-            <h2 className="section-head mb-4">Overview</h2>
-            <div className="overview-card-wrapper mb-5">
-                <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Income</h4>
-                        <h3 className="overview-card-heading mb-0">5000 USD</h3>
+            {screenLoader ? <ScreenLoader /> : <><h2 className="section-head mb-4">Overview</h2>
+                <div className="overview-card-wrapper mb-5">
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Income</h4>
+                            <h3 className="overview-card-heading mb-0">5000 USD</h3>
+                        </div>
+                        <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
-            </div>
+           
             <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom-grey">
                 <h2 className="section-head-sub">List of all register developers</h2>
                 <div className="text-center">
@@ -50,7 +52,7 @@ const VendorDashboard = () => {
             <div className="developers-list mb-5">
                 {vendorDashboard?.all_developers?.map((item, index) => {
                     return (
-                        <div className="developer-card" key={index} onClick={()=>handleCardClick(item?.id)}>
+                        <div className="developer-card" key={index} onClick={() => handleCardClick(item?.id)}>
                             <div className="user-imgbx">
                                 <img src={item?.profile_picture} className="user-img" />
                             </div>
@@ -108,6 +110,7 @@ const VendorDashboard = () => {
                     )
                 })}
             </div>
+            </>}
         </>
     )
 }
