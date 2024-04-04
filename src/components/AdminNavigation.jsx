@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiBars3 } from "react-icons/hi2";
 import { Dropdown } from "react-bootstrap";
 import { NOTIFICATIONBASEURL, getToken } from "../helper/utlis";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getNotification } from "../redux/slices/adminDataSlice";
 const AdminNavigation = ({ handleSidebar }) => {
  const dispatch =useDispatch()
+ const navigate=useNavigate()
  const [nottificationData,setNotificationData]=useState([])
  const {notificationList}=useSelector(state=>state.adminData)
  const [newJobPost,setNewJobPost]=useState(null)
@@ -18,10 +19,13 @@ const AdminNavigation = ({ handleSidebar }) => {
     },[])
 
     useEffect(()=>{
-        setNotificationData([newJobPost,...notificationList])
-    },[notificationList,newJobPost])
+        if(newJobPost!==null){
+            setNotificationData([newJobPost,...notificationList])
 
-    const token=getToken("token")
+        }else{
+            setNotificationData(notificationList)
+        }
+    },[notificationList,newJobPost])
     useEffect(() => {
         // Connect to the Socket.IO server
         const socket = io(NOTIFICATIONBASEURL);
@@ -45,7 +49,15 @@ const AdminNavigation = ({ handleSidebar }) => {
         return () => {
           socket.disconnect();
         };
-      }, []); //
+      }, []); 
+
+      const handleNotification=(id)=>{
+        navigate(`/admin-single-job/${id}`)
+      }
+
+      const redirectToallScreen=()=>{
+        navigate('/notification-admin')
+      }
     return (
         <>
             <header className="mb-4">
@@ -63,7 +75,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                                    {nottificationData?.map((item)=>{
                                     return (
                                         <>
-                                         <div className="dropdown-notify-item">
+                                         <div className="dropdown-notify-item" onClick={()=>handleNotification(item?.reference_id)}>
                                         <h4 className="dropdown-notifyheading">{item?.title}</h4>
                                         <p className="dropdown-notifytext">{item?.message}</p>
                                         <div className="text-end mt-2">
@@ -75,8 +87,8 @@ const AdminNavigation = ({ handleSidebar }) => {
                                    })}
 
                                 </div>
-                                <Dropdown.Item href="/notification-admin" className="see-all-notify mt-4"> See All</Dropdown.Item>
-                                <Dropdown.Item href="#" className="text-center no-notification">You have no notification</Dropdown.Item>
+                                <Dropdown.Item onClick={redirectToallScreen} className="see-all-notify mt-4"> See All</Dropdown.Item>
+                                {/* <Dropdown.Item href="#" className="text-center no-notification">You have no notification</Dropdown.Item> */}
                             </Dropdown.Menu>
                         </Dropdown>
                         <Link to={'/developer-list'} className="text-decoration-none main-btn">List of all developers</Link>
