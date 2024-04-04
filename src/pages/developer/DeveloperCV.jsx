@@ -183,7 +183,7 @@ const DeveloperCV = () => {
                                     return (
                                         <>
                                             <div className="exp-wrapper">
-                                                <p className="exp-year">{`${item?.start_date?.slice(0, 4)}-${item?.is_still_working ? "Present" : item?.end_date?.slice(0, 4)}`} {item?.job_title} </p>
+                                                <p className="exp-year">{`${item?.start_date?.slice(0, 4)}-${item?.is_still_working ? "Present" : item?.end_date?.slice(0, 4)}`} | {item?.job_title} </p>
                                                 <ul className="exp-role">
                                                     <li className="resume-text">{item?.company_name} | <span>{item?.description}</span></li>
                                                 </ul>
@@ -197,7 +197,7 @@ const DeveloperCV = () => {
                                     return (
                                         <React.Fragment key={item.id}>
                                             <div className="exp-wrapper">
-                                                <p className="exp-year">{item?.start_year} - {item?.end_year} | {item?.Degree?.title}</p>
+                                                <p className="exp-year">{item?.start_year} - {item?.end_year ? item?.end_year : "Present"} | {item?.Degree?.title}</p>
                                                 <ul className="exp-role">
                                                     <li className="resume-text">{item?.university_name}</li>
                                                     <li className="resume-text">{item?.Degree?.description}</li>

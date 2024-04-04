@@ -3,10 +3,13 @@ import { Button, Tab, Tabs } from "react-bootstrap";
 import { FaBell } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+
+
 const NotificationAdmin = () => {
-    const navigate=useNavigate()
+  const navigate = useNavigate()
   const { notificationList } = useSelector((state) => state.adminData);
-  const handleNotification=(id)=>{
+  const handleNotification = (id) => {
     navigate(`/admin-single-job/${id}`)
   }
   return (
@@ -33,7 +36,7 @@ const NotificationAdmin = () => {
                 {notificationList?.map((item) => {
                   return (
                     <>
-                      <div className="notification-wrapper" onClick={()=>handleNotification(item?.reference_id)}>
+                      <div className="notification-wrapper" onClick={() => handleNotification(item?.reference_id)}>
                         <span className="bell-icon">
                           <FaBell />
                         </span>
@@ -44,13 +47,13 @@ const NotificationAdmin = () => {
                               <span className="new-notify">New</span>
                             </h3>
                             <p className="notification-text">
-                             {
+                              {
                                 item?.message
-                             }
+                              }
                             </p>
                           </div>
                           <div className="notify-recieve">
-                            <span className="notify-date">{item?.created_at.slice(0,10)}</span>
+                            <span className="notify-date">{item?.created_at.slice(0, 10)}</span>
                             {/* <span className="notify-time">Just Now</span> */}
                           </div>
                         </div>
