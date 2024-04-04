@@ -183,7 +183,7 @@ export function getFolderData(payload, role, callback) {
 
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload,`${role}/documents`))  
+            let result = await clientInstance.get(generateApiUrl(payload, `${role}/documents`))
             if (result.status === 200) {
                 // dispatch(setTimeReporting(result.data.data))
                 dispatch(setFolderData(result.data.data))
