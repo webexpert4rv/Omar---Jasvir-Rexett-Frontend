@@ -108,15 +108,14 @@ const SingleJob = () => {
                 defaultActiveKey="application"
                 id="fill-tab-example"
                 className="mb-3 job-tabs"
-                fill
                 onSelect={handleSelect}
             >
                 <Tab eventKey="application" title="Job Details">
                     <section className="single-job-section">
                         <div className="single-job-card job-information-wrapper">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
-                                <div className="d-flex gap-3 align-items-center">
+                            <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
+                                <h2 className="single-job-title text-start mb-0">{singleJobDescription?.title}</h2>
+                                <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
                                     <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                    { singleJobDescription?.status!=="ended"?<>
                                    <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-xxl-5 px-4 closed-job-btn">End Job</Button>

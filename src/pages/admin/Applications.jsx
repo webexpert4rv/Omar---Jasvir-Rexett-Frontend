@@ -146,7 +146,7 @@ const Applications = () => {
                               <td colSpan="8">
                                 <div>
                                   <Row>
-                                    <Col md={4}>
+                                    <Col>
                                       <div>
                                         <h3 className="application-heading">
                                           New Team Member Start{" "}
@@ -159,7 +159,7 @@ const Applications = () => {
                                         </p>
                                       </div>
                                     </Col>
-                                    <Col md={4}>
+                                    <Col>
                                       <div>
                                         <h3 className="application-heading">
                                           Skillset Needed
@@ -177,7 +177,7 @@ const Applications = () => {
                                         </ul>
                                       </div>
                                     </Col>
-                                    <Col md={4}>
+                                    <Col>
                                       <div>
                                         <h3 className="application-heading">
                                           Applied on

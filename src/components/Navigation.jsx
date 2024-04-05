@@ -4,14 +4,14 @@ import { FaBell } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 import { useNavigate } from "react-router";
 import { PiArrowLineRight } from "react-icons/pi";
-const Navigation = ({ handleSidebar , sidebaractive }) => {
+const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
     const navigate = useNavigate()
     return (
         <>
             <header className="mb-4 zIndex3">
-                <div className="d-flex align-items-center justify-content-end gap-3">
-                    <div>
-                        {/* <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button> */}
+                <div className="d-flex align-items-center justify-content-lg-end justify-content-between gap-3">
+                    <div className="d-lg-none">
+                        <button onClick={handlemainSidebar} className="bars-btn"><HiBars3 /></button>
                     </div>
                     <div className="d-flex align-items-center gap-3">
                         <Dropdown className="notification-dropdown">
@@ -47,9 +47,9 @@ const Navigation = ({ handleSidebar , sidebaractive }) => {
                             </Dropdown.Menu>
                         </Dropdown>
                         <button className="main-btn" onClick={() => navigate("/job-post")}>+ Add new Job</button>
-                    </div>
-                    <div>
-                        <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button>
+                        <div>
+                            <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button>
+                        </div>
                     </div>
                 </div>
             </header>

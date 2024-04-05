@@ -36,7 +36,7 @@ const HiredDevelopers = () => {
   return (
     <>
       <Tab.Container className="w-100" defaultActiveKey="grid-view">
-        <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
+        <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom-grey">
           <h3 className="section-head-sub mb-0">List of assigned developers</h3>
           <Nav variant="pills" className="document-view-pill">
             <Nav.Item className="document-view-item">
@@ -82,9 +82,9 @@ const HiredDevelopers = () => {
                         <th>
                           <span>Email</span>
                         </th>
-                        <th>
+                        {/* <th>
                           <span>Connects</span>
-                        </th>
+                        </th> */}
                       </tr>
                     </thead>
                     <tbody>

@@ -72,16 +72,15 @@ let id=pathname.split("/")[2]
                 defaultActiveKey="job-details"
                 id="fill-tab-example"
                 className="mb-3 job-tabs"
-                fill
                 onSelect={handleSelect}
             >
                 <Tab eventKey="job-details" title="Job Details">
                     <section className="single-job-section">
                         <div className="single-job-card job-information-wrapper">
                             {/* <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2> */}
-                            <div className="d-flex justify-content-between align-items-center">
+                            <div className="d-flex justify-content-between align-items-center flex-md-row flex-column-reverse">
                                 <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
-                                <div className="d-flex gap-3 align-items-center">
+                                <div className="d-flex gap-3 align-items-center mb-md-0 mb-3">
                                     <p className="mb-0">Status <span className="status-text inprogress status-info">In progress</span></p>
                                     {/* <Button variant="transparent" onClick={handleShowEndJobModal} className="px-5 closed-job-btn">End Job</Button> */}
                                 </div>

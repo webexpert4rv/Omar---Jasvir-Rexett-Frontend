@@ -24,8 +24,8 @@ const Engagements = () => {
     }
     return (
         <>
-            <div className="border-bottom-grey pb-3 mb-4 d-flex justify-content-between align-items-center">
-                <h2 className="section-head border-0 mb-0 pb-0">Engagements</h2>
+            <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
+                <h2 className="section-head border-0 mb-md-0 mb-3 pb-0">Engagements</h2>
 
                 <div className="d-flex gap-3">
                     <Form.Control type="text" className="cv-field" placeholder="Enter Search Keywords" onChange={(e) => setSearch(e.target.value)}></Form.Control>

@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 import DeveloperDetails from "./Modals/DeveloperDetails";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { HiDownload } from "react-icons/hi";
 const DeveloperCV = () => {
     const dispatch = useDispatch()
     const { developerCvData, smallLoader ,screenLoader} = useSelector(state => state.developerData)
@@ -120,8 +121,8 @@ const DeveloperCV = () => {
                { screenLoader ? <ScreenLoader/>:<div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                        <h2 className="section-head mb-0 border-0">Overview</h2>
-                        <button className="main-btn px-xxl-5 px-4" onClick={() => downloadResume(developerCvData?.developer_detail?.resume)}>Download Resume</button>
+                        <h2 className="section-head mb-0 border-0 pb-0">Overview</h2>
+                        <button className="main-btn px-xxl-5 px-md-4 px-3" onClick={() => downloadResume(developerCvData?.developer_detail?.resume)}><span className="d-md-inline-block d-none">Download Resume</span> <span className="d-md-none"><HiDownload /></span></button>
                     </div>
                     <Row>
                         <Col lg={6} className="px-0">

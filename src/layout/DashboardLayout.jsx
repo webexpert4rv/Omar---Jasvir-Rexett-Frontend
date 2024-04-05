@@ -6,6 +6,8 @@ import { FaUser } from "react-icons/fa6";
 import { BiSolidPencil } from "react-icons/bi";
 import { Link, Navigate } from 'react-router-dom';
 import { Bar , Doughnut } from 'react-chartjs-2';
+import { Button } from 'react-bootstrap';
+import { main } from '@popperjs/core';
 const growthData = {
     labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
     datasets: [
@@ -55,6 +57,10 @@ const DashboardLayout = ({ children }) => {
     const handleSidebar = () => {
         isSidebarWrapper(!sidebarwrapper)
     }
+    const [mainSidebar, isMainSidebar] = useState(false);
+    const handleMainSidebar = () => {
+        isMainSidebar(!mainSidebar);
+    }
     let token=getToken("token");
     const role=localStorage.getItem("role")
 
@@ -62,13 +68,15 @@ const DashboardLayout = ({ children }) => {
     return (
         <>
             <div className="dashboard-layout">
-                <Sidebar />
+                <Sidebar sideBarActive={mainSidebar} closemainSidebar={handleMainSidebar} />
                 <main className={ sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper right-active'}>
-                    <Navigation sidebaractive={sidebarwrapper} handleSidebar={handleSidebar} />
+                    <Navigation sidebaractive={sidebarwrapper} handlemainSidebar={handleMainSidebar} handleSidebar={handleSidebar} />
                     {token && role=="client"?children:<Navigate to="/"/>}
                
                 {!sidebarwrapper ?<div className={ !sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
-
+                    <div className='text-end d-lg-none mb-4'>
+                        <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button>
+                    </div>
                     <h3 className='right-sidebar-heading mb-3'>Growth per month</h3>
                     <div className='growth-chart'>
                         <Bar data={growthData} />

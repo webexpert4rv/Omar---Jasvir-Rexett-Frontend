@@ -55,7 +55,7 @@ const DeveloperDashboard = () => {
             </div>
             <Row>
                 <Col md={3}>
-                    <div className="developers-list">
+                    <div className="developers-list mb-md-0 mb-3">
                         <div className="developer-card">
                             <div className="user-imgbx">
                                 <img src={developerDashboard?.developerDetails?.profile_picture} className="user-img" />
