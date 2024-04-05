@@ -135,6 +135,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                                             </>
                                         )
                                     })}
+                                    {developerDetails?.developer_educations? <>
                                     <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
                                     {/* <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div> */}
                                     {developerDetails?.developer_educations?.map((item) => {
@@ -150,6 +151,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                                             </React.Fragment>
                                         )
                                     })}
+                                    </>:""}
                                 </div>
                             </Col>
                         </Row>

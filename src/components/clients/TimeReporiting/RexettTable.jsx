@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { approvedClient } from '../../../redux/slices/clientDataSlice';
 import RexettButton from '../../atomic/RexettButton';
 import ScreenLoader from '../../atomic/ScreenLoader';
+import NoDataFound from '../../atomic/NoDataFound';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const { approvedLoader, smallLoader } = useSelector(state => state.clientData)
@@ -16,42 +17,44 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
         <div className={`weekly-report-table ${selectedPeriod}`}>
             <div className="table-responsive">
                 {smallLoader ? <ScreenLoader /> :
-                    <table className="table time-table table-bordered table-ui-custom">
-                        <thead>
-                            <th className="time-table-head">
-                                <span>{role !== "developer" ? "Developer Name" : "Client Name"}</span>
-                            </th>
-                            <th className="time-table-head">
-                                <span>{role !== "developer" ? "Image of Developer" : "Image of Client"}</span>
-                            </th>
+                    data?.length > 0 ?
+                        <table className="table time-table table-bordered table-ui-custom">
+                            <thead>
+                                <th className="time-table-head">
+                                    <span>{role !== "developer" ? "Developer Name" : "Client Name"}</span>
+                                </th>
+                                <th className="time-table-head">
+                                    <span>{role !== "developer" ? "Image of Developer" : "Image of Client"}</span>
+                                </th>
 
-                            {
-                                headerColumn?.map((item, index) => {
-                                    return (
-                                        <>
-                                            <th className="time-table-head">
-                                                <span>{item}</span>
-                                            </th>
-                                        </>
-                                    )
-                                })
-                            }
-                            <th className="time-table-head">
-                                <span>Total Hours</span>
-                            </th>
-                            <th className="time-table-head">
-                                <span>Contract</span>
-                            </th>
-                            <th className="time-table-head">
-                                <span>Status</span>
-                            </th>
-                            {selectedPeriod == "weekly" ? <th className="time-table-head">
-                                <span>Time Report Submit</span>
-                            </th> : ""}
-                        </thead>
-                        <tbody>
-                            {
-                                data?.map((item, index) => {
+                                {
+                                    headerColumn?.map((item, index) => {
+                                        return (
+                                            <>
+                                                <th className="time-table-head">
+                                                    <span>{item}</span>
+                                                </th>
+                                            </>
+                                        )
+                                    })
+                                }
+                                <th className="time-table-head">
+                                    <span>Total Hours</span>
+                                </th>
+                                <th className="time-table-head">
+                                    <span>Contract</span>
+                                </th>
+                                <th className="time-table-head">
+                                    <span>Status</span>
+                                </th>
+                                {selectedPeriod == "weekly" ? <th className="time-table-head">
+                                    <span>Time Report Submit</span>
+                                </th> : ""}
+                            </thead>
+
+                            <tbody>
+
+                                {data?.map((item, index) => {
                                     return (
                                         <>
                                             <tr>
@@ -100,10 +103,13 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                         </>
                                     )
                                 })
-                            }
+                                }
 
-                        </tbody>
-                    </table>}
+                            </tbody>
+
+
+                        </table>
+                        : <NoDataFound />}
             </div>
         </div>
     )

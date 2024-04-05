@@ -134,6 +134,7 @@ const RexettDocuments = ({ currentRole }) => {
                 return <MdPictureAsPdf />
             case "png":
             case "jpg":
+            case "jpeg":
                 return <img src={url} className="doc-image" />
 
             default:
@@ -376,7 +377,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 {/* <button className="view-btn doc-action-btn"><MdEdit /></button> */}
                                                                                 <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload /></button>
                                                                                 <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "file")}><FaTrashCan /></button>
-                                                                                <button onClick={handleShowShareFileModal} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
+                                                                                <button onClick={()=>handleShowShareFileModal(item?.id)} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
                                                                             </div>
                                                                         </div>
                                                                     </>

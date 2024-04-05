@@ -59,7 +59,7 @@ const HiredDevelopers = () => {
             <Tab.Content>
               <Tab.Pane eventKey="grid-view">
                 <div className="developers-list">
-                  {assignedDeveloperList?.map((item, index) => {
+                  {assignedDeveloperList?.assigned_developers?.map((item, index) => {
                     return (
                       <>
                         <Cards item={item} handleCardClick={()=>handleCardClick(item?.developer_id)} />
@@ -88,7 +88,7 @@ const HiredDevelopers = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {assignedDeveloperList?.map((item, index) => {
+                      {assignedDeveloperList?.assigned_developers?.map((item, index) => {
                         return (
                           <>
                             <tr>
