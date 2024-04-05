@@ -163,7 +163,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     <RexettButton
                                         type="submit"
                                         text="Filter"
-                                        className="main-btn py-2 px-5"
+                                        className="main-btn py-1_5 px-4"
                                         variant="transparent"
                                         onClick={handlePrevTimeReporting}
                                         isLoading={false}
@@ -173,7 +173,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                             </div>
                         </Form>
                         <div>
-                            <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
+                            <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `Edit Time Report` : "Add Bulk Time"}</Button>
                         </div>
                     </div>
                     <div className="d-flex justify-content-between align-items-center mt-3">

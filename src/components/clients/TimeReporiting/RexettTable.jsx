@@ -11,7 +11,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const dispatch = useDispatch()
     const submitApproved = (id, index) => {
         setSelectedApprovedBtn(index)
-        dispatch(approvedClient(id))
+        dispatch(approvedClient(id,role))
     }
     return (
         <div className={`weekly-report-table ${selectedPeriod}`}>
@@ -92,10 +92,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                 {selectedPeriod == "weekly" ? <td className="time-table-data">
                                                     <RexettButton
                                                         type="submit"
-                                                        text="Submit & Approved"
+                                                        text={role=="client"? "Submit & Approved":"Submit"}
                                                         className="outline-main-btn white-nowrap px-2 font-13"
                                                         variant="transparent"
-                                                        onClick={() => submitApproved(item?.contractDetails?.client_id, index)}
+                                                        onClick={() => submitApproved(item?.contractDetails?.contract_id, index)}
                                                         isLoading={selectedApprovedBtn === index ? approvedLoader : false}
                                                     />
                                                 </td> : ""}

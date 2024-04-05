@@ -21,7 +21,7 @@ const initialAdminData = {
     suggestedDeveloper:[],
     adminDashboard:[],
     approvedLoader :false,
-    notificationList:[]
+    notificationList:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -93,6 +93,7 @@ export const adminDataSlice = createSlice({
         },
         setSuggestedDeveloper:(state,action)=>{
             let recomnd=action.payload?.recommended_developers?.map((item)=>{return {...item,recommed:true}})
+            console.log(recomnd,"recomnd")
             let data=[...recomnd,...action.payload?.other_developers]
             state.suggestedDeveloper=data
         },
@@ -323,7 +324,7 @@ export function adminApproveReject(payload) {
 
 export function getDeveloperSuggestList(payload) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
+        // dispatch(setBtnLoader())
         try {
             let result = await clientInstance.get(`admin/developers-to-suggest/${payload}`)
             if (result.status === 200) {
@@ -343,9 +344,9 @@ export function suggestDeveloper(payload) {
         dispatch(setBtnLoader())
         try {
             let result = await clientInstance.post(`admin/suggest-developer`,{...payload})
+            dispatch(setSuccessAdminData())
             if (result.status === 200) {
                 toast.success(result.data?.message ?result.data?.message:result?.message,  { position: "top-center" })
-                dispatch(setSuggestedDeveloper(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

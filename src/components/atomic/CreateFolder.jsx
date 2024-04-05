@@ -37,7 +37,7 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,c
                 "contract_id": currentFolderDetails?.contract_id,
                 "file_type": 0,
                 "parent_id": currentFolderDetails?.id,
-                "added_by": currentRole=="client"? "client":"developer",
+                "added_by": currentRole,
                 "type": 1,
                 "s3_path": values.s3_path,
               }

@@ -16,7 +16,7 @@ const AdminSingleJob = () => {
  const dispatch =useDispatch()
 let id=pathname.split("/")[2]
     const [showEndJobModal, setShowEndJobModal] = useState(false);
-    const {singleJobListing,suggestedDeveloper}=useSelector(state=>state.adminData)
+    const {singleJobListing,suggestedDeveloper,smallLoader}=useSelector(state=>state.adminData)
     const [singleJobDescription,setSingleJobDescription]=useState({})
     const [selectedTabsData,setSelectedTabsData]=useState([]);
     const [suggestedData,setSuggestedData]=useState(null)
@@ -137,7 +137,7 @@ let id=pathname.split("/")[2]
                 </Tab>
             </Tabs>
             {/* <EndJobModal show={showEndJobModal} handleClose={handleCloseEndJobModal} /> */}
-            <ConfirmationModal text={`Are you sure to suggest this developer ?`}   show={showEndJobModal} handleClose={handleCloseEndJobModal}  onClick={handleJobStatusAction} />
+            <ConfirmationModal text={`Are you sure to suggest this developer ?`}   show={showEndJobModal} handleClose={handleCloseEndJobModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
         </>
     )
 }

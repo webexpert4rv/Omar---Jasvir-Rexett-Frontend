@@ -19,7 +19,7 @@ const RexettPagination = ({number,setPage,page }) => {
     <>
         <Pagination className="pagination flex-wrap">
           <Pagination.Prev
-            className="pagination-arrow me-3"
+            className="pagination-arrow custom-pagination-item me-1"
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 1}
           />
@@ -28,7 +28,7 @@ const RexettPagination = ({number,setPage,page }) => {
             {Array.from({ length: number }, (_, i) => (
               <Pagination.Item
                 key={i}
-                className="pagination-item" 
+                className="custom-pagination-item" 
                 active={i + 1 === page}
                 onClick={() => handlePageChange(i + 1)}
               >
@@ -37,11 +37,12 @@ const RexettPagination = ({number,setPage,page }) => {
             ))}
           </div>
           <Pagination.Next
-            className="pagination-arrow next-arrow ms-3"
+            className="pagination-arrow next-arrow ms-1 custom-pagination-item"
             onClick={() => handlePageChange(page + 1)}
             disabled={page === number}
           />
-        </Pagination>:
+        </Pagination>
+        
        
     </>
   );

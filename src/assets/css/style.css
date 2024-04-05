@@ -325,8 +325,8 @@ ul {
 .main-btn {
     display: inline-block;
     padding: 10px;
-    color: var(--white);
-    background: #037563;
+    color: var(--white) !important;
+    background-color: #037563 !important;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 400;
@@ -334,10 +334,14 @@ ul {
     outline: none;
     transition: .4s ease;
 }
-
+.py-1_5
+{
+    padding-top: 0.375rem !important;
+    padding-bottom: 0.375rem !important;
+}
 .main-btn:hover {
-    color: #037563;
-    background-color: transparent;
+    color: #037563 !important;
+    background-color: transparent !important;
 }
 
 .main-btn.border-danger {
@@ -495,8 +499,14 @@ ul {
     background: var(--primary-color);
     border-radius: 20px;
     z-index: 1;
+    transform: scale(1);
+    cursor: pointer;
+    transition: .3s ease;
 }
-
+.developer-card:hover
+{
+    transform: scale(1.04);
+}
 .developer-card:after {
     content: '';
     position: absolute;
@@ -1939,8 +1949,8 @@ ul {
 }
 
 .custom-pagination-item .page-link {
-    font-size: 14px;
-    color: var(--primary-color);
+    font-size: 14px !important;
+    color: #037563 !important;
 }
 
 .custom-pagination-item .page-link:focus {
@@ -1949,7 +1959,8 @@ ul {
 
 .custom-pagination-item.active .page-link {
     border-color: var(--primary-color);
-    background: var(--primary-color);
+    background: #037563;
+    font-size: 14px !important;
     color: var(--white);
 }
 
@@ -2459,6 +2470,7 @@ input[type="radio"]:checked {
 .table-ui-custom th {
     background-color: #037563;
     color: #fff;
+    border: none;
     padding: 12px 15px;
 }
 
@@ -2803,6 +2815,10 @@ input[type="radio"]:checked {
 
 .client-card {
     background: linear-gradient(to left, #44e0e1, #116e89);
+}
+.time-filter-select
+{
+    min-width: 110px;
 }
 
 @media only screen and (max-width: 1550px) {
