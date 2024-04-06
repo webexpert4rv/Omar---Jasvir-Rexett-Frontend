@@ -20,6 +20,14 @@ const NotificationAdmin = () => {
   const handleSelect = (key) => {
     setNotificationData(notificationList[key])   
 }
+
+const newTitleFunction=(data)=>{
+  const today = new Date();
+  const targetDate = new Date('2024-04-06');
+  if (targetDate > today) {
+    return true
+  }
+}
   return (
     <>
       <section className="notification-screen card-box">
@@ -53,7 +61,7 @@ const NotificationAdmin = () => {
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
-                              <span className="new-notify">{item?.created_at}</span>
+                              <span className="new-notify">{newTitleFunction(item?.created_at)==true && "New"}</span>
                             </h3>
                             <p className="notification-text">
                              {
