@@ -23,6 +23,8 @@ const AdminNavigation = ({ handleSidebar }) => {
         if(newJobPost!==null){
             setNotificationData([newJobPost,...notificationList['unreadNotifications']])
 
+        }else if(nottificationData?.length>0){
+            setNotificationData(nottificationData)
         }else{
             setNotificationData(notificationList['unreadNotifications'])
         }
@@ -41,7 +43,14 @@ const AdminNavigation = ({ handleSidebar }) => {
             setNewJobPost(jobPost)
             // Handle the new job post data here
           });
+
+          socket.on('job_application_revert', (jobPost) => {
+            console.log('New job post received:', jobPost);
+            setNewJobPost(jobPost)
+            // Handle the new job post data here
+          });
     
+          
         socket.on('disconnect', () => {
           console.log('Disconnected from Socket.IO server');
         });
@@ -51,6 +60,8 @@ const AdminNavigation = ({ handleSidebar }) => {
           socket.disconnect();
         };
       }, []); 
+
+      console.log(nottificationData,"nottificationData")
 
       const handleNotification=(id,data)=>{
         if(data=="Documents"){
@@ -63,6 +74,10 @@ const AdminNavigation = ({ handleSidebar }) => {
       const redirectToallScreen=()=>{
         navigate('/notification-admin')
       }
+
+      const handleNotificationBell=()=>{
+        setNewJobPost(null)
+      }
     return (
         <>
             <header className="mb-4">
@@ -73,7 +88,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                     <div className="d-flex align-items-center gap-3">
                         <Dropdown className="notification-dropdown">
                             <Dropdown.Toggle variant="transparent" id="dropdown-basic" className="notification-dropdown-toggle p-0">
-                                <button className={`notification-btn ${newJobPost!==null?"active":""} `}><FaBell /></button>
+                                <button className={`notification-btn ${newJobPost!==null?"active":""} `} onClick={handleNotificationBell} ><FaBell /></button>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className="notification-dropdown-menu">
                                 <div className="dropdown-notify-wrapper">
