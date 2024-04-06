@@ -5,8 +5,9 @@ import { FaTrashCan } from "react-icons/fa6";
 import { FaDownload } from "react-icons/fa6";
 import { FaFolder } from "react-icons/fa";
 import NoDataFound from '../../atomic/NoDataFound';
+import { IoIosShareAlt } from 'react-icons/io';
 
-const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFileName,generateFileImage,toggleFolderView}) => {
+const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFileName,generateFileImage,toggleFolderView,handleShowShareFileModal}) => {
   return (
     <div>
     <div className="table-responsive">
@@ -54,6 +55,7 @@ const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFile
                             <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload />
                             </button>
                             <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, item.file_type==0?"folder": "file")} ><FaTrashCan /></button>
+                            <button onClick={()=>handleShowShareFileModal(item?.id)} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
                         </div>
                     </td>
                 </tr>

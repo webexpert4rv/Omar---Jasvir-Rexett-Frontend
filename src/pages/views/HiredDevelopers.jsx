@@ -12,6 +12,7 @@ import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { Nav, Tab } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import NoDataFound from "../../components/atomic/NoDataFound";
 
 
 const HiredDevelopers = () => {
@@ -59,13 +60,13 @@ const HiredDevelopers = () => {
             <Tab.Content>
               <Tab.Pane eventKey="grid-view">
                 <div className="developers-list">
-                  {assignedDeveloperList?.assigned_developers?.map((item, index) => {
+                  {assignedDeveloperList?.assigned_developers?.length>0?assignedDeveloperList?.assigned_developers?.map((item, index) => {
                     return (
                       <>
                         <Cards item={item} handleCardClick={()=>handleCardClick(item?.developer_id)} />
                       </>
                     );
-                  })}
+                  }):<NoDataFound/>}
                 </div>
               </Tab.Pane>
               <Tab.Pane eventKey="list-view">
@@ -88,7 +89,7 @@ const HiredDevelopers = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {assignedDeveloperList?.assigned_developers?.map((item, index) => {
+                      {assignedDeveloperList?.assigned_developers?.length>0?assignedDeveloperList?.assigned_developers?.map((item, index) => {
                         return (
                           <>
                             <tr>
@@ -154,7 +155,7 @@ const HiredDevelopers = () => {
                             </tr>
                           </>
                         );
-                      })}
+                      }):<td colSpan={4}><NoDataFound/></td>}
                     </tbody>
                   </table>
                 </div>

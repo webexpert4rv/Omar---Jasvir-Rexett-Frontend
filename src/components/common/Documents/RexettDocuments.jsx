@@ -390,7 +390,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                 </div>}
                                             </Tab.Pane>
                                             <Tab.Pane eventKey="list-view">
-                                                <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage} toggleFolderView={toggleFolderView} />
+                                                <DocumentListView folderData={folderData} deleteFileAndFolder={deleteFileAndFolder} handleDownload={handleDownload} getFileName={getFileName} generateFileImage={generateFileImage} toggleFolderView={toggleFolderView} handleShowShareFileModal={handleShowShareFileModal} />
                                             </Tab.Pane>
                                         </Tab.Content>
                                     </Tab.Container>

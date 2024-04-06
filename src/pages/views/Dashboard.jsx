@@ -18,8 +18,6 @@ const Dashboard = (cardDetails) => {
     const dispatch = useDispatch();
     const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
     const navigate = useNavigate()
-    console.log(assignedDeveloperList,"assignedDeveloperList")
-
     useEffect(() => {
         dispatch(developerAssignList(1));
     }, [dispatch])
@@ -36,9 +34,9 @@ const Dashboard = (cardDetails) => {
             {screenLoader ? <ScreenLoader /> : <>
                 <div className="overview-card-wrapper mb-5">
                     <OverViewCard head="Fund" value="Spent" />
-                    <OverViewCard head="Earned Back" value={assignedDeveloperList?.earned_back_hours    } />
-                    <OverViewCard head="Job Posted" value={assignedDeveloperList?.total_jobs_posted} />
-                    <OverViewCard head="Developer Assigned" value={assignedDeveloperList?.num_assigned_developers} />
+                    <OverViewCard head="Earned Back" value={assignedDeveloperList?.earned_back_hours?assignedDeveloperList?.earned_back_hours:'0'} />
+                    <OverViewCard head="Job Posted" value={assignedDeveloperList?.total_jobs_posted? assignedDeveloperList?.total_jobs_posted:"0"} />
+                    <OverViewCard head="Developer Assigned" value={assignedDeveloperList?.num_assigned_developers?assignedDeveloperList?.num_assigned_developers:'0'} />
                 </div>
 
                 <Tab.Container className="w-100" defaultActiveKey="grid-view">
@@ -78,17 +76,17 @@ const Dashboard = (cardDetails) => {
                                                 <th><span>Developer Name</span></th>
                                                 <th><span>Designation</span></th>
                                                 <th><span>Email</span></th>
-                                                <th><span>Connects</span></th>
+                                                {/* <th><span>Connects</span></th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {assignedDeveloperList?.assigned_developers.map((item, index) => {
+                                            {assignedDeveloperList?.assigned_developers?.map((item, index) => {
                                                 return (
                                                     <>
-                                                        <tr>
+                                                        <tr onClick={() => handleCardClick(item?.developer?.id)}>
                                                             <td>
                                                                 <span className="d-flex align-items-center gap-3">
-                                                                    <img src={item?.developer?.profile_picture} />
+                                                                    <img src={item?.developer?.profile_picture?item?.developer?.profile_picture:userImg}    alt="developerImage" />
                                                                     <h3 className="user-name color-121212 mb-0">{item?.developer?.name}</h3>
                                                                 </span>
                                                             </td>
@@ -103,7 +101,7 @@ const Dashboard = (cardDetails) => {
                                                                 </span>
                                                             </td>
                                                             <td>
-                                                                <ul className="social-icons mb-0 justify-content-start">
+                                                                <ul className="social-icons mb-0 justify-content-start d-none">
                                                                     <li>
                                                                         <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
                                                                     </li>
@@ -130,7 +128,7 @@ const Dashboard = (cardDetails) => {
                                     </div>
                                 </>
                         </Tab.Content>
-                        : <div className=" mt-2"><NoDataFound /></div>}
+                        : <div><NoDataFound /></div>}
                 </Tab.Container>
             </>}
         </>

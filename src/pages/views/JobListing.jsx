@@ -6,6 +6,7 @@ import { getAllJobPostedList, getJobCategoryList } from "../../redux/slices/clie
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { FaEye } from "react-icons/fa6";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import NoDataFound from "../../components/atomic/NoDataFound";
 
 
 
@@ -41,7 +42,7 @@ const JobListing = () => {
                 <>
                     <section className="job-posted-section">
                         <div className="job-posted-wrapper">
-                            {allJobPostedList?.data?.map((item) => {
+                            { allJobPostedList?.data?.length>0?allJobPostedList?.data?.map((item) => {
                                 return (
                                     <>
                                         <div className="job-posted-list" key={item.id}>
@@ -84,7 +85,7 @@ const JobListing = () => {
                                         </div>
                                     </>
                                 )
-                            })}
+                            }):<NoDataFound data="No Jobs are available"/>}
                         </div>
                     </section>
                    {allJobPostedList?.totalCount>5 ?  <div className="d-flex justify-content-between align-items-center mb-4">

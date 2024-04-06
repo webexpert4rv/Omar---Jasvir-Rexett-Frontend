@@ -30,7 +30,7 @@ const DeveloperTimeReporting = () => {
     return (
         <>
             <RexettTimeReporting  timeReportingData={timeReportingData} handleShowModal={handleShowModal} role="developer"/>
-            {showModal?<AddTimingModal show={showModal} handleClose={handleCloseAddTimingModal} />:""}
+            {showModal?<AddTimingModal show={showModal} handleClose={handleCloseAddTimingModal} role="developer" />:""}
         </>
     )
 }

@@ -7,6 +7,7 @@ import { NOTIFICATIONBASEURL, getToken } from "../helper/utlis";
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from "react-redux";
 import { getNotification } from "../redux/slices/adminDataSlice";
+import moment from "moment";
 const AdminNavigation = ({ handleSidebar }) => {
  const dispatch =useDispatch()
  const navigate=useNavigate()
@@ -99,7 +100,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                                         <h4 className="dropdown-notifyheading">{item?.title}</h4>
                                         <p className="dropdown-notifytext">{item?.message}</p>
                                         <div className="text-end mt-2">
-                                            <span className="dropdown-notify-time">Just now</span>
+                                            <span className="dropdown-notify-time">{moment(item?.created_at).fromNow()}</span>
                                         </div>
                                     </div>
                                         </>

@@ -9,7 +9,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { current } from "@reduxjs/toolkit";
-const AddTimingModal = ({ show, handleClose }) => {
+import { timeReporting } from "../../../redux/slices/clientDataSlice";
+const AddTimingModal = ({ show, handleClose,role }) => {
   const dispatch = useDispatch();
   // const [selectDay, setDaySelection] = useState(null);
   const [disabledWorkDay, setDisabledWorkDay] = useState([]);
@@ -33,7 +34,7 @@ const AddTimingModal = ({ show, handleClose }) => {
   const { allContracts, addTimeReports, smallLoader } = useSelector(
     (state) => state.developerData
   );
-
+console.log(allContracts,"allContracts")
   useEffect(() => {
     dispatch(getAllContracts());
   }, []);
@@ -97,12 +98,12 @@ const AddTimingModal = ({ show, handleClose }) => {
       const updatedDisabledEndDates = [...disabledWorkDay];
       updatedDisabledEndDates[index] = true;
       setDisabledWorkDay(updatedDisabledEndDates);
-      setValue(`addTime[${index}].is_off_day`, true);
+      setValue(`addTime[${index}].is_off_day`, false);
     } else {
       const updatedDisabledEndDates = [...disabledWorkDay];
       updatedDisabledEndDates[index] = false;
       setDisabledWorkDay(updatedDisabledEndDates);
-      setValue(`addTime[${index}].is_off_day`, false);
+      setValue(`addTime[${index}].is_off_day`, true);
     }
   };
   const onSubmit = (values) => {
@@ -114,6 +115,7 @@ const AddTimingModal = ({ show, handleClose }) => {
     if (selectedFilter?.contract_id) {
       dispatch(
         saveTimeReports(payloadData, () => {
+          dispatch(timeReporting({}, role));
           handleClose();
         })
       );
@@ -273,14 +275,6 @@ const AddTimingModal = ({ show, handleClose }) => {
                     <option disabled selected>
                       Select Client Name
                     </option>
-
-                    {allContracts?.map((item) => {
-                      return (
-                        <>
-                          <option value={item?.id}>{item?.client?.name}</option>
-                        </>
-                      );
-                    })}
 
                     {allContracts?.map((item) => {
                       return (

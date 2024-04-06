@@ -27,10 +27,15 @@ const DeveloperCV = () => {
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
     const [developerDetails, setDeveloperDetails] = useState(false);
+    const [readmore,setReadMore]=useState(true)
 
     const handleShowModal = () => {
         setShowModal(true);
     };
+
+    const readMoreLess=()=>{
+        setReadMore(!readmore)
+    }
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -175,7 +180,16 @@ const DeveloperCV = () => {
                                 <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
                                 {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
                                 <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
-                                <p className="resume-text">{developerCvData?.developer_detail?.bio}</p>
+                                <p className="resume-text">{readmore && developerCvData?.developer_detail?.bio?.length>300?<>
+                                    {developerCvData?.developer_detail?.bio.slice(0,300)}
+                                    <span className="readLess"  onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
+                                </>:
+                                <>
+                                 {developerCvData?.developer_detail?.bio}
+                                <span className="readLess" onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
+                                </>
+}
+                                </p>
                             </div>
                             <div className="about-info px-4 pt-4">
                                 <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25} /></div>

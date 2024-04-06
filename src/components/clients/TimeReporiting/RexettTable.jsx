@@ -4,6 +4,7 @@ import { approvedClient } from '../../../redux/slices/clientDataSlice';
 import RexettButton from '../../atomic/RexettButton';
 import ScreenLoader from '../../atomic/ScreenLoader';
 import NoDataFound from '../../atomic/NoDataFound';
+import moment from 'moment';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const { approvedLoader, smallLoader } = useSelector(state => state.clientData)
@@ -54,7 +55,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
 
                             <tbody>
 
-                                {data?.map((item, index) => {
+                                {data.length>0 ? data?.map((item, index) => {
                                     return (
                                         <>
                                             <tr>
@@ -65,7 +66,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                         if (reprt.report_date) {
                                                             return (
                                                                 <>
-                                                                    <td className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : ""}`} >{reprt.start_time && reprt?.end_time ? `${reprt?.start_time} - ${reprt?.end_time} ` : "-"}</td>
+                                                                    <td className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : ""}`} >{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}</td>
                                                                 </>
                                                             )
                                                         } else if (reprt.month) {
@@ -103,7 +104,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                         </>
                                     )
                                 })
-                                }
+                                :<td colSpan={17}><NoDataFound/></td> }
 
                             </tbody>
 

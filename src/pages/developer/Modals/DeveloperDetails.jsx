@@ -9,7 +9,7 @@ import { filePreassignedUrlGenerate } from "../../../redux/slices/clientDataSlic
 
 const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) => {
     const dispatch = useDispatch();
-    const { smallLoader } = useSelector(state => state.developerData)
+    const { smallLoader } = useSelector(state => state.clientData)
     const [file, setFile] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null);
     const {
