@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
 import userImg from '../../assets/img/user-img.jpg'
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -11,37 +11,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminSingleJob, getDeveloperSuggestList, suggestDeveloper } from "../../redux/slices/adminDataSlice";
 import JobCard from "../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import RexettPagination from "../../components/atomic/RexettPagination";
+
 const AdminSingleJob = () => {
- const {pathname}=useLocation()
- const dispatch =useDispatch()
-let id=pathname.split("/")[2]
+    const { pathname } = useLocation()
+    const dispatch = useDispatch()
+    let id = pathname.split("/")[2]
     const [showEndJobModal, setShowEndJobModal] = useState(false);
-    const {singleJobListing,suggestedDeveloper}=useSelector(state=>state.adminData)
-    const [singleJobDescription,setSingleJobDescription]=useState({})
-    const [selectedTabsData,setSelectedTabsData]=useState([]);
-    const [suggestedData,setSuggestedData]=useState(null)
+    const { singleJobListing, suggestedDeveloper, singleJobPagination } = useSelector(state => state.adminData)
+    const [singleJobDescription, setSingleJobDescription] = useState({})
+    const [selectedTabsData, setSelectedTabsData] = useState([]);
+    const [suggestedData, setSuggestedData] = useState(null)
+    const [page, setPage] = useState(1)
 
 
-    useEffect(()=>{
-     if(id){
-        dispatch(adminSingleJob(id))
-        dispatch(getDeveloperSuggestList(id))
 
-     }
-    },[])
+  
+    useEffect(() => {
+        if (id) {
+            dispatch(adminSingleJob(id))
+            dispatch(getDeveloperSuggestList(id ,page))
 
-    useEffect(()=>{
+        }
+    }, [page])
+
+    useEffect(() => {
         setSingleJobDescription(singleJobListing?.data)
-    },[singleJobListing])
-    const handleShowEndJobModal = (id,status) => {
+    }, [singleJobListing])
+    const handleShowEndJobModal = (id, status) => {
         setSuggestedData({
-            developer_id:id,
-            status:status
+            developer_id: id,
+            status: status
         })
         setShowEndJobModal(true);
     };
 
-    const convertToArray=(arr)=>{
+    const convertToArray = (arr) => {
         const skillsArray = arr?.split(",");
         return skillsArray
     }
@@ -49,17 +54,17 @@ let id=pathname.split("/")[2]
     const handleCloseEndJobModal = () => {
         setShowEndJobModal(false);
     };
-    const handleSelect=(key)=>{
+    const handleSelect = (key) => {
         setSelectedTabsData(singleJobListing[key])
     }
-    const handleJobStatusAction=async(e)=>{
+    const handleJobStatusAction = async (e) => {
         e.preventDefault()
 
-        let data={
+        let data = {
             "job_id": id,
             "developer_id": suggestedData?.developer_id,
-            "status":suggestedData?.status 
-          }
+            "status": suggestedData?.status
+        }
         await dispatch(suggestDeveloper(data))
         setShowEndJobModal(false);
         dispatch(getDeveloperSuggestList(id))
@@ -108,15 +113,15 @@ let id=pathname.split("/")[2]
                         <div className="single-job-card">
                             <h3 className="req-heading">Skills</h3>
                             <ul className="skills-listing mb-0">
-                            {
-                                                convertToArray(singleJobDescription?.skills)?.map((item,index)=>{
-                                                    return (
-                                                        <>
-                                                         <li key={index}>{item}</li>
-                                                        </>
-                                                    )
-                                                })
-                                            }
+                                {
+                                    convertToArray(singleJobDescription?.skills)?.map((item, index) => {
+                                        return (
+                                            <>
+                                                <li key={index}>{item}</li>
+                                            </>
+                                        )
+                                    })
+                                }
                             </ul>
                         </div>
                     </section>
@@ -125,20 +130,20 @@ let id=pathname.split("/")[2]
                     <div className="text-center mb-3">
                         {/* <h3 className="px-5">Suggest the Developers</h3> */}
                     </div>
-                      <JobCard type="Suggested" data={suggestedDeveloper} role="admin" handleJobStatusModal={handleShowEndJobModal}/>
+                    <JobCard type="Suggested" data={suggestedDeveloper } setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                 </Tab>
                 <Tab eventKey="shortlisted" title="Shortlisted">
-                <JobCard type="Shortlisted" data={selectedTabsData} role="admin"/>
+                    <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
                 </Tab>
                 <Tab eventKey="interviewing" title="Interviewing">
-                <JobCard type="Interviewing" data={selectedTabsData} role="admin"/>
+                    <JobCard type="Interviewing" data={selectedTabsData} role="admin" />
                 </Tab>
                 <Tab eventKey="hired" title="Hired">
-                <JobCard type="Hired" data={selectedTabsData} role="admin"/>
+                    <JobCard type="Hired" data={selectedTabsData} role="admin" />
                 </Tab>
             </Tabs>
             {/* <EndJobModal show={showEndJobModal} handleClose={handleCloseEndJobModal} /> */}
-            <ConfirmationModal text={`Are you sure to suggest this developer ?`}   show={showEndJobModal} handleClose={handleCloseEndJobModal}  onClick={handleJobStatusAction} />
+            <ConfirmationModal text={`Are you sure to suggest this developer ?`} show={showEndJobModal} handleClose={handleCloseEndJobModal} onClick={handleJobStatusAction} />
         </>
     )
 }

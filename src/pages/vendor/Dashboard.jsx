@@ -60,7 +60,7 @@ const VendorDashboard = () => {
                                         <h3 className="user-name">{item?.name}</h3>
                                         {/* <p className="designation-user">Front End Designer</p> */}
                                         <p className="email-user">{item?.email}</p>
-                                        <ul className="social-icons">
+                                        {/* <ul className="social-icons">
                                             <li>
                                                 <Link to={"#"}><FaGithub /></Link>
                                             </li>
@@ -70,7 +70,7 @@ const VendorDashboard = () => {
                                             <li>
                                                 <Link to={"#"}><MdEmail /></Link>
                                             </li>
-                                        </ul>
+                                        </ul> */}
                                     </div>
                                 </div>
                             )
@@ -92,9 +92,9 @@ const VendorDashboard = () => {
                             return (
 
                                 <div className="developer-card" key={index}>
-                                    {/* <div className="user-imgbx"> */}
-                                    {/* <img src={userImg} className="user-img" /> */}
-                                    {/* </div>   */}
+                                    <div className="user-imgbx"> 
+                                    <img src={value?.profile_picture} className="user-img" />
+                                    </div>   
                                     <div className="text-center">
                                         <h3 className="user-name">{value?.name}</h3>
                                         {/* <p className="designation-user">Front End Designer</p> */}

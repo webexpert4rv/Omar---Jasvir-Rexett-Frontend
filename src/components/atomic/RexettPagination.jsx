@@ -41,7 +41,7 @@ const RexettPagination = ({number,setPage,page }) => {
             onClick={() => handlePageChange(page + 1)}
             disabled={page === number}
           />
-        </Pagination>:
+        </Pagination>
        
     </>
   );

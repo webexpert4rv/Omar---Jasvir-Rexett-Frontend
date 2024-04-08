@@ -21,7 +21,8 @@ const initialAdminData = {
     suggestedDeveloper:[],
     adminDashboard:[],
     approvedLoader :false,
-    notificationList:[]
+    notificationList:[],
+    singleJobPagination:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -108,12 +109,15 @@ export const adminDataSlice = createSlice({
             state.smallLoader = false;
             state.screenLoader = false;
         },
+        setPagination:(state,action)=>{
+            state.singleJobPagination = action.payload
+        }
 
 
     }
 })
 
-export const {setSuggestedDeveloper,setNotificationList, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const {setSuggestedDeveloper,setPagination,setNotificationList, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -322,13 +326,16 @@ export function adminApproveReject(payload) {
 }
 
 export function getDeveloperSuggestList(payload) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
             let result = await clientInstance.get(`admin/developers-to-suggest/${payload}`)
+            console.log(result.data,"result----")
             if (result.status === 200) {
 
                 dispatch(setSuggestedDeveloper(result.data.data))
+                dispatch(setPagination(result.data.pagination))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
