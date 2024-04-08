@@ -53,6 +53,7 @@ export const vendorDataSlice = createSlice({
         },
         setDeveloperList: (state, action) =>{
             state.screenLoader = false;
+            state.smallLoader=false;
             state.developerList = action.payload.data
         }
     }
@@ -104,18 +105,18 @@ export function getVendorTimeReporting() {
     }
 }
 export function getAddNewDeveloper(payload) {
-    console.log(payload,"payload")
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.post('/vendor/add-developer', {...payload})
             console.log(result.data,"result--------------")
             if (result?.status == 200) {
-                dispatch(setAddDeveloper(result.data))
+                dispatch(setVendorSuccess())
+                toast.success("New Developer is Added", {position:"top-center"})
             }
         } catch (error) {
             const message = error.message
-            toast.error(message, { position: "top-center" })
+            toast.error(error.response.data.message, { position: "top-center" })
             dispatch(setFailVendorData())
 
         }

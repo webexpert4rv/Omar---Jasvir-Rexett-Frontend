@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAddNewDeveloper } from "../../redux/slices/vendorDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
 import { getDegreeList } from "../../redux/slices/developerDataSlice";
+import RexettButton from "../../components/atomic/RexettButton";
 
 const options = [
     { value: 'html', label: 'HTML' },
@@ -25,12 +26,11 @@ const options = [
 
 const RegisterDeveloper = () => {
     const dispatch = useDispatch()
-    const { addDeveloper } = useSelector(state => state.vendorData)
+    const { addDeveloper,smallLoader } = useSelector(state => state.vendorData)
     const [disbaleYear, setDisbaleYear] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [skills, setSkills] = useState(null);
     const [disabledEndDates, setDisabledEndDates] = useState([]);
-    const [disabledDates, setDisabledDates] = useState([]);
     const { degreeList } = useSelector(state => state.developerData)
     const skillLabels = skills?.map(skill => skill.value);
     const skillSet = skillLabels?.toString()
@@ -62,10 +62,6 @@ const RegisterDeveloper = () => {
         name: "social_links",
     });
 
-    console.log(fields, "fields======")
-    console.log(disabledEndDates, "disabledEndDates")
-    console.log(degreeList, "degreeList")
-    console.log(addDeveloper, "adddeveloper--")
     const [experienceFields, setExperienceFields] = useState([
         {
             job_title: "",
@@ -94,7 +90,7 @@ const RegisterDeveloper = () => {
         setCurrentStep(currentStep + 1);
 
     };
-    const goToPreviousStep = (data, index) => {
+    const onSubmit = (data, index) => {
         console.log(data, "data")
         setCurrentStep(currentStep - 1);
         let formData = {
@@ -234,7 +230,7 @@ const RegisterDeveloper = () => {
                     ))}
                 </div> */}
                 <div className="">
-                    <Form onSubmit={handleSubmit(goToPreviousStep)}>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                         <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Enter Personal Details</h2>
                         <div className="inner-form mb-3">
                             <Row>
@@ -294,7 +290,7 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-field">Address</Form.Label>
+                                        <Form.Label>Address</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address_2"
                                             {...register("address_2", {
@@ -517,7 +513,7 @@ const RegisterDeveloper = () => {
                                         <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                                             <Form.Check
                                                 type="checkbox"
-                                                className="common-field"
+                                            
                                                 {...register(`experiences[${index}].is_still_working`, {
                                                     required: false,
                                                 })}
@@ -559,7 +555,7 @@ const RegisterDeveloper = () => {
                                         </Form.Group>
                                     </Col>
                                     <Col md={6}>
-                                        <Form.Group className="common-field">
+                                        <Form.Group>
                                             <Form.Label>Degree Name</Form.Label>
                                             <Select
                                                 options={degreeList}
@@ -573,7 +569,7 @@ const RegisterDeveloper = () => {
                                         <Form.Group className="mb-3">
                                             <Form.Label>Address</Form.Label>
                                             <Form.Control type="text"
-                                                className="common-field"
+                                                
                                                 {...register(`educations[${index}].address`, {
                                                     required: {
                                                         value: true,
@@ -586,7 +582,7 @@ const RegisterDeveloper = () => {
                                         </Form.Group>
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Group className="common-field">
+                                        <Form.Group>
                                             <Form.Label>Start Year</Form.Label>
                                             <Form.Select
                                                 {...register(`educations.${index}.start_year`, {
@@ -612,7 +608,7 @@ const RegisterDeveloper = () => {
                                             )}
                                         </Form.Group>
                                     </Col>
-                                    {/* {!disbaleYear[index] ? <Col md="6"> */}
+                                     <Col md="3">
                                     <Form.Group className="mb-3">
                                         <Form.Label>End Year</Form.Label>
                                         <Form.Select
@@ -638,7 +634,7 @@ const RegisterDeveloper = () => {
 
                                     </Form.Group>
 
-                                    {/* <Col > */}
+                                    </Col >
                                     <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                                         <Form.Check
                                             type="checkbox"
@@ -722,14 +718,14 @@ const RegisterDeveloper = () => {
                             </div>
                         </div>
                         <div className="text-center">
-                            <Button
-                                type="submit"
-                                variant="transparent"
-                                className="main-btn px-5"
-                                onClick={goToPreviousStep}
-                            >
-                                Register
-                            </Button>
+                           
+                            <RexettButton
+                         type="submit" 
+                         text="Register"
+                         className="main-btn px-5"
+                         variant="transparent"
+                         isLoading={smallLoader}
+                        />
                         </div>
                     </Form>
                 </div >
