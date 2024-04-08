@@ -60,7 +60,7 @@ const EditVendorProfile = () => {
     }, [])
 
     const onSubmit = () => {
-        setValue()
+        // setValue()
     }
 
     return (

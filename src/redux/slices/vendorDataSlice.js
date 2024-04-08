@@ -6,8 +6,9 @@ const initialVendorData = {
     screenLoader: false,
     smallLoader: false,
     vendorDashboard: {},
-    vendorProfile :{},
-    vendorTimeReport:[],
+    vendorProfile: {},
+    vendorTimeReport: [],
+    addDeveloper:{}
 }
 
 export const vendorDataSlice = createSlice({
@@ -24,21 +25,25 @@ export const vendorDataSlice = createSlice({
             state.vendorDashboard = action.payload
             state.screenLoader = false;
         },
-        setVendorProfile:(state,action) =>{
-            state.vendorProfile = action.payload  
-            state.screenLoader = false; 
+        setVendorProfile: (state, action) => {
+            state.vendorProfile = action.payload
+            state.screenLoader = false;
         },
-        setVendorTimeReport:(state , action)=>{
+        setVendorTimeReport: (state, action) => {
             state.vendorTimeReport = action.payload
             state.screenLoader = false
         },
-        setFailVendorData:(state ,action) => {
+        setFailVendorData: (state, action) => {
             state.screenLoader = false;
             state.smallLoader = false;
+        },
+        setAddDeveloper: (state, action) =>{
+            state.screenLoader = false;
+            state.addDeveloper = action.payload
         }
     }
 })
-export const { setScreenLoader, setSmallLoader, setVendorDashboard ,setVendorProfile ,setVendorTimeReport,setFailVendorData} = vendorDataSlice.actions
+export const { setScreenLoader, setSmallLoader,setAddDeveloper, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
 
 export default vendorDataSlice.reducer
 
@@ -52,37 +57,57 @@ export function getVendorDashboard() {
             }
 
         } catch (error) {
-            console.log(error,"error")
+            console.log(error, "error")
         }
     }
 }
-export function getVenderProfile(){
-    return async (dispatch) =>{
+export function getVenderProfile() {
+    return async (dispatch) => {
         dispatch(setScreenLoader())
-        try{
+        try {
             let result = await clientInstance.get("/vendor/get-profile")
-            if (result.status==200){
+            if (result.status == 200) {
                 dispatch(setVendorProfile(result.data))
             }
-        }catch(err){
-            console.log(err,"err")
+        } catch (err) {
+            console.log(err, "err")
         }
     }
 }
-export function getVendorTimeReporting (){
-    return async (dispatch) =>{
+export function getVendorTimeReporting() {
+    return async (dispatch) => {
         dispatch(setScreenLoader())
-        try{
+        try {
             let result = await clientInstance.get("/vendor/time-reports")
-            if (result.status==200){
+            if (result.status == 200) {
                 dispatch(setVendorTimeReport(result?.data?.data))
             }
-        }catch(error){
+        } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailVendorData())
         }
     }
 }
+export function getAddNewDeveloper(payload) {
+    console.log(payload,"payload")
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post('/vendor/add-developer', {...payload})
+            console.log(result.data,"result--------------")
+            if (result?.status == 200) {
+                dispatch(setAddDeveloper(result.data))
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
+
 
 

@@ -29,6 +29,8 @@ const DeveloperCV = () => {
     const [developerDetails, setDeveloperDetails] = useState(false);
     const [readmore,setReadMore]=useState(true)
 
+
+    console.log(developerCvData , "----developerCvData-----")
     const handleShowModal = () => {
         setShowModal(true);
     };
