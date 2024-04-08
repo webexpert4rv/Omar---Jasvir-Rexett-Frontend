@@ -10,6 +10,7 @@ import { adminListAssignedDeveloper, adminListClients, getAdminDashboard } from 
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
+import NoDataFound from "../../components/atomic/NoDataFound"
 
 
 
@@ -19,6 +20,8 @@ const AdminDashboard = () => {
     const { developerDetails } = useSelector(state => state.adminData)
     const navigate = useNavigate()
 
+
+  
     useEffect(() => {
         dispatch(getAdminDashboard())
     }, [])
@@ -74,46 +77,33 @@ const AdminDashboard = () => {
                             <h2 className="section-head-sub">List of clients</h2>
                         </div>
                         <div className="developers-list">
-                            {adminDashboard?.data?.clients.map((item, index) => {
+                            {adminDashboard?.data?.clients.length>0?adminDashboard?.data?.clients.map((item, index) => {
                                 return (
                                     <>
                                         <div className="developer-card client-card" >
                                             <div className="user-imgbx ">
-                                                <img src={userImg} className="user-img" />
+                                                <img src={item?.profile_picture? item?.profile_picture: userImg} className="user-img" alt="developer" />
                                             </div>
                                             <div className="text-center">
                                                 <h3 className="user-name ">{item?.name}</h3>
-                                                {/* <p className="designation-user">full stack developer</p> */}
                                                 <p className="email-user">{item?.email}</p>
-                                                {/* <ul className="social-icons">
-                                                <li>
-                                                    <Link to={"#"}><FaGithub /></Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={"#"}><FaLinkedin /></Link>
-                                                </li>
-                                                <li>
-                                                    <Link to={"#"}><MdEmail /></Link>
-                                                </li>
-                                            </ul> */}
                                             </div>
                                         </div>
                                     </>
                                 )
-                            })}
+                            }):<NoDataFound/>}
                         </div>
                     </Col>
                 </Row>
                 <h2 className="section-head-sub mb-4">List of assigned developers</h2>
                 <div className="developers-list">
 
-                    {adminDashboard?.data?.assignedDevelopers.map((item, index) => {
-                        console.log(item?.developer_id,"devlopeerrid")
+                    {adminDashboard?.data?.assignedDevelopers.length>0? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
                         return (
                             <>
                                 <div className="developer-card" onClick={() => handleCardClick(item?.developer_id)}>
                                     <div className="user-imgbx">
-                                        <img src={item?.developer?.profile_picture} className="user-img" />
+                                        <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg} alt="developer" className="user-img" />
                                     </div>
                                     <div className="text-center">
                                         <h3 className="user-name">{item?.developer?.name}</h3>
@@ -135,11 +125,11 @@ const AdminDashboard = () => {
                             </>
                         )
                     })
-                    }
+                    :<NoDataFound/>}
                 </div>
-                <div className="text-center mt-3">
+                {adminDashboard?.data?.assignedDevelopers.length>0?<div className="text-center mt-3">
                     <Link to={"/developer-list"} className="link-text-dark">See All</Link>
-                </div>
+                </div>:""}
             </div>}
         </>
     )

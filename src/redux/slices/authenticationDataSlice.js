@@ -44,6 +44,7 @@ export function loginUser(payload, callback) {
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role","client")
+                    localStorage.setItem("userId",result.data.data.id)
                   
                       window.location.href="/dashboard"
                 }
@@ -52,6 +53,7 @@ export function loginUser(payload, callback) {
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role","developer")
+                    localStorage.setItem("userId",result.data.data.id)
                       window.location.href="/developer-dashboard"
                 }
 
@@ -59,12 +61,14 @@ export function loginUser(payload, callback) {
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role","admin")
+                    localStorage.setItem("userId",result.data.data.id)
                       window.location.href="/admin-dashboard"
                 }
                 if(payload.role==="vendor"){
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
                     localStorage.setItem("role","vendor")
+                    localStorage.setItem("userId",result.data.data.id)
                       window.location.href="/vendor-dashboard"
                 }
 

@@ -13,7 +13,7 @@ const DeveloperNavigation = ({ onClick }) => {
                         {/* <button onClick={onClick} className="bars-btn"><HiBars3 /></button> */}
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                      <Notification/>
+                      <Notification route="notification-developer" job="" doc="documents" />
                         <Link to={'/developer-list'} className="text-decoration-none main-btn">Contact Support</Link>
                     </div>
                 </div>

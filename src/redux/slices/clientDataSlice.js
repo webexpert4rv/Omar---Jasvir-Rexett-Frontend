@@ -2,9 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import clientInstance from '../../services/client.instance';
 import { generateApiUrl } from '../../helper/utlis';
-import developerInstance from '../../services/developer.instance';
-import commanInstance from '../../services/commanInstance';
-import adminInstance from '../../services/admin.instance';
+
 
 const initialClientData = {
     screenLoader: false,

@@ -204,7 +204,7 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
                                             {...register(`educations.${index}.end_year`, {
                                                 required: {
                                                     value: disbaleYear[index]?false:true,
-                                                    message: "End Date is required",
+                                                    message: "End year is required",
                                                   },
                                              
                                             })}

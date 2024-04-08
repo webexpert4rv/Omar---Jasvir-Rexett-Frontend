@@ -274,7 +274,7 @@ export function getDegreeList(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`developer/degree-list`)
+            let result = await clientInstance.get(`common/degree-list`)
             dispatch(setDegreeList(result.data.data))
             // return callback()
 

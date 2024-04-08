@@ -1,10 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import authInstance from '../../services/auth.instance';
 import { toast } from 'react-toastify';
-import adminInstance from '../../services/admin.instance';
 import { generateApiUrl } from '../../helper/utlis';
 import clientInstance from '../../services/client.instance';
-import { setSmallLoader } from './clientDataSlice';
 
 const initialAdminData = {
     screenLoader: false,
@@ -21,7 +18,8 @@ const initialAdminData = {
     suggestedDeveloper:[],
     adminDashboard:[],
     approvedLoader :false,
-    notificationList:{}
+    notificationList:[],
+    singleJobPagination:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -93,7 +91,6 @@ export const adminDataSlice = createSlice({
         },
         setSuggestedDeveloper:(state,action)=>{
             let recomnd=action.payload?.recommended_developers?.map((item)=>{return {...item,recommed:true}})
-            console.log(recomnd,"recomnd")
             let data=[...recomnd,...action.payload?.other_developers]
             state.suggestedDeveloper=data
         },
@@ -109,12 +106,15 @@ export const adminDataSlice = createSlice({
             state.smallLoader = false;
             state.screenLoader = false;
         },
+        setPagination:(state,action)=>{
+            state.singleJobPagination = action.payload
+        }
 
 
     }
 })
 
-export const {setSuggestedDeveloper,setNotificationList, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const {setSuggestedDeveloper,setPagination,setNotificationList, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -323,13 +323,16 @@ export function adminApproveReject(payload) {
 }
 
 export function getDeveloperSuggestList(payload) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         // dispatch(setBtnLoader())
         try {
             let result = await clientInstance.get(`admin/developers-to-suggest/${payload}`)
+            console.log(result.data,"result----")
             if (result.status === 200) {
 
                 dispatch(setSuggestedDeveloper(result.data.data))
+                dispatch(setPagination(result.data.pagination))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -375,11 +378,28 @@ export function editTimeReporting(payload) {
 
 export function getNotification(payload) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`common/notifications`)
             if (result.status === 200) {
                 dispatch(setNotificationList(result.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function markAsRead(payload,callback) {
+    return async (dispatch) => {
+        // dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.put(`common/notifications/mark-as-read?notificationId=${payload}`)
+            if (result.status === 200) {
+                return callback()
+                // dispatch(setNotificationList(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
