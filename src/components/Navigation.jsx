@@ -15,7 +15,7 @@ const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
                         <button onClick={handlemainSidebar} className="bars-btn"><HiBars3 /></button>
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                      <Notification/>
+                      <Notification route="notification-client" job="single-job" doc="documents"/>
                         <button className="main-btn" onClick={() => navigate("/job-post")}>+ Add new Job</button>
                         <div>
                             <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button>
