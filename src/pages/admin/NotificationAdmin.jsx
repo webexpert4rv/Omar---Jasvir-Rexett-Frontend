@@ -23,7 +23,7 @@ const NotificationAdmin = () => {
 
 const newTitleFunction=(data)=>{
   const today = new Date();
-  const targetDate = new Date('2024-04-06');
+  const targetDate = new Date(data);
   if (targetDate > today) {
     return true
   }
@@ -61,7 +61,7 @@ const newTitleFunction=(data)=>{
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
-                              <span className="new-notify">{newTitleFunction(item?.created_at)==true && "New"}</span>
+                              {newTitleFunction(item?.created_at)&&<span className="new-notify">New</span>}
                             </h3>
                             <p className="notification-text">
                              {
