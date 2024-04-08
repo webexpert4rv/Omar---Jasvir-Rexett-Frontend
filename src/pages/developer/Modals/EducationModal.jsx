@@ -6,10 +6,10 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm, useFieldArray } from "react-hook-form";
 import Select from 'react-select';
 
-const EducationCV = ({ show, handleClose, data,smallLoader }) => {
+const EducationCV = ({ show, handleClose, data, smallLoader }) => {
     const dispatch = useDispatch();
     const [disbaleYear, setDisbaleYear] = useState([]);
-    const [renderModalData,setRenderModalData]=useState(data)
+    const [renderModalData, setRenderModalData] = useState(data)
     const { degreeList } = useSelector(state => state.developerData)
     const { register, control, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm();
     const { fields, append, remove } = useFieldArray({ control, name: "educations" });
@@ -47,21 +47,21 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
         dispatch(getDegreeList())
     }, [])
 
-    const handleCurrentlyWorkingChange = (e,index) => {
-        if(e.target.checked){
-          const end_year = watch(`educations[${index}].end_year`);
-          const updatedDisabledEndDates = [...disbaleYear];
-          updatedDisabledEndDates[index] = true;
-          setDisbaleYear(updatedDisabledEndDates);
-          setValue(`educations[${index}].end_year`, null);
-        }else{
-          const end_year = watch(`educations[${index}].end_year`);
-          const updatedDisabledEndDates = [...disbaleYear];
-          updatedDisabledEndDates[index] = false;
-          setDisbaleYear(updatedDisabledEndDates);
-          setValue(`educations[${index}].end_year`, end_year);
+    const handleCurrentlyWorkingChange = (e, index) => {
+        if (e.target.checked) {
+            const end_year = watch(`educations[${index}].end_year`);
+            const updatedDisabledEndDates = [...disbaleYear];
+            updatedDisabledEndDates[index] = true;
+            setDisbaleYear(updatedDisabledEndDates);
+            setValue(`educations[${index}].end_year`, null);
+        } else {
+            const end_year = watch(`educations[${index}].end_year`);
+            const updatedDisabledEndDates = [...disbaleYear];
+            updatedDisabledEndDates[index] = false;
+            setDisbaleYear(updatedDisabledEndDates);
+            setValue(`educations[${index}].end_year`, end_year);
         }
-        
+
     }
 
     const handleAddMore = async () => {
@@ -78,43 +78,43 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
         }
     };
 
-   
-  const deleteDeveloperExperience = (id,index) => {     
-    remove(index)
-    if(id){
-      dispatch(deleteEducationCv(id, () => {
-        dispatch(fetchDeveloperCv())
-    }))
+
+    const deleteDeveloperExperience = (id, index) => {
+        remove(index)
+        if (id) {
+            dispatch(deleteEducationCv(id, () => {
+                dispatch(fetchDeveloperCv())
+            }))
+        }
     }
-}
-  
+
 
 
     const onSubmit = (value) => {
-        let {educations}=value
+        let { educations } = value
         let addEdu = educations?.map((item) => {
             if (!item.new_id) {
                 return { ...item }
             }
         }).filter((item) => item)
         if (addEdu.length > 0) {
-            dispatch(addDeveloperCvEducation(addEdu,()=>{
+            dispatch(addDeveloperCvEducation(addEdu, () => {
                 dispatch(fetchDeveloperCv())
                 handleClose()
             }))
-        } 
-    
+        }
+
         educations?.forEach((item) => {
             if (item.new_id) {
                 dispatch(updateDeveloperCvEducation(item, item.new_id, () => {
                     dispatch(fetchDeveloperCv())
-                handleClose()
-                    }))
-    
-                }
-            })
-        
-      };
+                    handleClose()
+                }))
+
+            }
+        })
+
+    };
     return (
         <Modal show={show} onHide={handleClose} centered scrollable animation size="lg">
             <Modal.Header closeButton>
@@ -148,9 +148,9 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
                                             options={degreeList}
                                             onChange={(val) => setValue(`educations.${index}.degree_id`, val ? val.value : '')}
                                             defaultValue={degreeList.find(option => option.value === item.degree_id)}
-                                          
+
                                         />
-                                        
+
                                     </Form.Group>
 
                                 </Col>
@@ -189,7 +189,7 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
                                             <option disabled selected>Please select year</option>
                                             {yearsArray?.map((item) => (
                                                 <option key={item} value={item}>{item}</option>
-                                            ))} 
+                                            ))}
                                         </Form.Select>
                                         {errors && errors.educations && errors.educations[index] && errors.educations[index].start_year && (
                                             <p className="error-message">{errors.educations[index].start_year.message}</p>
@@ -197,18 +197,18 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
 
                                     </Form.Group>
                                 </Col>
-                                {!disbaleYear[index]?<Col md="6">
+                                {!disbaleYear[index] ? <Col md="6">
                                     <Form.Group className="mb-4">
                                         <Form.Label>End Year</Form.Label>
                                         <Form.Select
                                             {...register(`educations.${index}.end_year`, {
                                                 required: {
-                                                    value: disbaleYear[index]?false:true,
+                                                    value: disbaleYear[index] ? false : true,
                                                     message: "End Date is required",
-                                                  },
-                                             
+                                                },
+
                                             })}
-                                            disabled={disbaleYear[index]}  
+                                            disabled={disbaleYear[index]}
                                         >
                                             <option disabled selected>Please select year</option>
                                             {yearsArray?.map((item) => (
@@ -220,7 +220,7 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
                                         )}
 
                                     </Form.Group>
-                                </Col>:""}
+                                </Col> : ""}
                                 <Col md="12">
                                     <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                                         <Form.Check
@@ -229,16 +229,16 @@ const EducationCV = ({ show, handleClose, data,smallLoader }) => {
                                             id={`currently_attending_${index}`}
                                             {...register(`educations.${index}.currently_attending`)}
                                             defaultChecked={item.currently_attending}
-                                            onChange={(e) => handleCurrentlyWorkingChange(e,index)}
+                                            onChange={(e) => handleCurrentlyWorkingChange(e, index)}
                                         />
                                         <Form.Label htmlFor={`currently_attending_${index}`} className="mb-0">Currently Attending</Form.Label>
                                     </Form.Group>
                                 </Col>
                                 {index !== 0 && (
-                    <Col md="12" className="d-flex justify-content-end">
-                        <Button variant="danger" onClick={() =>deleteDeveloperExperience(item.new_id,index) }>Delete</Button>
-                    </Col>
-                )}
+                                    <Col md="12" className="d-flex justify-content-end">
+                                        <Button variant="danger" onClick={() => deleteDeveloperExperience(item.new_id, index)}>Delete</Button>
+                                    </Col>
+                                )}
                             </Row>
                         </div>
                     ))}

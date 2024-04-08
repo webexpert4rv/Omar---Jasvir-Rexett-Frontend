@@ -21,6 +21,8 @@ import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 import DeveloperDetails from "./Modals/DeveloperDetails";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { HiDownload } from "react-icons/hi";
+
+
 const DeveloperCV = () => {
     const dispatch = useDispatch()
     const { developerCvData, smallLoader ,screenLoader} = useSelector(state => state.developerData)
