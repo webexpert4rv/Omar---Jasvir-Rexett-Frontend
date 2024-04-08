@@ -59,7 +59,8 @@ const EditVendorProfile = () => {
         dispatch(getVenderProfile())
     }, [])
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault()
         // setValue()
     }
 
@@ -278,42 +279,7 @@ const EditVendorProfile = () => {
                                                 <p className="error-message">{errors.company_email.message}</p>
                                             )}
                                         </Form.Group>
-                                        <Form.Group className="mb-3">
-                                            <Form.Label className="common-label">Previous Password</Form.Label>
-                                            <div className="position-relative">
-                                                <Form.Control
-                                                    type={password.thirdPass ? "text" : "password"}
-                                                    className="cv-field"
-                                                    name="company_password"
-                                                    placeholder="Enter password"
-                                                    {...register(`company_password`, {
-                                                        required: "Password is required",
-                                                    })}
-                                                />
-                                                <span className="eye-btn" onClick={() => setPassword({ ...password, thirdPass: !password.thirdPass })}><FaEye /></span>
-                                            </div>
-                                            {errors?.company_password && (
-                                                <p className="error-message">{errors.company_password.message}</p>
-                                            )}
-                                        </Form.Group>
-                                        <Form.Group className="mb-3">
-                                            <Form.Label className="common-label">New Password</Form.Label>
-                                            <div className="position-relative">
-                                                <Form.Control
-                                                    type={password.fourthPass ? "text" : "password"}
-                                                    className="cv-field"
-                                                    name="company_new_password"
-                                                    placeholder="Enter New password"
-                                                    {...register(`company_new_password`, {
-                                                        required: "New password is required",
-                                                    })}
-                                                />
-                                                <span className="eye-btn" onClick={() => setPassword({ ...password, fourthPass: !password.fourthPass })}><FaEye /></span>
-                                            </div>
-                                            {errors?.company_new_password && (
-                                                <p className="error-message">{errors.company_new_password.message}</p>
-                                            )}
-                                        </Form.Group>
+                                
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">Address</Form.Label>
                                             <Form.Control

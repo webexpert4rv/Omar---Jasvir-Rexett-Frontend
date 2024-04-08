@@ -104,8 +104,7 @@ const RegisterDeveloper = () => {
         dispatch(getAddNewDeveloper(formData))
     };
     const handleAddMoreExp = async () => {
-        const isValid = await trigger();
-        if (isValid) {
+
             const newExperienceField = {
                 id: experienceFields.length + 1,
                 company_name: '',
@@ -118,7 +117,7 @@ const RegisterDeveloper = () => {
 
             setExperienceFields([...experienceFields, newExperienceField]);
             console.log(experienceFields,"newExperienceField")
-        }
+        
     };
     const handleDeleteFieldExp = (id) => {
         const updatedExperienceFields = experienceFields.filter(field => field.id !== id);
@@ -177,8 +176,8 @@ const RegisterDeveloper = () => {
     };
 
     const handleAddMoreSocial = () => {
-        const newRow =[ { id: socialMediaRows.length + 1, name: '', url: '' }];
-        setSocialMediaRows([{...socialMediaRows, newRow}]);
+        const newRow = { id: socialMediaRows.length + 1, name: '', url: '' };
+        setSocialMediaRows([...socialMediaRows, newRow]);
     };
 
     const handleDeleteRowSocial = (id) => {
@@ -693,13 +692,10 @@ const RegisterDeveloper = () => {
                                                         className="py-0 border-0 shadow-none bg-transparent"
                                                         {...register(`social_links[${index}].name`)} // Register the name field
                                                     >
-                                                        <option value="facebook">Facebook</option>
-                                                        <option value="linkedin">Linkedin</option>
-                                                        <option value="twitter">Twitter</option>
-                                                        <option value="github">Github</option>
-                                                        <option value="instagram">Instagram</option>
-                                                        <option value="gitlab">Gitlab</option>
-                                                        <option value="pinterest">Pinterest</option>
+                                                        <option value="facebook_url">Facebook</option>
+                                                        <option value="linkedin_url">Linkedin</option>
+                                                        <option value="twitter_url">Twitter</option>
+                                                        <option value="github_url">Github</option>
                                                     </Form.Select>
                                                 </InputGroup.Text>
                                                 <Form.Control

@@ -8,7 +8,9 @@ const initialVendorData = {
     vendorDashboard: {},
     vendorProfile: {},
     vendorTimeReport: [],
-    addDeveloper:{}
+    addDeveloper:{},
+    clientList:[],
+    developerList:[]
 }
 
 export const vendorDataSlice = createSlice({
@@ -23,6 +25,10 @@ export const vendorDataSlice = createSlice({
         },
         setVendorDashboard: (state, action) => {
             state.vendorDashboard = action.payload
+            state.screenLoader = false;
+        },
+        setVendorSuccess: (state, action) => {
+            state.smallLoader=false
             state.screenLoader = false;
         },
         setVendorProfile: (state, action) => {
@@ -40,10 +46,18 @@ export const vendorDataSlice = createSlice({
         setAddDeveloper: (state, action) =>{
             state.screenLoader = false;
             state.addDeveloper = action.payload
+        },
+        setClientList: (state, action) =>{
+            state.screenLoader = false;
+            state.clientList = action.payload.data
+        },
+        setDeveloperList: (state, action) =>{
+            state.screenLoader = false;
+            state.developerList = action.payload.data
         }
     }
 })
-export const { setScreenLoader, setSmallLoader,setAddDeveloper, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
+export const { setScreenLoader,setClientList,setVendorSuccess, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
 
 export default vendorDataSlice.reducer
 
@@ -109,5 +123,61 @@ export function getAddNewDeveloper(payload) {
 
 }
 
+export function getVendorList(payload) {
+    return async (dispatch) => {
+        // dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get('vendor/clients')
+            if (result?.status == 200) {
+                dispatch(setClientList(result.data))
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
+
+export function getDeveloperList(payload) {
+    return async (dispatch) => {
+        // dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`vendor/client/${payload}/developers`)
+            if (result?.status == 200) {
+                dispatch(setDeveloperList(result.data))
+              
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
+
+export function addFileInvoice(payload) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post(`vendor/upload-invoice`,{...payload})
+            if (result?.status == 200) {
+                dispatch(setVendorSuccess())
+                toast.success("file is Uploaded", { position: "top-center" })
+
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
 
 

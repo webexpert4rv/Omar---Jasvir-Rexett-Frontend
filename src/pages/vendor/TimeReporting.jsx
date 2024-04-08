@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getVendorTimeReporting } from "../../redux/slices/vendorDataSlice";
 import UploadInvoice from "../admin/Modals/UploadInvoice";
-
+import NoDataFound from "../../components/atomic/NoDataFound"
 
 const VendorTimeReporting = () => {
     const dispatch = useDispatch()
@@ -114,7 +114,7 @@ const VendorTimeReporting = () => {
                             </thead>
                             {screenLoader ? <ScreenLoader /> : <tbody>
                                 {
-                                    developerData?.map((item, index) => {
+                                   developerData.length>0? developerData?.map((item, index) => {
                                         return (
                                             <>
                                                 <tr>
@@ -144,7 +144,7 @@ const VendorTimeReporting = () => {
                                             </>
                                         )
                                     })
-                                }
+                                :<td colSpan={9}><NoDataFound/></td>}
 
                             </tbody>}
                         </table>
