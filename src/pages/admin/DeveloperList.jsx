@@ -125,7 +125,7 @@ const DeveloperList = () => {
                                         <div className="developer-card" >
                                             <span className="check-icon"><FaCircleCheck /></span>
                                             <div className="user-imgbx">
-                                                <img src={item?.profile_picture} className="user-img" />
+                                                <img src={item?.profile_picture ? item?.profile_picture  : userImg } className="user-img" />
                                             </div>
                                             <div className="text-center">
                                                 <h3 className="user-name">{item?.name}</h3>

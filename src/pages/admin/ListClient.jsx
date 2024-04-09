@@ -65,7 +65,7 @@ const ListClient = () => {
                                 return (<>
                                     <div className="developer-card">
                                         <div className="user-imgbx">
-                                            <img src={item.profile_picture} className="user-img client-logo" />
+                                            <img src={item.profile_picture ? item.profile_picture  : userImg } className="user-img client-logo" />
                                         </div>
                                         <div className="text-center">
                                             <h3 className="user-name">{item.name}</h3>
