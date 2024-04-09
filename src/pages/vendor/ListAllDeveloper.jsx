@@ -3,7 +3,7 @@ import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Nav, Tab } from "react-bootstrap";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
@@ -14,6 +14,7 @@ import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { SeeMore } from "../../components/atomic/SeeMore";
+import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 
 
 const AllDeveloperList = () => {
@@ -22,6 +23,7 @@ const AllDeveloperList = () => {
     console.log(allDevelopersList, "allDevelopersList")
     const [selectedFilter, setSelectedFilter] = useState({});
     const [count, setCount] = useState(1);
+    const navigate = useNavigate()
 
 
 
@@ -66,7 +68,10 @@ const AllDeveloperList = () => {
         })
         dispatch(getDevelopersList());
     }
-
+    const handleCardClick = (id) => {
+        dispatch(getDeveloperDetails(id))
+        navigate(`/vendor-single-developer/${id}`)
+    }
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <>
@@ -125,10 +130,10 @@ const AllDeveloperList = () => {
                         <Tab.Pane eventKey="grid-view">
                             <div className="developers-list">
                                 {allDevelopersList?.data?.developers.length > 0 ? allDevelopersList?.data?.developers.map((item, index) => {
-                                    return (
+                                   return (
                                         <>
 
-                                            <div className="developer-card">
+                                            <div className="developer-card" onClick = {()=>handleCardClick(item?.id)}>
                                                 <div className="user-imgbx">
                                                     <img src={item?.profile_picture} className="user-img" />
                                                 </div>

@@ -32,7 +32,7 @@ const EditVendorProfile = () => {
     secondPass: false,
     thirdPass: false,
     fourthPass: false,
-})
+  })
 
   useEffect(() => {
     setValue("vendor_name", vendorProfile?.name);
@@ -46,8 +46,8 @@ const EditVendorProfile = () => {
     setValue("company_name", vendorProfile?.company?.name);
     setValue("company_email", vendorProfile?.company?.email);
     setValue("company_phone_number", vendorProfile?.company?.phone_number);
-    setValue("company_address", vendorProfile?.company?.address);
-    setValue("company_address_2", vendorProfile?.company?.address_2);
+    // setValue("company_address", vendorProfile?.company?.address);
+    // setValue("company_address_2", vendorProfile?.company?.address_2);
     setValue("company_city", vendorProfile?.company?.city);
     setValue("company_country", vendorProfile?.company?.country);
     setValue("company_postcode", vendorProfile?.company?.passcode);
@@ -68,7 +68,7 @@ const EditVendorProfile = () => {
       address_2: values.address_2,
       city: values.city,
       passcode: values.passcode,
-      country: values,
+      country: values.country,
       company: {
         name: values.company_name,
         email: values.email, // Example email, replace with actual value
@@ -129,7 +129,7 @@ const EditVendorProfile = () => {
                             name="vendor_name"
                             placeholder="Enter Vendor Name"
                             {...register(`vendor_name`, {
-                              required: "vendor_name is required",
+                              required: "Name is required",
                             })}
                           />
                           {errors?.vendor_name && (
@@ -233,7 +233,7 @@ const EditVendorProfile = () => {
                             name="phone_number"
                             placeholder="Enter phone_number"
                             {...register(`phone_number`, {
-                              required: "phone_number is required",
+                              required: "Phone number is required",
                             })}
                           />
                           {errors?.phone_number && (
@@ -272,18 +272,35 @@ const EditVendorProfile = () => {
                           <Form.Control
                             type="text"
                             className="cv-field"
-                            name="address2"
-                            placeholder="Enter Address2"
-                            {...register(`address2`, {
-                              required: "Address2 is required",
+                            name="address_2"
+                            placeholder="Enter address 2"
+                            {...register(`address_2`, {
+                              required: "Address is required",
                             })}
                           />
-                          {errors?.address2 && (
+                          {errors?.address_2 && (
                             <p className="error-message">
-                              {errors.address2.message}
+                              {errors.address_2.message}
                             </p>
                           )}
                         </Form.Group>
+                        {/* <Form.Group className="mb-3">
+                          <Form.Label className="common-label">Profile Picture</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="profile_picture"
+                            placeholder="Enter Profile Picture"
+                            {...register(`profile_picture`, {
+                              required: "profile_picture is required",
+                            })}
+                          />
+                          {errors?.profile_picture && (
+                            <p className="error-message">
+                              {errors.profile_picture.message}
+                            </p>
+                          )}
+                        </Form.Group> */}
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">City</Form.Label>
                           <Form.Control
@@ -370,6 +387,25 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
+                            Type Of Company
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="type_of_company"
+                            placeholder="Enter Company Name"
+                            {...register(`type_of_company`, {
+                              required: "Type of Company is required",
+                            })}
+                          />
+                          {errors?.type_of_company && (
+                            <p className="error-message">
+                              {errors.type_of_company.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
                             Email
                           </Form.Label>
                           <Form.Control
@@ -417,7 +453,7 @@ const EditVendorProfile = () => {
                             name="company_phone_number"
                             placeholder="Enter phone_number"
                             {...register(`company_phone_number`, {
-                              required: "company_phone_number is required",
+                              required: "Phone number is required",
                             })}
                           />
                           {errors?.company_phone_number && (
@@ -432,7 +468,7 @@ const EditVendorProfile = () => {
                             Establishment Year
                           </Form.Label>
                           <Form.Control
-                            type="number"
+                            type="text"
                             className="cv-field"
                             name="establishment_year"
                             placeholder="Establishment year"
@@ -443,6 +479,25 @@ const EditVendorProfile = () => {
                           {errors?.establishment_year && (
                             <p className="error-message">
                               {errors.establishment_year.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Type Of Establishment
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="type_of_establishment"
+                            placeholder="Enter Type of Establishment "
+                            {...register(`type_of_establishment`, {
+                              required: "Type of Establishment  is required",
+                            })}
+                          />
+                          {errors?.type_of_establishment && (
+                            <p className="error-message">
+                              {errors.type_of_establishment.message}
                             </p>
                           )}
                         </Form.Group>
@@ -457,12 +512,125 @@ const EditVendorProfile = () => {
                             name="total_employees"
                             placeholder="Total Employees"
                             {...register(`total_employees`, {
-                              required: false,
+                              required: "Total Employees is required",
                             })}
                           />
                           {errors?.total_employees && (
                             <p className="error-message">
                               {errors.total_employees.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Total IT Recruiter
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            className="cv-field"
+                            name="total_it_recruiter"
+                            placeholder="Enter Total IT Recruiter"
+                            {...register(`total_it_recruiter`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.total_it_recruiter && (
+                            <p className="error-message">
+                              {errors.total_it_recruiter.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Service Offering
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="service_offering"
+                            placeholder="Enter Service Offering"
+                            {...register(`service_offering`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.service_offering && (
+                            <p className="error-message">
+                              {errors.service_offering.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Specialization
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="specialization"
+                            placeholder="Enter Specialization"
+                            {...register(`specialization`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.specialization && (
+                            <p className="error-message">
+                              {errors.specialization.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Turn around time to close contract position
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="turn_around_time_to_close_contract_position"
+                            placeholder="Enter Turn Around Time To Close Contract Position"
+                            {...register(`turn_around_time_to_close_contract_position`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.turn_around_time_to_close_contract_position && (
+                            <p className="error-message">
+                              {errors.turn_around_time_to_close_contract_position.message}
+                            </p>
+                          )}
+                        </Form.Group> <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Turn around time to close permanent position
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="turn_around_time_to_close_permanent_position"
+                            placeholder="Enter Turn Around Time To Close Permanent Position"
+                            {...register(`turn_around_time_to_close_permanent_position`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.turn_around_time_to_close_permanent_position && (
+                            <p className="error-message">
+                              {errors.turn_around_time_to_close_permanent_position.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Success Story
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="success_story"
+                            placeholder="Enter Success Story"
+                            {...register(`success_story`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.success_story && (
+                            <p className="error-message">
+                              {errors.success_story.message}
                             </p>
                           )}
                         </Form.Group>
@@ -474,7 +642,7 @@ const EditVendorProfile = () => {
                             type="number"
                             className="cv-field"
                             name="yearly_revenue"
-                            placeholder="Yearly Revenue"
+                            placeholder=" Enter Yearly Revenue"
                             {...register(`yearly_revenue`, {
                               required: false,
                             })}
@@ -489,7 +657,7 @@ const EditVendorProfile = () => {
                     </Col>
                     <Col md="6">
                       <div>
-                        <Form.Group className="mb-3">
+                        {/* <Form.Group className="mb-3">
                           <Form.Label className="common-label">
                             Address 2
                           </Form.Label>
@@ -506,8 +674,8 @@ const EditVendorProfile = () => {
                             <p className="error-message">
                               {errors.company_address2.message}
                             </p>
-                          )}
-                        </Form.Group>
+                          )} */}
+                        {/* </Form.Group> */}
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">City</Form.Label>
                           <Form.Control
@@ -534,8 +702,15 @@ const EditVendorProfile = () => {
                             className="cv-field"
                             name="state"
                             placeholder="Enter State"
-                            {...register(`State`, {
-                              required: "State is required",
+                            {...register(`state`, {
+                              required: {
+                                value: true,
+                                message: "State is required",
+                              },
+                              pattern: {
+                                value: /^[A-Za-z\s]+$/,
+                                message: "State should not contain numbers or special character",
+                              }
                             })}
                           />
                           {errors?.state && (
@@ -573,7 +748,14 @@ const EditVendorProfile = () => {
                             name="company_country"
                             placeholder="Enter Country"
                             {...register(`company_country`, {
-                              required: "Country is required",
+                              required: {
+                                value: true,
+                                message: "Country is required",
+                              },
+                              pattern: {
+                                value: /^[A-Za-z\s]+$/,
+                                message: "Country should not contain numbers or special character",
+                              }
                             })}
                           />
                           {errors?.company_country && (
@@ -593,7 +775,7 @@ const EditVendorProfile = () => {
                             name="country_code"
                             placeholder="Enter Country Code"
                             {...register(`country_code`, {
-                              required: false,
+                              required: "Country code is required",
                             })}
                           />
                           {errors?.country_code && (
@@ -632,7 +814,7 @@ const EditVendorProfile = () => {
                             name="gst_number"
                             placeholder="Enter GST number"
                             {...register(`gst_number`, {
-                              required: "Website is required",
+                              required: "Gst Number is required",
                             })}
                           />
                           {errors?.gst_number && (
@@ -662,7 +844,7 @@ const EditVendorProfile = () => {
                             name="proprietor_name"
                             placeholder="Enter Proprietor Name"
                             {...register(`proprietor_name`, {
-                              required: "proprietor_name is required",
+                              required: "Name is required",
                             })}
                           />
                           {errors?.proprietor_name && (
@@ -682,7 +864,7 @@ const EditVendorProfile = () => {
                               name="proprietor_email"
                               placeholder="Enter Proprietor Email"
                               {...register(`proprietor_email`, {
-                                required: "Proprietor Email is required",
+                                required: " Email is required",
                               })}
                             />
                             {errors?.proprietor_email && (
@@ -702,7 +884,7 @@ const EditVendorProfile = () => {
                             name="proprietor_contact_number"
                             placeholder="Enter Proprietor Contact Number"
                             {...register(`proprietor_contact_number`, {
-                              required: "proprietor_contact_number is required",
+                              required: "Contact number is required",
                             })}
                           />
                           {errors?.proprietor_contact_number && (
@@ -713,20 +895,58 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Address
+                            Contact person name
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
-                            name="address"
-                            placeholder="Enter Address"
-                            {...register(`address`, {
-                              required: "Address is required",
+                            name="proprietor_contact_person_name"
+                            placeholder="Enter Contact Person Name"
+                            {...register(`proprietor_contact_person_name`, {
+                              required: "Contact Person name is required",
                             })}
                           />
-                          {errors?.address && (
+                          {errors?.proprietor_contact_person_name && (
                             <p className="error-message">
-                              {errors.address.message}
+                              {errors.proprietor_contact_person_name.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Contact Phone Number
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="proprietor_contact_person_phone_number"
+                            placeholder="Enter Contact Person Number"
+                            {...register(`proprietor_contact_person_phone_number`, {
+                              required: "Contact Phone number is required",
+                            })}
+                          />
+                          {errors?.proprietor_contact_person_phone_number && (
+                            <p className="error-message">
+                              {errors.proprietor_contact_person_phone_number.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Contact Person Email
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="proprietor_contact_person_email"
+                            placeholder="Enter Contact Person Email"
+                            {...register(`proprietor_contact_person_email`, {
+                              required: "Contact email is required",
+                            })}
+                          />
+                          {errors?.proprietor_contact_person_email && (
+                            <p className="error-message">
+                              {errors.proprietor_contact_person_email.message}
                             </p>
                           )}
                         </Form.Group>
@@ -752,3 +972,22 @@ const EditVendorProfile = () => {
   );
 };
 export default EditVendorProfile;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

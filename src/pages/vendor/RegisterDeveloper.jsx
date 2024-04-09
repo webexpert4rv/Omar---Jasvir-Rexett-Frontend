@@ -26,7 +26,7 @@ const options = [
 
 const RegisterDeveloper = () => {
     const dispatch = useDispatch()
-    const { addDeveloper,smallLoader } = useSelector(state => state.vendorData)
+    const { smallLoader } = useSelector(state => state.vendorData)
     const [disbaleYear, setDisbaleYear] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [skills, setSkills] = useState(null);
@@ -34,10 +34,9 @@ const RegisterDeveloper = () => {
     const { degreeList } = useSelector(state => state.developerData)
     const skillLabels = skills?.map(skill => skill.value);
     const skillSet = skillLabels?.toString()
-    let token = localStorage.getItem("token")
     const [socialMediaRows, setSocialMediaRows] = useState([
         {
-           name:'',
+            name: '',
             url: ''
         } // Initial row
     ]);
@@ -84,13 +83,11 @@ const RegisterDeveloper = () => {
     // Example usage:
     const yearsArray = generateYears();
 
-    console.log(experienceFields, "experienceFields")
     const goToNextStep = () => {
         setCurrentStep(currentStep + 1);
 
     };
     const onSubmit = (data, index) => {
-        console.log(data, "data")
         setCurrentStep(currentStep - 1);
         let formData = {
             ...data,
@@ -100,19 +97,18 @@ const RegisterDeveloper = () => {
     };
     const handleAddMoreExp = async () => {
 
-            const newExperienceField = {
-                id: experienceFields.length + 1,
-                company_name: '',
-                job_title: '',
-                description: '',
-                start_date: '',
-                end_date: '',
-                is_still_working: false
-            };
+        const newExperienceField = {
+            id: experienceFields.length + 1,
+            company_name: '',
+            job_title: '',
+            description: '',
+            start_date: '',
+            end_date: '',
+            is_still_working: false
+        };
 
-            setExperienceFields([...experienceFields, newExperienceField]);
-            console.log(experienceFields,"newExperienceField")
-        
+        setExperienceFields([...experienceFields, newExperienceField]);
+
     };
     const handleDeleteFieldExp = (id) => {
         const updatedExperienceFields = experienceFields.filter(field => field.id !== id);
@@ -128,25 +124,7 @@ const RegisterDeveloper = () => {
             currently_attending: true,
             description: "",
         }
-    ]);
-    // useEffect(() => {
-    //     if (addDeveloper) {
-    //         addDeveloper?.forEach((item, index) => {
-    //             append({
-    //                 company_name: item?.company_name,
-    //                 job_title: item?.job_title,
-    //                 description: item?.description,
-    //                 start_date: item?.start_date?.slice(0, 10),
-    //                 end_date: item?.end_date?.slice(0, 10),
-    //                 is_still_working: item?.is_still_working,
-    //                 newId: item?.id
-
-    //             });
-    //             setDisabledEndDates(prevState => [...prevState, item?.is_still_working]);
-    //         });
-    //     }
-    // }, [addDeveloper]);
-
+    ])
     useEffect(() => {
         dispatch(getDegreeList())
     }, [])
@@ -218,16 +196,6 @@ const RegisterDeveloper = () => {
     return (
         <>
             <section className="register-developer card-box">
-                {/* <div className="step-counts">
-                    {steps.map((step, index) => (
-                        <span
-                            key={index}
-                            className={`count ${currentStep === index ? "current" : ""} ${currentStep > index ? "active" : ""}`}
-                        >
-                            {index + 1}
-                        </span>
-                    ))}
-                </div> */}
                 <div className="">
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Enter Personal Details</h2>
@@ -346,7 +314,7 @@ const RegisterDeveloper = () => {
                                         <Form.Label className="common-label">State</Form.Label>
                                         <Form.Control type="text"
                                             className="common-field"
-                                            name="State"
+                                            name="state"
                                             {...register("state", {
                                                 required: {
                                                     value: true,
@@ -488,31 +456,31 @@ const RegisterDeveloper = () => {
                                         </Form.Group>
                                     </Col>
                                     <Col md={3}>
-                                            <Form.Group className="mb-4">
-                                                <Form.Label>End Date</Form.Label>
-                                                <Form.Control
-                                                    type="date"
-                                                    className="cv-field"
-                                                    placeholder="Enter End Date"
-                                                    max={new Date().toISOString().split("T")[0]}
-                                                    {...register(`experiences[${index}].end_date`, {
-                                                        required: {
-                                                            value: disabledEndDates[index] ? false : true,
-                                                            message: "End Date is required",
-                                                        },
-                                                    })}
-                                                    disabled={disabledEndDates[index]}
-                                                />
-                                                {errors?.experiences?.[index]?.end_date && (
-                                                    <p className="error-message">{errors.experiences[index].end_date.message}</p>
-                                                )}
-                                            </Form.Group>
+                                        <Form.Group className="mb-4">
+                                            <Form.Label>End Date</Form.Label>
+                                            <Form.Control
+                                                type="date"
+                                                className="cv-field"
+                                                placeholder="Enter End Date"
+                                                max={new Date().toISOString().split("T")[0]}
+                                                {...register(`experiences[${index}].end_date`, {
+                                                    required: {
+                                                        value: disabledEndDates[index] ? false : true,
+                                                        message: "End Date is required",
+                                                    },
+                                                })}
+                                                disabled={disabledEndDates[index]}
+                                            />
+                                            {errors?.experiences?.[index]?.end_date && (
+                                                <p className="error-message">{errors.experiences[index].end_date.message}</p>
+                                            )}
+                                        </Form.Group>
                                     </Col>
                                     <Col md="12">
                                         <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                                             <Form.Check
                                                 type="checkbox"
-                                            
+
                                                 {...register(`experiences[${index}].is_still_working`, {
                                                     required: false,
                                                 })}
@@ -568,7 +536,7 @@ const RegisterDeveloper = () => {
                                         <Form.Group className="mb-3">
                                             <Form.Label>Address</Form.Label>
                                             <Form.Control type="text"
-                                                
+
                                                 {...register(`educations[${index}].address`, {
                                                     required: {
                                                         value: true,
@@ -607,32 +575,27 @@ const RegisterDeveloper = () => {
                                             )}
                                         </Form.Group>
                                     </Col>
-                                     <Col md="3">
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>End Year</Form.Label>
-                                        <Form.Select
-                                            {...register(`educations.${index}.end_year`, {
-                                                required: {
-                                                    value: disbaleYear[index] ? false : true,
-                                                    message: "End year is required"
-                                                }
-
-
-                                            })}
-                                            disabled={disbaleYear[index]}
-                                        >
-                                            <option disabled selected >Please select year</option>
-                                            {yearsArray?.map((item) => (
-                                                <option key={item} value={item}>{item}</option>
-                                            ))}
-                                        </Form.Select>
-                                        {errors && errors.educations && errors.educations[index] && errors.educations[index].end_year && (
-                                            <p className="error-message">{errors.educations[index].end_year.message}</p>
-                                        )}
-
-
-                                    </Form.Group>
-
+                                    <Col md="3">
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>End Year</Form.Label>
+                                            <Form.Select
+                                                {...register(`educations.${index}.end_year`, {
+                                                    required: {
+                                                        value: disbaleYear[index] ? false : true,
+                                                        message: "End year is required"
+                                                    }
+                                                })}
+                                                disabled={disbaleYear[index]}
+                                            >
+                                                <option disabled selected >Please select year</option>
+                                                {yearsArray?.map((item) => (
+                                                    <option key={item} value={item}>{item}</option>
+                                                ))}
+                                            </Form.Select>
+                                            {errors && errors.educations && errors.educations[index] && errors.educations[index].end_year && (
+                                                <p className="error-message">{errors.educations[index].end_year.message}</p>
+                                            )}
+                                        </Form.Group>
                                     </Col >
                                     <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                                         <Form.Check
@@ -645,8 +608,6 @@ const RegisterDeveloper = () => {
                                         />
                                         <Form.Label className="mb-0">Currently Attending</Form.Label>
                                     </Form.Group>
-                                    {/* </Col> */}
-                                    {/* </Col> : ""} */}
                                     {index !== 0 && (
                                         <Col md="12" className="d-flex justify-content-end">
                                             <Button variant="danger" onClick={() => handleDeleteField(id)}><FaTrash /></Button>
@@ -702,7 +663,7 @@ const RegisterDeveloper = () => {
                                                             value: true,
                                                             message: "Url is required",
                                                         },
-                                                    })}/>
+                                                    })} />
 
                                                 {errors?.social_links?.url && (
                                                     <p className="error-message">{errors.social_links?.url.message}</p>
@@ -717,14 +678,13 @@ const RegisterDeveloper = () => {
                             </div>
                         </div>
                         <div className="text-center">
-                           
                             <RexettButton
-                         type="submit" 
-                         text="Register"
-                         className="main-btn px-5"
-                         variant="transparent"
-                         isLoading={smallLoader}
-                        />
+                                type="submit"
+                                text="Register"
+                                className="main-btn px-5"
+                                variant="transparent"
+                                isLoading={smallLoader}
+                            />
                         </div>
                     </Form>
                 </div >

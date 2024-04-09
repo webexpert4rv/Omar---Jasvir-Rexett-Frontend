@@ -91,7 +91,7 @@ const VendorDashboard = () => {
                         {vendorDashboard?.rented_developers?.map((value, index) => {
                             return (
 
-                                <div className="developer-card" key={index}>
+                                <div className="developer-card" key={index} onClick={() => handleCardClick(value?.id)}>
                                     <div className="user-imgbx"> 
                                     <img src={value?.profile_picture} className="user-img" />
                                     </div>   
