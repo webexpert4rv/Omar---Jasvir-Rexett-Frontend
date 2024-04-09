@@ -19,7 +19,8 @@ const initialAdminData = {
     adminDashboard:[],
     approvedLoader :false,
     notificationList:[],
-    singleJobPagination:{}
+    singleJobPagination:{},
+    singleClient:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -108,13 +109,17 @@ export const adminDataSlice = createSlice({
         },
         setPagination:(state,action)=>{
             state.singleJobPagination = action.payload
+        },
+        setSingleClient:(state ,action) =>{
+            state.screenLoader =false;
+            state.singleClient =action.payload
         }
 
 
     }
 })
 
-export const {setSuggestedDeveloper,setPagination,setNotificationList, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
+export const {setSuggestedDeveloper,setSingleClient ,setPagination,setNotificationList, setScreenLoader,setApprovedLoader,setAdminDashboard,setApproveReject,setAdminEngagment,setSingleJobListing,setAdminTimeReporting, setSuccessApplicationList, setFailAdminData,setSuccessAdminData,setSuccessProfileData,setSuccessAdminJobListing,setSuccessAdminListClient,setSuccessAdminAssignedDeveloper,setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -217,6 +222,25 @@ export function updateAdminProfile(payload, callback) {
         }
     };
 }
+
+export function getSingleClient(id) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`common/client-details/${id}`)
+            if (result.status === 200) {
+                toast.success("Profile is Updated Successfully", { position: "top-center" })
+                dispatch(setSingleClient(result?.data?.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+
 
 export function adminJobListing(payload, callback) {
     return async (dispatch) => {

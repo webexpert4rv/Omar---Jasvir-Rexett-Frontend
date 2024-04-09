@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clientImg from '../../../assets/img/user-img.jpg';
 import { Col, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { getSingleClient } from "../../../redux/slices/adminDataSlice";
+import { useLocation } from "react-router-dom";
+
 const SingleClient = () => {
+    const {singleClient} = useSelector(state=>state.adminData)
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const id = location.pathname.split("/")[2]
+    console.log(singleClient,"singleid")
+
+    useEffect(()=>{
+        dispatch(getSingleClient(id))
+    },[id])
     return (
         <>
             <div className="single-client-wrapper">
                 <div className="client-container">
                     <div className="client-imgBx">
-                        <img src={clientImg} className="client-img" />
+                        <img src={singleClient?.profile_picture ? singleClient?.profile_picture :clientImg} className="client-img" />
                     </div>
                     <div className="client-infobx">
-                        <h3 className="client-name">Paul David</h3>
+                        <h3 className="client-name">{singleClient?.name}</h3>
                         <div className="d-flex gap-2">
-                            <p className="client-email">paul@amazon.com</p> | <p className="client-number">+1 123-456-789</p>
+                            <p className="client-email">{singleClient?.email}</p> | <p className="client-number">+1 123-456-789</p>
                         </div>
                     </div>
                 </div>

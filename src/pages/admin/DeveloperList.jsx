@@ -12,16 +12,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminListAssignedDeveloper } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { SeeMore } from "../../components/atomic/SeeMore";
 
 const DeveloperList = () => {
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
     const { assignedDeveloper, screenLoader } = useSelector(state => state.adminData)
+    const [count, setCount] = useState(1);
   
 
     useEffect(() => {
-        dispatch(adminListAssignedDeveloper())
-    }, [])
+        dispatch(adminListAssignedDeveloper({page:count}))
+    }, [count])
     
 
     const handleSkill = (e) => {
@@ -167,7 +169,7 @@ const DeveloperList = () => {
                                                 <tr>
                                                     <td>
                                                         <span className="d-flex align-items-center gap-3">
-                                                            <img src={value?.profile_picture} />
+                                                            <img src={value?.profile_picture ? value?.profile_picture  : userImg } />
                                                             <h3 className="user-name color-121212 mb-0">{value?.name}</h3>
                                                             <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span>
                                                         </span>
@@ -206,9 +208,14 @@ const DeveloperList = () => {
                     </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>
-            <div className="text-center mt-3">
-                {assignedDeveloper.length > 5 ? <Link to={"#"} className="link-text-dark">See All</Link> : ""}
-            </div>
+           
+            {assignedDeveloper.length >= 5 ? (
+                    <div className="text-center mt-3">
+                        <SeeMore setCount={setCount} />
+                    </div>
+                ) : (
+                    ""
+                )}
         </>
     )
 }
