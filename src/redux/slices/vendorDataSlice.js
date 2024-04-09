@@ -208,7 +208,6 @@ export function getVendorWithClient(payload) {
             let result = await clientInstance.get(`vendor/time-reports?client_id=${payload}`)
             if (result?.status == 200) {
                 dispatch(setVendorSuccess())
-                toast.success("file is Uploaded", { position: "top-center" })
 
             }
         } catch (error) {

@@ -34,12 +34,11 @@ const RegisterDeveloper = () => {
     const { degreeList } = useSelector(state => state.developerData)
     const skillLabels = skills?.map(skill => skill.value);
     const skillSet = skillLabels?.toString()
-    let token = localStorage.getItem("token")
     const [socialMediaRows, setSocialMediaRows] = useState([
         {
            name:'',
             url: ''
-        } // Initial row
+        } 
     ]);
 
     const {
@@ -61,6 +60,8 @@ const RegisterDeveloper = () => {
         name: "social_links",
     });
 
+    
+
     const [experienceFields, setExperienceFields] = useState([
         {
             job_title: "",
@@ -71,6 +72,10 @@ const RegisterDeveloper = () => {
             description: ""
         }
     ]);
+
+    useEffect(() => {
+        dispatch(getDegreeList())
+    }, [])
 
     function generateYears() {
         const currentYear = new Date().getFullYear();
@@ -84,11 +89,6 @@ const RegisterDeveloper = () => {
     // Example usage:
     const yearsArray = generateYears();
 
-    console.log(experienceFields, "experienceFields")
-    const goToNextStep = () => {
-        setCurrentStep(currentStep + 1);
-
-    };
     const onSubmit = (data, index) => {
         console.log(data, "data")
         setCurrentStep(currentStep - 1);
@@ -129,27 +129,8 @@ const RegisterDeveloper = () => {
             description: "",
         }
     ]);
-    // useEffect(() => {
-    //     if (addDeveloper) {
-    //         addDeveloper?.forEach((item, index) => {
-    //             append({
-    //                 company_name: item?.company_name,
-    //                 job_title: item?.job_title,
-    //                 description: item?.description,
-    //                 start_date: item?.start_date?.slice(0, 10),
-    //                 end_date: item?.end_date?.slice(0, 10),
-    //                 is_still_working: item?.is_still_working,
-    //                 newId: item?.id
 
-    //             });
-    //             setDisabledEndDates(prevState => [...prevState, item?.is_still_working]);
-    //         });
-    //     }
-    // }, [addDeveloper]);
-
-    useEffect(() => {
-        dispatch(getDegreeList())
-    }, [])
+   
 
     const handleAddMore = () => {
         const newEducationField = {
@@ -175,10 +156,6 @@ const RegisterDeveloper = () => {
         setSocialMediaRows([...socialMediaRows, newRow]);
     };
 
-    const handleDeleteRowSocial = (id) => {
-        const updatedRows = socialMediaRows.filter(row => row.id !== id);
-        setSocialMediaRows(updatedRows);
-    };
     const handleCurrentlyWorkingChange = (e, index) => {
         if (e.target.checked) {
             const isChecked = watch(`experiences[${index}].is_still_working`);
@@ -218,16 +195,6 @@ const RegisterDeveloper = () => {
     return (
         <>
             <section className="register-developer card-box">
-                {/* <div className="step-counts">
-                    {steps.map((step, index) => (
-                        <span
-                            key={index}
-                            className={`count ${currentStep === index ? "current" : ""} ${currentStep > index ? "active" : ""}`}
-                        >
-                            {index + 1}
-                        </span>
-                    ))}
-                </div> */}
                 <div className="">
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Enter Personal Details</h2>
@@ -257,7 +224,7 @@ const RegisterDeveloper = () => {
                                             {...register("email", {
                                                 required: {
                                                     value: true,
-                                                    message: "email is required",
+                                                    message: "Email is required",
                                                 },
                                             })} />
                                         <p className="error-message">
@@ -312,7 +279,7 @@ const RegisterDeveloper = () => {
                                             {...register("address", {
                                                 required: {
                                                     value: true,
-                                                    message: "Address is required",
+                                                    message: false,
                                                 },
                                             })}
                                         />
@@ -413,7 +380,7 @@ const RegisterDeveloper = () => {
                                         <Form.Group className="mb-3">
                                             <Form.Label className="common-label">Company Name</Form.Label>
                                             <Form.Control type="text"
-                                                className="common-field"
+                                                
                                                 {...register(`experiences[${index}].company_name`, {
                                                     required: {
                                                         value: true,
@@ -449,7 +416,6 @@ const RegisterDeveloper = () => {
                                                 type="text"
                                                 as="textarea"
                                                 rows={3}
-                                                className="common-field"
                                                 placeholder="Enter Job Description"
                                                 {...register(`experiences[${index}].description`, {
                                                     required: "Description name is required",
@@ -465,7 +431,6 @@ const RegisterDeveloper = () => {
                                             <Form.Label>Start Date</Form.Label>
                                             <Form.Control
                                                 type="date"
-                                                className="common-field"
                                                 placeholder="Enter Start Date"
                                                 max={new Date().toISOString().split("T")[0]}
                                                 {...register(`experiences[${index}].start_date`, {
@@ -540,7 +505,6 @@ const RegisterDeveloper = () => {
                                         <Form.Group className="mb-3">
                                             <Form.Label>University Name</Form.Label>
                                             <Form.Control type="text"
-                                                className="common-field"
                                                 {...register(`educations[${index}].university_name`, {
                                                     required: {
                                                         value: true,
