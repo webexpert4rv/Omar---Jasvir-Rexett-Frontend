@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { IoTrendingUpSharp } from "react-icons/io5";
+import {useDispatch} from "react-redux"
 import { Bar } from 'react-chartjs-2';
+import { getRevenue } from "../../redux/slices/vendorDataSlice";
 const data = {
     labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
     datasets: [
@@ -29,6 +31,11 @@ const options = {
     indexAxis: 'y',
   };
 const Revenue = () => {
+    const dispatch=useDispatch()
+    useEffect(()=>{
+
+       dispatch(getRevenue())
+    },[])
     return (
         <>
             <div className="overview-card-wrapper mb-5">

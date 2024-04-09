@@ -240,3 +240,21 @@ export function updateVendorProfile(payload) {
 
 }
 
+export function getRevenue(payload) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(`common/revenue`)
+            if (result?.status == 200) {
+                dispatch(setVendorSuccess())
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
+
