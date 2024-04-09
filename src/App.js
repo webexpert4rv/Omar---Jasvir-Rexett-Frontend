@@ -128,7 +128,7 @@ function App() {
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
           <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} />
           <Route path="/applications" exact element={<AdminDashboardLayout><Applications /></AdminDashboardLayout>} />
-          <Route path="/single-client" exact element={<AdminDashboardLayout><SingleClient /></AdminDashboardLayout>} />
+          <Route path="/admin-single-client/:id" exact element={<AdminDashboardLayout><SingleClient /></AdminDashboardLayout>} />
           <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
           <Route path="/vendor-login" exact element={<VendorPublicLayout><VendorLogin /></VendorPublicLayout>} />
           <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />

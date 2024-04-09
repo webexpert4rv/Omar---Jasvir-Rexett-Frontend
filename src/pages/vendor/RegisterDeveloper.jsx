@@ -89,6 +89,10 @@ const RegisterDeveloper = () => {
     // Example usage:
     const yearsArray = generateYears();
 
+    const goToNextStep = () => {
+        setCurrentStep(currentStep + 1);
+
+    };
     const onSubmit = (data, index) => {
         setCurrentStep(currentStep - 1);
         let formData = {
@@ -126,9 +130,10 @@ const RegisterDeveloper = () => {
             currently_attending: true,
             description: "",
         }
-    ]);
-
-   
+    ])
+    useEffect(() => {
+        dispatch(getDegreeList())
+    }, [])
 
     const handleAddMore = () => {
         const newEducationField = {

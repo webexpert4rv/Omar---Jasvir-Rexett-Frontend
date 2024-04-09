@@ -6,7 +6,7 @@ import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { adminListAssignedDeveloper, adminListClients, getAdminDashboard } from "../../redux/slices/adminDataSlice";
+import { adminListAssignedDeveloper, adminListClients, getAdminDashboard, getSingleClient } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
@@ -29,6 +29,11 @@ const AdminDashboard = () => {
     const handleCardClick = (id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/admin-single-developer/${id}`)
+    }
+    const handleClientCardClick =(client_id)=>{
+        console.log(client_id,"id")
+        dispatch(getSingleClient(client_id))
+        navigate(`/admin-single-client/${client_id}`)
     }
     return (
         <>
@@ -77,10 +82,10 @@ const AdminDashboard = () => {
                             <h2 className="section-head-sub">List of clients</h2>
                         </div>
                         <div className="developers-list">
-                            {adminDashboard?.data?.clients.length>0?adminDashboard?.data?.clients.map((item, index) => {
+                            {adminDashboard?.data?.clients.length>0? adminDashboard?.data?.clients.map((item, index) => {
                                 return (
                                     <>
-                                        <div className="developer-card client-card" >
+                                        <div className="developer-card client-card" onClick={() => handleClientCardClick(item?.id)} >
                                             <div className="user-imgbx ">
                                                 <img src={item?.profile_picture? item?.profile_picture: userImg} className="user-img" alt="developer" />
                                             </div>
