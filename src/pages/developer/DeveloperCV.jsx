@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import resumeImg from '../../assets/img/user-img.jpg'
 import AboutCV from "./Modals/AboutCVModal";
@@ -21,8 +21,10 @@ import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
 import DeveloperDetails from "./Modals/DeveloperDetails";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { HiDownload } from "react-icons/hi";
+import generatePDF from "react-to-pdf"
 const DeveloperCV = () => {
     const dispatch = useDispatch()
+    const contentRef=useRef()
     const { developerCvData, smallLoader ,screenLoader} = useSelector(state => state.developerData)
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
@@ -114,14 +116,6 @@ const DeveloperCV = () => {
         }
     }
 
-    const downloadResume = (url) => {
-        const newTab = window.open(url, '_blank');
-        if (newTab) {
-            newTab.focus();
-        } else {
-            alert('Please allow pop-ups for this site to download the file in a new tab.');
-        }
-    };
     return (
         <>
             <section className="overview-cv card-box">
@@ -129,9 +123,11 @@ const DeveloperCV = () => {
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="section-head mb-0 border-0 pb-0">Overview</h2>
-                        <button className="main-btn px-xxl-5 px-md-4 px-3" onClick={() => downloadResume(developerCvData?.developer_detail?.resume)}><span className="d-md-inline-block d-none">Download Resume</span> <span className="d-md-none"><HiDownload /></span></button>
+                        <button className="main-btn px-xxl-5 px-md-4 px-3"    onClick={async () => {
+                  await generatePDF(contentRef, { filename: "Resume.pdf" });
+                }}><span className="d-md-inline-block d-none">Download Resume</span> <span className="d-md-none"><HiDownload /></span></button>
                     </div>
-                    <Row>
+                    <Row ref={contentRef}>
                         <Col lg={6} className="px-0">
                             <div className="resume-basic-info text-center">
                                 <div className="resume-imgbx mx-auto mb-4">

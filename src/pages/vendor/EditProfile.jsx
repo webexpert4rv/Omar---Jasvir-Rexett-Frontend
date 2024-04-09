@@ -501,8 +501,87 @@ const EditVendorProfile = () => {
                             </p>
                           )}
                         </Form.Group>
-
                         <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Website
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="website"
+                            placeholder="Enter website"
+                            {...register(`website`, {
+                              required: "Website is required",
+                            })}
+                          />
+                          {errors?.website && (
+                            <p className="error-message">
+                              {errors.website.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            GST Number
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="gst_number"
+                            placeholder="Enter GST number"
+                            {...register(`gst_number`, {
+                              required: "Gst Number is required",
+                            })}
+                          />
+                          {errors?.gst_number && (
+                            <p className="error-message">
+                              {errors.gst_number.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                      </div>
+                      <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Success Story
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="success_story"
+                            placeholder="Enter Success Story"
+                            {...register(`success_story`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.success_story && (
+                            <p className="error-message">
+                              {errors.success_story.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label">
+                            Yearly Revenue
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            className="cv-field"
+                            name="yearly_revenue"
+                            placeholder=" Enter Yearly Revenue"
+                            {...register(`yearly_revenue`, {
+                              required: false,
+                            })}
+                          />
+                          {errors?.yearly_revenue && (
+                            <p className="error-message">
+                              {errors.yearly_revenue.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                    </Col>
+                    <Col md="6">
+
+                    <Form.Group className="mb-3">
                           <Form.Label className="common-label">
                             Total Employees
                           </Form.Label>
@@ -615,67 +694,9 @@ const EditVendorProfile = () => {
                             </p>
                           )}
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            Success Story
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="success_story"
-                            placeholder="Enter Success Story"
-                            {...register(`success_story`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.success_story && (
-                            <p className="error-message">
-                              {errors.success_story.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            Yearly Revenue
-                          </Form.Label>
-                          <Form.Control
-                            type="number"
-                            className="cv-field"
-                            name="yearly_revenue"
-                            placeholder=" Enter Yearly Revenue"
-                            {...register(`yearly_revenue`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.yearly_revenue && (
-                            <p className="error-message">
-                              {errors.yearly_revenue.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                      </div>
-                    </Col>
-                    <Col md="6">
+                      
                       <div>
-                        {/* <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            Address 2
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="company_address2"
-                            placeholder="Enter Address"
-                            {...register(`company_address2`, {
-                              required: "Address 2 is required",
-                            })}
-                          />
-                          {errors?.company_address2 && (
-                            <p className="error-message">
-                              {errors.company_address2.message}
-                            </p>
-                          )} */}
-                        {/* </Form.Group> */}
+  
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">City</Form.Label>
                           <Form.Control
@@ -785,45 +806,11 @@ const EditVendorProfile = () => {
                           )}
                         </Form.Group>
 
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            Website
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="website"
-                            placeholder="Enter website"
-                            {...register(`website`, {
-                              required: "Website is required",
-                            })}
-                          />
-                          {errors?.website && (
-                            <p className="error-message">
-                              {errors.website.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            GST Number
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="gst_number"
-                            placeholder="Enter GST number"
-                            {...register(`gst_number`, {
-                              required: "Gst Number is required",
-                            })}
-                          />
-                          {errors?.gst_number && (
-                            <p className="error-message">
-                              {errors.gst_number.message}
-                            </p>
-                          )}
-                        </Form.Group>
+                        
                       </div>
+                    </Col>
+                    <Col md="6">
+                   
                     </Col>
                   </Row>
                 </div>
@@ -893,7 +880,12 @@ const EditVendorProfile = () => {
                             </p>
                           )}
                         </Form.Group>
-                        <Form.Group className="mb-3">
+  
+                      </div>
+                    </Col>
+                    <Col md="6">
+                      <div className="inner-form">
+                      <Form.Group className="mb-3">
                           <Form.Label className="common-label">
                             Contact person name
                           </Form.Label>

@@ -323,12 +323,9 @@ export function adminApproveReject(payload) {
 }
 
 export function getDeveloperSuggestList(payload,page) {
-    console.log(payload,"payload")
     return async (dispatch) => {
-        // dispatch(setBtnLoader())
         try {
             let result = await clientInstance.get(`admin/developers-to-suggest/${payload}?page=${page}`)
-            console.log(result.data,"result----")
             if (result.status === 200) {
 
                 dispatch(setSuggestedDeveloper(result.data.data))
@@ -396,8 +393,15 @@ export function markAsRead(payload,callback) {
     return async (dispatch) => {
         // dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.put(`common/notifications/mark-as-read?notificationId=${payload}`)
+            let result 
+            if(payload==undefined){
+                 result = await clientInstance.put(`common/notifications/mark-as-read`)
+            }else {
+             result = await clientInstance.put(`common/notifications/mark-as-read?notificationId=${payload}`)
+
+            }
             if (result.status === 200) {
+                toast.success(result.data?.message ?result.data?.message:result?.message,  { position: "top-center" })
                 return callback()
                 // dispatch(setNotificationList(result.data))
             }
