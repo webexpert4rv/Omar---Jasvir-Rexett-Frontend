@@ -161,7 +161,7 @@ const HiredDevelopers = () => {
                 </div>
               </Tab.Pane>
             </Tab.Content>
-            {assignedDeveloperList.length >= 5 ? (
+            {assignedDeveloperList.length >= 2 ? (
               <div className="text-center mt-3">
                 <SeeMore setCount={setCount} />
               </div>

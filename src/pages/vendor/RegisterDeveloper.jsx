@@ -35,7 +35,6 @@ const RegisterDeveloper = () => {
     const skillLabels = skills?.map(skill => skill.value);
     const skillSet = skillLabels?.toString()
     let token = localStorage.getItem("token")
-    console.log(token, "token")
     const [socialMediaRows, setSocialMediaRows] = useState([
         {
            name:'',

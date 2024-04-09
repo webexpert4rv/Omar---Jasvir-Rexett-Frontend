@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import clientInstance from "../../services/client.instance";
 import { toast } from "react-toastify";
+import { generateApiUrl } from "../../helper/utlis";
 
 const initialVendorData = {
     screenLoader: false,
@@ -10,7 +11,8 @@ const initialVendorData = {
     vendorTimeReport: [],
     addDeveloper:{},
     clientList:[],
-    developerList:[]
+    developerList:[],
+    allDevelopersList:{}
 }
 
 export const vendorDataSlice = createSlice({
@@ -55,10 +57,14 @@ export const vendorDataSlice = createSlice({
             state.screenLoader = false;
             state.smallLoader=false;
             state.developerList = action.payload.data
+        },
+        setDevelopersList:(state, action) =>{
+            state.screenLoader = false;
+            state.allDevelopersList = action.payload
         }
     }
 })
-export const { setScreenLoader,setClientList,setVendorSuccess, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
+export const { setScreenLoader,setClientList,setDevelopersList ,setVendorSuccess, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
 
 export default vendorDataSlice.reducer
 
@@ -69,6 +75,21 @@ export function getVendorDashboard() {
             let result = await clientInstance.get("vendor/dashboard")
             if (result.status == 200) {
                 dispatch(setVendorDashboard(result.data.data))
+            }
+
+        } catch (error) {
+            console.log(error, "error")
+        }
+    }
+}
+
+export function getDevelopersList(payload ,page) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(generateApiUrl(payload, `vendor/developers`))
+            if (result.status == 200) {
+                dispatch(setDevelopersList(result.data))
             }
 
         } catch (error) {
@@ -109,11 +130,10 @@ export function getAddNewDeveloper(payload) {
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.post('/vendor/add-developer', {...payload})
-            console.log(result.data,"result--------------")
-            if (result?.status == 200) {
+         
                 dispatch(setVendorSuccess())
                 toast.success("New Developer is Added", {position:"top-center"})
-            }
+         
         } catch (error) {
             const message = error.message
             toast.error(error.response.data.message, { position: "top-center" })
