@@ -322,12 +322,12 @@ export function adminApproveReject(payload) {
     };
 }
 
-export function getDeveloperSuggestList(payload) {
+export function getDeveloperSuggestList(payload,page) {
     console.log(payload,"payload")
     return async (dispatch) => {
         // dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.get(`admin/developers-to-suggest/${payload}`)
+            let result = await clientInstance.get(`admin/developers-to-suggest/${payload}?page=${page}`)
             console.log(result.data,"result----")
             if (result.status === 200) {
 

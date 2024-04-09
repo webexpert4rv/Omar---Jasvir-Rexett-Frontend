@@ -38,8 +38,6 @@ const AdminJobListing = () => {
         dispatch(adminJobListing(filter))
     }
 
-
-
     return (
         <>
 
@@ -51,7 +49,7 @@ const AdminJobListing = () => {
                     onSelect={handleSelect}
                 >
                     <Tab eventKey="all" title="All">
-                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
+                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} screenLoader={screenLoader} />
                     </Tab>
                     <Tab eventKey="new" title="New Job Posts">
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
@@ -64,7 +62,7 @@ const AdminJobListing = () => {
                     </Tab>
                 </Tabs>
             </section>
-            {jobListing?.totalCount > 5 ? <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
+            {!screenLoader && jobListing?.totalCount > 5 ? <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
                 <p className="showing-result">Showing {(jobListing?.data?.length)} results</p>
                 <RexettPagination number={jobListing?.totalPages} setPage={setPage} page={page} />
             </div> : ""}

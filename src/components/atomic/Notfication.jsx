@@ -14,6 +14,7 @@ const Notification = ({route,job,doc}) => {
  const [nottificationData,setNotificationData]=useState([])
  const {notificationList,screenLoader}=useSelector(state=>state.adminData)
  const [newJobPost,setNewJobPost]=useState(null)
+ const [notificationModal,setNotificationModal]=useState(false)
 
  const userId=localStorage.getItem("userId")
 
@@ -66,6 +67,7 @@ const Notification = ({route,job,doc}) => {
 
 
       const handleNotification=(notificationId,id,data)=>{
+        setNotificationModal(false)
         dispatch(markAsRead(notificationId,()=>{
             dispatch(getNotification())
         }))
@@ -82,6 +84,7 @@ const Notification = ({route,job,doc}) => {
 
       const handleNotificationBell=()=>{
         setNewJobPost(null)
+        setNotificationModal(true)
       }
     return (
         <>
@@ -94,7 +97,7 @@ const Notification = ({route,job,doc}) => {
                             <Dropdown.Toggle variant="transparent" id="dropdown-basic" className="notification-dropdown-toggle p-0">
                                 <button className={`notification-btn ${newJobPost!==null?"active":""} `} onClick={handleNotificationBell} ><FaBell /></button>
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="notification-dropdown-menu">
+                            {notificationModal &&<Dropdown.Menu className="notification-dropdown-menu">
                                 <div className="dropdown-notify-wrapper">
                                    {nottificationData?.length>0? nottificationData?.map((item)=>{
                                     return (
@@ -113,7 +116,7 @@ const Notification = ({route,job,doc}) => {
                                 </div>
                                 <Dropdown.Item onClick={redirectToallScreen} className="see-all-notify mt-4"> See All</Dropdown.Item>
                                 
-                            </Dropdown.Menu>
+                            </Dropdown.Menu>}
                         </Dropdown>
                     </div>
                 </div>

@@ -65,10 +65,10 @@ const Engagements = () => {
                         </>}
                     </tbody>
                 </table>
-                {/* <div className="d-flex justify-content-between align-items-center mb-4">
+                <div className="d-flex justify-content-between align-items-center mb-4">
                             <p className="showing-result">Showing {(engagement?.length)} results</p>
                             <RexettPagination />
-                        </div> */}
+                        </div>
             </div>
         </>
     )

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { adminTimeReporting, editTimeReporting } from "../../../redux/slices/adminDataSlice";
@@ -22,6 +22,12 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     setDeveloperState(devName)
     }
 
+    useEffect(()=>{
+      return ()=>{
+        setTime(null)
+      }
+    },[])
+
     const handleDeveloper=(e)=>{
     let obj=JSON.parse(e.target.value)
         setTime(obj)
@@ -39,6 +45,8 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
   }
   await dispatch(editTimeReporting(paylaod))
   dispatch(adminTimeReporting())
+  setTime(null)
+  
   handleClose()
     }
 

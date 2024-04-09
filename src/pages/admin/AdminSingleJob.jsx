@@ -31,7 +31,6 @@ const AdminSingleJob = () => {
         if (id) {
             dispatch(adminSingleJob(id))
             dispatch(getDeveloperSuggestList(id ,page))
-
         }
     }, [page])
 
@@ -67,7 +66,7 @@ const AdminSingleJob = () => {
         }
         await dispatch(suggestDeveloper(data))
         setShowEndJobModal(false);
-        dispatch(getDeveloperSuggestList(id))
+        dispatch(getDeveloperSuggestList(id,page))
 
 
     }

@@ -130,8 +130,7 @@ const Applications = () => {
                                 />
                                 <RexettButton
                                   text="Reject"
-                                  className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
-                                  variant="danger"
+                                  variant={"danger"}
                                   onClick={(e) => handleClick(e, item?.id, "rejected", index)}
                                   isLoading={selectedRejectedBtn === index ? approvedLoader : false}
                                 />
@@ -183,7 +182,47 @@ const Applications = () => {
                                           Applied on
                                         </h3>
                                         <p className="application-text">
-                                          {item?.created_at?.slice(0, 11)}
+                                          {item?.created_at?.slice(0, 10)}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Job Title
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.jobs[0]?.title}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Project Length
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.jobs[0]?.project_length}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Experience
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.jobs[0]?.experience}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Contract type
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.jobs[0]?.contract_type}
                                         </p>
                                       </div>
                                     </Col>
@@ -249,7 +288,6 @@ const Applications = () => {
                                 <RexettButton
                                   // type="submit"
                                   text="Reject"
-                                  className="main-btn text-danger border-danger bg-transparent px-4 py-2 font-13"
                                   variant="danger"
                                   onClick={(e) => handleClick(e, item?.id, "rejected", index)}
                                   isLoading={selectedApprovedBtn === index ? approvedLoader : false}
@@ -268,8 +306,8 @@ const Applications = () => {
         </Tab.Content>
       </Tab.Container>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        {/* {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.clients?.length)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>} */}
-        {/* <RexettPagination /> */}
+         {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.clients?.length)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>} 
+        <RexettPagination /> 
       </div>
     </>
   );

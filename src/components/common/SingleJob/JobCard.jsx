@@ -48,8 +48,8 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                             </>
                         )
                     })}
-                  {  role === "admin" && type === "Suggested" ?<div className="d-block justify-content-between align-items-center mb-4">
-                        {/* <p className="showing-result">Showing {(singleJobPagination?.data?.length)} results</p>  */}
+                  {  role === "admin" && type === "Suggested" ?<div className="d-flex flex-wrap mb-4">
+                        <p className="">Showing {singleJobPagination?.data?.length} results</p> 
                         <RexettPagination number={singleJobPagination?.total_pages_for_all} setPage={setPage} page={page} />
                     </div>: ""}
                 </> :
