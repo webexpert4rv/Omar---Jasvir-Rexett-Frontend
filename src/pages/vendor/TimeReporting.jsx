@@ -3,13 +3,13 @@ import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
-import { getVendorTimeReporting } from "../../redux/slices/vendorDataSlice";
+import { getClientList, getVendorTimeReporting, getVendorWithClient } from "../../redux/slices/vendorDataSlice";
 import UploadInvoice from "../admin/Modals/UploadInvoice";
 import NoDataFound from "../../components/atomic/NoDataFound"
 
 const VendorTimeReporting = () => {
     const dispatch = useDispatch()
-    const { vendorTimeReport, screenLoader } = useSelector(state => state.vendorData)
+    const { vendorTimeReport, screenLoader,clientList} = useSelector(state => state.vendorData)
     const [contractId, setContractID] = useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
@@ -26,6 +26,11 @@ const VendorTimeReporting = () => {
         setDeveloperData(d)
 
     }, [vendorTimeReport])
+
+    useEffect(()=>{
+        dispatch(getClientList())
+         },[])
+
 
     const handleShowEditTimeModal = () => {
         setShowEditTimeModal(true);
@@ -60,6 +65,10 @@ const VendorTimeReporting = () => {
         newDev[inx].newData = newDev[inx].contracts[newInx]
         setDeveloperData(newDev)
     }
+
+    const handleClient=(e)=>{
+    dispatch(getVendorWithClient(e.target.value))
+    }
     return (
         <>
             <section>
@@ -68,12 +77,12 @@ const VendorTimeReporting = () => {
                         <div className="d-flex gap-3 justify-content-between align-items-end">
                             <div className="d-flex gap-3">
                                 <div>
-                                    <Form.Select className="filter-select shadow-none">
+                                    <Form.Select className="filter-select shadow-none" onChange={handleClient} >
                                         <option value="" selected disabled>Select Clients</option>
                                         {
-                                            (vendorTimeReport)?.map((item) => {
+                                            clientList?.map((item) => {
                                                 return (<>
-                                                    <option value={item?.client_details?.name}>{item?.client_details?.name}</option>
+                                                    <option value={item?.id}>{item?.name}</option>
                                                 </>)
                                             })
                                         }

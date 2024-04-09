@@ -32,7 +32,7 @@ export const vendorDataSlice = createSlice({
             state.screenLoader = false;
         },
         setVendorProfile: (state, action) => {
-            state.vendorProfile = action.payload
+            state.vendorProfile = action.payload.data
             state.screenLoader = false;
         },
         setVendorTimeReport: (state, action) => {
@@ -124,7 +124,7 @@ export function getAddNewDeveloper(payload) {
 
 }
 
-export function getVendorList(payload) {
+export function getClientList(payload) {
     return async (dispatch) => {
         // dispatch(setScreenLoader())
         try {
@@ -181,4 +181,43 @@ export function addFileInvoice(payload) {
 
 }
 
+export function getVendorWithClient(payload) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`vendor/time-reports?client_id=${payload}`)
+            if (result?.status == 200) {
+                dispatch(setVendorSuccess())
+                toast.success("file is Uploaded", { position: "top-center" })
+
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
+
+
+export function updateVendorProfile(payload) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`vendor/update-profile`,{...payload})
+            if (result?.status == 200) {
+                dispatch(setVendorSuccess())
+                toast.success("Profile is updated", { position: "top-center" })
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
 

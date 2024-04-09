@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import {useDispatch,useSelector} from "react-redux"
-import { addFileInvoice, getDeveloperList, getVendorList } from "../../redux/slices/vendorDataSlice";
+import { addFileInvoice, getDeveloperList, getClientList } from "../../redux/slices/vendorDataSlice";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 const VendorUploadInvoice = () =>{
@@ -15,7 +15,7 @@ const VendorUploadInvoice = () =>{
     const {smallLoader} =useSelector(state=>state.clientData)
 
     useEffect(()=>{
-   dispatch(getVendorList())
+   dispatch(getClientList())
     },[])
 
 
