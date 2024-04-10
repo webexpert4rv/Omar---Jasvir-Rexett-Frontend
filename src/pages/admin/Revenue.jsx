@@ -4,6 +4,7 @@ import { IoTrendingUpSharp } from "react-icons/io5";
 import {useDispatch} from "react-redux"
 import { Bar } from 'react-chartjs-2';
 import { getRevenue } from "../../redux/slices/vendorDataSlice";
+import {useSelector} from 'react-redux'
 const data = {
     labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
     datasets: [
@@ -32,6 +33,7 @@ const options = {
   };
 const Revenue = () => {
     const dispatch=useDispatch()
+    const {revenueData}=useSelector(state=>state.adminData)
     useEffect(()=>{
 
        dispatch(getRevenue())

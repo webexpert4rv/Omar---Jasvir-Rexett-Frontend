@@ -12,7 +12,8 @@ const initialVendorData = {
     addDeveloper:{},
     clientList:[],
     developerList:[],
-    allDevelopersList:{}
+    allDevelopersList:{},
+    revenueData:{}
 }
 
 export const vendorDataSlice = createSlice({
@@ -61,10 +62,14 @@ export const vendorDataSlice = createSlice({
         setDevelopersList:(state, action) =>{
             state.screenLoader = false;
             state.allDevelopersList = action.payload
+        },
+        setRevenueData:(state, action) =>{
+            state.screenLoader = false;
+            state.revenueData = action.payload
         }
     }
 })
-export const { setScreenLoader,setClientList,setDevelopersList ,setVendorSuccess, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
+export const { setScreenLoader,setClientList,setDevelopersList ,setVendorSuccess,setRevenueData, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
 
 export default vendorDataSlice.reducer
 
@@ -246,7 +251,7 @@ export function getRevenue(payload) {
         try {
             let result = await clientInstance.get(`common/revenue`)
             if (result?.status == 200) {
-                dispatch(setVendorSuccess())
+                dispatch(setRevenueData(result.data))
             }
         } catch (error) {
             const message = error.message
