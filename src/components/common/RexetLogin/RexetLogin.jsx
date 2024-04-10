@@ -34,6 +34,7 @@ const RexetLogin = ({userType}) => {
       },[])
      
       const onSubmit=(values)=>{
+        localStorage.setItem("email",values.email)
         let allRoles={
             client:"client",
             developer:"developer",
@@ -46,7 +47,9 @@ const RexetLogin = ({userType}) => {
             role:allRoles[`${userType}`],
             mac_address: "abc454tedgfdgfd"
         }
-        dispatch(loginUser(data))
+        dispatch(loginUser(data,()=>{
+            navigate(`/otp`)
+        }))
       }
     
 
