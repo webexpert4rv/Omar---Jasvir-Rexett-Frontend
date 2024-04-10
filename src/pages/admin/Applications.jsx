@@ -7,6 +7,7 @@ import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import RexettPagination from "../../components/atomic/RexettPagination";
+import { set } from "react-hook-form";
 
 
 
@@ -19,16 +20,16 @@ const Applications = () => {
   const [application, setApplication] = useState([]);
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null)
+  const [page ,setPage] = useState(1)
 
-  console.log(application, "application")
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
 
 
   useEffect(() => {
-    dispatch(allApplicationsList());
-  }, []);
+    dispatch(allApplicationsList(page));
+  }, [page]);
 
 
 
@@ -236,6 +237,12 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
+            {application?.length > 0 ?
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.items_per_page)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>}
+                <RexettPagination number={allApplications?.totalClientPages} setPage={setPage} page = {page}/>
+              </div>
+              : ""}
           </Tab.Pane>
           <Tab.Pane eventKey="vendors" className="py-4">
             <div className="table-responsive">
@@ -366,15 +373,16 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
+            {application?.length > 0 ?
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.items_per_page)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>}
+                <RexettPagination  number={allApplications?.totalVendorPages} setPage={setPage} page = {page}/>
+              </div>
+              : ""}
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
-      {application?.length > 0 ?
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.clients?.length)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>}
-          <RexettPagination />
-        </div>
-        : ""}
+
     </>
   );
 };

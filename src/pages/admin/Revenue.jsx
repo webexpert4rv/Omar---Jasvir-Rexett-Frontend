@@ -98,7 +98,7 @@ const Revenue = () => {
                 <Row>
                     <Col md={6}>
                         <div>
-                            <h2 className="section-head-sub">Statistic Revenue</h2>
+                            {/* <h2 className="section-head-sub">Statistic Revenue</h2> */}
                             <Bar data={data} />
                         </div>
                     </Col>

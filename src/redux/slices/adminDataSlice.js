@@ -292,12 +292,13 @@ export function adminTimeReporting(payload, callback) {
     };
 }
 
-export function allApplicationsList(payload, callback) {
+export function allApplicationsList(payload) {
+    console.log(payload , "payload")
     return async (dispatch) => {
         dispatch(setBtnLoader())
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`admin/applications`)
+            let result = await clientInstance.get(`admin/applications?page=${payload}`)
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSuccessApplicationList(result.data.data))
