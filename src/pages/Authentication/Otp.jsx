@@ -7,7 +7,7 @@ import logoWhite from '../../assets/img/logo-white.png'
 import authLoginImg from '../../assets/img/login-img-new.png'
 import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/slices/authenticationDataSlice";
+import { getVerifyOtp, loginUser } from "../../redux/slices/authenticationDataSlice";
 import OTPInput from "react-otp-input";
 
 const Otp = ({ userType }) => {
@@ -15,9 +15,7 @@ const Otp = ({ userType }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { smallLoader } = useSelector(state => state.authData);
-    const [isRemember, setRemember] = useState(false)
-    const [email, setEmail] = useState("")
-    const [isPassword, setPassword] = useState(false)
+
     const {
         register,
         setValue,
@@ -26,28 +24,15 @@ const Otp = ({ userType }) => {
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
 
-    useEffect(() => {
-        let email = localStorage.getItem("email")
-        if (email) {
-            setValue("email", email)
-            setRemember(true)
-        }
 
-    }, [])
+    const onSubmit = () => {
+    let email = localStorage.getItem("email" )
 
-    const onSubmit = (values) => {
-        let allRoles = {
-            client: "client",
-            developer: "developer",
-            admin: "admin",
-            vendor: "vendor"
-        }
         let data = {
-            email: values.email,
-            password: values.password,
-            role: allRoles[`${userType}`]
+           otp: otp,
+           email: email
         }
-        dispatch(loginUser(data))
+        dispatch(getVerifyOtp(data))
     }
 
 
@@ -55,41 +40,12 @@ const Otp = ({ userType }) => {
         navigate(`/${e.target.value}`)
     }
 
-    const handleRemember = (e) => {
-        if (e.target.checked) {
-            localStorage.setItem("email", email)
-            setRemember(true)
-        } else {
-            localStorage.removeItem("email")
-            setRemember(false)
-        }
-    }
-
-    const currentRoles = (userType) => {
-        let allRoles = {
-            client: "Client Login",
-            developer: "Developer Login",
-            admin: "Admin Login",
-            vendor: "Vendor Login"
-        }
-
-        return allRoles[userType]
-    }
     const handleOtpInputChange = (otp) => {
         if (isNaN(otp)) return;
         setOtpValue(otp);
     };
 
-    const verifyOtpButton = () => {
-        let data = {
-            otp: otp,
-            // userId: userData.user
-        }
-        // dispatch(verifyOtp(data, () => {
-        //     navigate("/price-list")
-        // }))
-    }
-
+  
     const resendOtpSys = () => {
         let data = {
             // email: userData.email
@@ -141,7 +97,7 @@ const Otp = ({ userType }) => {
                                             <OTPInput className="mb-5"
                                                 value={otp}
                                                 onChange={handleOtpInputChange}
-                                                numInputs={5}
+                                                numInputs={4}
                                                 renderInput={(props) => (
                                                     <input
                                                         {...props}

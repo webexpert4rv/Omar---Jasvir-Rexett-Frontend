@@ -12,7 +12,7 @@ const initialVendorData = {
     addDeveloper:{},
     clientList:[],
     developerList:[],
-    allDevelopersList:{}
+    allDevelopersList:{},
 }
 
 export const vendorDataSlice = createSlice({
@@ -61,10 +61,11 @@ export const vendorDataSlice = createSlice({
         setDevelopersList:(state, action) =>{
             state.screenLoader = false;
             state.allDevelopersList = action.payload
-        }
+        },
+        
     }
 })
-export const { setScreenLoader,setClientList,setDevelopersList ,setVendorSuccess, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
+export const { setScreenLoader,setClientList ,setDevelopersList ,setVendorSuccess, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
 
 export default vendorDataSlice.reducer
 
@@ -82,6 +83,8 @@ export function getVendorDashboard() {
         }
     }
 }
+
+
 
 export function getDevelopersList(payload ,page) {
     return async (dispatch) => {
@@ -257,4 +260,5 @@ export function getRevenue(payload) {
     }
 
 }
+
 
