@@ -21,7 +21,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                         {/* <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button> */}
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                        <Notification route="notification-admin"  job="admin-single-job" doc="documents" />
+                        <Notification route="notification-admin"  job="admin-single-job" doc="admin-documents" />
                         <Link to={'/developer-list'} className="text-decoration-none main-btn">List of all developers</Link>
                     </div>
                 </div>

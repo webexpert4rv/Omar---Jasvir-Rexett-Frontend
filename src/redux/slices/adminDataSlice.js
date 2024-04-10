@@ -423,7 +423,7 @@ export function markAsRead(payload,callback) {
 
             }
             if (result.status === 200) {
-                toast.success(result.data?.message ?result.data?.message:result?.message,  { position: "top-center" })
+                // toast.success(result.data?.message ?result.data?.message:result?.message,  { position: "top-center" })
                 return callback()
                 // dispatch(setNotificationList(result.data))
             }
