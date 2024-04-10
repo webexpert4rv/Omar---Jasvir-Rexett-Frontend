@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ScreenLoader from "./ScreenLoader";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../atomic/NoDataFound"
+
 const NotificationList = ({job,doc}) => {
     const navigate=useNavigate()
     const dispatch =useDispatch()

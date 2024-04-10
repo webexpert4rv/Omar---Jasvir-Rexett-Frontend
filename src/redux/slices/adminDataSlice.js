@@ -229,12 +229,10 @@ export function getSingleClient(id) {
         try {
             let result = await clientInstance.get(`common/client-details/${id}`)
             if (result.status === 200) {
-                toast.success("Profile is Updated Successfully", { position: "top-center" })
                 dispatch(setSingleClient(result?.data?.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };

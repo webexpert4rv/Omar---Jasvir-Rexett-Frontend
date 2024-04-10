@@ -66,6 +66,7 @@ import VendorLogin from './pages/Authentication/VendorLogin';
 import ClientSingleDeveloper from "./pages/views/ClientSingleDeveloper"
 import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
+import Otp from './pages/Authentication/Otp';
 
 
 Chart.register(ArcElement);
@@ -90,6 +91,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" exact element={<PublicLayout><Login/></PublicLayout> } />
+          <Route path="/otp" exact element={<Otp/> } />
           <Route path="/admin-login" exact element={<AdminPublicLayout><AgencyLogin/></AdminPublicLayout>} />
           <Route path="/forgot-password" exact element={<ForgotPassword/>} />
           <Route path="/reset-password" exact element={<ResetPassword/>} />

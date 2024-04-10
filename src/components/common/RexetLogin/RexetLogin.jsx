@@ -43,7 +43,8 @@ const RexetLogin = ({userType}) => {
         let data={
             email:values.email,
             password:values.password,
-            role:allRoles[`${userType}`]
+            role:allRoles[`${userType}`],
+            mac_address: "abc454tedgfdgfd"
         }
         dispatch(loginUser(data))
       }

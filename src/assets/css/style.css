@@ -46,6 +46,7 @@ ul {
     z-index: 1;
 }
 
+
 .inner-auth-wrapper:before {
     content: '';
     position: absolute;
@@ -1015,6 +1016,23 @@ ul {
     font-weight: 500;
     font-size: 17px;
     color: var(--primary-color);
+}
+.otpInput {
+    padding: 10px;
+    margin: 5px 3px 20px;
+    width: 55px !important;
+    border-radius: 8px;
+    border: 1px solid gray;
+    height: 55px;
+    text-align: center;
+}
+.OTPInputContainer {
+    justify-content: center;
+    gap: 3px;
+}
+.otp-heading{
+    color :#e9fffd ;
+    padding-bottom: 30px ;
 }
 
 .resume-basic-info {
