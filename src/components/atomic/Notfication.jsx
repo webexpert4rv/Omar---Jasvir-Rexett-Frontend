@@ -40,19 +40,28 @@ const Notification = ({route,job,doc}) => {
           console.log('Connected to Socket.IO server');
         });
     
-        socket.on('newJobPost', (jobPost) => {
+        socket.on('newJobPost_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
           });
 
-          socket.on('new_job_application', (jobPost) => {
+          socket.on('new_job_application_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
           });
 
-          socket.on('job_application_revert', (jobPost) => {
+          socket.on('job_application_revert_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
           });
     
           socket.on('file_shared_'+userId, (jobPost) => {
+            setNewJobPost(jobPost)
+          });
+          socket.on('invoice_uploaded_'+userId, (jobPost) => {
+            setNewJobPost(jobPost)
+          });
+          socket.on('time_report_approved_'+userId, (jobPost) => {
+            setNewJobPost(jobPost)
+          });
+          socket.on('time_report_added_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
           });
           
@@ -67,7 +76,7 @@ const Notification = ({route,job,doc}) => {
 
 
       const handleNotification=(notificationId,id,data)=>{
-        setNotificationModal(false)
+        // setNotificationModal(false)
         dispatch(markAsRead(notificationId,()=>{
             dispatch(getNotification())
         }))
