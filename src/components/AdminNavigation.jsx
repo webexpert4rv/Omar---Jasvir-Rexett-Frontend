@@ -10,9 +10,7 @@ import { getNotification } from "../redux/slices/adminDataSlice";
 import moment from "moment";
 import Notification from "./atomic/Notfication";
 const AdminNavigation = ({ handleSidebar }) => {
- 
 
-    
     return (
         <>
             <header className="mb-4">
