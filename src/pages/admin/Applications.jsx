@@ -20,7 +20,7 @@ const Applications = () => {
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null)
 
-
+  console.log(application, "application")
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
@@ -66,7 +66,6 @@ const Applications = () => {
   }
 
 
-  console.log(allApplications, "allApplications")
   return (
     <>
       <h2 className="section-head mb-4">Applications</h2>
@@ -232,7 +231,7 @@ const Applications = () => {
                             </tr>
                           )}
                         </React.Fragment>
-                      )) : <NoDataFound />}
+                      )) : <td colSpan={8}><NoDataFound /></td>}
                     </>}
                 </tbody>
               </table>
@@ -241,74 +240,141 @@ const Applications = () => {
           <Tab.Pane eventKey="vendors" className="py-4">
             <div className="table-responsive">
               <table className="table w-100 engagement-table table-ui-custom">
-                <thead>
-                  <th>Company Name</th>
-                  <th>Email Address</th>
-                  <th>Phone Number</th>
-                  <th>Type of Company</th>
-                  <th>Total Employees</th>
-                  <th>Website Address</th>
-                  <th>Yearly Avenue</th>
-                  <th>Action</th>
-                  <th></th>
+                <thead >
+                  <tr>
+                    <th>Client Name</th>
+                    <th>Email Address</th>
+                    <th>Phone Number</th>
+                    <th>Engagement</th>
+                    <th>Engagement Last</th>
+                    <th>Availability</th>
+                    <th>Action</th>
+                  </tr>
                 </thead>
                 <tbody>
-
-
-                  {screenLoader ? <ScreenLoader /> : <>
-
-                    {currentTab === "vendors" && application?.length > 0 ? application?.map((item, index) => (
-
-                      <React.Fragment key={index}>
-                        <tr
-                          className="application-row"
-                        >
-                          <td className="white-nowrap">{item?.name}</td>
-                          <td>
-                            <span className="application-mail">{item?.email}</span>
-                          </td>
-                          <td>{item?.phone_number}</td>
-                          <td>{item?.company?.type_of_company}</td>
-                          <td>{item?.company?.total_employees}</td>
-                          <td>{item?.company?.website}</td>
-                          <td>{item?.company?.yearly_revenue}</td>
-                          <td>
-                            <div className="d-flex gap-3">
-                              <div className="text-center">
+                  {screenLoader ? <ScreenLoader /> :
+                    <>
+                      {currentTab == "vendors" && application?.length > 0 ? application?.map((item, index) => (
+                        <React.Fragment key={index}>
+                          <tr
+                            className="application-row"
+                            onClick={() => handleRowClick(index)}
+                          >
+                            <td className="white-nowrap">{item?.name}</td>
+                            <td>
+                              <span className="application-mail">{item?.email}</span>
+                            </td>
+                            <td>{item?.phone_number}</td>
+                            <td>{item?.company?.type_of_company}</td>
+                            <td>{item?.company?.total_employees}</td>
+                            <td>{item?.company?.website}</td>
+                            <td>{item?.company?.yearly_revenue}</td>
+                            <td>
+                              <div className="d-flex gap-3">
                                 <RexettButton
-                                  // type="submit"
                                   text="Approve"
                                   className="main-btn px-4 py-2 font-13"
                                   variant="transparent"
                                   onClick={(e) => handleClick(e, item?.id, "approved", index)}
                                   isLoading={selectedApprovedBtn === index ? approvedLoader : false}
                                 />
-                              </div>
-                              <div className="text-center">
                                 <RexettButton
-                                  // type="submit"
                                   text="Reject"
-                                  variant="danger"
+                                  variant={"danger"}
                                   onClick={(e) => handleClick(e, item?.id, "rejected", index)}
-                                  isLoading={selectedApprovedBtn === index ? approvedLoader : false}
+                                  isLoading={selectedRejectedBtn === index ? approvedLoader : false}
                                 />
                               </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </React.Fragment>
-                    )) : <NoDataFound />}
-                  </>}
+                            </td>
+                          </tr>
+                          {expandedRow === index && (
+                            <tr
+                              className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                }`}
+                            >
+                              <td colSpan="8">
+                                <div>
+                                  <Row>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Company Name
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.company?.name}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Email
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.company?.email}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Total Employees
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.company?.total_employees}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Location
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.company?.location}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Phone Number
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.company?.phone_number}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        <h3 className="application-heading">
+                                          Type Of Company
+                                        </h3>
+                                        <p className="application-text">
+                                          {item?.company?.type_of_company}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      )) : <td colSpan={8}><NoDataFound /></td>}
+                    </>}
                 </tbody>
               </table>
             </div>
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-         {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.clients?.length)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>} 
-        <RexettPagination /> 
-      </div>
+      {application?.length > 0 ?
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          {currentTab == "clients" ? <p className="showing-result">Showing {(allApplications?.clients?.length)} results</p> : <p className="showing-result">Showing {(allApplications?.vendors?.length)} results</p>}
+          <RexettPagination />
+        </div>
+        : ""}
     </>
   );
 };
