@@ -65,7 +65,7 @@ export const vendorDataSlice = createSlice({
         },
         setRevenueData:(state, action) =>{
             state.screenLoader = false;
-            state.revenueData = action.payload
+            state.revenueData = action.payload.data
         }
     }
 })
@@ -251,7 +251,7 @@ export function getRevenue(payload) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.get(`common/revenue`)
+            let result = await clientInstance.get(generateApiUrl(payload, `common/revenue`))
             if (result?.status == 200) {
                 dispatch(setRevenueData(result.data))
             }
