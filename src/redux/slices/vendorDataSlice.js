@@ -88,6 +88,8 @@ export function getVendorDashboard() {
     }
 }
 
+
+
 export function getDevelopersList(payload ,page) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
@@ -262,4 +264,5 @@ export function getRevenue(payload) {
     }
 
 }
+
 
