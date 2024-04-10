@@ -48,6 +48,41 @@ export function loginUser(payload, callback) {
                 if (result.data.otp_sent) {
 
                     return callback()
+                } else {
+                    if (result.status == 200) {
+                        if (result.data.data.role === "client") {
+                            localStorage.setItem("token", result.data.access_token);
+                            localStorage.setItem("refreshToken", result.data.refresh_token);
+                            localStorage.setItem("role", "client")
+                            localStorage.setItem("userId", result.data.data.id)
+
+                            window.location.href = "/dashboard"
+                        }
+
+                        if (result.data.data.role === "developer") {
+                            localStorage.setItem("token", result.data.access_token);
+                            localStorage.setItem("refreshToken", result.data.refresh_token);
+                            localStorage.setItem("role", "developer")
+                            localStorage.setItem("userId", result.data.data.id)
+                            window.location.href = "/developer-dashboard"
+                        }
+
+                        if (result.data.data.role === "admin") {
+                            localStorage.setItem("token", result.data.access_token);
+                            localStorage.setItem("refreshToken", result.data.refresh_token);
+                            localStorage.setItem("role", "admin")
+                            localStorage.setItem("userId", result.data.data.id)
+                            window.location.href = "/admin-dashboard"
+                        }
+                        if (result.data.data.role === "vendor") {
+                            localStorage.setItem("token", result.data.access_token);
+                            localStorage.setItem("refreshToken", result.data.refresh_token);
+                            localStorage.setItem("role", "vendor")
+                            localStorage.setItem("userId", result.data.data.id)
+                            window.location.href = "/vendor-dashboard"
+                        }
+                    }
+
                 }
 
 
@@ -71,7 +106,7 @@ export function getVerifyOtp(payload) {
         dispatch(setScreenLoader())
         try {
             let result = await authInstance.post("/auth/verify-otp", { ...payload })
-            console.log(result,"result")
+            console.log(result, "result")
             if (result.status == 200) {
                 if (result.data.data.role === "client") {
                     localStorage.setItem("token", result.data.access_token);
