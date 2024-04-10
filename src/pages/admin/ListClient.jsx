@@ -4,12 +4,12 @@ import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { IoTrendingUpSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Col, Nav, Row, Tab } from "react-bootstrap";
 import clientLogo from '../../assets/img/facebook.png'
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
-import { adminListClients } from "../../redux/slices/adminDataSlice";
+import { adminListClients, getSingleClient } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 
@@ -18,12 +18,17 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 const ListClient = () => {
     const dispatch = useDispatch()
+    const navigate =useNavigate()
     const { listOfClients, assignedDeveloper ,screenLoader} = useSelector(state => state.adminData)
     useEffect(() => {
         dispatch(adminListClients())
     }, [])
 
-
+    const handleClientCardClick =(client_id)=>{
+        console.log(client_id,"id")
+        dispatch(getSingleClient(client_id))
+        navigate(`/admin-single-client/${client_id}`)
+    }
 
     return (
         <>
@@ -63,7 +68,7 @@ const ListClient = () => {
                             {listOfClients?.map((item, index) => {
                                 
                                 return (<>
-                                    <div className="developer-card">
+                                    <div className="developer-card"  onClick={() => handleClientCardClick(item?.id)}>
                                         <div className="user-imgbx">
                                             <img src={item.profile_picture ? item.profile_picture  : userImg } className="user-img client-logo" />
                                         </div>
