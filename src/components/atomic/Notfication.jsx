@@ -76,9 +76,11 @@ const Notification = ({route,job,doc}) => {
 
 
       const handleNotification=(notificationId,id,data)=>{
-        // setNotificationModal(false)
+        setNotificationModal(false)
         dispatch(markAsRead(notificationId,()=>{
             dispatch(getNotification())
+            setNewJobPost(null)
+            setNotificationData([])
         }))
         if(data=="Documents"){
             navigate(`/${doc}`)
