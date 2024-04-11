@@ -68,7 +68,7 @@ const markAllAsRead=()=>{
           <Tab eventKey="allNotifications" title="All">
             <div className="notification-main pt-4">
               <div className="notification-list">
-                {nottificationData.length>0?nottificationData?.map((item) => {
+                {nottificationData?.length>0?nottificationData?.map((item) => {
                   return (
                     <>
                       <div className="notification-wrapper" onClick={()=>handleNotification(item?.id,item?.reference_id,item?.reference_model)}>
