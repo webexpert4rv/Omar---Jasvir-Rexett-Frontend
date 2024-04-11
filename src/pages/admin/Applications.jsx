@@ -55,15 +55,17 @@ const Applications = () => {
     e.stopPropagation();
     let payload = {
       "user_id": clientId,
-      "status": status
+      "status": status,
+      "active-tab": currentTab,
     }
+    
     if (status === "approved") {
       setSelectedApprovedBtn(index)
     } else if (status === "rejected") {
       setSelectedRejectedBtn(index)
     }
     dispatch(adminApproveReject(payload))
-    dispatch(allApplicationsList());
+    dispatch(allApplicationsList(page));
   }
 
 

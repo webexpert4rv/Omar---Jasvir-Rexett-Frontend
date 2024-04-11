@@ -6,11 +6,13 @@ import UploadInvoice from "./Modals/UploadInvoice";
 import { useDispatch, useSelector } from "react-redux";
 import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { getClientList } from "../../redux/slices/vendorDataSlice";
 
 
 const AdminTimeReporting = () => {
     const dispatch = useDispatch()
     const { adminTimeReportingList, screenLoader } = useSelector(state => state.adminData)
+    const {clientList} = useSelector(state => state.vendorData)
     const [contractId, setContractID] = useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
@@ -28,6 +30,11 @@ const AdminTimeReporting = () => {
         setDeveloperData(d)
 
     }, [adminTimeReportingList])
+
+    useEffect(()=>{
+        dispatch(getClientList())
+         },[])
+
 
     const handleShowEditTimeModal = () => {
         setShowEditTimeModal(true);
@@ -62,6 +69,11 @@ const AdminTimeReporting = () => {
         newDev[inx].newData = newDev[inx].contracts[newInx]
         setDeveloperData(newDev)
     }
+
+    const handleClientClick=(e)=>{
+        console.log(e,"id-----------------")
+        dispatch(adminTimeReporting(e))
+    }
     return (
         <>
             <section>
@@ -70,12 +82,13 @@ const AdminTimeReporting = () => {
                         <div className="d-md-flex gap-3 justify-content-between align-items-end">
                             <div className="mb-md-0 mb-3">
                                 <div>
-                                    <Form.Select className="filter-select shadow-none">
+                                    <Form.Select className="filter-select shadow-none" onClick = {(e)=>handleClientClick(e.target.value)}>
                                         <option value="" selected disabled>Select Clients</option>
                                         {
-                                            adminTimeReportingList?.map((item) => {
+                                            clientList?.map((item ,index) => {
+                                                console.log(item,"itek")
                                                 return (<>
-                                                    <option value={item?.client_details?.name}>{item?.client_details?.name}</option>
+                                                    <option value={item?.client_details?.id} >{item?.client_details?.name}</option>
                                                 </>)
                                             })
                                         }

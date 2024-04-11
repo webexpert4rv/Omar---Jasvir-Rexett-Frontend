@@ -19,6 +19,9 @@ const SingleDeveloper = ({ developerDetails }) => {
     const dispatch = useDispatch()
     const { screenLoader } = useSelector(state => state.clientData)
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
+    const [readmore, setReadMore] = useState(true)
+    const [showModal, setShowModal] = useState(false);
+
 
 
     const splitSkills = (data) => {
@@ -26,6 +29,17 @@ const SingleDeveloper = ({ developerDetails }) => {
         return skills
 
     }
+    const handleShowModal = () => {
+        setShowModal(true);
+    };
+
+    const readMoreLess = () => {
+        setReadMore(!readmore)
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
     const generateSocailLinks = (link) => {
         switch (link) {
             case "Facebook":
@@ -114,12 +128,21 @@ const SingleDeveloper = ({ developerDetails }) => {
                                 </div>
                             </Col>
                             <Col lg={6} className="px-0 h-100">
-                                <div className="about-info px-4">
-                                    <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
-                                    {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
-                                    {/* <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25}/></div> */}
-                                    <p className="resume-text">{developerDetails?.developer_detail?.bio}</p>
-                                </div>
+                            <div className="about-info px-4">
+                                <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
+                                {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
+                                <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
+                             {  developerDetails?.developer_detail?.bio?.length >300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length>300?<>
+                                    {developerDetails?.developer_detail?.bio.slice(0,300)}
+                                    <span className="readLess"  onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
+                                </>:
+                                <>
+                                 {developerDetails?.developer_detail?.bio}
+                                <span className="readLess" onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
+                                </>
+}
+                                </p> : <> {developerDetails?.developer_detail?.bio}</>}
+                            </div>
                                 <div className="about-info px-4 pt-4">
                                     {/* <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25}/></div> */}
                                     <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>
@@ -127,7 +150,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                                         return (
                                             <>
                                                 <div className="exp-wrapper">
-                                                    <p className="exp-year">{`${item?.start_date?.slice(0, 4)}-${item?.is_still_working ? "Present" : item?.end_date?.slice(0, 4)}`} {item?.job_title} </p>
+                                                    <p className="exp-year">{`${item?.start_date?.slice(0, 4)}-${item?.is_still_working ? "Present" : item?.end_date?.slice(0, 4)}`} | {item?.job_title} </p>
                                                     <ul className="exp-role">
                                                         <li className="resume-text">{item?.company_name} | <span>{item?.description}</span></li>
                                                     </ul>
@@ -135,23 +158,23 @@ const SingleDeveloper = ({ developerDetails }) => {
                                             </>
                                         )
                                     })}
-                                    {developerDetails?.developer_educations? <>
-                                    <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
-                                    {/* <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div> */}
-                                    {developerDetails?.developer_educations?.map((item) => {
-                                        return (
-                                            <React.Fragment key={item.id}>
-                                                <div className="exp-wrapper">
-                                                    <p className="exp-year">{item?.start_year} - {item?.end_year} | {item?.Degree?.title}</p>
-                                                    <ul className="exp-role">
-                                                        <li className="resume-text">{item?.university_name}</li>
-                                                        <li className="resume-text">{item?.Degree?.description}</li>
-                                                    </ul>
-                                                </div>
-                                            </React.Fragment>
-                                        )
-                                    })}
-                                    </>:""}
+                                    {developerDetails?.developer_educations ? <>
+                                        <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
+                                        {/* <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div> */}
+                                        {developerDetails?.developer_educations?.map((item) => {
+                                            return (
+                                                <React.Fragment key={item.id}>
+                                                    <div className="exp-wrapper">
+                                                        <p className="exp-year">{item?.start_year} - {item?.end_year} | {item?.Degree?.title}</p>
+                                                        <ul className="exp-role">
+                                                            <li className="resume-text">{item?.university_name}</li>
+                                                            <li className="resume-text">{item?.Degree?.description}</li>
+                                                        </ul>
+                                                    </div>
+                                                </React.Fragment>
+                                            )
+                                        })}
+                                    </> : ""}
                                 </div>
                             </Col>
                         </Row>

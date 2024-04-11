@@ -13,7 +13,7 @@ const initialAdminData = {
     singleJobListing:{},
     allApplications:{},
     adminTimeReportingList:[],
-    engagement:[],
+    engagement:{},
     adminApproveReject:[],
     suggestedDeveloper:[],
     adminDashboard:[],
@@ -124,11 +124,12 @@ export const {setSuggestedDeveloper,setSingleClient ,setPagination,setNotificati
 export default adminDataSlice.reducer
 
 
-export function adminListClients(payload, callback) {
+export function adminListClients(page ,payload) {
+    console.log(page , "page")
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`admin/clients`,{...payload})
+            let result = await clientInstance.get(`admin/clients?page=${page}`,{...payload})
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
                 dispatch(setSuccessAdminListClient(result.data.data.clients))
@@ -275,15 +276,20 @@ export function adminSingleJob(payload, callback) {
     };
 }
 
-export function adminTimeReporting(payload, callback) {
+export function adminTimeReporting(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
+        let result;
         try {
-            let result = await clientInstance.get(`admin/time-reports`)
-            if (result.status === 200) {
+            if(payload){
+                 result = await clientInstance.get((`admin/time-reports?client_id=${payload}`))
+            }else{
+             result = await clientInstance.get((`admin/time-reports`))
+            }
+            // if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setAdminTimeReporting(result.data.data))
-            }
+            // }
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -311,7 +317,7 @@ export function allApplicationsList(payload) {
     };
 }
 
-export function adminEngagementList(payload, callback) {
+export function adminEngagementList(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         dispatch(setScreenLoader())
@@ -319,7 +325,7 @@ export function adminEngagementList(payload, callback) {
             let result = await clientInstance.get(generateApiUrl(payload,`admin/engagements`))
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
-                dispatch(setAdminEngagment(result.data.data))
+                dispatch(setAdminEngagment(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -329,6 +335,7 @@ export function adminEngagementList(payload, callback) {
     };
 }
 export function adminApproveReject(payload) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setApprovedLoader())
         try {
