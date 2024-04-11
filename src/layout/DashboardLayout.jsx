@@ -1,13 +1,15 @@
-import React ,{useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import Navigation from '../components/Navigation';
 import { getToken } from '../helper/utlis';
 import { FaUser } from "react-icons/fa6";
 import { BiSolidPencil } from "react-icons/bi";
 import { Link, Navigate } from 'react-router-dom';
-import { Bar , Doughnut } from 'react-chartjs-2';
-import { Button } from 'react-bootstrap';
+import { Bar, Doughnut } from 'react-chartjs-2';
+import { Button, Col, Row } from 'react-bootstrap';
 import { main } from '@popperjs/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRevenue } from '../redux/slices/vendorDataSlice';
 const growthData = {
     labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
     datasets: [
@@ -53,39 +55,96 @@ const options = {
     },
 };
 const DashboardLayout = ({ children }) => {
-    const [sidebarwrapper , isSidebarWrapper] = useState(false);
+    const [sidebarwrapper, isSidebarWrapper] = useState(false);
+    const { revenueData } = useSelector(state => state.vendorData)
+    const minOffset = 0;
+    const maxOffset = 10;
+    const [yearOptionsValue, setYearOptionsValue] = useState([]);
+    const thisYear = new Date().getFullYear();
+    const dispatch = useDispatch()
+
+
+    console.log(revenueData, "revenueData")
     const handleSidebar = () => {
         isSidebarWrapper(!sidebarwrapper)
     }
+   
     const [mainSidebar, isMainSidebar] = useState(false);
     const handleMainSidebar = () => {
         isMainSidebar(!mainSidebar);
     }
-    let token=getToken("token");
-    const role=localStorage.getItem("role")
+    let token = getToken("token");
+    const role = localStorage.getItem("role")
+    const monthlyData=(data)=>{
+        let newData=[]
+         data?.forEach((item)=>{
+           newData.push(item.totalAmount)
+         })
+   
+         return newData
+       }
+       useEffect(() => {
+        const optionsValue = [];
+        for (let i = minOffset; i <= maxOffset; i++) {
+          const year = thisYear - i;
+          optionsValue.push(year);
+        }
+        setYearOptionsValue(optionsValue);
+      }, []);
 
-    
+   
+       const data = {
+           labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct','Nov','Dec'],
+           datasets: [
+               {
+                   label: 'Revenue',
+                   data: monthlyData(revenueData?.monthly_revenue),
+                   borderColor: 'blue',
+                   backgroundColor: '#180049',
+               },
+           ],
+       };
+       useEffect(()=>{
+          dispatch(getRevenue())
+       },[])
+   
+       const handleFilter=(e,selected)=>{
+           let filter={
+               [selected]:e
+           }
+       
+           dispatch(getRevenue(filter));
+       }
+
     return (
         <>
             <div className="dashboard-layout">
                 <Sidebar sideBarActive={mainSidebar} closemainSidebar={handleMainSidebar} />
-                <main className={ sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper right-active'}>
+                <main className={sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper right-active'}>
                     <Navigation sidebaractive={sidebarwrapper} handlemainSidebar={handleMainSidebar} handleSidebar={handleSidebar} />
-                    {token && role=="client"?children:<Navigate to="/"/>}
-               
-                {!sidebarwrapper ?<div className={ !sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
-                    <div className='text-end d-lg-none mb-4'>
-                        <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button>
-                    </div>
-                    <h3 className='right-sidebar-heading mb-3'>Growth per month</h3>
-                    <div className='growth-chart'>
-                        <Bar data={growthData} />
-                    </div>
-                    <h3 className='right-sidebar-heading mt-4 mb-3'>Earned Back</h3>
-                    <div className='earned-chart'>
-                        <Doughnut data={earnedback} options={options} />
-                    </div>
-                </div>:""}
+                    {token && role == "client" ? children : <Navigate to="/" />}
+
+                    {!sidebarwrapper ? <div className={!sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
+                        <div className='text-end d-lg-none mb-4'>
+                            <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button>
+                        </div>
+                        <h3 className='right-sidebar-heading mb-3'>Growth per month</h3>
+                        <div className="card-box">
+                            <Row>
+                                <Col md={30}>
+                                    <div>
+                                        {/* <h2 className="section-head-sub">Statistic Revenue</h2> */}
+                                        <Bar data={data} />
+                                    </div>
+                                </Col>
+
+                            </Row>
+                        </div>
+                        <h3 className='right-sidebar-heading mt-4 mb-3'>Earned Back</h3>
+                        <div className='earned-chart'>
+                            <Doughnut data={earnedback} options={options} />
+                        </div>
+                    </div> : ""}
                 </main>
             </div>
         </>

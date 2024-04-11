@@ -304,6 +304,8 @@ export function publishedPost(payload, status, callback) {
 }
 
 export function approvedClient(payload, role) {
+    console.log(role,"role")
+    console.log(payload,"payload")
     return async (dispatch) => {
 
         dispatch(setApprovedLoader())

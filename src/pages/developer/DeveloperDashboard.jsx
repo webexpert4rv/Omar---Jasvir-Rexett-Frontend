@@ -25,14 +25,14 @@ const DeveloperDashboard = () => {
                 <div className="overview-card active">
                     <div>
                         <h4 className="overview-card-subhead">Total hours</h4>
-                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours ? developerDashboard?.totalHours:'0'} hrs</h3>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.thisMonthHours ? developerDashboard?.thisMonthHours:'0'} hrs</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">This Week Hours</h4>
-                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours ? developerDashboard?.totalHours:'0'} hrs</h3>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.thisWeekHours ? developerDashboard?.thisWeekHours:'0'} hrs</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>

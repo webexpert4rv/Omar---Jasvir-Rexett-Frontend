@@ -17,6 +17,7 @@ const initialDeveloperData = {
     addTimeReports: [],
     allContracts: [],
     shareDocument: [],
+    approvedLoader:false
 }
 
 export const developerDataSlice = createSlice({
@@ -32,6 +33,9 @@ export const developerDataSlice = createSlice({
         },
         setSmallLoader: (state, action) => {
             state.smallLoader = true;
+        },
+        setApprovedLoader: (state, action) => {
+            state.approvedLoader = true;
         },
 
         setSuccessDeveloperData: (state, action) => {
@@ -82,12 +86,16 @@ export const developerDataSlice = createSlice({
         setShareDocument: (state, action) => {
             state.smallLoader = false;
             state.shareDocument = action.payload;
+        },
+        setActionSuccessFully:(state,action) =>{
+            state.smallLoader = false;
+            state.approvedLoader = false;
         }
 
     }
 })
 
-export const { setSmallLoader, setShareDocument, setScreenLoader, setAllContracts, setDeveloperTimeReports, setAddTimeReports, setSuccessActionData, setBtnLoader, setDegreeList, setFailDeveloperData, setSuccessDeveloperData, setActionSuccessFully, setSuccessProfileData, setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader, setShareDocument, setScreenLoader,setApprovedLoader , setAllContracts, setDeveloperTimeReports, setAddTimeReports, setSuccessActionData, setBtnLoader, setDegreeList, setFailDeveloperData, setSuccessDeveloperData, setActionSuccessFully, setSuccessProfileData, setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
@@ -140,6 +148,22 @@ export function getDeveloperProfileDetails(payload, callback) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailDeveloperData())
+        }
+    };
+}
+export function approvedClient(payload, role) {
+
+    return async (dispatch) => {
+        dispatch(setApprovedLoader())
+        try {
+            let result = await clientInstance.put(`${role}/submit-time-report/${payload}`)
+            if (result.status === 200) {
+                dispatch(setActionSuccessFully())
+                toast.success("Time reports approved successfully", { position: "top-center" })
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
         }
     };
 }
