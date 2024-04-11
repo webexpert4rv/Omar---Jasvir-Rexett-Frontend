@@ -95,7 +95,7 @@ const HiredDevelopers = () => {
                             <tr>
                               <td>
                                 <span className="d-flex align-items-center gap-3">
-                                  <img src={item?.developer?.profile_picture} />
+                                  <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg } />
                                   <h3 className="user-name color-121212 mb-0">
                                     {item?.developer?.name}
                                   </h3>

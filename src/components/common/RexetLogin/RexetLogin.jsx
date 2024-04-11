@@ -16,6 +16,19 @@ const RexetLogin = ({userType}) => {
     const [isRemember,setRemember]=useState(false)
     const [email,setEmail]=useState("")
     const [isPassword,setPassword]=useState(false)
+
+    function generateBrowserId() {
+        const userAgent = navigator.userAgent;
+        const screenWidth = window.screen.width;
+        const screenHeight = window.screen.height;
+        const pixelRatio = window.devicePixelRatio;
+        const browserId = `${userAgent}-${screenWidth}-${screenHeight}-${pixelRatio}`;
+        return browserId;
+      }
+      
+      const browserId = generateBrowserId();
+      console.log(browserId)
+
     const {
         register,
         setValue,
@@ -45,7 +58,7 @@ const RexetLogin = ({userType}) => {
             email:values.email,
             password:values.password,
             role:allRoles[`${userType}`],
-            mac_address: "abc454tedgfdgfd"
+            mac_address: browserId
         }
         dispatch(loginUser(data,()=>{
             navigate(`/otp`)

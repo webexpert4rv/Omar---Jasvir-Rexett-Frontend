@@ -13,7 +13,7 @@ const VendorNavigation = ({ handleSidebar }) => {
                         {/* <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button> */}
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                       <Notification route="notification-vendor" job="" doc="documents" />
+                       <Notification route="notification-vendor" job="" doc="vendor-documents" />
                         <Link to={'/register-developer'} className="text-decoration-none main-btn">Register new developer</Link>
                     </div>
                 </div>

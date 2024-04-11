@@ -3,7 +3,7 @@ import NotificationList from "../../components/atomic/NotificationList";
 const NotificationVendor = () => {
     return (
         <>
-          <NotificationList job="" doc="documents"/>
+          <NotificationList job="" doc="vendor-documents" />
         </>
     )
 }

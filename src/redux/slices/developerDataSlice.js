@@ -156,7 +156,12 @@ export function approvedClient(payload, role) {
     return async (dispatch) => {
         dispatch(setApprovedLoader())
         try {
-            let result = await clientInstance.put(`${role}/submit-time-report/${payload}`)
+            let result
+            if(role=="developer"){
+             result = await clientInstance.put(`developer/submit-time-report/${payload}`)
+            }else{
+                result =  await clientInstance.post(`client/approve-time-reports/${payload}`)
+            }
             if (result.status === 200) {
                 dispatch(setActionSuccessFully())
                 toast.success("Time reports approved successfully", { position: "top-center" })
