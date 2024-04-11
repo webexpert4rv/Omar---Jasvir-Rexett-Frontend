@@ -104,6 +104,7 @@ const AdminDashboard = () => {
                 <div className="developers-list">
 
                     {adminDashboard?.data?.assignedDevelopers.length>0? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
+                        console.log(item,"item")
                         return (
                             <>
                                 <div className="developer-card" onClick={() => handleCardClick(item?.developer_id)}>

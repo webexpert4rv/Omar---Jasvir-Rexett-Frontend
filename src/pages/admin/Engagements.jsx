@@ -10,13 +10,13 @@ const Engagements = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
     const { engagement, screenLoader } = useSelector(state => state.adminData)
+    const [page , setPage] = useState(1)
 
     useEffect(() => {
-        dispatch(adminEngagementList())
-    }, [])
+        dispatch(adminEngagementList({page : page}))
+    }, [page])
 
     const handleSearch = () => {
-
         let data = {
             search: search
         }
@@ -45,8 +45,8 @@ const Engagements = () => {
                     </thead>
                     <tbody>
                         {screenLoader ? <ScreenLoader /> : <>
-                            {engagement.length > 0 ?
-                                engagement?.map((item, index) => {
+                            {engagement?.data?.length > 0 ?
+                                engagement?.data?.map((item, index) => {
                                     return (
                                         <>
                                             <tr>
@@ -66,8 +66,8 @@ const Engagements = () => {
                     </tbody>
                 </table>
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                            <p className="showing-result">Showing {(engagement?.length)} results</p>
-                            <RexettPagination />
+                            <p className="showing-result">Showing {(engagement?.items_per_page)} results</p>
+                            <RexettPagination  number = {engagement?.total_pages} setPage={setPage} page={page}/>
                         </div>
             </div>
         </>

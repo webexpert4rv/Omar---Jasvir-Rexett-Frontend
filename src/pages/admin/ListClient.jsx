@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -12,6 +12,7 @@ import { FaListUl } from "react-icons/fa6";
 import { adminListClients, getSingleClient } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { SeeMore } from "../../components/atomic/SeeMore";
 
 
 
@@ -20,9 +21,13 @@ const ListClient = () => {
     const dispatch = useDispatch()
     const navigate =useNavigate()
     const { listOfClients, assignedDeveloper ,screenLoader} = useSelector(state => state.adminData)
+    const [count , setCount] = useState(1)
+    console.log(count ,"count")
+
+
     useEffect(() => {
-        dispatch(adminListClients())
-    }, [])
+        dispatch(adminListClients(count))
+    }, [dispatch ,count])
 
     const handleClientCardClick =(client_id)=>{
         console.log(client_id,"id")
@@ -120,7 +125,7 @@ const ListClient = () => {
                                                 <tr>
                                                     <td>
                                                         <span className="d-flex align-items-center gap-3">
-                                                            <img src={val?.profile_picture} />
+                                                            <img src={val.profile_picture ? val.profile_picture  : userImg } />
                                                             <h3 className="user-name color-121212 mb-0">{val?.name}</h3>
                                                         </span>
                                                     </td>
@@ -164,9 +169,13 @@ const ListClient = () => {
                     </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>
-            <div className="text-center mt-3">
-                <Link to={"#"} className="link-text-dark">See All</Link>
-            </div>
+            {listOfClients.length >= 5 ? (
+              <div className="text-center mt-3">
+                <SeeMore setCount={setCount} />
+              </div>
+            ) : (
+              ""
+            )}
             </div>}
         </>
     )
