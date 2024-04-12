@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import ScreenLoader from "./ScreenLoader";
+import { toast } from 'react-toastify';
 const Notification = ({route,job,doc}) => {
  const dispatch =useDispatch()
  const navigate=useNavigate()
@@ -24,7 +25,8 @@ const Notification = ({route,job,doc}) => {
 
     useEffect(()=>{
         if(newJobPost!==null){
-            setNotificationData([newJobPost,...notificationList['unreadNotifications']])
+          let mergeRow=[newJobPost,...notificationList['unreadNotifications']]
+            setNotificationData([...nottificationData,...mergeRow])
 
         }else if(nottificationData?.length>0){
             setNotificationData(nottificationData)
@@ -42,27 +44,35 @@ const Notification = ({route,job,doc}) => {
     
         socket.on('newJobPost_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
+            toast.success(jobPost.message)
+            
           });
 
           socket.on('new_job_application_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
+            toast.success(jobPost.message)
           });
 
           socket.on('job_application_revert_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
+            toast.success(jobPost.message)
           });
     
           socket.on('file_shared_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
+            toast.success(jobPost.message)
           });
           socket.on('invoice_uploaded_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
+            toast.success(jobPost.message)
           });
           socket.on('time_report_approved_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
+            toast.success(jobPost.message)
           });
           socket.on('time_report_added_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
+            toast.success(jobPost.message)
           });
           
         socket.on('disconnect', () => {
@@ -75,10 +85,13 @@ const Notification = ({route,job,doc}) => {
       }, []); 
 
 
+
       const handleNotification=(notificationId,id,data)=>{
-        // setNotificationModal(false)
+        setNotificationModal(false)
         dispatch(markAsRead(notificationId,()=>{
             dispatch(getNotification())
+            setNewJobPost(null)
+            setNotificationData([])
         }))
         if(data=="Documents"){
             navigate(`/${doc}`)
@@ -95,9 +108,14 @@ const Notification = ({route,job,doc}) => {
         setNewJobPost(null)
         setNotificationModal(true)
       }
+
+      function compareDates(a, b) {
+        return new Date(b.created_at) - new Date(a.created_at);
+    }
+
     return (
         <>
-            <header className="mb-4">
+            <header>
                 <div className="d-flex align-items-center justify-content-between gap-3">
                     <div className="">
                     </div>
@@ -108,7 +126,7 @@ const Notification = ({route,job,doc}) => {
                             </Dropdown.Toggle>
                             {notificationModal &&<Dropdown.Menu className="notification-dropdown-menu">
                                 <div className="dropdown-notify-wrapper">
-                                   {nottificationData?.length>0? nottificationData?.map((item)=>{
+                                   {nottificationData.length>0? [...nottificationData]?.sort(compareDates)?.map((item)=>{
                                     return (
                                         <>
                                          <div className="dropdown-notify-item" onClick={()=>handleNotification(item?.id,item?.reference_id,item?.reference_model)}>

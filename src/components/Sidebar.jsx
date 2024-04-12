@@ -1,5 +1,5 @@
 import React from "react";
-import sidebarLogo from '../assets/img/logo-white-new.png'
+import sidebarLogo from '../assets/img/rexett-logo-white.png'
 import { NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
@@ -25,7 +25,7 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
                         <div className="d-flex justify-content-between align-items-center pe-4 mb-3">
-                            <div className="sidebar-logo">
+                            <div className="sidebar-logo mt-3 mb-4">
                                 <img src={sidebarLogo} alt="Sidebar Logo" />
                             </div>
                             <Button onClick={closemainSidebar} variant="transparent" className="main-btn outline-main-btn px-3 bg-white d-lg-none">&times;</Button>

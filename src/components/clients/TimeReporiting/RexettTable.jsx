@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { approvedClient } from '../../../redux/slices/clientDataSlice';
 import RexettButton from '../../atomic/RexettButton';
 import ScreenLoader from '../../atomic/ScreenLoader';
 import NoDataFound from '../../atomic/NoDataFound';
+import { approvedClient } from '../../../redux/slices/developerDataSlice';
 import moment from 'moment';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
-    const { approvedLoader, smallLoader } = useSelector(state => state.clientData)
+    const { approvedLoader, smallLoader } = useSelector(state => state.developerData)
     const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
     const dispatch = useDispatch()
     const submitApproved = (id, index) => {
+        console.log(id , "id ")
         setSelectedApprovedBtn(index)
         dispatch(approvedClient(id,role))
     }
@@ -56,6 +57,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                             <tbody>
 
                                 {data.length>0 ? data?.map((item, index) => {
+                                    console.log(item,"item")
                                     return (
                                         <>
                                             <tr>

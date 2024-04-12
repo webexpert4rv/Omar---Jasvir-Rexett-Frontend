@@ -303,23 +303,7 @@ export function publishedPost(payload, status, callback) {
     };
 }
 
-export function approvedClient(payload, role) {
-    return async (dispatch) => {
 
-        dispatch(setApprovedLoader())
-        try {
-            let result = await clientInstance.post(`${role}/approve-time-reports/${payload}`)
-            if (result.status === 200) {
-                dispatch(setActionSuccessFully())
-                toast.success("Time reports approved successfully", { position: "top-center" })
-            }
-        } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailClientData())
-        }
-    };
-}
 
 export function editTimeReportOfDev(payload, callback) {
     return async (dispatch) => {

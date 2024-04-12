@@ -5,18 +5,19 @@ import { Link } from "react-router-dom";
 import { adminEngagementList } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import { IoSearch } from "react-icons/io5";
 import RexettPagination from "../../components/atomic/RexettPagination";
 const Engagements = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
     const { engagement, screenLoader } = useSelector(state => state.adminData)
+    const [page , setPage] = useState(1)
 
     useEffect(() => {
-        dispatch(adminEngagementList())
-    }, [])
+        dispatch(adminEngagementList({page : page}))
+    }, [page])
 
     const handleSearch = () => {
-
         let data = {
             search: search
         }
@@ -28,8 +29,8 @@ const Engagements = () => {
                 <h2 className="section-head border-0 mb-md-0 mb-3 pb-0">Engagements</h2>
 
                 <div className="d-flex gap-3">
-                    <Form.Control type="text" className="cv-field" placeholder="Enter Search Keywords" onChange={(e) => setSearch(e.target.value)}></Form.Control>
-                    <Button variant="transparent" className="main-btn px-4" onClick={handleSearch}>Search</Button>
+                    <Form.Control type="text" className="form-field font-14 shadow-none" placeholder="Enter Search Keywords" onChange={(e) => setSearch(e.target.value)}></Form.Control>
+                    <Button variant="transparent" className="main-btn px-3 search-btn" onClick={handleSearch}><IoSearch /></Button>
                 </div>
             </div>
             <div className="table-responsive">
@@ -45,8 +46,8 @@ const Engagements = () => {
                     </thead>
                     <tbody>
                         {screenLoader ? <ScreenLoader /> : <>
-                            {engagement.length > 0 ?
-                                engagement?.map((item, index) => {
+                            {engagement?.data?.length > 0 ?
+                                engagement?.data?.map((item, index) => {
                                     return (
                                         <>
                                             <tr>
@@ -66,8 +67,8 @@ const Engagements = () => {
                     </tbody>
                 </table>
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                            <p className="showing-result">Showing {(engagement?.length)} results</p>
-                            <RexettPagination />
+                            <p className="showing-result">Showing {(engagement?.items_per_page)} results</p>
+                            <RexettPagination  number = {engagement?.total_pages} setPage={setPage} page={page}/>
                         </div>
             </div>
         </>

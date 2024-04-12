@@ -38,7 +38,7 @@ const VendorDashboard = () => {
                     <div className="overview-card">
                         <div>
                             <h4 className="overview-card-subhead">Income</h4>
-                            <h3 className="overview-card-heading mb-0">5000 USD</h3>
+                            <h3 className="overview-card-heading mb-0">{vendorDashboard?.revenue_total}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
@@ -60,7 +60,7 @@ const VendorDashboard = () => {
                                         <h3 className="user-name">{item?.name}</h3>
                                         {/* <p className="designation-user">Front End Designer</p> */}
                                         <p className="email-user">{item?.email}</p>
-                                        {/* <ul className="social-icons">
+                                        <ul className="social-icons">
                                             <li>
                                                 <Link to={"#"}><FaGithub /></Link>
                                             </li>
@@ -70,7 +70,7 @@ const VendorDashboard = () => {
                                             <li>
                                                 <Link to={"#"}><MdEmail /></Link>
                                             </li>
-                                        </ul> */}
+                                        </ul>
                                     </div>
                                 </div>
                             )

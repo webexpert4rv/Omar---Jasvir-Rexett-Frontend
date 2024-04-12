@@ -48,13 +48,14 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                             </>
                         )
                     })}
-                  {  role === "admin" && type === "Suggested" ?<div className="d-flex flex-wrap mb-4">
-                        <p className="">Showing {singleJobPagination?.data?.length} results</p> 
-                        <RexettPagination number={singleJobPagination?.total_pages_for_all} setPage={setPage} page={page} />
-                    </div>: ""}
                 </> :
                     <div> <NoDataFound  data="No developer found"/></div>}
             </div>
+            
+            {  role === "admin" && type === "Suggested" ?<div className="d-flex w-100 align-items-center justify-content-between my-4">
+                        <p className="mb-0">Showing {singleJobPagination?.data?.length} results</p> 
+                        <RexettPagination number={singleJobPagination?.total_pages_for_all} setPage={setPage} page={page} />
+                    </div>: ""}
         </>
 
     )

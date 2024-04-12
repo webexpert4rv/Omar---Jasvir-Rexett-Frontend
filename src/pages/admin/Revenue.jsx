@@ -57,7 +57,7 @@ const Revenue = () => {
     }
     return (
         <>
-            <div className="overview-card-wrapper mb-5">
+            {/* <div className="overview-card-wrapper mb-5">
                 <div className="overview-card active">
                     <div>
                         <h4 className="overview-card-subhead">Income</h4>
@@ -65,7 +65,7 @@ const Revenue = () => {
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
-            </div>
+            </div> */}
             <Form className="mb-4 d-block filter-section">
                 <div className="d-flex gap-3">
                     <div className="d-flex gap-3">
@@ -77,7 +77,7 @@ const Revenue = () => {
                     <div className="d-flex gap-3">
                         <div>
                             <Form.Label className="common-label">Filter By Year</Form.Label>
-                          <select onChange={(e)=>handleFilter(e.target.value,"year")}>
+                          <select className="filter-field form-select shadow-none form-control" onChange={(e)=>handleFilter(e.target.value,"year")}>
                           <option disabled selected >Select year</option>
                             {
                                 yearOptionsValue.map((item)=>{
@@ -98,7 +98,7 @@ const Revenue = () => {
                 <Row>
                     <Col md={6}>
                         <div>
-                            <h2 className="section-head-sub">Statistic Revenue</h2>
+                            {/* <h2 className="section-head-sub">Statistic Revenue</h2> */}
                             <Bar data={data} />
                         </div>
                     </Col>

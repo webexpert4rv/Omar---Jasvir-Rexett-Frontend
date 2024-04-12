@@ -17,6 +17,7 @@ const initialDeveloperData = {
     addTimeReports: [],
     allContracts: [],
     shareDocument: [],
+    approvedLoader: false
 }
 
 export const developerDataSlice = createSlice({
@@ -32,6 +33,9 @@ export const developerDataSlice = createSlice({
         },
         setSmallLoader: (state, action) => {
             state.smallLoader = true;
+        },
+        setApprovedLoader: (state, action) => {
+            state.approvedLoader = true;
         },
 
         setSuccessDeveloperData: (state, action) => {
@@ -82,12 +86,16 @@ export const developerDataSlice = createSlice({
         setShareDocument: (state, action) => {
             state.smallLoader = false;
             state.shareDocument = action.payload;
+        },
+        setActionSuccessFully: (state, action) => {
+            state.smallLoader = false;
+            state.approvedLoader = false;
         }
 
     }
 })
 
-export const { setSmallLoader, setShareDocument, setScreenLoader, setAllContracts, setDeveloperTimeReports, setAddTimeReports, setSuccessActionData, setBtnLoader, setDegreeList, setFailDeveloperData, setSuccessDeveloperData, setActionSuccessFully, setSuccessProfileData, setDeveloperDashboard } = developerDataSlice.actions
+export const { setSmallLoader, setShareDocument, setScreenLoader, setApprovedLoader, setAllContracts, setDeveloperTimeReports, setAddTimeReports, setSuccessActionData, setBtnLoader, setDegreeList, setFailDeveloperData, setSuccessDeveloperData, setActionSuccessFully, setSuccessProfileData, setDeveloperDashboard } = developerDataSlice.actions
 
 export default developerDataSlice.reducer
 
@@ -129,7 +137,6 @@ export function updateDeveloperProfile(payload, callback) {
 
 export function getDeveloperProfileDetails(payload, callback) {
     return async (dispatch) => {
-
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get('developer/get-profile')
@@ -143,7 +150,27 @@ export function getDeveloperProfileDetails(payload, callback) {
         }
     };
 }
+export function approvedClient(payload, role) {
+    return async (dispatch) => {
+        dispatch(setApprovedLoader())
+        let result;
+        try {
+            if (role === "developer") {
+                result = await clientInstance.put(`${role}/submit-time-report/${payload}`)
+            } else {
+                result = await clientInstance.post(`${role}/approve-time-reports/${payload}`)
+            }
+            if (result.status === 200) {
+                dispatch(setActionSuccessFully())
+                toast.success("Time reports approved successfully", { position: "top-center" })
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+        }
+    };
 
+}
 export function getDeveloperDashboard(payload, callback) {
     return async (dispatch) => {
 
@@ -216,7 +243,7 @@ export function addDeveloperCvExperience(payload, callback) {
 
 export function deleteExperience(payload, callback) {
     return async (dispatch) => {
-         dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.delete(`developer/delete-experience/${payload}`)
             if (result.status === 200) {
@@ -438,7 +465,7 @@ export function getDocumentShare() {
         try {
             let result = await clientInstance.get(`common/share-file/users`)
             if (result.status === 200) {
-            dispatch(setShareDocument(result.data))
+                dispatch(setShareDocument(result.data))
             }
         } catch (error) {
             console.log(error, "error")
@@ -451,7 +478,7 @@ export function shareBelongisFile(paylaod) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`common/share-file`,{...paylaod})
+            let result = await clientInstance.post(`common/share-file`, { ...paylaod })
             toast.success(result?.data?.message, { position: "top-center" })
             dispatch(setSuccessActionData())
         } catch (error) {
