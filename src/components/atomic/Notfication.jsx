@@ -44,35 +44,39 @@ const Notification = ({route,job,doc}) => {
     
         socket.on('newJobPost_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
-            toast.success(jobPost.message)
+           
             
           });
 
           socket.on('new_job_application_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
-            toast.success(jobPost.message)
+           
           });
 
           socket.on('job_application_revert_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
-            toast.success(jobPost.message)
+           
           });
     
           socket.on('file_shared_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
-            toast.success(jobPost.message)
+           
           });
           socket.on('invoice_uploaded_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
-            toast.success(jobPost.message)
+           
+          });
+          socket.on('registration_loggedin_'+userId, (jobPost) => {
+            setNewJobPost(jobPost)
+           
           });
           socket.on('time_report_approved_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
-            toast.success(jobPost.message)
+           
           });
           socket.on('time_report_added_'+userId, (jobPost) => {
             setNewJobPost(jobPost)
-            toast.success(jobPost.message)
+       
           });
           
         socket.on('disconnect', () => {
