@@ -66,7 +66,7 @@ const NotificationList = ({ job, doc }) => {
           onSelect={handleSelect}
         >
           <Tab eventKey="allNotifications" title="All">
-            <div className="notification-main pt-4">
+            <div className="notification-main pt-4 d-block">
               <div className="notification-list">
                 {nottificationData?.length > 0 ? nottificationData?.map((item) => {
                   return (

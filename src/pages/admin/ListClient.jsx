@@ -57,7 +57,8 @@ const ListClient = () => {
             </div>
             <Tab.Container className="w-100" defaultActiveKey="grid-view">
                 <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
-                    <h2 className="section-head-sub mb-0">List of clients who hire developers from Rexett</h2>
+                    <h2 className="section-head-sub mb-0">List of Clients</h2>
+                    {/* <h2 className="section-head-sub mb-0">List of clients who hire developers from Rexett</h2> */}
                     <Nav variant="pills" className="document-view-pill">
                         <Nav.Item className="document-view-item">
                             <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>

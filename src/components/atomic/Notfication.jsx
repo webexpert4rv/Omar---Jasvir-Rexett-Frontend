@@ -115,7 +115,7 @@ const Notification = ({route,job,doc}) => {
 
     return (
         <>
-            <header className="mb-4">
+            <header>
                 <div className="d-flex align-items-center justify-content-between gap-3">
                     <div className="">
                     </div>
