@@ -29,9 +29,9 @@ const SingleDeveloper = ({ developerDetails }) => {
         return skills
 
     }
-    const handleShowModal = () => {
-        setShowModal(true);
-    };
+    // const handleShowModal = () => {
+    //     setShowModal(true);
+    // };
 
     const readMoreLess = () => {
         setReadMore(!readmore)
@@ -131,7 +131,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                             <div className="about-info px-4">
                                 <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
                                 {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
-                                <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
+                                {/* <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div> */}
                              {  developerDetails?.developer_detail?.bio?.length >300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length>300?<>
                                     {developerDetails?.developer_detail?.bio.slice(0,300)}
                                     <span className="readLess"  onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>

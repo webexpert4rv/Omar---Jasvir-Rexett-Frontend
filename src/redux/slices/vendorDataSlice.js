@@ -155,7 +155,7 @@ export function getClientList(payload) {
     return async (dispatch) => {
         // dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get('common/clients')
+            let result = await clientInstance.get('vendor/clients')
             if (result?.status == 200) {
                 dispatch(setClientList(result.data))
             }
