@@ -25,8 +25,13 @@ const Dashboard = (cardDetails) => {
     const handleCardClick = (id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/client-single-developer/${id}`)
-
     }
+
+    const handleRowClick = (id) => {
+        dispatch(getDeveloperDetails(id))
+        navigate(`/client-single-developer/${id}`)
+    }
+    
     return (
         <>
             <h2 className="section-head">Overview</h2>
@@ -39,36 +44,21 @@ const Dashboard = (cardDetails) => {
                     <OverViewCard head="Developer Assigned" value={assignedDeveloperList?.num_assigned_developers ? assignedDeveloperList?.num_assigned_developers : '0'} />
                 </div>
 
-                <Tab.Container className="w-100" defaultActiveKey="grid-view">
+                <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
                         <h3 className="section-head-sub mb-0">List of assigned developers</h3>
                         <Nav variant="pills" className="document-view-pill">
                             <Nav.Item className="document-view-item">
-                                <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
+                            <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="document-view-item">
-                                <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
+                                 <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
                     {assignedDeveloperList?.assigned_developers?.length > 0 ?
                         <Tab.Content>
-                            <Tab.Pane eventKey="grid-view" >
-                                <div className="developers-list pt-3" >
-
-                                    {
-                                        assignedDeveloperList?.assigned_developers?.map((item, index) => {
-                                            return (
-                                                <>
-                                                    <Cards item={item} handleCardClick={() => handleCardClick(item?.developer?.id)} />
-                                                </>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </Tab.Pane>
-
-                            <Tab.Pane eventKey="list-view">
+                              <Tab.Pane eventKey="list-view">
                                 <div className="table-responsive">
                                     <table className="table developer-table">
                                         <thead>
@@ -83,7 +73,7 @@ const Dashboard = (cardDetails) => {
                                             {assignedDeveloperList?.assigned_developers?.map((item, index) => {
                                                 return (
                                                     <>
-                                                        <tr onClick={() => handleCardClick(item?.developer?.id)}>
+                                                        <tr onClick={() => handleRowClick(item?.developer?.id)}>
                                                             <td>
                                                                 <span className="d-flex align-items-center gap-3">
                                                                     <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg} />
@@ -122,6 +112,22 @@ const Dashboard = (cardDetails) => {
                                 </div>
 
                             </Tab.Pane>
+                            <Tab.Pane eventKey="grid-view" >
+                                <div className="developers-list pt-3" >
+
+                                    {
+                                        assignedDeveloperList?.assigned_developers?.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <Cards item={item} handleCardClick={() => handleCardClick(item?.developer?.id)} />
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </Tab.Pane>
+
+                          
                             <>
                                 <div className="text-center mt-5">
                                     <Link to={"/hired-developers"} className="link-text-dark">See All</Link>
