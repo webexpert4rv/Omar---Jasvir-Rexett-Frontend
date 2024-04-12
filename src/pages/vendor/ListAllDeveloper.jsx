@@ -79,7 +79,7 @@ const AllDeveloperList = () => {
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
                         <h3 className="section-head-sub mb-0">List of All developers</h3>
                         <Nav variant="pills" className="document-view-pill">
-                            <Nav.Item className="document-view-item">
+                               <Nav.Item className="document-view-item">
                                 <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="document-view-item">
@@ -93,7 +93,7 @@ const AllDeveloperList = () => {
                                 <div className="flex-none">
                                     {/* <Form.Label className="common-label">Category</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
-                                        <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
+                                        <option value="" onClick={(e) => e.stopPropagation()}>Select Skills</option>
                                         <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
                                         <option value="javascript" onClick={(e) => e.stopPropagation()}>JavaScript</option>
                                         <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option>

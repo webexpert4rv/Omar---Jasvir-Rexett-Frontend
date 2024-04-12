@@ -34,9 +34,9 @@ const Dashboard = (cardDetails) => {
             {screenLoader ? <ScreenLoader /> : <>
                 <div className="overview-card-wrapper mb-5">
                     <OverViewCard head="Fund" value="Spent" />
-                    <OverViewCard head="Earned Back" value={assignedDeveloperList?.earned_back_hours?assignedDeveloperList?.earned_back_hours:'0'} />
-                    <OverViewCard head="Job Posted" value={assignedDeveloperList?.total_jobs_posted? assignedDeveloperList?.total_jobs_posted:"0"} />
-                    <OverViewCard head="Developer Assigned" value={assignedDeveloperList?.num_assigned_developers?assignedDeveloperList?.num_assigned_developers:'0'} />
+                    <OverViewCard head="Earned Back" value={assignedDeveloperList?.earned_back_hours ? assignedDeveloperList?.earned_back_hours : '0'} />
+                    <OverViewCard head="Job Posted" value={assignedDeveloperList?.total_jobs_posted ? assignedDeveloperList?.total_jobs_posted : "0"} />
+                    <OverViewCard head="Developer Assigned" value={assignedDeveloperList?.num_assigned_developers ? assignedDeveloperList?.num_assigned_developers : '0'} />
                 </div>
 
                 <Tab.Container className="w-100" defaultActiveKey="grid-view">
@@ -73,7 +73,7 @@ const Dashboard = (cardDetails) => {
                                     <table className="table developer-table">
                                         <thead>
                                             <tr>
-                                                <th><span>Developer Name</span></th>
+                                                <th><span>Developer Name</span></th>    
                                                 <th><span>Designation</span></th>
                                                 <th><span>Email</span></th>
                                                 {/* <th><span>Connects</span></th> */}
@@ -86,7 +86,7 @@ const Dashboard = (cardDetails) => {
                                                         <tr onClick={() => handleCardClick(item?.developer?.id)}>
                                                             <td>
                                                                 <span className="d-flex align-items-center gap-3">
-                                                                    <img src={item?.developer?.profile_picture?item?.developer?.profile_picture:userImg}    alt="developerImage" />
+                                                                    <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg} />
                                                                     <h3 className="user-name color-121212 mb-0">{item?.developer?.name}</h3>
                                                                 </span>
                                                             </td>
@@ -120,13 +120,13 @@ const Dashboard = (cardDetails) => {
                                         </tbody>
                                     </table>
                                 </div>
-                               
+
                             </Tab.Pane>
                             <>
-                                    <div className="text-center mt-5">
-                                        <Link to={"/hired-developers"} className="link-text-dark">See All</Link>
-                                    </div>
-                                </>
+                                <div className="text-center mt-5">
+                                    <Link to={"/hired-developers"} className="link-text-dark">See All</Link>
+                                </div>
+                            </>
                         </Tab.Content>
                         : <div><NoDataFound /></div>}
                 </Tab.Container>
