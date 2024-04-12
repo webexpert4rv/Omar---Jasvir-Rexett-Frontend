@@ -31,9 +31,9 @@ const AdminTimeReporting = () => {
 
     }, [adminTimeReportingList])
 
-    useEffect(()=>{
-        dispatch(getClientList())
-         },[])
+    // useEffect(()=>{
+    //     dispatch(getClientList())
+    //      },[])
 
 
     const handleShowEditTimeModal = () => {
