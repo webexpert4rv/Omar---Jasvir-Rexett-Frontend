@@ -1,5 +1,5 @@
 import React from "react";
-import sidebarLogo from '../assets/img/logo-white-new.png'
+import sidebarLogo from '../assets/img/rexett-logo-white.png '
 import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { IoIosSettings } from "react-icons/io";
