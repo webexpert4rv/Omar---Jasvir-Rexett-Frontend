@@ -140,9 +140,9 @@ const DeveloperList = () => {
                                                     <li>
                                                         <Link to={`${item?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                                     </li>
-                                                    <li>
+                                                    {/* <li>
                                                         <Link to={`${item?.email}`}><MdEmail /></Link>
-                                                    </li>
+                                                    </li> */}
                                                 </ul>
                                             </div>
                                         </div>
@@ -193,9 +193,9 @@ const DeveloperList = () => {
                                                             <li>
                                                                 <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                                             </li>
-                                                            <li>
+                                                            {/* <li>
                                                                 <Link to={`${value?.email}`}><MdEmail /></Link>
-                                                            </li>
+                                                            </li> */}
                                                         </ul>
                                                     </td>
                                                 </tr>

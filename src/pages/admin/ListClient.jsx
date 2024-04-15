@@ -110,9 +110,9 @@ const ListClient = () => {
                                                                     <li>
                                                                         <Link to={"#"}><FaLinkedin /></Link>
                                                                     </li>
-                                                                    <li>
+                                                                    {/* <li>
                                                                         <Link to={"#"}><MdEmail /></Link>
-                                                                    </li>
+                                                                    </li> */}
                                                                 </ul> :
                                                                 <ul className="social-icons mb-0 justify-content-start">
                                                                     <li>
@@ -121,9 +121,9 @@ const ListClient = () => {
                                                                     <li>
                                                                         <Link to={`${val?.client_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                                                     </li>
-                                                                    <li>
+                                                                    {/* <li>
                                                                         <Link to={`${val?.email}`}><MdEmail /></Link>
-                                                                    </li>
+                                                                    </li> */}
                                                                 </ul>}
                                                         </td>
                                                     </tr>
@@ -153,9 +153,9 @@ const ListClient = () => {
                                                     <li>
                                                         <Link to={"#"}><FaLinkedin /></Link>
                                                     </li>
-                                                    <li>
+                                                    {/* <li>
                                                         <Link to={"#"}><MdEmail /></Link>
-                                                    </li>
+                                                    </li> */}
                                                 </ul>
                                                     : <ul className="social-icons">
                                                         <li>
@@ -164,9 +164,9 @@ const ListClient = () => {
                                                         <li>
                                                             <Link to={`${item?.client_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                                         </li>
-                                                        <li>
+                                                        {/* <li>
                                                             <Link to={`${item?.email}`}><MdEmail /></Link>
-                                                        </li>
+                                                        </li> */}
                                                     </ul>}
                                             </div>
                                         </div>

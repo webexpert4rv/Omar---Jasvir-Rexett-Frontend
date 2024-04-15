@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     const { developerDetails } = useSelector(state => state.adminData)
     const navigate = useNavigate()
 
-
+    const userName = localStorage.getItem("userName")
   
     useEffect(() => {
         dispatch(getAdminDashboard())
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">Overview</h2>
+                <h2 className="section-head mb-4">Overview    {userName}</h2>
                 <div className="overview-card-wrapper mb-5">
                     {/* <div className="overview-card">
                     <div>
@@ -122,9 +122,9 @@ const AdminDashboard = () => {
                                             <li>
                                                 <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
-                                            </li>
+                                            </li> */}
                                         </ul>
                                     </div>
                                 </div>

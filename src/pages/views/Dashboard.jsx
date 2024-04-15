@@ -18,6 +18,8 @@ const Dashboard = (cardDetails) => {
     const dispatch = useDispatch();
     const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
     const navigate = useNavigate()
+
+    const userName = localStorage.getItem("userName")
     useEffect(() => {
         dispatch(developerAssignList(1));
     }, [dispatch])
@@ -31,10 +33,10 @@ const Dashboard = (cardDetails) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/client-single-developer/${id}`)
     }
-    
     return (
         <>
-            <h2 className="section-head">Overview</h2>
+            <h2 className="section-head">Overview  {userName} </h2>
+            
             <p className="mb-4">Monitor and manage your developer team</p>
             {screenLoader ? <ScreenLoader /> : <>
                 <div className="overview-card-wrapper mb-5">
@@ -43,7 +45,7 @@ const Dashboard = (cardDetails) => {
                     <OverViewCard head="Job Posted" value={assignedDeveloperList?.total_jobs_posted ? assignedDeveloperList?.total_jobs_posted : "0"} />
                     <OverViewCard head="Developer Assigned" value={assignedDeveloperList?.num_assigned_developers ? assignedDeveloperList?.num_assigned_developers : '0'} />
                 </div>
-
+            
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
                         <h3 className="section-head-sub mb-0">List of assigned developers</h3>
@@ -98,9 +100,9 @@ const Dashboard = (cardDetails) => {
                                                                     <li>
                                                                         <Link to={item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                                                                     </li>
-                                                                    <li>
+                                                                    {/* <li>
                                                                         <Link to={item?.developer?.email}><MdEmail /></Link>
-                                                                    </li>
+                                                                    </li> */}
                                                                 </ul>
                                                             </td>
                                                         </tr>
@@ -115,8 +117,7 @@ const Dashboard = (cardDetails) => {
                             <Tab.Pane eventKey="grid-view" >
                                 <div className="developers-list pt-3" >
 
-                                    {
-                                        assignedDeveloperList?.assigned_developers?.map((item, index) => {
+                                    {assignedDeveloperList?.assigned_developers?.map((item, index) => {
                                             return (
                                                 <>
                                                     <Cards item={item} handleCardClick={() => handleCardClick(item?.developer?.id)} />

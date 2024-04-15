@@ -42,16 +42,16 @@ const SingleDeveloper = ({ developerDetails }) => {
     };
     const generateSocailLinks = (link) => {
         switch (link) {
-            case "Facebook":
-                return <FaFacebookF />
+            // case "Facebook":
+            //     return <FaFacebookF />
             case "LinkedIn":
                 return <FaLinkedinIn />
-            case "Twitter":
-                return <FaTwitter />
+            // case "Twitter":
+            //     return <FaTwitter />
             case "GitHub":
                 return <FaGithub />
-            case "Instagram":
-                return <FaInstagram />
+            // case "Instagram":
+            //     return <FaInstagram />
             default:
         }
     }
@@ -121,9 +121,9 @@ const SingleDeveloper = ({ developerDetails }) => {
                                         <li>
                                             <Link to={developerDetails?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                                         </li>
-                                        <li>
+                                        {/* <li>
                                             <Link to={developerDetails?.developer_detail?.email}><MdEmail /></Link>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </div>
                             </Col>

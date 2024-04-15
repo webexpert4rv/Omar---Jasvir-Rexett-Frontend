@@ -125,6 +125,14 @@ const Applications = () => {
               </span>
             </Nav.Link>
           </Nav.Item>
+          <Nav.Item className="application-item">
+            <Nav.Link eventKey="developers" className="application-link">
+              Developers{" "}
+              <span className="new-app">
+                {allApplications?.developers?.length}
+              </span>
+            </Nav.Link>
+          </Nav.Item>
         </Nav>
         <Tab.Content>
           <Tab.Pane eventKey="clients" className="py-4">
@@ -161,7 +169,7 @@ const Applications = () => {
                                       : "row-arrow"
                                   }
                                 >
-                                  <RxChevronRight />
+                                  {/* <RxChevronRight /> */}
                                 </span>{" "}
                                 {item?.name}
                               </td>
@@ -375,6 +383,195 @@ const Applications = () => {
                   ) : (
                     <>
                       {currentTab == "vendors" && application?.length > 0 ? (
+                        application?.map((item, index) => (
+                          <React.Fragment key={index}>
+                            <tr
+                              className="application-row"
+                              onClick={() => handleRowClick(index)}
+                            >
+                              <td className="white-nowrap">{item?.name}</td>
+                              <td>
+                                <span className="application-mail">
+                                  {item?.email}
+                                </span>
+                              </td>
+                              <td>{item?.phone_number}</td>
+                              <td>{item?.company?.type_of_company}</td>
+                              <td>{item?.company?.total_employees}</td>
+                              <td>{item?.company?.website}</td>
+                              <td>{item?.company?.yearly_revenue}</td>
+                              <td>
+                                <div className="d-flex gap-3">
+                                  <RexettButton
+                                    icon={<IoCheckmark />}
+                                    className="arrow-btn primary-arrow"
+                                    variant="transparent"
+                                    onClick={(e) =>
+                                      handleClick(
+                                        e,
+                                        item?.id,
+                                        "approved",
+                                        index
+                                      )
+                                    }
+                                    isLoading={
+                                      selectedApprovedBtn === index
+                                        ? approvedLoader
+                                        : false
+                                    }
+                                  />
+                                  <RexettButton
+                                    icon={<IoCloseOutline />}
+                                    className="arrow-btn"
+                                    variant={"danger"}
+                                    onClick={(e) =>
+                                      handleClick(
+                                        e,
+                                        item?.id,
+                                        "rejected",
+                                        index
+                                      )
+                                    }
+                                    isLoading={
+                                      selectedRejectedBtn === index
+                                        ? approvedLoader
+                                        : false
+                                    }
+                                  />
+                                </div>
+                              </td>
+                            </tr>
+                            {expandedRow === index && (
+                              <tr
+                                className={`collapsible-row ${
+                                  expandedRow === index ? "open" : ""
+                                }`}
+                              >
+                                <td colSpan="8">
+                                  <div>
+                                    <Row>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Company Name
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.company?.name}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Email
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.company?.email}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Total Employees
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.company?.total_employees}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Location
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.company?.location}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3}>
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Phone Number
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.company?.phone_number}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3}>
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Type Of Company
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.company?.type_of_company}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))
+                      ) : (
+                        <td colSpan={8}>
+                          <NoDataFound />
+                        </td>
+                      )}
+                    </>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            {application?.length > 0 ? (
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                {currentTab == "clients" ? (
+                  <p className="showing-result">
+                    Showing {allApplications?.items_per_page} results
+                  </p>
+                ) : (
+                  <p className="showing-result">
+                    Showing {allApplications?.vendors?.length} results
+                  </p>
+                )}
+                <RexettPagination
+                  number={allApplications?.totalVendorPages}
+                  setPage={setPage}
+                  page={page}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+          </Tab.Pane>
+
+
+
+          <Tab.Pane eventKey="developers" className="py-4">
+            <div className="table-responsive">
+              <table className="table w-100 engagement-table table-ui-custom">
+                <thead>
+                  <tr>
+                    <th>Developer Name</th>
+                    <th>Email Address</th>
+                    <th>Phone Number</th>
+                    <th>Type Of Company</th>
+                    <th>Engagement</th>
+                    <th>Engagement Last</th>
+                    <th>Availability</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {screenLoader ? (
+                    <ScreenLoader />
+                  ) : (
+                    <>
+                      {currentTab == "developers" && application?.length > 0 ? (
                         application?.map((item, index) => (
                           <React.Fragment key={index}>
                             <tr
