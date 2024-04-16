@@ -10,7 +10,6 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   adminApproveReject,
   allApplicationsList,
@@ -23,15 +22,16 @@ import { IoSearch } from "react-icons/io5";
 import { RxChevronRight } from "react-icons/rx";
 import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
-import { set } from "react-hook-form";
 
 const Applications = () => {
   const dispatch = useDispatch();
   const { allApplications, approvedLoader, screenLoader } = useSelector(
     (state) => state.adminData
   );
+  const [search, setSearch] = useState('')
+  const [timerValue, setTimerValue] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
-  const [arrowactive, setArrowActive] = useState(false);
+  const [arrowactive, setArrowActive] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
@@ -40,7 +40,7 @@ const Applications = () => {
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
-    setArrowActive(!arrowactive);
+    setArrowActive(index==arrowactive?null:index);
   };
 
   useEffect(() => {
@@ -88,6 +88,18 @@ const Applications = () => {
     </Tooltip>
   );
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value)
+    clearTimeout(timerValue);
+    const timer = setTimeout(() => {
+        let data = {
+            search: e.target.value
+        }
+    }, 500);
+    setTimerValue(timer);
+
+}
+
   return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
@@ -97,6 +109,7 @@ const Applications = () => {
             type="text"
             className="form-field font-14 shadow-none"
             placeholder="Enter Search Keywords"
+            onChange={handleSearchChange}
           />
           <Button variant="transparent" className="main-btn px-3 search-btn">
             <IoSearch />
@@ -156,7 +169,7 @@ const Applications = () => {
                               <td className="white-nowrap">
                                 <span
                                   className={
-                                    arrowactive
+                                    arrowactive==index && currentTab == "clients"  
                                       ? "row-arrow active"
                                       : "row-arrow"
                                   }
@@ -381,7 +394,18 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                              <td className="white-nowrap">{item?.name}</td>
+                              <td className="white-nowrap">
+                                <span
+                                  className={
+                                    arrowactive==index && currentTab == "vendors" 
+                                      ? "row-arrow active"
+                                      : "row-arrow"
+                                  }
+                                >
+                                  <RxChevronRight />
+                                </span>{" "}
+                                {item?.name}
+                              </td>
                               <td>
                                 <span className="application-mail">
                                   {item?.email}
