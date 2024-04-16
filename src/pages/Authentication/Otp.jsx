@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Row, Col, Form, Button } from "react-bootstrap";
-import logoWhite from '../../assets/img/logo-white.png'
+import sidebarLogo from '../../assets/img/rexett-logo-white.png'
 import authLoginImg from '../../assets/img/login-img-new.png'
 import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,7 +62,7 @@ const Otp = ({ userType }) => {
                             <div className="inner-auth-wrapper h-100 d-flex justify-content-center flex-column position-relative">
                                 <div>
                                     <div className="text-center mb-5 logo-auth-wrapper">
-                                        <img src={logoWhite} className="logo-white" />
+                                        <img src={sidebarLogo} className="logo-white" />
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
 

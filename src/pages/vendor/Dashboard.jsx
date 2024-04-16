@@ -19,7 +19,7 @@ const VendorDashboard = () => {
     const { vendorDashboard, smallLoader, screenLoader } = useSelector(state => state.vendorData)
     const navigate = useNavigate()
 
-
+    const userName = localStorage.getItem("userName")
     useEffect(() => {
         dispatch(getVendorDashboard())
     }, [])
@@ -30,10 +30,9 @@ const VendorDashboard = () => {
     }
 
 
-
     return (
         <>
-            {screenLoader ? <ScreenLoader /> : <><h2 className="section-head mb-4">Overview</h2>
+            {screenLoader ? <ScreenLoader /> : <><h2 className="section-head mb-4">Overview   {userName}</h2>
                 <div className="overview-card-wrapper mb-5">
                     <div className="overview-card">
                         <div>
@@ -92,9 +91,9 @@ const VendorDashboard = () => {
                             return (
 
                                 <div className="developer-card" key={index} onClick={() => handleCardClick(value?.id)}>
-                                    <div className="user-imgbx"> 
-                                    <img src={value?.profile_picture} className="user-img" />
-                                    </div>   
+                                    <div className="user-imgbx">
+                                        <img src={value?.profile_picture} className="user-img" />
+                                    </div>
                                     <div className="text-center">
                                         <h3 className="user-name">{value?.name}</h3>
                                         {/* <p className="designation-user">Front End Designer</p> */}

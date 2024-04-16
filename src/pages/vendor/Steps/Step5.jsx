@@ -27,13 +27,13 @@ const StepFive = () => {
                                     <Col md="12">
                                         <Form.Group className="mb-4">
                                             <Form.Select className="mb-2">
-                                                <option value="facebook">Facebook</option>
+                                                {/* <option value="facebook">Facebook</option> */}
                                                 <option value="linkedin">Linkedin</option>
-                                                <option value="twitter">Twitter</option>
+                                                {/* <option value="twitter">Twitter</option> */}
                                                 <option value="github">Github</option>
-                                                <option value="instagram">Instagram</option>
-                                                <option value="gitlab">Gitlab</option>
-                                                <option value="pinterest">Pinterest</option>
+                                                {/* <option value="instagram">Instagram</option> */}
+                                                {/* <option value="gitlab">Gitlab</option> */}
+                                                {/* <option value="pinterest">Pinterest</option> */}
                                             </Form.Select>
                                             <Form.Control type="text" className="cv-field" placeholder="Enter Url"></Form.Control>
                                         </Form.Group>

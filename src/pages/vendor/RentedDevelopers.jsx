@@ -24,7 +24,7 @@ const RentedDevelopers = () => {
 
 
     useEffect(() => {
-        dispatch(getDevelopersList({page:count}))
+        dispatch(getDevelopersList({ page: count }))
     }, [count])
 
 
@@ -64,22 +64,26 @@ const RentedDevelopers = () => {
         })
         dispatch(getDevelopersList());
     }
-    const handleCardClick = (id) => {
+    const handleCardClick = (devId) => {
+        dispatch(getDeveloperDetails(devId))
+        navigate(`/vendor-single-developer/${devId}`)
+    }
+    const handleRowClick =(id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/vendor-single-developer/${id}`)
     }
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <>
-                <Tab.Container className="w-100" defaultActiveKey="grid-view">
+                <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
                         <h3 className="section-head-sub mb-0">List of All developers</h3>
                         <Nav variant="pills" className="document-view-pill">
                             <Nav.Item className="document-view-item">
-                                <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
+                                <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="document-view-item">
-                                <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
+                                <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
@@ -126,10 +130,10 @@ const RentedDevelopers = () => {
                         <Tab.Pane eventKey="grid-view">
                             <div className="developers-list">
                                 {allDevelopersList?.data?.developers.length > 0 ? allDevelopersList?.data?.developers.map((item, index) => {
-                                   return (
+                                    return (
                                         <>
 
-                                            <div className="developer-card" onClick = {()=>handleCardClick(item?.id)}>
+                                            <div className="developer-card" onClick={() => handleCardClick(item?.id)}>
                                                 <div className="user-imgbx">
                                                     <img src={item?.profile_picture} className="user-img" />
                                                 </div>
@@ -144,9 +148,9 @@ const RentedDevelopers = () => {
                                                         <li>
                                                             <Link to={item?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                                                         </li>
-                                                        <li>
+                                                        {/* <li>
                                                             <Link to={item?.email}><MdEmail /></Link>
-                                                        </li>
+                                                        </li> */}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -173,7 +177,7 @@ const RentedDevelopers = () => {
                                         return (
                                             <>
                                                 <tbody>
-                                                    <tr>
+                                                    <tr   onClick={() => handleRowClick(value?.id)}>
                                                         <td>
                                                             <span className="d-flex align-items-center gap-3">
                                                                 <img src={value?.profile_picture} />
@@ -200,9 +204,9 @@ const RentedDevelopers = () => {
                                                                 <li>
                                                                     <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                                                 </li>
-                                                                <li>
+                                                                {/* <li>
                                                                     <Link to={`${value?.email}`}><MdEmail /></Link>
-                                                                </li>
+                                                                </li> */}
                                                             </ul>
                                                         </td>
                                                     </tr>

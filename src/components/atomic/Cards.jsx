@@ -40,11 +40,11 @@ const Cards = ({ item, handleCardClick }) => {
                 <FaLinkedin />
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to={item?.developer?.developer_detail?.email}>
                 <MdEmail />
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

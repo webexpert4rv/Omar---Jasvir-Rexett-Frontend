@@ -18,7 +18,7 @@ const VendorDashboardLayout = ({ children }) => {
             <div className="dashboard-layout">
                 <Sidebar sidebarwrapper={sidebarwrapper} />
                 <main className='main-wrapper'>
-                    <Navigation onClick={handleSidebar} />
+                    {/* <Navigation onClick={handleSidebar} /> */}
                     {token && role=="vendor"?children:<Navigate to="/vendor-login"/>}
                 </main>
             </div>

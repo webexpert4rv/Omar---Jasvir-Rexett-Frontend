@@ -7,7 +7,7 @@ import { PiArrowLineRight } from "react-icons/pi";
 import Notification from "./atomic/Notfication";
 const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
     const navigate = useNavigate()
-    return (
+    return (    
         <>
             <header className="mb-4 zIndex3">
                 <div className="d-flex align-items-center justify-content-lg-end justify-content-between gap-3">
@@ -18,7 +18,7 @@ const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
                       <Notification route="notification-client" job="single-job" doc="documents"/>
                         <button className="main-btn" onClick={() => navigate("/job-post")}>+ Add new Job</button>
                         <div>
-                            <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button>
+                            {/* <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button> */}
                         </div>
                     </div>
                 </div>

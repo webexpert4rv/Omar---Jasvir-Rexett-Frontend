@@ -28,26 +28,32 @@ const HiredDevelopers = () => {
   }, [dispatch, count]);
 
 
-  const handleCardClick=(id)=>{
+  const handleCardClick = (devId) => {
+    dispatch(getDeveloperDetails(devId))
+    navigate(`/client-single-developer/${devId}`)
+  }
+
+  const handleRowClick = (id) => {
     dispatch(getDeveloperDetails(id))
     navigate(`/client-single-developer/${id}`)
   }
 
 
+
   return (
     <>
-      <Tab.Container className="w-100" defaultActiveKey="grid-view">
+      <Tab.Container className="w-100" defaultActiveKey="list-view">
         <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom-grey">
           <h3 className="section-head-sub mb-0">List of assigned developers</h3>
           <Nav variant="pills" className="document-view-pill">
             <Nav.Item className="document-view-item">
-              <Nav.Link className="document-view-link" eventKey="grid-view">
-                <IoGrid />
+              <Nav.Link className="document-view-link" eventKey="list-view">
+                <FaListUl />
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="document-view-item">
-              <Nav.Link className="document-view-link" eventKey="list-view">
-                <FaListUl />
+              <Nav.Link className="document-view-link" eventKey="grid-view">
+                <IoGrid />
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -58,17 +64,7 @@ const HiredDevelopers = () => {
           <>
             {" "}
             <Tab.Content>
-              <Tab.Pane eventKey="grid-view">
-                <div className="developers-list">
-                  {assignedDeveloperList?.assigned_developers?.length>0?assignedDeveloperList?.assigned_developers?.map((item, index) => {
-                    return (
-                      <>
-                        <Cards item={item} handleCardClick={()=>handleCardClick(item?.developer_id)} />
-                      </>
-                    );
-                  }):<NoDataFound/>}
-                </div>
-              </Tab.Pane>
+
               <Tab.Pane eventKey="list-view">
                 <div className="table-responsive">
                   <table className="table developer-table">
@@ -89,10 +85,10 @@ const HiredDevelopers = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {assignedDeveloperList?.assigned_developers?.length>0?assignedDeveloperList?.assigned_developers?.map((item, index) => {
+                      {assignedDeveloperList?.assigned_developers?.length > 0 ? assignedDeveloperList?.assigned_developers?.map((item, index) => {
                         return (
                           <>
-                            <tr>
+                            <tr onClick={() => handleRowClick(item?.developer_id)}>
                               <td>
                                 <span className="d-flex align-items-center gap-3">
                                   <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg} />
@@ -155,9 +151,20 @@ const HiredDevelopers = () => {
                             </tr>
                           </>
                         );
-                      }):<td colSpan={4}><NoDataFound/></td>}
+                      }) : <td colSpan={4}><NoDataFound /></td>}
                     </tbody>
                   </table>
+                </div>
+              </Tab.Pane>
+              <Tab.Pane eventKey="grid-view">
+                <div className="developers-list">
+                  {assignedDeveloperList?.assigned_developers?.length > 0 ? assignedDeveloperList?.assigned_developers?.map((item, index) => {
+                    return (
+                      <>
+                        <Cards item={item} handleCardClick={() => handleCardClick(item?.developer_id)} />
+                      </>
+                    );
+                  }) : <NoDataFound />}
                 </div>
               </Tab.Pane>
             </Tab.Content>

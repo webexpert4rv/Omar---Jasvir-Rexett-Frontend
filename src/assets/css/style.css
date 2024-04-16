@@ -179,7 +179,7 @@ ul {
 }
 
 .sidebar-logo img {
-    max-width: 200px;
+    max-width: 160px;
 }
 
 .main-wrapper {
@@ -501,15 +501,15 @@ ul {
     background-color: #fff;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, .07);
     border-radius: 20px;
-    z-index: 1;
-    transform: scale(1);
+    /* z-index: 1; */
+    /* transform: scale(1); */
     cursor: pointer;
-    transition: .3s ease;
+    /* transition: .3s ease; */
 }
-.developer-card:hover
+/* .developer-card:hover
 {
     transform: scale(1.04);
-}
+} */
 .developer-card:after {
     content: '';
     position: absolute;
@@ -548,8 +548,9 @@ ul {
 }
 .client-card .user-name
 {
-    color: #fff;
+    color: black;
 }
+
 
 .designation-user {
     font-size: 15px;
@@ -558,7 +559,7 @@ ul {
 }
 .client-card .designation-user
 {
-    color: #fff;
+    color: #121212;
 }
 
 .email-user {
@@ -573,7 +574,7 @@ ul {
 }
 .client-card .email-user
 {
-    color: #fff;
+    color:  #121212;
 }
 
 .social-icons {
@@ -2862,7 +2863,8 @@ input[type="radio"]:checked {
 }
 
 .client-card {
-    background: linear-gradient(to left, #44e0e1, #116e89);
+    /* background: linear-gradient(to left, #44e0e1, #116e89); */
+    color: #000;
 }
 .time-filter-select
 {

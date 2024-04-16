@@ -120,11 +120,11 @@ const DashboardLayout = ({ children }) => {
         <>
             <div className="dashboard-layout">
                 <Sidebar sideBarActive={mainSidebar} closemainSidebar={handleMainSidebar} />
-                <main className={sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper right-active'}>
+                <main className={sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper '}>
                     <Navigation sidebaractive={sidebarwrapper} handlemainSidebar={handleMainSidebar} handleSidebar={handleSidebar} />
                     {token && role == "client" ? children : <Navigate to="/" />}
 
-                    {!sidebarwrapper ? <div className={!sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
+                    {!sidebarwrapper ? <div className={sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
                         <div className='text-end d-lg-none mb-4'>
                             <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button>
                         </div>

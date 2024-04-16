@@ -3,16 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Row, Col, Form, Button } from "react-bootstrap";
-import logoWhite from '../../../assets/img/logo-white-new.png'
 import authLoginImg from '../../../assets/img/login-img-new.png'
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/slices/authenticationDataSlice";
+import sidebarLogo from '../../../assets/img/rexett-logo-white.png'
+
 
 const RexetLogin = ({userType}) => {
     const dispatch =useDispatch();
     const navigate=useNavigate()
-    const {smallLoader}=useSelector(state=>state.authData);
+    const {smallLoader ,loginUserName}=useSelector(state=>state.authData);
     const [isRemember,setRemember]=useState(false)
     const [email,setEmail]=useState("")
     const [isPassword,setPassword]=useState(false)
@@ -59,7 +60,7 @@ const RexetLogin = ({userType}) => {
             password:values.password,
             role:allRoles[`${userType}`],
             mac_address: browserId
-        }
+        }   
         dispatch(loginUser(data,()=>{
             navigate(`/otp`)
         }))
@@ -100,7 +101,7 @@ const RexetLogin = ({userType}) => {
                             <div className="inner-auth-wrapper h-100 d-flex justify-content-center flex-column position-relative">
                                 <div>
                                     <div className="text-center mb-5 logo-auth-wrapper">
-                                        <img src={logoWhite} className="logo-white" />
+                                        <img src={sidebarLogo} className="logo-white" />
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
                                       
