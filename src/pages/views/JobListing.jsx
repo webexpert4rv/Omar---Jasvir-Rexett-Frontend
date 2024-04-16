@@ -57,7 +57,7 @@ const JobListing = () => {
                                                     <Col md="12">
                                                         <div className="info-grid">
                                                             <h4 className="grid-heading">Skills Req.</h4>
-                                                            <ul className="skills-listing">
+                                                            <ul className="need-skill-list ">
                                                                 {
                                                                     convertToArray(item.skills)?.map((item) => {
                                                                         return (

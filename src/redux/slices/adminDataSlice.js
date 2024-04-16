@@ -174,7 +174,7 @@ export function adminListAssignedDeveloper(payload, callback) {
             let result = await clientInstance.get(generateApiUrl(payload, "admin/developers"))
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
-                dispatch(setSuccessAdminAssignedDeveloper(result.data.data.developers))
+                dispatch(setSuccessAdminAssignedDeveloper(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
