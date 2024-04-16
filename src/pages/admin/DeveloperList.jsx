@@ -23,10 +23,10 @@ const DeveloperList = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        dispatch(adminListAssignedDeveloper({page:count}))
+        dispatch(adminListAssignedDeveloper({ page: count }))
     }, [count])
-    
 
+    console.log(assignedDeveloper, "assignedDeveloper")
     const handleSkill = (e) => {
         let filterData = {
             ...selectedFilter,
@@ -62,20 +62,20 @@ const DeveloperList = () => {
         })
         dispatch(adminListAssignedDeveloper());
     }
-    const handleCardClick=(devId)=>{
-            dispatch(getDeveloperDetails(devId))
-            navigate(`/admin-single-developer/${devId}`)
-        
-        
+    const handleCardClick = (devId) => {
+        dispatch(getDeveloperDetails(devId))
+        navigate(`/admin-single-developer/${devId}`)
+
+
     }
-    const handleRowClick=(id)=>{
+    const handleRowClick = (id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/admin-single-developer/${id}`)
-    
-    
-}
-    
-    
+
+
+    }
+
+
     return (
         <>
             <div>
@@ -85,10 +85,17 @@ const DeveloperList = () => {
                         <div className="flex-none">
                             {/* <Form.Label className="common-label">Category</Form.Label> */}
                             <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
-                                <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
-                                <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
+                                <option value="" onClick={(e) => e.stopPropagation()}>Select Skills</option>
+                                {assignedDeveloper?.skills?.map((item, index) => {
+                                    return (
+                                        <>
+                                            <option key={index} >{item?.title}</option>
+                                        </>
+                                    )
+                                })}
+                                {/* <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
                                 <option value="javascript" onClick={(e) => e.stopPropagation()}>JavaScript</option>
-                                <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option>
+                                <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option> */}
 
                             </Form.Select>
                         </div>
@@ -133,14 +140,14 @@ const DeveloperList = () => {
                 <Tab.Content>
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
-                            {assignedDeveloper.length > 0 ? assignedDeveloper.map((item, index) => {
-                                console.log(item,"item")
+                            {assignedDeveloper?.developers?.length > 0 ? assignedDeveloper?.developers?.map((item, index) => {
+                                console.log(item, "item")
                                 return (
                                     <>
-                                        <div className="developer-card" onClick = {()=>handleCardClick(item?.id)}>
+                                        <div className="developer-card" onClick={() => handleCardClick(item?.id)}>
                                             <span className="check-icon"><FaCircleCheck /></span>
                                             <div className="user-imgbx">
-                                                <img src={item?.profile_picture ? item?.profile_picture  : userImg } className="user-img" />
+                                                <img src={item?.profile_picture ? item?.profile_picture : userImg} className="user-img" />
                                             </div>
                                             <div className="text-center">
                                                 <h3 className="user-name">{item?.name}</h3>
@@ -175,14 +182,14 @@ const DeveloperList = () => {
                                         <th><span>Connects</span></th>
                                     </tr>
                                 </thead>
-                                {assignedDeveloper.map((value, index) => {
+                                {assignedDeveloper?.developers?.length > 0 ? assignedDeveloper?.developers?.map((value, index) => {
                                     return (
                                         <>
                                             <tbody>
-                                                <tr   onClick={()=>handleRowClick(value.id)}>
+                                                <tr onClick={() => handleRowClick(value.id)}>
                                                     <td>
                                                         <span className="d-flex align-items-center gap-3">
-                                                            <img src={value?.profile_picture ? value?.profile_picture  : userImg } />
+                                                            <img src={value?.profile_picture ? value?.profile_picture : userImg} />
                                                             <h3 className="user-name color-121212 mb-0">{value?.name}</h3>
                                                             <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span>
                                                         </span>
@@ -215,20 +222,21 @@ const DeveloperList = () => {
                                             </tbody>
                                         </>
                                     )
-                                })}
+                                    // })}
+                                }) : <NoDataFound />}
                             </table>
                         </div>
                     </Tab.Pane>
                 </Tab.Content>
             </Tab.Container>
-           
+
             {assignedDeveloper.length >= 5 ? (
-                    <div className="text-center mt-3">
-                        <SeeMore setCount={setCount} />
-                    </div>
-                ) : (
-                    ""
-                )}
+                <div className="text-center mt-3">
+                    <SeeMore setCount={setCount} />
+                </div>
+            ) : (
+                ""
+            )}
         </>
     )
 }
