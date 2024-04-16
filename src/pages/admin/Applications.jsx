@@ -182,7 +182,7 @@ const Applications = () => {
                                       : "row-arrow"
                                   }
                                 >
-                                  {/* <RxChevronRight /> */}
+                                  <RxChevronRight />
                                 </span>{" "}
                                 {item?.name}
                               </td>
@@ -573,8 +573,6 @@ const Applications = () => {
             )}
           </Tab.Pane>
 
-
-
           <Tab.Pane eventKey="developers" className="py-4">
             <div className="table-responsive">
               <table className="table w-100 engagement-table table-ui-custom">
@@ -602,17 +600,28 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                              <td className="white-nowrap">{item?.name}</td>
+                               <td className="white-nowrap">
+                                <span
+                                  className={
+                                    arrowactive==index && currentTab == "developers"  
+                                      ? "row-arrow active"
+                                      : "row-arrow"
+                                  }
+                                >
+                                  <RxChevronRight />
+                                </span>{" "}
+                                {item?.name}
+                              </td>
                               <td>
                                 <span className="application-mail">
                                   {item?.email}
                                 </span>
                               </td>
                               <td>{item?.phone_number}</td>
-                              <td>{item?.company?.type_of_company}</td>
-                              <td>{item?.company?.total_employees}</td>
-                              <td>{item?.company?.website}</td>
-                              <td>{item?.company?.yearly_revenue}</td>
+                              <td>{item?.type_of_company}</td>
+                              <td>{item?.total_employees}</td>
+                              <td>{item?.website}</td>
+                              <td>{item?.yearly_revenue}</td>
                               <td>
                                 <div className="d-flex gap-3">
                                   <RexettButton
@@ -666,54 +675,62 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Company Name
+                                           Company Name
                                           </h3>
                                           <p className="application-text">
-                                            {item?.company?.name}
+                                            {item?.developer_experiences[0]?.company_name}
                                           </p>
                                         </div>
                                       </Col>
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Email
+                                            Job Title
                                           </h3>
                                           <p className="application-text">
-                                            {item?.company?.email}
+                                            {item?.developer_experiences[0]?.job_title}
                                           </p>
                                         </div>
                                       </Col>
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Total Employees
+                                            Skillset Needed
                                           </h3>
-                                          <p className="application-text">
-                                            {item?.company?.total_employees}
-                                          </p>
+                                          <ul className="need-skill-list">
+                                            {convertToArray(
+                                              item?.developer_skills?.skills
+                                            )?.map((item, index) => {
+                                              return (
+                                                <>
+                                                  <li key={index}>{item}</li>
+                                                </>
+                                              );
+                                            })}
+                                          </ul>
                                         </div>
                                       </Col>
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Location
+                                            Marital Status
                                           </h3>
                                           <p className="application-text">
-                                            {item?.company?.location}
+                                            {item?.marital_status}
                                           </p>
                                         </div>
                                       </Col>
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
-                                            Phone Number
+                                          Professtional Title
                                           </h3>
                                           <p className="application-text">
-                                            {item?.company?.phone_number}
+                                            {item?.developer_detail?.professional_title}
                                           </p>
                                         </div>
                                       </Col>
-                                      <Col md={3}>
+                                      {/* <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
                                             Type Of Company
@@ -722,7 +739,7 @@ const Applications = () => {
                                             {item?.company?.type_of_company}
                                           </p>
                                         </div>
-                                      </Col>
+                                      </Col> */}
                                     </Row>
                                   </div>
                                 </td>

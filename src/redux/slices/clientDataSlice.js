@@ -59,6 +59,7 @@ export const clientDataSlice = createSlice({
         setTimeReporting: (state, action) => {
             state.timeReportingData = action.payload
             state.smallLoader = false;
+            state.screenLoader = false;
 
 
         },
@@ -157,7 +158,7 @@ export function getClientProfile(payload, callback) {
 
 export function timeReporting(payload, role, callback) {
     return async (dispatch) => {
-        dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result
             if (role === "client") {

@@ -730,7 +730,7 @@ const EditVendorProfile = () => {
                               },
                               pattern: {
                                 value: /^[A-Za-z\s]+$/,
-                                message: "State should not contain numbers or special character",
+                                message: "State should not contain numbers " ,
                               }
                             })}
                           />
@@ -796,7 +796,14 @@ const EditVendorProfile = () => {
                             name="country_code"
                             placeholder="Enter Country Code"
                             {...register(`country_code`, {
-                              required: "Country code is required",
+                              required: {
+                              value: true,
+                              message: "Country is required",
+                            },
+                            pattern:{
+                              value: /^(\+?\d{1,3}|\d{1,5})$/,
+                              message: "Country should not be greater than 5 digits ",
+                            }
                             })}
                           />
                           {errors?.country_code && (
@@ -805,8 +812,6 @@ const EditVendorProfile = () => {
                             </p>
                           )}
                         </Form.Group>
-
-                        
                       </div>
                     </Col>
                     <Col md="6">

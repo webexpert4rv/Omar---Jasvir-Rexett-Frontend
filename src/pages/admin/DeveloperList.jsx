@@ -3,23 +3,24 @@ import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Form, Nav, Tab } from "react-bootstrap";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { adminListAssignedDeveloper } from "../../redux/slices/adminDataSlice";
+import { adminListAssignedDeveloper, getSingleClient } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { SeeMore } from "../../components/atomic/SeeMore";
+import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 
 const DeveloperList = () => {
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
     const { assignedDeveloper, screenLoader } = useSelector(state => state.adminData)
     const [count, setCount] = useState(1);
-  
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(adminListAssignedDeveloper({page:count}))
@@ -61,7 +62,18 @@ const DeveloperList = () => {
         })
         dispatch(adminListAssignedDeveloper());
     }
-   
+    const handleCardClick=(devId)=>{
+            dispatch(getDeveloperDetails(devId))
+            navigate(`/admin-single-developer/${devId}`)
+        
+        
+    }
+    const handleRowClick=(id)=>{
+        dispatch(getDeveloperDetails(id))
+        navigate(`/admin-single-developer/${id}`)
+    
+    
+}
     
     
     return (
@@ -106,15 +118,15 @@ const DeveloperList = () => {
                     </div>
                 </Form>
             </div>
-            <Tab.Container className="w-100" defaultActiveKey="grid-view">
+            <Tab.Container className="w-100" defaultActiveKey="list-view">
                 <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
                     <h3 className="section-head-sub mb-0">List of All developers</h3>
                     <Nav variant="pills" className="document-view-pill">
                         <Nav.Item className="document-view-item">
-                            <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
+                            <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
                         </Nav.Item>
                         <Nav.Item className="document-view-item">
-                            <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
+                            <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </div>
@@ -122,9 +134,10 @@ const DeveloperList = () => {
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
                             {assignedDeveloper.length > 0 ? assignedDeveloper.map((item, index) => {
+                                console.log(item,"item")
                                 return (
                                     <>
-                                        <div className="developer-card" >
+                                        <div className="developer-card" onClick = {()=>handleCardClick(item?.id)}>
                                             <span className="check-icon"><FaCircleCheck /></span>
                                             <div className="user-imgbx">
                                                 <img src={item?.profile_picture ? item?.profile_picture  : userImg } className="user-img" />
@@ -166,7 +179,7 @@ const DeveloperList = () => {
                                     return (
                                         <>
                                             <tbody>
-                                                <tr>
+                                                <tr   onClick={()=>handleRowClick(value.id)}>
                                                     <td>
                                                         <span className="d-flex align-items-center gap-3">
                                                             <img src={value?.profile_picture ? value?.profile_picture  : userImg } />
