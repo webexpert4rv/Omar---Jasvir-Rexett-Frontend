@@ -13,11 +13,11 @@ import sidebarLogo from '../../../assets/img/rexett-logo-white.png'
 const RexetLogin = ({userType}) => {
     const dispatch =useDispatch();
     const navigate=useNavigate()
-    const {smallLoader ,loginUserName}=useSelector(state=>state.authData);
+    const {smallLoader }=useSelector(state=>state.authData);
     const [isRemember,setRemember]=useState(false)
     const [email,setEmail]=useState("")
     const [isPassword,setPassword]=useState(false)
-
+    const [loading , setLoading] = useState(false)
     function generateBrowserId() {
         const userAgent = navigator.userAgent;
         const screenWidth = window.screen.width;
@@ -48,6 +48,7 @@ const RexetLogin = ({userType}) => {
       },[])
      
       const onSubmit=(values)=>{
+        setLoading(true)
         localStorage.setItem("email",values.email)
         let allRoles={
             client:"client",
@@ -61,9 +62,11 @@ const RexetLogin = ({userType}) => {
             role:allRoles[`${userType}`],
             mac_address: browserId
         }   
+        
         dispatch(loginUser(data,()=>{
             navigate(`/otp`)
         }))
+        setLoading(false)
       }
     
 
@@ -91,6 +94,7 @@ const RexetLogin = ({userType}) => {
 
         return allRoles[userType]
      }
+     
 
     return (
         <>
@@ -165,7 +169,9 @@ const RexetLogin = ({userType}) => {
                                         type="submit" 
                                         text="Login"
                                         className="auth-btn d-block text-decoration-none"
+                                        onClick={handleSubmit}
                                         variant="transparent"
+                                        disabled={loading ? true : false}
                                         isLoading={smallLoader}
                                         />
                                     </form>
