@@ -22,7 +22,6 @@ const ListClient = () => {
     const navigate = useNavigate()
     const { listOfClients, assignedDeveloper, screenLoader } = useSelector(state => state.adminData)
     const [count, setCount] = useState(1)
-    console.log(count, "count")
 
 
     useEffect(() => {
@@ -30,13 +29,11 @@ const ListClient = () => {
     }, [dispatch, count])
 
     const handleClientCardClick = (client_id) => {
-        console.log(client_id, "id")
         dispatch(getSingleClient(client_id))
         navigate(`/admin-single-client/${client_id}`)
     }
 
     const handleClientRowClick = (client_id) => {
-        console.log(client_id, "id")
         dispatch(getSingleClient(client_id))
         navigate(`/admin-single-client/${client_id}`)
     }

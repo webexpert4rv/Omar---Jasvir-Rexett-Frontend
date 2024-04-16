@@ -111,7 +111,6 @@ export function getVerifyOtp(payload) {
         dispatch(setScreenLoader())
         try {
             let result = await authInstance.post("/auth/verify-otp", { ...payload })
-            console.log(result, "result")
             if (result.status == 200) {
                 if (result.data.data.role === "client") {
                     localStorage.setItem("token", result.data.access_token);

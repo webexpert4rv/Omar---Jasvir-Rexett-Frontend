@@ -42,7 +42,6 @@ const JobPost = () => {
 
 
     const onSubmit = (values) => {
-        console.log(values, "values")
         let convertArr = selectedOption.map((item) => item.label)
         let data = {
             ...values,
@@ -60,7 +59,6 @@ const JobPost = () => {
     }
 
     const handleSelect = (e) => {
-        console.log(e, "sleectedvLUE")
         let selectedValue = e
         if (selectedValue == "5") {
             setShowTextInput(true);

@@ -20,7 +20,6 @@ const AdminJobListing = () => {
     const { jobListing, screenLoader } = useSelector(state => state.adminData)
     const { jobCategoryList } = useSelector(state => state.clientData)
 
-    console.log(jobListing?.totalPages, "jobListing")
     useEffect(() => {
         dispatch(getJobCategoryList())
     }, [])

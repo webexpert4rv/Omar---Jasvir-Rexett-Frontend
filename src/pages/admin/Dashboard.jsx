@@ -31,7 +31,6 @@ const AdminDashboard = () => {
         navigate(`/admin-single-developer/${id}`)
     }
     const handleClientCardClick =(client_id)=>{
-        console.log(client_id,"id")
         dispatch(getSingleClient(client_id))
         navigate(`/admin-single-client/${client_id}`)
     }
@@ -104,7 +103,6 @@ const AdminDashboard = () => {
                 <div className="developers-list">
 
                     {adminDashboard?.data?.assignedDevelopers.length>0? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
-                        console.log(item,"item")
                         return (
                             <>
                                 <div className="developer-card" onClick={() => handleCardClick(item?.developer_id)}>
