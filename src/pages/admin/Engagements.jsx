@@ -10,6 +10,7 @@ import RexettPagination from "../../components/atomic/RexettPagination";
 const Engagements = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
+    const [timerValue, setTimerValue] = useState("");
     const { engagement, screenLoader } = useSelector(state => state.adminData)
     const [page , setPage] = useState(1)
 
@@ -23,13 +24,26 @@ const Engagements = () => {
         }
         dispatch(adminEngagementList(data))
     }
+
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value)
+        clearTimeout(timerValue);
+        const timer = setTimeout(() => {
+            let data = {
+                search: e.target.value
+            }
+            dispatch(adminEngagementList(data))
+        }, 500);
+        setTimerValue(timer);
+
+    }
     return (
         <>
             <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
                 <h2 className="section-head border-0 mb-md-0 mb-3 pb-0">Engagements</h2>
 
                 <div className="d-flex gap-3">
-                    <Form.Control type="text" className="form-field font-14 shadow-none" placeholder="Enter Search Keywords" onChange={(e) => setSearch(e.target.value)}></Form.Control>
+                    <Form.Control type="text" className="form-field font-14 shadow-none" placeholder="Enter Search Keywords" onChange={handleSearchChange}></Form.Control>
                     <Button variant="transparent" className="main-btn px-3 search-btn" onClick={handleSearch}><IoSearch /></Button>
                 </div>
             </div>
