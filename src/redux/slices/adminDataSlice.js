@@ -125,7 +125,6 @@ export default adminDataSlice.reducer
 
 
 export function adminListClients(page ,payload) {
-    console.log(page , "page")
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
@@ -299,7 +298,6 @@ export function adminTimeReporting(payload) {
 }
 
 export function allApplicationsList(payload) {
-    console.log(payload , "payload")
     return async (dispatch) => {
         dispatch(setBtnLoader())
         dispatch(setScreenLoader())
@@ -335,7 +333,6 @@ export function adminEngagementList(payload) {
     };
 }
 export function adminApproveReject(payload) {
-    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setApprovedLoader())
         try {

@@ -14,8 +14,6 @@ const JobListing = () => {
     const [page, setPage] = useState(1)
     const dispatch = useDispatch();
     const { allJobPostedList, jobCategoryList, screenLoader } = useSelector(state => state.clientData)
-    console.log(jobCategoryList, "jobCategoryList")
-    console.log(allJobPostedList, "allJobPostedList")
     
     useEffect(() => {
         dispatch(getJobCategoryList())

@@ -28,7 +28,6 @@ const RexetLogin = ({userType}) => {
       }
       
       const browserId = generateBrowserId();
-      console.log(browserId)
 
     const {
         register,

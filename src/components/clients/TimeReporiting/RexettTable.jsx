@@ -11,7 +11,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
     const dispatch = useDispatch()
     const submitApproved = (id, index) => {
-        console.log(id , "id ")
         setSelectedApprovedBtn(index)
         dispatch(approvedClient(id,role))
     }
@@ -57,7 +56,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                             <tbody>
 
                                 {data.length>0 ? data?.map((item, index) => {
-                                    console.log(item,"item")
                                     return (
                                         <>
                                             <tr>

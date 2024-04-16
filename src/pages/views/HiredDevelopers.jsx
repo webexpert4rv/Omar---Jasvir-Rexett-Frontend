@@ -39,7 +39,6 @@ const HiredDevelopers = () => {
   }
 
 
-
   return (
     <>
       <Tab.Container className="w-100" defaultActiveKey="list-view">
@@ -168,13 +167,12 @@ const HiredDevelopers = () => {
                 </div>
               </Tab.Pane>
             </Tab.Content>
-            {assignedDeveloperList.length >= 5 ? (
-              <div className="text-center mt-3">
-                <SeeMore setCount={setCount} />
-              </div>
-            ) : (
-              ""
-            )}
+            {
+              assignedDeveloperList?.total_developer_count > 5 &&  assignedDeveloperList?.assigned_developers?.length !==assignedDeveloperList.total_developer_count  ? (
+                <div className="text-center mt-3">
+                  <SeeMore setCount={setCount} />
+                </div>
+              ) : ("")}
           </>
         )}
       </Tab.Container>

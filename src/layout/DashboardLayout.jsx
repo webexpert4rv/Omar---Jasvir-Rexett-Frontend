@@ -64,7 +64,6 @@ const DashboardLayout = ({ children }) => {
     const dispatch = useDispatch()
 
 
-    console.log(revenueData, "revenueData")
     const handleSidebar = () => {
         isSidebarWrapper(!sidebarwrapper)
     }
