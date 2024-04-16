@@ -24,15 +24,12 @@ const AdminSingleJob = () => {
     const [suggestedData, setSuggestedData] = useState(null)
     const [page, setPage] = useState(1)
 
-
-
-  
     useEffect(() => {
         if (id) {
             dispatch(adminSingleJob(id))
             dispatch(getDeveloperSuggestList(id ,page))
         }
-    }, [page])
+    }, [page,id])
 
     useEffect(() => {
         setSingleJobDescription(singleJobListing?.data)
