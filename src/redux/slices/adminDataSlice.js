@@ -304,7 +304,7 @@ export function allApplicationsList(payload) {
         dispatch(setBtnLoader())
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`admin/applications?page=${payload}`)
+            let result = await clientInstance.get(generateApiUrl(payload, `admin/applications`))
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSuccessApplicationList(result.data.data))

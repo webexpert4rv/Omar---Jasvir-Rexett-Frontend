@@ -44,7 +44,10 @@ const Applications = () => {
   };
 
   useEffect(() => {
-    dispatch(allApplicationsList(page));
+    let data={
+      page:page
+    }
+    dispatch(allApplicationsList(data));
   }, [page]);
 
   useEffect(() => {
@@ -68,6 +71,11 @@ const Applications = () => {
       status: status,
       "active-tab": currentTab,
     };
+   
+    let data={
+      page:page,
+      "active-tab": currentTab,
+    }
 
     if (status === "approved") {
       setSelectedApprovedBtn(index);
@@ -75,7 +83,7 @@ const Applications = () => {
       setSelectedRejectedBtn(index);
     }
     dispatch(adminApproveReject(payload));
-    dispatch(allApplicationsList(page));
+    dispatch(allApplicationsList(data));
   };
   const approvedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -92,10 +100,14 @@ const Applications = () => {
     setSearch(e.target.value)
     clearTimeout(timerValue);
     const timer = setTimeout(() => {
-        let data = {
-            search: e.target.value
-        }
+      let data={
+        page:page,
+        "active-tab": currentTab,
+        search:e.target.value
+      }
+      dispatch(allApplicationsList(data));
     }, 500);
+    
     setTimerValue(timer);
 
 }
@@ -581,10 +593,6 @@ const Applications = () => {
                     <th>Developer Name</th>
                     <th>Email Address</th>
                     <th>Phone Number</th>
-                    <th>Type Of Company</th>
-                    <th>Engagement</th>
-                    <th>Engagement Last</th>
-                    <th>Availability</th>
                     <th>Action</th>
                   </tr>
                 </thead>
