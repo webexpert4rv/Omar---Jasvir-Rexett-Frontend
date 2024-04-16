@@ -69,7 +69,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                             <Col lg={6} className="px-0">
                                 <div className="resume-basic-info text-center">
                                     <div className="resume-imgbx mx-auto mb-4">
-                                        <img src={developerDetails?.profile_picture} className="resume-img" />
+                                        <img src={developerDetails?.profile_picture ? developerDetails?.profile_picture : resumeImg } className="resume-img" />
                                     </div>
                                     <h3 className="resume-name">{developerDetails?.name}</h3>
                                     <p className="resume-designation">{developerDetails?.developer_detailprofessional_title}</p>
@@ -79,11 +79,6 @@ const SingleDeveloper = ({ developerDetails }) => {
                                     <h3 className="subheading-resume text-center mb-3">Skills</h3>
                                     {/* <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25}/></div> */}
                                     <ul className="skills-pill text-center">
-                                        <li><span>HTML</span> </li>
-                                        <li><span>CSS</span> </li>
-                                        <li><span>JavaScript</span> </li>
-                                        <li><span>jQuery</span> </li>
-                                        <li><span>HTML</span> </li>
                                         {
                                             splitSkills(developerDetails?.developer_skills)?.map((item, index) => {
                                                 return (
