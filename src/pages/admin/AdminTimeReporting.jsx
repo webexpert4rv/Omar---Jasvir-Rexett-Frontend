@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getClientList } from "../../redux/slices/vendorDataSlice";
+import { useTranslation } from "react-i18next";
 
 
 const AdminTimeReporting = () => {
@@ -16,6 +17,7 @@ const AdminTimeReporting = () => {
     const [contractId, setContractID] = useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
+    const { t } = useTranslation()
 
 
     useEffect(() => {
@@ -71,7 +73,6 @@ const AdminTimeReporting = () => {
     }
 
     const handleClientClick=(e)=>{
-        console.log(e,"id-----------------")
         dispatch(adminTimeReporting(e))
     }
     return (
@@ -83,7 +84,7 @@ const AdminTimeReporting = () => {
                             <div className="mb-md-0 mb-3">
                                 <div>
                                     <Form.Select className="filter-select shadow-none" onClick = {(e)=>handleClientClick(e.target.value)}>
-                                        <option value="" selected disabled>Select Clients</option>
+                                        <option value="" selected disabled>{t("selectClients")}</option>
                                         {
                                             clientList?.map((item ,index) => {
                                                 console.log(item,"itek")
@@ -96,7 +97,7 @@ const AdminTimeReporting = () => {
                                 </div>
                             </div>
                             <div>
-                                <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>Edit Time Report</Button>
+                                <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>{t("editTimeReport")}</Button>
                             </div>
                         </div>
                     </Form>
@@ -106,28 +107,28 @@ const AdminTimeReporting = () => {
                         <table className="table time-table table-bordered table-ui-custom">
                             <thead>
                                 <th className="time-table-head">
-                                    Client Name
+                                    {t("clientName")}
                                 </th>
                                 <th className="time-table-head">
-                                    No of Developers Hired
+                                    {t("noOfDevelopersHired")}
                                 </th>
                                 <th className="time-table-head">
-                                    Name of Developers
+                                    {t("nameOfDevelopers")}
                                 </th>
                                 <th className="time-table-head">
-                                    Total Hours
+                                    {t("totalHours")}
                                 </th>
                                 <th className="time-table-head">
-                                    Location
+                                    {t("location")}
                                 </th>
                                 <th className="time-table-head">
-                                    Redeem
+                                    {t("redeem")}
                                 </th>
                                 <th className="time-table-head">
-                                    Invoice
+                                    {t("invoice")}
                                 </th>
                                 <th className="time-table-head">
-                                    Contract
+                                    "{t("contract")}"
                                 </th>
                             </thead>
                             {screenLoader ? <ScreenLoader /> : <tbody>

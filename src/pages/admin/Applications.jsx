@@ -22,6 +22,7 @@ import { IoSearch } from "react-icons/io5";
 import { RxChevronRight } from "react-icons/rx";
 import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const Applications = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const Applications = () => {
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
   const [page, setPage] = useState(1);
+  const { t }= useTranslation()
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
@@ -115,12 +117,12 @@ const Applications = () => {
   return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
-        <h2 className="section-head border-0 mb-0 pb-0">Applications</h2>
+        <h2 className="section-head border-0 mb-0 pb-0">{t("applications")}</h2>
         <div className="d-flex gap-3">
           <Form.Control
             type="text"
             className="form-field font-14 shadow-none"
-            placeholder="Enter Search Keywords"
+            placeholder={t("enterSearchKeywords")}
             onChange={handleSearchChange}
           />
           <Button variant="transparent" className="main-btn px-3 search-btn">
@@ -136,7 +138,7 @@ const Applications = () => {
         <Nav variant="pills" className="application-pills">
           <Nav.Item className="application-item">
             <Nav.Link eventKey="clients" className="application-link">
-              Clients{" "}
+              {t("clients")}{" "}
               <span className="new-app">
                 {allApplications?.clients?.length}
               </span>
@@ -144,7 +146,7 @@ const Applications = () => {
           </Nav.Item>
           <Nav.Item className="application-item">
             <Nav.Link eventKey="vendors" className="application-link">
-              Vendors{" "}
+              {t("vendors")}{" "}
               <span className="new-app">
                 {allApplications?.vendors?.length}
               </span>
@@ -152,7 +154,7 @@ const Applications = () => {
           </Nav.Item>
           <Nav.Item className="application-item">
             <Nav.Link eventKey="developers" className="application-link">
-              Developers{" "}
+            {t("developers")}{" "}
               <span className="new-app">
                 {allApplications?.developers?.length}
               </span>
@@ -165,13 +167,13 @@ const Applications = () => {
               <table className="table w-100 engagement-table table-ui-custom">
                 <thead>
                   <tr>
-                    <th>Client Name</th>
-                    <th>Email Address</th>
-                    <th>Phone Number</th>
-                    <th>Engagement</th>
-                    <th>Engagement Last</th>
-                    <th>Availability</th>
-                    <th>Action</th>
+                    <th>{t("clientName")}</th>
+                    <th>{t("email")} {t("address")}</th>
+                    <th>{t("phoneNumber")}</th>
+                    <th>{t("engagement")}</th>
+                    <th>{t("engagement")} {t("last")}</th>
+                    <th>{t("availability")}</th>
+                    <th>{t("action")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -392,14 +394,14 @@ const Applications = () => {
               <table className="table w-100 engagement-table table-ui-custom">
                 <thead>
                   <tr>
-                    <th>Client Name</th>
-                    <th>Email Address</th>
-                    <th>Phone Number</th>
-                    <th>Type Of Company</th>
-                    <th>Engagement</th>
-                    <th>Engagement Last</th>
-                    <th>Availability</th>
-                    <th>Action</th>
+                    <th>{t("clientName")}</th>
+                    <th>{t("email")} {t("address")}</th>
+                    <th>{t("phoneNumber")}</th>
+                    <th>{t("typeOfCompany")}</th>
+                    <th>{t("engagements")}</th>
+                    <th>{t("engagements")} {t("last")}</th>
+                    <th>{t("availability")}</th>
+                    <th>{t("action")}</th>
                   </tr>
                 </thead>
                 <tbody>

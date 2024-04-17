@@ -14,12 +14,14 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { SeeMore } from "../../components/atomic/SeeMore";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
+import { useTranslation } from "react-i18next";
 const RentedDevelopers = () => {
     const { allDevelopersList, screenLoader } = useSelector(state => state.vendorData)
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
     const [count, setCount] = useState(1);
     const navigate = useNavigate()
+    const {t} = useTranslation()
 
 
 
@@ -77,7 +79,7 @@ const RentedDevelopers = () => {
             {screenLoader ? <ScreenLoader /> : <>
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
-                        <h3 className="section-head-sub mb-0">List of All developers</h3>
+                        <h3 className="section-head-sub mb-0">{t("listOfAllDevelopers")}</h3>
                         <Nav variant="pills" className="document-view-pill">
                             <Nav.Item className="document-view-item">
                                 <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>

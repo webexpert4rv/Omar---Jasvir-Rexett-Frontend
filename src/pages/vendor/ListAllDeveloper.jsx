@@ -15,6 +15,7 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { SeeMore } from "../../components/atomic/SeeMore";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
+import { useTranslation } from "react-i18next";
 
 
 const AllDeveloperList = () => {
@@ -24,6 +25,7 @@ const AllDeveloperList = () => {
     const [selectedFilter, setSelectedFilter] = useState({});
     const [count, setCount] = useState(1);
     const navigate = useNavigate()
+    const{ t } = useTranslation()
 
 
 
@@ -82,7 +84,7 @@ const AllDeveloperList = () => {
             {screenLoader ? <ScreenLoader /> : <>
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
-                        <h3 className="section-head-sub mb-0">List of All developers</h3>
+                        <h3 className="section-head-sub mb-0">{t("listOfAllDevelopers")}</h3>
                         <Nav variant="pills" className="document-view-pill">
                                <Nav.Item className="document-view-item">
                                 <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>

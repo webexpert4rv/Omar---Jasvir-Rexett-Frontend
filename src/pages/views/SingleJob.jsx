@@ -14,6 +14,8 @@ import { changeJobStatus, getAllJobPostedList, getJobCategoryList, publishedPost
 import JobCard from "../../components/common/SingleJob/JobCard";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
 import { jobPostConfirmMessage } from "../../helper/utlis";
+import { useTranslation } from "react-i18next";
+
 const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
     const [currentTabsStatus,setCurrnetTabsStatus]=useState(null)
@@ -27,7 +29,7 @@ const SingleJob = () => {
     const location=useLocation();
     let id=location.pathname.split("/")[2]
     const {allJobPostedList,jobCategoryList,jobPostedData,approvedLoader,smallLoader}=useSelector(state=>state.clientData)
-   
+   const { t } = useTranslation()
     useEffect(()=>{
     if(id){
         dispatch(singleJobPostData(id,()=>{}))
@@ -118,7 +120,7 @@ const SingleJob = () => {
                                 <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
                                     <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                    { singleJobDescription?.status!=="ended"?<>
-                                   <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-xxl-5 px-4 closed-job-btn">End Job</Button>
+                                   <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-xxl-5 px-4 closed-job-btn">{t("endJob")}</Button>
                                     <Button variant="transparent" className="px-xxl-5 px-4 py-2 outline-main-btn" onClick={()=>{
                                         let data={
                                             status:singleJobDescription?.status=="published"?"Unpublished":"published"
@@ -134,21 +136,21 @@ const SingleJob = () => {
                         <div className="single-job-card">
                             <Row>
                                 <Col md="4">
-                                    <h3 className="req-heading">Experience Requirements</h3>
+                                    <h3 className="req-heading">{t("experienceRequirements")}</h3>
                                     <p className="req-text">{singleJobDescription?.experience}</p>
                                 </Col>
                                 <Col md="4">
-                                    <h3 className="req-heading">Contract</h3>
+                                    <h3 className="req-heading">{t("contract")}</h3>
                                     <p className="req-text">{singleJobDescription?.contract_type}</p>
                                 </Col>
                                 <Col md="4">
-                                    <h3 className="req-heading">Location</h3>
+                                    <h3 className="req-heading">{t("location")}</h3>
                                     <p className="req-text">{singleJobDescription?.job_type}</p>
                                 </Col>
                             </Row>
                         </div>
                         <div className="single-job-card">
-                            <h3 className="req-heading">Skills</h3>
+                            <h3 className="req-heading">{t("skills")}</h3>
                             <ul className="skills-listing mb-0">
                             {
                                                 convertToArray(singleJobDescription?.skills)?.map((item,index)=>{

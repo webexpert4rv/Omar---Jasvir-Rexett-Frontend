@@ -8,6 +8,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/slices/authenticationDataSlice";
 import sidebarLogo from '../../../assets/img/rexett-logo-white.png'
+import { useTranslation } from "react-i18next";
 
 
 const RexetLogin = ({userType}) => {
@@ -17,7 +18,7 @@ const RexetLogin = ({userType}) => {
     const [isRemember,setRemember]=useState(false)
     const [email,setEmail]=useState("")
     const [isPassword,setPassword]=useState(false)
-    const [loading , setLoading] = useState(false)
+    const { t } = useTranslation()
     function generateBrowserId() {
         const userAgent = navigator.userAgent;
         const screenWidth = window.screen.width;
@@ -47,7 +48,6 @@ const RexetLogin = ({userType}) => {
       },[])
      
       const onSubmit=(values)=>{
-        setLoading(true)
         localStorage.setItem("email",values.email)
         let allRoles={
             client:"client",
@@ -65,7 +65,6 @@ const RexetLogin = ({userType}) => {
         dispatch(loginUser(data,()=>{
             navigate(`/otp`)
         }))
-        setLoading(false)
       }
     
 
@@ -85,10 +84,10 @@ const RexetLogin = ({userType}) => {
 
      const currentRoles=(userType)=>{
         let allRoles={
-            client:"Client Login",
-            developer:"Developer Login",
-            admin:"Admin Login",
-            vendor:"Vendor Login"
+            client:t("clientLogin"),
+            developer:t("developerLogin"),
+            admin:t("adminLogin"),
+            vendor:t("vendorLogin")
         }
 
         return allRoles[userType]
@@ -115,7 +114,7 @@ const RexetLogin = ({userType}) => {
                                     </div>
                                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
                                         <Form.Group className="mb-3">
-                                            <Form.Label className="label-form">Email</Form.Label>
+                                            <Form.Label className="label-form">{t("email")}</Form.Label>
                                             <Form.Control type="email" className="auth-field"
                                             name="email"
                                             {...register("email", {
@@ -135,7 +134,7 @@ const RexetLogin = ({userType}) => {
                                                 </p>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
-                                            <Form.Label className="label-form">Password</Form.Label>
+                                            <Form.Label className="label-form">{t("password")}</Form.Label>
                                             <div className="position-relative">
                                                 <Form.Control type={isPassword?"text":"password"} className="auth-field pe-5" 
                                                 name="password"
@@ -157,20 +156,20 @@ const RexetLogin = ({userType}) => {
                                             <Form.Check
                                                 type="checkbox"
                                                 id="remember_me"
-                                                label="Remember Me"
+                                                label={t("rememberMe")}
                                                 onChange={handleRemember}
                                                 checked={isRemember}
                                                 className="remeber-check"
                                             />
-                                            <Link to={"/forgot-password"} className="link-text" >Forgot Password</Link>
+                                            <Link to={"/forgot-password"} className="link-text" >{t("forgotPassword")}</Link>
                                         </div>
                                         <RexettButton 
                                         type="submit" 
-                                        text="Login"
+                                        text={t("login")}
                                         className="auth-btn d-block text-decoration-none"
                                         onClick={handleSubmit}
                                         variant="transparent"
-                                        disabled={loading ? true : false}
+                                        disabled={smallLoader}
                                         isLoading={smallLoader}
                                         />
                                     </form>

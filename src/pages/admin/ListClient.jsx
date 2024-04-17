@@ -13,6 +13,7 @@ import { adminListClients, getSingleClient } from "../../redux/slices/adminDataS
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { SeeMore } from "../../components/atomic/SeeMore";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -22,6 +23,7 @@ const ListClient = () => {
     const navigate = useNavigate()
     const { listOfClients, assignedDeveloper, screenLoader } = useSelector(state => state.adminData)
     const [count, setCount] = useState(1)
+    const{ t } =useTranslation()
 
 
     useEffect(() => {
@@ -41,7 +43,7 @@ const ListClient = () => {
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">Overview</h2>
+                <h2 className="section-head mb-4">{t("overview")}</h2>
                 <div className="overview-card-wrapper mb-5">
                     {/* <div className="overview-card">
                     <div>
@@ -52,15 +54,15 @@ const ListClient = () => {
                 </div> */}
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Income</h4>
-                            <h3 className="overview-card-heading mb-0">Earned</h3>
+                            <h4 className="overview-card-subhead">{t("income")}</h4>
+                            <h3 className="overview-card-heading mb-0">{t("earned")}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
                 </div>
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
-                        <h2 className="section-head-sub mb-0">List of Clients</h2>
+                        <h2 className="section-head-sub mb-0">{t("listOfClients")}</h2>
                         {/* <h2 className="section-head-sub mb-0">List of clients who hire developers from Rexett</h2> */}
                         <Nav variant="pills" className="document-view-pill">
                             <Nav.Item className="document-view-item">
@@ -77,9 +79,9 @@ const ListClient = () => {
                                 <table className="table developer-table">
                                     <thead>
                                         <tr>
-                                            <th><span>Client Name</span></th>
-                                            <th><span>Designation</span></th>
-                                            <th><span>Connects</span></th>
+                                            <th><span>{t("ClientName")}</span></th>
+                                            <th><span>{t("designation")}</span></th>
+                                            <th><span>{t("connects")}</span></th>
                                         </tr>
                                     </thead>
                                     {listOfClients?.map((val, index) => {
@@ -95,7 +97,7 @@ const ListClient = () => {
                                                         </td>
                                                         <td>
                                                             <span>
-                                                                <p className="designation-user color-121212 mb-0">Full stack developer</p>
+                                                                <p className="designation-user color-121212 mb-0">{t("fullStackDeveloper")}</p>
                                                             </span>
                                                         </td>
                                                         <td>
@@ -174,13 +176,14 @@ const ListClient = () => {
 
                     </Tab.Content>
                 </Tab.Container>
-                {listOfClients.length >= 5 ? (
-                    <div className="text-center mt-3">
-                        <SeeMore setCount={setCount} />
-                    </div>
-                ) : (
-                    ""
-                )}
+                {
+              listOfClients?.total_clients > 5 &&  listOfClients?.clients?.length !==listOfClients.total_clients  ? (
+                <div className="text-center mt-3">
+                  <SeeMore setCount={setCount} />
+                </div>
+              ) : ("")}
+
+              
             </div>}
         </>
     )

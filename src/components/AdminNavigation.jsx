@@ -9,7 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getNotification } from "../redux/slices/adminDataSlice";
 import moment from "moment";
 import Notification from "./atomic/Notfication";
+import { useTranslation } from "react-i18next";
+
 const AdminNavigation = ({ handleSidebar }) => {
+    const{t} = useTranslation()
 
     return (
         <>
@@ -20,7 +23,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                     </div>
                     <div className="d-flex align-items-center gap-3">
                         <Notification route="notification-admin"  job="admin-single-job" doc="admin-documents" />
-                        <Link to={'/developer-list'} className="text-decoration-none main-btn">List of all developers</Link>
+                        <Link to={'/developer-list'} className="text-decoration-none main-btn">{t("listOfAllDevelopers")}</Link>
                     </div>
                 </div>
             </header>

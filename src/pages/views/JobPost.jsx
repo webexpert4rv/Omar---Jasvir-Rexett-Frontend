@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clientJobPost, getJobCategoryList, getSkillList, jobCategoryList, skillList } from "../../redux/slices/clientDataSlice";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const options = [
     { value: 'html', label: 'HTML' },
@@ -24,6 +25,7 @@ const JobPost = () => {
     const { skillList, jobCategoryList, smallLoader } = useSelector(state => state.clientData)
     const [showTextInput, setShowTextInput] = useState(false);
     const [otherCategory, setOtherCategory] = useState('');
+    const {t} = useTranslation()
 
     const dispatch = useDispatch()
     const {
@@ -74,12 +76,12 @@ const JobPost = () => {
             <section className="job-post-section card-box">
             <h2 className="mb-4 section-head"><Link to ="/job-posted"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16" className="back-button-icon">
                     <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5" />
-                </svg></Link> Job Post</h2>
+                </svg></Link> {t("jobPost")}</h2>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Row>
                         <Col md="6" className="mb-4">
                             <Form.Group>
-                                <Form.Label>Job Name</Form.Label>
+                                <Form.Label>{t("jobName")}</Form.Label>
                                 <Form.Control type="text" className="common-field" placeholder="Enter Job Name"
                                     {...register("title", {
                                         required: {
@@ -97,7 +99,7 @@ const JobPost = () => {
 
                         <Col md="6" className="mb-4">
                             <Form.Group>
-                                <Form.Label>Job Category</Form.Label>
+                                <Form.Label>{t("jobCategory")}</Form.Label>
                                 {showTextInput ?
                                     <div className="field">
                                         <div className="control ">
@@ -126,7 +128,7 @@ const JobPost = () => {
                                     //     },
                                     // })}
                                     >
-                                        <option value="" disabled selected>Select Job Category</option>
+                                        <option value="" disabled selected>{t("selectJobCategory")}</option>
 
                                         {
                                             jobCategoryList?.map((item) => {
@@ -137,14 +139,14 @@ const JobPost = () => {
                                                 )
                                             })
                                         }
-                                        <option value="5" >Others</option>
+                                        <option value="5" >{t("Others")}</option>
                                     </Form.Select>}
                             </Form.Group>
                         </Col>
 
                         <Col md="6" className="mb-4">
                             <Form.Group>
-                                <Form.Label>Experience Required</Form.Label>
+                                <Form.Label>{t("experienceRequired")}</Form.Label>
                                 <Form.Select
                                     className="common-field"
                                     {...register("experience", {
@@ -154,13 +156,13 @@ const JobPost = () => {
                                         },
                                     })}
                                 >
-                                    <option value="" disabled selected>Select Experience Required</option>
-                                    <option value="less_one">Less than 1 year</option>
-                                    <option value="1-2 Years">1 - 2 years</option>
-                                    <option value="2-3 Years">2 - 3 years</option>
-                                    <option value="3-4 Years">3 - 4 years</option>
-                                    <option value="4-5 Years">4 - 5 years</option>
-                                    <option value="5 more">5+ years</option>
+                                    <option value="" disabled selected>{t("selectExperienceRequired")}</option>
+                                    <option value="less_one">{t("lessThan1Year")}</option>
+                                    <option value="1-2 Years">1 - 2 {t("years")}</option>
+                                    <option value="2-3 Years">2 - 3 {t("years")}</option>
+                                    <option value="3-4 Years">3 - 4 {t("years")}</option>
+                                    <option value="4-5 Years">4 - 5 {t("years")}</option>
+                                    <option value="5 more">5+ {t("years")}</option>
                                 </Form.Select>
                             </Form.Group>
                             <p className="error-message">
@@ -169,7 +171,7 @@ const JobPost = () => {
                         </Col>
                         <Col md="6" className="mb-4">
                             <Form.Group>
-                                <Form.Label className="d-block">Location</Form.Label>
+                                <Form.Label className="d-block">{t("location")}</Form.Label>
                                 <div>
                                     <Form.Check type="radio" value="Remote" label="Remote" id="remote_loc" inline name="location_radio"
                                         {...register("job_type", {
@@ -203,7 +205,7 @@ const JobPost = () => {
                         </Col>
                         <Col md="6" className="mb-4">
                             <Form.Group>
-                                <Form.Label>Contract</Form.Label>
+                                <Form.Label>{t("contract")}</Form.Label>
                                 <Form.Select
                                     className="common-field"
                                     {...register("contract_type", {
@@ -213,13 +215,13 @@ const JobPost = () => {
                                         },
                                     })}
                                 >
-                                    <option value="" selected disabled>Select Contract</option>
-                                    <option value="Hourly">Hourly</option>
-                                    <option value="Project Base">Project Base</option>
-                                    <option value="Six month contract">6 month contract</option>
-                                    <option value="one Year Contract">1 year contract</option>
-                                    <option value="one Year Contract">1 year and above</option>
-                                    <option value="permanent">Permanent</option>
+                                    <option value="" selected disabled>{t("selectContract")}</option>
+                                    <option value="Hourly">{t("hourly")}</option>
+                                    <option value="Project Base">{t("projectBase")}</option>
+                                    <option value="Six month contract">6 {t("monthContract")}</option>
+                                    <option value="one Year Contract">1 {t("yearContract")}</option>
+                                    <option value="one Year Contract">1 {t("yearAndAbove")}</option>
+                                    <option value="permanent">{t("permanent")}</option>
                                 </Form.Select>
                             </Form.Group>
                             <p className="error-message ">
@@ -249,7 +251,7 @@ const JobPost = () => {
                         </Col>
                         <Col md="12" className="mb-4">
                             <Form.Group>
-                                <Form.Label>Job Description</Form.Label>
+                                <Form.Label>{t("jobDescription")}</Form.Label>
                                 <Form.Control as="textarea" className="common-field" rows="5" placeholder="Enter Job Description"
                                     {...register("description", {
                                         required: {
