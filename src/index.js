@@ -5,11 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux'
 import store from './redux/slices/store.js';
+import { I18nextProvider } from 'react-i18next';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
      <Provider store={store}>
+     <I18nextProvider>
      <App />
+     </I18nextProvider>
      </Provider>
 );
 
