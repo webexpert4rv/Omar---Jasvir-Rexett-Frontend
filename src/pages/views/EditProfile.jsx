@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getClientProfile, updateClientProfile } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { useTranslation } from "react-i18next";
 
 const EditProfile = () => {
     const {
@@ -15,6 +16,8 @@ const EditProfile = () => {
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const [isPassword,setPassword]=useState({
         firstPass:false,
         secondPass:false
@@ -61,14 +64,14 @@ const EditProfile = () => {
     return (
         <>
             <section className="card-box">
-                <h2 className="section-head mb-4">Update your Profile</h2>
+                <h2 className="section-head mb-4">{t("updateYourProfile")}</h2>
                 <div>
                   {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-4">
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Client Name</Form.Label>
+                                        <Form.Label className="common-label">{t("clientName")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {
@@ -82,7 +85,7 @@ const EditProfile = () => {
                                         </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Email</Form.Label>
+                                        <Form.Label className="common-label">{t("email")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="email"
                                             {...register("email", {
@@ -100,7 +103,7 @@ const EditProfile = () => {
                                             {errors.email?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Phone</Form.Label>
+                                        <Form.Label className="common-label">{t("phone")}</Form.Label>
                                         <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
@@ -118,7 +121,7 @@ const EditProfile = () => {
                                             {errors.phone_number?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Previous Password</Form.Label>
+                                        <Form.Label className="common-label">{t("previousPassword")}</Form.Label>
                                         <div className="position-relative">
                                             <Form.Control type={isPassword.firstPass?"text":"password"} className="common-field"
                                                 name="previous_password"
@@ -132,7 +135,7 @@ const EditProfile = () => {
                                             {errors.previous_password?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">New Password</Form.Label>
+                                        <Form.Label className="common-label">{t("newPassword")}</Form.Label>
                                         <div className="position-relative">
                                             <Form.Control  type={isPassword.secondPass?"text":"password"}  className="common-field"
                                                 name="password"
@@ -150,7 +153,7 @@ const EditProfile = () => {
                             <Col md="6">
                                 <div>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Address</Form.Label>
+                                        <Form.Label className="common-label">{t("address")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address"
                                             {...register("address", {
@@ -164,7 +167,7 @@ const EditProfile = () => {
                                             {errors.address?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Address 2</Form.Label>
+                                        <Form.Label className="common-label">{t("address")} 2</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address_2"
                                             {...register("address_2", {
@@ -178,7 +181,7 @@ const EditProfile = () => {
                                             {errors.address_2?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">City</Form.Label>
+                                        <Form.Label className="common-label">{t("city")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="city"
                                             {...register("city", {
@@ -196,7 +199,7 @@ const EditProfile = () => {
                                             {errors.city?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Postcode</Form.Label>
+                                        <Form.Label className="common-label">{t("postCode")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="passcode"
                                             {...register("passcode", {
@@ -215,7 +218,7 @@ const EditProfile = () => {
                                             {errors.passcode?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Country</Form.Label>
+                                        <Form.Label className="common-label">{t("country")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="country"
                                             {...register("country", {
@@ -238,7 +241,7 @@ const EditProfile = () => {
                         <div className="text-center">
                             <RexettButton
                                 type="submit"
-                                text="Update Profile"
+                                text={t("updateProfile")}
                                 className="main-btn px-5"
                                 variant="transparent"
                                 isLoading={smallLoader}

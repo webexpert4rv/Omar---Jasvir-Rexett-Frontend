@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux"
 import { Bar } from 'react-chartjs-2';
 import { getRevenue } from "../../redux/slices/vendorDataSlice";
 import {useSelector} from 'react-redux'
+import { useTranslation } from "react-i18next";
 
 
 const Revenue = () => {
@@ -14,6 +15,7 @@ const Revenue = () => {
     const {revenueData}=useSelector(state=>state.vendorData)
     const [yearOptionsValue, setYearOptionsValue] = useState([]);
     const thisYear = new Date().getFullYear();
+    const { t } = useTranslation()
 
     useEffect(() => {
         const optionsValue = [];
@@ -70,15 +72,15 @@ const Revenue = () => {
                 <div className="d-flex gap-3">
                     <div className="d-flex gap-3">
                         <div>
-                            <Form.Label className="common-label">Filter By Month</Form.Label>
+                            <Form.Label className="common-label">{t("filterByMonth")}</Form.Label>
                             <Form.Control type="month" className="filter-field shadow-none" onChange={(e)=>handleFilter(e.target.value.split('-')[1],"month")}></Form.Control>
                         </div>
                     </div>
                     <div className="d-flex gap-3">
                         <div>
-                            <Form.Label className="common-label">Filter By Year</Form.Label>
+                            <Form.Label className="common-label">{t("filterByYear")}</Form.Label>
                           <select className="filter-field form-select shadow-none form-control" onChange={(e)=>handleFilter(e.target.value,"year")}>
-                          <option disabled selected >Select year</option>
+                          <option disabled selected >{t("selectYear")}</option>
                             {
                                 yearOptionsValue.map((item)=>{
                                     return (

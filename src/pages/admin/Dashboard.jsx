@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound"
+import { useTranslation } from "react-i18next";
 
 
 
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
     const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
     const { developerDetails } = useSelector(state => state.adminData)
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const userName = localStorage.getItem("userName")
   
@@ -37,7 +39,7 @@ const AdminDashboard = () => {
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">Overview    {userName}</h2>
+                <h2 className="section-head mb-4">{t("overview")}    {userName}</h2>
                 <div className="overview-card-wrapper mb-5">
                     {/* <div className="overview-card">
                     <div>
@@ -48,28 +50,28 @@ const AdminDashboard = () => {
                 </div> */}
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Income</h4>
-                            <h3 className="overview-card-heading mb-0">Earned</h3>
+                            <h4 className="overview-card-subhead">{t("income")}</h4>
+                            <h3 className="overview-card-heading mb-0">{t("earned")}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Client Joined</h4>
+                            <h4 className="overview-card-subhead">{t("clientJoined")}</h4>
                             <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfClientsJoined}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Vendor Joined</h4>
+                            <h4 className="overview-card-subhead">{t("vendorJoined")}</h4>
                             <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfVendorsJoined}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Total Jobs Posted</h4>
+                            <h4 className="overview-card-subhead">{t("totalJobsPosted")}</h4>
                             <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.totalJobsPosted}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
@@ -78,7 +80,7 @@ const AdminDashboard = () => {
                 <Row className="mb-5">
                     <Col md={12}>
                         <div className="d-flex justify-content-between mb-4 ">
-                            <h2 className="section-head-sub">List of clients</h2>
+                            <h2 className="section-head-sub">{t("listOfClients")}</h2>
                         </div>
                         <div className="developers-list">
                             {adminDashboard?.data?.clients.length>0? adminDashboard?.data?.clients.map((item, index) => {
@@ -99,7 +101,7 @@ const AdminDashboard = () => {
                         </div>
                     </Col>
                 </Row>
-                <h2 className="section-head-sub mb-4">List of assigned developers</h2>
+                <h2 className="section-head-sub mb-4">{t("listOfAssignedDevelopers")}</h2>
                 <div className="developers-list">
 
                     {adminDashboard?.data?.assignedDevelopers.length>0? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
@@ -132,7 +134,7 @@ const AdminDashboard = () => {
                     :<NoDataFound/>}
                 </div>
                 {adminDashboard?.data?.assignedDevelopers.length>0?<div className="text-center mt-3">
-                    <Link to={"/developer-list"} className="link-text-dark">See All</Link>
+                    <Link to={"/developer-list"} className="link-text-dark">{t("seeAll")}</Link>
                 </div>:""}
             </div>}
         </>

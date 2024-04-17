@@ -10,12 +10,13 @@ import { getJobCategoryList } from "../../redux/slices/clientDataSlice";
 import JobTabs from "../../components/atomic/JobTabs";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { useTranslation } from "react-i18next";
 
 
 
 const AdminJobListing = () => {
     const [page, setPage] = useState(1)
-
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const { jobListing, screenLoader } = useSelector(state => state.adminData)
     const { jobCategoryList } = useSelector(state => state.clientData)
@@ -47,22 +48,22 @@ const AdminJobListing = () => {
                     className="mb-3 notification-tabs gap-md-0 gap-3"
                     onSelect={handleSelect}
                 >
-                    <Tab eventKey="all" title="All">
+                    <Tab eventKey="all" title={t("all")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} screenLoader={screenLoader} />
                     </Tab>
-                    <Tab eventKey="new" title="New Job Posts">
+                    <Tab eventKey="new" title={t("newJobPosts")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
-                    <Tab eventKey="in-progress" title="In Progress">
+                    <Tab eventKey="in-progress" title={t("inProgress")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
-                    <Tab eventKey="ended" title="End Jobs">
+                    <Tab eventKey="ended" title={t("endJobs")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
                 </Tabs>
             </section>
             {!screenLoader && jobListing?.totalCount > 5 ? <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
-                <p className="showing-result">Showing {(jobListing?.data?.length)} results</p>
+                <p className="showing-result">{t("showing")} {(jobListing?.data?.length)} {t("results")}</p>
                 <RexettPagination number={jobListing?.totalPages} setPage={setPage} page={page} />
             </div> : ""}
         </>

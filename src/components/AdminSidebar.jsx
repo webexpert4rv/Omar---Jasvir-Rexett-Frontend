@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useTransition } from "react";
 import sidebarLogo from '../assets/img/rexett-logo-white.png'
 import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
@@ -13,8 +13,10 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { FaListUl } from "react-icons/fa6";
 import { PiUsersFourFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
+import { useTranslation } from "react-i18next";
 
 const AdminSidebar = ({ sideBarActive }) => {
+    const { t } = useTranslation()
     const logout=()=>{
         localStorage.clear()
          window.location.href="/admin-login"
@@ -27,31 +29,31 @@ const AdminSidebar = ({ sideBarActive }) => {
                         <div className="sidebar-logo mt-3 mb-4">
                             <img src={sidebarLogo} alt="Sidebar Logo" />
                         </div>
-                        <NavLink to={"/admin-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
+                        <NavLink to={"/admin-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
                             <li className="sidebar-item">
-                                <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> List of clients</NavLink>
+                                <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> {t("listOfClients")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">Applications </span></NavLink>
+                                <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">{t("applications")} </span></NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/engagements"} className="side-link" activeClassName="active"><PiUsersFourFill /> Engagements</NavLink>
+                                <NavLink to={"/engagements"} className="side-link" activeClassName="active"><PiUsersFourFill /> {t("engagements")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> Job Listing</NavLink>
+                                <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> {t("jobListing")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/edit-admin-profile"} className="side-link" activeClassName="active"><IoIosSettings /> Edit Profile</NavLink>
+                                <NavLink to={"/edit-admin-profile"} className="side-link" activeClassName="active"><IoIosSettings /> {t("editProfile")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/admin-documents"} className="side-link" activeClassName="active"><IoDocuments /> Documents/Images</NavLink>
+                                <NavLink to={"/admin-documents"} className="side-link" activeClassName="active"><IoDocuments /> {t("documents")}/{t("images")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/admin-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
+                                <NavLink to={'/admin-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> Revenue</NavLink>
+                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
                             </li>
                             {/* <li className="sidebar-item">
                                 <NavLink to={'/admin-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
@@ -60,10 +62,10 @@ const AdminSidebar = ({ sideBarActive }) => {
                     </div>
                     <div className="w-100 px-3 mt-xxl-3">
                         <div>
-                        <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
+                        <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                         <div>
-                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>
+                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
                         </div>
                     </div>
                 </div>

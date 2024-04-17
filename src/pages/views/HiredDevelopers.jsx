@@ -13,12 +13,14 @@ import { FaListUl } from "react-icons/fa6";
 import { Nav, Tab } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import { useTranslation } from "react-i18next";
 
 
 const HiredDevelopers = () => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const navigate = useNavigate()
+  const { t } = useTranslation();
   const { assignedDeveloperList, screenLoader } = useSelector(
     (state) => state.clientData
   );
@@ -43,7 +45,7 @@ const HiredDevelopers = () => {
     <>
       <Tab.Container className="w-100" defaultActiveKey="list-view">
         <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom-grey">
-          <h3 className="section-head-sub mb-0">List of assigned developers</h3>
+          <h3 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h3>
           <Nav variant="pills" className="document-view-pill">
             <Nav.Item className="document-view-item">
               <Nav.Link className="document-view-link" eventKey="list-view">
@@ -70,13 +72,13 @@ const HiredDevelopers = () => {
                     <thead>
                       <tr>
                         <th>
-                          <span>Developer Name</span>
+                          <span>{t("developerName")}</span>
                         </th>
                         <th>
-                          <span>Designation</span>
+                          <span>{t("designation")}</span>
                         </th>
                         <th>
-                          <span>Email</span>
+                          <span>{t("email")}</span>
                         </th>
                         {/* <th>
                           <span>Connects</span>
