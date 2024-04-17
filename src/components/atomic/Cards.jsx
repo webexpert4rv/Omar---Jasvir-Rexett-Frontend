@@ -11,6 +11,7 @@ const Cards = ({ item, handleCardClick }) => {
       <div
         className="developer-card"
         onClick={() => handleCardClick(item?.developer?.id)}
+        key={item?.developer_id}
       >
         <div className="user-imgbx">
           <img

@@ -170,7 +170,7 @@ const RexetLogin = ({userType}) => {
                                         className="auth-btn d-block text-decoration-none"
                                         onClick={handleSubmit}
                                         variant="transparent"
-                                        disabled={loading ? true : false}
+                                        disabled={smallLoader}
                                         isLoading={smallLoader}
                                         />
                                     </form>

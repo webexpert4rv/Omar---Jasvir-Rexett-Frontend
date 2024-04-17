@@ -18,6 +18,7 @@ const initialClientData = {
     jobPostedData: {},
     earnedBack: {},
     developerDetails:{},
+    timeReportingPage:{}
 }
 
 export const clientDataSlice = createSlice({
@@ -57,7 +58,12 @@ export const clientDataSlice = createSlice({
         },
 
         setTimeReporting: (state, action) => {
-            state.timeReportingData = action.payload
+            let data={
+                totalPages:action.payload.totalPages,
+                totalRecords:action.payload.totalRecords
+            }
+            state.timeReportingPage=data
+            state.timeReportingData = action.payload.data
             state.smallLoader = false;
             state.screenLoader = false;
 
@@ -69,7 +75,8 @@ export const clientDataSlice = createSlice({
             state.screenLoader = false;
         },
         setJobCategory: (state, action) => {
-            state.jobCategoryList = action.payload
+            let newData= action.payload.map((item)=>{return { label:item.title , value:item.id}})
+            state.jobCategoryList = newData
         },
         setSkillList: (state, action) => {
             state.skillList = action.payload
@@ -167,7 +174,7 @@ export function timeReporting(payload, role, callback) {
                 result = await clientInstance.get(generateApiUrl(payload, `developer/time-reports`))
             }
             if (result.status === 200) {
-                dispatch(setTimeReporting(result.data.data))
+                dispatch(setTimeReporting(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

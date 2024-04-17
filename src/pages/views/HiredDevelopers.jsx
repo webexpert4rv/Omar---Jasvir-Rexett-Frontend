@@ -87,7 +87,7 @@ const HiredDevelopers = () => {
                       {assignedDeveloperList?.assigned_developers?.length > 0 ? assignedDeveloperList?.assigned_developers?.map((item, index) => {
                         return (
                           <>
-                            <tr onClick={() => handleRowClick(item?.developer_id)}>
+                            <tr onClick={() => handleRowClick(item?.developer_id)} key={item?.developer_id}>
                               <td>
                                 <span className="d-flex align-items-center gap-3">
                                   <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg} />

@@ -4,6 +4,7 @@ import RexettButton from '../../atomic/RexettButton';
 import ScreenLoader from '../../atomic/ScreenLoader';
 import NoDataFound from '../../atomic/NoDataFound';
 import { approvedClient } from '../../../redux/slices/developerDataSlice';
+import userImage from "../../../assets/img/user-img.jpg"
 import moment from 'moment';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
@@ -60,7 +61,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                         <>
                                             <tr>
                                                 <td className="time-table-data">{item?.contractDetails?.user_details?.name}</td>
-                                                <td className="time-table-data"><img src={item?.contractDetails?.user_details?.profile_picture} className="developer-img" alt="" /></td>
+                                                <td className="time-table-data"><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage } className="developer-img" alt="" /></td>
                                                 {
                                                     item?.timeReports?.map((reprt) => {
                                                         if (reprt.report_date) {

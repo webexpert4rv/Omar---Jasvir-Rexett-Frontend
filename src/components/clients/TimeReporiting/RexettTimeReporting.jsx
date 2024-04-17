@@ -7,6 +7,7 @@ import RexettTable from "../../../components/clients/TimeReporiting/RexettTable"
 import { weeklyTimeReports } from "../../../components/clients/TimeReporiting/constant";
 import RexettButton from "../../../components/atomic/RexettButton";
 import ScreenLoader from "../../atomic/ScreenLoader";
+import RexettPagination from "../../atomic/RexettPagination";
 
 
 
@@ -17,14 +18,25 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const [selectedWeek, setSelectedWeek] = useState("")
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedMonth, setSelectedMonth] = useState("")
-    const { screenLoader } = useSelector(state => state.clientData)
+    const [page, setPage] = useState(1)
+    const { screenLoader , timeReportingPage } = useSelector(state => state.clientData)
+
+    useEffect(()=>{
+        let filterData = {
+            ...selectedFilter,
+            filter: selectedPeriod,
+            page:page
+        };
+        dispatch(timeReporting(filterData, role));
+    },[page])
 
     const handlePeriodChange = (e) => {
         const selectedPeriodValue = e.target.value;
         setSelectedPeriod(selectedPeriodValue);
         let filterData = {
             ...selectedFilter,
-            filter: selectedPeriodValue
+            filter: selectedPeriodValue,
+            page:page
         };
 
         delete filterData.week;
@@ -68,7 +80,8 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         e.preventDefault()
         let filterData = {
             ...selectedFilter,
-            filter: selectedPeriod
+            filter: selectedPeriod,
+            page:page
         }
         if (selectedPeriod === "yearly") {
             filterData.year = selectedFilter.year;
@@ -195,6 +208,11 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                     </div>
 
                     <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
+
+                    { <div className="d-flex justify-content-between align-items-center mb-4">
+                   <p className="showing-result">Showing {(timeReportingData?.length)} results</p> 
+                <RexettPagination number={timeReportingPage?.totalPages} setPage={setPage} page={page}/>
+            </div>}
                 </section>}
 
         </>
