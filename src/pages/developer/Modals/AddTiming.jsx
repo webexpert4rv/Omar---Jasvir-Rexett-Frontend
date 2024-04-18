@@ -34,7 +34,6 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   const { allContracts, addTimeReports, smallLoader } = useSelector(
     (state) => state.developerData
   );
-console.log(allContracts,"allContracts")
   useEffect(() => {
     dispatch(getAllContracts());
   }, []);
@@ -146,7 +145,6 @@ console.log(allContracts,"allContracts")
     getCurrentWeekDates();
   }
 
-  console.log(selectedFilter,"selectedFilter")
   return (
     <Modal
       show={show}

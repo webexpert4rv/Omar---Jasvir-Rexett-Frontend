@@ -11,6 +11,7 @@ const Cards = ({ item, handleCardClick }) => {
       <div
         className="developer-card"
         onClick={() => handleCardClick(item?.developer?.id)}
+        key={item?.developer_id}
       >
         <div className="user-imgbx">
           <img
@@ -40,11 +41,11 @@ const Cards = ({ item, handleCardClick }) => {
                 <FaLinkedin />
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to={item?.developer?.developer_detail?.email}>
                 <MdEmail />
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

@@ -10,7 +10,6 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   adminApproveReject,
   allApplicationsList,
@@ -23,28 +22,34 @@ import { IoSearch } from "react-icons/io5";
 import { RxChevronRight } from "react-icons/rx";
 import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
-import { set } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 const Applications = () => {
   const dispatch = useDispatch();
   const { allApplications, approvedLoader, screenLoader } = useSelector(
     (state) => state.adminData
   );
+  const [search, setSearch] = useState('')
+  const [timerValue, setTimerValue] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
-  const [arrowactive, setArrowActive] = useState(false);
+  const [arrowactive, setArrowActive] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
   const [page, setPage] = useState(1);
+  const { t }= useTranslation()
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
-    setArrowActive(!arrowactive);
+    setArrowActive(index==arrowactive?null:index);
   };
 
   useEffect(() => {
-    dispatch(allApplicationsList(page));
+    let data={
+      page:page
+    }
+    dispatch(allApplicationsList(data));
   }, [page]);
 
   useEffect(() => {
@@ -68,6 +73,11 @@ const Applications = () => {
       status: status,
       "active-tab": currentTab,
     };
+   
+    let data={
+      page:page,
+      "active-tab": currentTab,
+    }
 
     if (status === "approved") {
       setSelectedApprovedBtn(index);
@@ -75,7 +85,7 @@ const Applications = () => {
       setSelectedRejectedBtn(index);
     }
     dispatch(adminApproveReject(payload));
-    dispatch(allApplicationsList(page));
+    dispatch(allApplicationsList(data));
   };
   const approvedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -88,15 +98,32 @@ const Applications = () => {
     </Tooltip>
   );
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value)
+    clearTimeout(timerValue);
+    const timer = setTimeout(() => {
+      let data={
+        page:page,
+        "active-tab": currentTab,
+        search:e.target.value
+      }
+      dispatch(allApplicationsList(data));
+    }, 500);
+    
+    setTimerValue(timer);
+
+}
+
   return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
-        <h2 className="section-head border-0 mb-0 pb-0">Applications</h2>
+        <h2 className="section-head border-0 mb-0 pb-0">{t("applications")}</h2>
         <div className="d-flex gap-3">
           <Form.Control
             type="text"
             className="form-field font-14 shadow-none"
-            placeholder="Enter Search Keywords"
+            placeholder={t("enterSearchKeywords")}
+            onChange={handleSearchChange}
           />
           <Button variant="transparent" className="main-btn px-3 search-btn">
             <IoSearch />
@@ -111,7 +138,7 @@ const Applications = () => {
         <Nav variant="pills" className="application-pills">
           <Nav.Item className="application-item">
             <Nav.Link eventKey="clients" className="application-link">
-              Clients{" "}
+              {t("clients")}{" "}
               <span className="new-app">
                 {allApplications?.clients?.length}
               </span>
@@ -119,9 +146,17 @@ const Applications = () => {
           </Nav.Item>
           <Nav.Item className="application-item">
             <Nav.Link eventKey="vendors" className="application-link">
-              Vendors{" "}
+              {t("vendors")}{" "}
               <span className="new-app">
                 {allApplications?.vendors?.length}
+              </span>
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item className="application-item">
+            <Nav.Link eventKey="developers" className="application-link">
+            {t("developers")}{" "}
+              <span className="new-app">
+                {allApplications?.developers?.length}
               </span>
             </Nav.Link>
           </Nav.Item>
@@ -132,13 +167,13 @@ const Applications = () => {
               <table className="table w-100 engagement-table table-ui-custom">
                 <thead>
                   <tr>
-                    <th>Client Name</th>
-                    <th>Email Address</th>
-                    <th>Phone Number</th>
-                    <th>Engagement</th>
-                    <th>Engagement Last</th>
-                    <th>Availability</th>
-                    <th>Action</th>
+                    <th>{t("clientName")}</th>
+                    <th>{t("email")} {t("address")}</th>
+                    <th>{t("phoneNumber")}</th>
+                    <th>{t("engagement")}</th>
+                    <th>{t("engagement")} {t("last")}</th>
+                    <th>{t("availability")}</th>
+                    <th>{t("action")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -156,7 +191,7 @@ const Applications = () => {
                               <td className="white-nowrap">
                                 <span
                                   className={
-                                    arrowactive
+                                    arrowactive==index && currentTab == "clients"  
                                       ? "row-arrow active"
                                       : "row-arrow"
                                   }
@@ -334,7 +369,7 @@ const Applications = () => {
               </table>
             </div>
             {application?.length > 0 ? (
-              <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
                     Showing {allApplications?.items_per_page} results
@@ -359,14 +394,14 @@ const Applications = () => {
               <table className="table w-100 engagement-table table-ui-custom">
                 <thead>
                   <tr>
-                    <th>Client Name</th>
-                    <th>Email Address</th>
-                    <th>Phone Number</th>
-                    <th>Type Of Company</th>
-                    <th>Engagement</th>
-                    <th>Engagement Last</th>
-                    <th>Availability</th>
-                    <th>Action</th>
+                    <th>{t("clientName")}</th>
+                    <th>{t("email")} {t("address")}</th>
+                    <th>{t("phoneNumber")}</th>
+                    <th>{t("typeOfCompany")}</th>
+                    <th>{t("engagements")}</th>
+                    <th>{t("engagements")} {t("last")}</th>
+                    <th>{t("availability")}</th>
+                    <th>{t("action")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -381,7 +416,18 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                              <td className="white-nowrap">{item?.name}</td>
+                              <td className="white-nowrap">
+                                <span
+                                  className={
+                                    arrowactive==index && currentTab == "vendors" 
+                                      ? "row-arrow active"
+                                      : "row-arrow"
+                                  }
+                                >
+                                  <RxChevronRight />
+                                </span>{" "}
+                                {item?.name}
+                              </td>
                               <td>
                                 <span className="application-mail">
                                   {item?.email}
@@ -520,7 +566,205 @@ const Applications = () => {
               </table>
             </div>
             {application?.length > 0 ? (
-              <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
+                {currentTab == "clients" ? (
+                  <p className="showing-result">
+                    Showing {allApplications?.items_per_page} results
+                  </p>
+                ) : (
+                  <p className="showing-result">
+                    Showing {allApplications?.vendors?.length} results
+                  </p>
+                )}
+                <RexettPagination
+                  number={allApplications?.totalVendorPages}
+                  setPage={setPage}
+                  page={page}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+          </Tab.Pane>
+
+          <Tab.Pane eventKey="developers" className="py-4">
+            <div className="table-responsive">
+              <table className="table w-100 engagement-table table-ui-custom">
+                <thead>
+                  <tr>
+                    <th>Developer Name</th>
+                    <th>Email Address</th>
+                    <th>Phone Number</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {screenLoader ? (
+                    <ScreenLoader />
+                  ) : (
+                    <>
+                      {currentTab == "developers" && application?.length > 0 ? (
+                        application?.map((item, index) => (
+                          <React.Fragment key={index}>
+                            <tr
+                              className="application-row"
+                              onClick={() => handleRowClick(index)}
+                            >
+                               <td className="white-nowrap">
+                                <span
+                                  className={
+                                    arrowactive==index && currentTab == "developers"  
+                                      ? "row-arrow active"
+                                      : "row-arrow"
+                                  }
+                                >
+                                  <RxChevronRight />
+                                </span>{" "}
+                                {item?.name}
+                              </td>
+                              <td>
+                                <span className="application-mail">
+                                  {item?.email}
+                                </span>
+                              </td>
+                              <td>{item?.phone_number}</td>
+                              <td>
+                                <div className="d-flex gap-3">
+                                  <RexettButton
+                                    icon={<IoCheckmark />}
+                                    className="arrow-btn primary-arrow"
+                                    variant="transparent"
+                                    onClick={(e) =>
+                                      handleClick(
+                                        e,
+                                        item?.id,
+                                        "approved",
+                                        index
+                                      )
+                                    }
+                                    isLoading={
+                                      selectedApprovedBtn === index
+                                        ? approvedLoader
+                                        : false
+                                    }
+                                  />
+                                  <RexettButton
+                                    icon={<IoCloseOutline />}
+                                    className="arrow-btn"
+                                    variant={"danger"}
+                                    onClick={(e) =>
+                                      handleClick(
+                                        e,
+                                        item?.id,
+                                        "rejected",
+                                        index
+                                      )
+                                    }
+                                    isLoading={
+                                      selectedRejectedBtn === index
+                                        ? approvedLoader
+                                        : false
+                                    }
+                                  />
+                                </div>
+                              </td>
+                            </tr>
+                            {expandedRow === index && (
+                              <tr
+                                className={`collapsible-row ${
+                                  expandedRow === index ? "open" : ""
+                                }`}
+                              >
+                                <td colSpan="8">
+                                  <div>
+                                    <Row>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                           Company Name
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.developer_experiences[0]?.company_name}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Job Title
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.developer_experiences[0]?.job_title}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Skillset Needed
+                                          </h3>
+                                          <ul className="need-skill-list">
+                                            {convertToArray(
+                                              item?.developer_skills?.skills
+                                            )?.map((item, index) => {
+                                              return (
+                                                <>
+                                                  <li key={index}>{item}</li>
+                                                </>
+                                              );
+                                            })}
+                                          </ul>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Marital Status
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.marital_status}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3}>
+                                        <div>
+                                          <h3 className="application-heading">
+                                          Professtional Title
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.developer_detail?.professional_title}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      {/* <Col md={3}>
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Type Of Company
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.company?.type_of_company}
+                                          </p>
+                                        </div>
+                                      </Col> */}
+                                    </Row>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))
+                      ) : (
+                        <td colSpan={8}>
+                          <NoDataFound />
+                        </td>
+                      )}
+                    </>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            {application?.length > 0 ? (
+              <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
                     Showing {allApplications?.items_per_page} results

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, Button, Col, Form, Row, Tabs, Tab, Nav } from "react-bootstrap";
+import { Collapse, Button, Col, Form, Row, Tabs, Tab, Nav,OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FaFolder } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
@@ -27,6 +27,7 @@ import ShareModal from "./ShareModal";
 import { FaFilter } from "react-icons/fa";
 import { getDocumentShare } from "../../../redux/slices/developerDataSlice";
 import { shareDocument } from "../../../redux/slices/developerDataSlice"
+import { useTranslation } from "react-i18next";
 
 const RexettDocuments = ({ currentRole }) => {
     const dispatch = useDispatch();
@@ -45,6 +46,8 @@ const RexettDocuments = ({ currentRole }) => {
     const { folderData, smallLoader, screenLoader } = useSelector(state => state.clientData)
     const { shareDocument } = useSelector(state => state.developerData)
     const [showUploadFileModal, setShowUploadFileModal] = useState(false);
+    const { t } = useTranslation();
+
 
 
 
@@ -228,6 +231,11 @@ const RexettDocuments = ({ currentRole }) => {
     const handleShowFilterMenu = () => {
         setShowFilterMenu(!showFilterMenu);
     }
+    const doctooltip = (
+        <Tooltip id="tooltip">
+          Create folder or Upload files
+        </Tooltip>
+      );
     return (
         <>
             <section>
@@ -241,7 +249,7 @@ const RexettDocuments = ({ currentRole }) => {
                                     <Form.Label className="main-btn px-4 cursor-pointer upload-btn mb-0" onClick={() => setShow(true)}>+ Upload File</Form.Label>
                                 </div> */}
                                 <div>
-                                    <Button variant="transparent" onClick={handleShowFilterMenu} className="main-btn outline-main-btn px-4"><FaFilter /> Filter</Button>
+                                    <Button variant="transparent" onClick={handleShowFilterMenu} className="main-btn outline-main-btn px-4"><FaFilter /> {t("filter")}</Button>
                                 </div>
                             </div>
                         </Col>
@@ -262,29 +270,29 @@ const RexettDocuments = ({ currentRole }) => {
                         <Col md={12}>
                             <div className="d-md-flex gap-3">
                                 <div className={showFilterMenu ? "side-filter active" : "side-filter"}>
-                                    <h3 className="section-head-sub">Filter</h3>
+                                    <h3 className="section-head-sub">{t("filter")}</h3>
                                     <Form className="mb-4">
                                         <div className="filter-section gap-3 align-items-center">
                                             <div className="mb-2">
-                                                <Form.Label className="common-label">Search</Form.Label>
+                                                <Form.Label className="common-label">{t("search")}</Form.Label>
                                                 <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} value={search} className="search-field"></Form.Control>
                                             </div>
                                             <div className="flex-none mb-2">
-                                                <Form.Label className="common-label">Select Category</Form.Label>
+                                                <Form.Label className="common-label">{t("selectCategory")}</Form.Label>
                                                 <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.category} onChange={(e) => handleFilterData(e, "category")}>
-                                                    <option value="All">All</option>
-                                                    <option value="1">Contracts</option>
-                                                    <option value="3">Invoices</option>
+                                                    <option value="All">{t("all")}</option>
+                                                    <option value="1">{t("contracts")}</option>
+                                                    <option value="3">{t("invoices")}</option>
                                                 </Form.Select>
                                             </div>
                                             <div className="flex-none mb-2">
-                                                <Form.Label className="common-label">Select File Type</Form.Label>
+                                                <Form.Label className="common-label">{t("selectFileType")}</Form.Label>
                                                 <Form.Select className="filter-select width-full shadow-none" value={allFilterValue?.file_extension} onChange={(e) => handleFilterData(e, "file_extension")}>
-                                                    <option value="All">All</option>
-                                                    <option value="pdf">PDFs</option>
-                                                    <option value="doc">Documents</option>
-                                                    <option value="img">Images</option>
-                                                    <option value="other">Others</option>
+                                                    <option value="All">{t("all")}</option>
+                                                    <option value="pdf">{t("pdfs")}</option>
+                                                    <option value="doc">{t("documents")}</option>
+                                                    <option value="img">{t("images")}</option>
+                                                    <option value="other">{t("others")}</option>
                                                 </Form.Select>
                                             </div>
                                             {/* <div className="flex-none mb-2">
@@ -298,7 +306,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                 </Form.Select>
                                             </div> */}
                                             <div className="mt-4">
-                                                <Button variant="transparent" className="main-btn px-3 py-2 " onClick={clearAllFilter}>Clear</Button>
+                                                <Button variant="transparent" className="main-btn px-3 py-2 " onClick={clearAllFilter}>{t("clear")}</Button>
                                             </div>
                                         </div>
                                     </Form>
@@ -308,20 +316,22 @@ const RexettDocuments = ({ currentRole }) => {
                                         <div className="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom-grey">
                                             <div className="d-flex align-items-center gap-3">
                                                 <div className="d-flex align-items-center gap-3">
-                                                    <h3 className="section-head-sub mb-0">Documents</h3>
+                                                    <h3 className="section-head-sub mb-0">{t("documents")}</h3>
                                                     <div className="position-relative">
-                                                        <Button
-                                                            onClick={() => setOpen(!open)}
-                                                            className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0"
-                                                            aria-controls="example-collapse-text"
-                                                            aria-expanded={open}
-                                                        >
-                                                            +
-                                                        </Button>
+                                                        <OverlayTrigger placement="bottom" overlay={doctooltip}>
+                                                            <Button
+                                                                onClick={() => setOpen(!open)}
+                                                                className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0"
+                                                                aria-controls="example-collapse-text"
+                                                                aria-expanded={open}
+                                                            >
+                                                                +
+                                                            </Button>
+                                                        </OverlayTrigger>
                                                         <Collapse in={open} className="new-doc-collapse">
                                                             <div>
-                                                                <Form.Label onClick={handleShowUploadFileModal} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-2 w-100">+ Create Folder</Form.Label>
-                                                                <Form.Label onClick={() => setShow(true)} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-0 w-100">+ Upload File</Form.Label>
+                                                                <Form.Label onClick={handleShowUploadFileModal} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-2 w-100">+ {t("createFolder")}</Form.Label>
+                                                                <Form.Label onClick={() => setShow(true)} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-0 w-100">+ {t("uploadFile")}</Form.Label>
                                                             </div>
                                                         </Collapse>
                                                     </div>
@@ -350,7 +360,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 <div className="name-folder">
                                                                                     <span className="name_folder_text">{item?.s3_path}</span>
                                                                                    {item?.user? <div className="shared-doc">
-                                                                                        <p className="shared-text">Shared by {item?.user?.name}</p>
+                                                                                        <p className="shared-text">{t("sharedBy")} {item?.user?.name}</p>
                                                                                     </div>:""}
                                                                                 </div>
                                                                                 <div className="doc-action">

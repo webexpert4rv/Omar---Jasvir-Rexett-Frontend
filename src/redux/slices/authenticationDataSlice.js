@@ -4,7 +4,8 @@ import { toast } from 'react-toastify';
 
 const initialAuthData = {
     screenLoader: false,
-    smallLoader: false
+    smallLoader: false,
+   
 }
 
 export const authenticationDataSlice = createSlice({
@@ -23,13 +24,13 @@ export const authenticationDataSlice = createSlice({
         setFailAuthData: (state, action) => {
             state.smallLoader = false;
         },
-
+        
 
 
     }
 })
 
-export const { setScreenLoader, setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
+export const { setScreenLoader,setLoginUserName , setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
 
 export default authenticationDataSlice.reducer
 
@@ -40,7 +41,6 @@ export function loginUser(payload, callback) {
         try {
             let result = await authInstance.post('auth/login/', { ...payload })
             if (result?.status === 200) {
-
 
                 dispatch(setSuccessAuthData())
                 toast.success(result.data.message, { position: "top-center" })
@@ -55,6 +55,8 @@ export function loginUser(payload, callback) {
                             localStorage.setItem("refreshToken", result.data.refresh_token);
                             localStorage.setItem("role", "client")
                             localStorage.setItem("userId", result.data.data.id)
+                            localStorage.setItem("userName",result?.data?.data?.name)
+
 
                             window.location.href = "/dashboard"
                         }
@@ -64,6 +66,7 @@ export function loginUser(payload, callback) {
                             localStorage.setItem("refreshToken", result.data.refresh_token);
                             localStorage.setItem("role", "developer")
                             localStorage.setItem("userId", result.data.data.id)
+                            localStorage.setItem("userName",result?.data?.data?.name)
                             window.location.href = "/developer-dashboard"
                         }
 
@@ -72,6 +75,7 @@ export function loginUser(payload, callback) {
                             localStorage.setItem("refreshToken", result.data.refresh_token);
                             localStorage.setItem("role", "admin")
                             localStorage.setItem("userId", result.data.data.id)
+                            localStorage.setItem("userName",result?.data?.data?.name)
                             window.location.href = "/admin-dashboard"
                         }
                         if (result.data.data.role === "vendor") {
@@ -79,6 +83,7 @@ export function loginUser(payload, callback) {
                             localStorage.setItem("refreshToken", result.data.refresh_token);
                             localStorage.setItem("role", "vendor")
                             localStorage.setItem("userId", result.data.data.id)
+                            localStorage.setItem("userName",result?.data?.data?.name)
                             window.location.href = "/vendor-dashboard"
                         }
                     }
@@ -106,7 +111,6 @@ export function getVerifyOtp(payload) {
         dispatch(setScreenLoader())
         try {
             let result = await authInstance.post("/auth/verify-otp", { ...payload })
-            console.log(result, "result")
             if (result.status == 200) {
                 if (result.data.data.role === "client") {
                     localStorage.setItem("token", result.data.access_token);

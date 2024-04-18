@@ -7,6 +7,7 @@ import RexettButton from "../../components/atomic/RexettButton";
 import { getClientProfile, updateClientProfile } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getAdminProfile, updateAdminProfile } from "../../redux/slices/adminDataSlice";
+import { useTranslation } from "react-i18next";
 
 const EditAdminProfile = () => {
     const {
@@ -21,7 +22,7 @@ const EditAdminProfile = () => {
         secondPass:false
     })
     const {smallLoader,profileData,screenLoader}=useSelector(state=>state.adminData)
-
+    const { t } = useTranslation()
     useEffect(()=>{
        dispatch(getAdminProfile())
     },[dispatch])
@@ -62,14 +63,14 @@ const EditAdminProfile = () => {
     return (
         <>
             <section className="card-box">
-                <h2 className="section-head mb-4">Update your Profile</h2>
+                <h2 className="section-head mb-4">{t("updateYourProfile")}</h2>
                 <div>
                   {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-4">
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Admin Name</Form.Label>
+                                        <Form.Label className="common-label">{t("adminName")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {
@@ -83,7 +84,7 @@ const EditAdminProfile = () => {
                                         </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Email</Form.Label>
+                                        <Form.Label className="common-label">{t("email")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="email"
                                             {...register("email", {
@@ -101,7 +102,7 @@ const EditAdminProfile = () => {
                                             {errors.email?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Phone</Form.Label>
+                                        <Form.Label className="common-label">{t("phone")}</Form.Label>
                                         <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
@@ -119,7 +120,7 @@ const EditAdminProfile = () => {
                                             {errors.phone_number?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Previous Password</Form.Label>
+                                        <Form.Label className="common-label">{t("previousPassword")}</Form.Label>
                                         <div className="position-relative">
                                             <Form.Control type={isPassword.firstPass?"text":"password"} className="common-field"
                                                 name="previous_password"
@@ -133,7 +134,7 @@ const EditAdminProfile = () => {
                                             {errors.previous_password?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">New Password</Form.Label>
+                                        <Form.Label className="common-label">{t("newPassword")}</Form.Label>
                                         <div className="position-relative">
                                             <Form.Control  type={isPassword.secondPass?"text":"password"}  className="common-field"
                                                 name="password"
@@ -151,7 +152,7 @@ const EditAdminProfile = () => {
                             <Col md="6">
                                 <div>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Address</Form.Label>
+                                        <Form.Label className="common-label">{t("address")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address"
                                             {...register("address", {
@@ -165,7 +166,7 @@ const EditAdminProfile = () => {
                                             {errors.address?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Address 2</Form.Label>
+                                        <Form.Label className="common-label">{t("address")} 2</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address_2"
                                             {...register("address_2", {
@@ -179,7 +180,7 @@ const EditAdminProfile = () => {
                                             {errors.address_2?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">City</Form.Label>
+                                        <Form.Label className="common-label">{t("city")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="city"
                                             {...register("city", {
@@ -197,7 +198,7 @@ const EditAdminProfile = () => {
                                             {errors.city?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Postcode</Form.Label>
+                                        <Form.Label className="common-label">{t("postCode")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="passcode"
                                             {...register("passcode", {
@@ -216,7 +217,7 @@ const EditAdminProfile = () => {
                                             {errors.passcode?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Country</Form.Label>
+                                        <Form.Label className="common-label">{t("country")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="country"
                                             {...register("country", {
@@ -239,7 +240,7 @@ const EditAdminProfile = () => {
                         <div className="text-center">
                             <RexettButton
                                 type="submit"
-                                text="Update Profile"
+                                text={t("updateProfile")}
                                 className="main-btn px-5"
                                 variant="transparent"
                                 isLoading={smallLoader}

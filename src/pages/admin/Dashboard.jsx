@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound"
+import { useTranslation } from "react-i18next";
 
 
 
@@ -19,8 +20,9 @@ const AdminDashboard = () => {
     const { listOfClients, adminDashboard, screenLoader } = useSelector(state => state.adminData)
     const { developerDetails } = useSelector(state => state.adminData)
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
-
+    const userName = localStorage.getItem("userName")
   
     useEffect(() => {
         dispatch(getAdminDashboard())
@@ -31,14 +33,13 @@ const AdminDashboard = () => {
         navigate(`/admin-single-developer/${id}`)
     }
     const handleClientCardClick =(client_id)=>{
-        console.log(client_id,"id")
         dispatch(getSingleClient(client_id))
         navigate(`/admin-single-client/${client_id}`)
     }
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">Overview</h2>
+                <h2 className="section-head mb-4">{t("overview")}    {userName}</h2>
                 <div className="overview-card-wrapper mb-5">
                     {/* <div className="overview-card">
                     <div>
@@ -49,28 +50,28 @@ const AdminDashboard = () => {
                 </div> */}
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Income</h4>
-                            <h3 className="overview-card-heading mb-0">Earned</h3>
+                            <h4 className="overview-card-subhead">{t("income")}</h4>
+                            <h3 className="overview-card-heading mb-0">{t("earned")}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Client Joined</h4>
+                            <h4 className="overview-card-subhead">{t("clientJoined")}</h4>
                             <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfClientsJoined}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Vendor Joined</h4>
+                            <h4 className="overview-card-subhead">{t("vendorJoined")}</h4>
                             <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfVendorsJoined}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Total Jobs Posted</h4>
+                            <h4 className="overview-card-subhead">{t("totalJobsPosted")}</h4>
                             <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.totalJobsPosted}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
@@ -79,7 +80,7 @@ const AdminDashboard = () => {
                 <Row className="mb-5">
                     <Col md={12}>
                         <div className="d-flex justify-content-between mb-4 ">
-                            <h2 className="section-head-sub">List of clients</h2>
+                            <h2 className="section-head-sub">{t("listOfClients")}</h2>
                         </div>
                         <div className="developers-list">
                             {adminDashboard?.data?.clients.length>0? adminDashboard?.data?.clients.map((item, index) => {
@@ -100,11 +101,10 @@ const AdminDashboard = () => {
                         </div>
                     </Col>
                 </Row>
-                <h2 className="section-head-sub mb-4">List of assigned developers</h2>
+                <h2 className="section-head-sub mb-4">{t("listOfAssignedDevelopers")}</h2>
                 <div className="developers-list">
 
                     {adminDashboard?.data?.assignedDevelopers.length>0? adminDashboard?.data?.assignedDevelopers.map((item, index) => {
-                        console.log(item,"item")
                         return (
                             <>
                                 <div className="developer-card" onClick={() => handleCardClick(item?.developer_id)}>
@@ -122,9 +122,9 @@ const AdminDashboard = () => {
                                             <li>
                                                 <Link to={`${item?.developer?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <Link to={`${item?.developer?.email}`}><MdEmail /></Link>
-                                            </li>
+                                            </li> */}
                                         </ul>
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
                     :<NoDataFound/>}
                 </div>
                 {adminDashboard?.data?.assignedDevelopers.length>0?<div className="text-center mt-3">
-                    <Link to={"/developer-list"} className="link-text-dark">See All</Link>
+                    <Link to={"/developer-list"} className="link-text-dark">{t("seeAll")}</Link>
                 </div>:""}
             </div>}
         </>

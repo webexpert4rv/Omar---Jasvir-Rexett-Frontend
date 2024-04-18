@@ -12,7 +12,6 @@ const SingleClient = () => {
     const dispatch = useDispatch()
     const location = useLocation()
     const id = location.pathname.split("/")[2]
-    console.log(singleClient, "singleid")
 
     useEffect(() => {
         dispatch(getSingleClient(id))

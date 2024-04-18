@@ -4,6 +4,7 @@ import RexettButton from '../../atomic/RexettButton';
 import ScreenLoader from '../../atomic/ScreenLoader';
 import NoDataFound from '../../atomic/NoDataFound';
 import { approvedClient } from '../../../redux/slices/developerDataSlice';
+import userImage from "../../../assets/img/user-img.jpg"
 import moment from 'moment';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
@@ -11,7 +12,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
     const dispatch = useDispatch()
     const submitApproved = (id, index) => {
-        console.log(id , "id ")
         setSelectedApprovedBtn(index)
         dispatch(approvedClient(id,role))
     }
@@ -57,30 +57,29 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                             <tbody>
 
                                 {data.length>0 ? data?.map((item, index) => {
-                                    console.log(item,"item")
                                     return (
                                         <>
                                             <tr>
                                                 <td className="time-table-data">{item?.contractDetails?.user_details?.name}</td>
-                                                <td className="time-table-data"><img src={item?.contractDetails?.user_details?.profile_picture} className="developer-img" alt="" /></td>
+                                                <td className="time-table-data"><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage } className="developer-img" alt="" /></td>
                                                 {
                                                     item?.timeReports?.map((reprt) => {
                                                         if (reprt.report_date) {
                                                             return (
                                                                 <>
-                                                                    <td className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : ""}`} >{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}</td>
+                                                                    <td className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} >{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}</td>
                                                                 </>
                                                             )
                                                         } else if (reprt.month) {
                                                             return (
                                                                 <>
-                                                                    <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : ""}`} >{reprt?.duration ? reprt?.duration : "-"}</td>
+                                                                    <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td>
                                                                 </>
                                                             )
                                                         } else {
                                                             return (
                                                                 <>
-                                                                    <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : ""}`} >{reprt?.duration ? reprt?.duration : "-"}</td>
+                                                                    <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td>
                                                                 </>
                                                             )
                                                         }

@@ -125,7 +125,6 @@ export default adminDataSlice.reducer
 
 
 export function adminListClients(page ,payload) {
-    console.log(page , "page")
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
@@ -175,7 +174,7 @@ export function adminListAssignedDeveloper(payload, callback) {
             let result = await clientInstance.get(generateApiUrl(payload, "admin/developers"))
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
-                dispatch(setSuccessAdminAssignedDeveloper(result.data.data.developers))
+                dispatch(setSuccessAdminAssignedDeveloper(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -299,12 +298,11 @@ export function adminTimeReporting(payload) {
 }
 
 export function allApplicationsList(payload) {
-    console.log(payload , "payload")
     return async (dispatch) => {
         dispatch(setBtnLoader())
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`admin/applications?page=${payload}`)
+            let result = await clientInstance.get(generateApiUrl(payload, `admin/applications`))
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSuccessApplicationList(result.data.data))
@@ -335,7 +333,6 @@ export function adminEngagementList(payload) {
     };
 }
 export function adminApproveReject(payload) {
-    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setApprovedLoader())
         try {

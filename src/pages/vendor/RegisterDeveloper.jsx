@@ -647,9 +647,9 @@ const RegisterDeveloper = () => {
                                                         className="py-0 border-0 shadow-none bg-transparent"
                                                         {...register(`social_links[${index}].name`)} // Register the name field
                                                     >
-                                                        <option value="facebook_url">Facebook</option>
+                                                        {/* <option value="facebook_url">Facebook</option> */}
                                                         <option value="linkedin_url">Linkedin</option>
-                                                        <option value="twitter_url">Twitter</option>
+                                                        {/* <option value="twitter_url">Twitter</option> */}
                                                         <option value="github_url">Github</option>
                                                     </Form.Select>
                                                 </InputGroup.Text>

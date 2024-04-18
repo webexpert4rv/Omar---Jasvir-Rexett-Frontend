@@ -3,20 +3,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Row, Col, Form, Button } from "react-bootstrap";
-import logoWhite from '../../../assets/img/logo-white-new.png'
 import authLoginImg from '../../../assets/img/login-img-new.png'
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/slices/authenticationDataSlice";
+import sidebarLogo from '../../../assets/img/rexett-logo-white.png'
+import { useTranslation } from "react-i18next";
+
 
 const RexetLogin = ({userType}) => {
     const dispatch =useDispatch();
     const navigate=useNavigate()
-    const {smallLoader}=useSelector(state=>state.authData);
+    const {smallLoader }=useSelector(state=>state.authData);
     const [isRemember,setRemember]=useState(false)
     const [email,setEmail]=useState("")
     const [isPassword,setPassword]=useState(false)
-
+    const { t } = useTranslation()
     function generateBrowserId() {
         const userAgent = navigator.userAgent;
         const screenWidth = window.screen.width;
@@ -27,7 +29,6 @@ const RexetLogin = ({userType}) => {
       }
       
       const browserId = generateBrowserId();
-      console.log(browserId)
 
     const {
         register,
@@ -59,7 +60,8 @@ const RexetLogin = ({userType}) => {
             password:values.password,
             role:allRoles[`${userType}`],
             mac_address: browserId
-        }
+        }   
+        
         dispatch(loginUser(data,()=>{
             navigate(`/otp`)
         }))
@@ -82,14 +84,15 @@ const RexetLogin = ({userType}) => {
 
      const currentRoles=(userType)=>{
         let allRoles={
-            client:"Client Login",
-            developer:"Developer Login",
-            admin:"Admin Login",
-            vendor:"Vendor Login"
+            client:t("clientLogin"),
+            developer:t("developerLogin"),
+            admin:t("adminLogin"),
+            vendor:t("vendorLogin")
         }
 
         return allRoles[userType]
      }
+     
 
     return (
         <>
@@ -100,7 +103,7 @@ const RexetLogin = ({userType}) => {
                             <div className="inner-auth-wrapper h-100 d-flex justify-content-center flex-column position-relative">
                                 <div>
                                     <div className="text-center mb-5 logo-auth-wrapper">
-                                        <img src={logoWhite} className="logo-white" />
+                                        <img src={sidebarLogo} className="logo-white" />
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
                                       
@@ -111,7 +114,7 @@ const RexetLogin = ({userType}) => {
                                     </div>
                                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
                                         <Form.Group className="mb-3">
-                                            <Form.Label className="label-form">Email</Form.Label>
+                                            <Form.Label className="label-form">{t("email")}</Form.Label>
                                             <Form.Control type="email" className="auth-field"
                                             name="email"
                                             {...register("email", {
@@ -131,7 +134,7 @@ const RexetLogin = ({userType}) => {
                                                 </p>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
-                                            <Form.Label className="label-form">Password</Form.Label>
+                                            <Form.Label className="label-form">{t("password")}</Form.Label>
                                             <div className="position-relative">
                                                 <Form.Control type={isPassword?"text":"password"} className="auth-field pe-5" 
                                                 name="password"
@@ -153,18 +156,20 @@ const RexetLogin = ({userType}) => {
                                             <Form.Check
                                                 type="checkbox"
                                                 id="remember_me"
-                                                label="Remember Me"
+                                                label={t("rememberMe")}
                                                 onChange={handleRemember}
                                                 checked={isRemember}
                                                 className="remeber-check"
                                             />
-                                            <Link to={"/forgot-password"} className="link-text" >Forgot Password</Link>
+                                            <Link to={"/forgot-password"} className="link-text" >{t("forgotPassword")}</Link>
                                         </div>
                                         <RexettButton 
                                         type="submit" 
-                                        text="Login"
+                                        text={t("login")}
                                         className="auth-btn d-block text-decoration-none"
+                                        onClick={handleSubmit}
                                         variant="transparent"
+                                        disabled={smallLoader}
                                         isLoading={smallLoader}
                                         />
                                     </form>

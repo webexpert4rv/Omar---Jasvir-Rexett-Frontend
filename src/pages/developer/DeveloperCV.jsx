@@ -32,7 +32,6 @@ const DeveloperCV = () => {
     const [readmore,setReadMore]=useState(true)
 
 
-    console.log(developerCvData , "----developerCvData-----")
     const handleShowModal = () => {
         setShowModal(true);
     };
@@ -102,16 +101,16 @@ const DeveloperCV = () => {
     }
     const generateSocailLinks = (link) => {
         switch (link) {
-            case "Facebook":
-                return <FaFacebookF />
+            // case "Facebook":
+            //     return <FaFacebookF />
             case "LinkedIn":
                 return <FaLinkedinIn />
-            case "Twitter":
-                return <FaTwitter />
+            // case "Twitter":
+            //     return <FaTwitter />
             case "GitHub":
                 return <FaGithub />
-            case "Instagram":
-                return <FaInstagram />
+            // case "Instagram":
+            //     return <FaInstagram />
             default:
         }
     }

@@ -20,7 +20,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                     {data?.map((item, index) => {
                         return (
                             <>
-                                <div className="developer-card">
+                                <div className={item?.recommed ? "developer-card recomed-dev" : "developer-card"}>
                                     <div className="tag-developer">{item?.recommed ? "Recommended" : type}</div>
                                     <div className="user-imgbx">
                                         <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg } alt='developer'  className="user-img" />
@@ -36,13 +36,13 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                                             <li>
                                                 <Link to="#"><FaLinkedin /></Link>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <Link to="#"><MdEmail /></Link>
-                                            </li>
+                                            </li> */}
                                         </ul>
                                         {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ? <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 bg-white text-black border-white mt-3">{type === "Interviewing" ? "Hire" : type === "Shortlisted" ? "Interview" : "Shortlist"}</Button> : ""}
                                         {role !== "admin" && <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100 mt-2">Reject</Button>}
-                                        {role === "admin" && <Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 bg-white border-white text-black mt-3 font-15">{item?.developer?.already_suggested ? "Suggested" : "Suggest"}</Button>}
+                                        {role === "admin" && <Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? "Suggested" : "Suggest"}</Button>}
                                     </div>
                                 </div>
                             </>

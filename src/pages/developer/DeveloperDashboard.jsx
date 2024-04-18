@@ -14,13 +14,16 @@ import NoDataFound from "../../components/atomic/NoDataFound"
 const DeveloperDashboard = () => {
     const {developerDashboard , screenLoader}=useSelector(state=>state.developerData)
     const dispatch=useDispatch()
+
+    const userName = localStorage.getItem("userName")
+
     useEffect(()=>{
      dispatch(getDeveloperDashboard())
     },[])
     return (
         <>
        { screenLoader ? <ScreenLoader/> : <div>
-            <h2 className="section-head mb-4">Overview</h2>
+            <h2 className="section-head mb-4">Overview  {userName}</h2>
             <div className="overview-card-wrapper mb-5">
                 <div className="overview-card active">
                     <div>
@@ -69,9 +72,9 @@ const DeveloperDashboard = () => {
                                     <li>
                                         <Link to={developerDashboard?.developerDetails?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <Link to={developerDashboard?.developerDetails?.developer_detail?.resume}><MdEmail /></Link>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             </div>
                         </div>

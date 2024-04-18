@@ -14,8 +14,6 @@ const JobListing = () => {
     const [page, setPage] = useState(1)
     const dispatch = useDispatch();
     const { allJobPostedList, jobCategoryList, screenLoader } = useSelector(state => state.clientData)
-    console.log(jobCategoryList, "jobCategoryList")
-    console.log(allJobPostedList, "allJobPostedList")
     
     useEffect(() => {
         dispatch(getJobCategoryList())
@@ -32,7 +30,7 @@ const JobListing = () => {
 
 
     const convertToArray = (arr) => {
-        const skillsArray = arr.split(", ");
+        const skillsArray = arr.split(",");
         return skillsArray
     }
     return (
@@ -59,7 +57,7 @@ const JobListing = () => {
                                                     <Col md="12">
                                                         <div className="info-grid">
                                                             <h4 className="grid-heading">Skills Req.</h4>
-                                                            <ul className="skills-listing">
+                                                            <ul className="need-skill-list ">
                                                                 {
                                                                     convertToArray(item.skills)?.map((item) => {
                                                                         return (

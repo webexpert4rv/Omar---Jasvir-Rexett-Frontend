@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
-import userImg from '../../assets/img/user-img.jpg'
 import { Link, useLocation } from "react-router-dom";
-import { FaGithub } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import EndJobModal from "./Modals/EndJobs";
-import amazonImg from '../../assets/img/amazon.png'
 import { useDispatch, useSelector } from "react-redux";
 import { adminSingleJob, getDeveloperSuggestList, suggestDeveloper } from "../../redux/slices/adminDataSlice";
 import JobCard from "../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
-import RexettPagination from "../../components/atomic/RexettPagination";
 
 const AdminSingleJob = () => {
     const { pathname } = useLocation()
@@ -24,15 +17,12 @@ const AdminSingleJob = () => {
     const [suggestedData, setSuggestedData] = useState(null)
     const [page, setPage] = useState(1)
 
-
-
-  
     useEffect(() => {
         if (id) {
             dispatch(adminSingleJob(id))
             dispatch(getDeveloperSuggestList(id ,page))
         }
-    }, [page])
+    }, [page,id])
 
     useEffect(() => {
         setSingleJobDescription(singleJobListing?.data)

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
+import { Button, Col, Row, Tab, Tabs, Tooltip , OverlayTrigger } from "react-bootstrap";
 // import userImg from '../../assets/img/user-img.jpg'
 
 import { Link, useLocation } from "react-router-dom";
@@ -14,6 +14,11 @@ import { changeJobStatus, getAllJobPostedList, getJobCategoryList, publishedPost
 import JobCard from "../../components/common/SingleJob/JobCard";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
 import { jobPostConfirmMessage } from "../../helper/utlis";
+import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
+import { BsFillSendFill } from "react-icons/bs";
+import { BsFillSendXFill } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
+
 const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
     const [currentTabsStatus,setCurrnetTabsStatus]=useState(null)
@@ -27,7 +32,7 @@ const SingleJob = () => {
     const location=useLocation();
     let id=location.pathname.split("/")[2]
     const {allJobPostedList,jobCategoryList,jobPostedData,approvedLoader,smallLoader}=useSelector(state=>state.clientData)
-   
+   const { t } = useTranslation()
     useEffect(()=>{
     if(id){
         dispatch(singleJobPostData(id,()=>{}))
@@ -101,6 +106,17 @@ const SingleJob = () => {
             id:id
         })
     }
+    const endjob = (
+        <Tooltip id="tooltip">
+          End Job
+        </Tooltip>
+    );
+    
+    const publishjob = (
+        <Tooltip id="tooltip">
+            Publish Job
+        </Tooltip>   
+    )
 
     return (
         <>
@@ -118,13 +134,17 @@ const SingleJob = () => {
                                 <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
                                     <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                    { singleJobDescription?.status!=="ended"?<>
-                                   <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-xxl-5 px-4 closed-job-btn">End Job</Button>
-                                    <Button variant="transparent" className="px-xxl-5 px-4 py-2 outline-main-btn" onClick={()=>{
+                                    <OverlayTrigger placement="top" overlay={endjob}>
+                                        <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="closed-job-btn"><MdOutlineDoNotDisturbAlt /></Button>
+                                    </OverlayTrigger>
+                                    <OverlayTrigger placement="top" overlay={publishjob}>
+                                        <Button variant="transparent" className="py-2 main-btn publish-job-btn" onClick={()=>{
                                         let data={
                                             status:singleJobDescription?.status=="published"?"Unpublished":"published"
                                         }
                                         handleUnpublished(singleJobDescription?.id,data)
-                                        }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?"Unpublish":"Publish"}</Button>
+                                        }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?<BsFillSendXFill />:<BsFillSendFill />}</Button>
+                                    </OverlayTrigger>
                                    </>:"" }
                                 </div>
                             </div>
@@ -134,21 +154,21 @@ const SingleJob = () => {
                         <div className="single-job-card">
                             <Row>
                                 <Col md="4">
-                                    <h3 className="req-heading">Experience Requirements</h3>
+                                    <h3 className="req-heading">{t("experienceRequirements")}</h3>
                                     <p className="req-text">{singleJobDescription?.experience}</p>
                                 </Col>
                                 <Col md="4">
-                                    <h3 className="req-heading">Contract</h3>
+                                    <h3 className="req-heading">{t("contract")}</h3>
                                     <p className="req-text">{singleJobDescription?.contract_type}</p>
                                 </Col>
                                 <Col md="4">
-                                    <h3 className="req-heading">Location</h3>
+                                    <h3 className="req-heading">{t("location")}</h3>
                                     <p className="req-text">{singleJobDescription?.job_type}</p>
                                 </Col>
                             </Row>
                         </div>
                         <div className="single-job-card">
-                            <h3 className="req-heading">Skills</h3>
+                            <h3 className="req-heading">{t("skills")}</h3>
                             <ul className="skills-listing mb-0">
                             {
                                                 convertToArray(singleJobDescription?.skills)?.map((item,index)=>{

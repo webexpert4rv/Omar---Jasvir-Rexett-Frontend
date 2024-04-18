@@ -43,7 +43,6 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
 
 
     const onSubmit = (values) => {
-        console.log(values,"val")
         let fileData = new FormData();
         fileData.append("file",file);
         if(file==null){
