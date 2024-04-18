@@ -125,7 +125,7 @@ const DashboardLayout = ({ children }) => {
 
                     {!sidebarwrapper ? <div className={sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
                         <div className='text-end d-lg-none mb-4'>
-                            <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button>
+                            {/* <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button> */}
                         </div>
                         <h3 className='right-sidebar-heading mb-3'>Growth per month</h3>
                         <div className="card-box">

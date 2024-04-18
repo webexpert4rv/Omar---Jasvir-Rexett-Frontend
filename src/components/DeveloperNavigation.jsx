@@ -1,9 +1,11 @@
 import React from "react";
 import Notification from "./atomic/Notfication";
 import { Tooltip , OverlayTrigger } from "react-bootstrap";
+
+const developerName = localStorage.getItem("userName")
 const tooltip = (
     <Tooltip id="tooltip">
-      John Deo
+      {developerName}
     </Tooltip>
   );
 const DeveloperNavigation = ({ onClick }) => {
@@ -18,7 +20,7 @@ const DeveloperNavigation = ({ onClick }) => {
                         {/* <Link to={'/developer-list'} className="text-decoration-none main-btn">Contact Support</Link> */}
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
                             <div className="profile-view">
-                                <span>JD</span>
+                                <span>{developerName.split("")[0]}</span>
                             </div>
                         </OverlayTrigger>
                     </div>
