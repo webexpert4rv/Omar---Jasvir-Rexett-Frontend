@@ -23,7 +23,7 @@ const DeveloperDashboard = () => {
     return (
         <>
        { screenLoader ? <ScreenLoader/> : <div>
-            <h2 className="section-head mb-4">Overview  {userName}</h2>
+            <h2 className="section-head mb-4">Overview</h2>
             <div className="overview-card-wrapper mb-5">
                 <div className="overview-card active">
                     <div>

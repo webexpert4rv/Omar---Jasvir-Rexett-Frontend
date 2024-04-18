@@ -37,7 +37,7 @@ const Dashboard = (cardDetails) => {
     }
     return (
         <>
-            <h2 className="section-head">{t("overview")}  {userName} </h2>
+            <h2 className="section-head">{t("overview")} </h2>
             
             <p className="mb-4">{t("monitorAndManage")}</p>
             {screenLoader ? <ScreenLoader /> : <>
