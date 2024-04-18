@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import RexettButton from "../../components/atomic/RexettButton";
 import { getClientProfile, updateClientProfile } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { useTranslation } from "react-i18next";
+import { FaTrashCan } from "react-icons/fa6";
 
 const EditProfile = () => {
     const {
@@ -48,7 +49,11 @@ const EditProfile = () => {
         }
      dispatch(updateClientProfile(formData))
     }
-
+    const deleteprofile = (
+        <Tooltip id="tooltip">
+          Delete Profile
+        </Tooltip>
+      );
     const validatePassword = (value) => {
         if (value === "") {
             return true; // Password is not required, so return true if empty
@@ -64,7 +69,12 @@ const EditProfile = () => {
     return (
         <>
             <section className="card-box">
-                <h2 className="section-head mb-4">{t("updateYourProfile")}</h2>
+                <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
+                    <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
+                    <OverlayTrigger placement="bottom" overlay={deleteprofile}>
+                        <Button className="delete-btn"><FaTrashCan /></Button>
+                    </OverlayTrigger>
+                </div>
                 <div>
                   {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-4">

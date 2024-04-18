@@ -314,7 +314,26 @@ ul {
 .pages-link .pagination-item {
     cursor: pointer;
 }
-
+.delete-btn
+{
+    width: 29px;
+    height: 29px;
+    font-size: 14px;
+    background-color: #c00;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    border-radius: 50%;
+    border: 1px solid #c00 !important;
+    transition: .4s ease;
+}
+.delete-btn:hover
+{
+    background-color: transparent;
+    color: #c00;
+}
 .pagination-item.active {
     font-weight: bold;
     background-color: #037563;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import userImg from '../../../assets/img/user-img.jpg'
 import { Link } from 'react-router-dom'
 import { FaGithub } from "react-icons/fa";
@@ -15,7 +15,17 @@ import { RiUserAddFill } from "react-icons/ri";
 const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, page }) => {
     const { singleJobPagination } = useSelector(state => state.adminData)
 
-   
+    const developerCardToolTip = (
+        <Tooltip id="tooltip">
+        {type === "Interviewing" ? "Hire" : type === "Shortlisted" ? "Interview" : "Shortlist"}
+        </Tooltip>
+      );
+
+      const rejectedCardToolTip = (
+        <Tooltip id="tooltip">
+        Rejected
+        </Tooltip>
+      ); 
     return (
         <>
             <div className="developers-list job-card ">
@@ -46,9 +56,11 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                                                 </li> */}
                                             </ul>
                                             <div className='job-card-btns'>
-                                                {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ? <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? <RiUserAddFill /> : type === "Shortlisted" ? <PiUserRectangleFill /> : <ImUserCheck />}</Button> : ""}
-                                                {role !== "admin" && <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100"><ImUserMinus /></Button>}
-                                                {role === "admin" && <Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? <RiUserAddFill /> : <RiUserAddFill />}</Button>}
+                                                {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ?
+                                                        <OverlayTrigger placement="bottom" overlay={developerCardToolTip}>
+                                                 <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? <RiUserAddFill />  : type === "Shortlisted" ? <PiUserRectangleFill /> : <ImUserCheck />}</Button></OverlayTrigger> : "" }
+                                                {role !== "admin" && <OverlayTrigger placement="bottom" overlay={rejectedCardToolTip}><Button variant="danger" onClick={() => handleJobStatusModal(item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100"><ImUserMinus /></Button></OverlayTrigger> }
+                                                {role === "admin" &&  <OverlayTrigger placement="bottom" overlay={developerCardToolTip}><Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? <RiUserAddFill /> : <RiUserAddFill />}</Button></OverlayTrigger> }
                                             </div>
                                         </div>
                                     </div>
