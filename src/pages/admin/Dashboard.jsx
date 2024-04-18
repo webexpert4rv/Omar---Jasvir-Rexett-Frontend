@@ -76,6 +76,13 @@ const AdminDashboard = () => {
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Total Developer Joined</h4>
+                            <h3 className="overview-card-heading mb-0">{adminDashboard?.data?.numberOfDevelopersJoined}</h3>
+                        </div>
+                        <span className="over-icon"><IoTrendingUpSharp /></span>
+                    </div>
                 </div>
                 <Row className="mb-5">
                     <Col md={12}>
