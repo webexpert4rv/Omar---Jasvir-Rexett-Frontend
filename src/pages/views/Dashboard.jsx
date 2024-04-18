@@ -21,7 +21,7 @@ const Dashboard = (cardDetails) => {
     const navigate = useNavigate()
     const { t } = useTranslation();
 
-    const userName = localStorage.getItem("userName")
+    // const userName = localStorage.getItem("userName")
     useEffect(() => {
         dispatch(developerAssignList(1));
     }, [dispatch])

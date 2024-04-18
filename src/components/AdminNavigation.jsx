@@ -10,9 +10,11 @@ import { getNotification } from "../redux/slices/adminDataSlice";
 import moment from "moment";
 import Notification from "./atomic/Notfication";
 import { useTranslation } from "react-i18next";
+
+const adminName = localStorage.getItem("userName")
 const tooltip = (
     <Tooltip id="tooltip">
-      Test Admins
+      {adminName}
     </Tooltip>
   );
 const AdminNavigation = ({ handleSidebar }) => {
@@ -30,7 +32,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                         <Link to={'/developer-list'} className="text-decoration-none main-btn">{t("listOfAllDevelopers")}</Link>
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
                             <div className="profile-view">
-                                <span>TA</span>
+                                <span>{adminName.split("")[0]}</span>
                             </div>
                         </OverlayTrigger>
                     </div>

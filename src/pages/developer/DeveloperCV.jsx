@@ -22,6 +22,7 @@ import DeveloperDetails from "./Modals/DeveloperDetails";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { HiDownload } from "react-icons/hi";
 import generatePDF from "react-to-pdf"
+import { useTranslation } from "react-i18next";
 const DeveloperCV = () => {
     const dispatch = useDispatch()
     const contentRef=useRef()
@@ -30,6 +31,7 @@ const DeveloperCV = () => {
     const [showModal, setShowModal] = useState(false);
     const [developerDetails, setDeveloperDetails] = useState(false);
     const [readmore,setReadMore]=useState(true)
+    const{t} = useTranslation()
 
 
     const handleShowModal = () => {
@@ -121,10 +123,10 @@ const DeveloperCV = () => {
                { screenLoader ? <ScreenLoader/>:<div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                        <h2 className="section-head mb-0 border-0 pb-0">Overview</h2>
+                        <h2 className="section-head mb-0 border-0 pb-0">{t("overview")}</h2>
                         <button className="main-btn px-xxl-5 px-md-4 px-3"    onClick={async () => {
                   await generatePDF(contentRef, { filename: "Resume.pdf" });
-                }}><span className="d-md-inline-block d-none">Download Resume</span> <span className="d-md-none"><HiDownload /></span></button>
+                }}><span className="d-md-inline-block d-none">{t("downloadResume")}</span> <span className="d-md-none"><HiDownload /></span></button>
                     </div>
                     <Row ref={contentRef}>
                         <Col lg={6} className="px-0">
@@ -153,7 +155,7 @@ const DeveloperCV = () => {
                                 </ul>
                             </div>
                             <div className="connect-social-media">
-                                <h3 className="subheading-resume text-center mb-3">Connect With Me</h3>
+                                <h3 className="subheading-resume text-center mb-3">{t("connectWithMe")}</h3>
                                 <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25} /></div>
                                 <ul className="social-media">
                                     {developerCvData?.social_links?.map((item) => {
@@ -174,28 +176,28 @@ const DeveloperCV = () => {
                         </Col>
                         <Col lg={6} className="px-0 h-100">
                             <div className="about-info px-4">
-                                <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
+                                <h3 className="subheading-resume mb-xxl-4 mb-3">{t("aboutMe")}</h3>
                                 {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
                                 <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
                                 <p className="resume-text">{readmore && developerCvData?.developer_detail?.bio?.length>300?<>
                                     {developerCvData?.developer_detail?.bio.slice(0,300)}
-                                    <span className="readLess"  onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
+                                    <span className="readLess"  onClick={readMoreLess}> {readmore? `${t("readMore")}`:`${t("readLess")}`} </span>
                                 </>:
                                 <>
                                  {developerCvData?.developer_detail?.bio}
-                                <span className="readLess" onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
+                                <span className="readLess" onClick={readMoreLess}> {readmore?`${t("readMore")}`:`${t("readLess")}`} </span>
                                 </>
 }
                                 </p>
                             </div>
                             <div className="about-info px-4 pt-4">
                                 <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25} /></div>
-                                <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>
+                                <h3 className="subheading-resume mb-xxl-4 mb-3">{t("experience")}</h3>
                                 {developerCvData?.developer_experiences?.map((item) => {
                                     return (
                                         <>
                                             <div className="exp-wrapper">
-                                                <p className="exp-year">{`${item?.start_date?.slice(0, 4)}-${item?.is_still_working ? "Present" : item?.end_date?.slice(0, 4)}`} | {item?.job_title} </p>
+                                                <p className="exp-year">{`${item?.start_date?.slice(0, 4)}-${item?.is_still_working ? t("present") : item?.end_date?.slice(0, 4)}`} | {item?.job_title} </p>
                                                 <ul className="exp-role">
                                                     <li className="resume-text">{item?.company_name} | <span>{item?.description}</span></li>
                                                 </ul>
@@ -203,13 +205,13 @@ const DeveloperCV = () => {
                                         </>
                                     )
                                 })}
-                                <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
+                                <h3 className="subheading-resume mb-xxl-4 mb-3">{t("education")}</h3>
                                 <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25} /></div>
                                 {developerCvData?.developer_educations?.map((item) => {
                                     return (
                                         <React.Fragment key={item.id}>
                                             <div className="exp-wrapper">
-                                                <p className="exp-year">{item?.start_year} - {item?.end_year ? item?.end_year : "Present"} | {item?.Degree?.title}</p>
+                                                <p className="exp-year">{item?.start_year} - {item?.end_year ? item?.end_year : t("present")} | {item?.Degree?.title}</p>
                                                 <ul className="exp-role">
                                                     <li className="resume-text">{item?.university_name}</li>
                                                     <li className="resume-text">{item?.Degree?.description}</li>

@@ -263,7 +263,18 @@
         "endDateValidation" : "End Date is required",
         "universityNameValidation": "University name is required",
         "startYearValidation" : "Start Year is required",
-        "endYearValidation":"End year is required"
+        "endYearValidation":"End year is required",
+        "thisWeekHours" : "This Week Hours",
+        "activeProjects": "Active Projects",
+        "thisMonthHours" : "This Month Hours" ,
+        "downloadResume" : "Download Resume",
+        "connectWithMe": "Connect With Me",
+        "aboutMe" : "About Me",
+        "experience" : "Experience",
+        "education" : "Education",
+        "present" : "Present",
+        "readMore" : "[Read More...]",
+        "readLess" : "[Read Less]"
         
 
     }

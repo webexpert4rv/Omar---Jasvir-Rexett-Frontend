@@ -7,7 +7,10 @@ import { Tooltip , OverlayTrigger } from "react-bootstrap";
 import { PiArrowLineRight } from "react-icons/pi";
 import Notification from "./atomic/Notfication";
 import { useTranslation } from "react-i18next";
+
+const clientName = localStorage.getItem("userName")
 const newtooltip = (
+    
     <Tooltip id="tooltip">
       Create Job
     </Tooltip>
@@ -15,7 +18,7 @@ const newtooltip = (
 
 const clientname = (
     <Tooltip id="tooltip">
-      Johan
+      {clientName}
     </Tooltip>
   );
 const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
@@ -35,7 +38,7 @@ const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={clientname}>
                             <div className="profile-view">
-                                <span>J</span>
+                                <span> {clientName.split("")[0]}</span>
                             </div>
                         </OverlayTrigger>
                         <div>

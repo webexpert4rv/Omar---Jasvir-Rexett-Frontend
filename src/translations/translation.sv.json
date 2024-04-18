@@ -255,14 +255,24 @@
         "contactNameValidation": "Kontaktnamn är obligatoriskt",
         "contactNumberValidation": "Kontaktnummer är obligatoriskt",
         "currentlyAttending": "För närvarande närvarande",
-        "currentlyWorking":"För närvarande arbetar",
-        "enterSkills" : "Ange färdigheter",
+        "currentlyWorking": "För närvarande arbetar",
+        "enterSkills": "Ange färdigheter",
         "jobPositionValidation": "Jobbtitel är obligatorisk",
         "descriptionValidation": "Beskrivning är obligatorisk",
         "startDateValidation": "Startdatum är obligatoriskt",
         "endDateValidation": "Slutdatum är obligatoriskt",
         "universityNameValidation": "Universitetsnamn är obligatoriskt",
         "startYearValidation": "Startår är obligatoriskt",
-        "endYearValidation": "Slutår är obligatoriskt"
+        "endYearValidation": "Slutår är obligatoriskt",
+        "thisWeekHours": "Denna veckas timmar",
+        "activeProjects": "Aktiva projekt",
+        "thisMonthHours": "Denna månads timmar",
+        "downloadResume": "Ladda ner CV",
+        "connectWithMe": "Anslut med mig",
+        "aboutMe": "Om mig",
+        "experience": "Erfarenhet",
+        "education": "Utbildning",
+        "readMore": "[Läs mer...]",
+        "readLess" :  "[Läs mindre]"
     }
 }
