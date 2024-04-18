@@ -8,6 +8,8 @@ import { MdEmail } from "react-icons/md";
 import NoDataFound from '../../atomic/NoDataFound';
 import RexettPagination from '../../atomic/RexettPagination';
 import { useSelector } from 'react-redux';
+import { ImUserCheck } from "react-icons/im";
+import { ImUserMinus } from "react-icons/im";
 const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, page }) => {
     const { singleJobPagination } = useSelector(state => state.adminData)
 
