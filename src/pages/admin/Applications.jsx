@@ -369,7 +369,7 @@ const Applications = () => {
               </table>
             </div>
             {application?.length > 0 ? (
-              <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
                     Showing {allApplications?.items_per_page} results
@@ -566,7 +566,7 @@ const Applications = () => {
               </table>
             </div>
             {application?.length > 0 ? (
-              <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
                     Showing {allApplications?.items_per_page} results
@@ -628,10 +628,6 @@ const Applications = () => {
                                 </span>
                               </td>
                               <td>{item?.phone_number}</td>
-                              <td>{item?.type_of_company}</td>
-                              <td>{item?.total_employees}</td>
-                              <td>{item?.website}</td>
-                              <td>{item?.yearly_revenue}</td>
                               <td>
                                 <div className="d-flex gap-3">
                                   <RexettButton
@@ -768,7 +764,7 @@ const Applications = () => {
               </table>
             </div>
             {application?.length > 0 ? (
-              <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
                     Showing {allApplications?.items_per_page} results

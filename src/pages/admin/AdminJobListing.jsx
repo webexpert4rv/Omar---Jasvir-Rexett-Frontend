@@ -45,7 +45,7 @@ const AdminJobListing = () => {
                 <Tabs
                     defaultActiveKey="all"
                     id="justify-tab-example"
-                    className="mb-3 notification-tabs gap-md-0 gap-3"
+                    className="mb-3 notification-tabs job-listing-tabs gap-md-0 gap-3"
                     onSelect={handleSelect}
                 >
                     <Tab eventKey="all" title={t("all")}>

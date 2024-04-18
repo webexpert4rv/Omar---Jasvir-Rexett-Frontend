@@ -41,11 +41,11 @@ const NotificationList = ({ job, doc }) => {
     }
   }
 
-  const markAllAsRead = () => {
-    dispatch(markAsRead(undefined, () => {
+  // const markAllAsRead = () => {
+  //   dispatch(markAsRead(undefined, () => {
 
-    }))
-  }
+  //   }))
+  // }
   return (
     <>
       {screenLoader ? <ScreenLoader /> : <section className="notification-screen card-box">
@@ -54,9 +54,9 @@ const NotificationList = ({ job, doc }) => {
             <h2 className="overview-card-heading fw-bold">Notification</h2>
             {notificationList['unreadNotifications']?.length > 0 ? <p className="notification-text">{`You've ${notificationList['unreadNotifications']?.length} unread notifications`}</p> : ""}
           </div>
-          <Button variant="transparent" className="mark-read-btn" onClick={markAllAsRead}>
+          {/* <Button variant="transparent" className="mark-read-btn" onClick={markAllAsRead}>
             Mark all as read
-          </Button>
+          </Button> */}
         </div>
         <Tabs
           defaultActiveKey="allNotifications"
@@ -75,7 +75,7 @@ const NotificationList = ({ job, doc }) => {
                         <span className="bell-icon">
                           <FaBell />
                         </span>
-                        <div className="d-flex gap-4 justify-content-between">
+                        <div className="d-flex gap-4 justify-content-between w-100">
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
@@ -100,7 +100,7 @@ const NotificationList = ({ job, doc }) => {
             </div>
           </Tab>
           <Tab eventKey="readNotifications" title="New">
-            <div className="notification-main pt-4">
+            <div className="notification-main pt-4 d-block">
               <div className="notification-list">
                 {nottificationData?.map((item) => {
                   return (
@@ -109,7 +109,7 @@ const NotificationList = ({ job, doc }) => {
                         <span className="bell-icon">
                           <FaBell />
                         </span>
-                        <div className="d-flex gap-4 justify-content-between">
+                        <div className="d-flex gap-4 w-100 justify-content-between">
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
@@ -134,7 +134,7 @@ const NotificationList = ({ job, doc }) => {
             </div>
           </Tab>
           <Tab eventKey="unreadNotifications" title="Read">
-            <div className="notification-main pt-4">
+            <div className="notification-main pt-4 d-block">
               <div className="notification-list">
                 {nottificationData?.map((item) => {
                   return (
@@ -143,7 +143,7 @@ const NotificationList = ({ job, doc }) => {
                         <span className="bell-icon">
                           <FaBell />
                         </span>
-                        <div className="d-flex gap-4 justify-content-between">
+                        <div className="d-flex gap-4 w-100 justify-content-between">
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
