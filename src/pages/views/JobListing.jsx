@@ -30,7 +30,7 @@ const JobListing = () => {
 
 
     const convertToArray = (arr) => {
-        const skillsArray = arr.split(", ");
+        const skillsArray = arr.split(",");
         return skillsArray
     }
     return (
