@@ -9,7 +9,7 @@ const RejectModal = ({ show, handleClose,onClick,smallLoader,header ,feedbacks ,
         setFeedback(e.target.value)
     }
     return(
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
+        <Modal show={show} onHide={(e)=>handleClose(e)} centered animation size="lg">
             <Modal.Header closeButton>
             <Modal.Title>{header}</Modal.Title>
             </Modal.Header>
