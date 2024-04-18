@@ -8,6 +8,8 @@ import { MdEmail } from "react-icons/md";
 import NoDataFound from '../../atomic/NoDataFound';
 import RexettPagination from '../../atomic/RexettPagination';
 import { useSelector } from 'react-redux';
+import { ImUserCheck } from "react-icons/im";
+import { ImUserMinus } from "react-icons/im";
 const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, page }) => {
     const { singleJobPagination } = useSelector(state => state.adminData)
 
@@ -22,27 +24,31 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                             <>
                                 <div className={item?.recommed ? "developer-card recomed-dev" : "developer-card"}>
                                     <div className="tag-developer">{item?.recommed ? "Recommended" : type}</div>
-                                    <div className="user-imgbx">
-                                        <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg } alt='developer'  className="user-img" />
-                                    </div>
-                                    <div className="text-center">
-                                        <h3 className="user-name">{item?.developer?.name}</h3>
-                                        <p className="designation-user">Software Developer</p>
-                                        <p className="email-user">{item?.developer?.email}</p>
-                                        <ul className="social-icons">
-                                            <li>
-                                                <Link to="#"><FaGithub /></Link>
-                                            </li>
-                                            <li>
-                                                <Link to="#"><FaLinkedin /></Link>
-                                            </li>
-                                            {/* <li>
-                                                <Link to="#"><MdEmail /></Link>
-                                            </li> */}
-                                        </ul>
-                                        {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ? <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 bg-white text-black border-white mt-3">{type === "Interviewing" ? "Hire" : type === "Shortlisted" ? "Interview" : "Shortlist"}</Button> : ""}
-                                        {role !== "admin" && <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100 mt-2">Reject</Button>}
-                                        {role === "admin" && <Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? "Suggested" : "Suggest"}</Button>}
+                                    <div className='overflow-hidden inner-dev-card'>
+                                        <div className="user-imgbx">
+                                            <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg } alt='developer'  className="user-img" />
+                                        </div>
+                                        <div className="text-center">
+                                            <h3 className="user-name">{item?.developer?.name}</h3>
+                                            <p className="designation-user">Software Developer</p>
+                                            <p className="email-user">{item?.developer?.email}</p>
+                                            <ul className="social-icons">
+                                                <li>
+                                                    <Link to="#"><FaGithub /></Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="#"><FaLinkedin /></Link>
+                                                </li>
+                                                {/* <li>
+                                                    <Link to="#"><MdEmail /></Link>
+                                                </li> */}
+                                            </ul>
+                                            <div className='job-card-btns'>
+                                                {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ? <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? "Hire" : type === "Shortlisted" ? "Interview" : <ImUserCheck />}</Button> : ""}
+                                                {role !== "admin" && <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100"><ImUserMinus /></Button>}
+                                                {role === "admin" && <Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? "Suggested" : "Suggest"}</Button>}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </>
