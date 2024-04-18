@@ -100,11 +100,24 @@ const SingleJob = () => {
     }
     
 
-    const handleJobStatusModal=(id,status)=>{
-        setStatusModal({
-            [status]:!statusModal.isTrue,
-            id:id
-        })
+    const handleJobStatusModal=(e,id,status)=>{
+        console.log(id,"oo")
+        console.log(e,"e")
+        if(e==undefined)
+        {
+            setStatusModal({
+                [status]:!statusModal.isTrue,
+                id:id
+            })
+        }else{
+        e.stopPropagation();
+
+            setStatusModal({
+                [status]:!statusModal.isTrue,
+                id:id
+            })
+        }
+       
     }
     const endjob = (
         <Tooltip id="tooltip">
@@ -114,7 +127,7 @@ const SingleJob = () => {
     
     const publishjob = (
         <Tooltip id="tooltip">
-            Publish Job
+          {singleJobDescription?.status=="published"?"Unpublish Job":"Publish Job"}
         </Tooltip>   
     )
 

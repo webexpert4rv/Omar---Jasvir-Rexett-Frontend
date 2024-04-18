@@ -25,7 +25,7 @@ const DeveloperList = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        dispatch(adminListAssignedDeveloper({ page: 3 }))
+        dispatch(adminListAssignedDeveloper({ page: 1 }))
     }, [count])
 
     console.log(assignedDeveloper, "assignedDeveloper")
