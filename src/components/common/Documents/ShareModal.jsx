@@ -60,12 +60,12 @@ const ShareModal = ({ show, handleClose,fileId}) => {
     }
 
     return (
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title>Share </Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">Share</h3>
                 <Form>
                     <div className="experience-container">
                         <Row>
@@ -76,7 +76,7 @@ const ShareModal = ({ show, handleClose,fileId}) => {
                                         settings={tagifySettings}
                                         autoFocus={true}
                                         {...tagifyProps}
-                                        className="w-100"
+                                        className="w-100 common-field"
                                         onChange={handleChange}
                                         whitelist={suggestedTags} // Add suggested tags
                                     />
@@ -103,7 +103,7 @@ const ShareModal = ({ show, handleClose,fileId}) => {
                                     <RexettButton
                                 // type="submit"
                                 text="Share"
-                                className="main-btn px-5"
+                                className="main-btn px-4 font-14 fw-semibold"
                                 onClick={handleShare}
                                 variant="success"
                                 isLoading={smallLoader}

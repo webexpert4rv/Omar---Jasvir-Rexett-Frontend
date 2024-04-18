@@ -67,12 +67,13 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,c
     };
 
     return (
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title>{data?.name?"Edit Folder":"Create Folder"}</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
+                {/* <Modal.Title></Modal.Title> */}
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">{data?.name?"Edit Folder":"Create Folder"}</h3>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className="experience-container">
                         <Row>
@@ -89,9 +90,8 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,c
                                     <input type="text"/>
                                     
                                 </Form.Group> */}
-                                <Form.Group className="mb-3 ">
-                                    <Form.Label className="label-form"></Form.Label>
-                                    <Form.Control type="text"
+                                <Form.Group className="mb-4 ">
+                                    <Form.Control type="text" className="common-field" placeholder="Enter Folder Name"
                                         name="s3_path"
                                         {...register("s3_path", {
                                             validate: validateFolderName
@@ -106,7 +106,7 @@ const CreateFolder = ({ show, handleClose,currentFolderDetails,data,folderData,c
                         <RexettButton
                             type="submit"
                             text={data?.name ? "Edit":"Create"}
-                            className="main-btn px-4"
+                            className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
                             isLoading={smallLoader}
                         />

@@ -65,12 +65,12 @@ const SocialMediaModal = ({ show, handleClose, data }) => {
 
 
   return (
-    <Modal show={show} onHide={handleClose} centered animation size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Add Social Media</Modal.Title>
+    <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+      <Modal.Header closeButton className="border-0 pb-3">
       </Modal.Header>
 
       <Modal.Body>
+        <h3 className="popup-heading">Add Social Media</h3>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
 
           {fields?.map((row, index) => (
@@ -105,7 +105,7 @@ const SocialMediaModal = ({ show, handleClose, data }) => {
             <RexettButton
               type="submit"
               text="Update Profile"
-              className="main-btn px-4"
+              className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
               isLoading={btnLoader}
             />

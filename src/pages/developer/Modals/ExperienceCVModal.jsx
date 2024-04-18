@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useForm, useFieldArray } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch } from "react-redux";
+import { FaTrashAlt } from "react-icons/fa";
 import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 
-const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
-  const [renderModalData,setRenderModalData]=useState(data)
+const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
+  const [renderModalData, setRenderModalData] = useState(data)
   const [disabledEndDates, setDisabledEndDates] = useState([]);
-    const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const {
     register,
     control,
@@ -32,10 +33,10 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
           company_name: item.company_name,
           job_title: item.job_title,
           description: item.description,
-          start_date:item.start_date?.slice(0, 10),
+          start_date: item.start_date?.slice(0, 10),
           end_date: item.end_date?.slice(0, 10),
           is_still_working: item.is_still_working,
-          newId:item.id
+          newId: item.id
 
         });
         setDisabledEndDates(prevState => [...prevState, item.is_still_working]);
@@ -43,52 +44,52 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
     }
   }, [renderModalData]);
 
-  const handleCurrentlyWorkingChange = (e,index) => {
-    if(e.target.checked){
+  const handleCurrentlyWorkingChange = (e, index) => {
+    if (e.target.checked) {
       const isChecked = watch(`test[${index}].is_still_working`);
       const updatedDisabledEndDates = [...disabledEndDates];
       updatedDisabledEndDates[index] = true;
       setDisabledEndDates(updatedDisabledEndDates);
       setValue(`test[${index}].end_date`, "");
-    }else{
+    } else {
       const isChecked = watch(`test[${index}].is_still_working`);
       const updatedDisabledEndDates = [...disabledEndDates];
       updatedDisabledEndDates[index] = false;
       setDisabledEndDates(updatedDisabledEndDates);
     }
-    
-}
+
+  }
 
   const onSubmit = (value) => {
-    let {test}=value
+    let { test } = value
     let addExp = test?.map((item) => {
-        if (!item.newId) {
-            return { ...item }
-        }
+      if (!item.newId) {
+        return { ...item }
+      }
     }).filter((item) => item)
     if (addExp.length > 0) {
-        dispatch(addDeveloperCvExperience(addExp,()=>{
-            dispatch(fetchDeveloperCv())
-            handleClose()
-        }))
-    } 
+      dispatch(addDeveloperCvExperience(addExp, () => {
+        dispatch(fetchDeveloperCv())
+        handleClose()
+      }))
+    }
 
     test?.forEach((item) => {
-        if (item.newId) {
-            dispatch(updateDeveloperCvExperience(item, item.newId, () => {
-                dispatch(fetchDeveloperCv())
-            handleClose()
-                }))
+      if (item.newId) {
+        dispatch(updateDeveloperCvExperience(item, item.newId, () => {
+          dispatch(fetchDeveloperCv())
+          handleClose()
+        }))
 
-            }
-        })
-    
+      }
+    })
+
   };
 
   const handleAppend = async () => {
     // Trigger validation for all fields
     const isValid = await trigger();
-  
+
     // Check if all fields are valid
     if (isValid) {
       append({
@@ -102,14 +103,24 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
     }
   };
 
-  const deleteDeveloperExperience = (id,index) => {     
+  const deleteDeveloperExperience = (id, index) => {
     remove(index)
-    if(id){
+    if (id) {
       dispatch(deleteExperience(id, () => {
         dispatch(fetchDeveloperCv())
-    }))
+      }))
     }
-}
+  }
+  const deletetooltip = (
+    <Tooltip id="tooltip">
+      Delete Row
+    </Tooltip>
+  );
+  const addtooltip = (
+    <Tooltip id="tooltip">
+      Add Row
+    </Tooltip>
+  );
 
 
   return (
@@ -117,25 +128,28 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
       show={show}
       onHide={handleClose}
       centered
-      animation
+      className="custom-modal"
       size="lg"
+      animation
       scrollable
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Experience CV Section</Modal.Title>
+      <Modal.Header closeButton className="border-0 pb-3">
+        {/* <Modal.Title>Experience CV Section</Modal.Title> */}
       </Modal.Header>
 
       <Modal.Body>
+
+        <h3 className="popup-heading">Experience CV Section</h3>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {fields.map((item, index) => (
             <div className="experience-container mb-3" key={item.id}>
               <Row>
                 <Col md="12">
                   <Form.Group className="mb-4">
-                    <Form.Label>Company Name</Form.Label>
+                    <Form.Label className="font-14">Company Name</Form.Label>
                     <Form.Control
                       type="text"
-                      className="cv-field"
+                      className="common-field"
                       name="company_name"
                       placeholder="Enter Company Name"
                       {...register(`test[${index}].company_name`, {
@@ -149,10 +163,10 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label>Job Position</Form.Label>
+                    <Form.Label className="font-14">Job Position</Form.Label>
                     <Form.Control
                       type="text"
-                      className="cv-field"
+                      className="common-field"
                       name="job_title"
                       placeholder="Enter Job Position"
                       {...register(`test[${index}].job_title`, {
@@ -166,12 +180,12 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label>Job Description</Form.Label>
+                    <Form.Label className="font-14">Job Description</Form.Label>
                     <Form.Control
                       type="text"
                       as="textarea"
                       rows={3}
-                      className="cv-field"
+                      className="common-field"
                       placeholder="Enter Job Description"
                       {...register(`test[${index}].description`, {
                         required: "Description name is required",
@@ -184,10 +198,10 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label>Start Date</Form.Label>
+                    <Form.Label className="font-14">Start Date</Form.Label>
                     <Form.Control
                       type="date"
-                      className="cv-field"
+                      className="common-field"
                       placeholder="Enter Start Date"
                       max={new Date().toISOString().split("T")[0]}
                       {...register(`test[${index}].start_date`, {
@@ -208,17 +222,17 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
                     )}
                   </Form.Group>
                 </Col>
-               <Col md="6">
+                <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label>End Date</Form.Label>
+                    <Form.Label className="font-14">End Date</Form.Label>
                     <Form.Control
                       type="date"
-                      className="cv-field"
+                      className="common-field"
                       placeholder="Enter End Date"
                       max={new Date().toISOString().split("T")[0]}
                       {...register(`test[${index}].end_date`, {
                         required: {
-                          value: disabledEndDates[index]?false:true,
+                          value: disabledEndDates[index] ? false : true,
                           message: "End Date is required",
                         },
                       })}
@@ -230,36 +244,42 @@ const ExperienceCVModal = ({ show, handleClose, data,smallLoader }) => {
                   </Form.Group>
                 </Col>
                 <Col md="12">
-                  <Form.Group className="mb-4 d-flex gap-2 align-items-center">
-                    <Form.Check
-                      type="checkbox"
-                      className="cv-field"
-                      {...register(`test[${index}].is_still_working`, {
-                        required: false,
-                      })}
-                      onChange={(e) => handleCurrentlyWorkingChange(e,index)}
-                    />
-                    <Form.Label className="mb-0">Currently Working</Form.Label>
-                  </Form.Group>
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <Form.Group className="d-flex gap-2 align-items-center">
+                      <Form.Check
+                        type="checkbox"
+                        className="cv-field"
+                        {...register(`test[${index}].is_still_working`, {
+                          required: false,
+                        })}
+                        onChange={(e) => handleCurrentlyWorkingChange(e, index)}
+                      />
+                      <Form.Label className="mb-0 font-14">Currently Working</Form.Label>
+                    </Form.Group>
+                    {index !== 0 && (
+                      <div>
+                        <OverlayTrigger placement="bottom" overlay={deletetooltip}>
+                          <Button variant="danger" className="font-14" onClick={() => deleteDeveloperExperience(item.newId, index)}><FaTrashAlt /></Button>
+                        </OverlayTrigger>
+                      </div>
+                    )}
+                  </div>
                 </Col>
-                {index !== 0 && (
-                    <Col md="12" className="d-flex justify-content-end">
-                        <Button variant="danger" onClick={() =>deleteDeveloperExperience(item.newId,index) }>Delete</Button>
-                    </Col>
-                )}
               </Row>
             </div>
           ))}
           <div className="text-end mb-3">
-            <Button className="main-btn py-2 px-3" onClick={handleAppend}>
-              Add More
-            </Button>
+            <OverlayTrigger placement="bottom" overlay={addtooltip}>
+              <Button className="main-btn py-2 px-3" onClick={handleAppend}>
+                +
+              </Button>
+            </OverlayTrigger>
           </div>
           <div className="text-center">
             <RexettButton
               type="submit"
               text="Submit"
-              className="main-btn px-4"
+              className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
               isLoading={smallLoader}
             />

@@ -65,16 +65,16 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
     }
 
     return (
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title>Developer Section</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">Developer Section</h3>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Form.Group className="mb-4">
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control name="name" placeholder="Enter your name"
+                        <Form.Label className="font-14">Name</Form.Label>
+                        <Form.Control name="name" className="common-field" placeholder="Enter your name"
                             {...register("name", {
                                 required: {
                                     value: true,
@@ -87,8 +87,8 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
                         <p className="error-message">
                             {errors.name?.message}
                         </p>
-                        <Form.Label>Position</Form.Label>
-                        <Form.Control name="professional_title" placeholder="Enter your name"
+                        <Form.Label className="font-14">Position</Form.Label>
+                        <Form.Control name="professional_title" className="common-field" placeholder="Enter your name"
                             {...register("professional_title", {
                                 required: {
                                     value: true,
@@ -103,7 +103,7 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
                             {errors.professional_title?.message}
                         </p>
 
-                        <Form.Label className="common-label">Image</Form.Label>
+                        <Form.Label className="font-14">Image</Form.Label>
                         <Form.Control type="file" id="developer-image"
                             name="profile_picture"
                             {...register("profile_picture", {
@@ -125,7 +125,7 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
                         <RexettButton
                             type="submit"
                             text="Submit"
-                            className="main-btn px-4"
+                            className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
                             isLoading={smallLoader}
                         />
