@@ -15,6 +15,7 @@ const RejectModal = ({ show, handleClose,onClick,smallLoader,header ,feedbacks ,
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">End Job</h3>
                 <Form>
                     <Form.Group className="mb-4">
                         <Form.Label>{feedbacks}</Form.Label>
