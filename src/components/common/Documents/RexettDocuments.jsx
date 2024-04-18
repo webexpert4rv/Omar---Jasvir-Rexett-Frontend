@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, Button, Col, Form, Row, Tabs, Tab, Nav } from "react-bootstrap";
+import { Collapse, Button, Col, Form, Row, Tabs, Tab, Nav,OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FaFolder } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
@@ -231,6 +231,11 @@ const RexettDocuments = ({ currentRole }) => {
     const handleShowFilterMenu = () => {
         setShowFilterMenu(!showFilterMenu);
     }
+    const doctooltip = (
+        <Tooltip id="tooltip">
+          Create folder or Upload files
+        </Tooltip>
+      );
     return (
         <>
             <section>
@@ -313,14 +318,16 @@ const RexettDocuments = ({ currentRole }) => {
                                                 <div className="d-flex align-items-center gap-3">
                                                     <h3 className="section-head-sub mb-0">{t("documents")}</h3>
                                                     <div className="position-relative">
-                                                        <Button
-                                                            onClick={() => setOpen(!open)}
-                                                            className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0"
-                                                            aria-controls="example-collapse-text"
-                                                            aria-expanded={open}
-                                                        >
-                                                            +
-                                                        </Button>
+                                                        <OverlayTrigger placement="bottom" overlay={doctooltip}>
+                                                            <Button
+                                                                onClick={() => setOpen(!open)}
+                                                                className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0"
+                                                                aria-controls="example-collapse-text"
+                                                                aria-expanded={open}
+                                                            >
+                                                                +
+                                                            </Button>
+                                                        </OverlayTrigger>
                                                         <Collapse in={open} className="new-doc-collapse">
                                                             <div>
                                                                 <Form.Label onClick={handleShowUploadFileModal} className="main-btn outline-main-btn px-4 cursor-pointer upload-btn mb-2 w-100">+ {t("createFolder")}</Form.Label>

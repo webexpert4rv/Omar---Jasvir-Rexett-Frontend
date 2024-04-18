@@ -82,7 +82,7 @@ const Engagements = () => {
                         </>}
                     </tbody>
                 </table>
-                <div className="d-flex justify-content-between align-items-center mb-4">
+                <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                             <p className="showing-result">{t("showing")} {(engagement?.items_per_page)} {t("results")}</p>
                             <RexettPagination  number = {engagement?.total_pages} setPage={setPage} page={page}/>
                         </div>

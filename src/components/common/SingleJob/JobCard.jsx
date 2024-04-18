@@ -20,7 +20,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                     {data?.map((item, index) => {
                         return (
                             <>
-                                <div className="developer-card">
+                                <div className={item?.recommed ? "developer-card recomed-dev" : "developer-card"}>
                                     <div className="tag-developer">{item?.recommed ? "Recommended" : type}</div>
                                     <div className="user-imgbx">
                                         <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg } alt='developer'  className="user-img" />

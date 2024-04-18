@@ -212,7 +212,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
 
                     <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
 
-                    { <div className="d-flex justify-content-between align-items-center mb-4">
+                    { <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                    <p className="showing-result">Showing {(timeReportingData?.length)} results</p> 
                 <RexettPagination number={timeReportingPage?.totalPages} setPage={setPage} page={page}/>
             </div>}

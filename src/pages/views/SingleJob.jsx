@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
+import { Button, Col, Row, Tab, Tabs, Tooltip , OverlayTrigger } from "react-bootstrap";
 // import userImg from '../../assets/img/user-img.jpg'
 
 import { Link, useLocation } from "react-router-dom";
@@ -14,6 +14,9 @@ import { changeJobStatus, getAllJobPostedList, getJobCategoryList, publishedPost
 import JobCard from "../../components/common/SingleJob/JobCard";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
 import { jobPostConfirmMessage } from "../../helper/utlis";
+import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
+import { BsFillSendFill } from "react-icons/bs";
+import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 
 const SingleJob = () => {
@@ -103,6 +106,17 @@ const SingleJob = () => {
             id:id
         })
     }
+    const endjob = (
+        <Tooltip id="tooltip">
+          End Job
+        </Tooltip>
+    );
+    
+    const publishjob = (
+        <Tooltip id="tooltip">
+            Publish Job
+        </Tooltip>   
+    )
 
     return (
         <>
@@ -120,13 +134,17 @@ const SingleJob = () => {
                                 <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
                                     <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                    { singleJobDescription?.status!=="ended"?<>
-                                   <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="px-xxl-5 px-4 closed-job-btn">{t("endJob")}</Button>
-                                    <Button variant="transparent" className="px-xxl-5 px-4 py-2 outline-main-btn" onClick={()=>{
+                                    <OverlayTrigger placement="top" overlay={endjob}>
+                                        <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="closed-job-btn"><MdOutlineDoNotDisturbAlt /></Button>
+                                    </OverlayTrigger>
+                                    <OverlayTrigger placement="top" overlay={publishjob}>
+                                        <Button variant="transparent" className="py-2 main-btn publish-job-btn" onClick={()=>{
                                         let data={
                                             status:singleJobDescription?.status=="published"?"Unpublished":"published"
                                         }
                                         handleUnpublished(singleJobDescription?.id,data)
-                                        }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?"Unpublish":"Publish"}</Button>
+                                        }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?<BsFillSendXFill />:<BsFillSendFill />}</Button>
+                                    </OverlayTrigger>
                                    </>:"" }
                                 </div>
                             </div>
