@@ -23,7 +23,7 @@ const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
     const { t } = useTranslation()
     return (    
         <>
-            <header className="mb-4 zIndex3 overflow-hidden">
+            <header className="mb-4 zIndex3">
                 <div className="d-flex align-items-center justify-content-lg-end justify-content-between gap-3">
                     <div className="d-lg-none">
                         <button onClick={handlemainSidebar} className="bars-btn"><HiBars3 /></button>
