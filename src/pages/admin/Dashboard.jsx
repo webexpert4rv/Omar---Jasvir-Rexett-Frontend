@@ -39,7 +39,7 @@ const AdminDashboard = () => {
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">{t("overview")}    {userName}</h2>
+                <h2 className="section-head mb-4">{t("overview")}</h2>
                 <div className="overview-card-wrapper mb-5">
                     {/* <div className="overview-card">
                     <div>
