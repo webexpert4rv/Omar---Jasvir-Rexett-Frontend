@@ -49,7 +49,7 @@ const JobPost = () => {
   }, [jobCategoryList]);
 
   const skillListMapped = skillList.map((item) => {
-    return { value: item.title, label: item.title };
+    return { value: item.id, label: item.title };
   });
 
   const handleCreate = (inputValue) => {
@@ -225,17 +225,20 @@ const JobPost = () => {
             <Col md="6" className="mb-4">
               <Form.Group>
                 <Form.Label>Skills</Form.Label>
-                <Select
+                {/* <Select
                   options={skillListMapped}
                   onChange={(val) => onChangeSelect(val)}
                   name="skills"
                   isMulti
-                  // {...register("skills", {
-                  //     required: {
-                  //       value: true,
-                  //       message: "Skills are required",
-                  //     },
-                  //   })}
+               
+                /> */}
+                    <CreatableSelect
+                  isClearable
+                  onChange={(newValue) => {
+                    setOtherCategory(newValue)
+                  }}
+                  onCreateOption={handleCreate}
+                  options={skillListMapped}
                 />
               </Form.Group>
               {/* <p className="error-message ">
