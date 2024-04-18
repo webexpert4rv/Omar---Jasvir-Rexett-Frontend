@@ -270,7 +270,7 @@ const RexettDocuments = ({ currentRole }) => {
                                         <div className="filter-section gap-3 align-items-center">
                                             <div className="mb-2">
                                                 <Form.Label className="common-label">{t("search")}</Form.Label>
-                                                <Form.Control type="text" placeholder="Search" onChange={handleSearchChange} value={search} className="search-field"></Form.Control>
+                                                <Form.Control type="text" placeholder={t("search")} onChange={handleSearchChange} value={search} className="search-field"></Form.Control>
                                             </div>
                                             <div className="flex-none mb-2">
                                                 <Form.Label className="common-label">{t("selectCategory")}</Form.Label>

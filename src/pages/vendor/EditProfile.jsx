@@ -9,6 +9,7 @@ import {
   updateVendorProfile,
 } from "../../redux/slices/vendorDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { useTranslation } from "react-i18next";
 
 const EditVendorProfile = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const EditVendorProfile = () => {
     setError,
     formState: { errors },
   } = useForm();
-
+  const { t } =  useTranslation()
   const [password, setPassword] = useState({
     firstPass: false,
     secondPass: false,
@@ -115,21 +116,21 @@ const EditVendorProfile = () => {
             <Form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div>
                 <div>
-                  <h2 className="section-head mb-4">Update Your Profile</h2>
+                  <h2 className="section-head mb-4">{t("updateYourProfile")}</h2>
                   <Row className="mb-4">
                     <Col md="6">
                       <div className="inner-form">
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Vendor Name
+                            {t("vendorName")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="vendor_name"
-                            placeholder="Enter Vendor Name"
+                            placeholder={t("enterVendorName")}
                             {...register(`vendor_name`, {
-                              required: "Name is required",
+                              required:t("nameValidation"),
                             })}
                           />
                           {errors?.vendor_name && (
@@ -140,16 +141,16 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Email
+                            {t("email")}
                           </Form.Label>
                           <div>
                             <Form.Control
                               type="text"
                               className="cv-field"
                               name="email"
-                              placeholder="Enter Email "
+                              placeholder={t("enterEmail")}
                               {...register(`email`, {
-                                required: "Email is required",
+                                required: t("emailValidation"),
                               })}
                             />
                             {errors?.email && (
@@ -161,16 +162,16 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Previous Password
+                            {t("previousPassword")}
                           </Form.Label>
                           <div className="position-relative">
                             <Form.Control
                               type={password.firstPass ? "text" : "password"}
                               className="cv-field"
                               name="password"
-                              placeholder="Enter password"
+                              placeholder={t("enterPassword")}
                               {...register(`password`, {
-                                required: "Password is required",
+                                required: t("passwordValidation"),
                               })}
                             />
                             {errors?.password && (
@@ -193,16 +194,16 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            New Password
+                            {t("newPassword")}
                           </Form.Label>
                           <div className="position-relative">
                             <Form.Control
                               type={password.secondPass ? "text" : "password"}
                               className="cv-field"
                               name="new_password"
-                              placeholder="Enter New password"
+                              placeholder={t("enterNewPassword")}
                               {...register(`new_password`, {
-                                required: "New Password is required",
+                                required: t("newPasswordValidation"),
                               })}
                             />
                             <span
@@ -225,15 +226,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Phone Number
+                            {t("phoneNumber")}
                           </Form.Label>
                           <Form.Control
                             type="number"
                             className="cv-field"
                             name="phone_number"
-                            placeholder="Enter phone_number"
+                            placeholder={t("enterPhoneNumber")}
                             {...register(`phone_number`, {
-                              required: "Phone number is required",
+                              required:t("phoneNumberValidation"),
                             })}
                           />
                           {errors?.phone_number && (
@@ -244,15 +245,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Address
+                            {t("address")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="address"
-                            placeholder="Enter Address"
+                            placeholder={t("enterAddress")}
                             {...register(`address`, {
-                              required: "Address is required",
+                              required: t("addressValidation"),
                             })}
                           />
                           {errors?.address && (
@@ -267,15 +268,15 @@ const EditVendorProfile = () => {
                       <div>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Address 2
+                            {t("address")} 2
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="address_2"
-                            placeholder="Enter address 2"
+                            placeholder={t("enterAddress2")} 
                             {...register(`address_2`, {
-                              required: "Address is required",
+                              required: t("addressValidation"),
                             })}
                           />
                           {errors?.address_2 && (
@@ -302,14 +303,14 @@ const EditVendorProfile = () => {
                           )}
                         </Form.Group> */}
                         <Form.Group className="mb-3">
-                          <Form.Label className="common-label">City</Form.Label>
+                          <Form.Label className="common-label">{t("city")}</Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="city"
-                            placeholder="Enter City"
+                            placeholder={t("enterCity")}
                             {...register(`city`, {
-                              required: "City is required",
+                              required: t("cityValidation"),
                             })}
                           />
                           {errors?.city && (
@@ -320,15 +321,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Postcode
+                            {t("postCode")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="postcode"
-                            placeholder="Enter postcode"
+                            placeholder={t("enterPostCode")}
                             {...register(`postcode`, {
-                              required: "Postcode is required",
+                              required: t("postCodeValidation"),
                             })}
                           />
                           {errors?.postcode && (
@@ -339,15 +340,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Country
+                            {t("country")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="country"
-                            placeholder="Enter Country name"
+                            placeholder={t("enterCountryName")}
                             {...register(`country`, {
-                              required: "Country is required",
+                              required: t("countryValidation"),
                             })}
                           />
                           {errors?.country && (
@@ -361,22 +362,22 @@ const EditVendorProfile = () => {
                   </Row>
                 </div>
                 <div>
-                  <h2 className="section-head mb-4">Update Company Profile</h2>
+                  <h2 className="section-head mb-4">{t("updateCompanyProfile")}</h2>
 
                   <Row className="mb-4">
                     <Col md="6">
                       <div className="inner-form">
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Company Name
+                            {t("companyName")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="company_name"
-                            placeholder="Enter Company Name"
+                            placeholder={t("enterCompanyName")}
                             {...register(`company_name`, {
-                              required: "Company name is required",
+                              required: t("compnyNameValidation"),
                             })}
                           />
                           {errors?.company_name && (
@@ -387,15 +388,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Type Of Company
+                            {t("typeOfCompany")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="type_of_company"
-                            placeholder="Enter Company Name"
+                            placeholder={t("enterCompanyType")}
                             {...register(`type_of_company`, {
-                              required: "Type of Company is required",
+                              required: t("compnyTypeValidation"),
                             })}
                           />
                           {errors?.type_of_company && (
@@ -406,15 +407,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Email
+                            {t("email")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="company_email"
-                            placeholder="Enter Email"
+                            placeholder={t("enterEmail")}
                             {...register(`company_email`, {
-                              required: "Email is required",
+                              required: t("emailValidation"),
                             })}
                           />
                           {errors?.company_email && (
@@ -426,15 +427,15 @@ const EditVendorProfile = () => {
 
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Address
+                            {t("address")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="company_address"
-                            placeholder="Enter Address"
+                            placeholder={t("enterAddress")}
                             {...register(`company_address`, {
-                              required: "Address is required",
+                              required: t("addressValidation"),
                             })}
                           />
                           {errors?.company_address && (
@@ -445,13 +446,13 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Phone Number
+                            {t("phoneNumber")}
                           </Form.Label>
                           <Form.Control
                             type="number"
                             className="cv-field"
                             name="company_phone_number"
-                            placeholder="Enter phone_number"
+                            placeholder={t("enterPhoneNumber")}
                             {...register(`company_phone_number`, {
                               required: "Phone number is required",
                             })}
@@ -465,15 +466,15 @@ const EditVendorProfile = () => {
 
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Establishment Year
+                            {t("establishmentYear")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="establishment_year"
-                            placeholder="Establishment year"
+                            placeholder={t("establishmentYear")}
                             {...register(`establishment_year`, {
-                              required: "Establishment year is required",
+                              required: t("establishmentValidation"),
                             })}
                           />
                           {errors?.establishment_year && (
@@ -484,15 +485,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Type Of Establishment
+                            {t("typeOfEstablishment")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="type_of_establishment"
-                            placeholder="Enter Type of Establishment "
+                            placeholder={t("enterTypeOfEstablishment")}
                             {...register(`type_of_establishment`, {
-                              required: "Type of Establishment  is required",
+                              required: t("typeOfEstablishmentValidation"),
                             })}
                           />
                           {errors?.type_of_establishment && (
@@ -503,15 +504,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Website
+                            {t("website")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="website"
-                            placeholder="Enter website"
+                            placeholder={t("enterWebsite")}
                             {...register(`website`, {
-                              required: "Website is required",
+                              required: t("websiteValidation"),
                             })}
                           />
                           {errors?.website && (
@@ -522,15 +523,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            GST Number
+                            {t("GSTNumber")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="gst_number"
-                            placeholder="Enter GST number"
+                            placeholder={t("enterGSTNumber")}
                             {...register(`gst_number`, {
-                              required: "Gst Number is required",
+                              required: t("gstValidation"),
                             })}
                           />
                           {errors?.gst_number && (
@@ -542,13 +543,13 @@ const EditVendorProfile = () => {
                       </div>
                       <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Success Story
+                            {t("successStory")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="success_story"
-                            placeholder="Enter Success Story"
+                            placeholder={t("enterSuccessStory")}
                             {...register(`success_story`, {
                               required: false,
                             })}
@@ -561,13 +562,13 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Yearly Revenue
+                            {t("yearlyRevenue")}
                           </Form.Label>
                           <Form.Control
                             type="number"
                             className="cv-field"
                             name="yearly_revenue"
-                            placeholder=" Enter Yearly Revenue"
+                            placeholder={t("enterYearlyRevenue")}
                             {...register(`yearly_revenue`, {
                               required: false,
                             })}
@@ -583,15 +584,15 @@ const EditVendorProfile = () => {
 
                     <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Total Employees
+                            {t("totalEmployees")}
                           </Form.Label>
                           <Form.Control
                             type="number"
                             className="cv-field"
                             name="total_employees"
-                            placeholder="Total Employees"
+                            placeholder={t("totalEmployees")}
                             {...register(`total_employees`, {
-                              required: "Total Employees is required",
+                              required: t("totalEmployeesValidation"),
                             })}
                           />
                           {errors?.total_employees && (
@@ -602,13 +603,13 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Total IT Recruiter
+                            {t("totalITRecruiter")}
                           </Form.Label>
                           <Form.Control
                             type="number"
                             className="cv-field"
                             name="total_it_recruiter"
-                            placeholder="Enter Total IT Recruiter"
+                            placeholder={t("enterTotalITRecruiter")}
                             {...register(`total_it_recruiter`, {
                               required: false,
                             })}
@@ -621,13 +622,13 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Service Offering
+                            {t("serviceOffering")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="service_offering"
-                            placeholder="Enter Service Offering"
+                            placeholder={t("enterServiceOffering")}
                             {...register(`service_offering`, {
                               required: false,
                             })}
@@ -640,13 +641,13 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Specialization
+                            {t("specialization")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="specialization"
-                            placeholder="Enter Specialization"
+                            placeholder={t("enterSpecialization")}
                             {...register(`specialization`, {
                               required: false,
                             })}
@@ -659,13 +660,13 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Turn around time to close contract position
+                          {t("closeContract")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="turn_around_time_to_close_contract_position"
-                            placeholder="Enter Turn Around Time To Close Contract Position"
+                            placeholder={t("enterCloseContract")}
                             {...register(`turn_around_time_to_close_contract_position`, {
                               required: false,
                             })}
@@ -677,13 +678,13 @@ const EditVendorProfile = () => {
                           )}
                         </Form.Group> <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Turn around time to close permanent position
+                          {t("closePermanent")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="turn_around_time_to_close_permanent_position"
-                            placeholder="Enter Turn Around Time To Close Permanent Position"
+                            placeholder={t("enterClosePermanent")}
                             {...register(`turn_around_time_to_close_permanent_position`, {
                               required: false,
                             })}
@@ -698,14 +699,14 @@ const EditVendorProfile = () => {
                       <div>
   
                         <Form.Group className="mb-3">
-                          <Form.Label className="common-label">City</Form.Label>
+                          <Form.Label className="common-label">{t("city")}</Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="company_city"
-                            placeholder="Enter city"
+                            placeholder={t("enterCity")}
                             {...register(`company_city`, {
-                              required: "City is required",
+                              required: t("cityValidation"),
                             })}
                           />
                           {errors?.company_city && (
@@ -716,17 +717,17 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            State
+                            {t("state")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="state"
-                            placeholder="Enter State"
+                            placeholder={t("enterState")}
                             {...register(`state`, {
                               required: {
                                 value: true,
-                                message: "State is required",
+                                message: t("stateValidation"),
                               },
                               pattern: {
                                 value: /^[A-Za-z\s]+$/,
@@ -742,15 +743,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Postcode
+                            {t("postCode")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="company_postcode"
-                            placeholder="Enter postcode"
+                            placeholder={t("enterPostCode")}
                             {...register(`company_postcode`, {
-                              required: "Postcode is required",
+                              required:t("postCodeValidation"),
                             })}
                           />
                           {errors?.company_postcode && (
@@ -761,17 +762,17 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Country
+                            {t("country")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="company_country"
-                            placeholder="Enter Country"
+                            placeholder={t("enterCountry")}
                             {...register(`company_country`, {
                               required: {
                                 value: true,
-                                message: "Country is required",
+                                message: t("countryValidation"),
                               },
                               pattern: {
                                 value: /^[A-Za-z\s]+$/,
@@ -788,17 +789,17 @@ const EditVendorProfile = () => {
 
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Country Code
+                            {t("countryCode")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="country_code"
-                            placeholder="Enter Country Code"
+                            placeholder={t("enterCountryCode")}
                             {...register(`country_code`, {
                               required: {
                               value: true,
-                              message: "Country is required",
+                              message: t("countryCodeValidation"),
                             },
                             pattern:{
                               value: /^(\+?\d{1,3}|\d{1,5})$/,
@@ -821,22 +822,22 @@ const EditVendorProfile = () => {
                 </div>
                 <div>
                   <h2 className="section-head mb-4">
-                    Update Your Proprietor Profile
-                  </h2>
+                  {t("updateYourProprietorProfile")}
+                  </h2> 
                   <Row className="mb-4">
                     <Col md="6">
                       <div className="inner-form">
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Proprietor Name
+                            {t("proprietorName")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="proprietor_name"
-                            placeholder="Enter Proprietor Name"
+                            placeholder={t("enterProprietorName")}
                             {...register(`proprietor_name`, {
-                              required: "Name is required",
+                              required: t("nameValidation"),
                             })}
                           />
                           {errors?.proprietor_name && (
@@ -847,16 +848,16 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Proprietor Email
+                            {t("proprietor")} {t("email")}
                           </Form.Label>
                           <div>
                             <Form.Control
                               type="text"
                               className="cv-field"
                               name="proprietor_email"
-                              placeholder="Enter Proprietor Email"
+                              placeholder={t("enterProprietorEmail")}
                               {...register(`proprietor_email`, {
-                                required: " Email is required",
+                                required: t("emailValidation"),
                               })}
                             />
                             {errors?.proprietor_email && (
@@ -868,15 +869,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Phone Number
+                            {t("phoneNumber")}
                           </Form.Label>
                           <Form.Control
                             type="number"
                             className="cv-field"
                             name="proprietor_contact_number"
-                            placeholder="Enter Proprietor Contact Number"
+                            placeholder={t("enterProprietorContactNumber")}
                             {...register(`proprietor_contact_number`, {
-                              required: "Contact number is required",
+                              required: t("contactNumberValidation"),
                             })}
                           />
                           {errors?.proprietor_contact_number && (
@@ -892,15 +893,15 @@ const EditVendorProfile = () => {
                       <div className="inner-form">
                       <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Contact person name
+                            {t("contactPersonName")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="proprietor_contact_person_name"
-                            placeholder="Enter Contact Person Name"
+                            placeholder={t("enterContactPersonName")}
                             {...register(`proprietor_contact_person_name`, {
-                              required: "Contact Person name is required",
+                              required: t("contactNameValidation"),
                             })}
                           />
                           {errors?.proprietor_contact_person_name && (
@@ -911,15 +912,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Contact Phone Number
+                            {t("contactPhoneNumber")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="proprietor_contact_person_phone_number"
-                            placeholder="Enter Contact Person Number"
+                            placeholder={t("enterContactPersonNumber")}
                             {...register(`proprietor_contact_person_phone_number`, {
-                              required: "Contact Phone number is required",
+                              required:t("contactNameValidation"),
                             })}
                           />
                           {errors?.proprietor_contact_person_phone_number && (
@@ -930,15 +931,15 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            Contact Person Email
+                            {t("contactPersonEmail")}
                           </Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
                             name="proprietor_contact_person_email"
-                            placeholder="Enter Contact Person Email"
+                            placeholder={t("enterContactPersonEmail")}
                             {...register(`proprietor_contact_person_email`, {
-                              required: "Contact email is required",
+                              required: t("contactEmailValidation"),
                             })}
                           />
                           {errors?.proprietor_contact_person_email && (
@@ -954,7 +955,7 @@ const EditVendorProfile = () => {
                 <div className="text-center">
                   <RexettButton
                     type="submit"
-                    text="Update profile"
+                    text={t("updateProfile")}
                     className="main-btn px-4"
                     variant="transparent"
                     isLoading={smallLoader}

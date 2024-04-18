@@ -4,6 +4,7 @@ import {useDispatch,useSelector} from "react-redux"
 import { addFileInvoice, getDeveloperList, getClientList } from "../../redux/slices/vendorDataSlice";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
+import { useTranslation } from "react-i18next";
 const VendorUploadInvoice = () =>{
     const dispatch =useDispatch()
     const [ids,setIds]=useState({
@@ -13,6 +14,7 @@ const VendorUploadInvoice = () =>{
     const [file,setFile]=useState(null)
     const {clientList,developerList,} = useSelector(state=>state.vendorData)
     const {smallLoader} =useSelector(state=>state.clientData)
+    const { t } = useTranslation()
 
     useEffect(()=>{
    dispatch(getClientList())
@@ -55,13 +57,13 @@ const VendorUploadInvoice = () =>{
     return(
         <>
             <section className="upload-invoice-section card-box">
-                <h2 className="overview-card-heading mb-4">Upload Invoice</h2>
+                <h2 className="overview-card-heading mb-4">{t("uploadInvoice")}</h2>
                 <Form>
                     <div className="experience-container">
                         <Row>
                             <Col md={6} className="mb-3">
                                 <Form.Select onChange={handleClient}>
-                                    <option value="" selected disabled>Select Client</option>
+                                    <option value="" selected disabled>{t("selectClient")}</option>
                                    {
                                     clientList?.map((item,index)=>{
                                         return (
@@ -75,7 +77,7 @@ const VendorUploadInvoice = () =>{
                             </Col>
                             <Col md={6} className="mb-3">
                             <Form.Select onChange={handleDeveloper} disabled={developerList.length==0}>
-                                    <option value="" selected disabled>Select Developer</option>
+                                    <option value="" selected disabled>{t("selectDeveloper")}</option>
                                     {
                                     developerList?.map((item,index)=>{
                                         return (
@@ -92,7 +94,7 @@ const VendorUploadInvoice = () =>{
                                     {/* <Form.Label>Select Client</Form.Label> */}
                                     {/* <Form.Label>Select Developer</Form.Label> */}
                                     <Form.Control type="file" className="d-none" id="upload-file" onChange={handleFile} />
-                                    <Form.Label htmlFor="upload-file" className="upload-file-label">Upload Invoice File</Form.Label>
+                                    <Form.Label htmlFor="upload-file" className="upload-file-label">{t("uploadInvoiceFile")}</Form.Label>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -101,7 +103,7 @@ const VendorUploadInvoice = () =>{
                     <div className="text-center">
                         <RexettButton
                          type="submit" 
-                         text="Submit"
+                         text={t("submit")}
                          className="main-btn px-4"
                          variant="transparent"
                          onClick={submitFile}
