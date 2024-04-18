@@ -10,6 +10,7 @@ import { getVendorDashboard } from "../../redux/slices/vendorDataSlice";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -18,6 +19,7 @@ const VendorDashboard = () => {
     const dispatch = useDispatch()
     const { vendorDashboard, smallLoader, screenLoader } = useSelector(state => state.vendorData)
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const userName = localStorage.getItem("userName")
     useEffect(() => {
@@ -32,11 +34,11 @@ const VendorDashboard = () => {
 
     return (
         <>
-            {screenLoader ? <ScreenLoader /> : <><h2 className="section-head mb-4">Overview</h2>
+            {screenLoader ? <ScreenLoader /> : <><h2 className="section-head mb-4">{t("overview")}  </h2>
                 <div className="overview-card-wrapper mb-5">
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Income</h4>
+                            <h4 className="overview-card-subhead">{t("income")}</h4>
                             <h3 className="overview-card-heading mb-0">{vendorDashboard?.revenue_total}</h3>
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
@@ -44,7 +46,7 @@ const VendorDashboard = () => {
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom-grey">
-                    <h2 className="section-head-sub">List of all register developers</h2>
+                    <h2 className="section-head-sub">{t("listOfAllRegisterDevelopers")}</h2>
 
                 </div>
                 <div className="developers-list mb-5">
@@ -75,14 +77,14 @@ const VendorDashboard = () => {
                             )
                         })}
                         <div className="mt-2 ">
-                            <Link to={"/list-all-developers"} className="link-text-dark">See All</Link>
+                            <Link to={"/list-all-developers"} className="link-text-dark">{t("seeAll")}</Link>
                         </div>
 
                     </> : <NoDataFound />}
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom-grey">
-                    <h2 className="section-head-sub">List of rented developers</h2>
+                    <h2 className="section-head-sub">{t("listOfRentedDevelopers")}</h2>
 
                 </div>
                 <div className="developers-list">
@@ -115,7 +117,7 @@ const VendorDashboard = () => {
                         })}
 
                         <div className="text-center ">
-                            <Link to={"/all-rented-developers"} className="link-text-dark">See All</Link>
+                            <Link to={"/all-rented-developers"} className="link-text-dark">{t("seeAll")}</Link>
                         </div>
                     </>
                         : <NoDataFound />}

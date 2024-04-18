@@ -12,6 +12,7 @@ import { getAddNewDeveloper } from "../../redux/slices/vendorDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
 import { getDegreeList } from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
+import { useTranslation } from "react-i18next";
 
 const options = [
     { value: 'html', label: 'HTML' },
@@ -34,6 +35,7 @@ const RegisterDeveloper = () => {
     const { degreeList } = useSelector(state => state.developerData)
     const skillLabels = skills?.map(skill => skill.value);
     const skillSet = skillLabels?.toString()
+    const { t } = useTranslation()
     const [socialMediaRows, setSocialMediaRows] = useState([
         {
             name: '',
@@ -200,18 +202,18 @@ const RegisterDeveloper = () => {
             <section className="register-developer card-box">
                 <div className="">
                     <Form onSubmit={handleSubmit(onSubmit)}>
-                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Enter Personal Details</h2>
+                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterPersonalDetails")}</h2>
                         <div className="inner-form mb-3">
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Developer Name</Form.Label>
+                                        <Form.Label className="common-label">{t("developerName")}</Form.Label>
                                         <Form.Control type="text"
                                             className="common-field"
                                             {...register("name", {
                                                 required: {
                                                     value: true,
-                                                    message: "Name is required",
+                                                    message: t("nameValidation"),
                                                 },
                                             })} />
                                         <p className="error-message">
@@ -221,13 +223,13 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Email</Form.Label>
+                                        <Form.Label className="common-label">{t("email")}</Form.Label>
                                         <Form.Control type="email"
                                             className="common-field"
                                             {...register("email", {
                                                 required: {
                                                     value: true,
-                                                    message: "Email is required",
+                                                    message: t("emailValidation"),
                                                 },
                                             })} />
                                         <p className="error-message">
@@ -237,14 +239,14 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Phone Number</Form.Label>
+                                        <Form.Label className="common-label">{t("phoneNumber")}</Form.Label>
                                         <Form.Control type="text"
                                             className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
                                                 required: {
                                                     value: true,
-                                                    message: "Phone Number is required",
+                                                    message: t("phoneNumberValidation"),
                                                 },
                                                 pattern: {
                                                     value: /^[0-9]{10}$/,
@@ -259,13 +261,13 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Address</Form.Label>
+                                        <Form.Label>{t("address")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address_2"
                                             {...register("address_2", {
                                                 required: {
                                                     value: true,
-                                                    message: "Address is required",
+                                                    message: t("addressValidation"),
                                                 },
                                             })}
                                         />
@@ -276,7 +278,7 @@ const RegisterDeveloper = () => {
 
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Address 2</Form.Label>
+                                        <Form.Label className="common-label">{t("address")} 2</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address"
                                             {...register("address", {
@@ -292,18 +294,18 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">City</Form.Label>
+                                        <Form.Label className="common-label">{t("city")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="City"
                                             {...register("city", {
                                                 required: {
                                                     value: true,
-                                                    message: "City is required",
+                                                    message: t("cityValidation"),
                                                 },
-                                                pattern: {
-                                                    value: /^[A-Za-z\s]+$/,
-                                                    message: "Country should not contain numbers or special character",
-                                                }
+                                                // pattern: {
+                                                //     value: /^[A-Za-z\s]+$/,
+                                                //     message: "Country should not contain numbers or special character",
+                                                // }
                                             })}
                                         />
                                         <p className="error-message">
@@ -313,19 +315,19 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">State</Form.Label>
+                                        <Form.Label className="common-label">{t("state")}</Form.Label>
                                         <Form.Control type="text"
                                             className="common-field"
                                             name="state"
                                             {...register("state", {
                                                 required: {
                                                     value: true,
-                                                    message: "State is required",
+                                                    message: t("stateValidation"),
                                                 },
-                                                pattern: {
-                                                    value: /^[A-Za-z\s]+$/,
-                                                    message: "State should not contain numbers or special character",
-                                                }
+                                                // pattern: {
+                                                //     value: /^[A-Za-z\s]+$/,
+                                                //     message: "State should not contain numbers or special character",
+                                                // }
                                             })}
                                         />
                                         <p className="error-message">
@@ -334,19 +336,19 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Postal Code</Form.Label>
+                                        <Form.Label className="common-label">{t("postCode")}</Form.Label>
                                         <Form.Control type="text"
                                             className="common-field"
                                             name="post_code"
                                             {...register("post_code", {
                                                 required: {
                                                     value: true,
-                                                    message: "Postal code is required",
+                                                    message:t("postCodeValidation"),
                                                 },
-                                                pattern: {
-                                                    value: /^[0-9]+$/,
-                                                    message: "Postal code should only contain numbers",
-                                                }
+                                                // pattern: {
+                                                //     value: /^[0-9]+$/,
+                                                //     message: "Postal code should only contain numbers",
+                                                // }
                                             })}
                                         />
                                         <p className="error-message">
@@ -355,18 +357,18 @@ const RegisterDeveloper = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Country</Form.Label>
+                                        <Form.Label className="common-label">{t("country")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="country"
                                             {...register("country", {
                                                 required: {
                                                     value: true,
-                                                    message: "Country is required",
+                                                    message: t("countryValidation"),
                                                 },
-                                                pattern: {
-                                                    value: /^[A-Za-z\s]+$/,
-                                                    message: "Country should not contain numbers or special character",
-                                                }
+                                                // pattern: {
+                                                //     value: /^[A-Za-z\s]+$/,
+                                                //     message: "Country should not contain numbers or special character",
+                                                // }
                                             })}
                                         />
                                         <p className="error-message">
@@ -375,19 +377,19 @@ const RegisterDeveloper = () => {
                                 </Col>
                             </Row>
                         </div>
-                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Enter Experience</h2>
+                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterExperience")}</h2>
                         <div className="inner-form mb-3">
                             {experienceFields.map(({ id, company, jobPosition, jobDescription, startDate, endDate, currentlyWorking }, index) => (
                                 <Row>
                                     <Col md={6}>
                                         <Form.Group className="mb-3">
-                                            <Form.Label className="common-label">Company Name</Form.Label>
+                                            <Form.Label className="common-label">{t("companyName")}</Form.Label>
                                             <Form.Control type="text"
                                                 
                                                 {...register(`experiences[${index}].company_name`, {
                                                     required: {
                                                         value: true,
-                                                        message: "Company name is required",
+                                                        message: t("compnyNameValidation"),
                                                     },
                                                 })} />
                                             {errors?.experiences?.[index]?.company_name && (
@@ -397,14 +399,14 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md={6}>
                                         <Form.Group className="mb-3">
-                                            <Form.Label className="common-label">Job Position</Form.Label>
+                                            <Form.Label className="common-label">{t("jobPosition")}</Form.Label>
                                             <Form.Control
                                                 type="text"
                                                 className="cv-field"
                                                 name="job_title"
-                                                placeholder="Enter Job Position"
+                                                placeholder={t("enterJobPosition")}
                                                 {...register(`experiences[${index}].job_title`, {
-                                                    required: "Job Position is required",
+                                                    required: t("jobPositionValidation"),
                                                 })}
                                             />
                                             {errors?.experiences?.[index]?.job_title && (
@@ -414,14 +416,14 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md={6}>
                                         <Form.Group className="mb-3">
-                                            <Form.Label className="common-label">Job Description</Form.Label>
+                                            <Form.Label className="common-label">{t("jobDescription")}</Form.Label>
                                             <Form.Control
                                                 type="text"
                                                 as="textarea"
                                                 rows={3}
-                                                placeholder="Enter Job Description"
+                                                // placeholder="Enter Job Description"
                                                 {...register(`experiences[${index}].description`, {
-                                                    required: "Description name is required",
+                                                    required: t("descriptionValidation"),
                                                 })}
                                             />
                                             {errors?.experiences?.[index]?.description && (
@@ -431,20 +433,20 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group className="mb-4">
-                                            <Form.Label>Start Date</Form.Label>
+                                            <Form.Label>{t("startDate")}</Form.Label>
                                             <Form.Control
                                                 type="date"
-                                                placeholder="Enter Start Date"
+                                                placeholder={t("enterStartDate")}
                                                 max={new Date().toISOString().split("T")[0]}
                                                 {...register(`experiences[${index}].start_date`, {
-                                                    required: "Start Date is required",
+                                                    required: t("startDateValidation"),
                                                     validate: {
                                                         dateRange: (value) => {
                                                             const end_date = watch(`experiences[${index}].end_date`); // Get the value of the end date field
-                                                            if (!end_date || value <= end_date) {
-                                                                return true;
-                                                            }
-                                                            return "Start Date must be before End Date";
+                                                            // if (!end_date || value <= end_date) {
+                                                            //     return true;
+                                                            // }
+                                                            // return "Start Date must be before End Date";
                                                         },
                                                     },
                                                 })}
@@ -457,16 +459,16 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group className="mb-4">
-                                            <Form.Label>End Date</Form.Label>
+                                            <Form.Label>{t("endDate")}</Form.Label>
                                             <Form.Control
                                                 type="date"
                                                 className="cv-field"
-                                                placeholder="Enter End Date"
+                                                placeholder={t("enterEndDate")}
                                                 max={new Date().toISOString().split("T")[0]}
                                                 {...register(`experiences[${index}].end_date`, {
                                                     required: {
                                                         value: disabledEndDates[index] ? false : true,
-                                                        message: "End Date is required",
+                                                        message: t("endDateValidation"),
                                                     },
                                                 })}
                                                 disabled={disabledEndDates[index]}
@@ -486,7 +488,7 @@ const RegisterDeveloper = () => {
                                                 })}
                                                 onChange={(e) => handleCurrentlyWorkingChange(e, index,)}
                                             />
-                                            <Form.Label className="mb-0">Currently Working</Form.Label>
+                                            <Form.Label className="mb-0">{t("currentlyWorking")}</Form.Label>
                                         </Form.Group>
                                     </Col>
                                     {index !== 0 && (
@@ -500,18 +502,18 @@ const RegisterDeveloper = () => {
                                 <Button className="main-btn py-2 px-3" onClick={handleAddMoreExp}>+</Button>
                             </div>
                         </div>
-                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Enter Education Details</h2>
+                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterEducationDetails")}</h2>
                         <div className="inner-form mb-3">
                             {educationFields.map(({ id, university_name, degree_id, address, start_year, end_year, currently_attending }, index) => (
                                 <Row>
                                     <Col md={6}>
                                         <Form.Group className="mb-3">
-                                            <Form.Label>University Name</Form.Label>
+                                            <Form.Label>{t("universityName")}</Form.Label>
                                             <Form.Control type="text"
                                                 {...register(`educations[${index}].university_name`, {
                                                     required: {
                                                         value: true,
-                                                        message: "University name is required",
+                                                        message: t("universityNameValidation"),
                                                     },
                                                 })} />
                                             {errors?.educations?.[index]?.university_name && (
@@ -522,7 +524,7 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md={6}>
                                         <Form.Group>
-                                            <Form.Label>Degree Name</Form.Label>
+                                            <Form.Label>{t("degreeName")}</Form.Label>
                                             <Select
                                                 options={degreeList}
                                                 onChange={(val) => setValue(`educations[${index}].degree_id`, val ? val.value : '')}
@@ -533,13 +535,13 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md={6}>
                                         <Form.Group className="mb-3">
-                                            <Form.Label>Address</Form.Label>
+                                            <Form.Label>{t("address")}</Form.Label>
                                             <Form.Control type="text"
 
                                                 {...register(`educations[${index}].address`, {
                                                     required: {
                                                         value: true,
-                                                        message: "Address is required",
+                                                        message: t("addressValidation"),
                                                     },
                                                 })} />
                                             {errors?.educations?.[index]?.address && (
@@ -549,22 +551,22 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md={3}>
                                         <Form.Group>
-                                            <Form.Label>Start Year</Form.Label>
+                                            <Form.Label>{t("startYear")}</Form.Label>
                                             <Form.Select
                                                 {...register(`educations.${index}.start_year`, {
-                                                    required: 'Start Year is required',
+                                                    required: t('startYearValidation'),
                                                     validate: {
                                                         lessThanEndYear: value => {
                                                             const endYear = watch(`educations.${index}.end_year`);
-                                                            if (!endYear || parseInt(value) < parseInt(endYear)) {
-                                                                return true;
-                                                            }
-                                                            return 'Start Year must be less than End Year';
+                                                            // if (!endYear || parseInt(value) < parseInt(endYear)) {
+                                                            //     return true;
+                                                            // }
+                                                            // return 'Start Year must be less than End Year';
                                                         }
                                                     }
                                                 })}
                                             >
-                                                <option disabled selected>Please select year</option>
+                                                <option disabled selected>{t("pleaseSelectYear")}</option>
                                                 {yearsArray?.map((item) => (
                                                     <option key={item} value={item}>{item}</option>
                                                 ))}
@@ -576,17 +578,17 @@ const RegisterDeveloper = () => {
                                     </Col>
                                     <Col md="3">
                                         <Form.Group className="mb-3">
-                                            <Form.Label>End Year</Form.Label>
+                                            <Form.Label>{t("endYear")}</Form.Label>
                                             <Form.Select
                                                 {...register(`educations.${index}.end_year`, {
                                                     required: {
                                                         value: disbaleYear[index] ? false : true,
-                                                        message: "End year is required"
+                                                        message: t("endYearValidation")
                                                     }
                                                 })}
                                                 disabled={disbaleYear[index]}
                                             >
-                                                <option disabled selected >Please select year</option>
+                                                <option disabled selected >{t("pleaseSelectYear")}</option>
                                                 {yearsArray?.map((item) => (
                                                     <option key={item} value={item}>{item}</option>
                                                 ))}
@@ -605,7 +607,7 @@ const RegisterDeveloper = () => {
                                             })}
                                             onChange={(e) => handleCurrentlyAttendingChange(e, index,)}
                                         />
-                                        <Form.Label className="mb-0">Currently Attending</Form.Label>
+                                        <Form.Label className="mb-0">{t("currentlyAttending")}</Form.Label>
                                     </Form.Group>
                                     {index !== 0 && (
                                         <Col md="12" className="d-flex justify-content-end">
@@ -618,7 +620,7 @@ const RegisterDeveloper = () => {
                                 <Button className="main-btn py-2 px-3" onClick={handleAddMore}>+</Button>
                             </div>
                         </div>
-                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Enter Skills</h2>
+                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterSkills")}</h2>
                         <div className="inner-form mb-3">
                             <Row>
                                 <Col md="12">
@@ -635,7 +637,7 @@ const RegisterDeveloper = () => {
                                 </Col>
                             </Row>
                         </div>
-                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">Add Social Links</h2>
+                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("addSocialLinks")}</h2>
                         <div className="inner-form">
                             {socialMediaRows.map((row, index) => (
                                 <div className="experience-container">
@@ -648,15 +650,15 @@ const RegisterDeveloper = () => {
                                                         {...register(`social_links[${index}].name`)} // Register the name field
                                                     >
                                                         {/* <option value="facebook_url">Facebook</option> */}
-                                                        <option value="linkedin_url">Linkedin</option>
+                                                        <option value="linkedin_url">{t("linkedIn")}</option>
                                                         {/* <option value="twitter_url">Twitter</option> */}
-                                                        <option value="github_url">Github</option>
+                                                        <option value="github_url">{t("github")}</option>
                                                     </Form.Select>
                                                 </InputGroup.Text>
                                                 <Form.Control
                                                     type="text"
                                                     className="cv-field"
-                                                    placeholder="Enter Url"
+                                                    placeholder={t("enterUrl")}
                                                     {...register(`social_links[${index}].url`, {
                                                         required: {
                                                             value: true,
@@ -679,7 +681,7 @@ const RegisterDeveloper = () => {
                         <div className="text-center">
                             <RexettButton
                                 type="submit"
-                                text="Register"
+                                text={t("register")}
                                 className="main-btn px-5"
                                 variant="transparent"
                                 isLoading={smallLoader}

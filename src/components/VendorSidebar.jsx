@@ -9,8 +9,10 @@ import { PiCoinsFill } from "react-icons/pi";
 import { FaFileInvoice } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
 
 const VendorSidebar = ({ sideBarActive }) => {
+    const { t } = useTranslation()
     const logout=()=>{
         localStorage.clear()
          window.location.href="/vendor-login"
@@ -23,31 +25,31 @@ const VendorSidebar = ({ sideBarActive }) => {
                         <div className="sidebar-logo mb-3">
                             <img src={sidebarLogo} alt="Sidebar Logo" />
                         </div>
-                        <NavLink to={"/vendor-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
+                        <NavLink to={"/vendor-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
                             <li className="sidebar-item">
-                                <NavLink to={"/edit-vendor-profile"} className="side-link" activeClassName="active"><IoIosSettings /> Edit Profile</NavLink>
+                                <NavLink to={"/edit-vendor-profile"} className="side-link" activeClassName="active"><IoIosSettings /> {t("editProfile")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/vendor-documents"} className="side-link" activeClassName="active"><IoDocuments /> Documents</NavLink>
+                                <NavLink to={"/vendor-documents"} className="side-link" activeClassName="active"><IoDocuments /> {t("documents")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/vendor-revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> Revenue</NavLink>
+                                <NavLink to={'/vendor-revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/vendor-upload-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Upload Invoice</NavLink>
+                                <NavLink to={'/vendor-upload-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("uploadInvoice")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/vendor-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
+                                <NavLink to={'/vendor-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                         </ul>
                     </div>
                     <div className="w-100 px-3">
                         <div>
-                            <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
+                            <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                         <div>
-                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>
+                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("FAQ")}</NavLink>
                         </div>
                     </div>
                 </div>
