@@ -9,7 +9,9 @@ import NoDataFound from '../../atomic/NoDataFound';
 import RexettPagination from '../../atomic/RexettPagination';
 import { useSelector } from 'react-redux';
 import { ImUserCheck } from "react-icons/im";
+import { PiUserRectangleFill } from "react-icons/pi";
 import { ImUserMinus } from "react-icons/im";
+import { RiUserAddFill } from "react-icons/ri";
 const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, page }) => {
     const { singleJobPagination } = useSelector(state => state.adminData)
 
@@ -44,7 +46,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                                                 </li> */}
                                             </ul>
                                             <div className='job-card-btns'>
-                                                {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ? <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? "Hire" : type === "Shortlisted" ? "Interview" : <ImUserCheck />}</Button> : ""}
+                                                {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ? <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={() => handleJobStatusModal(item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? <RiUserAddFill /> : type === "Shortlisted" ? <PiUserRectangleFill /> : <ImUserCheck />}</Button> : ""}
                                                 {role !== "admin" && <Button variant="danger" onClick={() => handleJobStatusModal(item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100"><ImUserMinus /></Button>}
                                                 {role === "admin" && <Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? "Suggested" : "Suggest"}</Button>}
                                             </div>
