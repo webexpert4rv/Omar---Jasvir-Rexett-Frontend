@@ -63,7 +63,7 @@ const JobPost = () => {
     let data = {
       ...values,
       skills: convertArr.toString(),
-      category: otherCategory,
+      category: otherCategory.value,
     };
     dispatch(
       clientJobPost(data, () => {
@@ -76,13 +76,6 @@ const JobPost = () => {
     setSelectedOption(val);
   };
 
-  const handleSelect = (e) => {
-    let selectedValue = e;
-    if (selectedValue == "5") {
-      setShowTextInput(true);
-      setOtherCategory(selectedValue);
-    } else setShowTextInput(false);
-  };
 
   return (
     <>
@@ -133,8 +126,7 @@ const JobPost = () => {
                 <CreatableSelect
                   isClearable
                   onChange={(newValue) => {
-                    console.log(newValue);
-                    setOtherCategory(newValue.value)
+                    setOtherCategory(newValue)
                   }}
                   onCreateOption={handleCreate}
                   options={options}
