@@ -43,18 +43,17 @@ const SkillsModal = ({ show, handleClose, data }) => {
     const filteredOptions = options.filter(option => !selectedOption.find(selected => selected.value === option.value));
 
     return (
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title>Skills</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">Skills</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="experience-container">
                         <Row>
                             <Col md="12">
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Skills</Form.Label>
                                     <Select
                                         value={selectedOption}
                                         onChange={handleChange}
@@ -70,7 +69,7 @@ const SkillsModal = ({ show, handleClose, data }) => {
                         <RexettButton
                             type="submit"
                             text="Submit"
-                            className="main-btn px-4"
+                            className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
                             isLoading={smallLoader}
                         />

@@ -58,18 +58,17 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
         })
     }
     return (
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title>End Time Report</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">End Time Report</h3>
                 <Form>
                     <Row>
                         <Col md="12">
                             <Form.Group className="mb-4">
-                                <Form.Label>Select Client</Form.Label>
-                                <Form.Select onChange={handleClient}>
+                                <Form.Select className="common-field" onChange={handleClient}>
                                     <option selected disabled>Select Client</option>
                                      {
                                        adminTimeReportingList?.map((item)=>{
@@ -83,8 +82,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                         </Col>
                         <Col md="12">
                             <Form.Group className="mb-4">
-                                <Form.Label>Select Developer</Form.Label>
-                                <Form.Select onChange={handleDeveloper}>
+                                <Form.Select className="common-field" onChange={handleDeveloper}>
                                     <option selected disabled>Select Client</option>
                                      {
                                        devloperState?.map((item)=>{
@@ -98,8 +96,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                         </Col>
                         <Col md="12">
                             <Form.Group className="mb-4">
-                                <Form.Label>Total Hours</Form.Label>
-                                <Form.Control type="text" value={time?.time} name="name" onChange={handleChange} />
+                                <Form.Control type="text" className="common-field" placeholder="Enter Total Hours" value={time?.time} name="name" onChange={handleChange} />
                             </Form.Group>
                         </Col>
                     </Row>
@@ -107,7 +104,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                         <RexettButton
                             type="submit"
                             text="Submit"
-                            className="main-btn px-4"
+                            className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
                             onClick={handleEditTime}
                             isLoading={smallLoader}

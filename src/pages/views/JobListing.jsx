@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Row, Tooltip , OverlayTrigger } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllJobPostedList, getJobCategoryList } from "../../redux/slices/clientDataSlice";
@@ -33,6 +33,11 @@ const JobListing = () => {
         const skillsArray = arr.split(", ");
         return skillsArray
     }
+    const viewtooltip = (
+        <Tooltip id="tooltip">
+          View Job
+        </Tooltip>
+      );
     return (
         <>
             {screenLoader ?
@@ -78,7 +83,9 @@ const JobListing = () => {
                                                     <p className="status-text inprogress mb-0">{item.status}</p>
                                                 </div>
                                                 <p className="font-15">Posted Date: <strong>{item.created_at.slice(0, 10)}</strong></p>
-                                                <Link to={`/single-job/${item.id}`} className="px-3 font-14 mb-2 main-btn text-decoration-none"><FaEye /></Link>
+                                                <OverlayTrigger placement="bottom" overlay={viewtooltip}>
+                                                    <Link to={`/single-job/${item.id}`} className="px-3 font-14 mb-2 main-btn text-decoration-none"><FaEye /></Link>    
+                                                </OverlayTrigger>
                                             </div>
                                         </div>
                                     </>
