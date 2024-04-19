@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
 import { HiUpload } from "react-icons/hi";
@@ -7,11 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getDeveloperProfileDetails, updateDeveloperProfile } from "../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
-import { createNewFolderAndFile, filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
+import { createNewFolderAndFile, filePreassignedUrlGenerate, getDeleteAccount } from "../../redux/slices/clientDataSlice";
+import EndJobModal from "./../views/Modals/EndJob";
+import { FaTrashCan } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
+
 
 
 const EditDeveloperProfile = () => {
     const [selectedImage, setSelectedImage] = useState(null);
+    const { t } = useTranslation()
 
     const {
         register,
@@ -19,13 +24,27 @@ const EditDeveloperProfile = () => {
         handleSubmit,
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
+    const [showModal,setShowModal]=useState(false)
     const [isPassword, setPassword] = useState({
         firstPass: false,
         secondPass: false
     })
     const [file, setFile] = useState(null)
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
+
+
+    console.log(developerProfileData,"developerProfileData")
+    const handleJobStatusModal=(id)=>{
+        console.log(id,"id")
+        setShowModal(!showModal)
+    }
+    const handleJobStatusAction= (e,data) => {
+        e.preventDefault()
+        dispatch(getDeleteAccount(data))
+        setShowModal(false)
+    }
+    
 
     useEffect(() => {
         dispatch(getDeveloperProfileDetails())
@@ -44,6 +63,11 @@ const EditDeveloperProfile = () => {
         setValue("profile_picture", developerProfileData?.data?.profile_picture)
 
     }, [developerProfileData])
+    const deleteprofile = (
+        <Tooltip id="tooltip">
+          Delete Profile
+        </Tooltip>
+      );
 
     const onSubmit = (values) => {
         let formData = new FormData();
@@ -99,7 +123,12 @@ const EditDeveloperProfile = () => {
     return (
         <>
             <section className="card-box">
-                <h2 className="section-head mb-4">Update your Profile</h2>
+            <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
+                    <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
+                    <OverlayTrigger placement="bottom" overlay={deleteprofile}>
+                        <Button onClick={() => handleJobStatusModal(developerProfileData?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
+                    </OverlayTrigger>
+                </div>
                 <div>
                     {screenLoader ? <ScreenLoader /> : <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-4">
@@ -304,6 +333,7 @@ const EditDeveloperProfile = () => {
                     </form>}
                 </div>
             </section>
+            <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} />
         </>
     )
 }

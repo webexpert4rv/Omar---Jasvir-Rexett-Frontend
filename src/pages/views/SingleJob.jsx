@@ -10,7 +10,7 @@ import RejectModal from "./Modals/RejectModal";
 import EndJobModal from "./Modals/EndJob";
 import ConfirmationModal from "./Modals/ConfirmationModal";
 import { useDispatch, useSelector } from "react-redux";
-import { changeJobStatus, getAllJobPostedList, getJobCategoryList, publishedPost, singleJobPostData } from "../../redux/slices/clientDataSlice";
+import { changeJobStatus, getAllJobPostedList, getDeleteJob, getJobCategoryList, publishedPost, singleJobPostData } from "../../redux/slices/clientDataSlice";
 import JobCard from "../../components/common/SingleJob/JobCard";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
 import { jobPostConfirmMessage } from "../../helper/utlis";
@@ -18,11 +18,13 @@ import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
+import { FaTrashCan } from "react-icons/fa6";
 
 const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
-    const [currentTabsStatus,setCurrnetTabsStatus]=useState(null)
+    const [currentTabsStatus,setCurrnetTabsStatus]=useState("application")
     const [currentTab,setCurrentTab]=useState("application")
+    const[showModal , setShowModal] = useState(false)
     const [statusModal,setStatusModal]=useState({
         isTrue:false,
         id:null
@@ -31,6 +33,7 @@ const SingleJob = () => {
     const dispatch =useDispatch()
     const location=useLocation();
     let id=location.pathname.split("/")[2]
+    console.log(id,"---------------idd")
     const {allJobPostedList,jobCategoryList,jobPostedData,approvedLoader,smallLoader}=useSelector(state=>state.clientData)
    const { t } = useTranslation()
     useEffect(()=>{
@@ -73,9 +76,15 @@ const SingleJob = () => {
         if(key=="interviewing"){
             setCurrnetTabsStatus("hired") 
         }
+        if(key=="application"){
+            setCurrnetTabsStatus("application") 
+        }
        
     }
-    const handleJobStatusAction= (e,data) => {
+    const handleJobStatusAction= (e,data ,id) => {
+        console.log(e,"e")
+        console.log(data,"data")
+        console.log(id,"i-----------------d")
         e.preventDefault()
         if(data.status=="ended"){
             dispatch(publishedPost(singleJobDescription?.id,data,()=>{
@@ -85,6 +94,9 @@ const SingleJob = () => {
                 })) 
             }
             ))
+        }else if(data.status=="application"){
+            dispatch(getDeleteJob(statusModal?.id,))
+
         }else{
             dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
                 dispatch(singleJobPostData(id,()=>{
@@ -96,6 +108,7 @@ const SingleJob = () => {
                 }))
             }))
         }
+        
            
     }
     
@@ -129,7 +142,15 @@ const SingleJob = () => {
           {singleJobDescription?.status=="published"?"Unpublish Job":"Publish Job"}
         </Tooltip>   
     )
+    const handleDelete=(status,id)=>{ 
+        console.log(status,"status")
+        setStatusModal({
+            [status]:!statusModal.isTrue,
+            id:id
+        })
+    }
 
+    
     return (
         <>
             <Tabs
@@ -158,6 +179,7 @@ const SingleJob = () => {
                                         }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?<BsFillSendXFill />:<BsFillSendFill />}</Button>
                                     </OverlayTrigger>
                                    </>:"" }
+                                   <Button disabled= {singleJobDescription?.status=="published" ? true : false} onClick={()=>handleDelete("application",singleJobDescription?.id)}><FaTrashCan/></Button>
                                 </div>
                             </div>
                             <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>
@@ -306,9 +328,15 @@ const SingleJob = () => {
                     <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}  jobStatus={singleJobDescription?.status}/>
                 </Tab>
             </Tabs>
-            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab} smallLoader={smallLoader} header="End Job"  feedbacks= {"Feedbacks"} submit={"Request"}/>
-            <EndJobModal show={statusModal?.ended} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
-            <ConfirmationModal text={jobPostConfirmMessage(currentTab)} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} type={currentTabsStatus} />
+            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab} smallLoader={smallLoader} />
+            <EndJobModal show={statusModal?.ended} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} header="End Job"  feedbacks= {"Feedbacks"} submit={"Request"} />
+            <ConfirmationModal text={jobPostConfirmMessage(currentTab)} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested || statusModal?.application  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} type={currentTabsStatus} />
+            {/* <ConfirmationModal
+                text={ `Are you sure you want to delete this job`}
+                show={showModal} onClick={handleAction}
+                handleClose={handleDelete}
+                smallLoader={smallLoader}
+            /> */}
         </>
     )
 }

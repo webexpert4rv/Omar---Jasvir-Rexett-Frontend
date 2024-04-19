@@ -13,7 +13,8 @@ const initialVendorData = {
     clientList:[],
     developerList:[],
     allDevelopersList:{},
-    revenueData:{}
+    revenueData:{},
+    rentedDevelopers:{}
 }
 
 export const vendorDataSlice = createSlice({
@@ -66,10 +67,14 @@ export const vendorDataSlice = createSlice({
         setRevenueData:(state, action) =>{
             state.screenLoader = false;
             state.revenueData = action.payload.data
+        },
+        setRentedDevelopers:(state,action) =>{
+            state.screenLoader = false;
+            state.rentedDevelopers = action.payload
         }
     }
 })
-export const { setScreenLoader,setClientList,setDevelopersList ,setVendorSuccess,setRevenueData, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
+export const { setScreenLoader,setClientList,setRentedDevelopers,setDevelopersList ,setVendorSuccess,setRevenueData, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
 
 export default vendorDataSlice.reducer
 
@@ -97,6 +102,21 @@ export function getDevelopersList(payload ,page) {
             let result = await clientInstance.get(generateApiUrl(payload, `vendor/developers`))
             if (result.status == 200) {
                 dispatch(setDevelopersList(result.data))
+            }
+
+        } catch (error) {
+            console.log(error, "error")
+        }
+    }
+}
+export function getRentedDevelopers(payload) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(generateApiUrl(payload,`vendor/rented-developers`))
+
+            if (result.status == 200) {
+                dispatch(setRentedDevelopers(result.data))
             }
 
         } catch (error) {

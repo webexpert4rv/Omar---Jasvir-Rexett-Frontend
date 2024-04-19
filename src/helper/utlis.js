@@ -38,6 +38,8 @@ export function getToken(tokenKey) {
     "suggested":"Want to shortlist this developer?",
     "shortlisted":"Want to interview this developer?",
     "interviewing":"Want to hire this developer?",
+    "application":"Are you sure you want to Delete this job?"
+
    }
    return message[key]
 

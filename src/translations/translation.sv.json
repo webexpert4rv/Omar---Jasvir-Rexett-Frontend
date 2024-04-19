@@ -273,6 +273,11 @@
         "experience": "Erfarenhet",
         "education": "Utbildning",
         "readMore": "[Läs mer...]",
-        "readLess" :  "[Läs mindre]"
+        "readLess": "[Läs mindre]",
+        "userName": "Användarnamn",
+        "userEmail": "Användare-postadress",
+        "role": "Roll",
+        "reason": "Orsak",
+        "accountDeletionList": "Lista över kontoupphävningar"
     }
 }

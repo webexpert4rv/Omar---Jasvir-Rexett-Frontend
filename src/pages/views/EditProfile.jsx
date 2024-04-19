@@ -19,8 +19,7 @@ const EditProfile = () => {
     } = useForm({});
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const [statusModal,setStatusModal]=useState(false)
-    const clientName = localStorage.getItem("userName")
+    const [showModal,setShowModal]=useState(false)
     const [isPassword,setPassword]=useState({
         firstPass:false,
         secondPass:false
@@ -30,11 +29,10 @@ const EditProfile = () => {
 
    
     const handleJobStatusModal=(id)=>{
-        setStatusModal(true)
+        console.log(id,"id")
+        setShowModal(!showModal)
     }
     
-     console.log(clientName,"clientName")
-    console.log(clientProfileDetails,"clientProfileDetails")
     useEffect(()=>{
        dispatch(getClientProfile())
     },[dispatch])
@@ -55,7 +53,7 @@ const EditProfile = () => {
         e.preventDefault()
         console.log(data,"data")
         dispatch(getDeleteAccount(data))
-        setStatusModal(false)
+        setShowModal(false)
         // if(data.status=="ended"){
         //     dispatch(publishedPost(singleJobDescription?.id,data,()=>{
         //         setStatusModal({})
@@ -77,6 +75,11 @@ const EditProfile = () => {
         // }
            
     }
+    const deleteprofile = (
+        <Tooltip id="tooltip">
+          Delete Profile
+        </Tooltip>
+      );
 
     const onSubmit = (values) => {
         let formData={
@@ -86,11 +89,7 @@ const EditProfile = () => {
         }
      dispatch(updateClientProfile(formData))
     }
-    const deleteprofile = (
-        <Tooltip id="tooltip">
-          Delete Profile
-        </Tooltip>
-      );
+  
     const validatePassword = (value) => {
         if (value === "") {
             return true; // Password is not required, so return true if empty
@@ -109,7 +108,7 @@ const EditProfile = () => {
                 <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
                     <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
                     <OverlayTrigger placement="bottom" overlay={deleteprofile}>
-                        <Button onClick={() => handleJobStatusModal(clientProfileDetails?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
+                        <Button onClick={() => handleJobStatusModal(clientProfileDetails?.id)} className="delete-btn"><FaTrashCan /></Button>
                     </OverlayTrigger>
                 </div>
                 <div>
@@ -297,7 +296,7 @@ const EditProfile = () => {
                     </form>}
                 </div>
             </section>
-            <EndJobModal show={statusModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={clientName} feedbacks= {"Reasons"} submit={"Delete"} />
+            <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} />
         </>
     )
 }
