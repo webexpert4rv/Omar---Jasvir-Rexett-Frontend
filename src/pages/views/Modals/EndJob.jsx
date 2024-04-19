@@ -9,12 +9,12 @@ const RejectModal = ({ show, handleClose,onClick,smallLoader,header ,feedbacks ,
         setFeedback(e.target.value)
     }
     return(
-        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
-            <Modal.Header closeButton className="border-0 pb-3">
+        <Modal show={show} onHide={handleClose} centered animation size="lg">
+            <Modal.Header closeButton>
+            <Modal.Title>{header}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                <h3 className="popup-heading">End Job</h3>
                 <Form>
                     <Form.Group className="mb-4">
                         <Form.Label>{feedbacks}</Form.Label>
