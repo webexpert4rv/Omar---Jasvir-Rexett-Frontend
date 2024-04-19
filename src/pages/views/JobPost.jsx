@@ -70,7 +70,6 @@ const JobPost = () => {
     }, 1000);
   };
 
-  console.log(selectedOption,"selectedOption")
 
   const onSubmit = (values) => {
     let convertArr = selectedOption.map((item) => item.label);

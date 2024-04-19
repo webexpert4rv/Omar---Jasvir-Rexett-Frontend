@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Tab, Tabs, Tooltip , OverlayTrigger } from "react-bootstrap";
 // import userImg from '../../assets/img/user-img.jpg'
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -24,13 +24,13 @@ const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
     const [currentTabsStatus,setCurrnetTabsStatus]=useState("application")
     const [currentTab,setCurrentTab]=useState("application")
-    const[showModal , setShowModal] = useState(false)
     const [statusModal,setStatusModal]=useState({
         isTrue:false,
         id:null
     })
     const [singleJobDescription,setSingleJobDescription]=useState({})
     const dispatch =useDispatch()
+    const navigate=useNavigate()
     const location=useLocation();
     let id=location.pathname.split("/")[2]
     console.log(id,"---------------idd")
@@ -95,8 +95,10 @@ const SingleJob = () => {
             }
             ))
         }else if(data.status=="application"){
-            dispatch(getDeleteJob(statusModal?.id,))
-
+            dispatch(getDeleteJob(statusModal?.id,()=>{
+                setStatusModal({})
+                navigate("/job-posted")
+            }))
         }else{
             dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
                 dispatch(singleJobPostData(id,()=>{
