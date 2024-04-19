@@ -12,6 +12,7 @@ import { ImUserCheck } from "react-icons/im";
 import { PiUserRectangleFill } from "react-icons/pi";
 import { ImUserMinus } from "react-icons/im";
 import { RiUserAddFill } from "react-icons/ri";
+
 const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, page }) => {
     const navigate=useNavigate()
     const { singleJobPagination } = useSelector(state => state.adminData)

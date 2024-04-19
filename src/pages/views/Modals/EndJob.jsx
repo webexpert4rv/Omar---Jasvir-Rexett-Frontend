@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import RexettSpinner from "../../../components/atomic/RexettSpinner";
-const RejectModal = ({ show, handleClose,onClick,smallLoader }) => {
+const RejectModal = ({ show, handleClose,onClick,smallLoader,header ,feedbacks , submit }) => {
+    console.log(feedbacks , "feedbacks")
+    console.log(header,"header")
     const [feedback,setFeedback]=useState("")
     const handleFeedback=(e)=>{
         setFeedback(e.target.value)
@@ -15,17 +17,30 @@ const RejectModal = ({ show, handleClose,onClick,smallLoader }) => {
                 <h3 className="popup-heading">End Job</h3>
                 <Form>
                     <Form.Group className="mb-4">
-                        <Form.Label className="font-14">Feedbacks</Form.Label>
-                        <Form.Control as="textarea" className="common-field" rows="6" placeholder="Enter your feedback, why you want to reject?" onChange={handleFeedback}></Form.Control>
+                        <Form.Label>{feedbacks}</Form.Label>
+                        <Form.Control as="textarea" rows="6" placeholder="Enter your feedback, why you want to reject?" onChange={handleFeedback}></Form.Control>
                     </Form.Group>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={(e)=>{
-                            let data={
+                        <Button variant="transparent" className="main-btn px-4" onClick={(e)=>{
+                            let data;
+                            if(feedbacks==="Reasons"){
+                            data={
+                                reason:feedback
+                            }
+                        }else{
+                             data={
                                 status:"ended",
                                 end_reason:feedback
                             }
+                        }
                             onClick(e,data)
-                            }}>{smallLoader?<RexettSpinner/>:"Request"} </Button>
+                            }}
+                        
+                        >{smallLoader?<RexettSpinner/>:submit} </Button>
+
+                        
+    
+                         
                     </div>
                 </Form>
             </Modal.Body>

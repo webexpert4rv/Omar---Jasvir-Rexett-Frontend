@@ -4,10 +4,11 @@ import { FaEye } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
-import { getClientProfile, updateClientProfile } from "../../redux/slices/clientDataSlice";
+import { getClientProfile, updateClientProfile,getDeleteAccount } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { useTranslation } from "react-i18next";
 import { FaTrashCan } from "react-icons/fa6";
+import EndJobModal from "./Modals/EndJob";
 
 const EditProfile = () => {
     const {
@@ -18,13 +19,22 @@ const EditProfile = () => {
     } = useForm({});
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
+    const [statusModal,setStatusModal]=useState(false)
+    const clientName = localStorage.getItem("userName")
     const [isPassword,setPassword]=useState({
         firstPass:false,
         secondPass:false
     })
     const {smallLoader,clientProfileDetails,screenLoader}=useSelector(state=>state.clientData)
 
+
+   
+    const handleJobStatusModal=(id)=>{
+        setStatusModal(true)
+    }
+    
+     console.log(clientName,"clientName")
+    console.log(clientProfileDetails,"clientProfileDetails")
     useEffect(()=>{
        dispatch(getClientProfile())
     },[dispatch])
@@ -40,6 +50,33 @@ const EditProfile = () => {
         setValue("passcode",clientProfileDetails?.data?.passcode)
          
     },[clientProfileDetails])
+    const handleJobStatusAction= (e,data) => {
+        console.log(data,"data")
+        e.preventDefault()
+        console.log(data,"data")
+        dispatch(getDeleteAccount(data))
+        setStatusModal(false)
+        // if(data.status=="ended"){
+        //     dispatch(publishedPost(singleJobDescription?.id,data,()=>{
+        //         setStatusModal({})
+        //         dispatch(singleJobPostData(id,()=>{
+
+        //         })) 
+        //     }
+        //     ))
+        // }else{
+        //     dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
+        //         dispatch(singleJobPostData(id,()=>{
+        //             setStatusModal({})
+        //             let prevData={...jobPostedData}
+        //            let d= prevData[currentTab]?.filter(item=>item.id!==statusModal?.id)
+        //            prevData[currentTab]=d
+        //            setSelectedTabsData(prevData[currentTab])
+        //         }))
+        //     }))
+        // }
+           
+    }
 
     const onSubmit = (values) => {
         let formData={
@@ -72,7 +109,7 @@ const EditProfile = () => {
                 <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
                     <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
                     <OverlayTrigger placement="bottom" overlay={deleteprofile}>
-                        <Button className="delete-btn"><FaTrashCan /></Button>
+                        <Button onClick={() => handleJobStatusModal(clientProfileDetails?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
                     </OverlayTrigger>
                 </div>
                 <div>
@@ -260,6 +297,7 @@ const EditProfile = () => {
                     </form>}
                 </div>
             </section>
+            <EndJobModal show={statusModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={clientName} feedbacks= {"Reasons"} submit={"Delete"} />
         </>
     )
 }

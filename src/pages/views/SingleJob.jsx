@@ -307,7 +307,7 @@ const SingleJob = () => {
                     <JobCard handleJobStatusModal={handleJobStatusModal} type="Hired"  data={selectedTabsData}  jobStatus={singleJobDescription?.status}/>
                 </Tab>
             </Tabs>
-            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab} smallLoader={smallLoader}/>
+            <RejectModal show={statusModal?.rejected} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} type={currentTab} smallLoader={smallLoader} header="End Job"  feedbacks= {"Feedbacks"} submit={"Request"}/>
             <EndJobModal show={statusModal?.ended} handleClose={handleJobStatusModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
             <ConfirmationModal text={jobPostConfirmMessage(currentTab)} show={statusModal?.Shortlisted || statusModal?.Interviewing || statusModal?.Suggested  }   onClick={handleJobStatusAction} handleClose={handleJobStatusModal} smallLoader={smallLoader} type={currentTabsStatus} />
         </>
