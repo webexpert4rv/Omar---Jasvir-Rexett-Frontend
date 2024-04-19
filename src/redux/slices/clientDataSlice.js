@@ -487,3 +487,17 @@ export function getDeleteAccount(payload) {
         }
     }
 }
+
+export function createNewJobCategory(payload,callback) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post(`/common/add-job-category`,{...payload})
+            return callback()
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    }
+}

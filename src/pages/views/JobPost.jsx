@@ -6,6 +6,7 @@ import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clientJobPost,
+  createNewJobCategory,
   getJobCategoryList,
   getSkillList,
   jobCategoryList,
@@ -27,9 +28,9 @@ const JobPost = () => {
   const { skillList, jobCategoryList, smallLoader } = useSelector(
     (state) => state.clientData
   );
-  const [showTextInput, setShowTextInput] = useState(false);
   const [otherCategory, setOtherCategory] = useState(null);
   const [options, setOptions] = useState([]);
+  const [skillCate,setSkillsCate]=useState([])
 
   const dispatch = useDispatch();
   const {
@@ -44,20 +45,32 @@ const JobPost = () => {
     dispatch(getJobCategoryList());
   }, [dispatch]);
 
-  useEffect(() => {
-    setOptions(jobCategoryList);
-  }, [jobCategoryList]);
+
 
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });
 
+
+  useEffect(() => {
+    setOptions(jobCategoryList);
+    setSkillsCate(skillListMapped)
+  }, [jobCategoryList,skillList]);
+
   const handleCreate = (inputValue) => {
     setTimeout(() => {
       const newOption = createOption(inputValue);
       setOptions((prev) => [...prev, newOption]);
+      let data={
+        title:inputValue
+      }
+      dispatch(createNewJobCategory(data,()=>{
+        dispatch(getJobCategoryList());
+      }))
     }, 1000);
   };
+
+  console.log(selectedOption,"selectedOption")
 
   const onSubmit = (values) => {
     let convertArr = selectedOption.map((item) => item.label);
@@ -74,7 +87,12 @@ const JobPost = () => {
   };
 
   const onChangeSelect = (val) => {
-    setSelectedOption(val);
+    console.log(val,"ddd")
+    setTimeout(() => {
+      const newOption = createOption(val);
+      setSkillsCate((prev) => [...prev, newOption]);
+   
+    }, 1000);
   };
 
 
@@ -233,12 +251,13 @@ const JobPost = () => {
                
                 /> */}
                     <CreatableSelect
+                    isMulti
                   isClearable
                   onChange={(newValue) => {
-                    setOtherCategory(newValue)
+                    setSelectedOption(newValue)
                   }}
-                  onCreateOption={handleCreate}
-                  options={skillListMapped}
+                  onCreateOption={onChangeSelect}
+                  options={skillCate}
                 />
               </Form.Group>
               {/* <p className="error-message ">
