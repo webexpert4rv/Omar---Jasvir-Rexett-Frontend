@@ -101,8 +101,7 @@ const SingleJob = () => {
     
 
     const handleJobStatusModal=(e,id,status)=>{
-        console.log(id,"oo")
-        console.log(e,"e")
+   
         if(e==undefined)
         {
             setStatusModal({
@@ -148,7 +147,7 @@ const SingleJob = () => {
                                     <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                    { singleJobDescription?.status!=="ended"?<>
                                     <OverlayTrigger placement="top" overlay={endjob}>
-                                        <Button variant="transparent" onClick={() => handleJobStatusModal(singleJobDescription?.id, "ended")} className="closed-job-btn"><MdOutlineDoNotDisturbAlt /></Button>
+                                        <Button variant="transparent" onClick={(e) => handleJobStatusModal(e,singleJobDescription?.id, "ended")} className="closed-job-btn"><MdOutlineDoNotDisturbAlt /></Button>
                                     </OverlayTrigger>
                                     <OverlayTrigger placement="top" overlay={publishjob}>
                                         <Button variant="transparent" className="py-2 main-btn publish-job-btn" onClick={()=>{
