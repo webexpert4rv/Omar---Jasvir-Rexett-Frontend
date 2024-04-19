@@ -474,3 +474,16 @@ export function getDeveloperDetails(id) {
         }
     }
 }
+export function getDeleteAccount(payload) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post("/common/delete-account",{...payload})
+            // dispatch(setDeveloperDetails(result.data.data))
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
+            // dispatch(setFailClientData())
+        }
+    }
+}
