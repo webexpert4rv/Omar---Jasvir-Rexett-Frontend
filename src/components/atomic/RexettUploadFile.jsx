@@ -42,19 +42,19 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
         }))
     }
     return (
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title>Upload File</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">Upload file</h3>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className="experience-container">
                         <Row>
                             <Col md="12">
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Select Category</Form.Label>
-                                    <Form.Select
+                                    {/* <Form.Label>Select Category</Form.Label> */}
+                                    <Form.Select className="common-field"
                                         {...register("category", { required: "Please select a Category" })}
                                     >
                                         <option value="" selected disabled>Select Category</option>
@@ -81,8 +81,8 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
                     <div className="text-center">
                         <RexettButton
                             type="submit"
-                            text="Create"
-                            className="main-btn px-4"
+                            text="Upload"
+                            className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
                             isLoading={smallLoader}
                         />

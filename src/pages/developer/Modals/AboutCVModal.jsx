@@ -37,16 +37,16 @@ const AboutCV = ({ show, handleClose,data }) => {
       }
 
     return(
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-            <Modal.Title>About Section</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
+            {/* <Modal.Title>About Section</Modal.Title> */}
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">About Section</h3>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Form.Group className="mb-4">
-                        <Form.Label>Bio</Form.Label>
-                        <Form.Control as="textarea" rows="6" name="bio"  placeholder="Enter your bio" 
+                        <Form.Control as="textarea" className="common-field" rows="6" name="bio"  placeholder="Enter your bio" 
                          {...register("bio", {
                             required: {
                               value: true,
@@ -68,7 +68,7 @@ const AboutCV = ({ show, handleClose,data }) => {
                         <RexettButton
                          type="submit" 
                          text="Submit"
-                         className="main-btn px-4"
+                         className="main-btn px-4 font-14 fw-semibold"
                          variant="transparent"
                          isLoading={smallLoader}
                         />

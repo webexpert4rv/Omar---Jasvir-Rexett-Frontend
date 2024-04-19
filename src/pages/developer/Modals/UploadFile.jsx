@@ -3,18 +3,18 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 const UploadFileModal = ({ show, handleClose }) => {
     const [selectedOption, setSelectedOption] = useState(null);
     return(
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-            <Modal.Title>Upload File</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered animation className="custom-modal">
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">Time Reports</h3>
                 <Form>
                     <div className="experience-container">
                         <Row>
                             <Col md="12">
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Select Category</Form.Label>
+                                    {/* <Form.Label>Select Category</Form.Label> */}
                                     <Form.Select>
                                         <option value="" selected disabled>Select Category</option>
                                         <option value="invoices">Invoices</option>
@@ -29,7 +29,7 @@ const UploadFileModal = ({ show, handleClose }) => {
                         </Row>
                     </div>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4">Submit</Button>
+                        <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold">Submit</Button>
                     </div>
                 </Form>
             </Modal.Body>

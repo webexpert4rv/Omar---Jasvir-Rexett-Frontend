@@ -67,6 +67,7 @@ import ClientSingleDeveloper from "./pages/views/ClientSingleDeveloper"
 import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
 import Otp from './pages/Authentication/Otp';
+import Faq from './pages/views/Faq';
 
 
 Chart.register(ArcElement);
@@ -142,6 +143,7 @@ function App() {
           <Route path="/all-rented-developers" exact element={<VendorDashboardLayout><RentedDevelopers /></VendorDashboardLayout>} />
           <Route path="/notification-vendor" exact element={<VendorDashboardLayout><NotificationVendor /></VendorDashboardLayout>} />
           <Route path="/register-developer" exact element={<VendorDashboardLayout><RegisterDeveloper /></VendorDashboardLayout>} />
+          <Route path='/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
         </Routes>
       </Router>
      

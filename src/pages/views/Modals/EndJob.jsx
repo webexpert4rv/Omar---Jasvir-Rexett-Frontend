@@ -7,19 +7,19 @@ const RejectModal = ({ show, handleClose,onClick,smallLoader }) => {
         setFeedback(e.target.value)
     }
     return(
-        <Modal show={show} onHide={(e)=>handleClose(e)} centered animation size="lg">
-            <Modal.Header closeButton>
-            <Modal.Title>End Job</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">End Job</h3>
                 <Form>
                     <Form.Group className="mb-4">
-                        <Form.Label>Feedbacks</Form.Label>
-                        <Form.Control as="textarea" rows="6" placeholder="Enter your feedback, why you want to reject?" onChange={handleFeedback}></Form.Control>
+                        <Form.Label className="font-14">Feedbacks</Form.Label>
+                        <Form.Control as="textarea" className="common-field" rows="6" placeholder="Enter your feedback, why you want to reject?" onChange={handleFeedback}></Form.Control>
                     </Form.Group>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4" onClick={(e)=>{
+                        <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={(e)=>{
                             let data={
                                 status:"ended",
                                 end_reason:feedback

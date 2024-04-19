@@ -151,15 +151,16 @@ const AddTimingModal = ({ show, handleClose,role }) => {
       onHide={handleClose}
       centered
       animation
+      className="custom-modal"
       size="lg"
       scrollable
     >
-      <Modal.Header >
-        <Modal.Title>Add Time</Modal.Title>
+      <Modal.Header className="border-0 pb-3">
         <CloseButton onClick={handleCloseModal}></CloseButton>
       </Modal.Header>
 
       <Modal.Body>
+        <h3 className="popup-heading">Add Time</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="experience-container">
             <div className="mb-3">
@@ -177,14 +178,11 @@ const AddTimingModal = ({ show, handleClose,role }) => {
               <Collapse in={open}>
                 <div className="mt-2">
                   <Row>
-                    <Col md={4} className="mb-3">
+                    <Col md={4} className="mb-0">
                       <div>
-                        <Form.Label className="common-label">
-                          Select Year
-                        </Form.Label>
                         <Form.Select
                           required="true"
-                          className="shadow-none"
+                          className="shadow-none common-field"
                           onChange={(e) => handleChange(e, "year")}
                         >
                           <option disabled selected>
@@ -204,14 +202,11 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                         ) : ""}
                       </div>
                     </Col>
-                    <Col md={4} className="mb-3">
+                    <Col md={4} className="mb-0">
                       <div>
-                        <Form.Label className="common-label">
-                          Select Month
-                        </Form.Label>
                         <Form.Select
                           required
-                          className="shadow-none"
+                          className="shadow-none common-field"
                           onChange={(e) => handleChange(e, "month")}
                         >
                           <option disabled selected>
@@ -235,13 +230,10 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                         ) : ""}
                       </div>
                     </Col>
-                    <Col md={4} className="mb-3">
+                    <Col md={4} className="mb-0">
                       <div>
-                        <Form.Label className="common-label">
-                          Select Week
-                        </Form.Label>
                         <Form.Select
-                          className="shadow-none"
+                          className="shadow-none common-field"
                           onChange={(e) => handleChange(e, "week")}
                         >
                           <option disabled selected>
@@ -265,9 +257,9 @@ const AddTimingModal = ({ show, handleClose,role }) => {
             <Row>
               <Col md={12} className="border-bottom mb-2 pb-4">
                 <Form.Group>
-                  <Form.Label>Client Name</Form.Label>
+                  {/* <Form.Label>Client Name</Form.Label> */}
                   <Form.Select
-                    className="shadow-none"
+                    className="shadow-none common-field"
                     onChange={(e) => handleChange(e, "contract_id")}
                   >
                     <option disabled selected>
@@ -417,11 +409,11 @@ const AddTimingModal = ({ show, handleClose,role }) => {
               );
             }) :
               ""}
-            <div>
+            <div className="text-center">
               {!open ? <RexettButton
                 type="submit"
                 text="Submit"
-                className="main-btn py-2 px-5"
+                className="main-btn py-2 px-4 font-14 fw-semibold"
                 variant="transparent"
                 isLoading={smallLoader}
               /> : ""}

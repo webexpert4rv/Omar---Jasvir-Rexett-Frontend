@@ -884,7 +884,7 @@ ul {
 }
 
 .outline-main-btn {
-    border: 1px solid #037563;
+    border: 1px solid #037563 !important;
     background-color: transparent !important;
     color: #037563 !important;
     padding: 10px 15px;
@@ -2346,11 +2346,14 @@ ul {
 }
 
 .modal-backdrop {
-    background-color: rgba(0, 0, 0, .2);
+    background-color: rgba(0, 0, 0, .6);
     opacity: 1 !important;
-    backdrop-filter: blur(8px);
+    /* backdrop-filter: blur(8px); */
 }
-
+.modal-header button
+{
+    box-shadow: none !important;
+}
 .modal-content {
     border: none;
     border-radius: 20px;
@@ -3039,7 +3042,146 @@ input[type="radio"]:checked {
     margin: 0px !important;
     flex: none;
 }
-
+.faq-banner
+{
+    padding: 50px 0;
+    text-align: center;
+    margin-bottom: 40px;
+    background-color: #D3F8D3;
+    /* color: #0E580E; */
+    color: #121212;
+    border-radius: 30px;
+    transition: .3s ease;
+}
+.faq-heading
+{
+    font-size: 20px;
+}
+.faq-tab-heading
+{
+    font-size: 28px;
+    font-weight: 700;
+}
+.faq-pill
+{
+    border-radius: 15px;
+    background-color: #D3F8D3;
+    transition: .3s ease;
+}
+.faq-section.jobposting-active .faq-pill
+{
+    background-color: #d3eef8;
+}
+.faq-section.timereporting-active .faq-pill
+{
+    background-color: #f8e9d3;
+}
+.faq-pill .faq-link
+{
+    color: #121212;
+    font-weight: 600;
+    padding: 15px 35px;
+    border-radius: 15px;
+    transition: .3s ease;
+}
+.faq-section.jobposting-active .faq-pill .faq-link.active
+{
+    background-color: #00719f;
+}
+.faq-section.timereporting-active .faq-pill .faq-link.active
+{
+    background-color: #cb6900;
+}
+.faq-pill .faq-link.active
+{
+    background-color: #0E580E;
+    color: #fff;
+}
+.faq-accordion
+{
+    box-shadow: 0px 4px 16px rgba(96,97,112,0.08);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 32px;
+}
+.faq-accordion-item
+{
+    border: none;
+}
+.faq-accordion-header .accordion-button
+{
+    padding: 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #121212;
+    box-shadow: none !important;
+}
+.faq-accordion-header .accordion-button:not(.collapsed)
+{
+    background-color: #fff;
+    color: #121212;
+}
+.faq-accordion-item:first-of-type .accordion-button,
+.faq-accordion-item:first-of-type
+{
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+}
+.faq-accordion-item:last-of-type .accordion-button.collapsed,
+.faq-accordion-item:last-of-type
+{
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+}
+.faq-accordion-body
+{
+    background-color: #D3F8D3;
+}
+.faq-section.jobposting-active .faq-accordion-body
+{
+    background-color: #d3eef8;
+}
+.faq-section.jobposting-active .faq-banner
+{
+    background-color: #d3eef8;
+    /* color: #00719f; */
+    color: #121212;
+}
+.faq-section.timereporting-active .faq-accordion-body
+{
+    background-color: #f8e9d3;
+}
+.faq-section.timereporting-active .faq-banner
+{
+    background-color: #f8e9d3;
+    /* color: #cb6900; */
+    color: #121212;
+}
+.popup-heading
+{
+    font-size: 25px;
+    text-align: center;
+    font-weight: 600;
+    color: #222222;
+    margin-bottom: 30px;
+}
+.custom-modal .modal-dialog
+{
+    max-width: 550px;
+}
+.custom-modal .modal-dialog.modal-lg
+{
+    max-width: 760px;
+}
+.custom-modal .modal-dialog .modal-header
+{
+    padding: 30px;
+}
+.custom-modal .modal-dialog .modal-body
+{
+    padding: 0px 30px 30px;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
