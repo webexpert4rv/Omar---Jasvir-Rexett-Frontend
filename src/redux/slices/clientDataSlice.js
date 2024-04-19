@@ -487,14 +487,15 @@ export function getDeleteAccount(payload) {
         }
     }
 }
-export function getDeleteJob(payload) {
+export function getDeleteJob(payload,callback) {
     console.log(payload,"iiiiiiiiiid")
     return async (dispatch) => {
-        // dispatch(setSmallLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.delete(`/client/delete-job/${payload}`)
-            // console.log(result,"result")
-            
+            toast.success("Job deleted successfully", { position: "top-center" })
+            dispatch(setActionSuccessFully())
+            return callback()
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error( "Delete account request already exists for this user", { position: "top-center" })
