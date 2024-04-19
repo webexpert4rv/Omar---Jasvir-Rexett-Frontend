@@ -476,14 +476,29 @@ export function getDeveloperDetails(id) {
 }
 export function getDeleteAccount(payload) {
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.post("/common/delete-account",{...payload})
-            // dispatch(setDeveloperDetails(result.data.data))
+            
         } catch (error) {
             const message = error.message || "Something went wrong";
-            // toast.error(message, { position: "top-center" })
-            // dispatch(setFailClientData())
+            toast.error( "Delete account request already exists for this user", { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    }
+}
+export function getDeleteJob(payload) {
+    console.log(payload,"iiiiiiiiiid")
+    return async (dispatch) => {
+        // dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.delete(`/client/delete-job/${payload}`)
+            // console.log(result,"result")
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error( "Delete account request already exists for this user", { position: "top-center" })
+            dispatch(setFailClientData())
         }
     }
 }

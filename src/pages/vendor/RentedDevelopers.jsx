@@ -8,7 +8,7 @@ import { Button, Form, Nav, Tab } from "react-bootstrap";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
-import { getDevelopersList } from "../../redux/slices/vendorDataSlice";
+import { getDevelopersList, getRentedDevelopers } from "../../redux/slices/vendorDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { SeeMore } from "../../components/atomic/SeeMore";
@@ -16,17 +16,17 @@ import NoDataFound from "../../components/atomic/NoDataFound";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
 const RentedDevelopers = () => {
-    const { allDevelopersList, screenLoader } = useSelector(state => state.vendorData)
+    const { allDevelopersList, rentedDevelopers, screenLoader } = useSelector(state => state.vendorData)
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
     const [count, setCount] = useState(1);
     const navigate = useNavigate()
-    const {t} = useTranslation()
+    const { t } = useTranslation()
 
 
 
     useEffect(() => {
-        dispatch(getDevelopersList({ page: count }))
+        dispatch(getRentedDevelopers({ page: count }))
     }, [count])
 
 
@@ -37,24 +37,24 @@ const RentedDevelopers = () => {
             skill_title: e.target.value
         }
         setSelectedFilter(filterData)
-        dispatch(getDevelopersList(filterData))
+        dispatch(getRentedDevelopers(filterData))
     };
 
-    const handleAssignment = (e) => {
-        let filterData = {
-            ...selectedFilter,
-            assignment_filter: e.target.value
-        }
-        setSelectedFilter(filterData)
-        dispatch(getDevelopersList(filterData))
-    };
+    // const handleAssignment = (e) => {
+    //     let filterData = {
+    //         ...selectedFilter,
+    //         assignment_filter: e.target.value
+    //     }
+    //     setSelectedFilter(filterData)
+    //     dispatch(getRentedDevelopers(filterData))
+    // };
     const handleExperience = (e) => {
         let filterData = {
             ...selectedFilter,
             experience_years: e.target.value
         }
         setSelectedFilter(filterData)
-        dispatch(getDevelopersList(filterData))
+        dispatch(getRentedDevelopers(filterData))
     };
 
     const handleClear = () => {
@@ -70,7 +70,7 @@ const RentedDevelopers = () => {
         dispatch(getDeveloperDetails(devId))
         navigate(`/vendor-single-developer/${devId}`)
     }
-    const handleRowClick =(id) => {
+    const handleRowClick = (id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/vendor-single-developer/${id}`)
     }
@@ -95,35 +95,42 @@ const RentedDevelopers = () => {
                                 <div className="flex-none">
                                     {/* <Form.Label className="common-label">Category</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
-                                        <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
-                                        <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
+                                        <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
+                                        {rentedDevelopers?.data?.skills?.map((item, index) => {
+                                            return (
+                                                <>
+
+                                                </>
+                                            )
+                                        })}
+                                        {/* <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
                                         <option value="javascript" onClick={(e) => e.stopPropagation()}>JavaScript</option>
-                                        <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option>
+                                        <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option> */}
 
                                     </Form.Select>
                                 </div>
-                                <div className="flex-none">
-                                    {/* <Form.Label className="common-label">Developers</Form.Label> */}
-                                    <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
-                                        <option value="" onClick={(e) => e.stopPropagation()}>Select Developers</option>
-                                        <option value="assigned" onClick={(e) => e.stopPropagation()} >Assigned</option>
-                                        <option value="unassigned" onClick={(e) => e.stopPropagation()}>Unassigned</option>
-                                        <option value="all_developers" onClick={(e) => e.stopPropagation()}>All Developers</option>
-                                    </Form.Select>
-                                </div>
+                                {/* <div className="flex-none"> */}
+                                {/* <Form.Label className="common-label">Developers</Form.Label> */}
+                                {/* <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
+                                        <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
+                                        <option value="assigned" onClick={(e) => e.stopPropagation()} >{t("assigned")}</option>
+                                        <option value="unassigned" onClick={(e) => e.stopPropagation()}>{t("unAssigned")}</option>
+                                        <option value="all_developers" onClick={(e) => e.stopPropagation()}>{t("allDevelopers")}</option>
+                                    </Form.Select> */}
+                                {/* </div> */}
                                 <div className="flex-none">
                                     {/* <Form.Label className="common-label">Experience</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
-                                        <option value="" > Select Experience </option>
-                                        <option value="1 years" onClick={(e) => e.stopPropagation()}>1 years</option>
-                                        <option value="2 years" onClick={(e) => e.stopPropagation()}>2 years</option>
-                                        <option value="3 years" onClick={(e) => e.stopPropagation()}>3 years</option>
-                                        <option value="5 years" onClick={(e) => e.stopPropagation()}>5 years</option>
-                                        <option value="10 years" onClick={(e) => e.stopPropagation()}>10 years</option>
+                                        <option value="" > {t("selectExperience")} </option>
+                                        <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
+                                        <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
+                                        <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
+                                        <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
+                                        <option value="10 years" onClick={(e) => e.stopPropagation()}>10 {t("years")}</option>
                                     </Form.Select>
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>Clear</Button>
+                                    <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>{t("clear")}</Button>
                                 </div>
                             </div>
                         </Form>
@@ -131,7 +138,7 @@ const RentedDevelopers = () => {
                     <Tab.Content>
                         <Tab.Pane eventKey="grid-view">
                             <div className="developers-list">
-                                {allDevelopersList?.data?.developers.length > 0 ? allDevelopersList?.data?.developers.map((item, index) => {
+                                {rentedDevelopers?.data?.developers.length > 0 ? allDevelopersList?.data?.developers.map((item, index) => {
                                     return (
                                         <>
 
@@ -169,17 +176,17 @@ const RentedDevelopers = () => {
                                 <table className="table developer-table">
                                     <thead>
                                         <tr>
-                                            <th><span>Developer Name</span></th>
-                                            <th><span>Designation</span></th>
-                                            <th><span>Email</span></th>
-                                            <th><span>Connects</span></th>
+                                            <th><span>{t("developerName")}</span></th>
+                                            <th><span>{t("designation")}</span></th>
+                                            <th><span>{t("email")}</span></th>
+                                            <th><span>{t("connects")}</span></th>
                                         </tr>
                                     </thead>
-                                    {allDevelopersList?.data?.developers?.map((value, index) => {
+                                    {rentedDevelopers?.data?.developers?.map((value, index) => {
                                         return (
                                             <>
                                                 <tbody>
-                                                    <tr   onClick={() => handleRowClick(value?.id)}>
+                                                    <tr onClick={() => handleRowClick(value?.id)}>
                                                         <td>
                                                             <span className="d-flex align-items-center gap-3">
                                                                 <img src={value?.profile_picture} />
@@ -221,7 +228,7 @@ const RentedDevelopers = () => {
                         </Tab.Pane>
                     </Tab.Content>
                 </Tab.Container>
-                {allDevelopersList?.data?.developers?.length >= 5 ? (
+                {rentedDevelopers?.pagination?.totalDevelopers >= 5 ? (
                     <div className="text-center mt-3">
                         <SeeMore setCount={setCount} />
                     </div>

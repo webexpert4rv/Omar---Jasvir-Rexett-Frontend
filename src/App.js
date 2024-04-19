@@ -22,6 +22,7 @@ import AdminDocuments from './pages/admin/AdminDocuments';
 import AdminTimeReporting from './pages/admin/AdminTimeReporting';
 import AdminInvoice from './pages/admin/AdminInvoice';
 import Revenue from './pages/admin/Revenue';
+import AccountDeletionRequest from './pages/admin/AccountDeletionRequest';
 import DeveloperDashboard from './pages/developer/DeveloperDashboard';
 import DeveloperDashboardLayout from '../src/layout/DeveloperDashboardLayout';
 import EditDeveloperProfile from './pages/developer/DeveloperEditProfile';
@@ -111,6 +112,7 @@ function App() {
           <Route path="/admin-documents" exact element={<AdminDashboardLayout><AdminDocuments /></AdminDashboardLayout>} />
           <Route path="/admin-time-reporting" exact element={<AdminDashboardLayout><AdminTimeReporting /></AdminDashboardLayout>} />
           <Route path="/revenue" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
+          <Route path="/account-deletion-request" exact element={<AdminDashboardLayout><AccountDeletionRequest/></AdminDashboardLayout>} />
           <Route path="/admin-invoice" exact element={<AdminDashboardLayout><AdminInvoice /></AdminDashboardLayout>} />
           <Route path="/developer-dashboard" exact element={<DeveloperDashboardLayout><DeveloperDashboard /></DeveloperDashboardLayout>} />
           <Route path="/edit-developer-profile" exact element={<DeveloperDashboardLayout><EditDeveloperProfile /></DeveloperDashboardLayout>} />

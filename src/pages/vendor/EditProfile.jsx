@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button, Tabs, Tab } from "react-bootstrap";
+import { Row, Col, Form, Button, Tabs, Tab,OverlayTrigger , Tooltip } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
 import RexettButton from "../../components/atomic/RexettButton";
@@ -10,9 +10,14 @@ import {
 } from "../../redux/slices/vendorDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { useTranslation } from "react-i18next";
+import { getDeleteAccount } from "../../redux/slices/clientDataSlice";
+import { FaTrashCan } from "react-icons/fa6";
+import EndJobModal from "./../views/Modals/EndJob";
+
 
 const EditVendorProfile = () => {
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false)
   const { vendorProfile, screenLoader, smallLoader } = useSelector(
     (state) => state.vendorData
   );
@@ -27,13 +32,15 @@ const EditVendorProfile = () => {
     setError,
     formState: { errors },
   } = useForm();
-  const { t } =  useTranslation()
+  const { t } = useTranslation()
   const [password, setPassword] = useState({
     firstPass: false,
     secondPass: false,
     thirdPass: false,
     fourthPass: false,
   })
+  console.log(vendorProfile ,"vendorProfile")
+
 
   useEffect(() => {
     setValue("vendor_name", vendorProfile?.name);
@@ -57,6 +64,26 @@ const EditVendorProfile = () => {
   useEffect(() => {
     dispatch(getVenderProfile());
   }, []);
+
+
+
+  const handleJobStatusModal = (id) => {
+    setShowModal(!showModal)
+  }
+
+
+  const handleJobStatusAction = (e, data) => {
+    console.log(data, "data")
+    e.preventDefault()
+    console.log(data, "data")
+    dispatch(getDeleteAccount(data))
+    setShowModal(false)
+  }
+  const deleteprofile = (
+    <Tooltip id="tooltip">
+      Delete Profile
+    </Tooltip>
+  );
 
   const onSubmit = (values) => {
     let payload = {
@@ -115,8 +142,12 @@ const EditVendorProfile = () => {
           <section className="card-box">
             <Form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div>
-                <div>
-                  <h2 className="section-head mb-4">{t("updateYourProfile")}</h2>
+              <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
+              <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
+                  <OverlayTrigger placement="bottom" overlay={deleteprofile}>
+                    <Button onClick={() => handleJobStatusModal(vendorProfile?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
+                  </OverlayTrigger>
+                  </div>
                   <Row className="mb-4">
                     <Col md="6">
                       <div className="inner-form">
@@ -130,7 +161,7 @@ const EditVendorProfile = () => {
                             name="vendor_name"
                             placeholder={t("enterVendorName")}
                             {...register(`vendor_name`, {
-                              required:t("nameValidation"),
+                              required: t("nameValidation"),
                             })}
                           />
                           {errors?.vendor_name && (
@@ -234,7 +265,7 @@ const EditVendorProfile = () => {
                             name="phone_number"
                             placeholder={t("enterPhoneNumber")}
                             {...register(`phone_number`, {
-                              required:t("phoneNumberValidation"),
+                              required: t("phoneNumberValidation"),
                             })}
                           />
                           {errors?.phone_number && (
@@ -274,7 +305,7 @@ const EditVendorProfile = () => {
                             type="text"
                             className="cv-field"
                             name="address_2"
-                            placeholder={t("enterAddress2")} 
+                            placeholder={t("enterAddress2")}
                             {...register(`address_2`, {
                               required: t("addressValidation"),
                             })}
@@ -542,162 +573,162 @@ const EditVendorProfile = () => {
                         </Form.Group>
                       </div>
                       <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            {t("successStory")}
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="success_story"
-                            placeholder={t("enterSuccessStory")}
-                            {...register(`success_story`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.success_story && (
-                            <p className="error-message">
-                              {errors.success_story.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            {t("yearlyRevenue")}
-                          </Form.Label>
-                          <Form.Control
-                            type="number"
-                            className="cv-field"
-                            name="yearly_revenue"
-                            placeholder={t("enterYearlyRevenue")}
-                            {...register(`yearly_revenue`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.yearly_revenue && (
-                            <p className="error-message">
-                              {errors.yearly_revenue.message}
-                            </p>
-                          )}
-                        </Form.Group>
+                        <Form.Label className="common-label">
+                          {t("successStory")}
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="success_story"
+                          placeholder={t("enterSuccessStory")}
+                          {...register(`success_story`, {
+                            required: false,
+                          })}
+                        />
+                        {errors?.success_story && (
+                          <p className="error-message">
+                            {errors.success_story.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("yearlyRevenue")}
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          className="cv-field"
+                          name="yearly_revenue"
+                          placeholder={t("enterYearlyRevenue")}
+                          {...register(`yearly_revenue`, {
+                            required: false,
+                          })}
+                        />
+                        {errors?.yearly_revenue && (
+                          <p className="error-message">
+                            {errors.yearly_revenue.message}
+                          </p>
+                        )}
+                      </Form.Group>
                     </Col>
                     <Col md="6">
 
-                    <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            {t("totalEmployees")}
-                          </Form.Label>
-                          <Form.Control
-                            type="number"
-                            className="cv-field"
-                            name="total_employees"
-                            placeholder={t("totalEmployees")}
-                            {...register(`total_employees`, {
-                              required: t("totalEmployeesValidation"),
-                            })}
-                          />
-                          {errors?.total_employees && (
-                            <p className="error-message">
-                              {errors.total_employees.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            {t("totalITRecruiter")}
-                          </Form.Label>
-                          <Form.Control
-                            type="number"
-                            className="cv-field"
-                            name="total_it_recruiter"
-                            placeholder={t("enterTotalITRecruiter")}
-                            {...register(`total_it_recruiter`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.total_it_recruiter && (
-                            <p className="error-message">
-                              {errors.total_it_recruiter.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            {t("serviceOffering")}
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="service_offering"
-                            placeholder={t("enterServiceOffering")}
-                            {...register(`service_offering`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.service_offering && (
-                            <p className="error-message">
-                              {errors.service_offering.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            {t("specialization")}
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="specialization"
-                            placeholder={t("enterSpecialization")}
-                            {...register(`specialization`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.specialization && (
-                            <p className="error-message">
-                              {errors.specialization.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("totalEmployees")}
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          className="cv-field"
+                          name="total_employees"
+                          placeholder={t("totalEmployees")}
+                          {...register(`total_employees`, {
+                            required: t("totalEmployeesValidation"),
+                          })}
+                        />
+                        {errors?.total_employees && (
+                          <p className="error-message">
+                            {errors.total_employees.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("totalITRecruiter")}
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          className="cv-field"
+                          name="total_it_recruiter"
+                          placeholder={t("enterTotalITRecruiter")}
+                          {...register(`total_it_recruiter`, {
+                            required: false,
+                          })}
+                        />
+                        {errors?.total_it_recruiter && (
+                          <p className="error-message">
+                            {errors.total_it_recruiter.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("serviceOffering")}
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="service_offering"
+                          placeholder={t("enterServiceOffering")}
+                          {...register(`service_offering`, {
+                            required: false,
+                          })}
+                        />
+                        {errors?.service_offering && (
+                          <p className="error-message">
+                            {errors.service_offering.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("specialization")}
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="specialization"
+                          placeholder={t("enterSpecialization")}
+                          {...register(`specialization`, {
+                            required: false,
+                          })}
+                        />
+                        {errors?.specialization && (
+                          <p className="error-message">
+                            {errors.specialization.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
                           {t("closeContract")}
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="turn_around_time_to_close_contract_position"
-                            placeholder={t("enterCloseContract")}
-                            {...register(`turn_around_time_to_close_contract_position`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.turn_around_time_to_close_contract_position && (
-                            <p className="error-message">
-                              {errors.turn_around_time_to_close_contract_position.message}
-                            </p>
-                          )}
-                        </Form.Group> <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="turn_around_time_to_close_contract_position"
+                          placeholder={t("enterCloseContract")}
+                          {...register(`turn_around_time_to_close_contract_position`, {
+                            required: false,
+                          })}
+                        />
+                        {errors?.turn_around_time_to_close_contract_position && (
+                          <p className="error-message">
+                            {errors.turn_around_time_to_close_contract_position.message}
+                          </p>
+                        )}
+                      </Form.Group> <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
                           {t("closePermanent")}
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="turn_around_time_to_close_permanent_position"
-                            placeholder={t("enterClosePermanent")}
-                            {...register(`turn_around_time_to_close_permanent_position`, {
-                              required: false,
-                            })}
-                          />
-                          {errors?.turn_around_time_to_close_permanent_position && (
-                            <p className="error-message">
-                              {errors.turn_around_time_to_close_permanent_position.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                      
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="turn_around_time_to_close_permanent_position"
+                          placeholder={t("enterClosePermanent")}
+                          {...register(`turn_around_time_to_close_permanent_position`, {
+                            required: false,
+                          })}
+                        />
+                        {errors?.turn_around_time_to_close_permanent_position && (
+                          <p className="error-message">
+                            {errors.turn_around_time_to_close_permanent_position.message}
+                          </p>
+                        )}
+                      </Form.Group>
+
                       <div>
-  
+
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">{t("city")}</Form.Label>
                           <Form.Control
@@ -731,7 +762,7 @@ const EditVendorProfile = () => {
                               },
                               pattern: {
                                 value: /^[A-Za-z\s]+$/,
-                                message: "State should not contain numbers " ,
+                                message: "State should not contain numbers ",
                               }
                             })}
                           />
@@ -751,7 +782,7 @@ const EditVendorProfile = () => {
                             name="company_postcode"
                             placeholder={t("enterPostCode")}
                             {...register(`company_postcode`, {
-                              required:t("postCodeValidation"),
+                              required: t("postCodeValidation"),
                             })}
                           />
                           {errors?.company_postcode && (
@@ -798,13 +829,13 @@ const EditVendorProfile = () => {
                             placeholder={t("enterCountryCode")}
                             {...register(`country_code`, {
                               required: {
-                              value: true,
-                              message: t("countryCodeValidation"),
-                            },
-                            pattern:{
-                              value: /^(\+?\d{1,3}|\d{1,5})$/,
-                              message: "Country should not be greater than 5 digits ",
-                            }
+                                value: true,
+                                message: t("countryCodeValidation"),
+                              },
+                              pattern: {
+                                value: /^(\+?\d{1,3}|\d{1,5})$/,
+                                message: "Country should not be greater than 5 digits ",
+                              }
                             })}
                           />
                           {errors?.country_code && (
@@ -816,14 +847,14 @@ const EditVendorProfile = () => {
                       </div>
                     </Col>
                     <Col md="6">
-                   
+
                     </Col>
                   </Row>
                 </div>
                 <div>
                   <h2 className="section-head mb-4">
-                  {t("updateYourProprietorProfile")}
-                  </h2> 
+                    {t("updateYourProprietorProfile")}
+                  </h2>
                   <Row className="mb-4">
                     <Col md="6">
                       <div className="inner-form">
@@ -886,12 +917,12 @@ const EditVendorProfile = () => {
                             </p>
                           )}
                         </Form.Group>
-  
+
                       </div>
                     </Col>
                     <Col md="6">
                       <div className="inner-form">
-                      <Form.Group className="mb-3">
+                        <Form.Group className="mb-3">
                           <Form.Label className="common-label">
                             {t("contactPersonName")}
                           </Form.Label>
@@ -920,7 +951,7 @@ const EditVendorProfile = () => {
                             name="proprietor_contact_person_phone_number"
                             placeholder={t("enterContactPersonNumber")}
                             {...register(`proprietor_contact_person_phone_number`, {
-                              required:t("contactNameValidation"),
+                              required: t("contactNameValidation"),
                             })}
                           />
                           {errors?.proprietor_contact_person_phone_number && (
@@ -961,9 +992,9 @@ const EditVendorProfile = () => {
                     isLoading={smallLoader}
                   />
                 </div>
-              </div>
             </Form>
           </section>
+          <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} />
         </>
       )}
     </>

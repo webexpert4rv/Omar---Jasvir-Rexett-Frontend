@@ -274,7 +274,12 @@
         "education" : "Education",
         "present" : "Present",
         "readMore" : "[Read More...]",
-        "readLess" : "[Read Less]"
+        "readLess" : "[Read Less]",
+        "userName": "User Name" , 
+        "userEmail" : "User Email",
+        "role" : "Role",
+        "reason" : "Reason" ,
+        "accountDeletionList" : "Account Deletion List"
         
 
     }
