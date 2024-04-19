@@ -487,8 +487,7 @@ export function getDeleteAccount(payload) {
         }
     }
 }
-export function getDeleteJob(payload,callback) {
-    console.log(payload,"iiiiiiiiiid")
+export function getDeleteJob(payload) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
