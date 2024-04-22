@@ -420,7 +420,10 @@ ul {
     width: 30px;
     height: 30px;
 }
-
+.notification-btn.active
+{
+    animation: wiggle 2s linear infinite;
+}
 .notification-btn.active:before {
     content: '';
     position: absolute;
@@ -432,6 +435,30 @@ ul {
     background-color: #f00;
     border-radius: 50%;
 }
+
+@keyframes wiggle {
+    0%, 7% {
+      transform: rotateZ(0);
+    }
+    15% {
+      transform: rotateZ(-15deg);
+    }
+    20% {
+      transform: rotateZ(10deg);
+    }
+    25% {
+      transform: rotateZ(-10deg);
+    }
+    30% {
+      transform: rotateZ(6deg);
+    }
+    35% {
+      transform: rotateZ(-4deg);
+    }
+    40%, 100% {
+      transform: rotateZ(0);
+    }
+  }
 
 .section-head {
     font-size: 25px;
@@ -3182,6 +3209,30 @@ input[type="radio"]:checked {
 {
     padding: 0px 30px 30px;
 }
+.action-btn
+{
+    width: 40px;
+    height: 40px;
+    background-color: #037563;
+    border: 1px solid #037563;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s ease;
+    padding: 0px;
+}
+.action-btn:disabled
+{
+    background-color: #8a8a8a !important;
+    border-color: #8a8a8a !important;
+    color: #222222 !important;
+}
+.action-btn:hover
+{
+    color: #037563;
+    background-color: transparent;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -3440,6 +3491,37 @@ input[type="radio"]:checked {
     .bell-icon {
         width: 45px;
         height: 45px;
+    }
+    .faq-accordion-body
+    {
+        font-size: 14px;
+    }
+    .faq-accordion-item:first-of-type .accordion-button, .faq-accordion-item:first-of-type
+    {
+        border-top-left-radius: 26px;
+        border-top-right-radius: 26px;
+    }
+    .faq-accordion-header .accordion-button
+    {
+        padding: 13px 18px;
+    }
+    .faq-section.jobposting-active .faq-banner
+    {
+        padding: 40px 0;
+    }
+    .faq-heading
+    {
+        font-size: 17px;
+    }
+    .faq-tab-heading
+    {
+        font-size: 24px;
+    }
+    .faq-pill .faq-link
+    {
+        padding: 14px 35px;
+        font-size: 14px;
+        border-radius: 11px;
     }
 }
 
