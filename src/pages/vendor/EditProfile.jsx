@@ -75,7 +75,6 @@ const EditVendorProfile = () => {
   const handleJobStatusAction = (e, data) => {
     console.log(data, "data")
     e.preventDefault()
-    console.log(data, "data")
     dispatch(getDeleteAccount(data))
     setShowModal(false)
   }

@@ -31,12 +31,12 @@ const JobPost = () => {
   );
   const [otherCategory, setOtherCategory] = useState(null);
   const [options, setOptions] = useState([]);
-  const [skillCate,setSkillsCate]=useState([])
-  const {jobPostedData} = useSelector(state => state.clientData)
+  const [skillCate, setSkillsCate] = useState([])
+  const { jobPostedData } = useSelector(state => state.clientData)
 
   const dispatch = useDispatch();
   const jobId = jobPostedData?.data?.id
-  const route =   `/job-edit-post/${jobId}`
+  const route = `/job-edit-post/${jobId}`
   const {
     register,
     setValue,
@@ -58,10 +58,16 @@ const JobPost = () => {
     dispatch(getJobCategoryList());
   }, [dispatch]);
 
+  //   useEffect(() => {
+  //     if (data) {
+  //         const array = data.split(",").map(tech => ({ label: tech.trim(), value: tech.trim() }));
+  //         setSelectedOption(array);
+  //     }
+  // }, [data]);
 
-  console.log(jobId,"jobid")
-  console.log(jobPostedData,"jobPostedData")
-  console.log(otherCategory , "otherCategory")
+  console.log(jobId, "jobid")
+  console.log(jobPostedData, "jobPostedData")
+  console.log(otherCategory, "otherCategory")
   useEffect(() => {
 
     setValue("title", jobPostedData?.data?.title)
@@ -72,7 +78,7 @@ const JobPost = () => {
     setValue("selectedOption", jobPostedData?.data?.skills)
     setValue("otherCategory", jobPostedData?.job_category?.title)
 
-}, [jobPostedData])
+  }, [jobPostedData])
 
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
@@ -82,47 +88,47 @@ const JobPost = () => {
   useEffect(() => {
     setOptions(jobCategoryList);
     setSkillsCate(skillListMapped)
-  }, [jobCategoryList,skillList]);
+  }, [jobCategoryList, skillList]);
 
   const handleCreate = (inputValue) => {
     setTimeout(() => {
       const newOption = createOption(inputValue);
       setOptions((prev) => [...prev, newOption]);
-      let data={
-        title:inputValue
+      let data = {
+        title: inputValue
       }
-      dispatch(createNewJobCategory(data,()=>{
+      dispatch(createNewJobCategory(data, () => {
         dispatch(getJobCategoryList());
       }))
     }, 1000);
   };
 
 
-  const onSubmit = (values ,jobId) => {
+  const onSubmit = (values, jobId) => {
     let convertArr = selectedOption.map((item) => item.label);
     let data = {
       ...values,
       skills: convertArr.toString(),
       category: otherCategory.label,
     };
-    if(route){
-      dispatch(clientUpdatePost(data ,jobId , ()=> { 
+    if (route) {
+      dispatch(clientUpdatePost(data, jobId, () => {
         navigate("/job-posted");
       }))
-    }else{
-    dispatch(
-      clientJobPost(data, () => {
-        navigate("/job-posted");
-      })
-    );
-  };
-}
+    } else {
+      dispatch(
+        clientJobPost(data, () => {
+          navigate("/job-posted");
+        })
+      );
+    };
+  }
 
   const onChangeSelect = (val) => {
     setTimeout(() => {
       const newOption = createOption(val);
       setSkillsCate((prev) => [...prev, newOption]);
-   
+
     }, 1000);
   };
 
@@ -290,8 +296,8 @@ const JobPost = () => {
                   isMulti
                
                 /> */}
-                    <CreatableSelect
-                    isMulti
+                <CreatableSelect
+                  isMulti
                   isClearable
                   name={selectedOption}
                   onChange={(newValue) => {
@@ -299,7 +305,7 @@ const JobPost = () => {
                   }}
                   onCreateOption={onChangeSelect}
                   options={skillCate}
-                  defaultValue={{ label: "Web develop", value: "Web develop" }}                
+                  defaultValue={{ label: "Web develop", value: "Web develop" }}
                 />
               </Form.Group>
               {/* <p className="error-message ">
