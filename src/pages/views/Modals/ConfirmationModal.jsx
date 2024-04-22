@@ -10,8 +10,8 @@ const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type}) =
         onClick(e,data)
     }
     return(
-        <Modal show={show} onHide={(e)=>handleClose(e)} centered animation size="lg">
-            <Modal.Header closeButton>
+        <Modal show={show} onHide={(e)=>handleClose(e)} centered animation className="custom-modal">
+            <Modal.Header closeButton className="border-0 pb-3">
             {/* <Modal.Title>End Job</Modal.Title> */}
             </Modal.Header>
 
