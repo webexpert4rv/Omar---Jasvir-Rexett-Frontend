@@ -5,20 +5,23 @@ import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Nav, Tab } from "react-bootstrap";
-import { FaCircleCheck } from "react-icons/fa6";
+import { FaCircleCheck, FaTrashCan } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
-import { getDevelopersList, getRentedDevelopers } from "../../redux/slices/vendorDataSlice";
+import { getDeleteDeveloper, getDevelopersList, getRentedDevelopers } from "../../redux/slices/vendorDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { SeeMore } from "../../components/atomic/SeeMore";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
+import ConfirmationModal from ".././views/Modals/ConfirmationModal";
+
 const RentedDevelopers = () => {
     const { allDevelopersList, rentedDevelopers, screenLoader } = useSelector(state => state.vendorData)
     const dispatch = useDispatch()
     const [selectedFilter, setSelectedFilter] = useState({});
+    const [showModal, setShowModal] = useState(false)
     const [count, setCount] = useState(1);
     const navigate = useNavigate()
     const { t } = useTranslation()
@@ -74,6 +77,13 @@ const RentedDevelopers = () => {
         dispatch(getDeveloperDetails(id))
         navigate(`/vendor-single-developer/${id}`)
     }
+    const handleDelete = (e,devId) => {
+        e.stopPropagation()
+        setShowModal(!showModal)
+    }
+    const handleDeleteAction=()=>{
+        dispatch(getDeleteDeveloper())
+    }
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <>
@@ -95,7 +105,7 @@ const RentedDevelopers = () => {
                                 <div className="flex-none">
                                     {/* <Form.Label className="common-label">Category</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
-                                        <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
+                                        <option value="" onClick={(e) => e.stopPropagation()}>{t("selectSkills")}</option>
                                         {rentedDevelopers?.data?.skills?.map((item, index) => {
                                             return (
                                                 <>
@@ -138,7 +148,7 @@ const RentedDevelopers = () => {
                     <Tab.Content>
                         <Tab.Pane eventKey="grid-view">
                             <div className="developers-list">
-                                {rentedDevelopers?.data?.developers.length > 0 ? allDevelopersList?.data?.developers.map((item, index) => {
+                                {rentedDevelopers?.data?.developers.length > 0 ? rentedDevelopers?.data?.developers.map((item, index) => {
                                     return (
                                         <>
 
@@ -180,6 +190,8 @@ const RentedDevelopers = () => {
                                             <th><span>{t("designation")}</span></th>
                                             <th><span>{t("email")}</span></th>
                                             <th><span>{t("connects")}</span></th>
+                                            <th><span>{t("action")}</span></th>
+
                                         </tr>
                                     </thead>
                                     {rentedDevelopers?.data?.developers?.map((value, index) => {
@@ -218,6 +230,7 @@ const RentedDevelopers = () => {
                                                                 </li> */}
                                                             </ul>
                                                         </td>
+                                                        <Button onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></Button>
                                                     </tr>
                                                 </tbody>
                                             </>
@@ -228,6 +241,7 @@ const RentedDevelopers = () => {
                         </Tab.Pane>
                     </Tab.Content>
                 </Tab.Container>
+
                 {rentedDevelopers?.pagination?.totalDevelopers >= 5 ? (
                     <div className="text-center mt-3">
                         <SeeMore setCount={setCount} />
@@ -235,6 +249,7 @@ const RentedDevelopers = () => {
                 ) : (
                     ""
                 )}
+                <ConfirmationModal show={showModal} handleClose={setShowModal} onClick={handleDeleteAction} header="Delete Job" text={"Are you sure ,you want to delete this job"} />
             </>
             }
         </>

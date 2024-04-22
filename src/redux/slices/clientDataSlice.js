@@ -18,7 +18,8 @@ const initialClientData = {
     jobPostedData: {},
     earnedBack: {},
     developerDetails:{},
-    timeReportingPage:{}
+    timeReportingPage:{},
+    faqsData:{}
 }
 
 export const clientDataSlice = createSlice({
@@ -101,12 +102,15 @@ export const clientDataSlice = createSlice({
         setDeveloperDetails:(state,action) =>{
             state.developerDetails = action.payload
             state.screenLoader = false;
+        },
+        setFaqs : (state ,action) =>{
+            state.faqsData = action.payload
         }
 
     }
 })
 
-export const { setAllJobPostedList, setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList, setFaqs ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -221,8 +225,6 @@ export function clientJobPost(payload, callback) {
     };
 }
 export function clientUpdatePost(payload,id, callback) {
-    console.log(id,"id----------------------------------")
-    console.log(payload,"payload----------------------------------")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
@@ -534,3 +536,15 @@ export function createNewJobCategory(payload,callback) {
         }
     }
 }
+export function getFaq() {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get("/web/faqs")
+            dispatch(setFaqs(result.data))
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+        }
+    }
+}
+
