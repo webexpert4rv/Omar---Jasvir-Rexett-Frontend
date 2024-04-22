@@ -34,6 +34,7 @@ const RentedDevelopers = () => {
 
 
 
+   
     const handleSkill = (e) => {
         let filterData = {
             ...selectedFilter,
@@ -83,6 +84,9 @@ const RentedDevelopers = () => {
     }
     const handleDeleteAction=()=>{
         dispatch(getDeleteDeveloper())
+    }
+    const handleClose=()=>{
+        setShowModal(!showModal)
     }
     return (
         <>
@@ -249,7 +253,7 @@ const RentedDevelopers = () => {
                 ) : (
                     ""
                 )}
-                <ConfirmationModal show={showModal} handleClose={setShowModal} onClick={handleDeleteAction} header="Delete Job" text={"Are you sure ,you want to delete this job"} />
+                <ConfirmationModal show={showModal} handleClose={setShowModal} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to delete this developer"} />
             </>
             }
         </>

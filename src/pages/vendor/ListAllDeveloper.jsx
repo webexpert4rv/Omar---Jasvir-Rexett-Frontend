@@ -5,29 +5,32 @@ import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Nav, Tab } from "react-bootstrap";
-import { FaCircleCheck } from "react-icons/fa6";
+import { FaCircleCheck, FaTrashCan } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { getDevelopersList } from "../../redux/slices/vendorDataSlice";
+import { getDeleteDeveloper, getDevelopersList } from "../../redux/slices/vendorDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { SeeMore } from "../../components/atomic/SeeMore";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
+import ConfirmationModal from ".././views/Modals/ConfirmationModal";
 
 
 const AllDeveloperList = () => {
     const { allDevelopersList, screenLoader } = useSelector(state => state.vendorData)
     const dispatch = useDispatch()
-    console.log(allDevelopersList, "allDevelopersList")
+    const [showModal, setShowModal] = useState(false)
     const [selectedFilter, setSelectedFilter] = useState({});
     const [count, setCount] = useState(1);
+    const [devId , setDevId] =  useState()
     const navigate = useNavigate()
     const { t } = useTranslation()
 
-
+    console.log(allDevelopersList,"allDevelopersList")
+    // console.log(allDevelopersList?.data?.developers[0]?.developer_skills?.developer_id, "allDevelopersList-----")
 
     useEffect(() => {
         dispatch(getDevelopersList({ page: count }))
@@ -79,6 +82,19 @@ const AllDeveloperList = () => {
         dispatch(getDeveloperDetails(id))
         navigate(`/vendor-single-developer/${id}`)
     }
+
+    const handleClose=()=>{
+        setShowModal(!showModal)
+    }
+    const handleDelete = (e,id) => {
+        e.stopPropagation()
+        setDevId(id)
+        setShowModal(!showModal)
+    }
+    console.log(devId , "devId")
+    const handleDeleteAction=()=>{
+        dispatch(getDeleteDeveloper(devId))
+    }
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <>
@@ -101,20 +117,21 @@ const AllDeveloperList = () => {
                                     {/* <Form.Label className="common-label">Category</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
                                         <option value="" onClick={(e) => e.stopPropagation()}>{t("selectSkills")}</option>
-                                        <option value="python" onClick={(e) => e.stopPropagation()}>{t("python")}</option>
-                                        <option value="javascript" onClick={(e) => e.stopPropagation()}>{t("javaScript")}</option>
-                                        <option value="full_stack" onClick={(e) => e.stopPropagation()}>{t("fullStack")}</option>
+                                        {allDevelopersList?.data?.skills?.map((item , index)=>{
+                                            return(
+                                            <option  key = {index} >{item?.title}</option>
+                                       ) })}
 
                                     </Form.Select>
                                 </div>
                                 <div className="flex-none">
                                     {/* <Form.Label className="common-label">Developers</Form.Label> */}
-                                    <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
+                                    {/* <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
                                         <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
                                         <option value="assigned" onClick={(e) => e.stopPropagation()} >{t("assigned")}</option>
                                         <option value="unassigned" onClick={(e) => e.stopPropagation()}>{t("unassigned")}</option>
                                         <option value="all_developers" onClick={(e) => e.stopPropagation()}>{t("allDevelopers")}</option>
-                                    </Form.Select>
+                                    </Form.Select> */}
                                 </div>
                                 <div className="flex-none">
                                     {/* <Form.Label className="common-label">Experience</Form.Label> */}
@@ -142,7 +159,7 @@ const AllDeveloperList = () => {
 
                                             <div className="developer-card" onClick={() => handleCardClick(item?.id)}>
                                                 <div className="user-imgbx">
-                                                    <img src={item?.profile_picture} className="user-img" />
+                                                    <img src={item?.profile_picture ? item?.profile_picture : userImg} className="user-img" />
                                                 </div>
                                                 <div className="text-center">
                                                     <h3 className="user-name">{item.name}</h3>
@@ -178,6 +195,8 @@ const AllDeveloperList = () => {
                                             <th><span>{t("designation")}</span></th>
                                             <th><span>{t("email")}</span></th>
                                             <th><span>{t("connects")}</span></th>
+                                            <th><span>{t("action")}</span></th>
+
                                         </tr>
                                     </thead>
                                     {allDevelopersList?.data?.developers?.map((value, index) => {
@@ -187,7 +206,7 @@ const AllDeveloperList = () => {
                                                     <tr onClick={() => handleRowClick(value?.id)} >
                                                         <td>
                                                             <span className="d-flex align-items-center gap-3">
-                                                                <img src={value?.profile_picture} />
+                                                                <img src={value?.profile_picture ? value?.profile_picture : userImg} />
                                                                 <h3 className="user-name color-121212 mb-0">{value?.name}</h3>
                                                                 <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span>
                                                             </span>
@@ -216,6 +235,9 @@ const AllDeveloperList = () => {
                                                                 </li> */}
                                                             </ul>
                                                         </td>
+
+
+                                                        <Button onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></Button>
                                                     </tr>
                                                 </tbody>
                                             </>
@@ -233,6 +255,7 @@ const AllDeveloperList = () => {
                 ) : (
                     ""
                 )}
+                <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete developer"} text={"Are you sure ,you want to delete this developer"} />
             </>
             }
         </>

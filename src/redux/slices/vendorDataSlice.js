@@ -289,15 +289,9 @@ export function getDeleteDeveloper(id) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`/vendor/delete-developer/${id}`)
-            if (result?.status == 200) {
-                dispatch(setRevenueData(result.data))
-            }
+            let result = await clientInstance.delete(`vendor/delete-developer/${id}`)
         } catch (error) {
-            const message = error.message
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailVendorData())
-
+           
         }
     }
 

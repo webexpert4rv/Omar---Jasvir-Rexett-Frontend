@@ -279,7 +279,13 @@
         "userEmail" : "User Email",
         "role" : "Role",
         "reason" : "Reason" ,
-        "accountDeletionList" : "Account Deletion List"
+        "accountDeletionList" : "Account Deletion List",
+        "uploadImage" : "Upload Image, Image must be jpg or png",
+        "addTime" : "Add Time",
+        "updatePreviousTime" : "Want To Update Previous Time",
+        "selectAMonth" : "Please select a month",
+        "selectAWeek" : "Please select a week",
+        "enterClientName" : "Please enter client name"
         
 
     }
