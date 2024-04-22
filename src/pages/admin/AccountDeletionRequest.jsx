@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row, Table } from "react-bootstrap";
+import { Button, Col, Form, Row, Table, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { adminEngagementList, getAccountDeletion } from "../../redux/slices/adminDataSlice";
@@ -39,6 +39,11 @@ const AccountDeletionRequest = () => {
     //     setTimerValue(timer);
 
     // }
+    const deleteApplication = (
+        <Tooltip id="tooltip">
+          Delete Application
+        </Tooltip>
+      );
     return (
         <>
             <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
@@ -67,14 +72,20 @@ const AccountDeletionRequest = () => {
                                     return (
                                         <>
                                             <tr>
-                                                <div className="user-imgbx">
-                                                    <img src={item?.user?.profile_picture} className="user-img" />
-                                                </div>
+                                                <td>
+                                                    <div className="user-imgbx application-imgbx my-0 mx-auto">
+                                                        <img src={item?.user?.profile_picture} className="user-img" />
+                                                    </div>
+                                                </td>
                                                 <td>{item?.user?.name}</td>
                                                 <td>{item?.user?.email}</td>
                                                 <td>{item?.user?.role}</td>
                                                 <td>{item?.reason}</td>
-                                               <Button variant="danger"><MdOutlineDelete/></Button>
+                                                <td>
+                                                    <OverlayTrigger placement="bottom" overlay={deleteApplication}>
+                                                        <Button className="delete-btn app-del-btn"><MdOutlineDelete/></Button>
+                                                    </OverlayTrigger>
+                                                </td>
                                             </tr>
                                         </>
                                     )

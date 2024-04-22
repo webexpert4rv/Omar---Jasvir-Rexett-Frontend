@@ -1697,6 +1697,9 @@ ul {
     width: auto;
     border: none;
     display: inline-flex;
+    padding: 5px;
+    background: #e5e5e5;
+    border-radius: 10px;
 }
 
 .notification-tabs li {
@@ -1708,7 +1711,7 @@ ul {
     border-radius: 10px;
     padding: 5px 20px;
     border: none;
-    color: #121212;
+    color: #656565;
 }
 .notification-tabs li .nav-link.active {
     background: var(--primary-color);
@@ -1998,6 +2001,18 @@ ul {
     width: auto;
     border: none;
     display: inline-flex;
+    padding: 5px;
+    background: #e5e5e5;
+    border-radius: 10px;
+}
+.application-pills
+{
+    width: auto;
+    border: none;
+    display: inline-flex;
+    padding: 5px;
+    background: #e5e5e5;
+    border-radius: 10px;
 }
 
 .job-tabs li {
@@ -2009,7 +2024,7 @@ ul {
     border-radius: 10px;
     padding: 5px 20px;
     border: none;
-    color: #121212;
+    color: #656565;
 }
 
 .job-tabs li .nav-link.active {
@@ -2455,12 +2470,12 @@ input[type="radio"]:checked {
 }
 
 .application-item .application-link {
-    color: #11998E;
+    color: #656565;
 }
 
 .application-item .application-link.active {
-    border-color: #11998E;
-    background-color: #11998E;
+    color: var(--white);
+    background: var(--primary-color);
 }
 
 .new-app {
@@ -2471,7 +2486,7 @@ input[type="radio"]:checked {
     height: 25px;
     color: #fff;
     border-radius: 50%;
-    background-color: #11998E;
+    background-color: #656565;
     font-size: 13px;
     margin-left: 5px;
 }
@@ -3232,6 +3247,47 @@ input[type="radio"]:checked {
 {
     color: #037563;
     background-color: transparent;
+}
+.application-imgbx
+{
+    width: 50px;
+    height: 50px;
+}
+.app-del-btn
+{
+    width: 39px;
+    height: 39px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.language-select {
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('../img/english.svg') no-repeat 4px center;
+    background-size: 22px;
+    padding-left: 30px;
+}
+.language-wrapper::before
+{
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 10px;
+    height: 10px;
+    transform: translateY(-50%);
+    background: url('../img/down-icon.svg') no-repeat;
+    background-size: cover;
+    z-index: 2;
+    pointer-events: none;
+}
+.language-select.lang-uk {
+    background-image: url('../img/english.svg');
+}
+.language-select.lang-swd {
+    background-image: url('../img/swedish.svg');
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {

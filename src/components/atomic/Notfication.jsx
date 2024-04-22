@@ -120,7 +120,7 @@ const Notification = ({route,job,doc}) => {
     return (
         <>
             <header>
-                <div className="d-flex align-items-center justify-content-between gap-3">
+                <div className="d-flex align-items-center justify-content-between">
                     <div className="">
                     </div>
                     <div className="d-flex align-items-center gap-3">

@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const LanguageChange = () => {
-    const [t,i18n] = useTranslation("global")
+  const [t, i18n] = useTranslation("global");
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
-    const handleLanguageChange=(lang)=>{
-        i18n.changeLanguage(lang.target.value)
+  const handleLanguageChange = (event) => {
+    const lang = event.target.value;
+    setSelectedLanguage(lang);
+    i18n.changeLanguage(lang);
+  }
 
-    }
   return (
-    <div>
-       <select onChange={handleLanguageChange}>
-                            <option value="en">EN</option>
-                            <option value="sv">SV</option>
-                        </select>
+    <div className='language-wrapper position-relative'>
+      <select className={`language-select form-control form-select shadow-none ${selectedLanguage === 'en' ? 'lang-uk' : 'lang-swd'}`} onChange={handleLanguageChange}>
+        <option value="en" className='lang-option'>EN</option>
+        <option value="sv" className='lang-option'>SV</option>
+      </select>
     </div>
   )
 }
