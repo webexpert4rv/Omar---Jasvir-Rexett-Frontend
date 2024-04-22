@@ -7,15 +7,14 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { IoSearch } from "react-icons/io5";
 import RexettPagination from "../../components/atomic/RexettPagination";
+import { MdOutlineDelete } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 const AccountDeletionRequest = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
     const { accountDeletionList, screenLoader } = useSelector(state => state.adminData)
     const { t } = useTranslation()
-    const [page, setPage] = useState(1)
 
-    console.log(accountDeletionList, "accountDeletion")
 
     useEffect(() => {
         dispatch(getAccountDeletion())
@@ -75,7 +74,7 @@ const AccountDeletionRequest = () => {
                                                 <td>{item?.user?.email}</td>
                                                 <td>{item?.user?.role}</td>
                                                 <td>{item?.reason}</td>
-                                               <Button variant="danger">Delete</Button>
+                                               <Button variant="danger"><MdOutlineDelete/></Button>
                                             </tr>
                                         </>
                                     )
