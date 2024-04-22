@@ -7,6 +7,7 @@ import { Tooltip , OverlayTrigger } from "react-bootstrap";
 import { PiArrowLineRight } from "react-icons/pi";
 import Notification from "./atomic/Notfication";
 import { useTranslation } from "react-i18next";
+import LanguageChange from "./atomic/LanguageChange";
 
 const clientName = localStorage.getItem("userName")
 const newtooltip = (
@@ -23,7 +24,7 @@ const clientname = (
   );
 const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
     const navigate = useNavigate()
-    const { t } = useTranslation()
+    const [t,i18n] = useTranslation("global")
     return (    
         <>
             <header className="mb-4 zIndex3">
@@ -32,6 +33,7 @@ const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
                         <button onClick={handlemainSidebar} className="bars-btn"><HiBars3 /></button>
                     </div>
                     <div className="d-flex align-items-center gap-3">
+                       <LanguageChange/>
                       <Notification route="notification-client" job="single-job" doc="documents"/>
                         <OverlayTrigger placement="bottom" overlay={newtooltip}>
                             <button className="main-btn add-new-job-btn" onClick={() => navigate("/job-post")}>+</button>

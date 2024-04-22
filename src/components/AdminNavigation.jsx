@@ -10,6 +10,7 @@ import { getNotification } from "../redux/slices/adminDataSlice";
 import moment from "moment";
 import Notification from "./atomic/Notfication";
 import { useTranslation } from "react-i18next";
+import LanguageChange from "./atomic/LanguageChange";
 
 const adminName = localStorage.getItem("userName")
 const tooltip = (
@@ -28,6 +29,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                         {/* <button onClick={handleSidebar} className="bars-btn"><HiBars3 /></button> */}
                     </div>
                     <div className="d-flex align-items-center gap-3">
+                        <LanguageChange/>
                         <Notification route="notification-admin"  job="admin-single-job" doc="admin-documents" />
                         <Link to={'/developer-list'} className="text-decoration-none main-btn">{t("listOfAllDevelopers")}</Link>
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
