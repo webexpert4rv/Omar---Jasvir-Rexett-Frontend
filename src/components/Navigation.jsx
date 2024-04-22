@@ -40,7 +40,7 @@ const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={clientname}>
                             <div className="profile-view">
-                                <span> {clientName.split("")[0]}</span>
+                                <span> {clientName?.split("")[0]}</span>
                             </div>
                         </OverlayTrigger>
                         <div>

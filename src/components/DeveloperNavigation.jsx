@@ -22,7 +22,7 @@ const DeveloperNavigation = ({ onClick }) => {
                         {/* <Link to={'/developer-list'} className="text-decoration-none main-btn">Contact Support</Link> */}
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
                             <div className="profile-view">
-                                <span>{developerName.split("")[0]}</span>
+                                <span>{developerName?.split("")[0]}</span>
                             </div>
                         </OverlayTrigger>
                     </div>

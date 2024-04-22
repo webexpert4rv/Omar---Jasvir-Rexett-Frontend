@@ -29,7 +29,7 @@ const VendorNavigation = ({ handleSidebar }) => {
                         <Link to={'/register-developer'} className="text-decoration-none main-btn">{t("registerNewDeveloper")}</Link>
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
                             <div className="profile-view">
-                                <span>{vendorName.split("")[0]}</span>
+                                <span>{vendorName?.split("")[0]}</span>
                             </div>
                         </OverlayTrigger>
                     </div>

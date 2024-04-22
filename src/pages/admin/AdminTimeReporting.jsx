@@ -89,9 +89,8 @@ const AdminTimeReporting = () => {
                                         <option value="" selected disabled>{t("selectClients")}</option>
                                         {
                                             adminClientList?.map((item ,index) => {
-                                                console.log(item,"item")
                                                 return (<>
-                                                    <option key={index} >{item?.name}</option>
+                                                    <option key={index} value={item.id}  >{item?.name}</option>
                                                 </>)
                                             })
                                         }
@@ -130,7 +129,7 @@ const AdminTimeReporting = () => {
                                     {t("invoice")}
                                 </th>
                                 <th className="time-table-head">
-                                    "{t("contract")}"
+                                    {t("contract")}
                                 </th>
                             </thead>
                             {screenLoader ? <ScreenLoader /> : <tbody>

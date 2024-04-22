@@ -34,7 +34,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                         <Link to={'/developer-list'} className="text-decoration-none main-btn">{t("listOfAllDevelopers")}</Link>
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
                             <div className="profile-view">
-                                <span>{adminName.split("")[0]}</span>
+                                <span>{adminName?.split("")[0]}</span>
                             </div>
                         </OverlayTrigger>
                     </div>

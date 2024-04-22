@@ -10,10 +10,9 @@ import {
   createNewJobCategory,
   getJobCategoryList,
   getSkillList,
-  jobCategoryList,
-  skillList,
+  singleJobPostData,
 } from "../../redux/slices/clientDataSlice";
-import { useNavigate } from "react-router";
+import { useNavigate,useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { IoArrowBack } from "react-icons/io5";
@@ -26,6 +25,7 @@ const createOption = (label) => ({
 const JobPost = () => {
   const [selectedOption, setSelectedOption] = useState([]);
   const navigate = useNavigate();
+  const location=useLocation();
   const { skillList, jobCategoryList, smallLoader } = useSelector(
     (state) => state.clientData
   );
@@ -44,17 +44,20 @@ const JobPost = () => {
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
 
+  let id=location.pathname.split("/")[2]
+
+
+  useEffect(()=>{
+    if(id){
+        dispatch(singleJobPostData(id,()=>{}))
+    }
+    },[])
+
   useEffect(() => {
     dispatch(getSkillList());
     dispatch(getJobCategoryList());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (data) {
-        const array = data.split(",").map(tech => ({ label: tech.trim(), value: tech.trim() }));
-        setSelectedOption(array);
-    }
-}, [data]);
 
   console.log(jobId,"jobid")
   console.log(jobPostedData,"jobPostedData")
@@ -123,6 +126,13 @@ const JobPost = () => {
     }, 1000);
   };
 
+  const getCategory = (cat) => {
+    console.log(cat,"cat")
+    let data = jobCategoryList.find((item) => item.id == cat)
+    console.log(data,"|d")
+    // return {label:data.title,value:data.title}
+}
+
 
   return (
     <>
@@ -131,7 +141,7 @@ const JobPost = () => {
           <Link className="main-btn outline-main-btn mb-0" to="/job-posted">
             <IoArrowBack />
           </Link>{" "}
-          Job Post
+          { id ? "Edit Post" :"Job Post"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Row>
@@ -165,6 +175,7 @@ const JobPost = () => {
                   }}
                   onCreateOption={handleCreate}
                   options={options}
+                  value={getCategory(jobPostedData?.data?.category)}
                 />
               </Form.Group>
             </Col>

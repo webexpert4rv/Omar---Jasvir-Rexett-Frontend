@@ -4,7 +4,7 @@ import userImg from '../../../assets/img/user-img.jpg'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { MdOutlinePersonRemove } from "react-icons/md";
 import NoDataFound from '../../atomic/NoDataFound';
 import RexettPagination from '../../atomic/RexettPagination';
 import { useSelector } from 'react-redux';
@@ -30,9 +30,10 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
       ); 
 
       const suggestedCardToolTip = (status)=>{
+        console.log(status)
         return (
             <Tooltip id="tooltip">
-            {status ? "Suggest" :"Remove"}
+            {status ? " Remove from suggestion" :"Suggest the developer"}
             </Tooltip>
         )
       } 
@@ -76,7 +77,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                                                         <OverlayTrigger placement="bottom" overlay={developerCardToolTip}>
                                                  <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={(e) => handleJobStatusModal(e,item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? <RiUserAddFill />  : type === "Shortlisted" ? <PiUserRectangleFill /> : <ImUserCheck />}</Button></OverlayTrigger> : "" }
                                                 {role !== "admin" && <OverlayTrigger placement="bottom" overlay={rejectedCardToolTip}><Button variant="danger" onClick={(e) => handleJobStatusModal(e,item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100"><ImUserMinus /></Button></OverlayTrigger> }
-                                                {role === "admin" &&  <OverlayTrigger placement="top" overlay={suggestedCardToolTip(item?.developer?.already_suggested)}><Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? <RiUserAddFill /> : <RiUserAddFill />}</Button></OverlayTrigger> }
+                                                {role === "admin" &&  <OverlayTrigger placement="top" overlay={suggestedCardToolTip(item?.developer?.already_suggested)}><Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? <MdOutlinePersonRemove/> : <RiUserAddFill />}</Button></OverlayTrigger> }
                                             </div>
                                         </div>
                                     </div>

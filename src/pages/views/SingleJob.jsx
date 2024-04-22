@@ -19,6 +19,8 @@ import { BsFillSendFill } from "react-icons/bs";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { FaTrashCan } from "react-icons/fa6";
+import { TiEdit } from "react-icons/ti";
+
 
 const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
@@ -143,7 +145,7 @@ const SingleJob = () => {
     );
     const editjob = (
         <Tooltip id="tooltip">
-        {singleJobDescription?.status=="published"? "Edit Job" : "Unpublish Job to delete"}
+        {singleJobDescription?.status=="published"? "Edit Job" : "Unpublish Job to edit"}
         </Tooltip>
     );
     
@@ -194,7 +196,7 @@ const SingleJob = () => {
                                    <Button   onClick={()=>handleDelete("application",singleJobDescription?.id)}><FaTrashCan/></Button>
                                    </OverlayTrigger>
                                    <OverlayTrigger placement="top" overlay={editjob}>
-                                   <Button   onClick={()=>handleEdit("application",singleJobDescription?.id)}><FaTrashCan/></Button>
+                                   <Button   onClick={()=>handleEdit("application",singleJobDescription?.id)}><TiEdit/></Button>
                                    </OverlayTrigger>
                                 </div>
                             </div>
