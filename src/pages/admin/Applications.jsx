@@ -286,7 +286,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Skillset Needed
+                                            {t("skillsetNeeded")}
                                           </h3>
                                           <ul className="need-skill-list">
                                             {convertToArray(
@@ -304,7 +304,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Applied on
+                                            {t("appliedOn")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.created_at?.slice(0, 10)}
@@ -321,10 +321,30 @@ const Applications = () => {
                                           </p>
                                         </div>
                                       </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Status
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.status}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            Role
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.role}
+                                          </p>
+                                        </div>
+                                      </Col>
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
-                                            Project Length
+                                            {t("projectLength")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.jobs[0]?.project_length}
@@ -334,7 +354,7 @@ const Applications = () => {
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
-                                            Experience
+                                            {t("experience")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.jobs[0]?.experience}
@@ -344,7 +364,7 @@ const Applications = () => {
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
-                                            Contract type
+                                            {t("contractType")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.jobs[0]?.contract_type}
@@ -372,11 +392,11 @@ const Applications = () => {
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
-                    Showing {allApplications?.items_per_page} results
+                    {t("showing")} {allApplications?.items_per_page} {t("results")}
                   </p>
                 ) : (
                   <p className="showing-result">
-                    Showing {allApplications?.vendors?.length} results
+                    {t("showing")} {allApplications?.vendors?.length} {t("results")}
                   </p>
                 )}
                 <RexettPagination
@@ -491,7 +511,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Company Name
+                                            {t("companyName")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.company?.name}
@@ -514,7 +534,7 @@ const Applications = () => {
                                             Total Employees
                                           </h3>
                                           <p className="application-text">
-                                            {item?.company?.total_employees}
+                                            {item?.company?.total_employees ? item?.company?.total_employees : " ----"}
                                           </p>
                                         </div>
                                       </Col>
@@ -524,14 +544,14 @@ const Applications = () => {
                                             Location
                                           </h3>
                                           <p className="application-text">
-                                            {item?.company?.location}
+                                            {item?.company?.location ? item?.company?.location : "----"}
                                           </p>
                                         </div>
                                       </Col>
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
-                                            Phone Number
+                                            {t("phoneNumber")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.company?.phone_number}
@@ -541,10 +561,40 @@ const Applications = () => {
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
-                                            Type Of Company
+                                            {t("typeOfCompany")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.company?.type_of_company}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3}>
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("status")}
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.status}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3}>
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("city")}
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.city}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3}>
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("country")}
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.country}
                                           </p>
                                         </div>
                                       </Col>
@@ -569,11 +619,11 @@ const Applications = () => {
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
-                    Showing {allApplications?.items_per_page} results
+                    {t("showing")} {allApplications?.items_per_page} {t("results")}
                   </p>
                 ) : (
                   <p className="showing-result">
-                    Showing {allApplications?.vendors?.length} results
+                    {t("showing")} {allApplications?.vendors?.length} {t("results")}
                   </p>
                 )}
                 <RexettPagination
@@ -592,10 +642,10 @@ const Applications = () => {
               <table className="table w-100 engagement-table table-ui-custom">
                 <thead>
                   <tr>
-                    <th>Developer Name</th>
-                    <th>Email Address</th>
-                    <th>Phone Number</th>
-                    <th>Action</th>
+                    <th>{t("developerName")}</th>
+                    <th>{t("email")} {t("address")}</th>
+                    <th>{t("phoneNumber")}</th>
+                    <th>{t("action")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -620,15 +670,16 @@ const Applications = () => {
                                 >
                                   <RxChevronRight />
                                 </span>{" "}
-                                {item?.name}
+                                {item?.name ? item?.name : "----"}
                               </td>
                               <td>
                                 <span className="application-mail">
-                                  {item?.email}
+                                  {item?.email ? item?.email : "----"} 
                                 </span>
                               </td>
-                              <td>{item?.phone_number}</td>
+                              <td>{item?.phone_number ?  item?.phone_number : "----"} </td>
                               <td>
+                                
                                 <div className="d-flex gap-3">
                                   <RexettButton
                                     icon={<IoCheckmark />}
@@ -681,7 +732,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                           Company Name
+                                           {t("companyName")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.developer_experiences[0]?.company_name}
@@ -701,7 +752,37 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Skillset Needed
+                                          Status
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.status}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                          Role
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.role}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                          Phone Number
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.phone_number}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("skillsetNeeded")}
                                           </h3>
                                           <ul className="need-skill-list">
                                             {convertToArray(
@@ -767,11 +848,11 @@ const Applications = () => {
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
-                    Showing {allApplications?.items_per_page} results
+                    {t("showing")} {allApplications?.items_per_page} {t("results")}
                   </p>
                 ) : (
                   <p className="showing-result">
-                    Showing {allApplications?.vendors?.length} results
+                    {t("showing")} {allApplications?.vendors?.length} {t("results")}
                   </p>
                 )}
                 <RexettPagination

@@ -285,7 +285,8 @@
         "updatePreviousTime" : "Want To Update Previous Time",
         "selectAMonth" : "Please select a month",
         "selectAWeek" : "Please select a week",
-        "enterClientName" : "Please enter client name"
+        "enterClientName" : "Please enter client name",
+        "projectLength" : "Project Length"
         
 
     }
