@@ -33,7 +33,6 @@ const SingleJob = () => {
     const navigate=useNavigate()
     const location=useLocation();
     let id=location.pathname.split("/")[2]
-    console.log(id,"---------------idd")
     const {allJobPostedList,jobCategoryList,jobPostedData,approvedLoader,smallLoader}=useSelector(state=>state.clientData)
    const { t } = useTranslation()
     useEffect(()=>{
