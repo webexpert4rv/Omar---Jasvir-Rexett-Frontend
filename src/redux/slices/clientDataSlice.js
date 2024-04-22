@@ -185,7 +185,7 @@ export function timeReporting(payload, role, callback) {
 }
 
 
-export function getFolderData(payload, role, callback) {
+export function getFolderData(payload, role) {
     return async (dispatch) => {
 
         dispatch(setScreenLoader())
@@ -210,6 +210,24 @@ export function clientJobPost(payload, callback) {
         try {
             let result = await clientInstance.post(`client/post-job`, { ...payload })
             toast.success("Job successfully Posted", { position: "top-center" })
+            dispatch(setActionSuccessFully())
+            return callback()
+
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+export function clientUpdatePost(payload,id, callback) {
+    console.log(id,"id----------------------------------")
+    console.log(payload,"payload----------------------------------")
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`client/update-job/${id}`,{ ...payload })
+            toast.success("Job successfully Updated", { position: "top-center" })
             dispatch(setActionSuccessFully())
             return callback()
 
@@ -487,7 +505,7 @@ export function getDeleteAccount(payload) {
         }
     }
 }
-export function getDeleteJob(payload) {
+export function getDeleteJob(payload ,callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {

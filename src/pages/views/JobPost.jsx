@@ -6,6 +6,7 @@ import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clientJobPost,
+  clientUpdatePost,
   createNewJobCategory,
   getJobCategoryList,
   getSkillList,
@@ -31,8 +32,11 @@ const JobPost = () => {
   const [otherCategory, setOtherCategory] = useState(null);
   const [options, setOptions] = useState([]);
   const [skillCate,setSkillsCate]=useState([])
+  const {jobPostedData} = useSelector(state => state.clientData)
 
   const dispatch = useDispatch();
+  const jobId = jobPostedData?.data?.id
+  const route =   `/job-edit-post/${jobId}`
   const {
     register,
     setValue,
@@ -45,7 +49,27 @@ const JobPost = () => {
     dispatch(getJobCategoryList());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (data) {
+        const array = data.split(",").map(tech => ({ label: tech.trim(), value: tech.trim() }));
+        setSelectedOption(array);
+    }
+}, [data]);
 
+  console.log(jobId,"jobid")
+  console.log(jobPostedData,"jobPostedData")
+  console.log(otherCategory , "otherCategory")
+  useEffect(() => {
+
+    setValue("title", jobPostedData?.data?.title)
+    setValue("experience", jobPostedData?.data?.experience)
+    setValue("contract_type", jobPostedData?.data?.contract_type)
+    setValue("job_type", jobPostedData?.data?.job_type)
+    setValue("description", jobPostedData?.data?.description)
+    setValue("selectedOption", jobPostedData?.data?.skills)
+    setValue("otherCategory", jobPostedData?.job_category?.title)
+
+}, [jobPostedData])
 
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
@@ -71,22 +95,27 @@ const JobPost = () => {
   };
 
 
-  const onSubmit = (values) => {
+  const onSubmit = (values ,jobId) => {
     let convertArr = selectedOption.map((item) => item.label);
     let data = {
       ...values,
       skills: convertArr.toString(),
-      category: otherCategory.value,
+      category: otherCategory.label,
     };
+    if(route){
+      dispatch(clientUpdatePost(data ,jobId , ()=> { 
+        navigate("/job-posted");
+      }))
+    }else{
     dispatch(
       clientJobPost(data, () => {
         navigate("/job-posted");
       })
     );
   };
+}
 
   const onChangeSelect = (val) => {
-    console.log(val,"ddd")
     setTimeout(() => {
       const newOption = createOption(val);
       setSkillsCate((prev) => [...prev, newOption]);
@@ -130,6 +159,7 @@ const JobPost = () => {
 
                 <CreatableSelect
                   isClearable
+                  defaultValue={{ label: "Web develop", value: "Web develop" }}
                   onChange={(newValue) => {
                     setOtherCategory(newValue)
                   }}
@@ -252,11 +282,13 @@ const JobPost = () => {
                     <CreatableSelect
                     isMulti
                   isClearable
+                  name={selectedOption}
                   onChange={(newValue) => {
                     setSelectedOption(newValue)
                   }}
                   onCreateOption={onChangeSelect}
                   options={skillCate}
+                  defaultValue={{ label: "Web develop", value: "Web develop" }}                
                 />
               </Form.Group>
               {/* <p className="error-message ">
