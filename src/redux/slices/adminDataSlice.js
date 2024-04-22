@@ -21,7 +21,8 @@ const initialAdminData = {
     notificationList: [],
     singleJobPagination: {},
     singleClient: {},
-    accountDeletionList:{}
+    accountDeletionList:{},
+    adminClientList : []
 }
 
 export const adminDataSlice = createSlice({
@@ -118,13 +119,17 @@ export const adminDataSlice = createSlice({
         setAccountDeletion:(state, action) =>{
             state.screenLoader = false;
             state.accountDeletionList = action.payload
+        },
+        setAdminClientList:(state ,action) =>{
+            state.screenLoader = false;
+            state.adminClientList = action.payload
         }
 
 
     }
 })
 
-export const { setSuggestedDeveloper,setAccountDeletion , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setSuggestedDeveloper,setAccountDeletion ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -293,6 +298,7 @@ export function adminTimeReporting(payload) {
             // if (result.status === 200) {
             // toast.success("Profile is Updated Successful ly", { position: "top-center" })
             dispatch(setAdminTimeReporting(result.data.data))
+            dispatch(setAdminClientList(result.data.client_list))
             // }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -449,7 +455,6 @@ export function getAccountDeletion() {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get("admin/delete-account-requests")
-            console.log(result.data,"result")
             if (result.status === 200) {
               dispatch(setAccountDeletion(result.data))
             }

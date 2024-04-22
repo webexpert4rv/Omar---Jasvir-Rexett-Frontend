@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 const AdminTimeReporting = () => {
     const dispatch = useDispatch()
-    const { adminTimeReportingList, screenLoader } = useSelector(state => state.adminData)
+    const { adminTimeReportingList, screenLoader ,adminClientList} = useSelector(state => state.adminData)
     const {clientList} = useSelector(state => state.vendorData)
     const [contractId, setContractID] = useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
@@ -33,6 +33,8 @@ const AdminTimeReporting = () => {
 
     }, [adminTimeReportingList])
 
+
+    console.log(adminClientList,"adminClientList")
     // useEffect(()=>{
     //     dispatch(getClientList())
     //      },[])
@@ -86,10 +88,10 @@ const AdminTimeReporting = () => {
                                     <Form.Select className="filter-select shadow-none" onClick = {(e)=>handleClientClick(e.target.value)}>
                                         <option value="" selected disabled>{t("selectClients")}</option>
                                         {
-                                            clientList?.map((item ,index) => {
-                                                console.log(item,"itek")
+                                            adminClientList?.map((item ,index) => {
+                                                console.log(item,"item")
                                                 return (<>
-                                                    <option value={item?.client_details?.id} >{item?.client_details?.name}</option>
+                                                    <option key={index} >{item?.name}</option>
                                                 </>)
                                             })
                                         }

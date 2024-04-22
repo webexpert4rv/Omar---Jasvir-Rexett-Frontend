@@ -41,7 +41,7 @@ const SingleJob = () => {
     }
     },[])
 
-
+    console.log(jobPostedData , "jobPostedData")
     useEffect(()=>{
         setSingleJobDescription(jobPostedData?.data)
     },[jobPostedData])
@@ -81,9 +81,6 @@ const SingleJob = () => {
        
     }
     const handleJobStatusAction= (e,data ,id) => {
-        console.log(e,"e")
-        console.log(data,"data")
-        console.log(id,"i-----------------d")
         e.preventDefault()
         if(data.status=="ended"){
             dispatch(publishedPost(singleJobDescription?.id,data,()=>{
@@ -108,11 +105,13 @@ const SingleJob = () => {
                    setSelectedTabsData(prevData[currentTab])
                 }))
             }))
-        }
-        
-           
+        }      
     }
     
+    const handleEdit=()=>{
+        navigate(`/job-edit-post/${id}`)
+
+    }
 
     const handleJobStatusModal=(e,id,status)=>{
    
@@ -137,6 +136,16 @@ const SingleJob = () => {
           End Job
         </Tooltip>
     );
+    const deletejob = (
+        <Tooltip id="tooltip">
+        {singleJobDescription?.status=="published"? "Delete Job" : "Unpublish Job to delete"}
+        </Tooltip>
+    );
+    const editjob = (
+        <Tooltip id="tooltip">
+        {singleJobDescription?.status=="published"? "Edit Job" : "Unpublish Job to delete"}
+        </Tooltip>
+    );
     
     const publishjob = (
         <Tooltip id="tooltip">
@@ -144,12 +153,13 @@ const SingleJob = () => {
         </Tooltip>   
     )
     const handleDelete=(status,id)=>{ 
-        console.log(status,"status")
+        if(singleJobDescription?.status=="published"){
         setStatusModal({
             [status]:!statusModal.isTrue,
             id:id
         })
     }
+}
 
     
     return (
@@ -180,7 +190,12 @@ const SingleJob = () => {
                                         }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?<BsFillSendXFill />:<BsFillSendFill />}</Button>
                                     </OverlayTrigger>
                                    </>:"" }
-                                   <Button disabled= {singleJobDescription?.status=="published" ? true : false} onClick={()=>handleDelete("application",singleJobDescription?.id)}><FaTrashCan/></Button>
+                                   <OverlayTrigger placement="top" overlay={deletejob}>
+                                   <Button   onClick={()=>handleDelete("application",singleJobDescription?.id)}><FaTrashCan/></Button>
+                                   </OverlayTrigger>
+                                   <OverlayTrigger placement="top" overlay={editjob}>
+                                   <Button   onClick={()=>handleEdit("application",singleJobDescription?.id)}><FaTrashCan/></Button>
+                                   </OverlayTrigger>
                                 </div>
                             </div>
                             <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>
