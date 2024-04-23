@@ -68,6 +68,20 @@ const JobPost = () => {
   console.log(jobId, "jobid")
   console.log(jobPostedData, "jobPostedData")
   console.log(otherCategory, "otherCategory")
+
+  const getCategory = (cat) => {
+    if(cat!==undefined){
+      console.log(cat,"cat")
+      let data = jobCategoryList.find((item) => item.value == cat)
+      console.log(data,"|d")
+      if(data){
+        setOtherCategory({label:data.label,value:data.value})
+      }
+    }
+   
+}
+
+
   useEffect(() => {
     if(id){
       setValue("title", jobPostedData?.data?.title)
@@ -77,10 +91,12 @@ const JobPost = () => {
       setValue("description", jobPostedData?.data?.description)
       setValue("selectedOption", jobPostedData?.data?.skills)
       setValue("otherCategory", jobPostedData?.job_category?.title)
+      getCategory(jobPostedData?.data?.category)
+      convertToArray(jobPostedData?.data?.skills)
     }
 
 
-  }, [jobPostedData])
+  }, [jobPostedData,jobCategoryList])
 
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
@@ -134,11 +150,18 @@ const JobPost = () => {
     }, 1000);
   };
 
-  const getCategory = (cat) => {
-    console.log(cat,"cat")
-    let data = jobCategoryList.find((item) => item.id == cat)
-    console.log(data,"|d")
-    // return {label:data.title,value:data.title}
+  const convertToArray = (arr) => {
+    if(arr){
+      const skillsArray = arr?.split(",");
+      console.log(skillsArray,"skillsArray")
+      let data=skillsArray?.map((item)=>{
+       return {
+         value: item, label: item
+       }
+      })
+      setSelectedOption(data)
+    }
+  
 }
 
 
@@ -182,7 +205,7 @@ const JobPost = () => {
                   }}
                   onCreateOption={handleCreate}
                   options={options}
-                  defaultValue={getCategory(jobPostedData?.data?.category)}
+                  value={otherCategory}
                 />
               </Form.Group>
             </Col>
@@ -306,7 +329,7 @@ const JobPost = () => {
                   }}
                   onCreateOption={onChangeSelect}
                   options={skillCate}
-                  defaultValue={{ label: "Web develop", value: "Web develop" }}
+                  value={selectedOption}
                 />
               </Form.Group>
               {/* <p className="error-message ">
