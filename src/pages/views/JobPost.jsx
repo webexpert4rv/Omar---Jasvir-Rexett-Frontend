@@ -69,14 +69,16 @@ const JobPost = () => {
   console.log(jobPostedData, "jobPostedData")
   console.log(otherCategory, "otherCategory")
   useEffect(() => {
+    if(id){
+      setValue("title", jobPostedData?.data?.title)
+      setValue("experience", jobPostedData?.data?.experience)
+      setValue("contract_type", jobPostedData?.data?.contract_type)
+      setValue("job_type", jobPostedData?.data?.job_type)
+      setValue("description", jobPostedData?.data?.description)
+      setValue("selectedOption", jobPostedData?.data?.skills)
+      setValue("otherCategory", jobPostedData?.job_category?.title)
+    }
 
-    setValue("title", jobPostedData?.data?.title)
-    setValue("experience", jobPostedData?.data?.experience)
-    setValue("contract_type", jobPostedData?.data?.contract_type)
-    setValue("job_type", jobPostedData?.data?.job_type)
-    setValue("description", jobPostedData?.data?.description)
-    setValue("selectedOption", jobPostedData?.data?.skills)
-    setValue("otherCategory", jobPostedData?.job_category?.title)
 
   }, [jobPostedData])
 
@@ -175,13 +177,12 @@ const JobPost = () => {
 
                 <CreatableSelect
                   isClearable
-                  defaultValue={{ label: "Web develop", value: "Web develop" }}
                   onChange={(newValue) => {
                     setOtherCategory(newValue)
                   }}
                   onCreateOption={handleCreate}
                   options={options}
-                  value={getCategory(jobPostedData?.data?.category)}
+                  defaultValue={getCategory(jobPostedData?.data?.category)}
                 />
               </Form.Group>
             </Col>
