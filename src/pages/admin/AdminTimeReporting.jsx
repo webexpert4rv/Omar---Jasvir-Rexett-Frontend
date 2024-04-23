@@ -172,7 +172,7 @@ const AdminTimeReporting = () => {
                 </div>
             </section>
             <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} adminTimeReportingList={adminTimeReportingList} />
-            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} />
+            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} role = {"admin"} />
         </>
     )
 }

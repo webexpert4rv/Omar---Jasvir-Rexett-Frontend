@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ScreenLoader from "./ScreenLoader";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../atomic/NoDataFound"
+import { useTranslation } from "react-i18next";
 
 const NotificationList = ({ job, doc }) => {
   const navigate = useNavigate()
@@ -13,6 +14,7 @@ const NotificationList = ({ job, doc }) => {
   const [currenTab, setCurrentTabs] = useState('allNotifications')
   const [nottificationData, setNotificationData] = useState([])
   const { notificationList, screenLoader } = useSelector((state) => state.adminData);
+  const { t } = useTranslation() 
 
   useEffect(() => {
     setNotificationData(notificationList[currenTab])
@@ -51,7 +53,7 @@ const NotificationList = ({ job, doc }) => {
       {screenLoader ? <ScreenLoader /> : <section className="notification-screen card-box">
         <div className="d-flex justify-content-between align-items-start">
           <div>
-            <h2 className="overview-card-heading fw-bold">Notification</h2>
+            <h2 className="overview-card-heading fw-bold">{t("notification")}</h2>
             {notificationList['unreadNotifications']?.length > 0 ? <p className="notification-text">{`You've ${notificationList['unreadNotifications']?.length} unread notifications`}</p> : ""}
           </div>
           {/* <Button variant="transparent" className="mark-read-btn" onClick={markAllAsRead}>
@@ -79,7 +81,7 @@ const NotificationList = ({ job, doc }) => {
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
-                              {newTitleFunction(item?.created_at) && <span className="new-notify">New</span>}
+                              {newTitleFunction(item?.created_at) && <span className="new-notify">{t("new")}</span>}
                             </h3>
                             <p className="notification-text">
                               {
@@ -113,7 +115,7 @@ const NotificationList = ({ job, doc }) => {
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
-                              {newTitleFunction(item?.created_at) && <span className="new-notify">New</span>}
+                              {newTitleFunction(item?.created_at) && <span className="new-notify">{t("new")}</span>}
                             </h3>
                             <p className="notification-text">
                               {
@@ -147,7 +149,7 @@ const NotificationList = ({ job, doc }) => {
                           <div>
                             <h3 className="notification-heading">
                               {item?.title}
-                              {newTitleFunction(item?.created_at) && <span className="new-notify">New</span>}
+                              {newTitleFunction(item?.created_at) && <span className="new-notify">{t("new")}</span>}
                             </h3>
                             <p className="notification-text">
                               {

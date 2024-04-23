@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createNewFolderAndFile, filePreassignedUrlGenerate } from "../../../redux/slices/clientDataSlice";
 import RexettButton from "../../../components/atomic/RexettButton";
-const UploadInvoice = ({ show, handleClose,contractId }) => {
+import { MdPictureAsPdf } from "react-icons/md";
+const UploadInvoice = ({ show, handleClose,contractId ,role}) => {
     const [selectedFile, setSelectedFile] = useState(null)
     const dispatch = useDispatch()
     const { smallLoader } = useSelector(state => state.clientData);
@@ -16,7 +17,18 @@ const UploadInvoice = ({ show, handleClose,contractId }) => {
     } = useForm({});
 
     const onSubmit = (values) => {
+        console.log(values,"values")
         let fileData = new FormData();
+        let fileName = values?.file_name?.type?.split("/")
+        // let splitWithDot = fileName[fileName.length - 1]
+        // let fileExtWithDot = splitWithDot?.split(".")
+
+        // let fileExt = fileExtWithDot[fileExtWithDot?.length - 1]
+        switch (fileName) {
+            case "pdf":
+                return <MdPictureAsPdf />
+        
+    }
 
         fileData.append("file",selectedFile);
 
@@ -50,7 +62,12 @@ const UploadInvoice = ({ show, handleClose,contractId }) => {
                             <Col md="12">
                                 <Form.Group className="mb-4">
                                     <Form.Label>Select Category</Form.Label>
-                                    <Form.Select
+                                   { role ==="admin" ?  <Form.Select
+                                        {...register("category", { required: "Please select a Category" })}
+                                    >
+                                        <option value="" selected disabled>Select Category</option>
+                                        <option value="3">Invoices</option>
+                                    </Form.Select> : <Form.Select
                                         {...register("category", { required: "Please select a Category" })}
                                     >
                                         <option value="" selected disabled>Select Category</option>
@@ -58,7 +75,7 @@ const UploadInvoice = ({ show, handleClose,contractId }) => {
                                         <option value="1">Contracts</option>
                                         <option value="2">CV</option>
                                         <option value="4">Others</option>
-                                    </Form.Select>
+                                    </Form.Select>}
                                     <Form.Control type="file" className="d-none" id="upload-file"
                                         name="file_name"
                                         {...register("file_name", {
