@@ -12,7 +12,8 @@ import Notification from "./atomic/Notfication";
 import { useTranslation } from "react-i18next";
 import LanguageChange from "./atomic/LanguageChange";
 
-const adminName = localStorage.getItem("userName")
+const str = String(localStorage.getItem("userName"));
+const adminName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())
 const tooltip = (
     <Tooltip id="tooltip">
       {adminName}

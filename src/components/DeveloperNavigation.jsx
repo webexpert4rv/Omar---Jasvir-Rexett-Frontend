@@ -3,7 +3,8 @@ import Notification from "./atomic/Notfication";
 import { Tooltip , OverlayTrigger } from "react-bootstrap";
 import LanguageChange from "./atomic/LanguageChange";
 
-const developerName = localStorage.getItem("userName")
+const str = String(localStorage.getItem("userName"));
+const developerName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())
 const tooltip = (
     <Tooltip id="tooltip">
       {developerName}
