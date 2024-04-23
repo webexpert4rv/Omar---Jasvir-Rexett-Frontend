@@ -45,7 +45,7 @@ const Dashboard = (cardDetails) => {
                     <OverViewCard head={t("fund")} value="Spent" />
                     <OverViewCard head={t("earnedBack")} value={assignedDeveloperList?.earned_back_hours ? assignedDeveloperList?.earned_back_hours : '0'} />
                     <OverViewCard head={t("jobPosted")} value={assignedDeveloperList?.total_jobs_posted ? assignedDeveloperList?.total_jobs_posted : "0"} />
-                    <OverViewCard head={t("developerAssigned")} value={assignedDeveloperList?.num_assigned_developers ? assignedDeveloperList?.num_assigned_developers : '0'} />
+                    <OverViewCard head={t("developerAssigned")} value={assignedDeveloperList?.total_developer_count ? assignedDeveloperList?.total_developer_count : '0'} />
                 </div>
             
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
@@ -129,8 +129,6 @@ const Dashboard = (cardDetails) => {
                                     }
                                 </div>
                             </Tab.Pane>
-
-                          
                             <>
                                 <div className="text-center mt-5">
                                     <Link to={"/hired-developers"} className="link-text-dark">{t("seeAll")}</Link>

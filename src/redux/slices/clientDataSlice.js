@@ -18,7 +18,8 @@ const initialClientData = {
     jobPostedData: {},
     earnedBack: {},
     developerDetails:{},
-    timeReportingPage:{}
+    timeReportingPage:{},
+    faqsData:{}
 }
 
 export const clientDataSlice = createSlice({
@@ -101,12 +102,15 @@ export const clientDataSlice = createSlice({
         setDeveloperDetails:(state,action) =>{
             state.developerDetails = action.payload
             state.screenLoader = false;
+        },
+        setFaqs : (state ,action) =>{
+            state.faqsData = action.payload
         }
 
     }
 })
 
-export const { setAllJobPostedList, setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+export const { setAllJobPostedList, setFaqs ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -185,7 +189,7 @@ export function timeReporting(payload, role, callback) {
 }
 
 
-export function getFolderData(payload, role, callback) {
+export function getFolderData(payload, role) {
     return async (dispatch) => {
 
         dispatch(setScreenLoader())
@@ -210,6 +214,24 @@ export function clientJobPost(payload, callback) {
         try {
             let result = await clientInstance.post(`client/post-job`, { ...payload })
             toast.success("Job successfully Posted", { position: "top-center" })
+            dispatch(setActionSuccessFully())
+            return callback()
+
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+export function clientUpdatePost(payload,id, callback) {
+    console.log(payload , "payload")
+    console.log(id , "id")
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`client/update-job/${id}`,{ ...payload })
+            toast.success("Job successfully Updated", { position: "top-center" })
             dispatch(setActionSuccessFully())
             return callback()
 
@@ -487,8 +509,7 @@ export function getDeleteAccount(payload) {
         }
     }
 }
-export function getDeleteJob(payload,callback) {
-    console.log(payload,"iiiiiiiiiid")
+export function getDeleteJob(payload ,callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
@@ -517,3 +538,15 @@ export function createNewJobCategory(payload,callback) {
         }
     }
 }
+export function getFaq() {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get("/web/faqs")
+            dispatch(setFaqs(result.data))
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+        }
+    }
+}
+

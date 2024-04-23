@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-// import userImg from '../../assets/img/user-img.jpg'
+import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -55,7 +55,7 @@ const VendorDashboard = () => {
                             return (
                                 <div className="developer-card" key={index} onClick={() => handleCardClick(item?.id)}>
                                     <div className="user-imgbx">
-                                        <img src={item?.profile_picture} className="user-img" />
+                                        <img src={item?.profile_picture ? item?.profile_picture : userImg} className="user-img" />
                                     </div>
                                     <div className="text-center">
                                         <h3 className="user-name">{item?.name}</h3>
@@ -94,7 +94,7 @@ const VendorDashboard = () => {
 
                                 <div className="developer-card" key={index} onClick={() => handleCardClick(value?.id)}>
                                     <div className="user-imgbx">
-                                        <img src={value?.profile_picture} className="user-img" />
+                                        <img src={value?.profile_picture ? value?.profile_picture : userImg } className="user-img" />
                                     </div>
                                     <div className="text-center">
                                         <h3 className="user-name">{value?.name}</h3>

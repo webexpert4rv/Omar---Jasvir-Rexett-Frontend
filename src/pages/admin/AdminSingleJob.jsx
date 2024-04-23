@@ -75,7 +75,7 @@ const AdminSingleJob = () => {
                             <div className="d-flex justify-content-between align-items-center flex-md-row flex-column-reverse">
                                 <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
                                 <div className="d-flex gap-3 align-items-center mb-md-0 mb-3">
-                                    <p className="mb-0">Status <span className="status-text inprogress status-info">In progress</span></p>
+                                    <p className="mb-0"><span className="status-text inprogress status-info">In progress</span></p>
                                     {/* <Button variant="transparent" onClick={handleShowEndJobModal} className="px-5 closed-job-btn">End Job</Button> */}
                                 </div>
                             </div>

@@ -420,7 +420,10 @@ ul {
     width: 30px;
     height: 30px;
 }
-
+.notification-btn.active
+{
+    animation: wiggle 2s linear infinite;
+}
 .notification-btn.active:before {
     content: '';
     position: absolute;
@@ -432,6 +435,30 @@ ul {
     background-color: #f00;
     border-radius: 50%;
 }
+
+@keyframes wiggle {
+    0%, 7% {
+      transform: rotateZ(0);
+    }
+    15% {
+      transform: rotateZ(-15deg);
+    }
+    20% {
+      transform: rotateZ(10deg);
+    }
+    25% {
+      transform: rotateZ(-10deg);
+    }
+    30% {
+      transform: rotateZ(6deg);
+    }
+    35% {
+      transform: rotateZ(-4deg);
+    }
+    40%, 100% {
+      transform: rotateZ(0);
+    }
+  }
 
 .section-head {
     font-size: 25px;
@@ -1670,6 +1697,9 @@ ul {
     width: auto;
     border: none;
     display: inline-flex;
+    padding: 5px;
+    background: #e5e5e5;
+    border-radius: 10px;
 }
 
 .notification-tabs li {
@@ -1681,7 +1711,7 @@ ul {
     border-radius: 10px;
     padding: 5px 20px;
     border: none;
-    color: #121212;
+    color: #656565;
 }
 .notification-tabs li .nav-link.active {
     background: var(--primary-color);
@@ -1971,6 +2001,18 @@ ul {
     width: auto;
     border: none;
     display: inline-flex;
+    padding: 5px;
+    background: #e5e5e5;
+    border-radius: 10px;
+}
+.application-pills
+{
+    width: auto;
+    border: none;
+    display: inline-flex;
+    padding: 5px;
+    background: #e5e5e5;
+    border-radius: 10px;
 }
 
 .job-tabs li {
@@ -1982,7 +2024,7 @@ ul {
     border-radius: 10px;
     padding: 5px 20px;
     border: none;
-    color: #121212;
+    color: #656565;
 }
 
 .job-tabs li .nav-link.active {
@@ -2428,12 +2470,12 @@ input[type="radio"]:checked {
 }
 
 .application-item .application-link {
-    color: #11998E;
+    color: #656565;
 }
 
 .application-item .application-link.active {
-    border-color: #11998E;
-    background-color: #11998E;
+    color: var(--white);
+    background: var(--primary-color);
 }
 
 .new-app {
@@ -2444,7 +2486,7 @@ input[type="radio"]:checked {
     height: 25px;
     color: #fff;
     border-radius: 50%;
-    background-color: #11998E;
+    background-color: #656565;
     font-size: 13px;
     margin-left: 5px;
 }
@@ -3182,6 +3224,71 @@ input[type="radio"]:checked {
 {
     padding: 0px 30px 30px;
 }
+.action-btn
+{
+    width: 40px;
+    height: 40px;
+    background-color: #037563;
+    border: 1px solid #037563;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s ease;
+    padding: 0px;
+}
+.action-btn:disabled
+{
+    background-color: #8a8a8a !important;
+    border-color: #8a8a8a !important;
+    color: #222222 !important;
+}
+.action-btn:hover
+{
+    color: #037563;
+    background-color: transparent;
+}
+.application-imgbx
+{
+    width: 50px;
+    height: 50px;
+}
+.app-del-btn
+{
+    width: 39px;
+    height: 39px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.language-select {
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('../img/english.svg') no-repeat 4px center;
+    background-size: 22px;
+    padding-left: 30px;
+}
+.language-wrapper::before
+{
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 10px;
+    height: 10px;
+    transform: translateY(-50%);
+    background: url('../img/down-icon.svg') no-repeat;
+    background-size: cover;
+    z-index: 2;
+    pointer-events: none;
+}
+.language-select.lang-uk {
+    background-image: url('../img/english.svg');
+}
+.language-select.lang-swd {
+    background-image: url('../img/swedish.svg');
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -3440,6 +3547,37 @@ input[type="radio"]:checked {
     .bell-icon {
         width: 45px;
         height: 45px;
+    }
+    .faq-accordion-body
+    {
+        font-size: 14px;
+    }
+    .faq-accordion-item:first-of-type .accordion-button, .faq-accordion-item:first-of-type
+    {
+        border-top-left-radius: 26px;
+        border-top-right-radius: 26px;
+    }
+    .faq-accordion-header .accordion-button
+    {
+        padding: 13px 18px;
+    }
+    .faq-section.jobposting-active .faq-banner
+    {
+        padding: 40px 0;
+    }
+    .faq-heading
+    {
+        font-size: 17px;
+    }
+    .faq-tab-heading
+    {
+        font-size: 24px;
+    }
+    .faq-pill .faq-link
+    {
+        padding: 14px 35px;
+        font-size: 14px;
+        border-radius: 11px;
     }
 }
 

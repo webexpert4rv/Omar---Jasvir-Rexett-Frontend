@@ -159,7 +159,7 @@ export function getAddNewDeveloper(payload) {
             let result = await clientInstance.post('/vendor/add-developer', {...payload})
          
                 dispatch(setVendorSuccess())
-                toast.success("New  is Added", {position:"top-center"})
+                toast.success("New Developer is Added", {position:"top-center"})
          
         } catch (error) {
             const message = error.message
@@ -280,6 +280,18 @@ export function getRevenue(payload) {
             toast.error(message, { position: "top-center" })
             dispatch(setFailVendorData())
 
+        }
+    }
+
+}
+
+export function getDeleteDeveloper(id) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.delete(`vendor/delete-developer/${id}`)
+        } catch (error) {
+           
         }
     }
 

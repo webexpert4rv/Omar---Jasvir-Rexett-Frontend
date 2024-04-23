@@ -123,7 +123,7 @@ const EditDeveloperProfile = () => {
     return (
         <>
             <section className="card-box">
-            <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
+            <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
                     <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
                     <OverlayTrigger placement="bottom" overlay={deleteprofile}>
                         <Button onClick={() => handleJobStatusModal(developerProfileData?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
@@ -135,7 +135,7 @@ const EditDeveloperProfile = () => {
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Client Name</Form.Label>
+                                        <Form.Label className="common-label">{t("clientName")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {
@@ -149,7 +149,7 @@ const EditDeveloperProfile = () => {
                                         </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Email</Form.Label>
+                                        <Form.Label className="common-label">{t("email")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="email"
                                             {...register("email", {
@@ -167,7 +167,7 @@ const EditDeveloperProfile = () => {
                                             {errors.email?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Phone</Form.Label>
+                                        <Form.Label className="common-label">{t("phone")}</Form.Label>
                                         <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
@@ -185,7 +185,7 @@ const EditDeveloperProfile = () => {
                                             {errors.phone_number?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Previous Password</Form.Label>
+                                        <Form.Label className="common-label">{t("previousPassword")}</Form.Label>
                                         <div className="position-relative">
                                             <Form.Control type={isPassword.firstPass ? "text" : "password"} className="common-field"
                                                 name="previous_password"
@@ -199,7 +199,7 @@ const EditDeveloperProfile = () => {
                                             {errors.previous_password?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">New Password</Form.Label>
+                                        <Form.Label className="common-label">{t("newPassword")}</Form.Label>
                                         <div className="position-relative">
                                             <Form.Control type={isPassword.secondPass ? "text" : "password"} className="common-field"
                                                 name="password"
@@ -213,7 +213,7 @@ const EditDeveloperProfile = () => {
                                             {errors.password?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Address</Form.Label>
+                                        <Form.Label className="common-label">{t("address")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address"
                                             {...register("address", {
@@ -231,7 +231,7 @@ const EditDeveloperProfile = () => {
                             <Col md="6">
                                 <div>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Address 2</Form.Label>
+                                        <Form.Label className="common-label">{t("address")} 2</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address_2"
                                             {...register("address_2", {
@@ -245,7 +245,7 @@ const EditDeveloperProfile = () => {
                                             {errors.address_2?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">City</Form.Label>
+                                        <Form.Label className="common-label">{t("city")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="city"
                                             {...register("city", {
@@ -263,7 +263,7 @@ const EditDeveloperProfile = () => {
                                             {errors.city?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Postcode</Form.Label>
+                                        <Form.Label className="common-label">{t("postCode")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
 
                                             name="passcode"
@@ -282,7 +282,7 @@ const EditDeveloperProfile = () => {
                                             {errors.passcode?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Country</Form.Label>
+                                        <Form.Label className="common-label">{t("country")}</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="country"
                                             {...register("country", {
@@ -300,7 +300,7 @@ const EditDeveloperProfile = () => {
                                             {errors.country?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">Image</Form.Label>
+                                        <Form.Label className="common-label">{t("image")}</Form.Label>
                                         <Form.Control type="file" id="developer-image"
                                             name="profile_picture"
                                             {...register("profile_picture", {
@@ -311,7 +311,7 @@ const EditDeveloperProfile = () => {
                                                 },
                                             })}
                                             className="d-none" />
-                                        <Form.Label htmlFor="developer-image" className="upload-image-label d-block"><HiUpload /> Upload Image, Image must be jpg or png</Form.Label>
+                                        <Form.Label htmlFor="developer-image" className="upload-image-label d-block"><HiUpload />{t("uploadImage")}</Form.Label>
                                     </Form.Group>
 
                                     <div>
