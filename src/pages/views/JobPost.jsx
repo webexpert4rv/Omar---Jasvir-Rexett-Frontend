@@ -16,6 +16,7 @@ import { useNavigate,useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { IoArrowBack } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const createOption = (label) => ({
   label,
@@ -33,6 +34,7 @@ const JobPost = () => {
   const [options, setOptions] = useState([]);
   const [skillCate, setSkillsCate] = useState([])
   const { jobPostedData } = useSelector(state => state.clientData)
+  const { t } = useTranslation()
 
   const dispatch = useDispatch();
   let id=location.pathname.split("/")[2]
@@ -174,7 +176,7 @@ const JobPost = () => {
           <Row>
             <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label>Job Name</Form.Label>
+                <Form.Label>{t("jobName")}</Form.Label>
                 <Form.Control
                   type="text"
                   className="common-field"
@@ -192,7 +194,7 @@ const JobPost = () => {
 
             <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label>Job Category</Form.Label>
+                <Form.Label>{t("jobCategory")}</Form.Label>
 
                 <CreatableSelect
                   isClearable
@@ -209,7 +211,7 @@ const JobPost = () => {
 
             <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label>Experience Required</Form.Label>
+                <Form.Label>{t("experienceRequired")}</Form.Label>
                 <Form.Select
                   className="common-field"
                   {...register("experience", {
@@ -220,21 +222,21 @@ const JobPost = () => {
                   })}
                 >
                   <option  disabled selected>
-                    Select Experience Required
+                    {t("select")} {t("experienceRequired")}
                   </option>
-                  <option value="less_one">Less than 1 year</option>
-                  <option value="1-2 Years">1 - 2 years</option>
-                  <option value="2-3 Years">2 - 3 years</option>
-                  <option value="3-4 Years">3 - 4 years</option>
-                  <option value="4-5 Years">4 - 5 years</option>
-                  <option value="5 more">5+ years</option>
+                  <option value="less_one">{t("lessThan1Year")}</option>
+                  <option value="1-2 Years">1 - 2 {t("years")}</option>
+                  <option value="2-3 Years">2 - 3 {t("years")}</option>
+                  <option value="3-4 Years">3 - 4 {t("years")}</option>
+                  <option value="4-5 Years">4 - 5 {t("years")}</option>
+                  <option value="5 more">5+ {t("years")}</option>
                 </Form.Select>
               </Form.Group>
               <p className="error-message">{errors.experience?.message}</p>
             </Col>
             <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label className="d-block">Location</Form.Label>
+                <Form.Label className="d-block">{t("location")}</Form.Label>
                 <div>
                   <Form.Check
                     type="radio"
@@ -284,32 +286,32 @@ const JobPost = () => {
             </Col>
             <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label>Contract</Form.Label>
+                <Form.Label>{t("contract")}</Form.Label>
                 <Form.Select
                   className="common-field"
                   {...register("contract_type", {
                     required: {
                       value: true,
                       message: "Contract Type is required",
-                    },
+                    },  
                   })}
                 >
                   <option value="" selected disabled>
-                    Select Contract
+                    {t("selectContract")}
                   </option>
-                  <option value="Hourly">Hourly</option>
-                  <option value="Project Base">Project Base</option>
-                  <option value="Six month contract">6 month contract</option>
-                  <option value="one Year Contract">1 year contract</option>
-                  <option value="one Year Contract">1 year and above</option>
-                  <option value="permanent">Permanent</option>
+                  <option value="Hourly">{t("hourly")}</option>
+                  <option value="Project Base">{t("projectBase")}</option>
+                  <option value="Six month contract">6 {t("MonthContract")}</option>
+                  <option value="one Year Contract">1 {t("yearContract")}</option>
+                  <option value="one Year Contract">1 {t("yearAndAbove")}</option>
+                  <option value="permanent">{t("permanent")}</option>
                 </Form.Select>
               </Form.Group>
               <p className="error-message ">{errors.contract_type?.message}</p>
             </Col>
             <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label>Skills</Form.Label>
+                <Form.Label>{t("skills")}</Form.Label>
                 {/* <Select
                   options={skillListMapped}
                   onChange={(val) => onChangeSelect(val)}
@@ -335,7 +337,7 @@ const JobPost = () => {
             </Col>
             <Col md="12" className="mb-4">
               <Form.Group>
-                <Form.Label>Job Description</Form.Label>
+                <Form.Label>{t("jobDescription")}</Form.Label>
                 <Form.Control
                   as="textarea"
                   className="common-field"
@@ -355,7 +357,7 @@ const JobPost = () => {
           <div className="text-center">
             <RexettButton
               type="submit"
-              text="Submit"
+              text={t("submit")}
               className="main-btn px-5"
               isLoading={smallLoader}
             />

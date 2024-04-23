@@ -139,7 +139,7 @@ const DeveloperCV = () => {
                                 <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25} /></div>
                             </div>
                             <div className="connect-social-media">
-                                <h3 className="subheading-resume text-center mb-3">Skills</h3>
+                                <h3 className="subheading-resume text-center mb-3">{t("skills")}</h3>
                                 <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25} /></div>
                                 <ul className="skills-pill text-center">
 

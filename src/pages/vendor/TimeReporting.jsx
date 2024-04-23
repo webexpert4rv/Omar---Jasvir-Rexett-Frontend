@@ -162,7 +162,7 @@ const VendorTimeReporting = () => {
                     </div>
                 </div>
             </section>
-            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} />
+            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} role = {"vendor"}/>
         </>
     )
 }

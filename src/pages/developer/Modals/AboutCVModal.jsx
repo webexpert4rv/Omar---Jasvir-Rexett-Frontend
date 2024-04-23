@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { fetchDeveloperCv, updateDeveloperCvBio } from "../../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
  
 const AboutCV = ({ show, handleClose,data }) => {
     const dispatch =useDispatch();
+    const {t} = useTranslation()
     const {smallLoader}=useSelector(state=>state.developerData)
     const {
         register,
@@ -43,7 +45,7 @@ const AboutCV = ({ show, handleClose,data }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <h3 className="popup-heading">About Section</h3>
+                <h3 className="popup-heading">{t("aboutSection")}</h3>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Form.Group className="mb-4">
                         <Form.Control as="textarea" className="common-field" rows="6" name="bio"  placeholder="Enter your bio" 
@@ -62,12 +64,12 @@ const AboutCV = ({ show, handleClose,data }) => {
                             <p className="error-message">
                                 {errors.bio?.message}
                             </p>
-                            <p className="font-13 text-end">{maxChars - charCount} characters remaining</p>
+                            <p className="font-13 text-end">{maxChars - charCount} {t("charactersRemaining")}</p>
                     </Form.Group>
                     <div className="text-center">
                         <RexettButton
                          type="submit" 
-                         text="Submit"
+                         text={t("submit")}
                          className="main-btn px-4 font-14 fw-semibold"
                          variant="transparent"
                          isLoading={smallLoader}

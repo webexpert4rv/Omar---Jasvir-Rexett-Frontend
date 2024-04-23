@@ -286,7 +286,24 @@
         "selectAMonth" : "Please select a month",
         "selectAWeek" : "Please select a week",
         "enterClientName" : "Please enter client name",
-        "projectLength" : "Project Length"
+        "projectLength" : "Project Length",
+        "skillsetNeeded" : "Skillset Needed",
+        "appliedOn" : "Applied On" ,
+        "select" : "Select",
+        "professtionalTitle" : "Professtional Title",
+        "maritalStatus" : "Marital Status",
+        "newTeamMemberStart" : "New Team Member Start",
+        "cv": "CV",
+        "timeReports" : "Time Reports",
+        "notification" : "Notification",
+        "aboutSection" : "About Section",
+        "charactersRemaining" : "Characters Remaining",
+        "accountDeletionRequest" : "Account Deletion Request",
+        "new" :"New",
+        "profilePicture" : "Profile Picture",
+        "general" : "General",
+        "jobPosting":"Job Posting",
+        "frequentlyAskedQuestions": "Frequently Asked Questions"
         
 
     }
