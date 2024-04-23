@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { current } from "@reduxjs/toolkit";
 import { timeReporting } from "../../../redux/slices/clientDataSlice";
+import { useTranslation } from "react-i18next";
 const AddTimingModal = ({ show, handleClose,role }) => {
   const dispatch = useDispatch();
   // const [selectDay, setDaySelection] = useState(null);
@@ -34,6 +35,8 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   const { allContracts, addTimeReports, smallLoader } = useSelector(
     (state) => state.developerData
   );
+
+  const {t} = useTranslation()
   useEffect(() => {
     dispatch(getAllContracts());
   }, []);
@@ -160,7 +163,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <h3 className="popup-heading">Add Time</h3>
+        <h3 className="popup-heading">{t("addTime")}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="experience-container">
             <div className="mb-3">
@@ -172,7 +175,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                   aria-controls="example-collapse-text"
                   aria-expanded={open}
                 >
-                  Want to update previous time?
+                  {t("updatePreviousTime")} ?
                 </Button>
               </div>:""}
               <Collapse in={open}>
@@ -186,7 +189,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           onChange={(e) => handleChange(e, "year")}
                         >
                           <option disabled selected>
-                            Select Year
+                            {t("selectYear")}
                           </option>
                           <option value="2024">2024</option>
                           <option value="2023">2023</option>
@@ -210,23 +213,23 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           onChange={(e) => handleChange(e, "month")}
                         >
                           <option disabled selected>
-                            Select Month
+                            {t("selectMonth")}
                           </option>
-                          <option value="1">January</option>
-                          <option value="2">Feburary</option>
-                          <option value="3">March</option>
-                          <option value="4">April</option>
-                          <option value="5">May</option>
-                          <option value="6">June</option>
-                          <option value="7">July</option>
-                          <option value="8">August</option>
-                          <option value="9">September</option>
-                          <option value="10">October</option>
-                          <option value="11">November</option>
-                          <option value="12">December</option>
+                          <option value="1">{t("january")}</option>
+                          <option value="2">{t("feburary")}</option>
+                          <option value="3">{t("march")}</option>
+                          <option value="4">{t("april")}</option>
+                          <option value="5">{t("may")}</option>
+                          <option value="6">{t("june")}</option>
+                          <option value="7">{t("july")}</option>
+                          <option value="8">{t("august")}</option>
+                          <option value="9">{t("september")}</option>
+                          <option value="10">{t("october")}</option>
+                          <option value="11">{t("november")}</option>
+                          <option value="12">{t("december")}</option>
                         </Form.Select>
                         {!selectedFilter?.month?.length > 0 && details ? (
-                          <p style={{ color: 'red' }}>Please select a month</p>
+                          <p style={{ color: 'red' }}>{t("selectAMonth")}</p>
                         ) : ""}
                       </div>
                     </Col>
@@ -237,17 +240,17 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           onChange={(e) => handleChange(e, "week")}
                         >
                           <option disabled selected>
-                            Select Week
+                            {t("selectWeek")}
                           </option>
-                          <option value="1">Week 1</option>
-                          <option value="2">Week 2</option>
-                          <option value="3">Week 3</option>
-                          <option value="4">Week 4</option>
+                          <option value="1">{t("Week")} 1</option>
+                          <option value="2">{t("Week")} 2</option>
+                          <option value="3">{t("Week")} 3</option>
+                          <option value="4">{t("Week")} 4</option>
                         </Form.Select>
 
                       </div>
                       {!selectedFilter?.week?.length > 0 && details ? (
-                        <p style={{ color: 'red' }}>Please select a week</p>
+                        <p style={{ color: 'red' }}>{t("selectAWeek")}</p>
                       ) : ""}
                     </Col>
                   </Row>
@@ -263,7 +266,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                     onChange={(e) => handleChange(e, "contract_id")}
                   >
                     <option disabled selected>
-                      Select Client Name
+                      {t("selectClientName")}
                     </option>
 
                     {allContracts?.map((item) => {
@@ -276,7 +279,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                   </Form.Select>
                 </Form.Group>
                 {!selectedFilter?.contract_id?.length > 0 && details ? (
-                  <p style={{ color: 'red' }}>Please enter client name</p>
+                  <p style={{ color: 'red' }}>{t("enterClientName")}</p>
                 ) : ""}
                 {open ? (
                   <div className="text-center mt-2">
@@ -308,7 +311,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                       <Col md={12}>
                         <Form.Group className="d-flex gap-3">
                           <Form.Label className="d-block mb-1 fw-semibold">
-                            Select Day
+                            {t("selectDay")}
                           </Form.Label>
                           <Form.Check
                             inline
@@ -344,7 +347,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                         >
                           <Form.Group>
                             <Form.Label className="font-13">
-                              Start Time
+                              {t("startTime")}
                             </Form.Label>
                             <Form.Control
                               type="time"
@@ -370,7 +373,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           </Form.Group>
                           <Form.Group>
                             <Form.Label className="font-13">
-                              End Time
+                              {t("endTime")}
                             </Form.Label>
                             <Form.Control
                               type="time"
@@ -384,7 +387,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           </Form.Group>
                           {disabledWorkDay[index] ? (
                             <Form.Group className="w-100">
-                              <Form.Label className="font-13">Memo</Form.Label>
+                              <Form.Label className="font-13">{t("memo")}</Form.Label>
                               <Form.Control
                                 type="text"
                                 as="textarea"

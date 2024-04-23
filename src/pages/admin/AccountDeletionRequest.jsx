@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row, Table } from "react-bootstrap";
+import { Button, Col, Form, Row, Table, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { adminEngagementList, getAccountDeletion } from "../../redux/slices/adminDataSlice";
+import { adminEngagementList, getAccountDeletion, getDeletionByAdmin } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { IoSearch } from "react-icons/io5";
 import RexettPagination from "../../components/atomic/RexettPagination";
+import { MdOutlineDelete } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import { getDeleteDeveloper } from "../../redux/slices/vendorDataSlice";
 const AccountDeletionRequest = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
     const { accountDeletionList, screenLoader } = useSelector(state => state.adminData)
+    const [showModal, setShowModal] = useState(false)
+    const [details, setDetails] = useState({
+        role: "",
+        id: ""
+    })
     const { t } = useTranslation()
-    const [page, setPage] = useState(1)
 
-    console.log(accountDeletionList, "accountDeletion")
 
     useEffect(() => {
         dispatch(getAccountDeletion())
@@ -40,6 +46,29 @@ const AccountDeletionRequest = () => {
     //     setTimerValue(timer);
 
     // }
+    const deleteApplication = (
+        <Tooltip id="tooltip">
+            Delete Application
+        </Tooltip>
+    );
+    const handleDelete = (e, newRole, newId) => {
+        e.stopPropagation()
+        setShowModal(!showModal)
+        setDetails(prevDetails => ({
+            ...prevDetails,
+            role: newRole ,
+            id : newId
+        }));
+
+    }
+    console.log(details, "details")
+    const handleDeleteAction = () => {
+        const { role, id } = details;
+        dispatch(getDeletionByAdmin(role, id))
+    }
+    const handleClose = () => {
+        setShowModal(!showModal)
+    }
     return (
         <>
             <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
@@ -59,7 +88,7 @@ const AccountDeletionRequest = () => {
                         <th>{t("role")}</th>
                         <th>{t("reason")}</th>
                         <th>{t("action")}</th>
-                       
+
                     </thead>
                     <tbody>
                         {screenLoader ? <ScreenLoader /> : <>
@@ -68,14 +97,20 @@ const AccountDeletionRequest = () => {
                                     return (
                                         <>
                                             <tr>
-                                                <div className="user-imgbx">
-                                                    <img src={item?.user?.profile_picture} className="user-img" />
-                                                </div>
+                                                <td>
+                                                    <div className="user-imgbx application-imgbx my-0 mx-auto">
+                                                        <img src={item?.user?.profile_picture} className="user-img" />
+                                                    </div>
+                                                </td>
                                                 <td>{item?.user?.name}</td>
                                                 <td>{item?.user?.email}</td>
                                                 <td>{item?.user?.role}</td>
                                                 <td>{item?.reason}</td>
-                                               <Button variant="danger">Delete</Button>
+                                                <td>
+                                                    <OverlayTrigger placement="bottom" overlay={deleteApplication}>
+                                                        <Button className="delete-btn app-del-btn" onClick={(e) => handleDelete(e, item?.user?.role, item?.user?.id)} ><MdOutlineDelete /></Button>
+                                                    </OverlayTrigger>
+                                                </td>
                                             </tr>
                                         </>
                                     )
@@ -89,6 +124,7 @@ const AccountDeletionRequest = () => {
                             <RexettPagination  number = {engagement?.total_pages} setPage={setPage} page={page}/>
                         </div> */}
             </div>
+            <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to delete this developer"} />
         </>
     )
 }

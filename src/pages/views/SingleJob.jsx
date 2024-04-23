@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Tab, Tabs, Tooltip , OverlayTrigger } from "react-bootstrap";
 // import userImg from '../../assets/img/user-img.jpg'
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -19,21 +19,22 @@ import { BsFillSendFill } from "react-icons/bs";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { FaTrashCan } from "react-icons/fa6";
+import { TiEdit } from "react-icons/ti";
+
 
 const SingleJob = () => {
     const [selectedTabsData,setSelectedTabsData]=useState([])
     const [currentTabsStatus,setCurrnetTabsStatus]=useState("application")
     const [currentTab,setCurrentTab]=useState("application")
-    const[showModal , setShowModal] = useState(false)
     const [statusModal,setStatusModal]=useState({
         isTrue:false,
         id:null
     })
     const [singleJobDescription,setSingleJobDescription]=useState({})
     const dispatch =useDispatch()
+    const navigate=useNavigate()
     const location=useLocation();
     let id=location.pathname.split("/")[2]
-    console.log(id,"---------------idd")
     const {allJobPostedList,jobCategoryList,jobPostedData,approvedLoader,smallLoader}=useSelector(state=>state.clientData)
    const { t } = useTranslation()
     useEffect(()=>{
@@ -42,7 +43,7 @@ const SingleJob = () => {
     }
     },[])
 
-
+    console.log(jobPostedData , "jobPostedData")
     useEffect(()=>{
         setSingleJobDescription(jobPostedData?.data)
     },[jobPostedData])
@@ -82,9 +83,6 @@ const SingleJob = () => {
        
     }
     const handleJobStatusAction= (e,data ,id) => {
-        console.log(e,"e")
-        console.log(data,"data")
-        console.log(id,"i-----------------d")
         e.preventDefault()
         if(data.status=="ended"){
             dispatch(publishedPost(singleJobDescription?.id,data,()=>{
@@ -95,8 +93,10 @@ const SingleJob = () => {
             }
             ))
         }else if(data.status=="application"){
-            dispatch(getDeleteJob(statusModal?.id,))
-
+            dispatch(getDeleteJob(statusModal?.id,()=>{
+                setStatusModal({})
+                navigate("/job-posted")
+            }))
         }else{
             dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
                 dispatch(singleJobPostData(id,()=>{
@@ -107,11 +107,13 @@ const SingleJob = () => {
                    setSelectedTabsData(prevData[currentTab])
                 }))
             }))
-        }
-        
-           
+        }      
     }
     
+    const handleEdit=()=>{
+        navigate(`/job-edit-post/${id}`)
+
+    }
 
     const handleJobStatusModal=(e,id,status)=>{
    
@@ -136,6 +138,16 @@ const SingleJob = () => {
           End Job
         </Tooltip>
     );
+    const deletejob = (
+        <Tooltip id="tooltip">
+        {singleJobDescription?.status=="published"? "Delete Job" : "Unpublish Job to delete"}
+        </Tooltip>
+    );
+    const editjob = (
+        <Tooltip id="tooltip">
+        {singleJobDescription?.status=="published"? "Edit Job" : "Unpublish Job to edit"}
+        </Tooltip>
+    );
     
     const publishjob = (
         <Tooltip id="tooltip">
@@ -143,12 +155,13 @@ const SingleJob = () => {
         </Tooltip>   
     )
     const handleDelete=(status,id)=>{ 
-        console.log(status,"status")
+        if(singleJobDescription?.status=="published"){
         setStatusModal({
             [status]:!statusModal.isTrue,
             id:id
         })
     }
+}
 
     
     return (
@@ -179,7 +192,12 @@ const SingleJob = () => {
                                         }}>{approvedLoader?<RexettSpinner/>: singleJobDescription?.status=="published"?<BsFillSendXFill />:<BsFillSendFill />}</Button>
                                     </OverlayTrigger>
                                    </>:"" }
-                                   <Button disabled= {singleJobDescription?.status=="published" ? true : false} onClick={()=>handleDelete("application",singleJobDescription?.id)}><FaTrashCan/></Button>
+                                   <OverlayTrigger placement="top" overlay={deletejob}>
+                                   <Button   onClick={()=>handleDelete("application",singleJobDescription?.id)}><FaTrashCan/></Button>
+                                   </OverlayTrigger>
+                                   <OverlayTrigger placement="top" overlay={editjob}>
+                                   <Button   onClick={()=>handleEdit("application",singleJobDescription?.id)}><TiEdit/></Button>
+                                   </OverlayTrigger>
                                 </div>
                             </div>
                             <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>

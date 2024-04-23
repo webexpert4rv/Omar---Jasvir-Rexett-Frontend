@@ -6,13 +6,13 @@ import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clientJobPost,
+  clientUpdatePost,
   createNewJobCategory,
   getJobCategoryList,
   getSkillList,
-  jobCategoryList,
-  skillList,
+  singleJobPostData,
 } from "../../redux/slices/clientDataSlice";
-import { useNavigate } from "react-router";
+import { useNavigate,useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { IoArrowBack } from "react-icons/io5";
@@ -25,27 +25,75 @@ const createOption = (label) => ({
 const JobPost = () => {
   const [selectedOption, setSelectedOption] = useState([]);
   const navigate = useNavigate();
+  const location=useLocation();
   const { skillList, jobCategoryList, smallLoader } = useSelector(
     (state) => state.clientData
   );
   const [otherCategory, setOtherCategory] = useState(null);
   const [options, setOptions] = useState([]);
-  const [skillCate,setSkillsCate]=useState([])
+  const [skillCate, setSkillsCate] = useState([])
+  const { jobPostedData } = useSelector(state => state.clientData)
 
   const dispatch = useDispatch();
+  let id=location.pathname.split("/")[2]
   const {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
+
+  
+
+
+  useEffect(()=>{
+    if(id){
+        dispatch(singleJobPostData(id,()=>{}))
+    }
+    },[])
 
   useEffect(() => {
     dispatch(getSkillList());
     dispatch(getJobCategoryList());
   }, [dispatch]);
 
+  //   useEffect(() => {
+  //     if (data) {
+  //         const array = data.split(",").map(tech => ({ label: tech.trim(), value: tech.trim() }));
+  //         setSelectedOption(array);
+  //     }
+  // }, [data]);
 
+  const getCategory = (cat) => {
+    if(cat!==undefined){
+      console.log(cat,"cat")
+      let data = jobCategoryList.find((item) => item.value == cat)
+      console.log(data,"|d")
+      if(data){
+        setOtherCategory({label:data.label,value:data.value})
+      }
+    }
+   
+}
+
+
+  useEffect(() => {
+    if(id){
+      setValue("title", jobPostedData?.data?.title)
+      setValue("experience", jobPostedData?.data?.experience)
+      setValue("contract_type", jobPostedData?.data?.contract_type)
+      setValue("job_type", jobPostedData?.data?.job_type)
+      setValue("description", jobPostedData?.data?.description)
+      getCategory(jobPostedData?.data?.category)
+      convertToArray(jobPostedData?.data?.skills)
+    }else{
+      reset()
+      setOtherCategory(null)
+      setSelectedOption([])
+
+    }
+  }, [jobPostedData,jobCategoryList ,id])
 
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
@@ -55,55 +103,72 @@ const JobPost = () => {
   useEffect(() => {
     setOptions(jobCategoryList);
     setSkillsCate(skillListMapped)
-  }, [jobCategoryList,skillList]);
+  }, [jobCategoryList, skillList]);
 
   const handleCreate = (inputValue) => {
     setTimeout(() => {
       const newOption = createOption(inputValue);
       setOptions((prev) => [...prev, newOption]);
-      let data={
-        title:inputValue
+      let data = {
+        title: inputValue
       }
-      dispatch(createNewJobCategory(data,()=>{
+      dispatch(createNewJobCategory(data, () => {
         dispatch(getJobCategoryList());
       }))
     }, 1000);
   };
-
-  console.log(selectedOption,"selectedOption")
 
   const onSubmit = (values) => {
     let convertArr = selectedOption.map((item) => item.label);
     let data = {
       ...values,
       skills: convertArr.toString(),
-      category: otherCategory.value,
+      category: otherCategory?.value,
     };
-    dispatch(
-      clientJobPost(data, () => {
+    if (id) {
+      dispatch(clientUpdatePost(data, id, () => {
         navigate("/job-posted");
-      })
-    );
-  };
-
+      }))
+    } else {
+      dispatch(
+        clientJobPost(data, () => {
+          navigate("/job-posted");
+        })
+      );
+    };
+    
+}
   const onChangeSelect = (val) => {
-    console.log(val,"ddd")
     setTimeout(() => {
       const newOption = createOption(val);
       setSkillsCate((prev) => [...prev, newOption]);
-   
+
     }, 1000);
   };
+
+  const convertToArray = (arr) => {
+    if(arr){
+      const skillsArray = arr?.split(",");
+      console.log(skillsArray,"skillsArray")
+      let data=skillsArray?.map((item)=>{
+       return {
+         value: item, label: item
+       }
+      })
+      setSelectedOption(data)
+    }
+  
+}
 
 
   return (
     <>
       <section className="job-post-section card-box">
         <h2 className="mb-4 section-head d-flex align-items-center gap-3">
-          <Link className="main-btn outline-main-btn mb-0" to="/job-posted">
+          <Link className="main-btn outline-main-btn mb-0" to="/job-posted"> 
             <IoArrowBack />
           </Link>{" "}
-          Job Post
+          { id ? "Edit Post" :"Job Post"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Row>
@@ -132,10 +197,12 @@ const JobPost = () => {
                 <CreatableSelect
                   isClearable
                   onChange={(newValue) => {
+                    console.log(newValue,"newValue")
                     setOtherCategory(newValue)
                   }}
                   onCreateOption={handleCreate}
                   options={options}
+                  value={otherCategory}
                 />
               </Form.Group>
             </Col>
@@ -152,7 +219,7 @@ const JobPost = () => {
                     },
                   })}
                 >
-                  <option value="" disabled selected>
+                  <option  disabled selected>
                     Select Experience Required
                   </option>
                   <option value="less_one">Less than 1 year</option>
@@ -250,14 +317,16 @@ const JobPost = () => {
                   isMulti
                
                 /> */}
-                    <CreatableSelect
-                    isMulti
+                <CreatableSelect
+                  isMulti
                   isClearable
+                  name={selectedOption}
                   onChange={(newValue) => {
                     setSelectedOption(newValue)
                   }}
                   onCreateOption={onChangeSelect}
                   options={skillCate}
+                  value={selectedOption}
                 />
               </Form.Group>
               {/* <p className="error-message ">
