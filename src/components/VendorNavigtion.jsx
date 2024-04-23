@@ -7,7 +7,8 @@ import Notification from "./atomic/Notfication";
 import { useTranslation } from "react-i18next";
 import LanguageChange from "./atomic/LanguageChange";
 
-const vendorName = localStorage.getItem("userName")
+const str = String(localStorage.getItem("userName"));
+const vendorName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())
 const tooltip = (
     <Tooltip id="tooltip">
        {vendorName}
@@ -16,6 +17,7 @@ const tooltip = (
 
 const VendorNavigation = ({ handleSidebar }) => {
     const { t } = useTranslation()
+   
     return (
         <>
             <header className="mb-4">

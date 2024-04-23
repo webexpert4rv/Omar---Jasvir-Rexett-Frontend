@@ -253,7 +253,7 @@ const RentedDevelopers = () => {
                 ) : (
                     ""
                 )}
-                <ConfirmationModal show={showModal} handleClose={setShowModal} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to delete this developer"} />
+                <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to delete this developer"} />
             </>
             }
         </>

@@ -225,6 +225,8 @@ export function clientJobPost(payload, callback) {
     };
 }
 export function clientUpdatePost(payload,id, callback) {
+    console.log(payload , "payload")
+    console.log(id , "id")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {

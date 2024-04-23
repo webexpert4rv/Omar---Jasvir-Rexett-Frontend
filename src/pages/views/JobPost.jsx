@@ -35,16 +35,16 @@ const JobPost = () => {
   const { jobPostedData } = useSelector(state => state.clientData)
 
   const dispatch = useDispatch();
-  const jobId = jobPostedData?.data?.id
-  const route = `/job-edit-post/${jobId}`
+  let id=location.pathname.split("/")[2]
   const {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
 
-  let id=location.pathname.split("/")[2]
+  
 
 
   useEffect(()=>{
@@ -64,10 +64,6 @@ const JobPost = () => {
   //         setSelectedOption(array);
   //     }
   // }, [data]);
-
-  console.log(jobId, "jobid")
-  console.log(jobPostedData, "jobPostedData")
-  console.log(otherCategory, "otherCategory")
 
   const getCategory = (cat) => {
     if(cat!==undefined){
@@ -89,14 +85,15 @@ const JobPost = () => {
       setValue("contract_type", jobPostedData?.data?.contract_type)
       setValue("job_type", jobPostedData?.data?.job_type)
       setValue("description", jobPostedData?.data?.description)
-      setValue("selectedOption", jobPostedData?.data?.skills)
-      setValue("otherCategory", jobPostedData?.job_category?.title)
       getCategory(jobPostedData?.data?.category)
       convertToArray(jobPostedData?.data?.skills)
+    }else{
+      reset()
+      setOtherCategory(null)
+      setSelectedOption([])
+
     }
-
-
-  }, [jobPostedData,jobCategoryList])
+  }, [jobPostedData,jobCategoryList ,id])
 
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
@@ -121,16 +118,15 @@ const JobPost = () => {
     }, 1000);
   };
 
-
-  const onSubmit = (values, jobId) => {
+  const onSubmit = (values) => {
     let convertArr = selectedOption.map((item) => item.label);
     let data = {
       ...values,
       skills: convertArr.toString(),
-      category: otherCategory.label,
+      category: otherCategory?.value,
     };
-    if (route) {
-      dispatch(clientUpdatePost(data, jobId, () => {
+    if (id) {
+      dispatch(clientUpdatePost(data, id, () => {
         navigate("/job-posted");
       }))
     } else {
@@ -140,8 +136,8 @@ const JobPost = () => {
         })
       );
     };
-  }
-
+    
+}
   const onChangeSelect = (val) => {
     setTimeout(() => {
       const newOption = createOption(val);
@@ -169,7 +165,7 @@ const JobPost = () => {
     <>
       <section className="job-post-section card-box">
         <h2 className="mb-4 section-head d-flex align-items-center gap-3">
-          <Link className="main-btn outline-main-btn mb-0" to="/job-posted">
+          <Link className="main-btn outline-main-btn mb-0" to="/job-posted"> 
             <IoArrowBack />
           </Link>{" "}
           { id ? "Edit Post" :"Job Post"}
@@ -201,6 +197,7 @@ const JobPost = () => {
                 <CreatableSelect
                   isClearable
                   onChange={(newValue) => {
+                    console.log(newValue,"newValue")
                     setOtherCategory(newValue)
                   }}
                   onCreateOption={handleCreate}
@@ -222,7 +219,7 @@ const JobPost = () => {
                     },
                   })}
                 >
-                  <option value="" disabled selected>
+                  <option  disabled selected>
                     Select Experience Required
                   </option>
                   <option value="less_one">Less than 1 year</option>

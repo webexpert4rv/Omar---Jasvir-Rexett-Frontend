@@ -465,3 +465,13 @@ export function getAccountDeletion() {
         }
     };
 }
+export function getDeletionByAdmin(role , id) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`/admin/delete-user/${role}/${id}`)
+        } catch (error) {
+            console.log(error,"errrrr")
+        }
+    };
+}
