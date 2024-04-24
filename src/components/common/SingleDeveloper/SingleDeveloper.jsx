@@ -68,7 +68,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                         <Row>
                             <Col lg={6} className="px-0">
                                 <div className="resume-basic-info text-center">
-                                    <div className="resume-imgbx mx-auto mb-4">
+                                     <div className="resume-imgbx mx-auto mb-4">
                                         <img src={developerDetails?.profile_picture ? developerDetails?.profile_picture : resumeImg } className="resume-img" />
                                     </div>
                                     <h3 className="resume-name">{developerDetails?.name}</h3>
@@ -124,6 +124,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                             </Col>
                             <Col lg={6} className="px-0 h-100">
                             <div className="about-info px-4">
+                            <div className="connect-social-media">
                                 <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
                                 {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
                                 {/* <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div> */}
@@ -138,6 +139,8 @@ const SingleDeveloper = ({ developerDetails }) => {
 }
                                 </p> : <> {developerDetails?.developer_detail?.bio}</>}
                             </div>
+                            </div>
+
                                 <div className="about-info px-4 pt-4">
                                     {/* <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25}/></div> */}
                                     <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>

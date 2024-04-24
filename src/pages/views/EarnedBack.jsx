@@ -109,7 +109,6 @@ const EarnedBack = () => {
                                     <Form.Select className="status-select shadow-none">
                                         <option value="finished">{t("Yes")}</option>
                                         <option value="progress">{t("No")}</option>
-                                        <option value="progress">{t("No")}</option>
                                     </Form.Select>
                                 </td>
                                 <td className="time-table-data">

@@ -78,14 +78,14 @@ const Engagements = () => {
                                         </>
                                     )
                                 })
-                                : <NoDataFound />}
+                                : <td colSpan={6}><NoDataFound /></td>}
                         </>}
                     </tbody>
                 </table>
-                <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                            <p className="showing-result">{t("showing")} {(engagement?.items_per_page)} {t("results")}</p>
+              { engagement?.total_pages >1 ? <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
+                            <p className="showing-result">{t("showing")} {(engagement?.data?.length)} {t("results")}</p>
                             <RexettPagination  number = {engagement?.total_pages} setPage={setPage} page={page}/>
-                        </div>
+                        </div> : ""}
             </div>
         </>
     )

@@ -43,7 +43,7 @@ const DeveloperDashboard = () => {
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">{t("activeProjects")}</h4>
-                        <h3 className="overview-card-heading mb-0">3</h3>
+                        <h3 className="overview-card-heading mb-0">0</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
