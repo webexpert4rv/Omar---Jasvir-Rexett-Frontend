@@ -203,7 +203,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     </div>
                                     <div className="d-inline-flex align-items-center gap-1">
                                         <span className="slot-indicate workday"></span>
-                                        <span className="font-15 fw-semibold">{("workDay")}</span>
+                                        <span className="font-15 fw-semibold">{t("workDay")}</span>
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +213,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                     <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
 
                     { <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                   <p className="showing-result">Showing {(timeReportingData?.length)} results</p> 
+                   <p className="showing-result">{t("showing")} {(timeReportingData?.length)} {t("results")}</p> 
                 <RexettPagination number={timeReportingPage?.totalPages} setPage={setPage} page={page}/>
             </div>}
                 </section>}

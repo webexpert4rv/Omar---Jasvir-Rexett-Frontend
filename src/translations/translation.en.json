@@ -303,7 +303,13 @@
         "profilePicture" : "Profile Picture",
         "general" : "General",
         "jobPosting":"Job Posting",
-        "frequentlyAskedQuestions": "Frequently Asked Questions"
+        "frequentlyAskedQuestions": "Frequently Asked Questions",
+        "pleaseSelectAYear" : "Please select a year",
+        "hired" : "Hired",
+        "interviewing" : "Interviewing",
+        "shortlisted" : "Shortlisted",
+        "suggestions" : "Suggestions",
+        "jobDetails" : "Job Details"
         
 
     }

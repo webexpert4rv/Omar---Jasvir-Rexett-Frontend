@@ -302,6 +302,12 @@
         "profilePicture": "Profilbild",
         "general": "Allmänt",
         "jobPosting": "Jobbannons",
-        "frequentlyAskedQuestions": "Vanliga frågor"
+        "frequentlyAskedQuestions": "Vanliga frågor",
+        "pleaseSelectAYear": "Välj ett år",
+        "hired": "Anställd",
+        "interviewing": "Intervjuar",
+        "shortlisted": "Shortlistad",
+        "suggestions": "Förslag",
+        "jobDetails" : "Jobbdetaljer"
     }
 }

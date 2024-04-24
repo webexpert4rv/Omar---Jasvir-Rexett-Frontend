@@ -68,6 +68,7 @@ const Applications = () => {
   };
 
   const handleClick = (e, clientId, status, index) => {
+    console.log(index,"index")
     e.stopPropagation();
     let payload = {
       user_id: clientId,

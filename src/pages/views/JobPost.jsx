@@ -224,12 +224,12 @@ const JobPost = () => {
                   <option  disabled selected>
                     {t("select")} {t("experienceRequired")}
                   </option>
-                  <option value="less_one">{t("lessThan1Year")}</option>
-                  <option value="1-2 Years">1 - 2 {t("years")}</option>
-                  <option value="2-3 Years">2 - 3 {t("years")}</option>
-                  <option value="3-4 Years">3 - 4 {t("years")}</option>
-                  <option value="4-5 Years">4 - 5 {t("years")}</option>
-                  <option value="5 more">5+ {t("years")}</option>
+                  <option value="Less_than_one">{t("lessThan1Year")}</option>
+                  <option value="1-2_Years">1 - 2 {t("years")}</option>
+                  <option value="2-3_Years">2 - 3 {t("years")}</option>
+                  <option value="3-4_Years">3 - 4 {t("years")}</option>
+                  <option value="4-5_Years">4 - 5 {t("years")}</option>
+                  <option value="5_more">5+ {t("years")}</option>
                 </Form.Select>
               </Form.Group>
               <p className="error-message">{errors.experience?.message}</p>
