@@ -5,6 +5,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDeveloperCv, updateDeveloperSkills } from "../../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
+import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 const options = [
     { value: 'HTML', label: 'HTML' },
     { value: 'CSS', label: 'CSS' },
@@ -15,7 +16,7 @@ const options = [
     { value: 'AngularJS', label: 'AngularJS' },
     { value: 'Bootstrap', label: 'Bootstrap' },
 ];
-const SkillsModal = ({ show, handleClose, data }) => {
+const SkillsModal = ({ show, handleClose, data ,id}) => {
     const [selectedOption, setSelectedOption] = useState([]);
     const { smallLoader } = useSelector(state => state.developerData)
     const dispatch = useDispatch()
@@ -35,8 +36,13 @@ const SkillsModal = ({ show, handleClose, data }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         let convertString = selectedOption.map((item) => item.label)
-        dispatch(updateDeveloperSkills(convertString.toString(), () => {
-            dispatch(fetchDeveloperCv())
+        let data= {
+             "skills" : convertString.toString(),
+             "user_id" : +id
+        }
+        console.log(data,"data")
+        dispatch(updateDeveloperSkills(data, () => {
+            dispatch(getDeveloperDetails(id))
             handleClose()
 
         }))

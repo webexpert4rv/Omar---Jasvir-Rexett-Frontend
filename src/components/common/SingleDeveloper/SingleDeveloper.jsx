@@ -19,6 +19,8 @@ import ExperienceCV from "../Modals/ExperienceCVModal";
 import EducationCV from "../Modals/EducationModal";
 import SkillsModal from "../Modals/SkillsCVModal";
 import SocialMediaModal from "../Modals/SocialMediaModal";
+import DeveloperDetails from "../Modals/DeveloperDetails";
+
 
 
 const SingleDeveloper = ({ data }) => {
@@ -48,7 +50,6 @@ const SingleDeveloper = ({ data }) => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
-
 
 
 
@@ -117,7 +118,7 @@ const SingleDeveloper = ({ data }) => {
                     <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                         <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h2 className="section-head mb-0 border-0">overview</h2>
+                            <h2 className="section-head mb-0 border-0">Overview</h2>
                             {/* <button className="main-btn px-xxl-5 px-4" onClick={()=>downloadResume(data?.developer_detail?.resume)}>Download Resume</button> */}
                         </div>
                         <Row>
@@ -233,11 +234,12 @@ const SingleDeveloper = ({ data }) => {
                         </Row>
                     </div>
                 </section>
-                <AboutCV show={showModal} handleClose={handleCloseModal} data={data?.developer_detail?.bio} />
-            {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={data?.developer_experiences} smallLoader={smallLoader} /> : ""}
-            {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} /> : ""}
-            {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} /> : ""}
-            {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.social_links} /> : ""}
+                <AboutCV show={showModal} handleClose={handleCloseModal} data={data?.developer_detail?.bio} id ={data?.id}/>
+            {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={data?.developer_experiences} smallLoader={smallLoader} id ={data?.id} /> : ""}
+            {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id ={data?.id}/> : ""}
+            {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id ={data?.id} /> : ""}
+            {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.linkedin_url} id ={data?.id} /> : ""}
+            <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id ={data?.id}/>
             </>}
         </>
     )

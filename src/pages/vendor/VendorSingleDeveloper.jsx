@@ -15,9 +15,9 @@ const VendorSingleDeveloper = () => {
         dispatch(getDeveloperDetails(devId))
 
     },[])
-    
+    console.log(developerDetails ,"developerDetails")
     return(<>
-    <SingleDeveloper  developerDetails={developerDetails}/>
+    <SingleDeveloper  data={developerDetails}/>
     </>
     )
 }
