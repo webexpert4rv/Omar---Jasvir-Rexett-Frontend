@@ -19,7 +19,7 @@ const AdminSingleDeveloper = () => {
 
 
     return(<>
-    <SingleDeveloper  developerDetails={developerDetails}/>
+    <SingleDeveloper  data={developerDetails}/>
     </>
     )
 }

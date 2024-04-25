@@ -68,10 +68,10 @@ const DeveloperDashboard = () => {
                                 <p className="email-user">{developerDashboard?.developerDetails?.email}</p>
                                 <ul className="social-icons">
                                     <li>
-                                        <Link to={developerDashboard?.developerDetails?.developer_detail?.github_url}><FaGithub /></Link>
+                                        {developerDashboard?.developerDetails?.developer_detail?.github_url ? <Link to={developerDashboard?.developerDetails?.developer_detail?.github_url}><FaGithub /></Link> : ""}
                                     </li>
                                     <li>
-                                        <Link to={developerDashboard?.developerDetails?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
+                                        {developerDashboard?.developerDetails?.developer_detail?.linkedin_url ? <Link to={developerDashboard?.developerDetails?.developer_detail?.linkedin_url}><FaLinkedin /></Link> : ""}
                                     </li>
                                     {/* <li>
                                         <Link to={developerDashboard?.developerDetails?.developer_detail?.resume}><MdEmail /></Link>
