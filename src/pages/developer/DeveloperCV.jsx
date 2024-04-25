@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import resumeImg from '../../assets/img/user-img.jpg'
-import AboutCV from "./Modals/AboutCVModal";
-import ExperienceCV from "./Modals/ExperienceCVModal";
-import EducationCV from "./Modals/EducationModal";
-import SkillsModal from "./Modals/SkillsCVModal";
-import SocialMediaModal from "./Modals/SocialMediaModal";
+
 import cvTemplate1 from '../../assets/img/cv-template1.png'
 import { Link } from "react-router-dom";
 import { FaFacebookF } from "react-icons/fa6";
@@ -18,7 +14,6 @@ import { FaPinterest } from "react-icons/fa6";
 import { MdEditNote } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDeveloperCv } from "../../redux/slices/developerDataSlice";
-import DeveloperDetails from "./Modals/DeveloperDetails";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { HiDownload } from "react-icons/hi";
 import generatePDF from "react-to-pdf"

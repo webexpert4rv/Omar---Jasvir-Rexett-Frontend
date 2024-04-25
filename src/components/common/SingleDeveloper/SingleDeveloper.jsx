@@ -14,11 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaLinkedin } from "react-icons/fa";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import { useTranslation } from "react-i18next";
-import AboutCV from "../../../pages/developer/Modals/AboutCVModal";
-import ExperienceCV from "../../../pages/developer/Modals/ExperienceCV";
-import EducationCV from "../../../pages/developer/Modals/EducationCV";
-import SkillsModal from "../../../pages/developer/Modals/SkillsModal";
-import SocialMediaModal from "../../../pages/developer/Modals/SocialMediaModal";
+import AboutCV from "../Modals/AboutCVModal";
+import ExperienceCV from "../Modals/ExperienceCVModal";
+import EducationCV from "../Modals/EducationModal";
+import SkillsModal from "../Modals/SkillsCVModal";
+import SocialMediaModal from "../Modals/SocialMediaModal";
 
 
 const SingleDeveloper = ({ data }) => {

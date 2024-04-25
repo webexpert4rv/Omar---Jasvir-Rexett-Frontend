@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import developerImg from '../../assets/img/user-img.jpg'
-import AddTimingModal from "./Modals/AddTiming";
+import AddTimingModal from "../../components/common/Modals/AddTiming";
 import RexettTimeReporting from "../../components/clients/TimeReporiting/RexettTimeReporting";
 import { useDispatch, useSelector } from "react-redux";
 import { timeReporting } from "../../redux/slices/clientDataSlice";
