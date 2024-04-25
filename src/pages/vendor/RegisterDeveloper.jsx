@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import StepOne from "./Steps/Step1";
-import StepTwo from "./Steps/Step2";
-import StepThree from "./Steps/Step3";
-import StepFour from "./Steps/Step4";
-import StepFive from "./Steps/Step5";
+import { HiUpload } from "react-icons/hi";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Select from 'react-select';
@@ -27,6 +23,8 @@ const options = [
 
 const RegisterDeveloper = () => {
     const dispatch = useDispatch()
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [file, setFile] = useState(null)
     const { smallLoader } = useSelector(state => state.vendorData)
     const [disbaleYear, setDisbaleYear] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
@@ -196,6 +194,17 @@ const RegisterDeveloper = () => {
 
     }
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        setFile(file)
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <>
@@ -374,6 +383,25 @@ const RegisterDeveloper = () => {
                                         <p className="error-message">
                                             {errors.country?.message} </p>
                                     </Form.Group>
+                                </Col>
+                                <Col>
+                                <Form.Group className="mb-3">
+                                        <Form.Label className="common-label">{t("image")}</Form.Label>
+                                        <Form.Control type="file" id="developer-image"
+                                            name="profile_picture"
+                                            {...register("profile_picture", {
+                                                onChange: (e) => handleFileChange(e),
+                                                required: {
+                                                    value: false,
+                                                    message: "Profile Picture is required",
+                                                },
+                                            })}
+                                            className="d-none" />
+                                        <Form.Label htmlFor="developer-image" className="upload-image-label d-block"><HiUpload />{t("uploadImage")}</Form.Label>
+                                    </Form.Group>
+                                   {selectedImage && <div>
+                                        <img src={selectedImage && selectedImage } alt="Selected" className="uploaded-image" />
+                                    </div>}
                                 </Col>
                             </Row>
                         </div>
@@ -619,6 +647,27 @@ const RegisterDeveloper = () => {
                             <div className="text-end my-3">
                                 <Button className="main-btn py-2 px-3" onClick={handleAddMore}>+</Button>
                             </div>
+                        </div>
+                        <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterAbout")}</h2>
+                        <div className="inner-form mb-3">
+                            <Row>
+                                <Col md="12">
+                                    <Form.Group className="mb-4">
+                                    <Form.Control as="textarea" rows={3} placeholder="Add your about"
+                                    className="common-field"
+                                    name="bio"
+                                    {...register("bio", {
+                                        required: {
+                                            value: true,
+                                            message: false,
+                                        },
+                                    })}
+                                    />
+                                    <p className="error-message">
+                                            {errors.bio?.message} </p>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
                         </div>
                         <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterSkills")}</h2>
                         <div className="inner-form mb-3">

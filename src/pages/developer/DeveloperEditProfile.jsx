@@ -34,7 +34,6 @@ const EditDeveloperProfile = () => {
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
 
 
-    console.log(developerProfileData,"developerProfileData")
     const handleJobStatusModal=(id)=>{
         console.log(id,"id")
         setShowModal(!showModal)

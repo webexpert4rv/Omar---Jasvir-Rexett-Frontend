@@ -257,6 +257,7 @@
         "currentlyAttending": "För närvarande närvarande",
         "currentlyWorking": "För närvarande arbetar",
         "enterSkills": "Ange färdigheter",
+        "enterAbout": "Ange färdigheter",
         "jobPositionValidation": "Jobbtitel är obligatorisk",
         "descriptionValidation": "Beskrivning är obligatorisk",
         "startDateValidation": "Startdatum är obligatoriskt",

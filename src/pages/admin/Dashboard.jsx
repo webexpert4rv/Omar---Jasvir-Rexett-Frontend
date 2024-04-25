@@ -36,6 +36,28 @@ const AdminDashboard = () => {
         dispatch(getSingleClient(client_id))
         navigate(`/admin-single-client/${client_id}`)
     }
+var capturedMessage
+    function captureConsoleMessage() {
+        var oldConsoleLog = console.log;
+        console.log = function(message) {
+            if (typeof message === 'object') {
+                message = JSON && JSON.stringify ? JSON.stringify(message) : message;
+            }
+            capturedMessage = message; // Store the message
+            oldConsoleLog.apply(console, arguments); // Call the original console.log
+        };
+    }
+    
+    captureConsoleMessage(); // Call the function to start capturing console log messages
+
+    
+    function getCapturedMessage() {
+        return capturedMessage;
+    }
+   let c= getCapturedMessage()
+   console.log(c,"op")
+    
+
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>

@@ -257,6 +257,7 @@
         "currentlyAttending": "Currently Attending",
         "currentlyWorking" : "Currently Working",
         "enterSkills" : "Enter Skills",
+        "enterAbout" : "Add About",
         "jobPositionValidation":"Job Position is required",
         "descriptionValidation":"Description is required",
         "startDateValidation" : "Start Date is required",
