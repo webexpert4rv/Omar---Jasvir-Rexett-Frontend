@@ -23,22 +23,23 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { HiDownload } from "react-icons/hi";
 import generatePDF from "react-to-pdf"
 import { useTranslation } from "react-i18next";
+import SingleDeveloper from "../../components/common/SingleDeveloper/SingleDeveloper";
+
 const DeveloperCV = () => {
     const dispatch = useDispatch()
-    const contentRef=useRef()
-    const { developerCvData, smallLoader ,screenLoader} = useSelector(state => state.developerData)
+    const contentRef = useRef()
+    const { developerCvData, smallLoader, screenLoader } = useSelector(state => state.developerData)
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
     const [showModal, setShowModal] = useState(false);
     const [developerDetails, setDeveloperDetails] = useState(false);
-    const [readmore,setReadMore]=useState(true)
-    const{t} = useTranslation()
-
+    const [readmore, setReadMore] = useState(true)
+    const { t } = useTranslation()
 
     const handleShowModal = () => {
         setShowModal(true);
     };
 
-    const readMoreLess=()=>{
+    const readMoreLess = () => {
         setReadMore(!readmore)
     }
 
@@ -119,14 +120,14 @@ const DeveloperCV = () => {
 
     return (
         <>
-            <section className="overview-cv card-box">
-               { screenLoader ? <ScreenLoader/>:<div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
+            {/* <section className="overview-cv card-box">
+                {screenLoader ? <ScreenLoader /> : <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="section-head mb-0 border-0 pb-0">{t("overview")}</h2>
-                        <button className="main-btn px-xxl-5 px-md-4 px-3"    onClick={async () => {
-                  await generatePDF(contentRef, { filename: "Resume.pdf" });
-                }}><span className="d-md-inline-block d-none">{t("downloadResume")}</span> <span className="d-md-none"><HiDownload /></span></button>
+                        <button className="main-btn px-xxl-5 px-md-4 px-3" onClick={async () => {
+                            await generatePDF(contentRef, { filename: "Resume.pdf" });
+                        }}><span className="d-md-inline-block d-none">{t("downloadResume")}</span> <span className="d-md-none"><HiDownload /></span></button>
                     </div>
                     <Row ref={contentRef}>
                         <Col lg={6} className="px-0">
@@ -177,18 +178,19 @@ const DeveloperCV = () => {
                         <Col lg={6} className="px-0 h-100">
                             <div className="about-info px-4">
                                 <h3 className="subheading-resume mb-xxl-4 mb-3">{t("aboutMe")}</h3>
-                                {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
+                                <h2 className="mainheading-resume">Art Changes Us</h2>
                                 <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
-                                <p className="resume-text">{readmore && developerCvData?.developer_detail?.bio?.length>300?<>
-                                    {developerCvData?.developer_detail?.bio.slice(0,300)}
-                                    <span className="readLess"  onClick={readMoreLess}> {readmore? `${t("readMore")}`:`${t("readLess")}`} </span>
-                                </>:
-                                <>
-                                 {developerCvData?.developer_detail?.bio}
-                                <span className="readLess" onClick={readMoreLess}> {readmore?`${t("readMore")}`:`${t("readLess")}`} </span>
-                                </>
-}
-                                </p>
+                                {developerCvData?.developer_detail?.bio?.length > 300 ? <><div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
+                                    <p className="resume-text">{readmore && developerCvData?.developer_detail?.bio?.length > 300 ? <>
+                                        {developerCvData?.developer_detail?.bio.slice(0, 300)}
+                                        <span className="readLess" onClick={readMoreLess}> {readmore ? `${t("readMore")}` : `${t("readLess")}`} </span>
+                                    </> :
+                                        <>
+                                            {developerCvData?.developer_detail?.bio}
+                                            <span className="readLess" onClick={readMoreLess}> {readmore ? `${t("readMore")}` : `${t("readLess")}`} </span>
+                                        </>
+                                    }
+                                    </p></> : <>{developerCvData?.developer_detail?.bio}</>}
                             </div>
                             <div className="about-info px-4 pt-4">
                                 <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25} /></div>
@@ -230,7 +232,8 @@ const DeveloperCV = () => {
             {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={developerCvData?.developer_educations} smallLoader={smallLoader} /> : ""}
             {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} /> : ""}
             {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={developerCvData?.social_links} /> : ""}
-            <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={developerCvData?.developer_detail?.professional_title} name={developerCvData?.name} profile={developerCvData?.profile_picture} smallLoader={smallLoader} />
+            <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={developerCvData?.developer_detail?.professional_title} name={developerCvData?.name} profile={developerCvData?.profile_picture} smallLoader={smallLoader} /> */}
+            <SingleDeveloper data={developerCvData} />
         </>
     )
 }

@@ -309,6 +309,11 @@
         "interviewing": "Intervjuar",
         "shortlisted": "Shortlistad",
         "suggestions": "Förslag",
-        "jobDetails" : "Jobbdetaljer"
+        "jobDetails" : "Jobbdetaljer",
+        "addSocialMedia" : "Lägg till sociala medier",
+        "addBulkTime" : "Lägg till Bulk Time",
+        "selectClientName" : "Välj klientnamn",
+        "image" : "bild",
+        "youHaveNoNotification" : "Du har ingen avisering"
     }
 }

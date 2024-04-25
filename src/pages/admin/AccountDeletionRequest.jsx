@@ -115,7 +115,7 @@ const AccountDeletionRequest = () => {
                                         </>
                                     )
                                 })
-                                : <NoDataFound />}
+                                : <td colSpan={6}><NoDataFound /></td>}
                         </>}
                     </tbody>
                 </table>

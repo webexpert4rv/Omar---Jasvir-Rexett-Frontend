@@ -310,7 +310,12 @@
         "interviewing" : "Interviewing",
         "shortlisted" : "Shortlisted",
         "suggestions" : "Suggestions",
-        "jobDetails" : "Job Details"
+        "jobDetails" : "Job Details",
+        "addSocialMedia" : "Add Social Media",
+        "addBulkTime" : "Add Bulk Time",
+        "selectClientName" : "Select Client Name",
+        "image" : "Image",
+        "youHaveNoNotification" : "You have no Notification"
         
 
     }

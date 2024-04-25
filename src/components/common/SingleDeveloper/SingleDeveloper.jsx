@@ -13,14 +13,22 @@ import { MdEditNote, MdEmail } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { FaLinkedin } from "react-icons/fa";
 import ScreenLoader from "../../atomic/ScreenLoader";
+import { useTranslation } from "react-i18next";
+import AboutCV from "../../../pages/developer/Modals/AboutCVModal";
+import ExperienceCV from "../../../pages/developer/Modals/ExperienceCV";
+import EducationCV from "../../../pages/developer/Modals/EducationCV";
+import SkillsModal from "../../../pages/developer/Modals/SkillsModal";
+import SocialMediaModal from "../../../pages/developer/Modals/SocialMediaModal";
 
 
-const SingleDeveloper = ({ developerDetails }) => {
+const SingleDeveloper = ({ data }) => {
     const dispatch = useDispatch()
-    const { screenLoader } = useSelector(state => state.clientData)
+    const { screenLoader , smallLoader } = useSelector(state => state.clientData)
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
+    const [developerDetails, setDeveloperDetails] = useState(false);
     const [readmore, setReadMore] = useState(true)
     const [showModal, setShowModal] = useState(false);
+    const { t }  =  useTranslation
 
 
 
@@ -29,9 +37,9 @@ const SingleDeveloper = ({ developerDetails }) => {
         return skills
 
     }
-    // const handleShowModal = () => {
-    //     setShowModal(true);
-    // };
+    const handleShowModal = () => {
+        setShowModal(true);
+    };
 
     const readMoreLess = () => {
         setReadMore(!readmore)
@@ -40,6 +48,53 @@ const SingleDeveloper = ({ developerDetails }) => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+
+
+
+    
+    const [showExperienceModal, setShowExperienceModal] = useState(false);
+    const handleShowExperienceModal = () => {
+        setShowExperienceModal(true);
+    };
+
+    const handleCloseExperienceModal = () => {
+        setShowExperienceModal(false);
+    };
+
+    const [showEducationModal, setShowEducationModal] = useState(false);
+    const handleShowEducationModal = () => {
+        setShowEducationModal(true);
+    };
+
+    const handleCloseEducationModal = () => {
+        setShowEducationModal(false);
+    };
+
+    const [showSkillsModal, setShowSkillsModal] = useState(false);
+    const handleShowSkillsModal = () => {
+        setShowSkillsModal(true);
+    };
+
+    const handleCloseSkillsModal = () => {
+        setShowSkillsModal(false);
+    };
+
+    const [showSocialMediaModal, setShowSocialMediaModal] = useState(false);
+    const handleShowSocialMediaModal = () => {
+        setShowSocialMediaModal(true);
+    };
+
+    const handleCloseSocialMediaModal = () => {
+        setShowSocialMediaModal(false);
+    };
+
+    const handleDeveloperDetails = () => {
+        setDeveloperDetails(true)
+    }
+    const handleClosDeveloperDetails = () => {
+        setDeveloperDetails(false)
+    }
     const generateSocailLinks = (link) => {
         switch (link) {
             // case "Facebook":
@@ -62,25 +117,25 @@ const SingleDeveloper = ({ developerDetails }) => {
                     <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                         <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h2 className="section-head mb-0 border-0">Overview</h2>
-                            {/* <button className="main-btn px-xxl-5 px-4" onClick={()=>downloadResume(developerCvData?.developer_detail?.resume)}>Download Resume</button> */}
+                            <h2 className="section-head mb-0 border-0">overview</h2>
+                            {/* <button className="main-btn px-xxl-5 px-4" onClick={()=>downloadResume(data?.developer_detail?.resume)}>Download Resume</button> */}
                         </div>
                         <Row>
                             <Col lg={6} className="px-0">
                                 <div className="resume-basic-info text-center">
-                                    <div className="resume-imgbx mx-auto mb-4">
-                                        <img src={developerDetails?.profile_picture ? developerDetails?.profile_picture : resumeImg } className="resume-img" />
+                                     <div className="resume-imgbx mx-auto mb-4">
+                                        <img src={data?.profile_picture ? data?.profile_picture : resumeImg } className="resume-img" />
                                     </div>
-                                    <h3 className="resume-name">{developerDetails?.name}</h3>
-                                    <p className="resume-designation">{developerDetails?.developer_detailprofessional_title}</p>
-                                    {/* <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25}/></div> */}
+                                    <h3 className="resume-name">{data?.name}</h3>
+                                    <p className="resume-designation">{data?.developer_detailprofessional_title}</p>
+                                    <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25}/></div>
                                 </div>
                                 <div className="connect-social-media">
                                     <h3 className="subheading-resume text-center mb-3">Skills</h3>
-                                    {/* <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25}/></div> */}
+                                    <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25}/></div>
                                     <ul className="skills-pill text-center">
                                         {
-                                            splitSkills(developerDetails?.developer_skills)?.map((item, index) => {
+                                            splitSkills(data?.developer_skills)?.map((item, index) => {
                                                 return (
                                                     <>
                                                         <li key={index}><span>{item}</span> </li>
@@ -92,7 +147,7 @@ const SingleDeveloper = ({ developerDetails }) => {
                                 </div>
                                 <div className="connect-social-media">
                                     <h3 className="subheading-resume text-center mb-3">Connect With Me</h3>
-                                    {/* <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25}/></div> */}
+                                    <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25}/></div>
                                     {/* <ul className="social-media">
                                     {developerDetails?.social_links?.map((item)=>{
                                         return(
@@ -111,10 +166,10 @@ const SingleDeveloper = ({ developerDetails }) => {
 
                                     <ul className="social-media ">
                                         <li>
-                                            <Link to={developerDetails?.developer_detail?.github_url}><FaGithub /></Link>
+                                            <Link to={data?.developer_detail?.github_url}><FaGithub /></Link>
                                         </li>
                                         <li>
-                                            <Link to={developerDetails?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
+                                            <Link to={data?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
                                         </li>
                                         {/* <li>
                                             <Link to={developerDetails?.developer_detail?.email}><MdEmail /></Link>
@@ -124,24 +179,27 @@ const SingleDeveloper = ({ developerDetails }) => {
                             </Col>
                             <Col lg={6} className="px-0 h-100">
                             <div className="about-info px-4">
+                            <div className="connect-social-media">
                                 <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
                                 {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
-                                {/* <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div> */}
-                             {  developerDetails?.developer_detail?.bio?.length >300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length>300?<>
-                                    {developerDetails?.developer_detail?.bio.slice(0,300)}
+                                <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
+                             {  data?.developer_detail?.bio?.length >300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length>300?<>
+                                    {data?.developer_detail?.bio.slice(0,300)}
                                     <span className="readLess"  onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
                                 </>:
                                 <>
-                                 {developerDetails?.developer_detail?.bio}
+                                 {data?.developer_detail?.bio}
                                 <span className="readLess" onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
                                 </>
 }
-                                </p> : <> {developerDetails?.developer_detail?.bio}</>}
+                                </p> : <> {data?.developer_detail?.bio}</>}
                             </div>
+                            </div>
+
                                 <div className="about-info px-4 pt-4">
-                                    {/* <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25}/></div> */}
+                                    <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25}/></div>
                                     <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>
-                                    {developerDetails?.developer_experiences?.map((item) => {
+                                    {data?.developer_experiences?.map((item) => {
                                         return (
                                             <>
                                                 <div className="exp-wrapper">
@@ -153,10 +211,10 @@ const SingleDeveloper = ({ developerDetails }) => {
                                             </>
                                         )
                                     })}
-                                    {developerDetails?.developer_educations ? <>
+                                    {data?.developer_educations ? <>
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
-                                        {/* <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div> */}
-                                        {developerDetails?.developer_educations?.map((item) => {
+                                        <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div>
+                                        {data?.developer_educations?.map((item) => {
                                             return (
                                                 <React.Fragment key={item.id}>
                                                     <div className="exp-wrapper">
@@ -175,6 +233,11 @@ const SingleDeveloper = ({ developerDetails }) => {
                         </Row>
                     </div>
                 </section>
+                <AboutCV show={showModal} handleClose={handleCloseModal} data={data?.developer_detail?.bio} />
+            {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={data?.developer_experiences} smallLoader={smallLoader} /> : ""}
+            {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} /> : ""}
+            {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} /> : ""}
+            {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.social_links} /> : ""}
             </>}
         </>
     )

@@ -68,7 +68,7 @@ const Applications = () => {
   };
 
   const handleClick = (e, clientId, status, index) => {
-    console.log(index,"index")
+    console.log(index, "index")
     e.stopPropagation();
     let payload = {
       user_id: clientId,
@@ -219,7 +219,8 @@ const Applications = () => {
                                     overlay={approvedTooltip}
                                   >
                                     <RexettButton
-                                      icon={<IoCheckmark />}
+                                      icon={selectedApprovedBtn === index
+                                        ? approvedLoader : <IoCheckmark />}
                                       className="arrow-btn primary-arrow"
                                       variant="transparent"
                                       onClick={(e) =>
@@ -231,7 +232,7 @@ const Applications = () => {
                                         )
                                       }
                                       isLoading={
-                                        selectedApprovedBtn === index
+                                        selectedApprovedBtn !== index
                                           ? approvedLoader
                                           : false
                                       }
@@ -242,7 +243,8 @@ const Applications = () => {
                                     overlay={rejectedTooltip}
                                   >
                                     <RexettButton
-                                      icon={<IoCloseOutline />}
+                                      icon={selectedRejectedBtn === index
+                                        ? approvedLoader : <IoCloseOutline />}
                                       className="arrow-btn"
                                       variant={"danger"}
                                       onClick={(e) =>
@@ -271,15 +273,15 @@ const Applications = () => {
                                 <td colSpan="8">
                                   <div>
                                     <Row>
-                                    <Col md={3} className="mb-3">
+                                      <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
                                             {t("profilePicture")}{" "}
                                           </h3>
                                           <div className="user-imgbx">
-                                          <img src = {item?.profile_picture ? item?.profile_picture : userImg} 
-                                            className="user-img"/>
-                                            </div>
+                                            <img src={item?.profile_picture ? item?.profile_picture : userImg}
+                                              className="user-img" />
+                                          </div>
                                         </div>
                                       </Col>
                                       <Col md={3} className="mb-3">
@@ -400,11 +402,11 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
-            {application?.length > 0 ? (
+            {allApplications?.totalClientPages > 1 ? (
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
-                    {t("showing")} {allApplications?.items_per_page} {t("results")}
+                    {t("showing")} {allApplications?.clients?.length} {t("results")}
                   </p>
                 ) : (
                   <p className="showing-result">
@@ -473,7 +475,8 @@ const Applications = () => {
                               <td>
                                 <div className="d-flex gap-3">
                                   <RexettButton
-                                    icon={<IoCheckmark />}
+                                    icon={selectedApprovedBtn === index
+                                      ? approvedLoader : <IoCheckmark />}
                                     className="arrow-btn primary-arrow"
                                     variant="transparent"
                                     onClick={(e) =>
@@ -491,7 +494,8 @@ const Applications = () => {
                                     }
                                   />
                                   <RexettButton
-                                    icon={<IoCloseOutline />}
+                                    icon={selectedRejectedBtn === index
+                                      ? approvedLoader :<IoCloseOutline />}
                                     className="arrow-btn"
                                     variant={"danger"}
                                     onClick={(e) =>
@@ -519,15 +523,15 @@ const Applications = () => {
                                 <td colSpan="8">
                                   <div>
                                     <Row>
-                                    <Col md={3} className="mb-3">
+                                      <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
                                             {t("profilePicture")}
                                           </h3>
                                           <div className="user-imgbx">
-                                          <img src = {item?.profile_picture ? item?.profile_picture : userImg} 
-                                           className="user-img"/>
-                                            </div>
+                                            <img src={item?.profile_picture ? item?.profile_picture : userImg}
+                                              className="user-img" />
+                                          </div>
                                         </div>
                                       </Col>
                                       <Col md={3} className="mb-3">
@@ -637,11 +641,11 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
-            {application?.length > 0 ? (
+            {allApplications?.totalVendorPages > 1 ? (
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
-                    {t("showing")} {allApplications?.items_per_page} {t("results")}
+                    {t("showing")} {allApplications?.clients?.length} {t("results")}
                   </p>
                 ) : (
                   <p className="showing-result">
@@ -704,7 +708,8 @@ const Applications = () => {
 
                                 <div className="d-flex gap-3">
                                   <RexettButton
-                                    icon={<IoCheckmark />}
+                                    icon={ selectedApprovedBtn === index
+                                      ? approvedLoader :<IoCheckmark />}
                                     className="arrow-btn primary-arrow"
                                     variant="transparent"
                                     onClick={(e) =>
@@ -722,7 +727,8 @@ const Applications = () => {
                                     }
                                   />
                                   <RexettButton
-                                    icon={<IoCloseOutline />}
+                                    icon={selectedRejectedBtn === index
+                                      ? approvedLoader:<IoCloseOutline />}
                                     className="arrow-btn"
                                     variant={"danger"}
                                     onClick={(e) =>
@@ -750,15 +756,15 @@ const Applications = () => {
                                 <td colSpan="8">
                                   <div>
                                     <Row>
-                                    <Col md={3} className="mb-3">
+                                      <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
                                             {t("profilePicture")}
                                           </h3>
                                           <div className="user-imgbx">
-                                          <img src = {item?.profile_picture ? item?.profile_picture : userImg} 
-                                           className="user-img"/>
-                                        </div>
+                                            <img src={item?.profile_picture ? item?.profile_picture : userImg}
+                                              className="user-img" />
+                                          </div>
                                         </div>
                                       </Col>
                                       <Col md={3} className="mb-3">
@@ -814,7 +820,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                              {t("phoneNumber")}
+                                            {t("phoneNumber")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.phone_number}
@@ -886,7 +892,7 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
-            {application?.length > 0 ? (
+            {allApplications?.totalDeveloperPages > 1 ? (
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "developers" ?
                   (<p className="showing-result">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FaFolder } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -6,10 +6,12 @@ import { MdPictureAsPdf } from "react-icons/md";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
 import { HiDownload } from "react-icons/hi";
+import { useDispatch } from "react-redux";
+import { getInvoice } from "../../redux/slices/clientDataSlice";
 
 const Invoice = () => {
     const [showFolderView, setShowFolderView] = useState(false);
-
+    const dispatch = useDispatch()
     const toggleFolderView = () => {
         setShowFolderView(!showFolderView);
     };
@@ -19,6 +21,10 @@ const Invoice = () => {
           Download Invoice
         </Tooltip>
       );
+
+    //   useEffect(()=>{
+    //     dispatch(getInvoice())
+    //   },[])
 
     return (
         <>
@@ -92,10 +98,10 @@ const Invoice = () => {
                             <table className="table table-ui-custom">
                                 <thead>
                                     <tr>
-                                        <th>Developer Name</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>{t("developerName")}</th>
+                                        <th>{t("date")}</th>
+                                        <th>{t("status")}</th>
+                                        <th>{t("action")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

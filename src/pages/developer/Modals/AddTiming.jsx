@@ -242,10 +242,10 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           <option disabled selected>
                             {t("selectWeek")}
                           </option>
-                          <option value="1">{t("Week")} 1</option>
-                          <option value="2">{t("Week")} 2</option>
-                          <option value="3">{t("Week")} 3</option>
-                          <option value="4">{t("Week")} 4</option>
+                          <option value="1">{t("week")} 1</option>
+                          <option value="2">{t("week")} 2</option>
+                          <option value="3">{t("week")} 3</option>
+                          <option value="4">{t("week")} 4</option>
                         </Form.Select>
 
                       </div>

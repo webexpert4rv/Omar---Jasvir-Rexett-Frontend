@@ -9,6 +9,8 @@ import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import ScreenLoader from "./ScreenLoader";
 import { toast } from 'react-toastify';
+import { useTranslation } from "react-i18next";
+import { tab } from "@testing-library/user-event/dist/tab";
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -16,7 +18,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
   const { notificationList, screenLoader } = useSelector(state => state.adminData)
   const [newJobPost, setNewJobPost] = useState(null)
   const [notificationModal, setNotificationModal] = useState(false)
-
+  const { t }= useTranslation() 
   const userId = localStorage.getItem("userId")
 
   useEffect(() => {
@@ -144,10 +146,10 @@ const Notification = ({ route, job, doc, timeReport }) => {
                         </div>
                       </>
                     )
-                  }) : <Dropdown.Item className="text-center no-notification">You have no notification</Dropdown.Item>}
+                  }) : <Dropdown.Item className="text-center no-notification">{t("youHaveNoNotification")}</Dropdown.Item>}
 
                 </div>
-                <Dropdown.Item onClick={redirectToallScreen} className="see-all-notify mt-4"> See All</Dropdown.Item>
+                <Dropdown.Item onClick={redirectToallScreen} className="see-all-notify mt-4"> {t("seeAll")}</Dropdown.Item>
 
               </Dropdown.Menu>}
             </Dropdown>
