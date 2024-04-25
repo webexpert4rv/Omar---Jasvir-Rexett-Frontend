@@ -5,9 +5,9 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { fetchDeveloperCv, updateDeveloperCvBio, updateDeveloperCvDetails } from "../../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { HiUpload } from "react-icons/hi";
-import { filePreassignedUrlGenerate } from "../../../redux/slices/clientDataSlice";
+import { filePreassignedUrlGenerate, getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) => {
+const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) => {
     const dispatch = useDispatch();
     const { smallLoader } = useSelector(state => state.clientData)
     const [file, setFile] = useState(null)
@@ -25,9 +25,7 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
         setValue("profile_picture", profile);
     }, [name, position])
 
-
-
-
+    console.log(id,"id")
     const handleChange = (e) => {
         const file = e.target.files[0];
         setFile(file)
@@ -43,11 +41,17 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
 
 
     const onSubmit = (values) => {
+        console.log(values , "values")
         let fileData = new FormData();
         fileData.append("file",file);
         if(file==null){
-            dispatch(updateDeveloperCvDetails(values, () => {
-                dispatch(fetchDeveloperCv())
+            let data = {
+                ...values,
+                "user_id" : +id
+            };
+            console.log(data,"data")
+            dispatch(updateDeveloperCvDetails(data, () => {
+                dispatch(getDeveloperDetails(id))
                 handleClose()
             }))
         }else{
@@ -55,9 +59,11 @@ const DeveloperDetails = ({ show, handleClose, data, name, position, profile }) 
                 let data = {
                     ...values,
                     "profile_picture": url,
+                    "user_id" : +id
                 };
+                console.log(data,"data")
                 dispatch(updateDeveloperCvDetails(data, () => {
-                    dispatch(fetchDeveloperCv())
+                    dispatch(getDeveloperDetails(id))
                     handleClose()
                 }))
             }));

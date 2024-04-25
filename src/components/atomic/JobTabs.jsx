@@ -6,7 +6,7 @@ import amazonImg from "../../assets/img/amazon.png";
 import NoDataFound from "./NoDataFound";
 import ScreenLoader from "./ScreenLoader";
 
-const JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
+const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
   const getCategory = (cat) => {
     let data = jobCategoryList.find((item) => item.id == cat);
     return data?.title;
@@ -52,7 +52,7 @@ const JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       <Col md="12">
                         <div className="info-grid">
                           <h4 className="grid-heading">Skills Req.</h4>
-                          <ul className="skills-listing">
+                          <ul className="skills-pill ">
                             {convertToArray(item?.skills)?.map((item) => {
                               return (
                                 <>

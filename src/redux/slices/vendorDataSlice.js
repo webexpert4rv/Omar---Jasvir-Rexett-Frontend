@@ -38,6 +38,7 @@ export const vendorDataSlice = createSlice({
         setVendorProfile: (state, action) => {
             state.vendorProfile = action.payload.data
             state.screenLoader = false;
+            state.smallLoader = false;
         },
         setVendorTimeReport: (state, action) => {
             state.vendorTimeReport = action.payload
@@ -65,6 +66,7 @@ export const vendorDataSlice = createSlice({
             state.allDevelopersList = action.payload
         },
         setRevenueData:(state, action) =>{
+            state.smallLoader=false;
             state.screenLoader = false;
             state.revenueData = action.payload.data
         },

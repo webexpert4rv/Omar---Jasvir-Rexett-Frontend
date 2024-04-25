@@ -23,6 +23,7 @@ import { RxChevronRight } from "react-icons/rx";
 import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import userImg from '../../assets/img/user-img.jpg'
 
 const Applications = () => {
   const dispatch = useDispatch();
@@ -38,16 +39,16 @@ const Applications = () => {
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
   const [page, setPage] = useState(1);
-  const { t }= useTranslation()
+  const { t } = useTranslation()
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
-    setArrowActive(index==arrowactive?null:index);
+    setArrowActive(index == arrowactive ? null : index);
   };
 
   useEffect(() => {
-    let data={
-      page:page
+    let data = {
+      page: page
     }
     dispatch(allApplicationsList(data));
   }, [page]);
@@ -67,15 +68,16 @@ const Applications = () => {
   };
 
   const handleClick = (e, clientId, status, index) => {
+    console.log(index, "index")
     e.stopPropagation();
     let payload = {
       user_id: clientId,
       status: status,
       "active-tab": currentTab,
     };
-   
-    let data={
-      page:page,
+
+    let data = {
+      page: page,
       "active-tab": currentTab,
     }
 
@@ -89,12 +91,12 @@ const Applications = () => {
   };
   const approvedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Approve
+      {t("approve")}
     </Tooltip>
   );
   const rejectedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-      Reject
+      {t("reject")}
     </Tooltip>
   );
 
@@ -102,17 +104,17 @@ const Applications = () => {
     setSearch(e.target.value)
     clearTimeout(timerValue);
     const timer = setTimeout(() => {
-      let data={
-        page:page,
+      let data = {
+        page: page,
         "active-tab": currentTab,
-        search:e.target.value
+        search: e.target.value
       }
       dispatch(allApplicationsList(data));
     }, 500);
-    
+
     setTimerValue(timer);
 
-}
+  }
 
   return (
     <>
@@ -154,7 +156,7 @@ const Applications = () => {
           </Nav.Item>
           <Nav.Item className="application-item">
             <Nav.Link eventKey="developers" className="application-link">
-            {t("developers")}{" "}
+              {t("developers")}{" "}
               <span className="new-app">
                 {allApplications?.developers?.length}
               </span>
@@ -191,7 +193,7 @@ const Applications = () => {
                               <td className="white-nowrap">
                                 <span
                                   className={
-                                    arrowactive==index && currentTab == "clients"  
+                                    arrowactive == index && currentTab == "clients"
                                       ? "row-arrow active"
                                       : "row-arrow"
                                   }
@@ -217,7 +219,8 @@ const Applications = () => {
                                     overlay={approvedTooltip}
                                   >
                                     <RexettButton
-                                      icon={<IoCheckmark />}
+                                      icon={selectedApprovedBtn === index
+                                        ? approvedLoader : <IoCheckmark />}
                                       className="arrow-btn primary-arrow"
                                       variant="transparent"
                                       onClick={(e) =>
@@ -229,7 +232,7 @@ const Applications = () => {
                                         )
                                       }
                                       isLoading={
-                                        selectedApprovedBtn === index
+                                        selectedApprovedBtn !== index
                                           ? approvedLoader
                                           : false
                                       }
@@ -240,7 +243,8 @@ const Applications = () => {
                                     overlay={rejectedTooltip}
                                   >
                                     <RexettButton
-                                      icon={<IoCloseOutline />}
+                                      icon={selectedRejectedBtn === index
+                                        ? approvedLoader : <IoCloseOutline />}
                                       className="arrow-btn"
                                       variant={"danger"}
                                       onClick={(e) =>
@@ -263,9 +267,8 @@ const Applications = () => {
                             </tr>
                             {expandedRow === index && (
                               <tr
-                                className={`collapsible-row ${
-                                  expandedRow === index ? "open" : ""
-                                }`}
+                                className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                  }`}
                               >
                                 <td colSpan="8">
                                   <div>
@@ -273,7 +276,18 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            New Team Member Start{" "}
+                                            {t("profilePicture")}{" "}
+                                          </h3>
+                                          <div className="user-imgbx">
+                                            <img src={item?.profile_picture ? item?.profile_picture : userImg}
+                                              className="user-img" />
+                                          </div>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("newTeamMemberStart")}{" "}
                                           </h3>
                                           <p className="application-text">
                                             {
@@ -314,7 +328,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Job Title
+                                            {t("jobTitle")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.jobs[0]?.title}
@@ -324,7 +338,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Status
+                                            {t("status")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.status}
@@ -334,7 +348,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Role
+                                            {t("role")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.role}
@@ -388,11 +402,11 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
-            {application?.length > 0 ? (
+            {allApplications?.totalClientPages > 1 ? (
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
-                    {t("showing")} {allApplications?.items_per_page} {t("results")}
+                    {t("showing")} {allApplications?.clients?.length} {t("results")}
                   </p>
                 ) : (
                   <p className="showing-result">
@@ -439,7 +453,7 @@ const Applications = () => {
                               <td className="white-nowrap">
                                 <span
                                   className={
-                                    arrowactive==index && currentTab == "vendors" 
+                                    arrowactive == index && currentTab == "vendors"
                                       ? "row-arrow active"
                                       : "row-arrow"
                                   }
@@ -461,7 +475,8 @@ const Applications = () => {
                               <td>
                                 <div className="d-flex gap-3">
                                   <RexettButton
-                                    icon={<IoCheckmark />}
+                                    icon={selectedApprovedBtn === index
+                                      ? approvedLoader : <IoCheckmark />}
                                     className="arrow-btn primary-arrow"
                                     variant="transparent"
                                     onClick={(e) =>
@@ -479,7 +494,8 @@ const Applications = () => {
                                     }
                                   />
                                   <RexettButton
-                                    icon={<IoCloseOutline />}
+                                    icon={selectedRejectedBtn === index
+                                      ? approvedLoader :<IoCloseOutline />}
                                     className="arrow-btn"
                                     variant={"danger"}
                                     onClick={(e) =>
@@ -501,13 +517,23 @@ const Applications = () => {
                             </tr>
                             {expandedRow === index && (
                               <tr
-                                className={`collapsible-row ${
-                                  expandedRow === index ? "open" : ""
-                                }`}
+                                className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                  }`}
                               >
                                 <td colSpan="8">
                                   <div>
                                     <Row>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("profilePicture")}
+                                          </h3>
+                                          <div className="user-imgbx">
+                                            <img src={item?.profile_picture ? item?.profile_picture : userImg}
+                                              className="user-img" />
+                                          </div>
+                                        </div>
+                                      </Col>
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
@@ -521,7 +547,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Email
+                                            {t("email")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.company?.email}
@@ -531,7 +557,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Total Employees
+                                            {t("totalEmployees")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.company?.total_employees ? item?.company?.total_employees : " ----"}
@@ -541,7 +567,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Location
+                                            {t("location")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.company?.location ? item?.company?.location : "----"}
@@ -615,11 +641,11 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
-            {application?.length > 0 ? (
+            {allApplications?.totalVendorPages > 1 ? (
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                 {currentTab == "clients" ? (
                   <p className="showing-result">
-                    {t("showing")} {allApplications?.items_per_page} {t("results")}
+                    {t("showing")} {allApplications?.clients?.length} {t("results")}
                   </p>
                 ) : (
                   <p className="showing-result">
@@ -660,10 +686,10 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                               <td className="white-nowrap">
+                              <td className="white-nowrap">
                                 <span
                                   className={
-                                    arrowactive==index && currentTab == "developers"  
+                                    arrowactive == index && currentTab == "developers"
                                       ? "row-arrow active"
                                       : "row-arrow"
                                   }
@@ -674,15 +700,16 @@ const Applications = () => {
                               </td>
                               <td>
                                 <span className="application-mail">
-                                  {item?.email ? item?.email : "----"} 
+                                  {item?.email ? item?.email : "----"}
                                 </span>
                               </td>
-                              <td>{item?.phone_number ?  item?.phone_number : "----"} </td>
+                              <td>{item?.phone_number ? item?.phone_number : "----"} </td>
                               <td>
-                                
+
                                 <div className="d-flex gap-3">
                                   <RexettButton
-                                    icon={<IoCheckmark />}
+                                    icon={ selectedApprovedBtn === index
+                                      ? approvedLoader :<IoCheckmark />}
                                     className="arrow-btn primary-arrow"
                                     variant="transparent"
                                     onClick={(e) =>
@@ -700,7 +727,8 @@ const Applications = () => {
                                     }
                                   />
                                   <RexettButton
-                                    icon={<IoCloseOutline />}
+                                    icon={selectedRejectedBtn === index
+                                      ? approvedLoader:<IoCloseOutline />}
                                     className="arrow-btn"
                                     variant={"danger"}
                                     onClick={(e) =>
@@ -722,9 +750,8 @@ const Applications = () => {
                             </tr>
                             {expandedRow === index && (
                               <tr
-                                className={`collapsible-row ${
-                                  expandedRow === index ? "open" : ""
-                                }`}
+                                className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                  }`}
                               >
                                 <td colSpan="8">
                                   <div>
@@ -732,7 +759,18 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                           {t("companyName")}
+                                            {t("profilePicture")}
+                                          </h3>
+                                          <div className="user-imgbx">
+                                            <img src={item?.profile_picture ? item?.profile_picture : userImg}
+                                              className="user-img" />
+                                          </div>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("companyName")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.developer_experiences[0]?.company_name}
@@ -742,7 +780,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Job Title
+                                            {t("jobTitle")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.developer_experiences[0]?.job_title}
@@ -752,7 +790,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                          Status
+                                            {t("status")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.status}
@@ -762,7 +800,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                          Role
+                                            {t("role")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.role}
@@ -772,7 +810,17 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                          Phone Number
+                                            {t("jobDescription")}
+                                          </h3>
+                                          <p className="application-text">
+                                            {item?.developer_experiences[0]?.description}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col md={3} className="mb-3">
+                                        <div>
+                                          <h3 className="application-heading">
+                                            {t("phoneNumber")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.phone_number}
@@ -800,7 +848,7 @@ const Applications = () => {
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
-                                            Marital Status
+                                            {t("maritalStatus")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.marital_status}
@@ -810,7 +858,7 @@ const Applications = () => {
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
-                                          Professtional Title
+                                            {t("professtionalTitle")}
                                           </h3>
                                           <p className="application-text">
                                             {item?.developer_detail?.professional_title}
@@ -844,19 +892,16 @@ const Applications = () => {
                 </tbody>
               </table>
             </div>
-            {application?.length > 0 ? (
+            {allApplications?.totalDeveloperPages > 1 ? (
               <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                {currentTab == "clients" ? (
-                  <p className="showing-result">
-                    {t("showing")} {allApplications?.items_per_page} {t("results")}
-                  </p>
-                ) : (
-                  <p className="showing-result">
-                    {t("showing")} {allApplications?.vendors?.length} {t("results")}
-                  </p>
-                )}
+                {currentTab == "developers" ?
+                  (<p className="showing-result">
+                    {t("showing")} {allApplications?.developers?.length} {t("results")}
+                  </p>)
+                  : ""
+                }
                 <RexettPagination
-                  number={allApplications?.totalVendorPages}
+                  number={allApplications?.totalDeveloperPages}
                   setPage={setPage}
                   page={page}
                 />

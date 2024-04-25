@@ -538,6 +538,18 @@ export function createNewJobCategory(payload,callback) {
         }
     }
 }
+
+export function getInvoice() {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get("/client/invoices")
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+        }
+    }
+}
+
 export function getFaq() {
     return async (dispatch) => {
         dispatch(setScreenLoader())

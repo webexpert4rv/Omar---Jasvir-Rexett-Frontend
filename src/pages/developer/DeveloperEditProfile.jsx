@@ -34,7 +34,6 @@ const EditDeveloperProfile = () => {
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
 
 
-    console.log(developerProfileData,"developerProfileData")
     const handleJobStatusModal=(id)=>{
         console.log(id,"id")
         setShowModal(!showModal)
@@ -125,9 +124,9 @@ const EditDeveloperProfile = () => {
             <section className="card-box">
             <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
                     <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
-                    <OverlayTrigger placement="bottom" overlay={deleteprofile}>
+                    {/* <OverlayTrigger placement="bottom" overlay={deleteprofile}>
                         <Button onClick={() => handleJobStatusModal(developerProfileData?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
-                    </OverlayTrigger>
+                    </OverlayTrigger> */}
                 </div>
                 <div>
                     {screenLoader ? <ScreenLoader /> : <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -135,7 +134,7 @@ const EditDeveloperProfile = () => {
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("clientName")}</Form.Label>
+                                        <Form.Label className="common-label">{t("clientName")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {

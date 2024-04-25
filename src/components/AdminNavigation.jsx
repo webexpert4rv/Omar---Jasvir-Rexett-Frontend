@@ -31,7 +31,7 @@ const AdminNavigation = ({ handleSidebar }) => {
                     </div>
                     <div className="d-flex align-items-center gap-3">
                         <LanguageChange/>
-                        <Notification route="notification-admin"  job="admin-single-job" doc="admin-documents" />
+                        <Notification route="notification-admin"  job="admin-single-job" doc="admin-documents" timeReport="admin-time-reporting"/>
                         <Link to={'/developer-list'} className="text-decoration-none main-btn">{t("listOfAllDevelopers")}</Link>
                         <OverlayTrigger placement="bottom" overlay={tooltip}>
                             <div className="profile-view">
