@@ -134,7 +134,7 @@ const EditDeveloperProfile = () => {
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("clientName")}</Form.Label>
+                                        <Form.Label className="common-label">{t("clientName")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {
