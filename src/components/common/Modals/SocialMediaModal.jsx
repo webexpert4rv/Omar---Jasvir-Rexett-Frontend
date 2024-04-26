@@ -5,6 +5,7 @@ import { addDeveloperSocialMedia, deleteDeveloperSocialMedia, fetchDeveloperCv, 
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
+import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
 const socialMediaOptions = [
   { value: "facebook", label: "Facebook" },
@@ -58,7 +59,7 @@ const SocialMediaModal = ({ show, handleClose, data }) => {
     let { test } = value
 
     dispatch(addDeveloperSocialMedia(test, () => {
-      dispatch(fetchDeveloperCv())
+      dispatch(getDeveloperDetails())
       handleClose()
     }))
   }

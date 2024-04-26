@@ -154,24 +154,7 @@ export function getVendorTimeReporting() {
         }
     }
 }
-export function getAddNewDeveloper(payload) {
-    return async (dispatch) => {
-        dispatch(setSmallLoader())
-        try {
-            let result = await clientInstance.post('/vendor/add-developer', {...payload})
-         
-                dispatch(setVendorSuccess())
-                toast.success("New Developer is Added", {position:"top-center"})
-         
-        } catch (error) {
-            const message = error.message
-            toast.error(error.response.data.message, { position: "top-center" })
-            dispatch(setFailVendorData())
 
-        }
-    }
-
-}
 
 export function getClientList(payload) {
     return async (dispatch) => {

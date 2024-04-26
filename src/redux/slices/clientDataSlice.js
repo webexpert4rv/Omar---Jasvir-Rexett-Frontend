@@ -562,3 +562,22 @@ export function getFaq() {
     }
 }
 
+export function getAddNewDeveloper(payload,callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post('/vendor/add-developer', {...payload})
+         
+                dispatch(setActionSuccessFully())
+                 toast.success("New Developer is Added", {position:"top-center"})
+                return callback()   
+            
+        } catch (error) {
+            const message = error.message
+            toast.error(error.response.data.message, { position: "top-center" })
+            dispatch(setFailClientData())
+
+        }
+    }
+
+}

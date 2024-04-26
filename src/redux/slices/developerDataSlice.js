@@ -193,7 +193,7 @@ export function updateDeveloperCvBio(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-bio', { ...payload })
+            let result = await clientInstance.post('common/update-bio', { ...payload })
             if (result.status === 200) {
                 toast.success("Bio is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -357,7 +357,7 @@ export function addDeveloperSocialMedia(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.post(`developer/add-social-links`, [...payload])
+            let result = await clientInstance.post(`common/add-social-links`, [...payload])
             if (result.status === 200) {
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())

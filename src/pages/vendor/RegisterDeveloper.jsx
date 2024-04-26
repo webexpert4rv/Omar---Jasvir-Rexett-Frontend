@@ -4,13 +4,14 @@ import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getAddNewDeveloper } from "../../redux/slices/vendorDataSlice";
+import { getAddNewDeveloper } from "../../redux/slices/clientDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
 import { getDegreeList } from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
+import { useNavigate } from "react-router-dom";
 
 const options = [
   { value: "html", label: "HTML" },
@@ -27,17 +28,19 @@ const RegisterDeveloper = () => {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
-  const { smallLoader } = useSelector((state) => state.vendorData);
+  const { smallLoader } = useSelector((state) => state.clientData);
   const [disbaleYear, setDisbaleYear] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [skills, setSkills] = useState(null);
   const [disabledEndDates, setDisabledEndDates] = useState([]);
+  const [skillCate, setSkillsCate] = useState([]);
+
   const { degreeList } = useSelector((state) => state.developerData);
-  const skillLabels = skills?.map((skill) => skill.value);
+  const skillLabels = skillCate?.map((skill) => skill.value);
   const skillSet = skillLabels?.toString();
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState([]);
-  const [skillCate, setSkillsCate] = useState([]);
+  const navigate = useNavigate()
   const [socialMediaRows, setSocialMediaRows] = useState([
     {
       name: "",
@@ -101,8 +104,8 @@ const RegisterDeveloper = () => {
   // Example usage:
   const yearsArray = generateYears();
 
-  const onSubmit = (data, index) => {
-    setCurrentStep(currentStep - 1);
+  const onSubmit =  (data, index) => {
+    console.log(data,"data")
     let formData = {
       ...data,
       skills: skillSet,
@@ -117,9 +120,13 @@ const RegisterDeveloper = () => {
           ...formData,
           profile_picture: url,
         };
-        dispatch(getAddNewDeveloper(data));
+         dispatch(getAddNewDeveloper(data,()=>{
+          navigate("/vendor-dashboard")
+
+         }));
       })
     );
+   
   };
   const handleAddMoreExp = async () => {
     const newExperienceField = {
@@ -436,10 +443,33 @@ const RegisterDeveloper = () => {
                     <p className="error-message">{errors.country?.message} </p>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
-                      {t("image")}
+                      {t("professional_title")} *
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className="common-field"
+                      name="professional_title"
+                      {...register("professional_title", {
+                        required: {
+                          value: true,
+                          message: t("professionalTitleValidation"),
+                        },
+                        // pattern: {
+                        //     value: /^[A-Za-z\s]+$/,
+                        //     message: "Country should not contain numbers or special character",
+                        // }
+                      })}
+                    />
+                    <p className="error-message">{errors.professional_title?.message} </p>
+                  </Form.Group>
+                  </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="common-label">
+                      {t("image")}*
                     </Form.Label>
                     <Form.Control
                       type="file"
@@ -839,8 +869,8 @@ const RegisterDeveloper = () => {
                       rows={3}
                       placeholder="Add your about"
                       className="common-field"
-                      name="professional_title"
-                      {...register("professional_title", {
+                      name="bio"
+                      {...register("bio", {
                         required: {
                           value: true,
                           message: false,
@@ -848,7 +878,7 @@ const RegisterDeveloper = () => {
                       })}
                     />
                     <p className="error-message">
-                      {errors.professional_title?.message}{" "}
+                      {errors.bio?.message}{" "}
                     </p>
                   </Form.Group>
                 </Col>
@@ -937,6 +967,7 @@ const RegisterDeveloper = () => {
                 text={t("register")}
                 className="main-btn px-5"
                 variant="transparent"
+                disabled={smallLoader }
                 isLoading={smallLoader}
               />
             </div>
