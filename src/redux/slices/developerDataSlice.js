@@ -300,7 +300,7 @@ export function updateDeveloperCvEducation(payload, id, callback) {
 export function getDegreeList(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        // dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get(`common/degree-list`)
             dispatch(setDegreeList(result.data.data))
@@ -374,7 +374,7 @@ export function addDeveloperSocialMedia(payload, callback) {
 export function updateDeveloperCvDetails(payload, callback) {
     console.log(payload , "payload")
     return async (dispatch) => {
-        dispatch(setBtnLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.put(`common/update-cv-profile`, { ...payload })
             if (result.status === 200) {
