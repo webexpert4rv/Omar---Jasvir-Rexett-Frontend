@@ -37,7 +37,7 @@ const RegisterDeveloper = () => {
   const skillSet = skillLabels?.toString();
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState([]);
-  const [skillCate, setSkillsCate] = useState(options);
+  const [skillCate, setSkillsCate] = useState([]);
   const [socialMediaRows, setSocialMediaRows] = useState([
     {
       name: "",
@@ -79,6 +79,11 @@ const RegisterDeveloper = () => {
     dispatch(getDegreeList());
   }, []);
 
+  useEffect(()=>{
+    setSkillsCate(options)
+
+  },[])
+
   const createOption = (label) => ({
     label,
     value: label.toLowerCase().replace(/\W/g, ""),
@@ -96,9 +101,6 @@ const RegisterDeveloper = () => {
   // Example usage:
   const yearsArray = generateYears();
 
-  const goToNextStep = () => {
-    setCurrentStep(currentStep + 1);
-  };
   const onSubmit = (data, index) => {
     setCurrentStep(currentStep - 1);
     let formData = {
@@ -178,6 +180,7 @@ const RegisterDeveloper = () => {
     setSocialMediaRows([...socialMediaRows, newRow]);
   };
 
+
   const handleCurrentlyWorkingChange = (e, index) => {
     if (e.target.checked) {
       const isChecked = watch(`experiences[${index}].is_still_working`);
@@ -224,10 +227,9 @@ const RegisterDeveloper = () => {
   };
 
   const onChangeSelect = (val) => {
-    setTimeout(() => {
       const newOption = createOption(val);
+      setSelectedOption((prev) => [...prev, newOption])
       setSkillsCate((prev) => [...prev, newOption]);
-    }, 1000);
   };
 
   return (
@@ -307,8 +309,8 @@ const RegisterDeveloper = () => {
                     <Form.Control
                       type="text"
                       className="common-field"
-                      name="address_2"
-                      {...register("address_2", {
+                      name="address"
+                      {...register("address", {
                         required: {
                           value: true,
                           message: t("addressValidation"),
@@ -316,7 +318,7 @@ const RegisterDeveloper = () => {
                       })}
                     />
                     <p className="error-message">
-                      {errors.address_2?.message}{" "}
+                      {errors.address?.message}{" "}
                     </p>
                   </Form.Group>
                 </Col>
@@ -329,10 +331,10 @@ const RegisterDeveloper = () => {
                     <Form.Control
                       type="text"
                       className="common-field"
-                      name="address"
+                      name="address_2"
                       {...register("address", {
                         required: {
-                          value: true,
+                          value: false,
                           message: false,
                         },
                       })}
@@ -493,7 +495,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("companyName")}
+                          {t("companyName")} *
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -514,7 +516,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("jobPosition")}
+                          {t("jobPosition")} *
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -535,7 +537,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("jobDescription")}
+                          {t("jobDescription")} *
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -555,7 +557,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={3}>
                       <Form.Group className="mb-4">
-                        <Form.Label>{t("startDate")}</Form.Label>
+                        <Form.Label>{t("startDate")} *</Form.Label>
                         <Form.Control
                           type="date"
                           placeholder={t("enterStartDate")}
@@ -584,7 +586,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={3}>
                       <Form.Group className="mb-4">
-                        <Form.Label>{t("endDate")}</Form.Label>
+                        <Form.Label>{t("endDate")} *</Form.Label>
                         <Form.Control
                           type="date"
                           className="cv-field"
@@ -666,7 +668,7 @@ const RegisterDeveloper = () => {
                   <Row>
                     <Col md={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label>{t("universityName")}</Form.Label>
+                        <Form.Label>{t("universityName")} *</Form.Label>
                         <Form.Control
                           type="text"
                           {...register(`educations[${index}].university_name`, {
@@ -685,7 +687,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>{t("degreeName")}</Form.Label>
+                        <Form.Label>{t("degreeName")} *</Form.Label>
                         <Select
                           options={degreeList}
                           onChange={(val) =>
@@ -702,7 +704,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label>{t("address")}</Form.Label>
+                        <Form.Label>{t("address")} *</Form.Label>
                         <Form.Control
                           type="text"
                           {...register(`educations[${index}].address`, {
@@ -721,7 +723,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={3}>
                       <Form.Group>
-                        <Form.Label>{t("startYear")}</Form.Label>
+                        <Form.Label>{t("startYear")} *</Form.Label>
                         <Form.Select
                           {...register(`educations.${index}.start_year`, {
                             required: t("startYearValidation"),
@@ -759,7 +761,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md="3">
                       <Form.Group className="mb-3">
-                        <Form.Label>{t("endYear")}</Form.Label>
+                        <Form.Label>{t("endYear")} *</Form.Label>
                         <Form.Select
                           {...register(`educations.${index}.end_year`, {
                             required: {
