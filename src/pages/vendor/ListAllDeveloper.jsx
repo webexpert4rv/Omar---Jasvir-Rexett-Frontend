@@ -58,7 +58,7 @@ const AllDeveloperList = () => {
     const handleExperience = (e) => {
         let filterData = {
             ...selectedFilter,
-            experience_years: e.target.value
+            experience_years: +e.target.value
         }
         setSelectedFilter(filterData)
         dispatch(getDevelopersList(filterData))
@@ -137,11 +137,11 @@ const AllDeveloperList = () => {
                                     {/* <Form.Label className="common-label">Experience</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
                                         <option value="" > {t("selectExperience")} </option>
-                                        <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
-                                        <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
-                                        <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
-                                        <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
-                                        <option value="10 years" onClick={(e) => e.stopPropagation()}>10 {t("years")}</option>
+                                        <option value="1" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
+                                        <option value="2" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
+                                        <option value="3" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
+                                        <option value="5" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
+                                        <option value="10" onClick={(e) => e.stopPropagation()}>10 {t("years")}</option>
                                     </Form.Select>
                                 </div>
                                 <div>

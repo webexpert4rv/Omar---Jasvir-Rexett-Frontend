@@ -49,7 +49,7 @@ const VendorDashboard = () => {
                     <h2 className="section-head-sub">{t("listOfAllRegisterDevelopers")}</h2>
 
                 </div>
-                <div className="developers-list mb-5">
+                <div className="developers-list mb-3">
                     {vendorDashboard?.all_developers?.length > 0 ? <>
                         {vendorDashboard?.all_developers?.map((item, index) => {
                             return (
@@ -76,12 +76,13 @@ const VendorDashboard = () => {
                                 </div>
                             )
                         })}
-                        <div className="mt-2 ">
-                            <Link to={"/list-all-developers"} className="link-text-dark">{t("seeAll")}</Link>
-                        </div>
+                        
 
                     </> : <NoDataFound />}
                 </div>
+                <div className="my-2 text-center">
+                            <Link to={"/list-all-developers"} className="link-text-dark">{t("seeAll")}</Link>
+                        </div>
 
                 <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom-grey">
                     <h2 className="section-head-sub">{t("listOfRentedDevelopers")}</h2>
