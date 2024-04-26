@@ -24,13 +24,14 @@ import DeveloperDetails from "../Modals/DeveloperDetails";
 
 
 const SingleDeveloper = ({ data }) => {
+    console.log(data, "data")
     const dispatch = useDispatch()
-    const { screenLoader , smallLoader } = useSelector(state => state.clientData)
+    const { screenLoader, smallLoader } = useSelector(state => state.clientData)
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
     const [developerDetails, setDeveloperDetails] = useState(false);
     const [readmore, setReadMore] = useState(true)
     const [showModal, setShowModal] = useState(false);
-    const { t }  =  useTranslation
+    const { t } = useTranslation
 
 
 
@@ -53,7 +54,7 @@ const SingleDeveloper = ({ data }) => {
 
 
 
-    
+
     const [showExperienceModal, setShowExperienceModal] = useState(false);
     const handleShowExperienceModal = () => {
         setShowExperienceModal(true);
@@ -111,6 +112,7 @@ const SingleDeveloper = ({ data }) => {
             default:
         }
     }
+    console.log(data,"data-----------------------")
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <>
@@ -124,16 +126,17 @@ const SingleDeveloper = ({ data }) => {
                         <Row>
                             <Col lg={6} className="px-0">
                                 <div className="resume-basic-info text-center">
-                                     <div className="resume-imgbx mx-auto mb-4">
-                                        <img src={data?.profile_picture ? data?.profile_picture : resumeImg } className="resume-img" />
+                                    <div className="resume-imgbx mx-auto mb-4">
+                                        <img src={data?.profile_picture ? data?.profile_picture : resumeImg} className="resume-img" />
                                     </div>
                                     <h3 className="resume-name">{data?.name}</h3>
-                                    <p className="resume-designation">{data?.developer_detailprofessional_title}</p>
-                                    <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25}/></div>
+                                    <p className="resume-designation">{data?.developer_detail?.professional_title
+                                    }</p>
+                                    <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25} /></div>
                                 </div>
                                 <div className="connect-social-media">
                                     <h3 className="subheading-resume text-center mb-3">Skills</h3>
-                                    <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25}/></div>
+                                    <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25} /></div>
                                     <ul className="skills-pill text-center">
                                         {
                                             splitSkills(data?.developer_skills)?.map((item, index) => {
@@ -148,7 +151,7 @@ const SingleDeveloper = ({ data }) => {
                                 </div>
                                 <div className="connect-social-media">
                                     <h3 className="subheading-resume text-center mb-3">Connect With Me</h3>
-                                    <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25}/></div>
+                                    <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25} /></div>
                                     {/* <ul className="social-media">
                                     {developerDetails?.social_links?.map((item)=>{
                                         return(
@@ -167,10 +170,10 @@ const SingleDeveloper = ({ data }) => {
 
                                     <ul className="social-media ">
                                         <li>
-                                            <Link to={data?.developer_detail?.github_url}><FaGithub /></Link>
+                                            {data?.developer_detail?.github_url ? <Link to={data?.developer_detail?.github_url} ><FaGithub /></Link> : ""}
                                         </li>
                                         <li>
-                                            <Link to={data?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
+                                            {data?.developer_detail?.linkedin_url ? <Link to={data?.developer_detail?.linkedin_url}><FaLinkedin /></Link> : ""}
                                         </li>
                                         {/* <li>
                                             <Link to={developerDetails?.developer_detail?.email}><MdEmail /></Link>
@@ -179,26 +182,26 @@ const SingleDeveloper = ({ data }) => {
                                 </div>
                             </Col>
                             <Col lg={6} className="px-0 h-100">
-                            <div className="about-info px-4">
-                            <div className="connect-social-media">
-                                <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
-                                {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
-                                <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
-                             {  data?.developer_detail?.bio?.length >300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length>300?<>
-                                    {data?.developer_detail?.bio.slice(0,300)}
-                                    <span className="readLess"  onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
-                                </>:
-                                <>
-                                 {data?.developer_detail?.bio}
-                                <span className="readLess" onClick={readMoreLess}> {readmore? '[Read more...]':'[Read Less]'} </span>
-                                </>
-}
-                                </p> : <> {data?.developer_detail?.bio}</>}
-                            </div>
-                            </div>
+                                <div className="about-info px-4">
+                                    <div className="connect-social-media">
+                                        <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
+                                        {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
+                                        <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
+                                        {data?.developer_detail?.bio?.length > 300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length > 300 ? <>
+                                            {data?.developer_detail?.bio.slice(0, 300)}
+                                            <span className="readLess" onClick={readMoreLess}> {readmore ? '[Read more...]' : '[Read Less]'} </span>
+                                        </> :
+                                            <>
+                                                {data?.developer_detail?.bio}
+                                                <span className="readLess" onClick={readMoreLess}> {readmore ? '[Read more...]' : '[Read Less]'} </span>
+                                            </>
+                                        }
+                                        </p> : <> {data?.developer_detail?.bio}</>}
+                                    </div>
+                                </div>
 
                                 <div className="about-info px-4 pt-4">
-                                    <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25}/></div>
+                                    <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25} /></div>
                                     <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>
                                     {data?.developer_experiences?.map((item) => {
                                         return (
@@ -214,12 +217,12 @@ const SingleDeveloper = ({ data }) => {
                                     })}
                                     {data?.developer_educations ? <>
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
-                                        <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25}/></div>
+                                        <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25} /></div>
                                         {data?.developer_educations?.map((item) => {
                                             return (
                                                 <React.Fragment key={item.id}>
                                                     <div className="exp-wrapper">
-                                                        <p className="exp-year">{item?.start_year} - {item?.end_year} | {item?.Degree?.title}</p>
+                                                        <p className="exp-year">{item?.start_year} - {item?.end_year ? item?.end_year :"Present"} | {item?.Degree?.title}</p>
                                                         <ul className="exp-role">
                                                             <li className="resume-text">{item?.university_name}</li>
                                                             <li className="resume-text">{item?.Degree?.description}</li>
@@ -234,12 +237,12 @@ const SingleDeveloper = ({ data }) => {
                         </Row>
                     </div>
                 </section>
-                <AboutCV show={showModal} handleClose={handleCloseModal} data={data?.developer_detail?.bio} id ={data?.id}/>
-            {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={data?.developer_experiences} smallLoader={smallLoader} id ={data?.id} /> : ""}
-            {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id ={data?.id}/> : ""}
-            {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id ={data?.id} /> : ""}
-            {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.linkedin_url} id ={data?.id} /> : ""}
-            <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id ={data?.id}/>
+                <AboutCV show={showModal} handleClose={handleCloseModal} data={data?.developer_detail?.bio} id={data?.id} />
+                {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={data?.developer_experiences} smallLoader={smallLoader} id={data?.id} /> : ""}
+                {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id={data?.id} /> : ""}
+                {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id={data?.id} /> : ""}
+                {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.linkedin_url} id={data?.id} /> : ""}
+                <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id={data?.id} />
             </>}
         </>
     )

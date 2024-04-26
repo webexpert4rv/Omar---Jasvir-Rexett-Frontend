@@ -256,7 +256,7 @@
         "contactNumberValidation":"contactNumberValidation",
         "currentlyAttending": "Currently Attending",
         "currentlyWorking" : "Currently Working",
-        "enterSkills" : "Enter Skills",
+        "enterSkills" : "Enter and create new skills",
         "enterAbout" : "Add About",
         "jobPositionValidation":"Job Position is required",
         "descriptionValidation":"Description is required",
@@ -315,7 +315,9 @@
         "addBulkTime" : "Add Bulk Time",
         "selectClientName" : "Select Client Name",
         "image" : "Image",
-        "youHaveNoNotification" : "You have no Notification"
+        "youHaveNoNotification" : "You have no Notification",
+        "professional_title" : "Professional Title",
+        "professionalTitleValidation" : "Professional Title is required"
         
 
     }

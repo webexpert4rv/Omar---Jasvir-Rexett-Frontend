@@ -314,6 +314,8 @@
         "addBulkTime" : "Lägg till Bulk Time",
         "selectClientName" : "Välj klientnamn",
         "image" : "bild",
-        "youHaveNoNotification" : "Du har ingen avisering"
+        "youHaveNoNotification" : "Du har ingen avisering",
+        "professional_title" : "Professionell titel",
+        "professionalTitleValidation" : "Yrkestitel krävs"
     }
 }

@@ -4,13 +4,14 @@ import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getAddNewDeveloper } from "../../redux/slices/vendorDataSlice";
+import { getAddNewDeveloper } from "../../redux/slices/clientDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
 import { getDegreeList } from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
+import { useNavigate } from "react-router-dom";
 
 const options = [
   { value: "html", label: "HTML" },
@@ -27,17 +28,19 @@ const RegisterDeveloper = () => {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
-  const { smallLoader } = useSelector((state) => state.vendorData);
+  const { smallLoader } = useSelector((state) => state.clientData);
   const [disbaleYear, setDisbaleYear] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [skills, setSkills] = useState(null);
   const [disabledEndDates, setDisabledEndDates] = useState([]);
+  const [skillCate, setSkillsCate] = useState([]);
+
   const { degreeList } = useSelector((state) => state.developerData);
-  const skillLabels = skills?.map((skill) => skill.value);
+  const skillLabels = skillCate?.map((skill) => skill.value);
   const skillSet = skillLabels?.toString();
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState([]);
-  const [skillCate, setSkillsCate] = useState(options);
+  const navigate = useNavigate()
   const [socialMediaRows, setSocialMediaRows] = useState([
     {
       name: "",
@@ -79,6 +82,11 @@ const RegisterDeveloper = () => {
     dispatch(getDegreeList());
   }, []);
 
+  useEffect(()=>{
+    setSkillsCate(options)
+
+  },[])
+
   const createOption = (label) => ({
     label,
     value: label.toLowerCase().replace(/\W/g, ""),
@@ -96,11 +104,8 @@ const RegisterDeveloper = () => {
   // Example usage:
   const yearsArray = generateYears();
 
-  const goToNextStep = () => {
-    setCurrentStep(currentStep + 1);
-  };
-  const onSubmit = (data, index) => {
-    setCurrentStep(currentStep - 1);
+  const onSubmit =  (data, index) => {
+    console.log(data,"data")
     let formData = {
       ...data,
       skills: skillSet,
@@ -115,9 +120,13 @@ const RegisterDeveloper = () => {
           ...formData,
           profile_picture: url,
         };
-        dispatch(getAddNewDeveloper(data));
+         dispatch(getAddNewDeveloper(data,()=>{
+          navigate("/vendor-dashboard")
+
+         }));
       })
     );
+   
   };
   const handleAddMoreExp = async () => {
     const newExperienceField = {
@@ -178,6 +187,7 @@ const RegisterDeveloper = () => {
     setSocialMediaRows([...socialMediaRows, newRow]);
   };
 
+
   const handleCurrentlyWorkingChange = (e, index) => {
     if (e.target.checked) {
       const isChecked = watch(`experiences[${index}].is_still_working`);
@@ -224,10 +234,9 @@ const RegisterDeveloper = () => {
   };
 
   const onChangeSelect = (val) => {
-    setTimeout(() => {
       const newOption = createOption(val);
+      setSelectedOption((prev) => [...prev, newOption])
       setSkillsCate((prev) => [...prev, newOption]);
-    }, 1000);
   };
 
   return (
@@ -307,8 +316,8 @@ const RegisterDeveloper = () => {
                     <Form.Control
                       type="text"
                       className="common-field"
-                      name="address_2"
-                      {...register("address_2", {
+                      name="address"
+                      {...register("address", {
                         required: {
                           value: true,
                           message: t("addressValidation"),
@@ -316,7 +325,7 @@ const RegisterDeveloper = () => {
                       })}
                     />
                     <p className="error-message">
-                      {errors.address_2?.message}{" "}
+                      {errors.address?.message}{" "}
                     </p>
                   </Form.Group>
                 </Col>
@@ -329,10 +338,10 @@ const RegisterDeveloper = () => {
                     <Form.Control
                       type="text"
                       className="common-field"
-                      name="address"
+                      name="address_2"
                       {...register("address", {
                         required: {
-                          value: true,
+                          value: false,
                           message: false,
                         },
                       })}
@@ -434,10 +443,33 @@ const RegisterDeveloper = () => {
                     <p className="error-message">{errors.country?.message} </p>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
-                      {t("image")}
+                      {t("professional_title")} *
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className="common-field"
+                      name="professional_title"
+                      {...register("professional_title", {
+                        required: {
+                          value: true,
+                          message: t("professionalTitleValidation"),
+                        },
+                        // pattern: {
+                        //     value: /^[A-Za-z\s]+$/,
+                        //     message: "Country should not contain numbers or special character",
+                        // }
+                      })}
+                    />
+                    <p className="error-message">{errors.professional_title?.message} </p>
+                  </Form.Group>
+                  </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="common-label">
+                      {t("image")}*
                     </Form.Label>
                     <Form.Control
                       type="file"
@@ -493,7 +525,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("companyName")}
+                          {t("companyName")} *
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -514,7 +546,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("jobPosition")}
+                          {t("jobPosition")} *
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -535,7 +567,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("jobDescription")}
+                          {t("jobDescription")} *
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -555,7 +587,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={3}>
                       <Form.Group className="mb-4">
-                        <Form.Label>{t("startDate")}</Form.Label>
+                        <Form.Label>{t("startDate")} *</Form.Label>
                         <Form.Control
                           type="date"
                           placeholder={t("enterStartDate")}
@@ -584,7 +616,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={3}>
                       <Form.Group className="mb-4">
-                        <Form.Label>{t("endDate")}</Form.Label>
+                        <Form.Label>{t("endDate")} *</Form.Label>
                         <Form.Control
                           type="date"
                           className="cv-field"
@@ -666,7 +698,7 @@ const RegisterDeveloper = () => {
                   <Row>
                     <Col md={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label>{t("universityName")}</Form.Label>
+                        <Form.Label>{t("universityName")} *</Form.Label>
                         <Form.Control
                           type="text"
                           {...register(`educations[${index}].university_name`, {
@@ -685,7 +717,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>{t("degreeName")}</Form.Label>
+                        <Form.Label>{t("degreeName")} *</Form.Label>
                         <Select
                           options={degreeList}
                           onChange={(val) =>
@@ -702,7 +734,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label>{t("address")}</Form.Label>
+                        <Form.Label>{t("address")} *</Form.Label>
                         <Form.Control
                           type="text"
                           {...register(`educations[${index}].address`, {
@@ -721,7 +753,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md={3}>
                       <Form.Group>
-                        <Form.Label>{t("startYear")}</Form.Label>
+                        <Form.Label>{t("startYear")} *</Form.Label>
                         <Form.Select
                           {...register(`educations.${index}.start_year`, {
                             required: t("startYearValidation"),
@@ -759,7 +791,7 @@ const RegisterDeveloper = () => {
                     </Col>
                     <Col md="3">
                       <Form.Group className="mb-3">
-                        <Form.Label>{t("endYear")}</Form.Label>
+                        <Form.Label>{t("endYear")} *</Form.Label>
                         <Form.Select
                           {...register(`educations.${index}.end_year`, {
                             required: {
@@ -837,8 +869,8 @@ const RegisterDeveloper = () => {
                       rows={3}
                       placeholder="Add your about"
                       className="common-field"
-                      name="professional_title"
-                      {...register("professional_title", {
+                      name="bio"
+                      {...register("bio", {
                         required: {
                           value: true,
                           message: false,
@@ -846,7 +878,7 @@ const RegisterDeveloper = () => {
                       })}
                     />
                     <p className="error-message">
-                      {errors.professional_title?.message}{" "}
+                      {errors.bio?.message}{" "}
                     </p>
                   </Form.Group>
                 </Col>
@@ -935,6 +967,7 @@ const RegisterDeveloper = () => {
                 text={t("register")}
                 className="main-btn px-5"
                 variant="transparent"
+                disabled={smallLoader }
                 isLoading={smallLoader}
               />
             </div>
