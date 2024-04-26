@@ -6,8 +6,9 @@ import { useDispatch } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
 import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
+import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,role }) => {
+const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) => {
   const [renderModalData, setRenderModalData] = useState(data)
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const dispatch = useDispatch()
@@ -66,9 +67,12 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,role }) => {
     let { test } = value
     let addExp = test?.map((item) => {
       if (!item.newId) {
-        return { ...item }
+        return { ...item}
       }
     }).filter((item) => item)
+    let data ={
+
+    }
     if (addExp.length > 0) {
       dispatch(addDeveloperCvExperience(addExp, () => {
         dispatch(fetchDeveloperCv())
@@ -78,6 +82,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,role }) => {
 
     test?.forEach((item) => {
       if (item.newId) {
+        
         dispatch(updateDeveloperCvExperience(item, item.newId, () => {
           dispatch(fetchDeveloperCv())
           handleClose()

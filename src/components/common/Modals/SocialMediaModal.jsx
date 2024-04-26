@@ -17,7 +17,7 @@ const socialMediaOptions = [
   { value: "pinterest", label: "Pinterest" }
 ];
 
-const SocialMediaModal = ({ show, handleClose, data, role }) => {
+const SocialMediaModal = ({ show, handleClose, data, id ,role }) => {
   const dispatch = useDispatch()
   const [renderModalData, setRenderModalData] = useState(data)
   const { smallLoader, btnLoader } = useSelector(state => state.developerData)
@@ -58,13 +58,21 @@ const SocialMediaModal = ({ show, handleClose, data, role }) => {
   const onSubmit = (value) => {
     let { test } = value
     if (role === "developer") {
-      dispatch(addDeveloperSocialMedia(test, () => {
+      let data={
+        "social_links": test,
+        "user_id" : id
+      }
+      dispatch(addDeveloperSocialMedia(data, () => {
         dispatch(fetchDeveloperCv())
         handleClose()
       }))
     } else {
-      dispatch(addDeveloperSocialMedia(test, () => {
-        dispatch(getDeveloperDetails())
+      let data={
+        "social_links": test,
+        "user_id" : id
+      }
+      dispatch(addDeveloperSocialMedia(data, () => {
+        dispatch(getDeveloperDetails(id))
         handleClose()
       }))
     }

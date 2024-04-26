@@ -6,8 +6,9 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm, useFieldArray } from "react-hook-form";
 import Select from 'react-select';
 import { FaTrashAlt } from "react-icons/fa";
+import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const EducationCV = ({ show, handleClose, data, smallLoader }) => {
+const EducationCV = ({ show, handleClose, data, smallLoader, id, role }) => {
     const dispatch = useDispatch();
     const [disbaleYear, setDisbaleYear] = useState([]);
     const [renderModalData, setRenderModalData] = useState(data)
@@ -84,7 +85,7 @@ const EducationCV = ({ show, handleClose, data, smallLoader }) => {
         remove(index)
         if (id) {
             dispatch(deleteEducationCv(id, () => {
-                dispatch(fetchDeveloperCv())
+                dispatch(fetchDeveloperCv(id))
             }))
         }
     }
@@ -98,33 +99,42 @@ const EducationCV = ({ show, handleClose, data, smallLoader }) => {
                 return { ...item }
             }
         }).filter((item) => item)
-        if (addEdu.length > 0) {
+        if (addEdu.length > 0){
             dispatch(addDeveloperCvEducation(addEdu, () => {
-                dispatch(fetchDeveloperCv())
+                if (role === "developer") {
+                    dispatch(fetchDeveloperCv())
+                } else {
+                    dispatch(getDeveloperDetails())
+                }
                 handleClose()
             }))
         }
 
-        educations?.forEach((item) => {
-            if (item.new_id) {
-                dispatch(updateDeveloperCvEducation(item, item.new_id, () => {
+
+    educations?.forEach((item) => {
+        if (item.new_id) {
+            dispatch(updateDeveloperCvEducation(item, item.new_id, () => {
+                if (role === "developer") {
                     dispatch(fetchDeveloperCv())
-                    handleClose()
-                }))
+                } else {
+                    dispatch(getDeveloperDetails())
+                }
+                handleClose()
+            }))
+        }
+    })
+}
+console.log(role,"role")
 
-            }
-        })
-
-    };
     const deletetooltip = (
-      <Tooltip id="tooltip">
-        Delete Row
-      </Tooltip>
+        <Tooltip id="tooltip">
+            Delete Row
+        </Tooltip>
     );
     const addtooltip = (
-      <Tooltip id="tooltip">
-        Add Row
-      </Tooltip>
+        <Tooltip id="tooltip">
+            Add Row
+        </Tooltip>
     );
     return (
         <Modal show={show} onHide={handleClose} centered scrollable className="custom-modal" animation size="lg">
@@ -250,7 +260,7 @@ const EducationCV = ({ show, handleClose, data, smallLoader }) => {
                                         {index !== 0 && (
                                             <div>
                                                 <OverlayTrigger placement="bottom" overlay={deletetooltip}>
-                                                    <Button variant="danger" onClick={() => deleteDeveloperExperience(item.new_id, index)}><FaTrashAlt/></Button>
+                                                    <Button variant="danger" onClick={() => deleteDeveloperExperience(item.new_id, index)}><FaTrashAlt /></Button>
                                                 </OverlayTrigger>
                                             </div>
                                         )}
