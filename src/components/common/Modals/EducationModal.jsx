@@ -8,11 +8,11 @@ import Select from 'react-select';
 import { FaTrashAlt } from "react-icons/fa";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const EducationCV = ({ show, handleClose, data, smallLoader, id, role }) => {
+const EducationCV = ({ show, handleClose, data, id, role }) => {
     const dispatch = useDispatch();
     const [disbaleYear, setDisbaleYear] = useState([]);
     const [renderModalData, setRenderModalData] = useState(data)
-    const { degreeList } = useSelector(state => state.developerData)
+    const { degreeList,smallLoader } = useSelector(state => state.developerData)
     const { register, control, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm();
     const { fields, append, remove } = useFieldArray({ control, name: "educations" });
 
@@ -101,10 +101,10 @@ const EducationCV = ({ show, handleClose, data, smallLoader, id, role }) => {
         }).filter((item) => item)
         if (addEdu.length > 0){
             dispatch(addDeveloperCvEducation(addEdu, () => {
-                if (role === "developer") {
+                if (role == "developer") {
                     dispatch(fetchDeveloperCv())
                 } else {
-                    dispatch(getDeveloperDetails())
+                    dispatch(getDeveloperDetails(id))
                 }
                 handleClose()
             }))
@@ -114,10 +114,10 @@ const EducationCV = ({ show, handleClose, data, smallLoader, id, role }) => {
     educations?.forEach((item) => {
         if (item.new_id) {
             dispatch(updateDeveloperCvEducation(item, item.new_id, () => {
-                if (role === "developer") {
+                if (role == "developer") {
                     dispatch(fetchDeveloperCv())
                 } else {
-                    dispatch(getDeveloperDetails())
+                    dispatch(getDeveloperDetails(id))
                 }
                 handleClose()
             }))
@@ -281,6 +281,7 @@ console.log(role,"role")
                             text="Submit"
                             className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
+                            disabled={smallLoader}
                             isLoading={smallLoader}
                         />
                     </div>

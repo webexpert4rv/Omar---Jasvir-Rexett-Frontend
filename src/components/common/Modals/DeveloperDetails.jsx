@@ -9,7 +9,7 @@ import { filePreassignedUrlGenerate, getDeveloperDetails } from "../../../redux/
 
 const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) => {
     const dispatch = useDispatch();
-    const { smallLoader } = useSelector(state => state.clientData)
+    const { smallLoader } = useSelector(state => state.developerData)
     const [file, setFile] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null);
     const {
@@ -133,6 +133,7 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) =
                             text="Submit"
                             className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
+                            disabled={smallLoader}
                             isLoading={smallLoader}
                         />
                     </div>

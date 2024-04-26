@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useForm, useFieldArray } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
 import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) => {
+const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
   const [renderModalData, setRenderModalData] = useState(data)
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const dispatch = useDispatch()
@@ -28,6 +28,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) =
     control,
     name: "test",
   });
+  const {smallLoader } = useSelector(state => state.developerData)
 
   useEffect(() => {
     if (data) {
@@ -75,7 +76,11 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) =
     }
     if (addExp.length > 0) {
       dispatch(addDeveloperCvExperience(addExp, () => {
+        if(role=="developer"){
         dispatch(fetchDeveloperCv())
+        }else{
+          dispatch(getDeveloperDetails(id))
+        }
         handleClose()
       }))
     }
@@ -84,10 +89,13 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) =
       if (item.newId) {
         
         dispatch(updateDeveloperCvExperience(item, item.newId, () => {
-          dispatch(fetchDeveloperCv())
+          if(role=="developer"){
+            dispatch(fetchDeveloperCv())
+          }else{
+            dispatch(getDeveloperDetails(id))
+          }
           handleClose()
         }))
-
       }
     })
 
@@ -96,7 +104,6 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) =
   const handleAppend = async () => {
     // Trigger validation for all fields
     const isValid = await trigger();
-
     // Check if all fields are valid
     if (isValid) {
       append({
@@ -288,6 +295,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) =
               text="Submit"
               className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
+              disabled={smallLoader}
               isLoading={smallLoader}
             />
           </div>

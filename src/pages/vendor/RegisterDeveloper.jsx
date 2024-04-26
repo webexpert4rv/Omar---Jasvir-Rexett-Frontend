@@ -12,6 +12,10 @@ import { useTranslation } from "react-i18next";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 import { useNavigate } from "react-router-dom";
+import { type } from "@testing-library/user-event/dist/type";
+import { INVALID_FILE_TYPE } from "../../components/clients/TimeReporiting/constant";
+import { Controller } from "react-hook-form";
+import { min } from "moment";
 
 const options = [
   { value: "html", label: "HTML" },
@@ -40,7 +44,8 @@ const RegisterDeveloper = () => {
   const skillSet = skillLabels?.toString();
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState([]);
-  const navigate = useNavigate()
+  const [fileTypeError, setFileTypeError] = useState(false);
+  const navigate = useNavigate();
   const [socialMediaRows, setSocialMediaRows] = useState([
     {
       name: "",
@@ -52,6 +57,7 @@ const RegisterDeveloper = () => {
     register,
     control,
     setValue,
+    clearErrors,
     watch,
     handleSubmit,
     reset,
@@ -82,10 +88,9 @@ const RegisterDeveloper = () => {
     dispatch(getDegreeList());
   }, []);
 
-  useEffect(()=>{
-    setSkillsCate(options)
-
-  },[])
+  useEffect(() => {
+    setSkillsCate(options);
+  }, []);
 
   const createOption = (label) => ({
     label,
@@ -104,8 +109,8 @@ const RegisterDeveloper = () => {
   // Example usage:
   const yearsArray = generateYears();
 
-  const onSubmit =  (data, index) => {
-    console.log(data,"data")
+  const onSubmit = (data, index) => {
+    console.log(data, "data");
     let formData = {
       ...data,
       skills: skillSet,
@@ -120,26 +125,36 @@ const RegisterDeveloper = () => {
           ...formData,
           profile_picture: url,
         };
-         dispatch(getAddNewDeveloper(data,()=>{
-          navigate("/vendor-dashboard")
-
-         }));
+        dispatch(
+          getAddNewDeveloper(data, () => {
+            navigate("/vendor-dashboard");
+          })
+        );
       })
     );
-   
   };
   const handleAddMoreExp = async () => {
-    const newExperienceField = {
-      id: experienceFields.length + 1,
-      company_name: "",
-      job_title: "",
-      description: "",
-      start_date: "",
-      end_date: "",
-      is_still_working: false,
-    };
-
-    setExperienceFields([...experienceFields, newExperienceField]);
+    const experiences = watch("experiences");
+    console.log(experiences, "experiences");
+    // to check if any of the field inside experiences array is empty
+    const index = experiences?.findIndex(
+      ({ job_title, company_name, description, start_date, end_date }) =>
+        !company_name || !job_title || !description || !start_date || !end_date
+    );
+    console.log(index);
+    // if index is greater than -1 means there is field inside element that is empty
+    if (index === -1) {
+      const newExperienceField = {
+        id: experienceFields.length + 1,
+        company_name: "",
+        job_title: "",
+        description: "",
+        start_date: "",
+        end_date: "",
+        is_still_working: false,
+      };
+      setExperienceFields([...experienceFields, newExperienceField]);
+    }
   };
   const handleDeleteFieldExp = (id) => {
     const updatedExperienceFields = experienceFields.filter(
@@ -163,18 +178,28 @@ const RegisterDeveloper = () => {
   }, []);
 
   const handleAddMore = () => {
-    const newEducationField = {
-      id: educationFields.length + 1,
-      university_name: "",
-      degree_id: "",
-      address: "",
-      start_year: "",
-      end_year: "",
-      currently_attending: false,
-    };
-    setEducationFields([...educationFields, newEducationField]);
+    const educations = watch("educations");
+    const index = educations.findIndex(
+      ({ university_name, degree_id, address, start_year, end_year }) =>
+        !university_name ||
+        !degree_id ||
+        !address ||
+        end_year === "Please Select Year" ||
+        start_year === "Please Select Year"
+    );
+    if (index === -1) {
+      const newEducationField = {
+        id: educationFields.length + 1,
+        university_name: "",
+        degree_id: "",
+        address: "",
+        start_year: "",
+        end_year: "",
+        currently_attending: false,
+      };
+      setEducationFields([...educationFields, newEducationField]);
+    }
   };
-
   const handleDeleteField = (id) => {
     const updatedEducationFields = educationFields.filter(
       (field) => field.id !== id
@@ -186,7 +211,6 @@ const RegisterDeveloper = () => {
     const newRow = { id: socialMediaRows.length + 1, name: "", url: "" };
     setSocialMediaRows([...socialMediaRows, newRow]);
   };
-
 
   const handleCurrentlyWorkingChange = (e, index) => {
     if (e.target.checked) {
@@ -222,22 +246,34 @@ const RegisterDeveloper = () => {
   };
 
   const handleFileChange = (event) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
     const file = event.target.files[0];
-    setFile(file);
-    if (file) {
+    if (file && allowedTypes.includes(file.type)) {
+      // clearErrors("profile_picture");
+      setFileTypeError(false);
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
+      setFile(file);
+    } else {
+      // setError("profile_picture", {
+      //   type: "manual",
+      //   message: t("invalid_file_type"),
+      // });
+      setFileTypeError(true);
+      setSelectedImage(null);
+      // setValue("profile_picture","")
     }
   };
 
   const onChangeSelect = (val) => {
-      const newOption = createOption(val);
-      setSelectedOption((prev) => [...prev, newOption])
-      setSkillsCate((prev) => [...prev, newOption]);
+    const newOption = createOption(val);
+    setSelectedOption((prev) => [...prev, newOption]);
+    setSkillsCate((prev) => [...prev, newOption]);
   };
+  console.log(errors.profile_picture, "errors");
 
   return (
     <>
@@ -280,6 +316,10 @@ const RegisterDeveloper = () => {
                           value: true,
                           message: t("emailValidation"),
                         },
+                        pattern: {
+                          value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+                          message: t("invalidEmail"),
+                        },
                       })}
                     />
                     <p className="error-message">{errors.email?.message}</p>
@@ -290,11 +330,12 @@ const RegisterDeveloper = () => {
                     <Form.Label className="common-label">
                       {t("phoneNumber")} *
                     </Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       className="common-field"
                       name="phone_number"
                       {...register("phone_number", {
+                        onChange:(e)=>{ const numericValue = e.target},
                         required: {
                           value: true,
                           message: t("phoneNumberValidation"),
@@ -304,36 +345,57 @@ const RegisterDeveloper = () => {
                           message: "Please enter a valid phone number",
                         },
                       })}
+                    /> */}
+                    <Controller
+                      name="phone_number"
+                      control={control}
+                      // rules={{
+                      //    min: {
+                      //   value :true,
+                      //   message :"phone number at least of 10 digits"
+                      // } }}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          className="common-field"
+                          onChange={(e) => {
+                            const numericValue =
+                              e.target.value.replace(/[^0-9]/g);
+                            field.onChange(numericValue);
+                          }}
+                        />
+                      )}
                     />
-                    <p className="error-message">
-                      {errors.phone_number?.message}{" "}
-                    </p>
+                    {errors?.phone_number && (
+                      <p className="error-message">
+                        {errors.phone_number?.message}
+                      </p>
+                    )}
                   </Form.Group>
                 </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>{t("address")} *</Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="address"
-                      {...register("address", {
-                        required: {
-                          value: true,
-                          message: t("addressValidation"),
-                        },
-                      })}
-                    />
-                    <p className="error-message">
-                      {errors.address?.message}{" "}
-                    </p>
-                  </Form.Group>
-                </Col>
-
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
-                      {t("address")} 2
+                      {t("address")} *
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className="common-field"
+                      // name="address"
+                      {...register("address", {
+                        required: t("addressValidation"),
+                      })}
+                    />
+                    {errors?.address && (
+                      <p className="error-message">{errors.address.message} </p>
+                    )}
+                  </Form.Group>
+                </Col>
+
+                {/* <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="common-label">
+                      {t("address")} 
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -348,7 +410,7 @@ const RegisterDeveloper = () => {
                     />
                     <p className="error-message">{errors.address?.message} </p>
                   </Form.Group>
-                </Col>
+                </Col> */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -463,9 +525,11 @@ const RegisterDeveloper = () => {
                         // }
                       })}
                     />
-                    <p className="error-message">{errors.professional_title?.message} </p>
+                    <p className="error-message">
+                      {errors.professional_title?.message}{" "}
+                    </p>
                   </Form.Group>
-                  </Col>
+                </Col>
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -478,12 +542,29 @@ const RegisterDeveloper = () => {
                       {...register("profile_picture", {
                         onChange: (e) => handleFileChange(e),
                         required: {
-                          value: false,
-                          message: "Profile Picture is required",
+                          value: true,
+                          message: t("profilePictureValidation"),
                         },
                       })}
                       className="d-none"
                     />
+                    {/* <Controller
+                      name="profile_picture"
+                      control={control}
+                      rules={{ required: t("profilePictureValidation") }}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="file"
+                          className="d-none"
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleFileChange(e);
+                          }}
+                        />
+                      )}
+                    /> */}
+
                     <Form.Label
                       htmlFor="developer-image"
                       className="upload-image-label d-block"
@@ -492,6 +573,21 @@ const RegisterDeveloper = () => {
                       {t("uploadImage")}
                     </Form.Label>
                   </Form.Group>
+                  {fileTypeError ? (
+                    <p className="error-message">{t("invalid_file_type")}</p>
+                  ) : (
+                    errors?.profile_picture && (
+                      <p className="error-message">
+                        {" "}
+                        {errors?.profile_picture?.message}
+                      </p>
+                    )
+                  )}
+                  {/* {errors?.profile_picture && (
+                    <p className="error-message">
+                      {errors?.profile_picture?.message}
+                    </p>
+                  )} */}
                   {selectedImage && (
                     <div>
                       <img
@@ -877,9 +973,7 @@ const RegisterDeveloper = () => {
                         },
                       })}
                     />
-                    <p className="error-message">
-                      {errors.bio?.message}{" "}
-                    </p>
+                    <p className="error-message">{errors.bio?.message} </p>
                   </Form.Group>
                 </Col>
               </Row>
@@ -967,7 +1061,7 @@ const RegisterDeveloper = () => {
                 text={t("register")}
                 className="main-btn px-5"
                 variant="transparent"
-                disabled={smallLoader }
+                disabled={smallLoader}
                 isLoading={smallLoader}
               />
             </div>
