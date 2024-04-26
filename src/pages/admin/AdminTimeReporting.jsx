@@ -8,12 +8,13 @@ import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getClientList } from "../../redux/slices/vendorDataSlice";
 import { useTranslation } from "react-i18next";
+import NoDataFound from "../../components/atomic/NoDataFound";
 
 
 const AdminTimeReporting = () => {
     const dispatch = useDispatch()
-    const { adminTimeReportingList, screenLoader ,adminClientList} = useSelector(state => state.adminData)
-    const {clientList} = useSelector(state => state.vendorData)
+    const { adminTimeReportingList, screenLoader, adminClientList } = useSelector(state => state.adminData)
+    const { clientList } = useSelector(state => state.vendorData)
     const [contractId, setContractID] = useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
@@ -34,7 +35,7 @@ const AdminTimeReporting = () => {
     }, [adminTimeReportingList])
 
 
-    console.log(adminClientList,"adminClientList")
+    console.log(adminClientList, "adminClientList")
     // useEffect(()=>{
     //     dispatch(getClientList())
     //      },[])
@@ -74,7 +75,7 @@ const AdminTimeReporting = () => {
         setDeveloperData(newDev)
     }
 
-    const handleClientClick=(e)=>{
+    const handleClientClick = (e) => {
         dispatch(adminTimeReporting(e))
     }
     return (
@@ -85,10 +86,10 @@ const AdminTimeReporting = () => {
                         <div className="d-md-flex gap-3 justify-content-between align-items-end">
                             <div className="mb-md-0 mb-3">
                                 <div>
-                                    <Form.Select className="filter-select shadow-none" onClick = {(e)=>handleClientClick(e.target.value)}>
+                                    <Form.Select className="filter-select shadow-none" onClick={(e) => handleClientClick(e.target.value)}>
                                         <option value="" selected disabled>{t("selectClients")}</option>
                                         {
-                                            adminClientList?.map((item ,index) => {
+                                            adminClientList?.map((item, index) => {
                                                 return (<>
                                                     <option key={index} value={item.id}  >{item?.name}</option>
                                                 </>)
@@ -132,47 +133,48 @@ const AdminTimeReporting = () => {
                                     {t("contract")}
                                 </th>
                             </thead>
-                            {screenLoader ? <ScreenLoader /> : <tbody>
-                                {
-                                    developerData?.map((item, index) => {
-                                        return (
-                                            <>
-                                                <tr>
-                                                    <td className="time-table-data">{item?.client_details?.name}</td>
-                                                    <td className="time-table-data">{item?.contracts?.length}</td>
-                                                    <td className="time-table-data">
-                                                        <Form.Select className="status-select shadow-none" onChange={(e) => handleDeveloper(e, index)}>
-                                                            {
-                                                                contractName(item?.contracts)?.map((el, inx) => {
-                                                                    return (
-                                                                        <>
-                                                                            <option value={inx}>{el?.dev}</option>
-                                                                        </>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </Form.Select>
-                                                    </td>
-                                                    <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
-                                                    <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
-                                                    <td className="time-table-data">N/A</td>
-                                                    <td className="time-table-data">
-                                                        <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
-                                                    </td>
-                                                    <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
-                                                </tr>
-                                            </>
-                                        )
-                                    })
-                                }
-
-                            </tbody>}
+                            <tbody>
+                                {screenLoader ? <ScreenLoader /> : <>
+                                    {developerData?.length > 0 ?
+                                        developerData?.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <tr>
+                                                        <td className="time-table-data">{item?.client_details?.name}</td>
+                                                        <td className="time-table-data">{item?.contracts?.length}</td>
+                                                        <td className="time-table-data">
+                                                            <Form.Select className="status-select shadow-none" onChange={(e) => handleDeveloper(e, index)}>
+                                                                {
+                                                                    contractName(item?.contracts)?.map((el, inx) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option value={inx}>{el?.dev}</option>
+                                                                            </>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Select>
+                                                        </td>
+                                                        <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
+                                                        <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
+                                                        <td className="time-table-data">N/A</td>
+                                                        <td className="time-table-data">
+                                                            <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
+                                                        </td>
+                                                        <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })
+                                        : <td colSpan={6}><NoDataFound /></td>}
+                                </>}
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </section>
             <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} adminTimeReportingList={adminTimeReportingList} />
-            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} />
+            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} role={"admin"} />
         </>
     )
 }

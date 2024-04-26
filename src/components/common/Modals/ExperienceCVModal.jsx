@@ -5,8 +5,10 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
 import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
+import { useTranslation } from "react-i18next";
+import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
+const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,id ,role }) => {
   const [renderModalData, setRenderModalData] = useState(data)
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const dispatch = useDispatch()
@@ -18,9 +20,10 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
     handleSubmit,
     reset,
     trigger,
-    setError,
+    setError, 
     formState: { errors },
   } = useForm();
+  const { t } =  useTranslation()
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "test",
@@ -64,9 +67,12 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
     let { test } = value
     let addExp = test?.map((item) => {
       if (!item.newId) {
-        return { ...item }
+        return { ...item}
       }
     }).filter((item) => item)
+    let data ={
+
+    }
     if (addExp.length > 0) {
       dispatch(addDeveloperCvExperience(addExp, () => {
         dispatch(fetchDeveloperCv())
@@ -76,6 +82,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
 
     test?.forEach((item) => {
       if (item.newId) {
+        
         dispatch(updateDeveloperCvExperience(item, item.newId, () => {
           dispatch(fetchDeveloperCv())
           handleClose()
@@ -113,12 +120,12 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
   }
   const deletetooltip = (
     <Tooltip id="tooltip">
-      Delete Row
+     {t("deleteRow")}
     </Tooltip>
   );
   const addtooltip = (
     <Tooltip id="tooltip">
-      Add Row
+      {t("addRow")}
     </Tooltip>
   );
 
@@ -139,14 +146,14 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
 
       <Modal.Body>
 
-        <h3 className="popup-heading">Experience CV Section</h3>
+        <h3 className="popup-heading">{t("experience")} CV {t("section")}</h3>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {fields.map((item, index) => (
             <div className="experience-container mb-3" key={item.id}>
               <Row>
                 <Col md="12">
                   <Form.Group className="mb-4">
-                    <Form.Label className="font-14">Company Name</Form.Label>
+                    <Form.Label className="font-14">{t("companyName")}</Form.Label>
                     <Form.Control
                       type="text"
                       className="common-field"
@@ -163,7 +170,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label className="font-14">Job Position</Form.Label>
+                    <Form.Label className="font-14">{t("jobPosition")}</Form.Label>
                     <Form.Control
                       type="text"
                       className="common-field"
@@ -180,7 +187,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label className="font-14">Job Description</Form.Label>
+                    <Form.Label className="font-14">{t("jobDescription")}</Form.Label>
                     <Form.Control
                       type="text"
                       as="textarea"
@@ -198,7 +205,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label className="font-14">Start Date</Form.Label>
+                    <Form.Label className="font-14">{t("startDate")}</Form.Label>
                     <Form.Control
                       type="date"
                       className="common-field"
@@ -224,7 +231,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
                 </Col>
                 <Col md="6">
                   <Form.Group className="mb-4">
-                    <Form.Label className="font-14">End Date</Form.Label>
+                    <Form.Label className="font-14">{t("endDate")}</Form.Label>
                     <Form.Control
                       type="date"
                       className="common-field"
@@ -254,7 +261,7 @@ const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
                         })}
                         onChange={(e) => handleCurrentlyWorkingChange(e, index)}
                       />
-                      <Form.Label className="mb-0 font-14">Currently Working</Form.Label>
+                      <Form.Label className="mb-0 font-14">{t("currentlyWorking")}</Form.Label>
                     </Form.Group>
                     {index !== 0 && (
                       <div>

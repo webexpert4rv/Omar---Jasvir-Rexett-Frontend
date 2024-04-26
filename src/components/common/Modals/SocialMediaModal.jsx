@@ -4,6 +4,8 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { addDeveloperSocialMedia, deleteDeveloperSocialMedia, fetchDeveloperCv, updateDeveloperSocialMedia } from "../../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../../components/atomic/RexettButton";
+import { useTranslation } from "react-i18next";
+import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
 const socialMediaOptions = [
   { value: "facebook", label: "Facebook" },
@@ -15,10 +17,11 @@ const socialMediaOptions = [
   { value: "pinterest", label: "Pinterest" }
 ];
 
-const SocialMediaModal = ({ show, handleClose, data }) => {
+const SocialMediaModal = ({ show, handleClose, data, id ,role }) => {
   const dispatch = useDispatch()
   const [renderModalData, setRenderModalData] = useState(data)
   const { smallLoader, btnLoader } = useSelector(state => state.developerData)
+  const { t } = useTranslation()
   const {
     register,
     control,
@@ -54,11 +57,25 @@ const SocialMediaModal = ({ show, handleClose, data }) => {
 
   const onSubmit = (value) => {
     let { test } = value
-
-    dispatch(addDeveloperSocialMedia(test, () => {
-      dispatch(fetchDeveloperCv())
-      handleClose()
-    }))
+    if (role === "developer") {
+      let data={
+        "social_links": test,
+        "user_id" : id
+      }
+      dispatch(addDeveloperSocialMedia(data, () => {
+        dispatch(fetchDeveloperCv())
+        handleClose()
+      }))
+    } else {
+      let data={
+        "social_links": test,
+        "user_id" : id
+      }
+      dispatch(addDeveloperSocialMedia(data, () => {
+        dispatch(getDeveloperDetails(id))
+        handleClose()
+      }))
+    }
   }
 
 
@@ -70,7 +87,7 @@ const SocialMediaModal = ({ show, handleClose, data }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <h3 className="popup-heading">Add Social Media</h3>
+        <h3 className="popup-heading">{t("addSocialMedia")}</h3>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
 
           {fields?.map((row, index) => (

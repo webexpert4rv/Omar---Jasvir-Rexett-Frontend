@@ -72,12 +72,12 @@ const EditVendorProfile = () => {
   }
 
 
-  const handleJobStatusAction = (e, data) => {
-    console.log(data, "data")
-    e.preventDefault()
-    dispatch(getDeleteAccount(data))
-    setShowModal(false)
-  }
+  // const handleJobStatusAction = (e, data) => {
+  //   console.log(data, "data")
+  //   e.preventDefault()
+  //   dispatch(getDeleteAccount(data))
+  //   setShowModal(false)
+  // }
   const deleteprofile = (
     <Tooltip id="tooltip">
       Delete Profile
@@ -143,9 +143,9 @@ const EditVendorProfile = () => {
               <div>
               <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
               <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
-                  <OverlayTrigger placement="bottom" overlay={deleteprofile}>
+                  {/* <OverlayTrigger placement="bottom" overlay={deleteprofile}>
                     <Button onClick={() => handleJobStatusModal(vendorProfile?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
-                  </OverlayTrigger>
+                  </OverlayTrigger> */}
                   </div>
                   <Row className="mb-4">
                     <Col md="6">
@@ -993,7 +993,7 @@ const EditVendorProfile = () => {
                 </div>
             </Form>
           </section>
-          <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} />
+          {/* <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} /> */}
         </>
       )}
     </>

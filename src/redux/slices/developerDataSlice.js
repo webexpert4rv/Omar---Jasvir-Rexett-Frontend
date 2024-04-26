@@ -121,7 +121,7 @@ export function updateDeveloperProfile(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-profile/', { ...payload })
+            let result = await clientInstance.post('common/update-profile/', { ...payload })
             if (result.status === 200) {
                 dispatch(setActionSuccessFully())
                 toast.success("Profile is Updated", { position: "top-center" })
@@ -189,10 +189,11 @@ export function getDeveloperDashboard(payload, callback) {
 }
 
 export function updateDeveloperCvBio(payload, callback) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-bio', { ...payload })
+            let result = await clientInstance.post('common/update-bio', { ...payload })
             if (result.status === 200) {
                 toast.success("Bio is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -210,7 +211,7 @@ export function updateDeveloperCvExperience(payload, id, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`developer/update-experience/${id}`, { ...payload })
+            let result = await clientInstance.put(`common/update-experience/${id}`, { ...payload })
             if (result.status === 200) {
                 // toast.success("Experience is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -228,7 +229,7 @@ export function addDeveloperCvExperience(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/add-experience', [...payload])
+            let result = await clientInstance.post('common/add-experience', [...payload])
             toast.success("Experience is Added", { position: "top-center" })
             dispatch(setSuccessActionData())
             return callback()
@@ -264,7 +265,7 @@ export function addDeveloperCvEducation(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/add-education', [...payload])
+            let result = await clientInstance.post('common/add-education', [...payload])
 
             toast.success("Education is Added", { position: "top-center" })
             dispatch(setSuccessActionData())
@@ -282,7 +283,7 @@ export function updateDeveloperCvEducation(payload, id, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`developer/update-education/${id}`, { ...payload })
+            let result = await clientInstance.put(`common/update-education/${id}`, { ...payload })
             if (result.status === 200) {
                 // toast.success("Education is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -332,10 +333,11 @@ export function deleteEducationCv(payload, callback) {
 }
 
 export function updateDeveloperSkills(payload, callback) {
+    console.log(payload,"skillspayload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`developer/update-developer-skills`, { skills: payload })
+            let result = await clientInstance.post(`common/update-developer-skills`, {... payload })
             if (result.status === 200) {
                 toast.success("Skills updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -355,7 +357,7 @@ export function addDeveloperSocialMedia(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.post(`developer/add-social-links`, [...payload])
+            let result = await clientInstance.post(`common/add-social-links`, {...payload})
             if (result.status === 200) {
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -370,10 +372,11 @@ export function addDeveloperSocialMedia(payload, callback) {
 }
 
 export function updateDeveloperCvDetails(payload, callback) {
+    console.log(payload , "payload")
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.put(`developer/update-cv-profile`, { ...payload })
+            let result = await clientInstance.put(`common/update-cv-profile`, { ...payload })
             if (result.status === 200) {
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())

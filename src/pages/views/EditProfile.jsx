@@ -28,10 +28,10 @@ const EditProfile = () => {
 
 
    
-    const handleJobStatusModal=(id)=>{
-        console.log(id,"id")
-        setShowModal(!showModal)
-    }
+    // const handleJobStatusModal=(id)=>{
+    //     console.log(id,"id")
+    //     setShowModal(!showModal)
+    // }
     
     useEffect(()=>{
        dispatch(getClientProfile())
@@ -107,9 +107,9 @@ const EditProfile = () => {
             <section className="card-box">
                 <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
                     <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
-                    <OverlayTrigger placement="bottom" overlay={deleteprofile}>
+                    {/* <OverlayTrigger placement="bottom" overlay={deleteprofile}>
                         <Button onClick={() => handleJobStatusModal(clientProfileDetails?.id)} className="delete-btn"><FaTrashCan /></Button>
-                    </OverlayTrigger>
+                    </OverlayTrigger> */}
                 </div>
                 <div>
                   {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -117,7 +117,7 @@ const EditProfile = () => {
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("clientName")}</Form.Label>
+                                        <Form.Label className="common-label">{t("clientName")} * </Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {
@@ -131,7 +131,7 @@ const EditProfile = () => {
                                         </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("email")}</Form.Label>
+                                        <Form.Label className="common-label">{t("email")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="email"
                                             {...register("email", {
@@ -149,7 +149,7 @@ const EditProfile = () => {
                                             {errors.email?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("phone")}</Form.Label>
+                                        <Form.Label className="common-label">{t("phone")} *</Form.Label>
                                         <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
@@ -199,7 +199,7 @@ const EditProfile = () => {
                             <Col md="6">
                                 <div>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("address")}</Form.Label>
+                                        <Form.Label className="common-label">{t("address")} * </Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address"
                                             {...register("address", {
@@ -227,7 +227,7 @@ const EditProfile = () => {
                                             {errors.address_2?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("city")}</Form.Label>
+                                        <Form.Label className="common-label">{t("city")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="city"
                                             {...register("city", {
@@ -245,7 +245,7 @@ const EditProfile = () => {
                                             {errors.city?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("postCode")}</Form.Label>
+                                        <Form.Label className="common-label">{t("postCode")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="passcode"
                                             {...register("passcode", {
@@ -264,7 +264,7 @@ const EditProfile = () => {
                                             {errors.passcode?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("country")}</Form.Label>
+                                        <Form.Label className="common-label">{t("country")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="country"
                                             {...register("country", {
@@ -296,7 +296,7 @@ const EditProfile = () => {
                     </form>}
                 </div>
             </section>
-            <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} />
+            {/* <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} /> */}
         </>
     )
 }

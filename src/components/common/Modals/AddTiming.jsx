@@ -19,6 +19,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   const [open, setOpen] = useState(false);
   const [timeReportingData, setTimeReportingData] = useState([]);
   const [details, setDetails] = useState(false)
+  const { t } = useTranslation()
   const {
     register,
     control,
@@ -36,7 +37,6 @@ const AddTimingModal = ({ show, handleClose,role }) => {
     (state) => state.developerData
   );
 
-  const {t} = useTranslation()
   useEffect(() => {
     dispatch(getAllContracts());
   }, []);
@@ -201,7 +201,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           <option value="2017">2017</option>
                         </Form.Select>
                         {!selectedFilter?.year?.length > 0 && details ? (
-                          <p style={{ color: 'red' }}>Please select a year</p>
+                          <p style={{ color: 'red' }}>{t("pleaseSelectAYear")}</p>
                         ) : ""}
                       </div>
                     </Col>
@@ -242,10 +242,10 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                           <option disabled selected>
                             {t("selectWeek")}
                           </option>
-                          <option value="1">{t("Week")} 1</option>
-                          <option value="2">{t("Week")} 2</option>
-                          <option value="3">{t("Week")} 3</option>
-                          <option value="4">{t("Week")} 4</option>
+                          <option value="1">{t("week")} 1</option>
+                          <option value="2">{t("week")} 2</option>
+                          <option value="3">{t("week")} 3</option>
+                          <option value="4">{t("week")} 4</option>
                         </Form.Select>
 
                       </div>
@@ -323,7 +323,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                             }
                             className="font-15"
                             id="work-day"
-                            label="Work Day"
+                            label={t("workDay")}
                           />
                           <Form.Check
                             inline

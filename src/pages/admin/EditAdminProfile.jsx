@@ -70,7 +70,7 @@ const EditAdminProfile = () => {
                             <Col md="6">
                                 <div className="inner-form">
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("adminName")}</Form.Label>
+                                        <Form.Label className="common-label">{t("adminName")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="name"
                                             {...register("name", {
@@ -84,7 +84,7 @@ const EditAdminProfile = () => {
                                         </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("email")}</Form.Label>
+                                        <Form.Label className="common-label">{t("email")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="email"
                                             {...register("email", {
@@ -102,7 +102,7 @@ const EditAdminProfile = () => {
                                             {errors.email?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("phone")}</Form.Label>
+                                        <Form.Label className="common-label">{t("phone")} *</Form.Label>
                                         <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
@@ -152,7 +152,7 @@ const EditAdminProfile = () => {
                             <Col md="6">
                                 <div>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("address")}</Form.Label>
+                                        <Form.Label className="common-label">{t("address")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="address"
                                             {...register("address", {
@@ -180,7 +180,7 @@ const EditAdminProfile = () => {
                                             {errors.address_2?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("city")}</Form.Label>
+                                        <Form.Label className="common-label">{t("city")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="city"
                                             {...register("city", {
@@ -198,7 +198,7 @@ const EditAdminProfile = () => {
                                             {errors.city?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("postCode")}</Form.Label>
+                                        <Form.Label className="common-label">{t("postCode")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="passcode"
                                             {...register("passcode", {
@@ -217,7 +217,7 @@ const EditAdminProfile = () => {
                                             {errors.passcode?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("country")}</Form.Label>
+                                        <Form.Label className="common-label">{t("country")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="country"
                                             {...register("country", {

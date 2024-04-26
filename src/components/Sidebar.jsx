@@ -56,7 +56,7 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                                 <NavLink to={'/earned-back'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("earnedBack")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
+                                <NavLink to={'/invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("invoice")}</NavLink>
                             </li>
                         </ul>
                     </div>

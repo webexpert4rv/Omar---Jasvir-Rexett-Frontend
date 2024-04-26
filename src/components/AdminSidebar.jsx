@@ -56,7 +56,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><FaFileInvoice /> Account Deletion Request</NavLink>
+                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("accountDeletionRequest")}</NavLink>
                             </li>
                         </ul>
                     </div>
