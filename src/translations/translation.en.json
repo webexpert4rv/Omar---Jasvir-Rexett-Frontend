@@ -317,7 +317,10 @@
         "image" : "Image",
         "youHaveNoNotification" : "You have no Notification",
         "professional_title" : "Professional Title",
-        "professionalTitleValidation" : "Professional Title is required"
+        "professionalTitleValidation" : "Professional Title is required",
+        "invalid_file_type" :"Invalid file type ",
+        "profilePictureValidation" :"Profile Picture is required",
+        "invalidEmail" :"Invalid email"
         
 
     }
