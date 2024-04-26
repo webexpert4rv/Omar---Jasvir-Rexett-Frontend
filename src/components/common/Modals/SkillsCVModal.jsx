@@ -16,7 +16,7 @@ const options = [
     { value: 'AngularJS', label: 'AngularJS' },
     { value: 'Bootstrap', label: 'Bootstrap' },
 ];
-const SkillsModal = ({ show, handleClose, data ,id}) => {
+const SkillsModal = ({ show, handleClose, data, id, role }) => {
     const [selectedOption, setSelectedOption] = useState([]);
     const { smallLoader } = useSelector(state => state.developerData)
     const dispatch = useDispatch()
@@ -36,16 +36,27 @@ const SkillsModal = ({ show, handleClose, data ,id}) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         let convertString = selectedOption.map((item) => item.label)
-        let data= {
-             "skills" : convertString.toString(),
-             "user_id" : +id
-        }
-        console.log(data,"data")
-        dispatch(updateDeveloperSkills(data, () => {
-            dispatch(getDeveloperDetails(id))
-            handleClose()
+        if (role === "developer") {
+            let data = {
+                "skills": convertString.toString(),
+                "user_id": +id
+            }
+            dispatch(updateDeveloperSkills(data, () => {
+                dispatch(fetchDeveloperCv())
+                handleClose()
+            }))
 
-        }))
+        } else {
+            let data = {
+                "skills": convertString.toString(),
+                "user_id": +id
+            }
+            dispatch(updateDeveloperSkills(data, () => {
+                dispatch(getDeveloperDetails(id))
+                handleClose()
+
+            }))
+        }
     }
 
     const filteredOptions = options.filter(option => !selectedOption.find(selected => selected.value === option.value));

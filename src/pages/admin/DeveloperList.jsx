@@ -159,10 +159,10 @@ const DeveloperList = () => {
                                                         <p className="email-user">{item?.email}</p>
                                                         <ul className="social-icons">
                                                             <li>
-                                                                <Link to={`${item?.developer_detail?.github_url}`}><FaGithub /></Link>
+                                                                {item?.developer_detail?.github_url ? <Link to={`${item?.developer_detail?.github_url}`}><FaGithub /></Link> : ""}
                                                             </li>
                                                             <li>
-                                                                <Link to={`${item?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
+                                                               {item?.developer_detail?.linkedin_url ?  <Link to={`${item?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link> : ""}
                                                             </li>
                                                             {/* <li>
                                                         <Link to={`${item?.email}`}><MdEmail /></Link>
@@ -212,10 +212,10 @@ const DeveloperList = () => {
                                                             <td>
                                                                 <ul className="social-icons mb-0 justify-content-start">
                                                                     <li>
-                                                                        <Link to={`${value?.developer_detail?.github_url}`}><FaGithub /></Link>
+                                                                    {value?.developer_detail?.github_url ? <Link to={`${value?.developer_detail?.github_url}`}><FaGithub /></Link> : ""}
                                                                     </li>
                                                                     <li>
-                                                                        <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
+                                                                    {value?.developer_detail?.linkedin_url ?  <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link> : ""}
                                                                     </li>
                                                                     {/* <li>
                                                                 <Link to={`${value?.email}`}><MdEmail /></Link>

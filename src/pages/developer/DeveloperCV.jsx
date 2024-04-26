@@ -228,7 +228,7 @@ const DeveloperCV = () => {
             {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={developerCvData?.developer_skills?.skills} /> : ""}
             {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={developerCvData?.social_links} /> : ""}
             <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={developerCvData?.developer_detail?.professional_title} name={developerCvData?.name} profile={developerCvData?.profile_picture} smallLoader={smallLoader} /> */}
-            <SingleDeveloper data={developerCvData} />
+            <SingleDeveloper data={developerCvData} role={"developer"}/>
         </>
     )
 }

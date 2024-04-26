@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 const LanguageChange = () => {
   const [t, i18n] = useTranslation("global");
   let lang= localStorage.getItem("language")
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
   useEffect(()=>{
     if(lang){

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const AboutCV = ({ show, handleClose, data, id }) => {
+const AboutCV = ({ show, handleClose, data, id, role }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation()
   const { smallLoader } = useSelector(state => state.developerData)
@@ -28,21 +28,30 @@ const AboutCV = ({ show, handleClose, data, id }) => {
     }
   };
 
-  console.log(id,"id")
   useEffect(() => {
     setValue("bio", data)
   }, [data])
 
   const onSubmit = (values) => {
-    let data = {
-      ...values,
-      "user_id": id
+    if (role === "developer") {
+      let data = {
+        ...values,
+        "user_id": id
+      }
+      dispatch(updateDeveloperCvBio(data, () => {
+        dispatch(fetchDeveloperCv(id))
+        handleClose()
+      }))
+    } else {
+      let data = {
+        ...values,
+        "user_id": id
+      }
+      dispatch(updateDeveloperCvBio(data, () => {
+        dispatch(getDeveloperDetails(id))
+        handleClose()
+      }))
     }
-    console.log(data,"data")
-    dispatch(updateDeveloperCvBio(data, () => {
-      dispatch(getDeveloperDetails(id))
-      handleClose()
-    }))
   }
 
   return (
