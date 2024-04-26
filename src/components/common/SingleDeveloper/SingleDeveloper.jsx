@@ -23,7 +23,7 @@ import DeveloperDetails from "../Modals/DeveloperDetails";
 
 
 
-const SingleDeveloper = ({ data }) => {
+const SingleDeveloper = ({ data ,role}) => {
     console.log(data, "data")
     const dispatch = useDispatch()
     const { screenLoader, smallLoader } = useSelector(state => state.clientData)
@@ -130,8 +130,7 @@ const SingleDeveloper = ({ data }) => {
                                         <img src={data?.profile_picture ? data?.profile_picture : resumeImg} className="resume-img" />
                                     </div>
                                     <h3 className="resume-name">{data?.name}</h3>
-                                    <p className="resume-designation">{data?.developer_detail?.professional_title
-                                    }</p>
+                                    <p className="resume-designation">{data?.developer_detail?.professional_title}</p>
                                     <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25} /></div>
                                 </div>
                                 <div className="connect-social-media">
@@ -237,12 +236,12 @@ const SingleDeveloper = ({ data }) => {
                         </Row>
                     </div>
                 </section>
-                <AboutCV show={showModal} handleClose={handleCloseModal} data={data?.developer_detail?.bio} id={data?.id} />
-                {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={data?.developer_experiences} smallLoader={smallLoader} id={data?.id} /> : ""}
-                {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id={data?.id} /> : ""}
-                {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id={data?.id} /> : ""}
-                {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.linkedin_url} id={data?.id} /> : ""}
-                <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id={data?.id} />
+                <AboutCV show={showModal} handleClose={handleCloseModal} data={data?.developer_detail?.bio} id={data?.id} role = {role}/>
+                {showExperienceModal ? <ExperienceCV show={showExperienceModal} handleClose={handleCloseExperienceModal} data={data?.developer_experiences} smallLoader={smallLoader} id={data?.id} role = {role}/> : ""}
+                {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id={data?.id} role = {role}/> : ""}
+                {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id={data?.id} role = {role}/> : ""}
+                {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.social_links} id={data?.id} role = {role}/> : ""}
+                <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id={data?.id} role = {role} />
             </>}
         </>
     )

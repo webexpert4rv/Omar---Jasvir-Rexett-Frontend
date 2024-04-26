@@ -17,7 +17,7 @@ const VendorSingleDeveloper = () => {
     },[])
     console.log(developerDetails ,"developerDetails")
     return(<>
-    <SingleDeveloper  data={developerDetails}/>
+    <SingleDeveloper  data={developerDetails} role={"vendor"}/>
     </>
     )
 }

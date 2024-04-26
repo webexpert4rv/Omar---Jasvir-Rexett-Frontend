@@ -18,7 +18,7 @@ const ClientSingleDeveloper = () => {
 
     },[])
     return(<>
-    <SingleDeveloper  data={developerDetails}/>
+    <SingleDeveloper  data={developerDetails} role={"client"}/>
     </>
     )
 }

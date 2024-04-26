@@ -17,11 +17,11 @@ const socialMediaOptions = [
   { value: "pinterest", label: "Pinterest" }
 ];
 
-const SocialMediaModal = ({ show, handleClose, data }) => {
+const SocialMediaModal = ({ show, handleClose, data, role }) => {
   const dispatch = useDispatch()
   const [renderModalData, setRenderModalData] = useState(data)
   const { smallLoader, btnLoader } = useSelector(state => state.developerData)
-  const { t } =  useTranslation()
+  const { t } = useTranslation()
   const {
     register,
     control,
@@ -57,11 +57,17 @@ const SocialMediaModal = ({ show, handleClose, data }) => {
 
   const onSubmit = (value) => {
     let { test } = value
-
-    dispatch(addDeveloperSocialMedia(test, () => {
-      dispatch(getDeveloperDetails())
-      handleClose()
-    }))
+    if (role === "developer") {
+      dispatch(addDeveloperSocialMedia(test, () => {
+        dispatch(fetchDeveloperCv())
+        handleClose()
+      }))
+    } else {
+      dispatch(addDeveloperSocialMedia(test, () => {
+        dispatch(getDeveloperDetails())
+        handleClose()
+      }))
+    }
   }
 
 

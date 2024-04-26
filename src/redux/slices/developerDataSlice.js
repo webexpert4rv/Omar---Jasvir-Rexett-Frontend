@@ -121,7 +121,7 @@ export function updateDeveloperProfile(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-profile/', { ...payload })
+            let result = await clientInstance.post('common/update-profile/', { ...payload })
             if (result.status === 200) {
                 dispatch(setActionSuccessFully())
                 toast.success("Profile is Updated", { position: "top-center" })

@@ -7,7 +7,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { addDeveloperCvExperience, deleteExperience, fetchDeveloperCv, updateDeveloperCvExperience } from "../../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
 
-const ExperienceCVModal = ({ show, handleClose, data, smallLoader }) => {
+const ExperienceCVModal = ({ show, handleClose, data, smallLoader ,role }) => {
   const [renderModalData, setRenderModalData] = useState(data)
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const dispatch = useDispatch()
