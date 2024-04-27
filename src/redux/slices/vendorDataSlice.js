@@ -99,6 +99,13 @@ export function getVendorDashboard() {
 
 export function getDevelopersList(payload ,page) {
     return async (dispatch) => {
+        if(payload?.skill_title=="Select Skills"){
+            delete payload.skill_title
+        }
+        if(payload?.experience_years=="Select Experience"){
+            delete payload?.experience_years
+        }
+
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload, `vendor/developers`))
@@ -275,7 +282,12 @@ export function getDeleteDeveloper(id) {
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.delete(`vendor/delete-developer/${id}`)
+            dispatch(setVendorSuccess())
+            toast.success("Developer is deleted", { position: "top-center" })
         } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
            
         }
     }

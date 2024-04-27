@@ -124,6 +124,7 @@ const SocialMediaModal = ({ show, handleClose, data, id ,role }) => {
               text="Update Profile"
               className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
+              disabled={btnLoader}
               isLoading={btnLoader}
             />
           </div>

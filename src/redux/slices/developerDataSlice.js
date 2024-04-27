@@ -229,7 +229,7 @@ export function addDeveloperCvExperience(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('common/add-experience', [...payload])
+            let result = await clientInstance.post('common/add-experience', {...payload})
             toast.success("Experience is Added", { position: "top-center" })
             dispatch(setSuccessActionData())
             return callback()
@@ -265,7 +265,7 @@ export function addDeveloperCvEducation(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('common/add-education', [...payload])
+            let result = await clientInstance.post('common/add-education', {...payload})
 
             toast.success("Education is Added", { position: "top-center" })
             dispatch(setSuccessActionData())
@@ -371,24 +371,7 @@ export function addDeveloperSocialMedia(payload, callback) {
     };
 }
 
-export function updateDeveloperCvDetails(payload, callback) {
-    console.log(payload , "payload")
-    return async (dispatch) => {
-        dispatch(setSmallLoader())
-        try {
-            let result = await clientInstance.put(`common/update-cv-profile`, { ...payload })
-            if (result.status === 200) {
-                toast.success("Media is updated successfully", { position: "top-center" })
-                dispatch(setSuccessActionData())
-                return callback()
-            }
-        } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailDeveloperData())
-        }
-    };
-}
+
 
 export function developertimeReporting(payload,) {
     return async (dispatch) => {

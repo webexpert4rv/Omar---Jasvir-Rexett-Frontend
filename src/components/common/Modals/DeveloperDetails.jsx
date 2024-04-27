@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
-import { fetchDeveloperCv, updateDeveloperCvBio, updateDeveloperCvDetails } from "../../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { HiUpload } from "react-icons/hi";
-import { filePreassignedUrlGenerate, getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
+import { filePreassignedUrlGenerate, getDeveloperDetails, updateDeveloperCvDetails } from "../../../redux/slices/clientDataSlice";
 
 const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) => {
     const dispatch = useDispatch();
-    const { smallLoader } = useSelector(state => state.developerData)
+    const { smallLoader } = useSelector(state => state.clientData)
     const [file, setFile] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null);
     const {
@@ -25,7 +24,6 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) =
         setValue("profile_picture", profile);
     }, [name, position])
 
-    console.log(id,"id")
     const handleChange = (e) => {
         const file = e.target.files[0];
         setFile(file)

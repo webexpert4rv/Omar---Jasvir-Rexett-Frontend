@@ -178,6 +178,16 @@ export function getAdminDashboard() {
 
 export function adminListAssignedDeveloper(payload, callback) {
     return async (dispatch) => {
+        if(payload?.skill_title=="Select Skills"){
+            delete payload.skill_title
+        }
+        if(payload?.experience_years=="Select Experience"){
+            delete payload?.experience_years
+        }
+        if(payload?.assignment_filter=="Select Developers"){
+            delete payload?.assignment_filter
+        }
+
 
         dispatch(setScreenLoader())
         try {

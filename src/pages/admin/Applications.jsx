@@ -67,7 +67,7 @@ const Applications = () => {
     return skillsArray;
   };
 
-  const handleClick = (e, clientId, status, index) => {
+  const handleClick = async(e, clientId, status, index) => {
     console.log(index, "index")
     e.stopPropagation();
     let payload = {
@@ -86,8 +86,12 @@ const Applications = () => {
     } else if (status === "rejected") {
       setSelectedRejectedBtn(index);
     }
-    dispatch(adminApproveReject(payload));
+   await dispatch(adminApproveReject(payload));
+   setArrowActive(null)
+   setSelectedApprovedBtn(null)
+   setSelectedRejectedBtn(null)
     dispatch(allApplicationsList(data));
+
   };
   const approvedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -232,7 +236,7 @@ const Applications = () => {
                                         )
                                       }
                                       isLoading={
-                                        selectedApprovedBtn !== index
+                                        selectedApprovedBtn === index
                                           ? approvedLoader
                                           : false
                                       }

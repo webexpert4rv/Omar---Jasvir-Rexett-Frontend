@@ -167,7 +167,7 @@ const SingleDeveloper = ({ data ,role}) => {
 
                                 </ul> */}
 
-                                    <ul className="social-media ">
+                                    <ul className="social-media">
                                         <li>
                                             {data?.developer_detail?.github_url ? <Link to={data?.developer_detail?.github_url} ><FaGithub /></Link> : ""}
                                         </li>
@@ -182,7 +182,7 @@ const SingleDeveloper = ({ data ,role}) => {
                             </Col>
                             <Col lg={6} className="px-0 h-100">
                                 <div className="about-info px-4">
-                                    <div className="connect-social-media">
+                                    <div className="">
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
                                         {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
                                         <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>

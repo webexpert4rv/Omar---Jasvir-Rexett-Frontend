@@ -80,8 +80,7 @@ const ListClient = () => {
                                     <thead>
                                         <tr>
                                             <th><span>{t("ClientName")}</span></th>
-                                            <th><span>{t("designation")}</span></th>
-                                            <th><span>{t("connects")}</span></th>
+                                            <th><span>{t("email")}</span></th>
                                         </tr>
                                     </thead>
                                     {listOfClients?.map((val, index) => {
@@ -97,34 +96,10 @@ const ListClient = () => {
                                                         </td>
                                                         <td>
                                                             <span>
-                                                                <p className="designation-user color-121212 mb-0">{t("fullStackDeveloper")}</p>
+                                                                <p className="designation-user color-121212 mb-0">{val?.email}</p>
                                                             </span>
                                                         </td>
-                                                        <td>
-                                                            {val?.client_detail === null ?
-                                                                <ul className="social-icons mb-0 justify-content-start">
-                                                                    <li>
-                                                                        <Link to={"#"}><FaGithub /></Link>
-                                                                    </li>
-                                                                    <li>
-                                                                        <Link to={"#"}><FaLinkedin /></Link>
-                                                                    </li>
-                                                                    {/* <li>
-                                                                        <Link to={"#"}><MdEmail /></Link>
-                                                                    </li> */}
-                                                                </ul> :
-                                                                <ul className="social-icons mb-0 justify-content-start">
-                                                                    <li>
-                                                                        <Link to={`${val?.client_detail?.github_url}`}><FaGithub /></Link>
-                                                                    </li>
-                                                                    <li>
-                                                                        <Link to={`${val?.client_detail?.linkedin_url}`}><FaLinkedin /></Link>
-                                                                    </li>
-                                                                    {/* <li>
-                                                                        <Link to={`${val?.email}`}><MdEmail /></Link>
-                                                                    </li> */}
-                                                                </ul>}
-                                                        </td>
+                                                      
                                                     </tr>
 
                                                 </tbody>
@@ -145,28 +120,7 @@ const ListClient = () => {
                                             <div className="text-center">
                                                 <h3 className="user-name">{item.name}</h3>
                                                 <p className="email-user">{item?.email}</p>
-                                                {item?.client_detail === null ? <ul className="social-icons">
-                                                    <li>
-                                                        <Link to={"#"}><FaGithub /></Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link to={"#"}><FaLinkedin /></Link>
-                                                    </li>
-                                                    {/* <li>
-                                                        <Link to={"#"}><MdEmail /></Link>
-                                                    </li> */}
-                                                </ul>
-                                                    : <ul className="social-icons">
-                                                        <li>
-                                                            <Link to={`${item?.client_detail?.github_url}`}><FaGithub /></Link>
-                                                        </li>
-                                                        <li>
-                                                            <Link to={`${item?.client_detail?.linkedin_url}`}><FaLinkedin /></Link>
-                                                        </li>
-                                                        {/* <li>
-                                                            <Link to={`${item?.email}`}><MdEmail /></Link>
-                                                        </li> */}
-                                                    </ul>}
+                                                
                                             </div>
                                         </div>
                                     </>)
@@ -177,7 +131,7 @@ const ListClient = () => {
                     </Tab.Content>
                 </Tab.Container>
                 {
-              listOfClients?.total_clients > 5 &&  listOfClients?.clients?.length !==listOfClients.total_clients  ? (
+              listOfClients?.total_clients > 5  ? (
                 <div className="text-center mt-3">
                   <SeeMore setCount={setCount} />
                 </div>

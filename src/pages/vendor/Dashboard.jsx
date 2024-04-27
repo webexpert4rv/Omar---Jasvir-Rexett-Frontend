@@ -62,15 +62,15 @@ const VendorDashboard = () => {
                                         {/* <p className="designation-user">Front End Designer</p> */}
                                         <p className="email-user">{item?.email}</p>
                                         <ul className="social-icons">
-                                            <li>
-                                                <Link to={"#"}><FaGithub /></Link>
-                                            </li>
-                                            <li>
-                                                <Link to={"#"}><FaLinkedin /></Link>
-                                            </li>
-                                            <li>
+                                           {item?.github_url && <li>
+                                                <Link to={item?.github_url}><FaGithub /></Link>
+                                            </li>}
+                                            {item?.linkedin_url && <li>
+                                                <Link to={item?.linkedin_url}><FaLinkedin /></Link>
+                                            </li>}
+                                            {/* <li>
                                                 <Link to={"#"}><MdEmail /></Link>
-                                            </li>
+                                            </li> */}
                                         </ul>
                                     </div>
                                 </div>

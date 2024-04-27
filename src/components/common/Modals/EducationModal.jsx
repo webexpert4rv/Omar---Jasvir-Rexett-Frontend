@@ -100,7 +100,11 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
             }
         }).filter((item) => item)
         if (addEdu.length > 0){
-            dispatch(addDeveloperCvEducation(addEdu, () => {
+            let data={
+                educations:addEdu,
+                user_id:+id
+            }
+            dispatch(addDeveloperCvEducation(data, () => {
                 if (role == "developer") {
                     dispatch(fetchDeveloperCv())
                 } else {

@@ -330,12 +330,11 @@ const RegisterDeveloper = () => {
                     <Form.Label className="common-label">
                       {t("phoneNumber")} *
                     </Form.Label>
-                    {/* <Form.Control
+                    <Form.Control
                       type="text"
                       className="common-field"
                       name="phone_number"
                       {...register("phone_number", {
-                        onChange:(e)=>{ const numericValue = e.target},
                         required: {
                           value: true,
                           message: t("phoneNumberValidation"),
@@ -345,32 +344,9 @@ const RegisterDeveloper = () => {
                           message: "Please enter a valid phone number",
                         },
                       })}
-                    /> */}
-                    <Controller
-                      name="phone_number"
-                      control={control}
-                      // rules={{
-                      //    min: {
-                      //   value :true,
-                      //   message :"phone number at least of 10 digits"
-                      // } }}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          className="common-field"
-                          onChange={(e) => {
-                            const numericValue =
-                              e.target.value.replace(/[^0-9]/g);
-                            field.onChange(numericValue);
-                          }}
-                        />
-                      )}
                     />
-                    {errors?.phone_number && (
-                      <p className="error-message">
-                        {errors.phone_number?.message}
-                      </p>
-                    )}
+                   
+                   
                   </Form.Group>
                 </Col>
                 <Col md={6}>

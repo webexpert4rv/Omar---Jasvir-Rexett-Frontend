@@ -21,14 +21,15 @@ const DeveloperList = () => {
     const [selectedFilter, setSelectedFilter] = useState({});
     const { assignedDeveloper, screenLoader } = useSelector(state => state.adminData)
     const [count, setCount] = useState(1);
+    const [search,setSearch]=useState()
+    const [timerValue, setTimerValue] = useState("");
     const { t }= useTranslation()
     const navigate = useNavigate()
 
     useEffect(() => {
-        dispatch(adminListAssignedDeveloper({ page: 1 }))
+        dispatch(adminListAssignedDeveloper({ page: count }))
     }, [count])
 
-    console.log(assignedDeveloper, "assignedDeveloper")
     const handleSkill = (e) => {
         let filterData = {
             ...selectedFilter,
@@ -57,11 +58,12 @@ const DeveloperList = () => {
 
     const handleClear = () => {
         setSelectedFilter({
-            skill_title: "Select Filter",
-            assignment_filter: "Select Developers ",
+            skill_title: "Select Skills",
+            assignment_filter: "Select Developers",
             experience_years: "Select Experience",
 
         })
+        setSearch()
         dispatch(adminListAssignedDeveloper());
     }
     const handleCardClick = (devId) => {
@@ -77,10 +79,24 @@ const DeveloperList = () => {
 
     }
 
+    const handleSearchChange = (e) => {
+        clearTimeout(timerValue);
+        setSearch(e.target.value)
+        const timer = setTimeout(() => {
+            let filterData = {
+                ...selectedFilter,
+                search:e.target.value
+            }
+            dispatch(adminListAssignedDeveloper(filterData))
+        }, 500);
+        setTimerValue(timer);
+
+    }
+
 
     return (
         <>
-            {screenLoader ? <ScreenLoader /> : <>
+          
                 <div>
                     {/* <h3 className="section-head-sub">Filter By</h3> */}
                     <Form className="mb-4 filter-section">
@@ -96,10 +112,6 @@ const DeveloperList = () => {
                                             </>
                                         )
                                     })}
-                                    {/* <option value="python" onClick={(e) => e.stopPropagation()}>Python</option>
-                                <option value="javascript" onClick={(e) => e.stopPropagation()}>JavaScript</option>
-                                <option value="full_stack" onClick={(e) => e.stopPropagation()}>Full Stack</option> */}
-
                                 </Form.Select>
                             </div>
                             <div className="flex-none">
@@ -115,13 +127,17 @@ const DeveloperList = () => {
                                 {/* <Form.Label className="common-label">Experience</Form.Label> */}
                                 <Form.Select className="filter-select shadow-none" value={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
                                     <option value="" > {t("selectExperience")} </option>
-                                    <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
-                                    <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
-                                    <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
-                                    <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
-                                    <option value="10 years" onClick={(e) => e.stopPropagation()}>10 {t("years")}</option>
+                                    <option value="1" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
+                                    <option value="2" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
+                                    <option value="3" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
+                                    <option value="5" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
+                                    <option value="10" onClick={(e) => e.stopPropagation()}>10 {t("years")}</option>
                                 </Form.Select>
                             </div>
+
+                            <div className="flex-none">
+                                <Form.Control type="email" placeholder="Search Developer" value={search}  onChange={handleSearchChange} />
+                                </div>
                             <div>
                                 <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>{t("clear")}</Button>
                             </div>
@@ -129,7 +145,7 @@ const DeveloperList = () => {
                     </Form>
                 </div>
                
-                    <Tab.Container className="w-100" defaultActiveKey="list-view">
+                { screenLoader ? <ScreenLoader />:   <Tab.Container className="w-100" defaultActiveKey="list-view">
                         <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
                             <h3 className="section-head-sub mb-0">{t("listOfAllDevelopers")}</h3>
                             <Nav variant="pills" className="document-view-pill">
@@ -232,15 +248,14 @@ const DeveloperList = () => {
                                 </div>
                             </Tab.Pane>
                         </Tab.Content>
-                    </Tab.Container>
+                    </Tab.Container>}
                
                 {
-                    assignedDeveloper?.total_developers_count > 5 && assignedDeveloper?.developers?.length !== assignedDeveloper.total_developers_count ? (
+                   !screenLoader && assignedDeveloper?.total_developers_count > 5 && assignedDeveloper?.developers?.length !== assignedDeveloper.total_developers_count ? (
                         <div className="text-center mt-3">
                             <SeeMore setCount={setCount} />
                         </div>
                     ) : ("")}
-            </> }
         </>
     )
 }

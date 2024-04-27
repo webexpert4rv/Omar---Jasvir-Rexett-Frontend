@@ -75,7 +75,11 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
 
     }
     if (addExp.length > 0) {
-      dispatch(addDeveloperCvExperience(addExp, () => {
+      let data={
+        experiences:addExp,
+        user_id:+id
+    }
+      dispatch(addDeveloperCvExperience(data, () => {
         if(role=="developer"){
         dispatch(fetchDeveloperCv())
         }else{

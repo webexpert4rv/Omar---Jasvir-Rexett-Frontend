@@ -581,3 +581,22 @@ export function getAddNewDeveloper(payload,callback) {
     }
 
 }
+
+export function updateDeveloperCvDetails(payload, callback) {
+    console.log(payload , "payload")
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`common/update-cv-profile`, { ...payload })
+            if (result.status === 200) {
+                toast.success("Media is updated successfully", { position: "top-center" })
+                dispatch(setActionSuccessFully())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}

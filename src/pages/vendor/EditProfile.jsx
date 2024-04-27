@@ -152,7 +152,7 @@ const EditVendorProfile = () => {
                       <div className="inner-form">
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            {t("vendorName")}
+                            {t("vendorName")} *
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -171,7 +171,7 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            {t("email")}
+                            {t("email")} *
                           </Form.Label>
                           <div>
                             <Form.Control
@@ -256,7 +256,7 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            {t("phoneNumber")}
+                            {t("phoneNumber")} *
                           </Form.Label>
                           <Form.Control
                             type="number"
@@ -273,9 +273,13 @@ const EditVendorProfile = () => {
                             </p>
                           )}
                         </Form.Group>
+                      </div>
+                    </Col>
+                    <Col md="6">
+                      <div>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            {t("address")}
+                            {t("address")} *
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -292,48 +296,8 @@ const EditVendorProfile = () => {
                             </p>
                           )}
                         </Form.Group>
-                      </div>
-                    </Col>
-                    <Col md="6">
-                      <div>
                         <Form.Group className="mb-3">
-                          <Form.Label className="common-label">
-                            {t("address")} 2
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="address_2"
-                            placeholder={t("enterAddress2")}
-                            {...register(`address_2`, {
-                              required: t("addressValidation"),
-                            })}
-                          />
-                          {errors?.address_2 && (
-                            <p className="error-message">
-                              {errors.address_2.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                        {/* <Form.Group className="mb-3">
-                          <Form.Label className="common-label">Profile Picture</Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="cv-field"
-                            name="profile_picture"
-                            placeholder="Enter Profile Picture"
-                            {...register(`profile_picture`, {
-                              required: "profile_picture is required",
-                            })}
-                          />
-                          {errors?.profile_picture && (
-                            <p className="error-message">
-                              {errors.profile_picture.message}
-                            </p>
-                          )}
-                        </Form.Group> */}
-                        <Form.Group className="mb-3">
-                          <Form.Label className="common-label">{t("city")}</Form.Label>
+                          <Form.Label className="common-label">{t("city")} *</Form.Label>
                           <Form.Control
                             type="text"
                             className="cv-field"
@@ -351,7 +315,7 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            {t("postCode")}
+                            {t("postCode")} *
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -370,7 +334,7 @@ const EditVendorProfile = () => {
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label className="common-label">
-                            {t("country")}
+                            {t("country")} *
                           </Form.Label>
                           <Form.Control
                             type="text"
