@@ -17,12 +17,15 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
     return skillsArray;
   };
   const currentStatusCssClass = (status) => {
+    console.log(status,"st")
     switch (status) {
       case "ended":
         return "endcontract";
       case "Initiated":
         return "inprogress";
       case "completed":
+        return "completed";
+      case "published":
         return "completed";
       default:
         return;
@@ -52,7 +55,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       <Col md="12">
                         <div className="info-grid">
                           <h4 className="grid-heading">Skills Req.</h4>
-                          <ul className="skills-pill ">
+                          {item?.skills.length>0?<ul className="skills-listing">
                             {convertToArray(item?.skills)?.map((item) => {
                               return (
                                 <>
@@ -60,7 +63,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                                 </>
                               );
                             })}
-                          </ul>
+                          </ul>:"Not Mentioned"}
                         </div>
                       </Col>
                     </Row>
@@ -73,7 +76,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                         item?.status
                       )}`}
                     >
-                      {item?.status}
+                      {item?.status.charAt(0).toUpperCase() + item?.status.slice(1)}
                     </p>
                   </div>
                   <p className="font-15">

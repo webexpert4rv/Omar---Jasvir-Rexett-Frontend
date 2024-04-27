@@ -131,11 +131,11 @@ const SingleDeveloper = ({ data ,role}) => {
                                     </div>
                                     <h3 className="resume-name">{data?.name}</h3>
                                     <p className="resume-designation">{data?.developer_detail?.professional_title}</p>
-                                    <div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25} /></div>
+                                    {role!=="client" &&<div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25} /></div>}
                                 </div>
                                 <div className="connect-social-media">
                                     <h3 className="subheading-resume text-center mb-3">Skills</h3>
-                                    <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25} /></div>
+                                  { role!=="client" && <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25} /></div>}
                                     <ul className="skills-pill text-center">
                                         {
                                             splitSkills(data?.developer_skills)?.map((item, index) => {
@@ -150,7 +150,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                 </div>
                                 <div className="connect-social-media">
                                     <h3 className="subheading-resume text-center mb-3">Connect With Me</h3>
-                                    <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25} /></div>
+                                   {role!=="client" && <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25} /></div>}
                                     {/* <ul className="social-media">
                                     {developerDetails?.social_links?.map((item)=>{
                                         return(
@@ -185,7 +185,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                     <div className="">
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
                                         {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
-                                        <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>
+                                       {role!=="client" && <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>}
                                         {data?.developer_detail?.bio?.length > 300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length > 300 ? <>
                                             {data?.developer_detail?.bio.slice(0, 300)}
                                             <span className="readLess" onClick={readMoreLess}> {readmore ? '[Read more...]' : '[Read Less]'} </span>
@@ -200,7 +200,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                 </div>
 
                                 <div className="about-info px-4 pt-4">
-                                    <div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25} /></div>
+                                   { role!=="client" &&<div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25} /></div>}
                                     <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>
                                     {data?.developer_experiences?.map((item) => {
                                         return (
@@ -216,7 +216,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                     })}
                                     {data?.developer_educations ? <>
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
-                                        <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25} /></div>
+                                      { role!=="client" && <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25} /></div>}
                                         {data?.developer_educations?.map((item) => {
                                             return (
                                                 <React.Fragment key={item.id}>

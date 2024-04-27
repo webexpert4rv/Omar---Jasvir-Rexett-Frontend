@@ -73,7 +73,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                                                 </li> */}
                                             </ul>
                                             <div className='job-card-btns'>
-                                                {role !== "admin" && (type === "Shortlisted" || type === "Suggest" || type === "Interviewing") && type !== "Hired" ?
+                                                {role !== "admin" && (type === "Shortlisted" || type === "Suggested" || type === "Interviewing") && type !== "Hired" ?
                                                         <OverlayTrigger placement="bottom" overlay={developerCardToolTip}>
                                                  <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={(e) => handleJobStatusModal(e,item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? <RiUserAddFill />  : type === "Shortlisted" ? <PiUserRectangleFill /> : <ImUserCheck />}</Button></OverlayTrigger> : "" }
                                                 {role !== "admin" && <OverlayTrigger placement="bottom" overlay={rejectedCardToolTip}><Button variant="danger" onClick={(e) => handleJobStatusModal(e,item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100"><ImUserMinus /></Button></OverlayTrigger> }

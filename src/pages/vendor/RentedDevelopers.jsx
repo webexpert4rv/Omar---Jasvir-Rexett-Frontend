@@ -82,7 +82,8 @@ const RentedDevelopers = () => {
         e.stopPropagation()
         setShowModal(!showModal)
     }
-    const handleDeleteAction=()=>{
+    const handleDeleteAction=(e)=>{
+        e.preventDefault()
         dispatch(getDeleteDeveloper())
     }
     const handleClose=()=>{

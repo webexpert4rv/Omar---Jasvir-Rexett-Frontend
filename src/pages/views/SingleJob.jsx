@@ -3,9 +3,6 @@ import { Button, Col, Row, Tab, Tabs, Tooltip, OverlayTrigger } from "react-boot
 // import userImg from '../../assets/img/user-img.jpg'
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaGithub } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
 import RejectModal from "./Modals/RejectModal";
 import EndJobModal from "./Modals/EndJob";
 import ConfirmationModal from "./Modals/ConfirmationModal";
@@ -43,7 +40,6 @@ const SingleJob = () => {
         }
     }, [])
 
-    console.log(jobPostedData, "jobPostedData")
     useEffect(() => {
         setSingleJobDescription(jobPostedData?.data)
     }, [jobPostedData])
@@ -65,7 +61,6 @@ const SingleJob = () => {
         ))
 
     }
-    console.log(singleJobDescription?.experience , "singleJobDescription")
     const handleSelect = (key) => {
         setCurrentTab(key)
         setSelectedTabsData(jobPostedData[key])
@@ -83,7 +78,8 @@ const SingleJob = () => {
         }
 
     }
-    const handleJobStatusAction = (e, data, id) => {
+    const handleJobStatusAction = (e,data) => {
+        console.log("jkk")
         e.preventDefault()
         if (data.status == "ended") {
             dispatch(publishedPost(singleJobDescription?.id, data, () => {
@@ -118,7 +114,6 @@ const SingleJob = () => {
     }
 
     const handleJobStatusModal = (e, id, status) => {
-
         if (e == undefined) {
             setStatusModal({
                 [status]: !statusModal.isTrue,

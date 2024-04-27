@@ -62,7 +62,8 @@ const AccountDeletionRequest = () => {
 
     }
     console.log(details, "details")
-    const handleDeleteAction = () => {
+    const handleDeleteAction = (e) => {
+        e.preventDefault()
         const { role, id } = details;
         dispatch(getDeletionByAdmin(role, id))
     }
