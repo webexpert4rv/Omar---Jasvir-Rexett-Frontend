@@ -81,7 +81,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
         // const currrentDate = selectedFilter?.length > 0 ? item?.report_date :formattedDate ;
         append({
           report_date: item?.report_date,
-          is_off_day: false,
+          is_off_day: true,
           start_time: item?.start_time ? item?.start_time : null,
           end_time: item?.start_time ? item?.end_time : null,
           memo: item?.memo ? item?.memo : null,
@@ -96,6 +96,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   }, [timeReportingData ]);
 
   const handleWorkDaysChange = (e, index, state) => {
+    console.log(state,"stat")
     if (state) {
       const updatedDisabledEndDates = [...disabledWorkDay];
       updatedDisabledEndDates[index] = true;
@@ -109,6 +110,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
     }
   };
   const onSubmit = (values) => {
+    console.log(values,"op")
     let payloadData = {
       contract_id: +selectedFilter?.contract_id,
       reports: values?.addTime,

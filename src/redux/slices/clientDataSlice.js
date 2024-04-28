@@ -143,7 +143,8 @@ export function updateClientProfile(payload, callback) {
                 toast.success("Profile is Updated", { position: "top-center" })
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message = error.response.data.message || "Something went wrong";
+            console.log(error,"err")
             toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }

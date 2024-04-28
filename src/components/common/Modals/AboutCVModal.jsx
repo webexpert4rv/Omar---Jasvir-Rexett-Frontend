@@ -39,7 +39,7 @@ const AboutCV = ({ show, handleClose, data, id, role }) => {
         "user_id": id
       }
       dispatch(updateDeveloperCvBio(data, () => {
-        dispatch(fetchDeveloperCv(id))
+        dispatch(fetchDeveloperCv())
         handleClose()
       }))
     } else {

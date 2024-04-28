@@ -25,13 +25,6 @@ const EditProfile = () => {
         secondPass:false
     })
     const {smallLoader,clientProfileDetails,screenLoader}=useSelector(state=>state.clientData)
-
-
-   
-    // const handleJobStatusModal=(id)=>{
-    //     console.log(id,"id")
-    //     setShowModal(!showModal)
-    // }
     
     useEffect(()=>{
        dispatch(getClientProfile())
@@ -48,38 +41,6 @@ const EditProfile = () => {
         setValue("passcode",clientProfileDetails?.data?.passcode)
          
     },[clientProfileDetails])
-    const handleJobStatusAction= (e,data) => {
-        console.log(data,"data")
-        e.preventDefault()
-        console.log(data,"data")
-        dispatch(getDeleteAccount(data))
-        setShowModal(false)
-        // if(data.status=="ended"){
-        //     dispatch(publishedPost(singleJobDescription?.id,data,()=>{
-        //         setStatusModal({})
-        //         dispatch(singleJobPostData(id,()=>{
-
-        //         })) 
-        //     }
-        //     ))
-        // }else{
-        //     dispatch(changeJobStatus(currentTab,statusModal?.id,data, () => {    
-        //         dispatch(singleJobPostData(id,()=>{
-        //             setStatusModal({})
-        //             let prevData={...jobPostedData}
-        //            let d= prevData[currentTab]?.filter(item=>item.id!==statusModal?.id)
-        //            prevData[currentTab]=d
-        //            setSelectedTabsData(prevData[currentTab])
-        //         }))
-        //     }))
-        // }
-           
-    }
-    const deleteprofile = (
-        <Tooltip id="tooltip">
-          Delete Profile
-        </Tooltip>
-      );
 
     const onSubmit = (values) => {
         let formData={
@@ -107,9 +68,6 @@ const EditProfile = () => {
             <section className="card-box">
                 <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
                     <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
-                    {/* <OverlayTrigger placement="bottom" overlay={deleteprofile}>
-                        <Button onClick={() => handleJobStatusModal(clientProfileDetails?.id)} className="delete-btn"><FaTrashCan /></Button>
-                    </OverlayTrigger> */}
                 </div>
                 <div>
                   {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -290,6 +248,7 @@ const EditProfile = () => {
                                 text={t("updateProfile")}
                                 className="main-btn px-5"
                                 variant="transparent"
+                                disabled={smallLoader}
                                 isLoading={smallLoader}
                             />
                         </div>

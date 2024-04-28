@@ -318,7 +318,7 @@ export function deleteEducationCv(payload, callback) {
     return async (dispatch) => {
         //  dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`developer/delete-education/${payload}`)
+            let result = await clientInstance.delete(`common/delete-education/${payload}`)
             if (result.status === 200) {
                 toast.success("Education is Deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())

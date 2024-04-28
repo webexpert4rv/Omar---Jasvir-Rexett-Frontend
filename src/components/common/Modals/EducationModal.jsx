@@ -85,7 +85,11 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
         remove(index)
         if (id) {
             dispatch(deleteEducationCv(id, () => {
-                dispatch(fetchDeveloperCv(id))
+                if (role == "developer") {
+                    dispatch(fetchDeveloperCv())
+                } else {
+                    dispatch(getDeveloperDetails(id))
+                }
             }))
         }
     }

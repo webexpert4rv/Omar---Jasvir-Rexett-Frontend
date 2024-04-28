@@ -5,8 +5,9 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import { HiUpload } from "react-icons/hi";
 import { filePreassignedUrlGenerate, getDeveloperDetails, updateDeveloperCvDetails } from "../../../redux/slices/clientDataSlice";
+import { fetchDeveloperCv } from "../../../redux/slices/developerDataSlice";
 
-const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) => {
+const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role }) => {
     const dispatch = useDispatch();
     const { smallLoader } = useSelector(state => state.clientData)
     const [file, setFile] = useState(null)
@@ -49,7 +50,12 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) =
             };
             console.log(data,"data")
             dispatch(updateDeveloperCvDetails(data, () => {
-                dispatch(getDeveloperDetails(id))
+                if(role=="developer"){
+                    dispatch(fetchDeveloperCv())
+                }else{
+                    dispatch(getDeveloperDetails(id))
+
+                }
                 handleClose()
             }))
         }else{
@@ -61,7 +67,12 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id }) =
                 };
                 console.log(data,"data")
                 dispatch(updateDeveloperCvDetails(data, () => {
-                    dispatch(getDeveloperDetails(id))
+                    if(role=="developer"){
+                        dispatch(fetchDeveloperCv())
+                    }else{
+                        dispatch(getDeveloperDetails(id))
+    
+                    }
                     handleClose()
                 }))
             }));

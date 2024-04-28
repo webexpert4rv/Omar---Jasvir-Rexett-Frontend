@@ -103,7 +103,7 @@ const RexetLogin = ({userType}) => {
                             <div className="inner-auth-wrapper h-100 d-flex justify-content-center flex-column position-relative">
                                 <div>
                                     <div className="text-center mb-5 logo-auth-wrapper">
-                                        <img src={sidebarLogo} className="logo-white" />
+                                    <a href="https://rexett-web.rvtechnologies.in/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
                                       

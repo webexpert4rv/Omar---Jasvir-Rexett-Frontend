@@ -117,12 +117,14 @@ const VendorDashboard = () => {
                             )
                         })}
 
-                        <div className="text-center ">
-                            <Link to={"/all-rented-developers"} className="link-text-dark">{t("seeAll")}</Link>
-                        </div>
+
                     </>
                         : <NoDataFound />}
+                                                
                 </div>
+                <div className="text-center ">
+                            <Link to={"/all-rented-developers"} className="link-text-dark">{t("seeAll")}</Link>
+                        </div>
 
             </>}
         </>

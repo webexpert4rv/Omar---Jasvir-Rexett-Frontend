@@ -235,7 +235,7 @@ const AllDeveloperList = () => {
                         </Tab.Pane>
                     </Tab.Content>}
                 </Tab.Container>
-                {!screenLoader && allDevelopersList?.data?.developers?.length >= 5 ? (
+                {!screenLoader && allDevelopersList?.data?.developers?.length >= 5 && allDevelopersList?.data?.developers?.length!== allDevelopersList?.pagination?.totalDevelopers  ? (
                     <div className="text-center mt-3">
                         <SeeMore setCount={setCount} />
                     </div>
