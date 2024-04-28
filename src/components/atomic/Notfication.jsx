@@ -130,11 +130,11 @@ const Notification = ({ route, job, doc, timeReport }) => {
           <div className="d-flex align-items-center gap-3">
             <Dropdown className="notification-dropdown">
               <Dropdown.Toggle variant="transparent" id="dropdown-basic" className="notification-dropdown-toggle p-0">
-                <button className={`notification-btn ${newJobPost !== null ? "active" : ""} `} onClick={handleNotificationBell} >{nottificationData.length > 0?<span className="bell-count">{nottificationData.length}</span>:""}<FaBell /></button>
+                <button className={`notification-btn ${newJobPost !== null ? "active" : ""} `} onClick={handleNotificationBell} >{nottificationData?.length > 0?<span className="bell-count">{nottificationData.length}</span>:""}<FaBell /></button>
               </Dropdown.Toggle>
               {notificationModal && <Dropdown.Menu className="notification-dropdown-menu">
                 <div className="dropdown-notify-wrapper">
-                  {nottificationData.length > 0 ? [...nottificationData]?.sort(compareDates)?.map((item) => {
+                  {nottificationData?.length > 0 ? [...nottificationData]?.sort(compareDates)?.map((item) => {
                     return (
                       <>
                         <div className="dropdown-notify-item" onClick={() => handleNotification(item?.id, item?.reference_id, item?.reference_model)}>
