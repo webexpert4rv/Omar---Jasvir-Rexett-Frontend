@@ -652,6 +652,19 @@ ul {
     color: #fff;
 }
 
+.bell-count{
+    position: absolute;
+    top: -7px;
+    left: 25px;
+    border: 1px solid red;
+    background: red;
+    color: wheat;
+    height: 24px;
+    width: 21px;
+    border-radius: 11px;
+
+}
+
 .link-text-dark {
     font-size: 16px;
     text-decoration: none;
