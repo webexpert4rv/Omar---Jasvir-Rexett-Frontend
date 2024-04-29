@@ -66,7 +66,7 @@ const RexettDocuments = ({ currentRole }) => {
     const handleShowShareFileModal = (id) => {
         setShareFileModal(true);
         setFileID(id)
-        dispatch(getDocumentShare())
+      
     }
     const handleCloseShareFileModal = () => {
         setShareFileModal(false)
