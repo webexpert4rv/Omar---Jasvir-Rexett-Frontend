@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
 import { HiUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,13 +15,14 @@ import { useTranslation } from "react-i18next";
 
 
 const EditDeveloperProfile = () => {
+    const userId = localStorage.getItem("userId");
     const [selectedImage, setSelectedImage] = useState(null);
-    const userId = localStorage.getItem("userId")
     const { t } = useTranslation()
 
     const {
         register,
         setValue,
+        control,
         handleSubmit,
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
@@ -34,9 +35,7 @@ const EditDeveloperProfile = () => {
     const [file, setFile] = useState(null)
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
 
-    console.log(userId, "userId")
     const handleJobStatusModal = (id) => {
-        console.log(id, "id")
         setShowModal(!showModal)
     }
     const handleJobStatusAction = (e, data) => {
@@ -91,7 +90,6 @@ const EditDeveloperProfile = () => {
                     "user_id": userId
                 };
                 // formData.append("file",data.s3_path);
-                console.log(data, "data")
                 dispatch(updateDeveloperProfile(data));
             }));
         }
@@ -174,7 +172,7 @@ const EditDeveloperProfile = () => {
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">{t("phone")}*</Form.Label>
-                                        <Form.Control type="tel" className="common-field"
+                                        {/* <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
                                                 required: {
@@ -185,8 +183,35 @@ const EditDeveloperProfile = () => {
                                                     value: /^[0-9]{10}$/,
                                                     message: "Please enter a valid phone number"
                                                 }
-                                            })}
-                                        />
+                                        /> */} 
+                     <Controller
+                      name="phone_number"
+                      control={control} 
+                      rules={{
+                        required: {
+                          value: true,
+                          message: t("phoneNumberValidation"),
+                        },
+                        pattern: {
+                          value: /^[0-9]{10}$/,
+                          message: "Please enter a valid phone number",
+                        },
+                      }}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="common-field form-control"
+                          onChange={(e) => {
+                            const numericValue = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                            field.onChange(numericValue);
+                          }}
+                        />
+                      )}
+                    />
                                         <p className="error-message">
                                             {errors.phone_number?.message} </p>
                                     </Form.Group>
@@ -276,11 +301,11 @@ const EditDeveloperProfile = () => {
                                             {...register("passcode", {
                                                 required: {
                                                     value: true,
-                                                    message: "Plan Name is required",
+                                                    message: "Postcode is required",
                                                 },
                                                 pattern: {
                                                     value: /^[0-9]+$/,
-                                                    message: "Passcode should only contain numbers",
+                                                    message: "Postcode should only contain numbers",
                                                 }
                                             })}
                                         />

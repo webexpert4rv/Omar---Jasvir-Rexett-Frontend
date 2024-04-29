@@ -5,6 +5,7 @@ import {
   getAllContracts,
   getPreviousTimeReports,
   saveTimeReports,
+  setAddTimeReports,
 } from "../../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../../components/atomic/RexettButton";
@@ -40,7 +41,6 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   useEffect(() => {
     dispatch(getAllContracts());
   }, []);
-
   const getCurrentWeekDates = () => {
     const today = new Date();
     const currentDay = today.getDay();
@@ -96,7 +96,6 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   }, [timeReportingData ]);
 
   const handleWorkDaysChange = (e, index, state) => {
-    console.log(state,"stat")
     if (state) {
       const updatedDisabledEndDates = [...disabledWorkDay];
       updatedDisabledEndDates[index] = true;
@@ -110,7 +109,6 @@ const AddTimingModal = ({ show, handleClose,role }) => {
     }
   };
   const onSubmit = (values) => {
-    console.log(values,"op")
     let payloadData = {
       contract_id: +selectedFilter?.contract_id,
       reports: values?.addTime,
@@ -145,9 +143,10 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   };
   const handleCloseModal = () => {
     setSelectedFilter({})
-    handleClose()
     setTimeReportingData([])
+    setAddTimeReports([])
     getCurrentWeekDates();
+    handleClose()
   }
 
   return (
@@ -160,8 +159,8 @@ const AddTimingModal = ({ show, handleClose,role }) => {
       size="lg"
       scrollable
     >
-      <Modal.Header className="border-0 pb-3">
-        <CloseButton onClick={handleCloseModal}></CloseButton>
+      <Modal.Header className="border-0 pb-3" onClick={handleCloseModal}>
+        <CloseButton></CloseButton>
       </Modal.Header>
 
       <Modal.Body>
@@ -303,7 +302,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
             {!open ? fields?.map((item, index) => {
               return (
                 <>
-                  <div className="time-row">
+                  <div className="time-row">  
                     <Row>
                       <Col md={12}>
                         <Form.Label className="date-text">

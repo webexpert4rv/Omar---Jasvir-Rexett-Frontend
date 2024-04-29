@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addDeveloperCvEducation, deleteEducationCv, fetchDeveloperCv, getDegreeList, updateDeveloperCvEducation } from "../../../redux/slices/developerDataSlice";
+import { addDegree, addDeveloperCvEducation, deleteEducationCv, fetchDeveloperCv, getDegreeList, updateDeveloperCvEducation } from "../../../redux/slices/developerDataSlice";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm, useFieldArray } from "react-hook-form";
 import Select from 'react-select';
 import { FaTrashAlt } from "react-icons/fa";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
+import CreatableSelect from "react-select/creatable";
 
 const EducationCV = ({ show, handleClose, data, id, role }) => {
     const dispatch = useDispatch();
@@ -132,7 +133,14 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
         }
     })
 }
-console.log(role,"role")
+   const handleCreate = (inputValue) => {
+    const payload = {
+        title : inputValue
+    }
+    dispatch(addDegree(payload, () => {
+        dispatch(getDegreeList());
+      }))
+   } 
 
     const deletetooltip = (
         <Tooltip id="tooltip">
@@ -174,12 +182,20 @@ console.log(role,"role")
                                 <Col md="6">
                                     <Form.Group className="mb-4">
                                         <Form.Label className="font-14">Degree Name</Form.Label>
-                                        <Select
+                                        <CreatableSelect
+                                        isClearable
+                                        onChange={(val) => setValue(`educations.${index}.degree_id`, val ? val.value : '')}
+                                        defaultValue={degreeList.find(option => option.value === item.degree_id)}
+                                        onCreateOption={handleCreate}
+                                        options={degreeList}
+                                        />
+                                            {/* <Select
                                             options={degreeList}
+                                            onCreateOption={handleCreate}
                                             onChange={(val) => setValue(`educations.${index}.degree_id`, val ? val.value : '')}
                                             defaultValue={degreeList.find(option => option.value === item.degree_id)}
 
-                                        />
+                                        /> */}
 
                                     </Form.Group>
 
