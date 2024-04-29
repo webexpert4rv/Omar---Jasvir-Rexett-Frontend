@@ -11,7 +11,7 @@ const DeveloperTimeReporting = () => {
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({});
     const { timeReportingData, smallLoader } = useSelector(state => state.clientData)   
-<<<<<<< HEAD
+
     // useEffect(() => {
     //     let filterData = {
     //         ...selectedFilter,
@@ -19,7 +19,6 @@ const DeveloperTimeReporting = () => {
     //     }
     //     dispatch(timeReporting(filterData,"developer"))
     // }, [dispatch])
-=======
     useEffect(() => {
         let filterData = {
             ...selectedFilter,
@@ -27,7 +26,6 @@ const DeveloperTimeReporting = () => {
         }
         dispatch(timeReporting(filterData,"developer"))
     }, [dispatch])
->>>>>>> a125417 (added creatable select for degree fields)
 
     const handleShowModal = () => {
         setShowModal(true);
