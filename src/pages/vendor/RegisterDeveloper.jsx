@@ -299,7 +299,7 @@ const RegisterDeveloper = () => {
       dispatch(getDegreeList());
     }))
   }
-
+  
   return (
     <>
       <section className="register-developer card-box">
