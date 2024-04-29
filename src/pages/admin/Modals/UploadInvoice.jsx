@@ -17,37 +17,30 @@ const UploadInvoice = ({ show, handleClose,contractId ,role}) => {
     } = useForm({});
 
     const onSubmit = (values) => {
-        console.log(values,"values")
+        console.log(values?.file?.type, "values");
+    
+       
+         if (values.category === "3" && values.file_name[0].type !== "application/pdf") {
+            alert("Only PDF files are allowed for Invoices category.");
+            return; 
+        }
+    
         let fileData = new FormData();
-        let fileName = values?.file_name?.type?.split("/")
-        // let splitWithDot = fileName[fileName.length - 1]
-        // let fileExtWithDot = splitWithDot?.split(".")
-
-        // let fileExt = fileExtWithDot[fileExtWithDot?.length - 1]
-        switch (fileName) {
-            case "pdf":
-                return <MdPictureAsPdf />
-        
-    }
-
-        fileData.append("file",selectedFile);
-
-            dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-                let data = {
-                        "contract_id": contractId,
-                        "file_type": 0,
-                        "parent_id": 0,
-                        "type": values?.category,
-                        "s3_path": url,
-                        "file_extension": "string"      
-                };
-                // formData.append("file",data.s3_path);
-                dispatch(createNewFolderAndFile(data,()=>{
-                    handleClose()
-                }));
+        fileData.append("file", selectedFile);
+    
+        dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+            let data = {
+                "contract_id": contractId,
+                "file_type": 0,
+                "parent_id": 0,
+                "type": values.category,
+                "s3_path": url,
+                "file_extension": "pdf" 
+            };
+            dispatch(createNewFolderAndFile(data, () => {
+                handleClose();
             }));
-        
-      
+        }));
     };
     return (
         <Modal show={show} onHide={handleClose} centered animation size="lg">
@@ -97,6 +90,7 @@ const UploadInvoice = ({ show, handleClose,contractId ,role}) => {
                             text="Create"
                             className="main-btn px-4"
                             variant="transparent"
+                            disabled={smallLoader}
                             isLoading={smallLoader}
                         />
                     </div>

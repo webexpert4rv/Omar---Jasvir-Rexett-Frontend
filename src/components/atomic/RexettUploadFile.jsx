@@ -4,8 +4,9 @@ import { callPreSignedUrlResponse, createNewFolderAndFile, filePreassignedUrlGen
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "./RexettButton";
 import { useForm } from "react-hook-form";
-const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,setOpen }) => {
+const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole, setOpen }) => {
     const [selectedFile, setSelectedFile] = useState(null)
+    const[details,setDetails] = useState()
     const dispatch = useDispatch()
     const { smallLoader } = useSelector(state => state.clientData);
     const {
@@ -16,9 +17,17 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
     } = useForm({});
 
 
+    console.log(selectedFile , "selectedFile")
     const onSubmit = async (values) => {
-        let formData = new FormData()
-        formData.append("file", values.file_name[0])
+        setDetails(values)
+        let formData = new FormData();
+        formData.append("file", values.file_name[0]);
+    
+        if (values.category === "3" && values.file_name[0].type !== "application/pdf") {
+            alert("Only PDF files are allowed for Invoices category.");
+            return; 
+        }
+    
         dispatch(filePreassignedUrlGenerate(formData, (url) => {
             let fileData = {
                 "contract_id": currentFolderDetails.contract_id,
@@ -32,15 +41,14 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
                 let data = {
                     parent_id: parent_id
                 }
-                handleClose()
-                setOpen(false)
-                setSelectedFile(null)
-                dispatch(getFolderData(data,currentRole))
-            }))
-
-
-        }))
-    }
+                handleClose();
+                setOpen(false);
+                setSelectedFile(null);
+                dispatch(getFolderData(data, currentRole));
+            }));
+        }));
+    };
+    
     return (
         <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
             <Modal.Header closeButton className="border-0 pb-3">
@@ -84,6 +92,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
                             text="Upload"
                             className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
+                            disabled={smallLoader && details.category==="3" ? true : false}
                             isLoading={smallLoader}
                         />
                     </div>
