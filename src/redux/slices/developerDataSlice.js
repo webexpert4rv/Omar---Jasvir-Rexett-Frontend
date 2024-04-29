@@ -472,3 +472,17 @@ export function shareBelongisFile(paylaod) {
         }
     };
 }
+
+// add degree
+export function addDegree(paylaod,callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`common/add-degree`, { ...paylaod })
+            return callback();
+        } catch (error) {
+            console.log(error, "error");
+        }
+    };
+}
+

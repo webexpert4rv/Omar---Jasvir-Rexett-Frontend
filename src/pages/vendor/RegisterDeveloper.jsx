@@ -6,7 +6,7 @@ import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getAddNewDeveloper } from "../../redux/slices/clientDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
-import { getDegreeList } from "../../redux/slices/developerDataSlice";
+import { addDegree, getDegreeList } from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
@@ -110,7 +110,6 @@ const RegisterDeveloper = () => {
   const yearsArray = generateYears();
 
   const onSubmit = (data, index) => {
-    console.log(data, "data");
     let formData = {
       ...data,
       skills: skillSet,
@@ -135,13 +134,11 @@ const RegisterDeveloper = () => {
   };
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
-    console.log(experiences, "experiences");
     // to check if any of the field inside experiences array is empty
     const index = experiences?.findIndex(
       ({ job_title, company_name, description, start_date, end_date }) =>
         !company_name || !job_title || !description || !start_date || !end_date
     );
-    console.log(index);
     // if index is greater than -1 means there is field inside element that is empty
     if (index === -1) {
       const newExperienceField = {
@@ -273,7 +270,14 @@ const RegisterDeveloper = () => {
     setSelectedOption((prev) => [...prev, newOption]);
     setSkillsCate((prev) => [...prev, newOption]);
   };
-  console.log(errors.profile_picture, "errors");
+  const handleCreate = (inputValue) => {
+    const payload = {
+        title : inputValue
+    }
+    dispatch(addDegree(payload, () => {
+        dispatch(getDegreeList());
+      }))
+   } 
 
   return (
     <>
@@ -330,7 +334,7 @@ const RegisterDeveloper = () => {
                     <Form.Label className="common-label">
                       {t("phoneNumber")} *
                     </Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       className="common-field"
                       name="phone_number"
@@ -344,9 +348,40 @@ const RegisterDeveloper = () => {
                           message: "Please enter a valid phone number",
                         },
                       })}
+                    /> */}
+                    <Controller
+                      name="phone_number"
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: t("phoneNumberValidation"),
+                        },
+                        pattern: {
+                          value: /^[0-9]{10}$/,
+                          message: "Please enter a valid phone number",
+                        },
+                      }}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="common-field form-control"
+                          onChange={(e) => {
+                            const numericValue = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                            field.onChange(numericValue);
+                          }}
+                        />
+                      )}
                     />
-                   
-                   
+                    {errors?.phone_number && (
+                      <p className="error-message">
+                        {errors?.phone_number?.message}
+                      </p>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col md={6}>
@@ -790,7 +825,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group>
                         <Form.Label>{t("degreeName")} *</Form.Label>
-                        <Select
+                        {/* <Select
                           options={degreeList}
                           onChange={(val) =>
                             setValue(
@@ -801,6 +836,20 @@ const RegisterDeveloper = () => {
                           defaultValue={degreeList.find(
                             (option) => option.value === degree_id
                           )}
+                        /> */}
+                        <CreatableSelect
+                          isClearable
+                          onChange={(val) =>
+                            setValue(
+                              `educations[${index}].degree_id`,
+                              val ? val.value : ""
+                            )
+                          }
+                          defaultValue={degreeList.find(
+                            (option) => option.value === degree_id
+                          )}
+                          onCreateOption={handleCreate}
+                          options={degreeList}
                         />
                       </Form.Group>
                     </Col>

@@ -10,7 +10,7 @@ const DeveloperTimeReporting = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({});
-    const { timeReportingData, smallLoader } = useSelector(state => state.clientData)
+    const { timeReportingData, smallLoader } = useSelector(state => state.clientData)   
     useEffect(() => {
         let filterData = {
             ...selectedFilter,
