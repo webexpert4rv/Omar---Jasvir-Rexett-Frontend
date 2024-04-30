@@ -188,12 +188,14 @@ const SingleJob = () => {
                                             }}>{approvedLoader ? <RexettSpinner /> : singleJobDescription?.status == "published" ? <BsFillSendXFill /> : <BsFillSendFill />}</Button>
                                         </OverlayTrigger>
                                     </> : ""}
+                                    {singleJobDescription?.status !== "ended" ?
                                     <OverlayTrigger placement="top" overlay={deletejob}>
-                                        <Button onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button>
-                                    </OverlayTrigger>
+                                        <Button onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button> 
+                                    </OverlayTrigger> :""}
+                                    {singleJobDescription?.status !== "ended" ?
                                     <OverlayTrigger placement="top" overlay={editjob}>
                                         <Button onClick={() => handleEdit("application", singleJobDescription?.id)}><TiEdit /></Button>
-                                    </OverlayTrigger>
+                                    </OverlayTrigger> :""}
                                 </div>
                             </div>
                             <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>
