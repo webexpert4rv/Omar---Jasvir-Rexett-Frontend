@@ -34,7 +34,7 @@
         "sharedBy": "Shared by",
         "weekly": "Weekly",
         "monthly": "Monthly",
-        "yearly": "yearly",
+        "yearly": "Yearly",
         "selectYear": "Select Year",
         "selectMonth": "Select Month",
         "selectWeek": "Select Week",
@@ -251,9 +251,12 @@
         "totalEmployeesValidation" : "Total Employees is required",
         "stateValidation" : "State is required",
         "countryCodeValidation":"Country Code is required",
-        "contactEmailValidation":"contactEmailValidation",
-        "contactNameValidation":"contactNameValidation",
-        "contactNumberValidation":"contactNumberValidation",
+        "contactEmailValidation":"Contact Email is required",
+        "contactNameValidation":"Contact name is required",
+        "contactNumberValidation":"Contact number is required",
+        "proprietorNameValidation":"Name is required",
+        "proprietorEmailValidation":"Email is required",
+        "proprietorNumberValidation":"Number is required",
         "currentlyAttending": "Currently Attending",
         "currentlyWorking" : "Currently Working",
         "enterSkills" : "Enter and create new skills",
@@ -320,7 +323,8 @@
         "professionalTitleValidation" : "Professional Title is required",
         "invalid_file_type" :"Invalid file type ",
         "profilePictureValidation" :"Profile Picture is required",
-        "invalidEmail" :"Invalid email"
+        "invalidEmail" :"Invalid email",
+        "selectView" : "Select View"
         
 
     }

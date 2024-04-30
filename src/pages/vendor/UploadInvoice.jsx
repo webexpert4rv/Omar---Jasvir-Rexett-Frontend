@@ -107,6 +107,7 @@ const VendorUploadInvoice = () => {
                             className="main-btn px-4"
                             variant="transparent"
                             onClick={submitFile}
+                            disabled={smallLoader}
                             isLoading={smallLoader}
                         />
                     </div>

@@ -454,7 +454,7 @@ export function getDocumentShare() {
                 dispatch(setShareDocument(result.data))
             }
         } catch (error) {
-            console.log(error, "error")
+          console.log(error)
         }
     };
 }
@@ -468,7 +468,10 @@ export function shareBelongisFile(paylaod) {
             toast.success(result?.data?.message, { position: "top-center" })
             dispatch(setSuccessActionData())
         } catch (error) {
-            console.log(error, "error")
+            console.log(error.response.data.message ,"error.response.data.message")
+            const message = error.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
         }
     };
 }

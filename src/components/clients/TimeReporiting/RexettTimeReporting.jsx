@@ -14,32 +14,36 @@ import { useTranslation } from "react-i18next";
 
 const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const dispatch = useDispatch()
-    const [selectedPeriod, setSelectedPeriod] = useState("weekly");
-    const [selectedFilter, setSelectedFilter] = useState({ filter: "weekly" });
+    const [selectedPeriod, setSelectedPeriod] = useState("");
+    const [selectedFilter, setSelectedFilter] = useState({ filter: "" });
     const [selectedWeek, setSelectedWeek] = useState("")
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedMonth, setSelectedMonth] = useState("")
+    const [selectedView, setSelectedView] = useState("")
     const [page, setPage] = useState(1)
-    const { screenLoader , timeReportingPage } = useSelector(state => state.clientData)
+    const { screenLoader, timeReportingPage } = useSelector(state => state.clientData)
 
-    useEffect(()=>{
+    useEffect(() => {
         let filterData = {
             ...selectedFilter,
             filter: selectedPeriod,
-            page:page
+            page: page
         };
         dispatch(timeReporting(filterData, role));
-    },[page])
+    }, [page])
     const { t } = useTranslation();
-
-
-    const handlePeriodChange = (e) => {
-        const selectedPeriodValue = e.target.value;
+    console.log(selectedView,"selectedView")
+    console.log(selectedFilter, "selectedFilter")
+    console.log(selectedPeriod, "selectedPeriod")
+    const handlePeriodChange = (value) => {
+        setSelectedView(value)
+        const selectedPeriodValue = value;
+        console.log(selectedPeriodValue , "selectedPeriodValue")
         setSelectedPeriod(selectedPeriodValue);
         let filterData = {
             ...selectedFilter,
             filter: selectedPeriodValue,
-            page:page
+            page: page
         };
 
         delete filterData.week;
@@ -84,7 +88,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         let filterData = {
             ...selectedFilter,
             filter: selectedPeriod,
-            page:page
+            page: page
         }
         if (selectedPeriod === "yearly") {
             filterData.year = selectedFilter.year;
@@ -115,7 +119,8 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 <div className="d-flex gap-3 flex-wrap align-items-end">
                                     <div className="flex-none">
                                         {/* <Form.Label className="common-label">Select View</Form.Label> */}
-                                        <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} >
+                                        <Form.Select className=" time-filter-select shadow-none" value={selectedView} onChange={(e)=>handlePeriodChange(e.target.value)} >
+                                            <option value="">{t("selectView")}</option>
                                             <option value="weekly">{t("weekly")}</option>
                                             <option value="monthly">{t("monthly")}</option>
                                             <option value="yearly">{t("yearly")}</option>
@@ -212,10 +217,10 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
 
                     <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
 
-                    { timeReportingPage?.totalPages >1 ?  <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                   <p className="showing-result">{t("showing")} {(timeReportingData?.length)} {t("results")}</p> 
-                <RexettPagination number={timeReportingPage?.totalPages} setPage={setPage} page={page}/>
-            </div> : ""}
+                    {timeReportingPage?.totalPages > 1 ? <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
+                        <p className="showing-result">{t("showing")} {(timeReportingData?.length)} {t("results")}</p>
+                        <RexettPagination number={timeReportingPage?.totalPages} setPage={setPage} page={page} />
+                    </div> : ""}
                 </section>}
 
         </>
