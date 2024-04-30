@@ -80,7 +80,7 @@ const JobListing = () => {
                                             </div>
                                             <div className="status-wrapper">
                                                 <div className="d-flex gap-3 align-items-center mb-2">
-                                                    <p className="status-text inprogress mb-0">{item.status}</p>
+                                                    <p className="status-text inprogress mb-0">{item.status.charAt(0).toUpperCase() + item.status.slice(1)}</p>
                                                 </div>
                                                 <p className="font-15">Posted Date: <strong>{item.created_at.slice(0, 10)}</strong></p>
                                                 <OverlayTrigger placement="bottom" overlay={viewtooltip}>

@@ -24,14 +24,13 @@ import DeveloperDetails from "../Modals/DeveloperDetails";
 
 
 const SingleDeveloper = ({ data ,role}) => {
-    console.log(data, "data")
     const dispatch = useDispatch()
     const { screenLoader, smallLoader } = useSelector(state => state.clientData)
     const [selectedTemplate, setSelectedTemplate] = useState('cv-template1')
     const [developerDetails, setDeveloperDetails] = useState(false);
     const [readmore, setReadMore] = useState(true)
     const [showModal, setShowModal] = useState(false);
-    const { t } = useTranslation
+    const { t } = useTranslation()
 
 
 
@@ -112,7 +111,6 @@ const SingleDeveloper = ({ data ,role}) => {
             default:
         }
     }
-    console.log(data,"data-----------------------")
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <>
@@ -120,7 +118,7 @@ const SingleDeveloper = ({ data ,role}) => {
                     <div className={selectedTemplate === 'cv-template1' ? 'cv-template-section cv-template3' : 'cv-template-section cv-template3 d-none'}>
 
                         <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h2 className="section-head mb-0 border-0">Overview</h2>
+                            <h2 className="section-head mb-0 border-0">{t("overview")}</h2>
                             {/* <button className="main-btn px-xxl-5 px-4" onClick={()=>downloadResume(data?.developer_detail?.resume)}>Download Resume</button> */}
                         </div>
                         <Row>
@@ -134,7 +132,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                     {role!=="client" &&<div className="add_more_section" onClick={handleDeveloperDetails}><MdEditNote size={25} /></div>}
                                 </div>
                                 <div className="connect-social-media">
-                                    <h3 className="subheading-resume text-center mb-3">Skills</h3>
+                                    <h3 className="subheading-resume text-center mb-3">{t("skills")}</h3>
                                   { role!=="client" && <div className="add_more_section" onClick={handleShowSkillsModal}><MdEditNote size={25} /></div>}
                                     <ul className="skills-pill text-center">
                                         {
@@ -149,7 +147,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                     </ul>
                                 </div>
                                 <div className="connect-social-media">
-                                    <h3 className="subheading-resume text-center mb-3">Connect With Me</h3>
+                                    <h3 className="subheading-resume text-center mb-3">{t("connectWithMe")}</h3>
                                    {role!=="client" && <div className="add_more_section" onClick={handleShowSocialMediaModal}><MdEditNote size={25} /></div>}
                                     {/* <ul className="social-media">
                                     {developerDetails?.social_links?.map((item)=>{
@@ -183,7 +181,7 @@ const SingleDeveloper = ({ data ,role}) => {
                             <Col lg={6} className="px-0 h-100">
                                 <div className="about-info px-4">
                                     <div className="">
-                                        <h3 className="subheading-resume mb-xxl-4 mb-3">About Me</h3>
+                                        <h3 className="subheading-resume mb-xxl-4 mb-3">{t("aboutMe")}</h3>
                                         {/* <h2 className="mainheading-resume">Art Changes Us</h2> */}
                                        {role!=="client" && <div className="add_more_section" onClick={handleShowModal}><MdEditNote size={25} /></div>}
                                         {data?.developer_detail?.bio?.length > 300 ? <p className="resume-text">{readmore && developerDetails?.developer_detail?.bio?.length > 300 ? <>
@@ -201,7 +199,7 @@ const SingleDeveloper = ({ data ,role}) => {
 
                                 <div className="about-info px-4 pt-4">
                                    { role!=="client" &&<div className="add_more_section" onClick={handleShowExperienceModal}><MdEditNote size={25} /></div>}
-                                    <h3 className="subheading-resume mb-xxl-4 mb-3">Experience</h3>
+                                    <h3 className="subheading-resume mb-xxl-4 mb-3">{t("experience")}</h3>
                                     {data?.developer_experiences?.map((item) => {
                                         return (
                                             <>
@@ -215,7 +213,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                         )
                                     })}
                                     {data?.developer_educations ? <>
-                                        <h3 className="subheading-resume mb-xxl-4 mb-3">Education</h3>
+                                        <h3 className="subheading-resume mb-xxl-4 mb-3">{t("education")}</h3>
                                       { role!=="client" && <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25} /></div>}
                                         {data?.developer_educations?.map((item) => {
                                             return (

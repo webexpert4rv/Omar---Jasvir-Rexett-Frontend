@@ -29,14 +29,14 @@ const DeveloperDashboard = () => {
                 <div className="overview-card active">
                     <div>
                         <h4 className="overview-card-subhead">{t("totalHours")}</h4>
-                        <h3 className="overview-card-heading mb-0">{developerDashboard?.thisMonthHours ? developerDashboard?.thisMonthHours:'0'} hrs</h3>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.thisMonthHours ?( developerDashboard?.thisMonthHours).toFixed(2):'0'} hrs</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">{t("thisWeekHours")}</h4>
-                        <h3 className="overview-card-heading mb-0">{developerDashboard?.thisWeekHours ? developerDashboard?.thisWeekHours:'0'} hrs</h3>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.thisWeekHours ? (developerDashboard?.thisWeekHours).toFixed(2):'0'} hrs</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
@@ -50,7 +50,7 @@ const DeveloperDashboard = () => {
                 <div className="overview-card">
                     <div>
                         <h4 className="overview-card-subhead">{t("thisMonthHours")}</h4>
-                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours?developerDashboard?.totalHours:'0'} hrs</h3>
+                        <h3 className="overview-card-heading mb-0">{developerDashboard?.totalHours ? (developerDashboard?.totalHours).toFixed(2):'0'} hrs</h3>
                     </div>
                     <span className="over-icon"><IoTrendingUpSharp /></span>
                 </div>
@@ -115,7 +115,7 @@ const DeveloperDashboard = () => {
                                                              <tr>
                                                         <td className="time-table-data">{item.clientName}</td>
                                                         <td className="time-table-data">{item.contractType}</td>
-                                                        <td className="time-table-data">{item.totalHours} </td>
+                                                        <td className="time-table-data">{(item.totalHours).toFixed(2)} </td>
                                                         <td className="time-table-data">{item.location}</td>
                                                         <td className="time-table-data"><span className="status-finished">{item?.status?"Finished":"Progress"}</span></td>
                                                         </tr></React.Fragment>
