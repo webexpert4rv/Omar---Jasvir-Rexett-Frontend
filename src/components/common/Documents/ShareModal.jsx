@@ -111,7 +111,7 @@ const ShareModal = ({ show, handleClose,fileId}) => {
                                 className="main-btn px-4 font-14 fw-semibold"
                                 onClick={handleShare}
                                 variant="success"
-                                disabled={data?.detail?.value.length > 0 ? false : true }
+                                disabled={!smallLoader && data?.detail?.value.length > 0 ? false : true }
                                 isLoading={smallLoader}
                             />
 

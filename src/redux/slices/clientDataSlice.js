@@ -169,6 +169,7 @@ export function getClientProfile(payload, callback) {
 
 
 export function timeReporting(payload, role, callback) {
+    console.log(payload , "payload")
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {

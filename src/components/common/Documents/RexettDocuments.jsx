@@ -50,7 +50,7 @@ const RexettDocuments = ({ currentRole }) => {
 
 
 
-
+    console.log(folderData , "folderdata")
     const handleShowUploadFileModal = (id, name) => {
         setOpen(!open)
         if (id) {
@@ -80,12 +80,13 @@ const RexettDocuments = ({ currentRole }) => {
     };
 
     const toggleFolderView = (item) => {
+        console.log(item,"item")
         let data = {
             name: item?.s3_path,
             parent_id: item?.parent_id
         }
+        console.log(item , "item")
         setBradCrum([...bradCrump, data])
-        setCurrentFolderDetails(item)
         setShowFolderView(true);
         let filterData = {
             parent_id: item.id
@@ -102,6 +103,7 @@ const RexettDocuments = ({ currentRole }) => {
         dispatch(getFolderData(filterData, currentRole))
     }, [dispatch])
 
+    console.log(currentFolderDetails , "currentFolderDetails------")
 
     const handleDownload = (url) => {
         const newTab = window.open(url, '_blank');
@@ -125,7 +127,6 @@ const RexettDocuments = ({ currentRole }) => {
         let fileName = url?.split("/")
         let splitWithDot = fileName[fileName.length - 1]
         let fileExtWithDot = splitWithDot.split(".")
-
         let fileExt = fileExtWithDot[fileExtWithDot.length - 1]
         switch (fileExt) {
             case "ts":
@@ -153,7 +154,7 @@ const RexettDocuments = ({ currentRole }) => {
         e.preventDefault()
         dispatch(_deleteFileAndFolder(isDelete?.id, () => {
             let filterData = {
-                parent_id: currentFolderDetails?.id
+                parent_id: currentFolderDetails?.id,
             }
             setDelete({ isDelete: false, id: "" })
             dispatch(getFolderData(filterData, currentRole))
@@ -208,9 +209,7 @@ const RexettDocuments = ({ currentRole }) => {
             dispatch(getFolderData(filterData, currentRole))
         }, 500);
         setTimerValue(timer);
-
     }
-
     const bradCrumpHandle = (id) => {
         let copyBrdCrmb = [...bradCrump]
         let index = copyBrdCrmb.findIndex(item => item.parent_id == id)

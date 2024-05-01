@@ -14,8 +14,8 @@ import { useTranslation } from "react-i18next";
 
 const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const dispatch = useDispatch()
-    const [selectedPeriod, setSelectedPeriod] = useState("");
-    const [selectedFilter, setSelectedFilter] = useState({ filter: "" });
+    const [selectedPeriod, setSelectedPeriod] = useState("weekly");
+    const [selectedFilter, setSelectedFilter] = useState({ filter: "weekly" });
     const [selectedWeek, setSelectedWeek] = useState("")
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedMonth, setSelectedMonth] = useState("")
@@ -120,7 +120,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     <div className="flex-none">
                                         {/* <Form.Label className="common-label">Select View</Form.Label> */}
                                         <Form.Select className=" time-filter-select shadow-none" value={selectedView} onChange={(e)=>handlePeriodChange(e.target.value)} >
-                                            <option value="">{t("selectView")}</option>
+                                            <option selected disabled>{t("selectView")}</option>
                                             <option value="weekly">{t("weekly")}</option>
                                             <option value="monthly">{t("monthly")}</option>
                                             <option value="yearly">{t("yearly")}</option>
@@ -129,7 +129,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     <div>
                                         {/* <Form.Label className="common-label">Select Year</Form.Label> */}
                                         <Form.Select className="time-filter-select shadow-none" value={selectedYear} onChange={(e) => handleChange(e, "year")}>
-                                            <option value="">{t("selectYear")}</option>
+                                            <option selected disabled>{t("selectYear")}</option>
                                             <option value="2024">2024</option>
                                             <option value="2023">2023</option>
                                             <option value="2022">2022</option>
@@ -143,7 +143,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     {selectedPeriod !== "yearly" ? <div>
                                         {/* <Form.Label className="common-label">Select Month</Form.Label> */}
                                         <Form.Select className="time-filter-select shadow-none" value={selectedMonth} onChange={(e) => handleChange(e, "month")}>
-                                            <option value="" >{t("selectMonth")}</option>
+                                            <option selected disabled >{t("selectMonth")}</option>
                                             <option value="1">{t("january")}</option>
                                             <option value="2">{t("feburary")}</option>
                                             <option value="3">{t("march")}</option>
@@ -161,7 +161,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     {selectedPeriod !== "yearly" && selectedPeriod !== "monthly" ? <div>
                                         {/* <Form.Label className="common-label">Select Week</Form.Label> */}
                                         <Form.Select className="time-filter-select shadow-none" value={selectedWeek} onChange={(e) => handleChange(e, "week")}>
-                                            <option value="">{t("selectWeek")}</option>
+                                            <option selected disabled>{t("selectWeek")}</option>
                                             <option value="1">{t("week")} 1</option>
                                             <option value="2">{t("week")} 2</option>
                                             <option value="3">{t("week")} 3</option>

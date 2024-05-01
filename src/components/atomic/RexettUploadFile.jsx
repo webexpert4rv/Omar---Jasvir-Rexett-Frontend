@@ -17,17 +17,19 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole
     } = useForm({});
 
 
-    console.log(selectedFile , "selectedFile")
+    console.log(currentFolderDetails , "currentFolderDetails")
+   
     const onSubmit = async (values) => {
+        console.log(values ,"values")
         setDetails(values)
         let formData = new FormData();
         formData.append("file", values.file_name[0]);
-    
-        if (values.category === "3" && values.file_name[0].type !== "application/pdf") {
+        console.log(selectedFile , "selectedFile")
+        
+        if (values?.category === "3" && values?.file_name[0]?.type !== "application/pdf") {
             alert("Only PDF files are allowed for Invoices category.");
             return; 
         }
-    
         dispatch(filePreassignedUrlGenerate(formData, (url) => {
             let fileData = {
                 "contract_id": currentFolderDetails.contract_id,
@@ -92,7 +94,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole
                             text="Upload"
                             className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
-                            disabled={smallLoader && details.category==="3" ? true : false}
+                            disabled={smallLoader && details?.category==="3" ? true : false}
                             isLoading={smallLoader}
                         />
                     </div>
