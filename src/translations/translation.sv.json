@@ -317,6 +317,9 @@
         "youHaveNoNotification" : "Du har ingen avisering",
         "professional_title" : "Professionell titel",
         "professionalTitleValidation" : "Yrkestitel krävs",
-        "selectView" : "Välj Visa"
+        "invalidEmail" :"Ogiltig e-postadress",
+        "invoiceUploaded" : "Redan uppladdad",
+        "suggestDeveloper" : "Är du säker på att du vill föreslå denna utvecklare?",
+        "removeDeveloperFromSuggestion" :"Är du säker på att du vill ta bort denna utvecklare från förslagen?"
     }
 }

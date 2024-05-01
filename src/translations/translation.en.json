@@ -324,9 +324,9 @@
         "invalid_file_type" :"Invalid file type ",
         "profilePictureValidation" :"Profile Picture is required",
         "invalidEmail" :"Invalid email",
-        "selectView" : "Select View"
-        
-        
+        "invoiceUploaded" : "Already Uploaded",
+        "suggestDeveloper" : "Are you sure you want to suggest this developer ?",
+        "removeDeveloperFromSuggestion" :"Are you sure you want to remove this developer from suggestions ?"
 
     }
 }
