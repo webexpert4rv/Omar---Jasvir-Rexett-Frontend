@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/slices/authenticationDataSlice";
 import sidebarLogo from '../../../assets/img/rexett-logo-white.png'
 import { useTranslation } from "react-i18next";
+import { FaEyeSlash } from "react-icons/fa6";
 
 
 const RexetLogin = ({userType}) => {
@@ -143,10 +144,14 @@ const RexetLogin = ({userType}) => {
                                                       value: true,
                                                       message: "Password is required",
                                                     },
-                                                    
+                                                  
                                                   })}
                                                 />
-                                                <span className="eye-btn" onClick={()=>setPassword(!isPassword)}><FaEye /></span>
+                                                <span className="eye-btn" onClick={()=>setPassword(!isPassword)}>
+                                                    {
+                                                      isPassword ? <FaEyeSlash/> : <FaEye/>
+                                                    }
+                                                </span>
                                             </div>
                                             <p className="error-message">
                                                 {errors.password?.message}

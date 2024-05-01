@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Tab, Tabs } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { adminSingleJob, getDeveloperSuggestList, suggestDeveloper } from "../../redux/slices/adminDataSlice";
 import JobCard from "../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import { useTranslation } from "react-i18next";
 
 const AdminSingleJob = () => {
+    const {t} = useTranslation();
+    const navigate = useNavigate();
     const { pathname } = useLocation()
     const dispatch = useDispatch()
     let id = pathname.split("/")[2]
@@ -118,7 +121,7 @@ const AdminSingleJob = () => {
                     <div className="text-center mb-3">
                         {/* <h3 className="px-5">Suggest the Developers</h3> */}
                     </div>
-                    <JobCard type="Suggested" data={suggestedDeveloper } setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                    <JobCard type="Suggested"  data={suggestedDeveloper } setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                 </Tab>
                 <Tab eventKey="shortlisted" title="Shortlisted">
                     <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
@@ -131,7 +134,7 @@ const AdminSingleJob = () => {
                 </Tab>
             </Tabs>
             {/* <EndJobModal show={showEndJobModal} handleClose={handleCloseEndJobModal} /> */}
-            <ConfirmationModal text={`Are you sure to suggest this developer ?`}   show={showEndJobModal} handleClose={handleCloseEndJobModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
+            <ConfirmationModal text={(suggestedData?.status) ? t("suggestDeveloper"):t("removeDeveloperFromSuggestion")}   show={showEndJobModal} handleClose={handleCloseEndJobModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
         </>
     )
 }

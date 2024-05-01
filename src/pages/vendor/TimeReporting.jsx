@@ -148,7 +148,10 @@ const VendorTimeReporting = () => {
                                                     <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
                                                     <td className="time-table-data">{t("N/A")}</td>
                                                     <td className="time-table-data">
-                                                        <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
+                                                        <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>
+                                                             {!(item?.newData?.contractDetails?.has_invoice) ? t("uploadInvoice") : t("invoiceUploaded")}
+                                                            <HiUpload />
+                                                    </label>
                                                     </td>
                                                     <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
                                                 </tr>

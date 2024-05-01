@@ -148,7 +148,6 @@ const AddTimingModal = ({ show, handleClose,role }) => {
     getCurrentWeekDates();
     handleClose()
   }
-
   return (
     <Modal
       show={show}
