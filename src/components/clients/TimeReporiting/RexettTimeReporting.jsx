@@ -95,7 +95,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         } else if (selectedPeriod === "monthly") {
             filterData.year = selectedFilter.year;
             filterData.month = selectedFilter.month;
-            delete filterData.week;
+            delete filterData.week; 
         } else {
             filterData.year = selectedFilter.year;
             filterData.month = selectedFilter.month;

@@ -43,6 +43,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     "contract_id": time?.contract_id,
     "total_hours": hours
   }
+  console.log(time.contractId,"contractId");
   await dispatch(editTimeReporting(paylaod))
   dispatch(adminTimeReporting())
   setTime(null)
@@ -80,7 +81,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                                 </Form.Select>
                             </Form.Group>
                         </Col>
-                        {/* <Col md="12">
+                        <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Select className="common-field" onChange={handleDeveloper}>
                                     <option selected disabled>Select Client</option>
@@ -93,7 +94,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                                      }
                                 </Form.Select>
                             </Form.Group>
-                        </Col> */}
+                        </Col>
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Control type="text" className="common-field" placeholder="Enter Total Hours" value={time?.time} name="name" onChange={handleChange} />

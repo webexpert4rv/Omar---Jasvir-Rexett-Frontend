@@ -324,11 +324,17 @@
         "invalid_file_type" :"Invalid file type ",
         "profilePictureValidation" :"Profile Picture is required",
         "invalidEmail" :"Invalid email",
+<<<<<<< HEAD
         "selectView" : "Select View",
         "expertise" : "Expertise",
         "enterExpertise" : "Enter Expertise"
         
         
+=======
+        "invoiceUploaded" : "Already Uploaded",
+        "suggestDeveloper" : "Are you sure you want to suggest this developer ?",
+        "removeDeveloperFromSuggestion" :"Are you sure you want to remove this developer from suggestions ?"
+>>>>>>> 858319b (fixed issues inside admin's job listing page)
 
     }
 }

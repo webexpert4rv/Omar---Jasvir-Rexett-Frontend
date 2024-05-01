@@ -25,8 +25,11 @@ const Notification = ({ route, job, doc, timeReport }) => {
   useEffect(() => {
     dispatch(getNotification())
   }, [])
+<<<<<<< HEAD
   console.log(newJobPost, "newJobPost")
   console.log(notificationList ,"notificationList")
+=======
+>>>>>>> 858319b (fixed issues inside admin's job listing page)
 
   useEffect(() => {
     if (newJobPost !== null) {
