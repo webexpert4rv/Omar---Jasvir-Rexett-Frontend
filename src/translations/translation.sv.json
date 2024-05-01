@@ -329,6 +329,6 @@
         "selectStatus" : "Välj status",
         "approved" : "Godkänd",
         "pending" : "Avvaktar",
-        "AboutRequired":"Om krävs"
+        
     }
 }
