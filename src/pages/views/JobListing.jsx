@@ -7,6 +7,7 @@ import RexettPagination from "../../components/atomic/RexettPagination";
 import { FaEye } from "react-icons/fa6";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -14,6 +15,7 @@ const JobListing = () => {
     const [page, setPage] = useState(1)
     const dispatch = useDispatch();
     const { allJobPostedList, jobCategoryList, screenLoader } = useSelector(state => state.clientData)
+    const { t } = useTranslation() 
     
     useEffect(() => {
         dispatch(getJobCategoryList())
@@ -94,7 +96,7 @@ const JobListing = () => {
                         </div>
                     </section>
                    {allJobPostedList?.totalCount>5 ?  <div className="d-flex justify-content-between align-items-center mb-4">
-                   <p className="showing-result">Showing {(allJobPostedList?.data?.length)} results</p> 
+                   <p className="showing-result">{t("showing")} {(allJobPostedList?.data?.length)} {t("results")}</p> 
                 <RexettPagination number={allJobPostedList?.totalPages} setPage={setPage} page={page}/>
             </div> : ""}
                 </>
