@@ -39,6 +39,11 @@ const VendorUploadInvoice = () => {
         e.preventDefault()
         let fileData = new FormData();
         fileData.append("file", file);
+        console.log(file?.type,"file")
+        if (file?.type !== "application/pdf") {
+            alert("Only PDF files are allowed for Invoices .");
+            return; 
+        }
         if (ids.client !== '' && ids.developer !== '' && file !== null) {
             dispatch(filePreassignedUrlGenerate(fileData, (url) => {
                 let payload = {
@@ -107,6 +112,7 @@ const VendorUploadInvoice = () => {
                             className="main-btn px-4"
                             variant="transparent"
                             onClick={submitFile}
+                            disabled={smallLoader}
                             isLoading={smallLoader}
                         />
                     </div>

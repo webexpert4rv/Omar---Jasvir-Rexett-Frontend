@@ -251,7 +251,7 @@
         "totalEmployeesValidation": "Totalt antal anställda är obligatoriskt",
         "stateValidation": "Delstat är obligatoriskt",
         "countryCodeValidation": "Landskod är obligatoriskt",
-        "contactEmailValidation": "Kontakt-e-post är obligatoriskt",
+        "contactEmailValidation": "Kontakt E-post krävs",
         "contactNameValidation": "Kontaktnamn är obligatoriskt",
         "contactNumberValidation": "Kontaktnummer är obligatoriskt",
         "currentlyAttending": "För närvarande närvarande",

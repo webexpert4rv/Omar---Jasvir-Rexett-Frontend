@@ -9,6 +9,8 @@ import NoDataFound from "../atomic/NoDataFound"
 import { useTranslation } from "react-i18next";
 
 const NotificationList = ({ job, doc }) => {
+  console.log(job , "job")
+  console.log(doc,"doc")
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currenTab, setCurrentTabs] = useState('allNotifications')
@@ -31,6 +33,7 @@ const NotificationList = ({ job, doc }) => {
     }
   }
 
+  console.log(nottificationData , "nottificationData")
   const handleSelect = (key) => {
     setNotificationData(notificationList[key])
   }
@@ -54,7 +57,7 @@ const NotificationList = ({ job, doc }) => {
         <div className="d-flex justify-content-between align-items-start">
           <div>
             <h2 className="overview-card-heading fw-bold">{t("notification")}</h2>
-            {notificationList['unreadNotifications']?.length > 0 ? <p className="notification-text">{`You've ${notificationList['unreadNotifications']?.length} unread notifications`}</p> : ""}
+            {/* {notificationList['unreadNotifications']?.length > 0 ? <p className="notification-text">{`You've ${notificationList['unreadNotifications']?.length} unread notifications`}</p> : ""} */}
           </div>
           {/* <Button variant="transparent" className="mark-read-btn" onClick={markAllAsRead}>
             Mark all as read
@@ -101,7 +104,7 @@ const NotificationList = ({ job, doc }) => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="readNotifications" title="New">
+          <Tab eventKey="readNotifications" title="Read">
             <div className="notification-main pt-4 d-block">
               <div className="notification-list">
                 {nottificationData?.map((item) => {
@@ -135,7 +138,7 @@ const NotificationList = ({ job, doc }) => {
               </div>
             </div>
           </Tab>
-          <Tab eventKey="unreadNotifications" title="Read">
+          <Tab eventKey="unreadNotifications" title="New">
             <div className="notification-main pt-4 d-block">
               <div className="notification-list">
                 {nottificationData?.map((item) => {

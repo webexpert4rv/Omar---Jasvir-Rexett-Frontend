@@ -11,6 +11,7 @@ import ScreenLoader from "./ScreenLoader";
 import { toast } from 'react-toastify';
 import { useTranslation } from "react-i18next";
 import { tab } from "@testing-library/user-event/dist/tab";
+
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -148,7 +149,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
                   }) : <Dropdown.Item className="text-center no-notification">{t("youHaveNoNotification")}</Dropdown.Item>}
 
                 </div>
-                <Dropdown.Item onClick={redirectToallScreen} className="see-all-notify mt-4"> {t("seeAll")}</Dropdown.Item>
+               {nottificationData?.length > 0 ?  <Dropdown.Item onClick={redirectToallScreen} className="see-all-notify mt-4"> {t("seeAll")}</Dropdown.Item> : ""}
 
               </Dropdown.Menu>}
             </Dropdown>

@@ -359,6 +359,7 @@ const JobPost = () => {
               type="submit"
               text={t("submit")}
               className="main-btn px-5"
+              disabled={smallLoader}
               isLoading={smallLoader}
             />
           </div>

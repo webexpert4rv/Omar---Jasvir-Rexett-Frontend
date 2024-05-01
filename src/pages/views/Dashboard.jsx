@@ -130,9 +130,9 @@ const Dashboard = (cardDetails) => {
                                 </div>
                             </Tab.Pane>
                             <>
-                                <div className="text-center mt-5">
+                               { assignedDeveloperList?.assigned_developers?.length >5 ? <div className="text-center mt-5">
                                     <Link to={"/hired-developers"} className="link-text-dark">{t("seeAll")}</Link>
-                                </div>
+                                </div> : ""}
                             </>
                         </Tab.Content>
                         : <div><NoDataFound /></div>}

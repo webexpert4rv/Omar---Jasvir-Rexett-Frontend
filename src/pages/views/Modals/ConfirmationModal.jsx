@@ -26,9 +26,10 @@ const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type}) =
                             onClick={callBackBtn}
                             className="main-btn px-4 me-3 font-14 fw-semibold"
                             variant="transparent"
+                            disabled={smallLoader}
                             isLoading={smallLoader}
                         />
-                        <Button variant="transparent" onClick={handleClose} className="outline-main-btn font-14 fw-semibold bg-transparent border-black text-black px-4">No</Button>
+                        <Button variant="transparent" onClick={handleClose} className="outline-main-btn font-14 fw-semibold bg-transparent border-black text-black px-4" >No</Button>
                     </div>
                 </Form>
             </Modal.Body>

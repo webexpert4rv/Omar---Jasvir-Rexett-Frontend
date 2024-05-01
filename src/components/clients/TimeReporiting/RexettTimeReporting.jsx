@@ -19,27 +19,31 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const [selectedWeek, setSelectedWeek] = useState("")
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedMonth, setSelectedMonth] = useState("")
+    const [selectedView, setSelectedView] = useState("")
     const [page, setPage] = useState(1)
-    const { screenLoader , timeReportingPage } = useSelector(state => state.clientData)
+    const { screenLoader, timeReportingPage } = useSelector(state => state.clientData)
 
-    useEffect(()=>{
+    useEffect(() => {
         let filterData = {
             ...selectedFilter,
             filter: selectedPeriod,
-            page:page
+            page: page
         };
         dispatch(timeReporting(filterData, role));
-    },[page])
+    }, [page])
     const { t } = useTranslation();
-
-
-    const handlePeriodChange = (e) => {
-        const selectedPeriodValue = e.target.value;
+    console.log(selectedView,"selectedView")
+    console.log(selectedFilter, "selectedFilter")
+    console.log(selectedPeriod, "selectedPeriod")
+    const handlePeriodChange = (value) => {
+        setSelectedView(value)
+        const selectedPeriodValue = value;
+        console.log(selectedPeriodValue , "selectedPeriodValue")
         setSelectedPeriod(selectedPeriodValue);
         let filterData = {
             ...selectedFilter,
             filter: selectedPeriodValue,
-            page:page
+            page: page
         };
 
         delete filterData.week;
@@ -84,7 +88,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         let filterData = {
             ...selectedFilter,
             filter: selectedPeriod,
-            page:page
+            page: page
         }
         if (selectedPeriod === "yearly") {
             filterData.year = selectedFilter.year;
@@ -115,7 +119,8 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 <div className="d-flex gap-3 flex-wrap align-items-end">
                                     <div className="flex-none">
                                         {/* <Form.Label className="common-label">Select View</Form.Label> */}
-                                        <Form.Select className="filter-select time-filter-select shadow-none" onChange={handlePeriodChange} >
+                                        <Form.Select className=" time-filter-select shadow-none" value={selectedView} onChange={(e)=>handlePeriodChange(e.target.value)} >
+                                            <option selected disabled>{t("selectView")}</option>
                                             <option value="weekly">{t("weekly")}</option>
                                             <option value="monthly">{t("monthly")}</option>
                                             <option value="yearly">{t("yearly")}</option>
@@ -124,7 +129,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     <div>
                                         {/* <Form.Label className="common-label">Select Year</Form.Label> */}
                                         <Form.Select className="time-filter-select shadow-none" value={selectedYear} onChange={(e) => handleChange(e, "year")}>
-                                            <option value="">{t("selectYear")}</option>
+                                            <option selected disabled>{t("selectYear")}</option>
                                             <option value="2024">2024</option>
                                             <option value="2023">2023</option>
                                             <option value="2022">2022</option>
@@ -138,7 +143,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     {selectedPeriod !== "yearly" ? <div>
                                         {/* <Form.Label className="common-label">Select Month</Form.Label> */}
                                         <Form.Select className="time-filter-select shadow-none" value={selectedMonth} onChange={(e) => handleChange(e, "month")}>
-                                            <option value="" >{t("selectMonth")}</option>
+                                            <option selected disabled >{t("selectMonth")}</option>
                                             <option value="1">{t("january")}</option>
                                             <option value="2">{t("feburary")}</option>
                                             <option value="3">{t("march")}</option>
@@ -156,7 +161,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     {selectedPeriod !== "yearly" && selectedPeriod !== "monthly" ? <div>
                                         {/* <Form.Label className="common-label">Select Week</Form.Label> */}
                                         <Form.Select className="time-filter-select shadow-none" value={selectedWeek} onChange={(e) => handleChange(e, "week")}>
-                                            <option value="">{t("selectWeek")}</option>
+                                            <option selected disabled>{t("selectWeek")}</option>
                                             <option value="1">{t("week")} 1</option>
                                             <option value="2">{t("week")} 2</option>
                                             <option value="3">{t("week")} 3</option>
@@ -212,10 +217,10 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
 
                     <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
 
-                    { timeReportingPage?.totalPages >1 ?  <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                   <p className="showing-result">{t("showing")} {(timeReportingData?.length)} {t("results")}</p> 
-                <RexettPagination number={timeReportingPage?.totalPages} setPage={setPage} page={page}/>
-            </div> : ""}
+                    {timeReportingPage?.totalPages > 1 ? <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
+                        <p className="showing-result">{t("showing")} {(timeReportingData?.length)} {t("results")}</p>
+                        <RexettPagination number={timeReportingPage?.totalPages} setPage={setPage} page={page} />
+                    </div> : ""}
                 </section>}
 
         </>

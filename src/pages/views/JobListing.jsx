@@ -7,6 +7,7 @@ import RexettPagination from "../../components/atomic/RexettPagination";
 import { FaEye } from "react-icons/fa6";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -14,6 +15,7 @@ const JobListing = () => {
     const [page, setPage] = useState(1)
     const dispatch = useDispatch();
     const { allJobPostedList, jobCategoryList, screenLoader } = useSelector(state => state.clientData)
+    const { t } = useTranslation() 
     
     useEffect(() => {
         dispatch(getJobCategoryList())
@@ -53,7 +55,7 @@ const JobListing = () => {
                                                 <h2 className="job-title">{item.title}</h2>
                                                 <h4 className="job-category">{getCategory(item.category)}</h4>
                                                 <div className="profile-req">
-                                                    <p className="grid-text">{item?.experience} of exp</p>
+                                                    <p className="grid-text">{item?.experience?.split("_").join(" ")} of exp</p>
                                                     <p className="grid-text">{item?.contract_type}</p>
                                                     <p className="grid-text">{item.job_type}</p>
                                                 </div>
@@ -80,7 +82,7 @@ const JobListing = () => {
                                             </div>
                                             <div className="status-wrapper">
                                                 <div className="d-flex gap-3 align-items-center mb-2">
-                                                    <p className="status-text inprogress mb-0">{item.status}</p>
+                                                    <p className="status-text inprogress mb-0">{item.status.charAt(0).toUpperCase() + item.status.slice(1)}</p>
                                                 </div>
                                                 <p className="font-15">Posted Date: <strong>{item.created_at.slice(0, 10)}</strong></p>
                                                 <OverlayTrigger placement="bottom" overlay={viewtooltip}>
@@ -94,7 +96,7 @@ const JobListing = () => {
                         </div>
                     </section>
                    {allJobPostedList?.totalCount>5 ?  <div className="d-flex justify-content-between align-items-center mb-4">
-                   <p className="showing-result">Showing {(allJobPostedList?.data?.length)} results</p> 
+                   <p className="showing-result">{t("showing")} {(allJobPostedList?.data?.length)} {t("results")}</p> 
                 <RexettPagination number={allJobPostedList?.totalPages} setPage={setPage} page={page}/>
             </div> : ""}
                 </>

@@ -5,7 +5,7 @@ import Tags from "@yaireo/tagify/dist/react.tagify";
 import profileImg from "../../../assets/img/user-img.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../atomic/RexettButton";
-import { shareBelongisFile } from "../../../redux/slices/developerDataSlice";
+import { getDocumentShare, shareBelongisFile } from "../../../redux/slices/developerDataSlice";
 
 const baseTagifySettings = {
     blacklist: ["xxx", "yyy", "zzz"],
@@ -23,6 +23,7 @@ const ShareModal = ({ show, handleClose,fileId}) => {
     const [tagifySettings, setTagifySettings] = useState(baseTagifySettings);
     const [tagifyProps, setTagifyProps] = useState({});
     const [sharedTags,setSharedTags]=useState([])
+    const [data , setData] = useState()
     const { shareDocument,smallLoader } = useSelector(state => state.developerData)
     const suggestedTags =  shareDocument?.data?.map(item =>{return {value:item.name,label:item.id}})|| [];
     useEffect(() => {
@@ -35,7 +36,9 @@ const ShareModal = ({ show, handleClose,fileId}) => {
             }));
         }, 5000);
     }, []);
+    
     const handleChange = (e) => {
+        setData(e)
         if(e.detail.value){
             let d=  JSON.parse(e.detail.value)
             setSharedTags(d)
@@ -50,12 +53,14 @@ const ShareModal = ({ show, handleClose,fileId}) => {
         let user_id=sharedTags?.map((item)=>item.label)
         let payload={
             "file_id": fileId,
-            "user_ids":user_id
+            "user_ids": user_id
           }
           if(user_id.length>0){
             await dispatch(shareBelongisFile(payload))
             handleClose()
           }
+          dispatch(getDocumentShare())
+          setSharedTags([])  
         
     }
 
@@ -106,6 +111,7 @@ const ShareModal = ({ show, handleClose,fileId}) => {
                                 className="main-btn px-4 font-14 fw-semibold"
                                 onClick={handleShare}
                                 variant="success"
+                                disabled={!smallLoader && data?.detail?.value.length > 0 ? false : true }
                                 isLoading={smallLoader}
                             />
 
