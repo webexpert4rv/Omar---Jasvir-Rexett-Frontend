@@ -24,7 +24,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
   useEffect(() => {
     dispatch(getNotification())
   }, [])
-  console.log(newJobPost, "newJobPost")
 
   useEffect(() => {
     if (newJobPost !== null) {
