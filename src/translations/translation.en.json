@@ -324,12 +324,6 @@
         "invalid_file_type" :"Invalid file type ",
         "profilePictureValidation" :"Profile Picture is required",
         "invalidEmail" :"Invalid email",
-        "selectView" : "Select View",
-        "expertise" : "Expertise",
-        "enterExpertise" : "Enter Expertise",
-        "invoiceUploaded" : "Already Uploaded",
-        "suggestDeveloper" : "Are you sure you want to suggest this developer ?",
-        "removeDeveloperFromSuggestion" :"Are you sure you want to remove this developer from suggestions ?",
         "AboutRequired":"About is required",
         "amount" :"Amount",
         "selectStatus" :"Select Status",
@@ -338,9 +332,10 @@
         "max_character_limit_msg" :"Maximum character limit reached",
         "selectView" : "Select View",
         "expertise" : "Expertise",
-        "enterExpertise" : "Enter Expertise"
-        
-        
+        "enterExpertise" : "Enter Expertise",
+        "invoiceUploaded" : "Already Uploaded",
+        "suggestDeveloper" : "Are you sure you want to suggest this developer ?",
+        "removeDeveloperFromSuggestion" :"Are you sure you want to remove this developer from suggestions ?"
 
     }
 }
