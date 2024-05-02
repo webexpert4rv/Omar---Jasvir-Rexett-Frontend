@@ -326,7 +326,11 @@
         "invalidEmail" :"Invalid email",
         "invoiceUploaded" : "Already Uploaded",
         "suggestDeveloper" : "Are you sure you want to suggest this developer ?",
-        "removeDeveloperFromSuggestion" :"Are you sure you want to remove this developer from suggestions ?"
-
+        "removeDeveloperFromSuggestion" :"Are you sure you want to remove this developer from suggestions ?",
+        "amount" :"Amount",
+        "selectStatus" :"Select Status",
+        "approved" :"Approved",
+        "pending" :"Pending",
+        "max_character_limit_msg" :"Maximum character limit reached"
     }
 }

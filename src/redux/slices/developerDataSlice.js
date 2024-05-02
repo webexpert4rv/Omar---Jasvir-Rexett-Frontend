@@ -213,7 +213,7 @@ export function updateDeveloperCvExperience(payload, id, callback) {
         try {
             let result = await clientInstance.put(`common/update-experience/${id}`, { ...payload })
             if (result.status === 200) {
-                // toast.success("Experience is Updated", { position: "top-center" })
+                toast.success("Experience is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
             }
@@ -285,7 +285,7 @@ export function updateDeveloperCvEducation(payload, id, callback) {
         try {
             let result = await clientInstance.put(`common/update-education/${id}`, { ...payload })
             if (result.status === 200) {
-                // toast.success("Education is Updated", { position: "top-center" })
+                toast.success("Education is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
             }
