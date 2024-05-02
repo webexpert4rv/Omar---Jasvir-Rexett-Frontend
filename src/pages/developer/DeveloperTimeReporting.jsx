@@ -11,14 +11,6 @@ const DeveloperTimeReporting = () => {
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({});
     const { timeReportingData, smallLoader } = useSelector(state => state.clientData)   
-
-    // useEffect(() => {
-    //     let filterData = {
-    //         ...selectedFilter,
-    //         filter: selectedPeriod
-    //     }
-    //     dispatch(timeReporting(filterData,"developer"))
-    // }, [dispatch])
     useEffect(() => {
         let filterData = {
             ...selectedFilter,

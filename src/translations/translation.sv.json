@@ -328,7 +328,7 @@
         "amount" : "Belopp",
         "selectStatus" : "Välj status",
         "approved" : "Godkänd",
-        "pending" : "Avvaktar",
+        "pending" : "Avvaktar"
         
     }
 }
