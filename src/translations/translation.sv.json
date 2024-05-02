@@ -317,15 +317,13 @@
         "youHaveNoNotification" : "Du har ingen avisering",
         "professional_title" : "Professionell titel",
         "professionalTitleValidation" : "Yrkestitel krävs",
-<<<<<<< HEAD
         "selectView" : "Välj Visa",
         "expertise" : "Expertis",
-        "enterExpertise" : "Ange Expertis"
-=======
+        "enterExpertise" : "Ange Expertis",
         "invalidEmail" :"Ogiltig e-postadress",
         "invoiceUploaded" : "Redan uppladdad",
         "suggestDeveloper" : "Är du säker på att du vill föreslå denna utvecklare?",
-        "removeDeveloperFromSuggestion" :"Är du säker på att du vill ta bort denna utvecklare från förslagen?"
->>>>>>> 858319b (fixed issues inside admin's job listing page)
+        "removeDeveloperFromSuggestion" :"Är du säker på att du vill ta bort denna utvecklare från förslagen?",
+        "AboutRequired":"Om krävs"
     }
 }

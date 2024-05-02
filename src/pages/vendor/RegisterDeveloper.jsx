@@ -1054,7 +1054,7 @@ const RegisterDeveloper = () => {
               </div>
             </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterAbout")}
+              {t("enterAbout")} *
             </h2>
             <div className="inner-form mb-3">
               <Row>
@@ -1069,7 +1069,7 @@ const RegisterDeveloper = () => {
                       {...register("bio", {
                         required: {
                           value: true,
-                          message: false,
+                          message: `${t("AboutRequired")}`,
                         },
                       })}
                     />

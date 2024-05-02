@@ -103,7 +103,7 @@ const AdminSingleJob = () => {
                         </div>
                         <div className="single-job-card">
                             <h3 className="req-heading">Skills</h3>
-                            <ul className="skills-listing mb-0">
+                           {singleJobDescription?.skills?.length>0? <ul className="skills-listing mb-0">
                                 {
                                     convertToArray(singleJobDescription?.skills)?.map((item, index) => {
                                         return (
@@ -113,7 +113,7 @@ const AdminSingleJob = () => {
                                         )
                                     })
                                 }
-                            </ul>
+                            </ul>:"Not Mentioned"}
                         </div>
                     </section>
                 </Tab>
