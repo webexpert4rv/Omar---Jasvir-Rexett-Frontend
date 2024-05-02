@@ -324,11 +324,11 @@
         "invoiceUploaded" : "Redan uppladdad",
         "suggestDeveloper" : "Är du säker på att du vill föreslå denna utvecklare?",
         "removeDeveloperFromSuggestion" :"Är du säker på att du vill ta bort denna utvecklare från förslagen?",
-        "AboutRequired":"Om krävs",
         "max_character_limit_msg":"Maxgränsen för tecken har nåtts",
         "amount" : "Belopp",
         "selectStatus" : "Välj status",
         "approved" : "Godkänd",
-        "pending" : "Avvaktar"
+        "pending" : "Avvaktar",
+        "AboutRequired":"Om krävs"
     }
 }
