@@ -686,6 +686,11 @@ ul {
     color: #037563;
 }
 
+.resend-top{
+    cursor: pointer;
+    color: white;
+}
+
 .common-label {
     font-size: 15px;
     color: #121212;

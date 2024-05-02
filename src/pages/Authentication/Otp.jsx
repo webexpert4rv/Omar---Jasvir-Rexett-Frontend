@@ -7,14 +7,15 @@ import sidebarLogo from '../../assets/img/rexett-logo-white.png'
 import authLoginImg from '../../assets/img/login-img-new.png'
 import RexettButton from "../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
-import { getVerifyOtp, loginUser } from "../../redux/slices/authenticationDataSlice";
+import { getVerifyOtp, loginUser, resendOtpDispatch } from "../../redux/slices/authenticationDataSlice";
 import OTPInput from "react-otp-input";
+import RexettSpinner from "../../components/atomic/RexettSpinner";
 
 const Otp = ({ userType }) => {
     const [otp, setOtpValue] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    const { smallLoader } = useSelector(state => state.authData);
+    const { smallLoader,otpLoader } = useSelector(state => state.authData);
 
     const {
         register,
@@ -36,10 +37,6 @@ const Otp = ({ userType }) => {
     }
 
 
-    const handleRoles = (e) => {
-        navigate(`/${e.target.value}`)
-    }
-
     const handleOtpInputChange = (otp) => {
         if (isNaN(otp)) return;
         setOtpValue(otp);
@@ -47,10 +44,8 @@ const Otp = ({ userType }) => {
 
   
     const resendOtpSys = () => {
-        let data = {
-            // email: userData.email
-        }
-        dispatch(resendOtpSys(data))
+        let email=localStorage.getItem("email")
+        dispatch(resendOtpDispatch({email:email}))
     }
 
     return (
@@ -65,11 +60,6 @@ const Otp = ({ userType }) => {
                                         <img src={sidebarLogo} className="logo-white" />
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
-
-                                        {/* <Link to={"#"} className="link-text text-decoration-none">OTP </Link> */}
-
-                                        {/* <Link to={"#"} className="link-text text-decoration-none">Client Login</Link> */}
-                                        {/* <Link to={"#"} className="link-text">Register</Link> */}
                                     </div>
                                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
                                         {/* <Form.Group className="mb-3">
@@ -128,6 +118,7 @@ const Otp = ({ userType }) => {
                                             isLoading={smallLoader}
                                         />
                                     </form>
+                                    <div className="mt-3 text-center resend-top" onClick={resendOtpSys}>{otpLoader?<RexettSpinner/>: "Resend OTP"}</div>
                                 </div>
                             </div>
                         </Col>

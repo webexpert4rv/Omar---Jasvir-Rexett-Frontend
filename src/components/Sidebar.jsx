@@ -28,7 +28,7 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                     <div className="w-100">
                         <div className="d-flex justify-content-between align-items-center pe-4 mb-3">
                             <div className="sidebar-logo mt-3 mb-4">
-                            <a href="https://rexett-web.rvtechnologies.in/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
+                            <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
                             </div>
                             <Button onClick={closemainSidebar} variant="transparent" className="main-btn outline-main-btn px-3 bg-white d-lg-none">&times;</Button>
                         </div>
@@ -55,9 +55,9 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                             <li className="sidebar-item">
                                 <NavLink to={'/earned-back'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("earnedBack")}</NavLink>
                             </li>
-                            {/* <li className="sidebar-item">
+                            <li className="sidebar-item">
                                 <NavLink to={'/invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("invoice")}</NavLink>
-                            </li> */}
+                            </li>
                         </ul>
                     </div>
                     <div className="w-100 px-3 mt-xxl-3">

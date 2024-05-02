@@ -309,7 +309,7 @@
         "interviewing": "Intervjuar",
         "shortlisted": "Shortlistad",
         "suggestions": "Förslag",
-        "jobDetails" : "Jobbdetaljer",
+        "jobDetails" : "Jobbdetaljer",      
         "addSocialMedia" : "Lägg till sociala medier",
         "addBulkTime" : "Lägg till Bulk Time",
         "selectClientName" : "Välj klientnamn",
@@ -320,6 +320,12 @@
         "invalidEmail" :"Ogiltig e-postadress",
         "invoiceUploaded" : "Redan uppladdad",
         "suggestDeveloper" : "Är du säker på att du vill föreslå denna utvecklare?",
-        "removeDeveloperFromSuggestion" :"Är du säker på att du vill ta bort denna utvecklare från förslagen?"
+        "removeDeveloperFromSuggestion" :"Är du säker på att du vill ta bort denna utvecklare från förslagen?",
+        "AboutRequired":"Om krävs",
+        "max_character_limit_msg":"Maxgränsen för tecken har nåtts",
+        "amount" : "Belopp",
+        "selectStatus" : "Välj status",
+        "approved" : "Godkänd",
+        "pending" : "Avvaktar"
     }
 }

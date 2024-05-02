@@ -9,6 +9,7 @@ const initialClientData = {
     approvedLoader: false,
     smallLoader: false,
     assignedDeveloperList: [],
+    invoiceList: [],
     clientProfileDetails: {},
     timeReportingData: [],
     folderData: [],
@@ -105,12 +106,16 @@ export const clientDataSlice = createSlice({
         },
         setFaqs : (state ,action) =>{
             state.faqsData = action.payload
+        },
+        setInvoiceList: (state,action) => {
+            state.invoiceList = action.payload;
+            state.screenLoader = false;
         }
 
     }
 })
 
-export const { setAllJobPostedList, setFaqs ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList, setFaqs ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -541,15 +546,30 @@ export function createNewJobCategory(payload,callback) {
     }
 }
 
-export function getInvoice() {
+// export function getInvoice() {
+//     return async (dispatch) => {
+//         dispatch(setScreenLoader())
+//         try {
+//             let result = await clientInstance.get("/client/invoices")
+//         } catch (error) {
+//             const message = error.message || "Something went wrong";
+//         }
+//     }
+// }
+
+export function getInvoice(payload) {
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setScreenLoader()) 
         try {
-            let result = await clientInstance.get("/client/invoices")
+            let result = await clientInstance.get(generateApiUrl(payload, `client/invoices`))
+            if (result.status === 200) {
+                dispatch(setInvoiceList(result.data ))
+            }
         } catch (error) {
             const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
         }
-    }
+    };
 }
 
 export function getFaq() {
