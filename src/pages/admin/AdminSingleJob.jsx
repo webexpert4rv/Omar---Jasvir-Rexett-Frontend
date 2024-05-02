@@ -89,7 +89,7 @@ const AdminSingleJob = () => {
                             <Row>
                                 <Col md="4">
                                     <h3 className="req-heading">Experience Requirements</h3>
-                                    <p className="req-text">{singleJobDescription?.experience.split("_").join(" ")}</p>
+                                    <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ")}</p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">Contract</h3>
@@ -103,7 +103,7 @@ const AdminSingleJob = () => {
                         </div>
                         <div className="single-job-card">
                             <h3 className="req-heading">Skills</h3>
-                            <ul className="skills-listing mb-0">
+                           {singleJobDescription?.skills?.length>0? <ul className="skills-listing mb-0">
                                 {
                                     convertToArray(singleJobDescription?.skills)?.map((item, index) => {
                                         return (
@@ -113,7 +113,7 @@ const AdminSingleJob = () => {
                                         )
                                     })
                                 }
-                            </ul>
+                            </ul>:"Not Mentioned"}
                         </div>
                     </section>
                 </Tab>
