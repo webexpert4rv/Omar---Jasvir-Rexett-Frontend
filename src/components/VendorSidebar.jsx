@@ -49,7 +49,7 @@ const VendorSidebar = ({ sideBarActive }) => {
                             <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                         <div>
-                            {/* <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("FAQ")}</NavLink> */}
+                            <NavLink to={"/vendor-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("FAQ")}</NavLink>
                         </div>
                     </div>
                 </div>

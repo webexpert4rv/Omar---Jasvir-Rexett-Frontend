@@ -65,7 +65,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                         <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                         <div>
-                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
+                            <NavLink to={"/admin-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
                         </div>
                     </div>
                 </div>
