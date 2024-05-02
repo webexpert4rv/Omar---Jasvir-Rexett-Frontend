@@ -336,7 +336,5 @@
         "invoiceUploaded" : "Already Uploaded",
         "suggestDeveloper" : "Are you sure you want to suggest this developer ?",
         "removeDeveloperFromSuggestion" :"Are you sure you want to remove this developer from suggestions ?",
-        "AboutRequired":"About is required"
-
     }
 }

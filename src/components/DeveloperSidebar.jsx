@@ -46,7 +46,6 @@ const AdminSidebar = ({sideBarActive}) => {
                         </div>
                         <div>
                             <NavLink to={"/developer-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
-                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
                         </div>
                     </div>
                 </div>
