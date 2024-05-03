@@ -224,7 +224,9 @@ const AllDeveloperList = () => {
                                                                 </li> */}
                                                             </ul>
                                                         </td>
-                                                        <span  className="" onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></span>
+                                                        <td>
+                                                            <span  className="delete-btn d-inline-block" onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></span>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </>

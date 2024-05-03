@@ -329,6 +329,8 @@
         "pending" : "Avvaktar",
         "selectView" : "Välj Visa",
         "expertise" : "Expertis",
-        "enterExpertise" : "Ange Expertis"
+        "enterExpertise" : "Ange Expertis",
+        "SingleJobskills":"Färdigheter",
+        "singlejobCategory": "Enstaka jobb kategori"
     }
 }

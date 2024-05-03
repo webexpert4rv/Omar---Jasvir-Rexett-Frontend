@@ -226,7 +226,9 @@ const RentedDevelopers = () => {
                                                                 </li> */}
                                                             </ul>
                                                         </td>
-                                                        <Button onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></Button>
+                                                        <td>
+                                                            <Button className="delete-btn" onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></Button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </>
