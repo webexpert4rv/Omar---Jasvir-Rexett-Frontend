@@ -922,6 +922,7 @@ ul {
 .time-table-data.workday-data {
     background-color: #037563;
     color: #fff;
+    cursor: pointer;
 }
 
 .time-table tr {
@@ -3342,7 +3343,7 @@ input[type="radio"]:checked {
 }
 .remarks-text
 {
-    min-width: 480px;
+    min-width: 300px;
     margin-bottom: 0px;
     font-size: 12px;
     font-weight: 400;
@@ -3353,9 +3354,9 @@ input[type="radio"]:checked {
 }
 .timing-text
 {
-    font-size: 12px;
+    font-size: 13px;
     margin-bottom: 6px;
-    font-weight: 400;
+    font-weight: 600;
     color: #f9f9f9;
 }
 .memo-text
@@ -3371,6 +3372,67 @@ input[type="radio"]:checked {
     font-size: 12px;
     border-left: 2px solid #fff;
     margin-bottom: 0px;
+}
+.detail-view .sidebar-heading
+{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.detail-view .client-name-heading
+{
+    margin-bottom: 0px;
+    font-size: 15px;
+}
+.detail-view .client-name-heading img
+{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+.detail-view .client-info
+{
+    padding: 12px;
+    border-radius: 10px;
+    background: #f7f7f7;
+}
+.weekly-detail
+{
+    border: 1px solid #dfdfdf;
+    border-radius: 20px;
+    background: linear-gradient(#00b377, #006f5c);
+}
+.weekly-detail .client-info
+{
+    color: #fff;
+    background-color: rgba(255, 255, 255, .16);
+}
+.weekly-tabs
+{
+    background-color: #f7f7f7;
+    padding: 6px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.detail-view .memo-text-sidebar
+{
+    font-size: 13px;
+}
+.weekly-tabs .weekly-tab-item .weekly-tab-link
+{
+    color: #037563;
+    font-size: 14px;
+}
+.weekly-tabs .weekly-tab-item .weekly-tab-link.active
+{
+    background-color: #037563;
+    color: #fff;
+}
+.time-detail-sidepanel
+{
+    width: 450px !important;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
