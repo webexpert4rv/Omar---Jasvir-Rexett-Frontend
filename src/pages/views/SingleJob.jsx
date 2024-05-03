@@ -46,9 +46,7 @@ const SingleJob = () => {
     }, [jobPostedData])
 
     const getCategory = (cat) => {
-        console.log(cat,"cat")
         let data = jobCategoryList.find((item) => item.value == cat)
-        console.log(data,"daat")
         return data?.label
     }
 
