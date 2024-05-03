@@ -1982,12 +1982,12 @@ ul {
 }
 
 .closed-job-btn {
-    min-width: 50px;
+    min-width: 40px;
     background-color: #c00;
     border: 1px solid #c00 !important;
     color: var(--white);
     padding: 0px 0px;
-    height: 40px;
+    height: 36px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2001,12 +2001,12 @@ ul {
 }
 .publish-job-btn
 {
-    min-width: 50px;
+    min-width: 40px;
     background-color: #037563;
     border: 1px solid #037563 !important;
     color: var(--white);
     padding: 0px 0px;
-    height: 40px;
+    height: 36px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2015,6 +2015,25 @@ ul {
     transition: .3s ease;
 }
 .publish-job-btn:hover
+{
+    color: #037563 !important;
+}
+.edit-job-btn
+{
+    min-width: 40px;
+    background-color: #00afd7;
+    border: 1px solid #00afd7 !important;
+    color: var(--white);
+    padding: 0px 0px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    flex: none;
+    transition: .3s ease;
+}
+.edit-job-btn:hover
 {
     color: #037563 !important;
 }

@@ -173,7 +173,7 @@ const SingleJob = () => {
                         <div className="single-job-card job-information-wrapper">
                             <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
                                 <h2 className="single-job-title text-start mb-0">{singleJobDescription?.title}</h2>
-                                <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
+                                <div className="d-flex gap-2 flex-wrap mb-md-0 mb-4 align-items-center">
                                     <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
                                     {singleJobDescription?.status !== "ended" ? <>
                                         <OverlayTrigger placement="top" overlay={endjob}>
@@ -190,11 +190,11 @@ const SingleJob = () => {
                                     </> : ""}
                                     {singleJobDescription?.status !== "ended" ?
                                     <OverlayTrigger placement="top" overlay={deletejob}>
-                                        <Button onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button> 
+                                        <Button className="closed-job-btn" variant="transparent" onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button> 
                                     </OverlayTrigger> :""}
                                     {singleJobDescription?.status !== "ended" ?
                                     <OverlayTrigger placement="top" overlay={editjob}>
-                                        <Button onClick={() => handleEdit("application", singleJobDescription?.id)}><TiEdit /></Button>
+                                        <Button className="edit-job-btn" variant="transparent" onClick={() => handleEdit("application", singleJobDescription?.id)}><TiEdit /></Button>
                                     </OverlayTrigger> :""}
                                 </div>
                             </div>
