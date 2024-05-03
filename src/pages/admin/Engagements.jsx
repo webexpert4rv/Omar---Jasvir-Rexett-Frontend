@@ -73,7 +73,7 @@ const Engagements = () => {
                                                 <td>{item?.contract?.job?.title}</td>
                                                 <td>{item?.contract?.employment_type}</td>
                                                 <td>{item?.contract?.job_type}</td>
-                                                <td>{item?.total_duration}</td>
+                                                <td>{item?.total_duration?.toFixed(2)}</td>
                                             </tr>
                                         </>
                                     )

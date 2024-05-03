@@ -101,7 +101,7 @@ const JobPost = () => {
     return { value: item.id, label: item.title };
   });
 
-
+console.log(skillCate , "skillCate----")
   useEffect(() => {
     setOptions(jobCategoryList);
     setSkillsCate(skillListMapped)

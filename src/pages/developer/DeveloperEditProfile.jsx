@@ -93,11 +93,7 @@ const EditDeveloperProfile = () => {
                 dispatch(updateDeveloperProfile(data));
             }));
         }
-
     };
-
-
-
     const validatePassword = (value) => {
         if (value === "") {
             return true; // Password is not required, so return true if empty
@@ -171,51 +167,6 @@ const EditDeveloperProfile = () => {
                                             {errors.email?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("phone")}*</Form.Label>
-                                        {/* <Form.Control type="tel" className="common-field"
-                                            name="phone_number"
-                                            {...register("phone_number", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Phone Number is required",
-                                                },
-                                                pattern: {
-                                                    value: /^[0-9]{10}$/,
-                                                    message: "Please enter a valid phone number"
-                                                }
-                                        /> */} 
-                     <Controller
-                      name="phone_number"
-                      control={control} 
-                      rules={{
-                        required: {
-                          value: true,
-                          message: t("phoneNumberValidation"),
-                        },
-                        pattern: {
-                          value: /^[0-9]{10}$/,
-                          message: "Please enter a valid phone number",
-                        },
-                      }}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="common-field form-control"
-                          onChange={(e) => {
-                            const numericValue = e.target.value.replace(
-                              /[^0-9]/g,
-                              ""
-                            );
-                            field.onChange(numericValue);
-                          }}
-                        />
-                      )}
-                    />
-                                        <p className="error-message">
-                                            {errors.phone_number?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
                                         <Form.Label className="common-label">{t("previousPassword")}</Form.Label>
                                         <div className="position-relative">
                                             <Form.Control type={isPassword.firstPass ? "text" : "password"} className="common-field"
@@ -263,17 +214,64 @@ const EditDeveloperProfile = () => {
                                 <div>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">{t("address")} 2</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="address_2"
-                                            {...register("address_2", {
-                                                required: {
-                                                    value: false,
-                                                    message: "Address 2 is required",
-                                                },
-                                            })}
-                                        />
+                                        <div className="position-relative">
+                                            <Form.Control type="text" className="common-field"
+                                                name="address_2"
+                                                {...register("address_2", {
+                                                    required: {
+                                                        value: false,
+                                                        message: "Address 2 is required",
+                                                    },
+                                                })}
+                                            />
+                                        </div>
                                         <p className="error-message">
                                             {errors.address_2?.message} </p>
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="common-label">{t("phone")}*</Form.Label>
+                                        {/* <Form.Control type="tel" className="common-field"
+                                            name="phone_number"
+                                            {...register("phone_number", {
+                                                required: {
+                                                    value: true,
+                                                    message: "Phone Number is required",
+                                                },
+                                                pattern: {
+                                                    value: /^[0-9]{10}$/,
+                                                    message: "Please enter a valid phone number"
+                                                }
+                                        /> */}
+                                        <Controller
+                                            name="phone_number"
+                                            control={control}
+                                            rules={{
+                                                required: {
+                                                    value: true,
+                                                    message: t("phoneNumberValidation"),
+                                                },
+                                                pattern: {
+                                                    value: /^[0-9]{10}$/,
+                                                    message: "Please enter a valid phone number",
+                                                },
+                                            }}
+                                            render={({ field }) => (
+                                                <input
+                                                    {...field}
+                                                    type="text"
+                                                    className="common-field form-control"
+                                                    onChange={(e) => {
+                                                        const numericValue = e.target.value.replace(
+                                                            /[^0-9]/g,
+                                                            ""
+                                                        );
+                                                        field.onChange(numericValue);
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                        <p className="error-message">
+                                            {errors.phone_number?.message} </p>
                                     </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">{t("city")}*</Form.Label>
