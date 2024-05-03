@@ -46,7 +46,7 @@ const RexettInvoiceFilter = ({ setSelectedFilters, selectedFilters }) => {
             >
               <option value="">{t("selectStatus")}</option>
               <option value="approved">{t("approved")}</option>
-              <option value="pending">{t("pending")}</option>
+              <option value="pending">{t("pending")}</option> 
             </Form.Select>
           </div>
           <div>

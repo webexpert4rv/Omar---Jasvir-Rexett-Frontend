@@ -327,6 +327,7 @@
         "selectStatus" : "Välj status",
         "approved" : "Godkänd",
         "pending" : "Avvaktar",
+        "bio_validation_msg":"Bio måste vara minst 300 tecken långt",
         "selectView" : "Välj Visa",
         "expertise" : "Expertis",
         "enterExpertise" : "Ange Expertis",
