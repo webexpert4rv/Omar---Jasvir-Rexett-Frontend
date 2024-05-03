@@ -12,7 +12,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { current } from "@reduxjs/toolkit";
 import { timeReporting } from "../../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
-const AddTimingModal = ({ show, handleClose,role }) => {
+const AddTimingModal = ({ show, handleClose, role }) => {
   const dispatch = useDispatch();
   // const [selectDay, setDaySelection] = useState(null);
   const [disabledWorkDay, setDisabledWorkDay] = useState([]);
@@ -92,8 +92,8 @@ const AddTimingModal = ({ show, handleClose,role }) => {
         ]);
       });
     }
-  
-  }, [timeReportingData ]);
+
+  }, [timeReportingData]);
 
   const handleWorkDaysChange = (e, index, state) => {
     if (state) {
@@ -121,7 +121,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
           handleClose();
         })
       );
-    }else{
+    } else {
       setDetails(true)
     }
   };
@@ -134,7 +134,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
   const handlePrevTimeReporting = (e) => {
     e.preventDefault()
     setDetails(true)
-    if (selectedFilter && Object.keys(selectedFilter).length==4) {
+    if (selectedFilter && Object.keys(selectedFilter).length == 4) {
       dispatch(getPreviousTimeReports(selectedFilter, () => {
         setOpen(false)
       }));
@@ -167,7 +167,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="experience-container">
             <div className="mb-3">
-              {!open ?<div className="text-end">
+              {!open ? <div className="text-end">
                 <Button
                   variant="transparent"
                   className="main-btn px-3"
@@ -177,7 +177,7 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                 >
                   {t("updatePreviousTime")} ?
                 </Button>
-              </div>:""}
+              </div> : ""}
               <Collapse in={open}>
                 <div className="mt-2">
                   <Row>
@@ -284,13 +284,13 @@ const AddTimingModal = ({ show, handleClose,role }) => {
                 {open ? (
                   <div className="text-center mt-2">
                     <RexettButton
-                            type="submit"
-                            text="Get Previous Time Report"
-                            className="main-btn px-4"
-                            variant="transparent"
-                            onClick={handlePrevTimeReporting}
-                            isLoading={smallLoader}
-                        />
+                      type="submit"
+                      text="Get Previous Time Report"
+                      className="main-btn px-4"
+                      variant="transparent"
+                      onClick={handlePrevTimeReporting}
+                      isLoading={smallLoader}
+                    />
 
                   </div>
                 ) : (
@@ -301,112 +301,112 @@ const AddTimingModal = ({ show, handleClose,role }) => {
             {!open ? fields?.map((item, index) => {
               return (
                 <>
-                  <div className="time-row">  
-                    <Row>
-                      <Col md={12}>
-                        <Form.Label className="date-text">
+                  <div className="time-row">
+                    <Row className="align-items-center">
+                      <Col md={4}>
+                        <Form.Label className="date-text mb-0">
                           {item?.report_date}
                         </Form.Label>
                       </Col>
-                      <Col md={12}>
-                        <Form.Group className="d-flex gap-3">
-                          <Form.Label className="d-block mb-1 fw-semibold">
+                      <Col md={8}>
+                        <Form.Group className="d-flex justify-content-end gap-3">
+                          {/* <Form.Label className="d-block mb-1 fw-semibold">
                             {t("selectDay")}
-                          </Form.Label>
+                          </Form.Label> */}
                           <Form.Check
                             inline
                             type="radio"
                             value="work-day"
-                            name="day-select"
+                            name={`"day-select"${index}`}
                             onChange={(e) =>
                               handleWorkDaysChange(e, index, true)
                             }
-                            className="font-15"
-                            id="work-day"
+                            className="font-15 select-radiolabel me-0 ps-0"
+                            id={`work-day${index}`}
                             label={t("workDay")}
                           />
                           <Form.Check
                             inline
                             type="radio"
                             value="off-day"
-                            name="day-select"
+                            data-value="off-day"
+                            name={`"day-select"${index}`}
                             onChange={(e) =>
                               handleWorkDaysChange(e, index, false)
                             }
-                            className="font-15"
-                            id="off-day"
+                            className="font-15 select-radiolabel me-0 ps-0"
+                            id={`"off-day"${index}`}
                             label="Holiday"
                           />
                         </Form.Group>
-                        <div
-                          className={
-                            disabledWorkDay[index]
-                              ? "d-flex gap-3"
-                              : "cv-template-section cv-template1 d-none"
-                          }
-                        >
-                          <Form.Group>
-                            <Form.Label className="font-13">
-                              {t("startTime")}
-                            </Form.Label>
-                            <Form.Control
-                              type="time"
-                              className="cv-field font-13"
-                              {...register(`addTime.${index}.start_time`, {
-                                required: disabledWorkDay[index] ? "Please Enter Time" : false,
-                                validate: {
-
-                                  lessThanEndTime: value => {
-                                    const watchEndTime = watch(`addTime.${index}.end_time`);
-                                    if (!watchEndTime || parseInt(value) < parseInt(watchEndTime)) {
-                                      return true;
-                                    }
-                                    return 'Start time must be less than End Time';
-                                  }
-                                }
-                              })}
-                              defaultValue={item.start_time}
-                            ></Form.Control>
-                            {errors && errors.addTime && errors.addTime[index] && errors.addTime[index].start_time && (
-                              <p className="error-message">{errors.addTime[index].start_time.message}</p>
-                            )}
-                          </Form.Group>
-                          <Form.Group>
-                            <Form.Label className="font-13">
-                              {t("endTime")}
-                            </Form.Label>
-                            <Form.Control
-                              type="time"
-                              className="cv-field font-13"
-                              {...register(`addTime.${index}.end_time`, {
-                                required: disabledWorkDay[index] ? "Please Enter Time" : false,
-                              })}
-                              defaultValue={item.end_time}
-                            >
-                            </Form.Control>
-                          </Form.Group>
-                          {disabledWorkDay[index] ? (
-                            <Form.Group className="w-100">
-                              <Form.Label className="font-13">{t("memo")}</Form.Label>
-                              <Form.Control
-                                type="text"
-                                as="textarea"
-                                rows={3}
-                                className="cv-field font-13"
-                                placeholder="Add Memo"
-                                {...register(`addTime.${index}.memo`, {
-                                  required: false,
-                                })}
-                                defaultValue={item.memo}
-                              >
-                              </Form.Control>
-                            </Form.Group>
-                          ) : (
-                            ""
-                          )}
-                        </div>
                       </Col>
                     </Row>
+                    <div
+                      className={
+                        disabledWorkDay[index]
+                          ? "d-flex gap-3 align-items-center mt-3"
+                          : "cv-template-section cv-template1 d-none"
+                      }
+                    >
+                      <Form.Group>
+                        {/* <Form.Label className="font-13">
+                          {t("startTime")}
+                        </Form.Label> */}
+                        <Form.Control
+                          type="time"
+                          className="cv-field font-13 shadow-none"
+                          {...register(`addTime.${index}.start_time`, {
+                            required: disabledWorkDay[index] ? "Please Enter Time" : false,
+                            validate: {
+
+                              lessThanEndTime: value => {
+                                const watchEndTime = watch(`addTime.${index}.end_time`);
+                                if (!watchEndTime || parseInt(value) < parseInt(watchEndTime)) {
+                                  return true;
+                                }
+                                return 'Start time must be less than End Time';
+                              }
+                            }
+                          })}
+                          defaultValue={item.start_time}
+                        ></Form.Control>
+                        {errors && errors.addTime && errors.addTime[index] && errors.addTime[index].start_time && (
+                          <p className="error-message">{errors.addTime[index].start_time.message}</p>
+                        )}
+                      </Form.Group>
+                      <span>-</span>
+                      <Form.Group>
+                        {/* <Form.Label className="font-13">
+                          {t("endTime")}
+                        </Form.Label> */}
+                        <Form.Control
+                          type="time"
+                          className="cv-field font-13 shadow-none"
+                          {...register(`addTime.${index}.end_time`, {
+                            required: disabledWorkDay[index] ? "Please Enter Time" : false,
+                          })}
+                          defaultValue={item.end_time}
+                        >
+                        </Form.Control>
+                      </Form.Group>
+                      {disabledWorkDay[index] ? (
+                        <Form.Group className="w-100">
+                          {/* <Form.Label className="font-13">{t("memo")}</Form.Label> */}
+                          <Form.Control
+                            type="text"
+                            className="cv-field font-13 shadow-none"
+                            placeholder="Add Memo"
+                            {...register(`addTime.${index}.memo`, {
+                              required: false,
+                            })}
+                            defaultValue={item.memo}
+                          >
+                          </Form.Control>
+                        </Form.Group>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
                 </>
               );

@@ -282,7 +282,7 @@
         "accountDeletionList": "Lista över kontoupphävningar",
         "uploadImage": "Ladda upp bild, Bilden måste vara jpg eller png",
         "addTime": "Lägg till tid",
-        "updatePreviousTime": "Vill du uppdatera tidigare tid?",
+        "updatePreviousTime": "uppdatera tidigare tid?",
         "selectAMonth": "Välj en månad, Välj månad",
         "selectAWeek": "Välj en vecka, Välj vecka",
         "enterClientName": "Ange kundens namn",

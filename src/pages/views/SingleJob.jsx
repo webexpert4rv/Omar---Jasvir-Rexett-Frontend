@@ -190,11 +190,11 @@ const SingleJob = () => {
                                     </> : ""}
                                     {singleJobDescription?.status !== "ended" ?
                                     <OverlayTrigger placement="top" overlay={deletejob}>
-                                        <Button onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button> 
+                                        <Button className="closed-job-btn" variant="transparent" onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button> 
                                     </OverlayTrigger> :""}
                                     {singleJobDescription?.status !== "ended" ?
                                     <OverlayTrigger placement="top" overlay={editjob}>
-                                        <Button onClick={() => handleEdit("application", singleJobDescription?.id)}><TiEdit /></Button>
+                                        <Button className="edit-job-btn" variant="transparent" onClick={() => handleEdit("application", singleJobDescription?.id)}><TiEdit /></Button>
                                     </OverlayTrigger> :""}
                                 </div>
                             </div>

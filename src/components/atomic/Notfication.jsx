@@ -91,8 +91,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
     };
   }, []);
 
-
-
   const handleNotification = (notificationId, id, data) => {
     setNotificationModal(false)
     dispatch(markAsRead(notificationId, () => {
