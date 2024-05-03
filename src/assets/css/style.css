@@ -586,6 +586,14 @@ ul {
     margin-right: auto;
     margin-bottom: 20px;
 }
+.application-userbx
+{
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    margin-left: 0px;
+}
 
 .user-img {
     width: 100%;
@@ -680,6 +688,11 @@ ul {
 .link-text-dark:hover {
     background: transparent !important;
     color: #037563;
+}
+
+.resend-top{
+    cursor: pointer;
+    color: white;
 }
 
 .common-label {

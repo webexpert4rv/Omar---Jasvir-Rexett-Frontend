@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { HiUpload } from "react-icons/hi";
 import { filePreassignedUrlGenerate, getDeveloperDetails, updateDeveloperCvDetails } from "../../../redux/slices/clientDataSlice";
 import { fetchDeveloperCv } from "../../../redux/slices/developerDataSlice";
+import { useTranslation } from "react-i18next";
 
 const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role }) => {
     const dispatch = useDispatch();
     const { smallLoader } = useSelector(state => state.clientData)
     const [file, setFile] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null);
+    const{ t } =  useTranslation() 
     const {
         register,
         setValue,
@@ -37,7 +39,9 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role
         }
     };
 
+    const handleExperience = () =>{
 
+    }
 
     const onSubmit = (values) => {
         console.log(values , "values")
@@ -117,6 +121,21 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role
                         <p className="error-message">
                             {errors.professional_title?.message}
                         </p>
+                        <div className="flex-none">
+                                    <Form.Label className="common-label">{t("experience")}</Form.Label>
+                                    <Form.Select className="filter-select shadow-none"  onChange={(e) => handleExperience(e)}>
+                                        <option value="" > {t("selectExperience")} </option>
+                                        <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
+                                        <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
+                                        <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
+                                        <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
+                                        <option value="above 5" onClick={(e) => e.stopPropagation()}>above 5  {t("years")}</option>
+                                    </Form.Select>
+                                </div>
+                        <p className="error-message">
+                            {errors.professional_title?.message}
+                        </p>
+
 
                         <Form.Label className="font-14">Image</Form.Label>
                         <Form.Control type="file" id="developer-image"
