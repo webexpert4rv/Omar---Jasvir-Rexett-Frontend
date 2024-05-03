@@ -317,6 +317,8 @@
         "youHaveNoNotification" : "Du har ingen avisering",
         "professional_title" : "Professionell titel",
         "professionalTitleValidation" : "Yrkestitel krävs",
-        "selectView" : "Välj Visa"
+        "selectView" : "Välj Visa",
+        "expertise" : "Expertis",
+        "enterExpertise" : "Ange Expertis"
     }
 }
