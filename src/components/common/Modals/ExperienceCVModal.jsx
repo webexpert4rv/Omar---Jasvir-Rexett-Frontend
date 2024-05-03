@@ -154,9 +154,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
       <Modal.Header closeButton className="border-0 pb-3">
         {/* <Modal.Title>Experience CV Section</Modal.Title> */}
       </Modal.Header>
-
       <Modal.Body>
-
         <h3 className="popup-heading">{t("experience")} CV {t("section")}</h3>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {fields.map((item, index) => (

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { HiUpload } from "react-icons/hi";
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getAddNewDeveloper } from "../../redux/slices/clientDataSlice";
+import { getAddNewDeveloper, getSkillList } from "../../redux/slices/clientDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
 import { addDegree, getDegreeList } from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
@@ -17,28 +17,22 @@ import { INVALID_FILE_TYPE } from "../../components/clients/TimeReporiting/const
 import { Controller } from "react-hook-form";
 import { min } from "moment";
 
-const options = [
-  { value: "html", label: "HTML" },
-  { value: "css", label: "CSS" },
-  { value: "js", label: "JavaScript" },
-  { value: "jquery", label: "jQuery" },
-  { value: "reactjs", label: "ReactJS" },
-  { value: "vuejs", label: "VueJS" },
-  { value: "angularjs", label: "AngularJS" },
-  { value: "bootstrap", label: "Bootstrap" },
-];
 
+const createOption = (label) => ({
+  label,
+  value: label.toLowerCase().replace(/\W/g, ""),
+});
 const RegisterDeveloper = () => {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
-  const { smallLoader } = useSelector((state) => state.clientData);
+  const { smallLoader, skillList } = useSelector((state) => state.clientData);
+  const [options, setOptions] = useState([]);
   const [disbaleYear, setDisbaleYear] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [skills, setSkills] = useState(null);
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const [skillCate, setSkillsCate] = useState([]);
-
   const { degreeList } = useSelector((state) => state.developerData);
   const skillLabels = skillCate?.map((skill) => skill.value);
   const skillSet = skillLabels?.toString();
@@ -88,15 +82,16 @@ const RegisterDeveloper = () => {
     dispatch(getDegreeList());
   }, []);
 
+
   useEffect(() => {
-    setSkillsCate(options);
-  }, []);
+    dispatch(getSkillList());
+  }, [dispatch]);
+  useEffect(() => {
+    setSkillsCate(skillListMapped)
+  }, [skillList]);
 
-  const createOption = (label) => ({
-    label,
-    value: label.toLowerCase().replace(/\W/g, ""),
-  });
 
+  console.log(skillCate, "skillCate")
   function generateYears() {
     const currentYear = new Date().getFullYear();
     const years = [];
@@ -106,13 +101,13 @@ const RegisterDeveloper = () => {
     return years;
   }
 
-  // Example usage:
   const yearsArray = generateYears();
 
   const onSubmit = (data, index) => {
+    let convertArr = selectedOption.map((item) => item.label);
     let formData = {
       ...data,
-      skills: skillSet,
+      skills: convertArr.toString(),
     };
 
     let fileData = new FormData();
@@ -132,6 +127,32 @@ const RegisterDeveloper = () => {
       })
     );
   };
+
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title };
+  });
+
+  const handleExperience = () => {
+
+  }
+
+  const handleAppend = async () => {
+    // Trigger validation for all fields
+    const isValid = await trigger();
+    // Check if all fields are valid
+    if (isValid) {
+      append({
+        skills: "",
+        experience: ""
+      });
+    }
+  };
+  const addtooltip = (
+    <Tooltip id="tooltip">
+      {t("addRow")}
+    </Tooltip>
+  );
+
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
     // to check if any of the field inside experiences array is empty
@@ -272,12 +293,12 @@ const RegisterDeveloper = () => {
   };
   const handleCreate = (inputValue) => {
     const payload = {
-        title : inputValue
+      title: inputValue
     }
     dispatch(addDegree(payload, () => {
-        dispatch(getDegreeList());
-      }))
-   } 
+      dispatch(getDegreeList());
+    }))
+  }
 
   return (
     <>
@@ -648,6 +669,7 @@ const RegisterDeveloper = () => {
                             {errors.experiences[index].company_name.message}
                           </p>
                         )}
+
                       </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -784,6 +806,59 @@ const RegisterDeveloper = () => {
                   +
                 </Button>
               </div>
+            </div>
+            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
+              {t("enterExpertise")}
+            </h2>
+            <Row>
+              <Col md="12">
+                <Form.Group className="mb-4">
+                  <Form.Label className="common-label">{t("Enter Skills")}</Form.Label>
+                  <CreatableSelect
+                    isMulti
+                    isClearable
+                    name={selectedOption}
+                    onChange={(newValue) => {
+                      setSelectedOption(newValue);
+                    }}
+                    onCreateOption={onChangeSelect}
+                    options={skillCate}
+                    value={selectedOption}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <div className="flex-none">
+              <Form.Label className="common-label">{t("experience")}</Form.Label>
+              <Form.Select className="filter-select shadow-none" onChange={(e) => handleExperience(e)}>
+                <option value="" > {t("selectExperience")} </option>
+                <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
+                <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
+                <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
+                <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
+                <option value="above 5" onClick={(e) => e.stopPropagation()}>above 5  {t("years")}</option>
+              </Form.Select>
+            </div>
+            {/* <p className="error-message">
+                            {errors.professional_title?.message}
+                        </p> */}
+
+            <div className="text-end mb-3">
+              <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                <Button className="main-btn py-2 px-3" onClick={handleAppend}>
+                  +
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div className="text-center">
+              <RexettButton
+                type="submit"
+                text="Submit"
+                className="main-btn px-4 font-14 fw-semibold"
+                variant="transparent"
+                disabled={smallLoader}
+                isLoading={smallLoader}
+              />
             </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterEducationDetails")}
@@ -979,7 +1054,7 @@ const RegisterDeveloper = () => {
               </div>
             </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterAbout")}
+              {t("enterAbout")} *
             </h2>
             <div className="inner-form mb-3">
               <Row>
@@ -994,7 +1069,7 @@ const RegisterDeveloper = () => {
                       {...register("bio", {
                         required: {
                           value: true,
-                          message: false,
+                          message: `${t("AboutRequired")}`,
                         },
                       })}
                     />

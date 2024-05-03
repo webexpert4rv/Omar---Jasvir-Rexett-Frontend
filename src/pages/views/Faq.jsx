@@ -10,10 +10,12 @@ const Faq = () => {
     const handleTabChange = (tab) => {
         setActiveTab(tab);
     };
-    const { t } = useTranslation()
+    const { t } = useTranslation();
+    
     useEffect(() => {
         dispatch(getFaq())
     }, [])
+
     return (
         <>
             <section className={`faq-section ${activeTab === "general" ? "general-active" : ""} ${activeTab === "jobposting" ? "jobposting-active" : ""} ${activeTab === "timereporting" ? "timereporting-active" : ""}`}>

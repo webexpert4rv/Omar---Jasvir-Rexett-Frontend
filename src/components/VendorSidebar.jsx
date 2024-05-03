@@ -23,7 +23,7 @@ const VendorSidebar = ({ sideBarActive }) => {
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
                         <div className="sidebar-logo mb-3">
-                           <a href="https://rexett-web.rvtechnologies.in/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
+                           <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
                         </div>
                         <NavLink to={"/vendor-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
@@ -49,7 +49,7 @@ const VendorSidebar = ({ sideBarActive }) => {
                             <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                         <div>
-                            {/* <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("FAQ")}</NavLink> */}
+                            <NavLink to={"/vendor-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("FAQ")}</NavLink>
                         </div>
                     </div>
                 </div>
