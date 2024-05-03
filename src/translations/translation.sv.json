@@ -325,6 +325,7 @@
         "amount" : "Belopp",
         "selectStatus" : "Välj status",
         "approved" : "Godkänd",
-        "pending" : "Avvaktar"
+        "pending" : "Avvaktar",
+        "bio_validation_msg":"Bio måste vara minst 300 tecken långt"
     }
 }
