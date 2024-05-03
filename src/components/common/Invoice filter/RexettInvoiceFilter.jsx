@@ -83,7 +83,7 @@ const RexettInvoiceFilter = ({ setSelectedFilters, selectedFilters }) => {
             {/* <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control> */}
             <RexettButton
               type="submit"
-              text="Filter"   
+              text={t("filter")}   
               className="main-btn py-1_5 px-4"
               variant="transparent"
               isLoading={false} 

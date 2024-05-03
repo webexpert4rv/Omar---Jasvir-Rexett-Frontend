@@ -332,8 +332,9 @@
         "max_character_limit_msg" :"Maximum character limit reached",
         "selectView" : "Select View",
         "expertise" : "Expertise",
-        "enterExpertise" : "Enter Expertise"
-        
+        "enterExpertise" : "Enter Expertise",
+        "date" : "Date",
+        "status" : "Status"        
         
 
     }

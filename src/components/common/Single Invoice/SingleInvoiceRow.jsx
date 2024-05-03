@@ -8,6 +8,7 @@ const SingleInvoiceRow = ({ curInvoice }) => {
   const actiontooltip = <Tooltip id="tooltip">Download Invoice</Tooltip>;
 
   const handleDownload = (download_link) => {
+    console.log(download_link , "download_link")
     fetch(download_link)
       .then((response) => response.blob())
       .then((blob) => {
