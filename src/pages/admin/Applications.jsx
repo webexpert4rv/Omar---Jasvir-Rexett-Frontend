@@ -196,27 +196,29 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                              <td className="white-nowrap">
-                                <span
-                                  className={
-                                    arrowactive == index &&
-                                    currentTab == "clients"
-                                      ? "row-arrow active"
-                                      : "row-arrow"
-                                  }
-                                ></span>{" "}
-                                <div className="user-imgbx">
-                                  <RxChevronRight />
-                                  {item?.name}
-
-                                  <img
-                                    src={
-                                      item?.profile_picture
-                                        ? item?.profile_picture
-                                        : userImg
+                                <td className="white-nowrap">
+                                <div className="d-flex align-items-center">
+                                  <span
+                                    className={
+                                      arrowactive == index &&
+                                      currentTab == "clients"
+                                        ? "row-arrow active"
+                                        : "row-arrow"
                                     }
-                                    className="user-img"
-                                  />
+                                  >
+                                    <RxChevronRight />
+                                  </span>{" "}
+                                  <div className="user-imgbx application-userbx">
+                                    <img
+                                      src={
+                                        item?.profile_picture
+                                          ? item?.profile_picture
+                                          : userImg
+                                      }
+                                      className="user-img"
+                                    />
+                                  </div>
+                                  {item?.name}
                                 </div>
                               </td>
                               <td>
@@ -474,28 +476,29 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                              <td className="white-nowrap">
-                                <span
-                                  className={
-                                    arrowactive == index &&
-                                    currentTab == "vendors"
-                                      ? "row-arrow active"
-                                      : "row-arrow"
-                                  }
-                                >
-                                </span>{" "}
-                                <div className="user-imgbx">
-                                  <RxChevronRight />
-                                  {item?.name}
-
-                                  <img
-                                    src={
-                                      item?.profile_picture
-                                        ? item?.profile_picture
-                                        : userImg
+                                    <td className="white-nowrap">
+                                <div className="d-flex align-items-center">
+                                  <span
+                                    className={
+                                      arrowactive == index &&
+                                      currentTab == "vendors"
+                                        ? "row-arrow active"
+                                        : "row-arrow"
                                     }
-                                    className="user-img"
-                                  />
+                                  >
+                                    <RxChevronRight />
+                                  </span>{" "}
+                                  <div className="user-imgbx application-userbx">
+                                    <img
+                                      src={
+                                        item?.profile_picture
+                                          ? item?.profile_picture
+                                          : userImg
+                                      }
+                                      className="user-img"
+                                    />
+                                  </div>
+                                  {item?.name}
                                 </div>
                               </td>
                               <td>
@@ -731,27 +734,28 @@ const Applications = () => {
                               onClick={() => handleRowClick(index)}
                             >
                               <td className="white-nowrap">
-                                <span
-                                  className={
-                                    arrowactive == index &&
-                                    currentTab == "developers"
-                                      ? "row-arrow active"
-                                      : "row-arrow"
-                                  }
-                                >
-                                </span>{" "}
-                                <div className="user-imgbx">
-                                  <RxChevronRight />
-                                  {item?.name}
-
-                                  <img
-                                    src={
-                                      item?.profile_picture
-                                        ? item?.profile_picture
-                                        : userImg
+                                <div className="d-flex align-items-center">
+                                  <span
+                                    className={
+                                      arrowactive == index &&
+                                      currentTab == "developers"
+                                        ? "row-arrow active"
+                                        : "row-arrow"
                                     }
-                                    className="user-img"
-                                  />
+                                  >
+                                    <RxChevronRight />
+                                  </span>{" "}
+                                  <div className="user-imgbx application-userbx">
+                                    <img
+                                      src={
+                                        item?.profile_picture
+                                          ? item?.profile_picture
+                                          : userImg
+                                      }
+                                      className="user-img"
+                                    />
+                                  </div>
+                                  {item?.name}
                                 </div>
                               </td>
                               <td>
