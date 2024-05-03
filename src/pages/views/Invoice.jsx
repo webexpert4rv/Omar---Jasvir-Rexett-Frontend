@@ -41,11 +41,18 @@ const Invoice = () => {
     };
     dispatch(getInvoice(data));
   }, [page, selectedFilters]);
-  const toggleFolderView = () => {
-    setShowFolderView(!showFolderView);
-  };  
+
   const { t } = useTranslation();
-  const actiontooltip = <Tooltip id="tooltip">Download Invoice</Tooltip>;
+ 
+  const handleDownload = (url) => {
+    const newTab = window.open(url, '_blank');
+    if (newTab) {
+        newTab.focus();
+    } else {
+        // If the popup blocker prevents opening the new tab
+        alert('Please allow pop-ups for this site to download the file in a new tab.');
+    }
+};
 
   return (
     <>

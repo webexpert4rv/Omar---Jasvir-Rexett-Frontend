@@ -50,7 +50,6 @@ const RexettDocuments = ({ currentRole }) => {
 
 
 
-    console.log(folderData , "folderdata")
     const handleShowUploadFileModal = (id, name) => {
         setOpen(!open)
         if (id) {
@@ -80,12 +79,10 @@ const RexettDocuments = ({ currentRole }) => {
     };
 
     const toggleFolderView = (item) => {
-        console.log(item,"item")
         let data = {
             name: item?.s3_path,
             parent_id: item?.parent_id
         }
-        console.log(item , "item")
         setBradCrum([...bradCrump, data])
         setShowFolderView(true);
         let filterData = {
@@ -103,7 +100,6 @@ const RexettDocuments = ({ currentRole }) => {
         dispatch(getFolderData(filterData, currentRole))
     }, [dispatch])
 
-    console.log(currentFolderDetails , "currentFolderDetails------")
 
     const handleDownload = (url) => {
         const newTab = window.open(url, '_blank');

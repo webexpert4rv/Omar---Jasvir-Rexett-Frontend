@@ -4,8 +4,6 @@ import resumeImg from '../../../assets/img/user-img.jpg'
 import { Link } from "react-router-dom";
 import { FaFacebookF } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa6";
-import { FaTwitter } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { FaGitlab } from "react-icons/fa6";
 import { FaPinterest } from "react-icons/fa6";
@@ -239,7 +237,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                             )
                                         })}
                                     </> : ""}
-                                    {data?.developer_educations ? <>
+                                    {/* {data?.experties ? <>
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">{t("expertise")}</h3>
                                       { role!=="client" && <div className="add_more_section_education" onClick={handleShowExpertiseModal}><MdEditNote size={25} /></div>}
                                         {data?.developer_educations?.map((item) => {
@@ -254,7 +252,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                                     </div>
                                                 </React.Fragment>
                                             )})}
-                                    </> : ""}
+                                    </> : ""} */}
                                 </div>
                             </Col>
                         </Row>
