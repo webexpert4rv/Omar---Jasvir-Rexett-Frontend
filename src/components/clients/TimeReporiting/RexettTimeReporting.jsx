@@ -32,9 +32,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         dispatch(timeReporting(filterData, role));
     }, [page])
     const { t } = useTranslation();
-    console.log(selectedView,"selectedView")
-    console.log(selectedFilter, "selectedFilter")
-    console.log(selectedPeriod, "selectedPeriod")
+   
     const handlePeriodChange = (value) => {
         setSelectedView(value)
         const selectedPeriodValue = value;

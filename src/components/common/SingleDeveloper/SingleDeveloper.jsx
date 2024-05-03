@@ -20,6 +20,7 @@ import EducationCV from "../Modals/EducationModal";
 import SkillsModal from "../Modals/SkillsCVModal";
 import SocialMediaModal from "../Modals/SocialMediaModal";
 import DeveloperDetails from "../Modals/DeveloperDetails";
+import ExpertiseModal from "../Modals/ExpertiseModal";
 
 
 
@@ -67,6 +68,15 @@ const SingleDeveloper = ({ data ,role}) => {
     const handleShowEducationModal = () => {
         setShowEducationModal(true);
     };
+
+    const [showExpertiseModal , setShowExpertiseModal] = useState(false)
+    const handleShowExpertiseModal = ()=>{
+        setShowExpertiseModal(true)
+    }
+
+    const handleCloseExpertiseModal = () =>{
+        setShowExpertiseModal(false)
+    }
 
     const handleCloseEducationModal = () => {
         setShowEducationModal(false);
@@ -229,6 +239,22 @@ const SingleDeveloper = ({ data ,role}) => {
                                             )
                                         })}
                                     </> : ""}
+                                    {data?.developer_educations ? <>
+                                        <h3 className="subheading-resume mb-xxl-4 mb-3">{t("expertise")}</h3>
+                                      { role!=="client" && <div className="add_more_section_education" onClick={handleShowExpertiseModal}><MdEditNote size={25} /></div>}
+                                        {data?.developer_educations?.map((item) => {
+                                            return (
+                                                <React.Fragment key={item.id}>
+                                                    <div className="exp-wrapper">
+                                                        <p className="exp-year">{} - {} | {}</p>
+                                                        <ul className="exp-role">
+                                                            <li className="resume-text">{}</li>
+                                                            <li className="resume-text">{}</li>
+                                                        </ul>
+                                                    </div>
+                                                </React.Fragment>
+                                            )})}
+                                    </> : ""}
                                 </div>
                             </Col>
                         </Row>
@@ -239,6 +265,7 @@ const SingleDeveloper = ({ data ,role}) => {
                 {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id={data?.id} role = {role}/> : ""}
                 {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id={data?.id} role = {role}/> : ""}
                 {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.social_links} id={data?.id} role = {role}/> : ""}
+                {showExpertiseModal ? <ExpertiseModal show={showExpertiseModal} handleClose={handleCloseExpertiseModal} />:""}
                 <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id={data?.id} role = {role} />
             </>}
         </>

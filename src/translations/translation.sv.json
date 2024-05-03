@@ -326,6 +326,9 @@
         "amount" : "Belopp",
         "selectStatus" : "Välj status",
         "approved" : "Godkänd",
-        "pending" : "Avvaktar"
+        "pending" : "Avvaktar",
+        "selectView" : "Välj Visa",
+        "expertise" : "Expertis",
+        "enterExpertise" : "Ange Expertis"
     }
 }

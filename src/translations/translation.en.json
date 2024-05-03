@@ -332,6 +332,12 @@
         "selectStatus" :"Select Status",
         "approved" :"Approved",
         "pending" :"Pending",
-        "max_character_limit_msg" :"Maximum character limit reached"
+        "max_character_limit_msg" :"Maximum character limit reached",
+        "selectView" : "Select View",
+        "expertise" : "Expertise",
+        "enterExpertise" : "Enter Expertise"
+        
+        
+
     }
 }
