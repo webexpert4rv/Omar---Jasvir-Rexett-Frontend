@@ -11,26 +11,17 @@ import { useTranslation } from "react-i18next";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
 const AboutCV = ({ show, handleClose, data, id, role }) => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { smallLoader } = useSelector((state) => state.developerData);
   const {
     register,
     setValue,
     handleSubmit,
-    clearErrors,
     watch,
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
-  const [charCount, setCharCount] = useState(0);
   const maxChars = 1000;
-  // const handleChange = (e) => {
-  //   const value = e.target.value;
-  //   if (value.length <= 1000) {
-  //     setCharCount(value.length);
-  //     setValue("bio", value.slice(0, maxChars));
-  //   }
-  // };
 
   useEffect(() => {
     setValue("bio", data);
@@ -95,7 +86,7 @@ const AboutCV = ({ show, handleClose, data, id, role }) => {
                   message: "Please Enter Bio Data",
                 },
                 validate: (value) =>
-                  value.length >= 300 || t("bio_validation_msg"),
+                  value.length <= maxChars || "Maximum character limit reached",
               })}
               // onChange={handleChange}
               maxLength={1000}

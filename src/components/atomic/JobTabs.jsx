@@ -27,6 +27,8 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
         return "completed";
       case "published":
         return "completed";
+      case "Unpublished":
+          return "unpublished";
       default:
         return;
     }
@@ -46,16 +48,16 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       {getCategory(item.category)}
                     </h4>
                     <div className="profile-req">
-                      <p className="grid-text">{item?.experience}</p>
-                      <p className="grid-text">{item?.contract_type}</p>
+                      <p className="grid-text">{item?.experience?.split("_").join(" ")}</p>
+                      <p className="grid-text">{item?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                       <p className="grid-text">{item?.job_type}</p>
                     </div>
                     <p className="job-description">{item?.description}</p>
                     <Row>
                       <Col md="12">
                         <div className="info-grid">
-                          <h4 className="grid-heading">Skills Req.</h4>
-                          {item?.skills.length>0?<ul className="skills-listing">
+                          <h4 className="grid-heading">Skills Req.</h4> 
+                          {item?.skills.length>0?<ul className="need-skill-list">
                             {convertToArray(item?.skills)?.map((item) => {
                               return (
                                 <>

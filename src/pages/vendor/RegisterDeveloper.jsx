@@ -293,12 +293,12 @@ const RegisterDeveloper = () => {
   };
   const handleCreate = (inputValue) => {
     const payload = {
-      title: inputValue
+        title : inputValue
     }
     dispatch(addDegree(payload, () => {
-      dispatch(getDegreeList());
-    }))
-  }
+        dispatch(getDegreeList());
+      }))
+   } 
 
   return (
     <>
@@ -849,16 +849,6 @@ const RegisterDeveloper = () => {
                   +
                 </Button>
               </OverlayTrigger>
-            </div>
-            <div className="text-center">
-              <RexettButton
-                type="submit"
-                text="Submit"
-                className="main-btn px-4 font-14 fw-semibold"
-                variant="transparent"
-                disabled={smallLoader}
-                isLoading={smallLoader}
-              />
             </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterEducationDetails")}

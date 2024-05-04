@@ -338,9 +338,9 @@
         "expertise" : "Expertise",
         "enterExpertise" : "Enter Expertise",
         "SingleJobskills":"Skills",
-        "singlejobCategory":"Job Category"
-
-        
+        "singlejobCategory":"Job Category",
+        "date" : "Date",
+        "status" : "Status"        
         
 
     }
