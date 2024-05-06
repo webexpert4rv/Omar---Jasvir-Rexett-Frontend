@@ -19,6 +19,7 @@ const AboutCV = ({ show, handleClose, data, id, role }) => {
     setValue,
     handleSubmit,
     watch,
+    clearErrors,
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
   const maxChars = 1000;
