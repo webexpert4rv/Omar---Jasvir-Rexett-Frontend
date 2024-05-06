@@ -340,11 +340,11 @@
         "SingleJobskills":"Skills",
         "singlejobCategory":"Job Category",
         "date" : "Date",
-        "skillsRequired" : "Skills Required",
-        "optionalSkills" : "Optional Skills" ,  
         "status" : "Status",
         "required_message" :"This field is required",
-        "enterSkill" :"Enter Skill"
+        "enterSkill" :"Enter Skill",
+        "skillsRequired" : "Skills Required",
+        "optionalSkills" : "Optional Skills"       
         
 
     }

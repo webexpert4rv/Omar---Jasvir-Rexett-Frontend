@@ -41,7 +41,7 @@ const EditDeveloperProfile = () => {
         setStatus(!status)
         setShowModal(false)
     }
-    console.log(status, "status")
+    console.log(status,"status")
     const handleToggle = () => {
         setStatus("active")
         setShowModal(true)
