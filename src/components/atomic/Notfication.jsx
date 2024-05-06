@@ -107,6 +107,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
   }
 
   const redirectToallScreen = () => {
+    dispatch(getNotification())
     navigate(`/${route}`)
   }
 

@@ -807,7 +807,7 @@ const RegisterDeveloper = () => {
                 </Button>
               </div>
             </div>
-            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
+            {/* <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterExpertise")}
             </h2>
             <Row>
@@ -827,8 +827,8 @@ const RegisterDeveloper = () => {
                   />
                 </Form.Group>
               </Col>
-            </Row>
-            <div className="flex-none">
+            </Row> */}
+            {/* <div className="flex-none">
               <Form.Label className="common-label">{t("experience")}</Form.Label>
               <Form.Select className="filter-select shadow-none" onChange={(e) => handleExperience(e)}>
                 <option value="" > {t("selectExperience")} </option>
@@ -839,9 +839,7 @@ const RegisterDeveloper = () => {
                 <option value="above 5" onClick={(e) => e.stopPropagation()}>above 5  {t("years")}</option>
               </Form.Select>
             </div>
-            {/* <p className="error-message">
-                            {errors.professional_title?.message}
-                        </p> */}
+
 
             <div className="text-end mb-3">
               <OverlayTrigger placement="bottom" overlay={addtooltip}>
@@ -849,7 +847,17 @@ const RegisterDeveloper = () => {
                   +
                 </Button>
               </OverlayTrigger>
-            </div>
+            </div> */}
+            {/* <div className="text-center">
+              <RexettButton
+                type="submit"
+                text="Submit"
+                className="main-btn px-4 font-14 fw-semibold"
+                variant="transparent"
+                disabled={smallLoader}
+                isLoading={smallLoader}
+              />
+            </div> */}
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterEducationDetails")}
             </h2>
