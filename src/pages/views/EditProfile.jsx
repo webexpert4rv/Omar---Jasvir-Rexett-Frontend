@@ -43,6 +43,8 @@ const EditProfile = () => {
     },[clientProfileDetails])
 
     const onSubmit = (values) => {
+        console.log(values?.name,"values")
+        localStorage.setItem("newUserName" ,values?.name)
         let formData={
             ...values,
             password:values.password?values.password:null,

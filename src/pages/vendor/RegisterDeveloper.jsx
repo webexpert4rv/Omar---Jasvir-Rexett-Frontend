@@ -293,12 +293,12 @@ const RegisterDeveloper = () => {
   };
   const handleCreate = (inputValue) => {
     const payload = {
-      title: inputValue
+        title : inputValue
     }
     dispatch(addDegree(payload, () => {
-      dispatch(getDegreeList());
-    }))
-  }
+        dispatch(getDegreeList());
+      }))
+   } 
 
   return (
     <>

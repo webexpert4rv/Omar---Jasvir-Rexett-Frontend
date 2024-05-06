@@ -1695,6 +1695,10 @@ ul {
     background-color: #00a1a9;
     color: #fff;
 }
+.status-text.unpublished {
+    background-color: #a99800;
+    color: #fff;
+}
 
 .status-text.endcontract {
     background-color: #c00;

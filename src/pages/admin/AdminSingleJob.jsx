@@ -8,13 +8,13 @@ import ConfirmationModal from "../views/Modals/ConfirmationModal";
 import { useTranslation } from "react-i18next";
 
 const AdminSingleJob = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation()
     const dispatch = useDispatch()
     let id = pathname.split("/")[2]
     const [showEndJobModal, setShowEndJobModal] = useState(false);
-    const { singleJobListing, suggestedDeveloper, singleJobPagination,smallLoader } = useSelector(state => state.adminData)
+    const { singleJobListing, suggestedDeveloper, singleJobPagination, smallLoader } = useSelector(state => state.adminData)
     const [singleJobDescription, setSingleJobDescription] = useState({})
     const [selectedTabsData, setSelectedTabsData] = useState([]);
     const [suggestedData, setSuggestedData] = useState(null)
@@ -23,9 +23,9 @@ const AdminSingleJob = () => {
     useEffect(() => {
         if (id) {
             dispatch(adminSingleJob(id))
-            dispatch(getDeveloperSuggestList(id ,page))
+            dispatch(getDeveloperSuggestList(id, page))
         }
-    }, [page,id])
+    }, [page, id])
 
     useEffect(() => {
         setSingleJobDescription(singleJobListing?.data)
@@ -59,10 +59,26 @@ const AdminSingleJob = () => {
         }
         await dispatch(suggestDeveloper(data))
         setShowEndJobModal(false);
-        dispatch(getDeveloperSuggestList(id,page))
-
-
+        dispatch(getDeveloperSuggestList(id, page))
     }
+    const currentStatusCssClass = (status) => {
+        console.log(status, "st")
+        switch (status) {
+            case "ended":
+                return "endcontract";
+            case "Initiated":
+                return "inprogress";
+            case "completed":
+                return "completed";
+            case "published":
+                return "completed";
+            case "Unpublished":
+                return "unpublished";
+            default:
+                return;
+        }
+    };
+
     return (
         <>
             <Tabs
@@ -78,7 +94,9 @@ const AdminSingleJob = () => {
                             <div className="d-flex justify-content-between align-items-center flex-md-row flex-column-reverse">
                                 <h2 className="single-job-title mb-0">{singleJobDescription?.title}</h2>
                                 <div className="d-flex gap-3 align-items-center mb-md-0 mb-3">
-                                    <p className="mb-0"><span className="status-text inprogress status-info">In progress</span></p>
+                                    <p className={`status-text ${currentStatusCssClass(
+                                        singleJobDescription?.status
+                                    )}`}>{singleJobDescription?.status?.charAt(0).toUpperCase() + singleJobDescription?.status?.slice(1)}</p>
                                     {/* <Button variant="transparent" onClick={handleShowEndJobModal} className="px-5 closed-job-btn">End Job</Button> */}
                                 </div>
                             </div>
@@ -93,7 +111,7 @@ const AdminSingleJob = () => {
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">Contract</h3>
-                                    <p className="req-text">{singleJobDescription?.contract_type}</p>
+                                    <p className="req-text">{singleJobDescription?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">Location</h3>
