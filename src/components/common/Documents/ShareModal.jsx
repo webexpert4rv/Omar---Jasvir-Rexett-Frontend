@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import "@yaireo/tagify/dist/tagify.css"; // Import the default tagify styles
-import Tags from "@yaireo/tagify/dist/react.tagify";
+// import "@yaireo/tagify/dist/tagify.css";
+// import Tags from "@yaireo/tagify/dist/react.tagify";
 import profileImg from "../../../assets/img/user-img.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../atomic/RexettButton";
@@ -76,15 +76,15 @@ const ShareModal = ({ show, handleClose,fileId}) => {
                         <Row>
                             <Col md="12">
                                 <Form.Group className="mb-4">
-                                    <Tags
+                                    {/* <Tags
                                         ref={tagifyRef1}
                                         settings={tagifySettings}
                                         autoFocus={true}
                                         {...tagifyProps}
                                         className="w-100 common-field"
                                         onChange={handleChange}
-                                        whitelist={suggestedTags} // Add suggested tags
-                                    />
+                                        whitelist={suggestedTags} 
+                                    /> */}
                                 </Form.Group>
                                 <div>
                                     {/* <h4 className="access-heading mb-3">People with access</h4> */}
