@@ -3213,6 +3213,10 @@ input[type="radio"]:checked {
     color: #121212;
     box-shadow: none !important;
 }
+.admin-faq-section .faq-accordion .accordion-button::after
+{
+    margin-left: 0;
+}
 .faq-accordion-header .accordion-button:not(.collapsed)
 {
     background-color: #fff;
