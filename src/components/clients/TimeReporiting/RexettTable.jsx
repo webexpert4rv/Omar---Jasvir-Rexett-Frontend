@@ -80,13 +80,15 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                         } else if (reprt.month) {
                                                             return (
                                                                 <>
-                                                                    <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td>
+                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='timing-text'>9:30 AM - 7:00 PM</p><p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                    {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
                                                         } else {
                                                             return (
                                                                 <>
-                                                                    <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td>
+                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='timing-text'>9:30 AM - 7:00 PM</p><p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                    {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
                                                         }
@@ -126,7 +128,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                 <Offcanvas.Title>Time Reporting</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    {/* <div className='detail-view day-view'>
+                  { selectedPeriod == "weekly" && <div className='detail-view day-view'>
                             <div className='client-info mb-3'>
                                 <h4 className='sidebar-heading'>Client Name</h4>
                                 <p className='client-name-heading'><img src={userImage}/> Pankaj Pundir</p>
@@ -149,9 +151,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                 <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
                             </div>
                         </div>
-                    </div> */}
+                    </div>}
                     
-                    {/* <div className='detail-view weekly-view'>
+                {  selectedPeriod == "monthly" &&  <div className='detail-view weekly-view'>
                         <div className='client-info mb-3'>
                             <h4 className='sidebar-heading'>Client Name</h4>
                             <p className='client-name-heading'><img src={userImage}/> Pankaj Pundir</p>
@@ -273,9 +275,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                 </div>
                             </div>
                         </div>
-                    </div> */}
+                    </div>}
 
-                    <div className='detail-view monthly-view'>
+                  { selectedPeriod == "yearly" &&  <div className='detail-view monthly-view'>
                         <div className='client-info mb-3'>
                             <h4 className='sidebar-heading'>Client Name</h4>
                             <p className='client-name-heading'><img src={userImage}/> Pankaj Pundir</p>
@@ -759,7 +761,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                 </Tab.Pane>
                             </Tab.Content>
                         </Tab.Container>
-                    </div>
+                    </div>}
                 </Offcanvas.Body>
             </Offcanvas>
         </div>
