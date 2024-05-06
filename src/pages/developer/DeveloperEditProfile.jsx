@@ -7,10 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getDeveloperProfileDetails, updateDeveloperProfile } from "../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
-import { createNewFolderAndFile, filePreassignedUrlGenerate, getDeleteAccount } from "../../redux/slices/clientDataSlice";
+import { createNewFolderAndFile, filePreassignedUrlGenerate, getDeleteAccount, getEnableDisableAccount } from "../../redux/slices/clientDataSlice";
 import EndJobModal from "./../views/Modals/EndJob";
 import { FaTrashCan } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import ConfirmationModal from "../views/Modals/ConfirmationModal";
 
 
 
@@ -18,7 +19,7 @@ const EditDeveloperProfile = () => {
     const userId = localStorage.getItem("userId");
     const [selectedImage, setSelectedImage] = useState(null);
     const { t } = useTranslation()
-
+    console.log(userId,"userIs")
     const {
         register,
         setValue,
@@ -28,6 +29,7 @@ const EditDeveloperProfile = () => {
     } = useForm({});
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
+    const [status,setStatus] = useState("inactive")
     const [isPassword, setPassword] = useState({
         firstPass: false,
         secondPass: false
@@ -35,14 +37,23 @@ const EditDeveloperProfile = () => {
     const [file, setFile] = useState(null)
     const { smallLoader, developerProfileData, screenLoader } = useSelector(state => state.developerData)
 
-    const handleJobStatusModal = (id) => {
-        setShowModal(!showModal)
-    }
-    const handleJobStatusAction = (e, data) => {
-        e.preventDefault()
-        dispatch(getDeleteAccount(data))
+    const handleJobStatusModal = () => {
+        setStatus(!status)
         setShowModal(false)
     }
+    console.log(status,"status")
+    const handleToggle = () => {
+        setStatus("active")
+        setShowModal(true)
+    }
+    const handleAction = () => {
+        let data = {
+            user_id: +userId,
+            status : status
+        }
+        dispatch(getEnableDisableAccount(data))
+    }
+
 
 
     useEffect(() => {
@@ -50,7 +61,6 @@ const EditDeveloperProfile = () => {
     }, [dispatch])
 
     useEffect(() => {
-
         setValue("name", developerProfileData?.data?.name)
         setValue("email", developerProfileData?.data?.email)
         setValue("phone_number", developerProfileData?.data?.phone_number)
@@ -62,9 +72,9 @@ const EditDeveloperProfile = () => {
         setValue("profile_picture", developerProfileData?.data?.profile_picture)
 
     }, [developerProfileData])
-    const deleteprofile = (
+    const disableProfile = (
         <Tooltip id="tooltip">
-            Delete Profile
+            Disable your Account
         </Tooltip>
     );
 
@@ -125,9 +135,11 @@ const EditDeveloperProfile = () => {
             <section className="card-box">
                 <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
                     <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
-                    {/* <OverlayTrigger placement="bottom" overlay={deleteprofile}>
-                        <Button onClick={() => handleJobStatusModal(developerProfileData?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
-                    </OverlayTrigger> */}
+                    <OverlayTrigger placement="bottom" overlay={disableProfile}>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" onClick={handleToggle} checked />
+                        </div>
+                    </OverlayTrigger>
                 </div>
                 <div>
                     {screenLoader ? <ScreenLoader /> : <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -408,7 +420,7 @@ const EditDeveloperProfile = () => {
                     </form>}
                 </div>
             </section>
-            <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks={"Reasons"} submit={"Delete"} />
+            <ConfirmationModal show={showModal} handleClose={handleJobStatusModal} onClick={handleAction} smallLoader={smallLoader} text={"Are you sure, you want to disable your account"} />
         </>
     )
 }

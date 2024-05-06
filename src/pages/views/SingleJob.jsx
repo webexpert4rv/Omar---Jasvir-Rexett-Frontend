@@ -19,7 +19,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
 
 
-const SingleJob = () => {
+const   SingleJob = () => {
     const [selectedTabsData, setSelectedTabsData] = useState([])
     const [currentTabsStatus, setCurrnetTabsStatus] = useState("application")
     const [currentTab, setCurrentTab] = useState("application")
@@ -79,7 +79,7 @@ const SingleJob = () => {
         }
 
     }
-    const handleJobStatusAction = (e,data) => {
+    const handleJobStatusAction = (e, data) => {
         console.log("jkk")
         e.preventDefault()
         if (data.status == "ended") {
@@ -189,22 +189,22 @@ const SingleJob = () => {
                                         </OverlayTrigger>
                                     </> : ""}
                                     {singleJobDescription?.status !== "ended" ?
-                                    <OverlayTrigger placement="top" overlay={deletejob}>
-                                        <Button className="closed-job-btn" variant="transparent" onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button> 
-                                    </OverlayTrigger> :""}
+                                        <OverlayTrigger placement="top" overlay={deletejob}>
+                                            <Button className="closed-job-btn" variant="transparent" onClick={() => handleDelete("application", singleJobDescription?.id)}><FaTrashCan /></Button>
+                                        </OverlayTrigger> : ""}
                                     {singleJobDescription?.status !== "ended" ?
-                                    <OverlayTrigger placement="top" overlay={editjob}>
-                                        <Button className="edit-job-btn" variant="transparent" onClick={() => handleEdit("application", singleJobDescription?.id)}><TiEdit /></Button>
-                                    </OverlayTrigger> :""}
+                                        <OverlayTrigger placement="top" overlay={editjob}>
+                                            <Button className="edit-job-btn" variant="transparent" onClick={() => handleEdit("application", singleJobDescription?.id)}><TiEdit /></Button>
+                                        </OverlayTrigger> : ""}
                                 </div>
                             </div>
                             <p className="single-job-description">{singleJobDescription?.description}</p>
                         </div>
                         <div className="single-job-card">
                             <Row>
-                            <Col md="4">
-                                    <h3 className="req-heading">{t("singlejobCategory")}</h3>
-                                    <p className="req-text">{getCategory(singleJobDescription?.category)}</p>
+                                <Col md="4" >
+                                    <h3 className="req-heading">{t("clientName")}</h3>
+                                    <p className="req-text">{singleJobDescription?.client?.name}</p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("experienceRequirements")}</h3>
@@ -214,25 +214,43 @@ const SingleJob = () => {
                                     <h3 className="req-heading">{t("contract")}</h3>
                                     <p className="req-text">{singleJobDescription?.contract_type}</p>
                                 </Col>
-                                <Col md="4" className="mt-5">
-                                    <h3 className="req-heading">{t("location")}</h3>
+                                <Col md="4" >
+                                    <h3 className="req-heading mt-4">{t("location")}</h3>
                                     <p className="req-text">{singleJobDescription?.job_type}</p>
                                 </Col>
                             </Row>
                         </div>
                         <div className="single-job-card">
-                            <h3 className="req-heading">{t("SingleJobskills")}</h3>
-                           {singleJobDescription?.skills?.length>0? <ul className="skills-listing mb-0">
-                                {
-                                    convertToArray(singleJobDescription?.skills)?.map((item, index) => {
-                                        return (
-                                            <>
-                                                <li key={index}>{item}</li>
-                                            </>
-                                        )
-                                    })
-                                }
-                            </ul>:"Not Mentioned"}
+                            <Row>
+                                <Col md="4">
+                                    <h3 className="req-heading">{t("skillsRequired")}</h3>
+                                    {singleJobDescription?.skills?.length > 0 ? <ul className="skills-listing mb-0">
+                                        {
+                                            convertToArray(singleJobDescription?.skills)?.map((item, index) => {
+                                                return (
+                                                    <>
+                                                        <li key={index}>{item}</li>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                    </ul> : "Not Mentioned"} <br></br>
+                                </Col>
+                                <Col md="4">
+                                    <h3 className="req-heading">{t("optionalSkills")}</h3>
+                                    {singleJobDescription?.optional_skills?.length > 0 ? <ul className="skills-listing mb-0">
+                                        {
+                                            convertToArray(singleJobDescription?.optional_skills)?.map((item, index) => {
+                                                return (
+                                                    <>
+                                                        <li key={index}>{item}</li>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                    </ul> : "Not Mentioned"}
+                                </Col>
+                            </Row>
                         </div>
                     </section>
                 </Tab>
