@@ -19,8 +19,7 @@ import SkillsModal from "../Modals/SkillsCVModal";
 import SocialMediaModal from "../Modals/SocialMediaModal";
 import DeveloperDetails from "../Modals/DeveloperDetails";
 import ExpertiseModal from "../Modals/ExpertiseModal";
-
-
+import { getSkillList } from "../../../redux/slices/clientDataSlice";
 
 const SingleDeveloper = ({ data ,role}) => {
     const dispatch = useDispatch()
@@ -31,7 +30,9 @@ const SingleDeveloper = ({ data ,role}) => {
     const [showModal, setShowModal] = useState(false);
     const { t } = useTranslation()
 
-
+    useEffect(()=>{
+    dispatch(getSkillList());
+    },[])
 
     const splitSkills = (data) => {
         let skills = data?.skills?.split(",")
@@ -119,6 +120,8 @@ const SingleDeveloper = ({ data ,role}) => {
             default:
         }
     }
+
+    
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <>
@@ -222,7 +225,7 @@ const SingleDeveloper = ({ data ,role}) => {
                                     })}
                                     {data?.developer_educations ? <>
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">{t("education")}</h3>
-                                      { role!=="client" && <div className="add_more_section_education" onClick={handleShowEducationModal}><MdEditNote size={25} /></div>}
+                                      { role!=="client" && <div className="add_more_section_education pointer" onClick={handleShowEducationModal}><MdEditNote size={25} /></div>}
                                         {data?.developer_educations?.map((item) => {
                                             return (
                                                 <React.Fragment key={item.id}>
@@ -237,18 +240,21 @@ const SingleDeveloper = ({ data ,role}) => {
                                             )
                                         })}
                                     </> : ""}
-                                    {data?.experties ? <>
                                         <h3 className="subheading-resume mb-xxl-4 mb-3">{t("expertise")}</h3>
-                                      { role!=="client" && <div className="add_more_section_education" onClick={handleShowExpertiseModal}><MdEditNote size={25} /></div>}
-                                        {data?.developer_educations?.map((item) => {
+                                      { role!=="client" && <div className="add_more_section_education pointer" onClick={handleShowExpertiseModal}><MdEditNote size={25} /></div>}
+                                    {data?.developer_skill_and_experience ? <>
+                                        {data?.developer_skill_and_experience?.map(({experience,skill},index) => {
                                             return (
-                                                <React.Fragment key={item.id}>
+                                                <React.Fragment key={index}>
                                                     <div className="exp-wrapper">
-                                                        <p className="exp-year">{} - {} | {}</p>
-                                                        <ul className="exp-role">
+                                                        {/* <p className="exp-year">{} - {} | {}</p> */}
+                                                        <p>{experience}</p>
+                                                        <p>{skill}</p>
+
+                                                        {/* <ul className="exp-role">
                                                             <li className="resume-text">{}</li>
                                                             <li className="resume-text">{}</li>
-                                                        </ul>
+                                                        </ul> */}
                                                     </div>
                                                 </React.Fragment>
                                             )})}
@@ -263,7 +269,7 @@ const SingleDeveloper = ({ data ,role}) => {
                 {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id={data?.id} role = {role}/> : ""}
                 {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id={data?.id} role = {role}/> : ""}
                 {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.social_links} id={data?.id} role = {role}/> : ""}
-                {showExpertiseModal ? <ExpertiseModal show={showExpertiseModal} handleClose={handleCloseExpertiseModal} />:""}
+                {showExpertiseModal ? <ExpertiseModal data = {data.developer_skill_and_experience} show={showExpertiseModal} handleClose={handleCloseExpertiseModal} />:""}
                 <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id={data?.id} role = {role} />
             </>}
         </>

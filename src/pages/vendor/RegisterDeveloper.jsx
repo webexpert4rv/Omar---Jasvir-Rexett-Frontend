@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { HiUpload } from "react-icons/hi";
 import { Button, Col, Form, InputGroup, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
@@ -16,6 +16,7 @@ import { type } from "@testing-library/user-event/dist/type";
 import { INVALID_FILE_TYPE } from "../../components/clients/TimeReporiting/constant";
 import { Controller } from "react-hook-form";
 import { min } from "moment";
+import { EXPERIENCE_OPTIONS } from "../../helper/utlis";
 
 
 const createOption = (label) => ({
@@ -27,10 +28,8 @@ const RegisterDeveloper = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
-  const [options, setOptions] = useState([]);
   const [disbaleYear, setDisbaleYear] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
-  const [skills, setSkills] = useState(null);
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const [skillCate, setSkillsCate] = useState([]);
   const { degreeList } = useSelector((state) => state.developerData);
@@ -38,6 +37,7 @@ const RegisterDeveloper = () => {
   const skillSet = skillLabels?.toString();
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState([]);
+  const [expertSkill, setExpertSkill] = useState([])
   const [fileTypeError, setFileTypeError] = useState(false);
   const navigate = useNavigate();
   const [socialMediaRows, setSocialMediaRows] = useState([
@@ -59,12 +59,16 @@ const RegisterDeveloper = () => {
     setError,
     formState: { errors },
   } = useForm();
-
+  console.log(selectedOption, "select-----")
+  console.log(expertSkill, "experskilll")
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "educations",
     name: "experiences",
+    name: "expertise",
     name: "social_links",
+    name: "skills",
+
   });
 
   const [experienceFields, setExperienceFields] = useState([
@@ -77,6 +81,15 @@ const RegisterDeveloper = () => {
       description: "",
     },
   ]);
+  const [expertiseFields, setExpertiseFields] = useState([
+    {
+      skill: "",
+      experience: ""
+    },
+  ]);
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title }
+  });
 
   useEffect(() => {
     dispatch(getDegreeList());
@@ -90,6 +103,18 @@ const RegisterDeveloper = () => {
     setSkillsCate(skillListMapped)
   }, [skillList]);
 
+  const handleAppend = () => {
+    const expertise = watch("skills");
+    const index = expertise.findIndex(
+      (curElem) => curElem.experience === "" || curElem.skill === ""
+    );
+    if (index === -1) {
+      append({
+        skill: "",
+        experience: "",
+      });
+    }
+  };
 
   console.log(skillCate, "skillCate")
   function generateYears() {
@@ -103,50 +128,33 @@ const RegisterDeveloper = () => {
 
   const yearsArray = generateYears();
 
-  const onSubmit = (data, index) => {
-    let convertArr = selectedOption.map((item) => item.label);
-    let formData = {
-      ...data,
-      skills: convertArr.toString(),
-    };
-
-    let fileData = new FormData();
-    fileData.append("file", file);
-
-    dispatch(
-      filePreassignedUrlGenerate(fileData, (url) => {
-        let data = {
-          ...formData,
-          profile_picture: url,
-        };
-        dispatch(
-          getAddNewDeveloper(data, () => {
-            navigate("/vendor-dashboard");
-          })
-        );
+  const onSubmit = (data) => {
+    let formattedExpertise = [];
+    let convertedExpertise = expertSkill.map((val) => val.label)
+    formattedExpertise = convertedExpertise.map((val) => {
+      return { skill: val, experience: "" }
+    })
+    let formattedSkills = [];
+    let convertString = selectedOption.map((item) => item.label);
+    formattedSkills = convertString.map((item) => {
+      return { skill: item, experience: "" }
+    })
+    if (data) {
+      let formData = {
+        ...data,
+        skills: formattedSkills,
+        expertise: formattedExpertise
+      };
+      console.log(formData, "formdata")
+      dispatch(filePreassignedUrlGenerate(formData))
+      dispatch(getAddNewDeveloper(formData, () => {
+        navigate("/vendor-dashboard");
       })
-    );
-  };
-
-  const skillListMapped = skillList.map((item) => {
-    return { value: item.id, label: item.title };
-  });
-
-  const handleExperience = () => {
-
+      );
+    };
   }
 
-  const handleAppend = async () => {
-    // Trigger validation for all fields
-    const isValid = await trigger();
-    // Check if all fields are valid
-    if (isValid) {
-      append({
-        skills: "",
-        experience: ""
-      });
-    }
-  };
+
   const addtooltip = (
     <Tooltip id="tooltip">
       {t("addRow")}
@@ -286,19 +294,20 @@ const RegisterDeveloper = () => {
     }
   };
 
-  const onChangeSelect = (val) => {
+  const onChangeSelect = (item, val) => {
     const newOption = createOption(val);
+    setExpertSkill((prev) => [...prev, newOption])
     setSelectedOption((prev) => [...prev, newOption]);
     setSkillsCate((prev) => [...prev, newOption]);
   };
   const handleCreate = (inputValue) => {
     const payload = {
-        title : inputValue
+      title: inputValue
     }
     dispatch(addDegree(payload, () => {
-        dispatch(getDegreeList());
-      }))
-   } 
+      dispatch(getDegreeList());
+    }))
+  }
 
   return (
     <>
@@ -563,30 +572,30 @@ const RegisterDeveloper = () => {
                   </Form.Group>
                 </Col>
                 <Col md="6" className="mb-4">
-              <Form.Group>
-                <Form.Label>{t("experienceRequired")}*</Form.Label>
-                <Form.Select
-                  className="common-field"
-                  {...register("experience", {
-                    required: {
-                      value: true,
-                      message: "Experienced is required",
-                    },
-                  })}
-                >
-                  <option disabled selected>
-                    {t("select")} {t("experienceRequired")}
-                  </option>
-                  <option value="Less_than_one">{t("lessThan1Year")}</option>
-                  <option value="1-2_Years">1 - 2 {t("years")}</option>
-                  <option value="2-3_Years">2 - 3 {t("years")}</option>
-                  <option value="3-4_Years">3 - 4 {t("years")}</option>
-                  <option value="4-5_Years">4 - 5 {t("years")}</option>
-                  <option value="5_more">5+ {t("years")}</option>
-                </Form.Select>
-              </Form.Group>
-              <p className="error-message">{errors.experience?.message}</p>
-            </Col>
+                  <Form.Group>
+                    <Form.Label>{t("experienceRequired")}*</Form.Label>
+                    <Form.Select
+                      className="common-field"
+                      {...register("experience", {
+                        required: {
+                          value: true,
+                          message: "Experienced is required",
+                        },
+                      })}
+                    >
+                      <option disabled selected>
+                        {t("select")} {t("experienceRequired")}
+                      </option>
+                      <option value="Less_than_one">{t("lessThan1Year")}</option>
+                      <option value="1-2_Years">1 - 2 {t("years")}</option>
+                      <option value="2-3_Years">2 - 3 {t("years")}</option>
+                      <option value="3-4_Years">3 - 4 {t("years")}</option>
+                      <option value="4-5_Years">4 - 5 {t("years")}</option>
+                      <option value="5_more">5+ {t("years")}</option>
+                    </Form.Select>
+                  </Form.Group>
+                  <p className="error-message">{errors.experience?.message}</p>
+                </Col>
                 {/* <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -719,9 +728,9 @@ const RegisterDeveloper = () => {
                             {errors.experiences[index].company_name.message}
                           </p>
                         )}
-
                       </Form.Group>
                     </Col>
+
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
@@ -857,57 +866,88 @@ const RegisterDeveloper = () => {
                 </Button>
               </div>
             </div>
-            {/* <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterExpertise")}
-            </h2>
-            <Row>
-              <Col md="12">
-                <Form.Group className="mb-4">
-                  <Form.Label className="common-label">{t("Enter Skills")}</Form.Label>
-                  <CreatableSelect
-                    isMulti
-                    isClearable
-                    name={selectedOption}
-                    onChange={(newValue) => {
-                      setSelectedOption(newValue);
-                    }}
-                    onCreateOption={onChangeSelect}
-                    options={skillCate}
-                    value={selectedOption}
-                  />
-                </Form.Group>
-              </Col>
-            </Row> */}
-            {/* <div className="flex-none">
-              <Form.Label className="common-label">{t("experience")}</Form.Label>
-              <Form.Select className="filter-select shadow-none" onChange={(e) => handleExperience(e)}>
-                <option value="" > {t("selectExperience")} </option>
-                <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
-                <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
-                <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
-                <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
-                <option value="above 5" onClick={(e) => e.stopPropagation()}>above 5  {t("years")}</option>
-              </Form.Select>
-            </div>
-
-
+            <h3 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterExpertise")}</h3>
+            {expertiseFields.map((field, index) => {
+              return (
+                <Fragment key={field.id}>
+                  <div>
+                    <Row>
+                      <Col >
+                        <Form.Group >
+                          <Form.Label className="common-label">
+                            {t("enterSkill")}
+                          </Form.Label>
+                          <CreatableSelect
+                            {...register(`expertise.${index}.skill`, {
+                              required: {
+                                value: true,
+                                message: t("required_message"),
+                              },
+                            })}
+                            isClearable
+                            options={skillCate}
+                            onChange={(newValue) => {
+                              setExpertSkill(newValue);
+                              setValue(`expertise.${index}.skill`, newValue);
+                              clearErrors(`expertise.${index}.skill`);
+                            }}
+                            onCreateOption={(val) => {
+                              onChangeSelect(val, index);
+                            }}
+                            value={expertSkill}
+                            name={expertSkill}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    {errors?.skills?.[index]?.skill && (
+                      <p className="error-message">
+                        {errors?.skills[index]?.skill?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex-none">
+                    <Form.Label className="common-label">
+                      {t("experience")}
+                    </Form.Label>
+                    <Form.Select
+                      {...register(`expertise.${index}.experience`, {
+                        required: {
+                          value: true,
+                          message: t("required_message"),
+                        },
+                      })}
+                      className="filter-select shadow-none">
+                      <option value=""> {t("selectExperience")} </option>
+                      {EXPERIENCE_OPTIONS.map(({ label, value }, index) => (
+                        <option value={value} key={index}>
+                          {label} {t("years")}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    {errors?.skills?.[index]?.experience && (
+                      <p className="error-message">
+                        {errors?.skills[index]?.experience?.message}
+                      </p>
+                    )}
+                  </div>
+                  {/* {watch("skills")?.length !== 1 && (
+                  <Col md="12" className="d-flex justify-content-end">
+                    <Button variant="danger" onClick={() => remove(index)}>
+                      <FaTrash />
+                    </Button>
+                  </Col>
+                )} */}
+                </Fragment>
+              )
+            })}
             <div className="text-end mb-3">
               <OverlayTrigger placement="bottom" overlay={addtooltip}>
                 <Button className="main-btn py-2 px-3" onClick={handleAppend}>
                   +
                 </Button>
               </OverlayTrigger>
-            </div> */}
-            {/* <div className="text-center">
-              <RexettButton
-                type="submit"
-                text="Submit"
-                className="main-btn px-4 font-14 fw-semibold"
-                variant="transparent"
-                disabled={smallLoader}
-                isLoading={smallLoader}
-              />
-            </div> */}
+            </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterEducationDetails")}
             </h2>
@@ -1129,12 +1169,10 @@ const RegisterDeveloper = () => {
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterSkills")}
             </h2>
-            <div className="inner-form mb-3">
+            <div className="experience-container">
               <Row>
                 <Col md="12">
                   <Form.Group className="mb-4">
-                    {/* <Form.Label>Skills</Form.Label> */}
-
                     <CreatableSelect
                       isMulti
                       isClearable

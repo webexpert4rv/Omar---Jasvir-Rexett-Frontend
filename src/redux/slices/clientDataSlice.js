@@ -601,6 +601,7 @@ export function getFaq() {
 }
 
 export function getAddNewDeveloper(payload,callback) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
