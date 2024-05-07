@@ -255,7 +255,7 @@ const   SingleJob = () => {
                     </section>
                 </Tab>
                 <Tab eventKey="suggested" title={t("suggestions")}>
-                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Suggested" data={selectedTabsData} jobStatus={singleJobDescription?.status} />
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Suggested" data={selectedTabsData} jobStatus={singleJobDescription?.status} role="client" />
                 </Tab>
                 <Tab eventKey="shortlisted" title={t("shortlisted")}>
                     {/* <div className="developers-list job-card">
@@ -283,7 +283,7 @@ const   SingleJob = () => {
                             </div>
                         </div>
                     </div> */}
-                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Shortlisted" data={selectedTabsData} jobStatus={singleJobDescription?.status} />
+                    <JobCard handleJobStatusModal={handleJobStatusModal} type="Shortlisted" data={selectedTabsData} jobStatus={singleJobDescription?.status} role="client" />
                 </Tab>
                 <Tab eventKey="interviewing" title={t("interviewing")}>
                     <JobCard handleJobStatusModal={handleJobStatusModal} type="Interviewing" data={selectedTabsData} jobStatus={singleJobDescription?.status} />

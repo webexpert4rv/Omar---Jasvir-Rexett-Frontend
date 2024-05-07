@@ -80,7 +80,6 @@ console.log(selectedOptional,"selectedOptional")
 
   }
 
-console.log(jobPostedData, "selectedOption")
   useEffect(() => {
     if (id) {
       setValue("title", jobPostedData?.data?.title)
@@ -88,13 +87,15 @@ console.log(jobPostedData, "selectedOption")
       setValue("contract_type", jobPostedData?.data?.contract_type)
       setValue("job_type", jobPostedData?.data?.job_type)
       setValue("description", jobPostedData?.data?.description)
-      convertToArray("optional_skills",jobPostedData?.data?.optional_skills)
-      convertToArray("skills" ,jobPostedData?.data?.skills)
+      convertToArray("optional",jobPostedData?.data?.optional_skills)
+      convertToArray("skill", jobPostedData?.data?.skills)
     } else {
       reset()
       setOtherCategory(null)
       setSelectedOption([])
       setSelectedOptional([])
+      setValue("experience", '')
+      setValue("contract_type",'')
 
     }
   }, [jobPostedData, jobCategoryList, id])
@@ -103,7 +104,7 @@ console.log(jobPostedData, "selectedOption")
     return { value: item.id, label: item.title };
   });
 
-  console.log(skillCate, "skillCate----")
+  console.log(jobPostedData, "jobPostedData----")
   useEffect(() => {
     setOptions(jobCategoryList);
     setSkillsCate(skillListMapped)
@@ -151,7 +152,7 @@ console.log(jobPostedData, "selectedOption")
     }, 1000);
   };
 
-  const convertToArray = (arr) => {
+  const convertToArray = (arg,arr) => {
     if (arr) {
       const skillsArray = arr?.split(",");
       let data = skillsArray?.map((item) => {
@@ -159,8 +160,12 @@ console.log(jobPostedData, "selectedOption")
           value: item, label: item
         }
       })
-      setSelectedOption(data)
+      if(arg=="optional"){
       setSelectedOptional(data)
+      }else{
+        setSelectedOption(data)
+      }
+
     }
 
   }
@@ -238,7 +243,7 @@ console.log(jobPostedData, "selectedOption")
                     },
                   })}
                 >
-                  <option disabled selected>
+                  <option disabled selected value=''>
                     {t("select")} {t("experienceRequired")}
                   </option>
                   <option value="Less_than_one">{t("lessThan1Year")}</option>

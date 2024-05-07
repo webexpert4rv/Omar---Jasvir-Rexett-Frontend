@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row, Table, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { adminEngagementList, getAccountDeletion, getDeletionByAdmin } from "../../redux/slices/adminDataSlice";
+import { adminEngagementList, getAccountDeletion, getAccountEnableDisable, getDeletionByAdmin } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { IoSearch } from "react-icons/io5";
@@ -21,10 +21,10 @@ const AccountDeletionRequest = () => {
         id: ""
     })
     const { t } = useTranslation()
-
+console.log(accountDeletionList,"accountDeletionList")
 
     useEffect(() => {
-        dispatch(getAccountDeletion())
+        dispatch(getAccountEnableDisable())
     }, [])
 
     // const handleSearch = () => {
@@ -87,14 +87,13 @@ const AccountDeletionRequest = () => {
                         <th>{t("userName")}</th>
                         <th>{t("userEmail")}</th>
                         <th>{t("role")}</th>
-                        <th>{t("reason")}</th>
                         <th>{t("action")}</th>
 
                     </thead>
                     <tbody>
                         {screenLoader ? <ScreenLoader /> : <>
-                            {accountDeletionList?.data?.length > 0 ?
-                                accountDeletionList?.data?.map((item, index) => {
+                            {accountDeletionList?.data?.users?.length > 0 ?
+                                accountDeletionList?.data?.users?.map((item, index) => {
                                     return (
                                         <>
                                             <tr>
@@ -103,10 +102,9 @@ const AccountDeletionRequest = () => {
                                                         <img src={item?.user?.profile_picture} className="user-img" />
                                                     </div>
                                                 </td>
-                                                <td>{item?.user?.name}</td>
-                                                <td>{item?.user?.email}</td>
-                                                <td>{item?.user?.role}</td>
-                                                <td>{item?.reason}</td>
+                                                <td>{item?.name}</td>
+                                                <td>{item?.email}</td>
+                                                <td>{item?.role}</td>
                                                 <td>
                                                     <OverlayTrigger placement="bottom" overlay={deleteApplication}>
                                                         <Button className="delete-btn app-del-btn" onClick={(e) => handleDelete(e, item?.user?.role, item?.user?.id)} ><MdOutlineDelete /></Button>

@@ -116,7 +116,7 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
             state.singleClient = action.payload
         },
-        setAccountDeletion:(state, action) =>{
+        setAccountEnableDisable:(state, action) =>{
             state.screenLoader = false;
             state.accountDeletionList = action.payload
         },
@@ -129,7 +129,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setSuggestedDeveloper,setAccountDeletion ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -460,13 +460,13 @@ export function markAsRead(payload, callback) {
         }
     };
 }
-export function getAccountDeletion() {
+export function getAccountEnableDisable() {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get("admin/delete-account-requests")
+            let result = await clientInstance.get("admin/users-list?page=1")
             if (result.status === 200) {
-              dispatch(setAccountDeletion(result.data))
+              dispatch(setAccountEnableDisable(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
