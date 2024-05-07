@@ -332,12 +332,19 @@ export function deleteEducationCv(payload, callback) {
     };
 }
 
-export function updateDeveloperSkills(payload, callback) {
+export function updateDeveloperSkills(payload, callback,method ="post") {
     console.log(payload,"skillspayload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`common/update-developer-skills`, {... payload })
+            let result;
+             if(method === "post")
+                {
+                     result = await clientInstance.post(`common/update-developer-skills`, {... payload })
+                }
+                else{
+                    result = await clientInstance.put(`common/update-developer-skills`, {... payload })
+                }
             if (result.status === 200) {
                 toast.success("Skills updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())

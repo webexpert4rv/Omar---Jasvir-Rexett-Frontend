@@ -334,6 +334,9 @@
         "approved" : "Godkänd",
         "pending" : "Avvaktar",
         "date" : "Datum",
-        "status" : "Status"
+        "status" : "Status",
+        "required_message" :"Detta fält är obligatoriskt",
+        "enterSkill" :"Ange Skill"
+
         }
 }

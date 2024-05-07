@@ -47,10 +47,14 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let formattedSkills = [];
     let convertString = selectedOption.map((item) => item.label);
+     formattedSkills = convertString.map((item)=>{
+      return { skill : item, experience :""}
+    })
     if (role === "developer") {
       let data = {
-        skills: convertString.toString(),
+        skills: formattedSkills,
         user_id: +id,
       };
       dispatch(
@@ -61,7 +65,7 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
       );
     } else {
       let data = {
-        skills: convertString.toString(),
+        skills: formattedSkills,
         user_id: +id,
       };
       dispatch(
