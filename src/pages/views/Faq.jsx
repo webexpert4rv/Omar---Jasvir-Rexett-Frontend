@@ -9,6 +9,7 @@ import AddFaq from "./Modals/AddFaq";
 import ConfirmationModal from "./Modals/ConfirmationModal";
 import { deleteFaq } from "../../redux/slices/adminDataSlice";
 import { useLocation } from "react-router-dom";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 const Faq = () => {
   const [activeTab, setActiveTab] = useState("general");
   const [show, setShow] = useState(false);
@@ -18,7 +19,7 @@ const Faq = () => {
     id:null,
   });
   const dispatch = useDispatch();
-  const { faqsData } = useSelector((state) => state.clientData);
+  const { faqsData,screenLoader } = useSelector((state) => state.clientData);
   const { smallLoader } = useSelector((state) => state.adminData);
   let {pathname} =useLocation()
 
@@ -81,7 +82,7 @@ const Faq = () => {
           activeTab === "timereporting" ? "timereporting-active" : ""
         }`}
       >
-        <div className="inner-faq-section">
+        {screenLoader? <ScreenLoader />:  <div className="inner-faq-section">
           <div className="faq-banner">
             <h3 className="mb-3 faq-heading">
               {t("frequentlyAskedQuestions")}
@@ -207,7 +208,7 @@ const Faq = () => {
               </Tab.Pane>
             </Tab.Content>
           </Tab.Container>
-        </div>
+        </div>}
         <AddFaq show={show} showFaqModal={showFaqModal} isEdit={isEditId} smallLoader={smallLoader} />
         <ConfirmationModal show={deleteModal?.isDelete} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Faq"} text={"Are you sure ,you want to delete this Question?"} smallLoader={smallLoader}/>
       </section>

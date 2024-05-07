@@ -106,6 +106,7 @@ export const clientDataSlice = createSlice({
         },
         setFaqs : (state ,action) =>{
             state.faqsData = action.payload
+            state.screenLoader = false;
         },
         setInvoiceList: (state,action) => {
             state.invoiceList = action.payload;
