@@ -19,17 +19,10 @@ const AboutCV = ({ show, handleClose, data, id, role }) => {
     setValue,
     handleSubmit,
     watch,
+    clearErrors,
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
-  const [charCount, setCharCount] = useState(0);
   const maxChars = 1000;
-  // const handleChange = (e) => {
-  //   const value = e.target.value;
-  //   if (value.length <= 1000) {
-  //     setCharCount(value.length);
-  //     setValue("bio", value.slice(0, maxChars));
-  //   }
-  // };
 
   useEffect(() => {
     setValue("bio", data);
@@ -63,6 +56,7 @@ const AboutCV = ({ show, handleClose, data, id, role }) => {
   const handleCloseAndModalData = () => {
     setValue("bio",data);
     handleClose()
+    clearErrors("bio");
   }
 
   return (

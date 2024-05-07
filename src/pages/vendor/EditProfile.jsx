@@ -109,8 +109,10 @@ const EditVendorProfile = () => {
   );
 
   const onSubmit = (values) => {
+    console.log(values, "vennnnnnnndor")
+    localStorage.setItem("vendorName", values?.vendor_name)
     let payload = {
-      name: values.name,
+      name: values.vendor_name,
       email: values.email,
       previous_password: values.previous_password,
       password: values.password,
@@ -154,6 +156,19 @@ const EditVendorProfile = () => {
     };
 
     dispatch(updateVendorProfile(payload));
+  };
+
+  const validatePassword = (value) => {
+    if (value === "") {
+      return true; // Password is not required, so return true if empty
+    } else {
+      // Check if password matches the pattern
+      const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      if (!pattern.test(value)) {
+        return "Password must contain at least a symbol, upper and lower case letters and a number";
+      }
+    }
+    return true;
   };
 
   return (
@@ -224,15 +239,12 @@ const EditVendorProfile = () => {
                             className="cv-field"
                             name="password"
                             placeholder={t("enterPassword")}
-                          // {...register(`password`, {
-                          //   required: t("passwordValidation"),
-                          // })}
+                            {...register("previous_password", {
+                              validate: validatePassword
+                            })}
                           />
-                          {/* {errors?.password && (
-                              <p className="error-message">
-                                {errors.password.message}
-                              </p>
-                            )} */}
+                          <p className="error-message">
+                            {errors.previous_password?.message} </p>
                           <span
                             className="eye-btn"
                             onClick={() =>
@@ -387,7 +399,7 @@ const EditVendorProfile = () => {
                     <div className="inner-form">
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("companyName")}
+                          {t("companyName")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -406,7 +418,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("typeOfCompany")}
+                          {t("typeOfCompany")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -425,7 +437,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("email")}
+                          {t("email")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -445,7 +457,7 @@ const EditVendorProfile = () => {
 
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("address")}
+                          {t("address")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -464,7 +476,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("phoneNumber")}
+                          {t("phoneNumber")}*
                         </Form.Label>
                         <Form.Control
                           type="number"
@@ -484,7 +496,7 @@ const EditVendorProfile = () => {
 
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("establishmentYear")}
+                          {t("establishmentYear")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -503,7 +515,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("typeOfEstablishment")}
+                          {t("typeOfEstablishment")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -522,7 +534,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("website")}
+                          {t("website")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -541,7 +553,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("GSTNumber")}
+                          {t("GSTNumber")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -602,7 +614,7 @@ const EditVendorProfile = () => {
 
                     <Form.Group className="mb-3">
                       <Form.Label className="common-label">
-                        {t("totalEmployees")}
+                        {t("totalEmployees")}*
                       </Form.Label>
                       <Form.Control
                         type="number"
@@ -717,7 +729,7 @@ const EditVendorProfile = () => {
                     <div>
 
                       <Form.Group className="mb-3">
-                        <Form.Label className="common-label">{t("city")}</Form.Label>
+                        <Form.Label className="common-label">{t("city")}*</Form.Label>
                         <Form.Control
                           type="text"
                           className="cv-field"
@@ -735,7 +747,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("state")}
+                          {t("state")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -761,7 +773,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("postCode")}
+                          {t("postCode")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -780,7 +792,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("country")}
+                          {t("country")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -807,7 +819,7 @@ const EditVendorProfile = () => {
 
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("countryCode")}
+                          {t("countryCode")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -847,7 +859,7 @@ const EditVendorProfile = () => {
                     <div className="inner-form">
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("proprietorName")}
+                          {t("proprietorName")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -866,7 +878,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("proprietor")} {t("email")}
+                          {t("proprietor")} {t("email")}*
                         </Form.Label>
                         <div>
                           <Form.Control
@@ -887,7 +899,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("phoneNumber")}
+                          {t("phoneNumber")}*
                         </Form.Label>
                         <Form.Control
                           type="number"
@@ -911,7 +923,7 @@ const EditVendorProfile = () => {
                     <div className="inner-form">
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("contactPersonName")}
+                          {t("contactPersonName")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -930,7 +942,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("contactPhoneNumber")}
+                          {t("contactPhoneNumber")}*
                         </Form.Label>
                         <Form.Control
                           type="text"
@@ -949,7 +961,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
-                          {t("contactPersonEmail")}
+                          {t("contactPersonEmail")}*
                         </Form.Label>
                         <Form.Control
                           type="text"

@@ -485,3 +485,37 @@ export function getDeletionByAdmin(role , id) {
         }
     };
 }
+
+export function createFaq(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post("admin/create-faqs",{...payload})
+            if (result.status === 200) {
+                toast.success("Question has been added")
+                dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function deleteFaq(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.delete(`admin/delete-faq/${payload}`)
+            if (result.status === 200) {
+                toast.success("Question has been deleted", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}

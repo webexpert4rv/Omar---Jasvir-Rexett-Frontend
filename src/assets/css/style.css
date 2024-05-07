@@ -1702,6 +1702,10 @@ ul {
     background-color: #00a1a9;
     color: #fff;
 }
+.status-text.unpublished {
+    background-color: #a99800;
+    color: #fff;
+}
 
 .status-text.endcontract {
     background-color: #c00;
@@ -3215,6 +3219,10 @@ input[type="radio"]:checked {
     font-weight: 700;
     color: #121212;
     box-shadow: none !important;
+}
+.admin-faq-section .faq-accordion .accordion-button::after
+{
+    margin-left: 0;
 }
 .faq-accordion-header .accordion-button:not(.collapsed)
 {

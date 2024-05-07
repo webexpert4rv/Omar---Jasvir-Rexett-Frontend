@@ -38,6 +38,7 @@ const SingleJob = () => {
         if (id) {
             dispatch(singleJobPostData(id, () => { }))
         }
+        dispatch(getJobCategoryList())
     }, [])
 
     useEffect(() => {
@@ -45,8 +46,8 @@ const SingleJob = () => {
     }, [jobPostedData])
 
     const getCategory = (cat) => {
-        let data = jobCategoryList.find((item) => item.id == cat)
-        return data?.title
+        let data = jobCategoryList.find((item) => item.value == cat)
+        return data?.label
     }
 
     const convertToArray = (arr) => {
@@ -159,7 +160,6 @@ const SingleJob = () => {
         }
     }
 
-
     return (
         <>
             <Tabs
@@ -173,8 +173,8 @@ const SingleJob = () => {
                         <div className="single-job-card job-information-wrapper">
                             <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
                                 <h2 className="single-job-title text-start mb-0">{singleJobDescription?.title}</h2>
-                                <div className="d-flex gap-2 flex-wrap mb-md-0 mb-4 align-items-center">
-                                    <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status}</span></p>
+                                <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
+                                    <p className="mb-0"><span className="status-text inprogress status-info">{singleJobDescription?.status?.charAt(0)?.toUpperCase() + singleJobDescription?.status?.slice(1)}</span></p>
                                     {singleJobDescription?.status !== "ended" ? <>
                                         <OverlayTrigger placement="top" overlay={endjob}>
                                             <Button variant="transparent" onClick={(e) => handleJobStatusModal(e, singleJobDescription?.id, "ended")} className="closed-job-btn"><MdOutlineDoNotDisturbAlt /></Button>
@@ -198,11 +198,14 @@ const SingleJob = () => {
                                     </OverlayTrigger> :""}
                                 </div>
                             </div>
-                            <h4 className="single-job-category">{getCategory(singleJobDescription?.category)}</h4>
                             <p className="single-job-description">{singleJobDescription?.description}</p>
                         </div>
                         <div className="single-job-card">
                             <Row>
+                            <Col md="4">
+                                    <h3 className="req-heading">{t("singlejobCategory")}</h3>
+                                    <p className="req-text">{getCategory(singleJobDescription?.category)}</p>
+                                </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("experienceRequirements")}</h3>
                                     <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ")}</p>
@@ -211,15 +214,15 @@ const SingleJob = () => {
                                     <h3 className="req-heading">{t("contract")}</h3>
                                     <p className="req-text">{singleJobDescription?.contract_type}</p>
                                 </Col>
-                                <Col md="4">
+                                <Col md="4" className="mt-5">
                                     <h3 className="req-heading">{t("location")}</h3>
                                     <p className="req-text">{singleJobDescription?.job_type}</p>
                                 </Col>
                             </Row>
                         </div>
                         <div className="single-job-card">
-                            <h3 className="req-heading">{t("skills")}</h3>
-                            <ul className="skills-listing mb-0">
+                            <h3 className="req-heading">{t("SingleJobskills")}</h3>
+                           {singleJobDescription?.skills?.length>0? <ul className="skills-listing mb-0">
                                 {
                                     convertToArray(singleJobDescription?.skills)?.map((item, index) => {
                                         return (
@@ -229,7 +232,7 @@ const SingleJob = () => {
                                         )
                                     })
                                 }
-                            </ul>
+                            </ul>:"Not Mentioned"}
                         </div>
                     </section>
                 </Tab>

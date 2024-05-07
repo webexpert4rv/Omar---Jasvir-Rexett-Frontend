@@ -332,11 +332,15 @@
         "selectStatus" :"Select Status",
         "approved" :"Approved",
         "pending" :"Pending",
+        "bio_validation_msg" :"Bio must be at least 300 characters long",
         "max_character_limit_msg" :"Maximum character limit reached",
         "selectView" : "Select View",
         "expertise" : "Expertise",
-        "enterExpertise" : "Enter Expertise"
-        
+        "enterExpertise" : "Enter Expertise",
+        "SingleJobskills":"Skills",
+        "singlejobCategory":"Job Category",
+        "date" : "Date",
+        "status" : "Status"        
         
 
     }
