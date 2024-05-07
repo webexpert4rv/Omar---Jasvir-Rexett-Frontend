@@ -488,12 +488,12 @@ export function getDeletionByAdmin(role , id) {
 
 export function createFaq(payload) {
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setBtnLoader())
         try {
             let result = await clientInstance.post("admin/create-faqs",{...payload})
             if (result.status === 200) {
                 toast.success("Question has been added")
-            //   dispatch(setAccountDeletion(result.data))
+                dispatch(setSuccessAdminData())
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

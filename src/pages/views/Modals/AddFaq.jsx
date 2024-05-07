@@ -7,40 +7,58 @@ import { Modal, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm } from "react-hook-form";
 import { createFaq } from "../../../redux/slices/adminDataSlice";
-const AddFaq = ({ show, showFaqModal,isEdit}) => {
+import { getFaq } from "../../../redux/slices/clientDataSlice";
+const AddFaq = ({ show, showFaqModal,isEdit,smallLoader}) => {
   const [content, setContent] = useState("");
   const dispatch = useDispatch();
-  const { faqsData } = useSelector((state) => state.clientData);
   const { t } = useTranslation();
   const {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid, isSubmitting },
-  } = useForm({});
+  } = useForm({
+    defaultValues:{
+      question:"",
+      status:"",
+      type:""
+    }
+  });
 
   useEffect(()=>{
-    if(isEdit){
+  
+    if(isEdit!==null){
+      console.log("hell")
         setValue("question",isEdit?.question)
         setValue("status",isEdit?.status)
         setValue("type",isEdit?.type)
         setValue("user_type",isEdit?.user_type)
         setContent(isEdit?.answer)
+    }else{
+      setValue("question",'')
+      setContent('')
+      setValue("type",'')
+      setValue("status",'')
+      setValue("user_type",'')
     }
 
   },[isEdit])
 
-  console.log(isEdit,"isEdit")
 
-  const onSubmit = (value) => {
+
+  const onSubmit = async (value) => {
     let payload = {
+      id:isEdit? isEdit?.id:null,
       question: value?.question,
-      status: value?.status,
+      status: value?.status ?  value?.status :"not-active",
       type: value?.type,
       user_type:value?.user_type,
       answer: content,
     };
-    dispatch(createFaq(payload));
+    await dispatch(createFaq(payload));
+    dispatch(getFaq());
+    showFaqModal()
   };
 
   return (
@@ -190,8 +208,8 @@ const AddFaq = ({ show, showFaqModal,isEdit}) => {
                 // onClick={callBackBtn}
                 className="main-btn px-4 me-3 font-14 fw-semibold"
                 variant="transparent"
-                // disabled={smallLoader}
-                // isLoading={smallLoader}
+                disabled={smallLoader}
+                isLoading={smallLoader}
               />
             </div>
           </Form>
