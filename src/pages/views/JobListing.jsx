@@ -53,7 +53,7 @@ const JobListing = () => {
                                         <div className="job-posted-list" key={item.id}>
                                             <div>
                                                 <h2 className="job-title">{item.title}</h2>
-                                                <h4 className="job-category">{getCategory(item.category)}</h4>
+                                                {/* <h4 className="job-category">{item.client.name}</h4> */}
                                                 <div className="profile-req">
                                                     <p className="grid-text">{item?.experience?.split("_").join(" ")} of exp</p>
                                                     <p className="grid-text">{item?.contract_type}</p>

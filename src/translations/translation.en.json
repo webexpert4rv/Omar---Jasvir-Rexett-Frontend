@@ -341,7 +341,9 @@
         "SingleJobskills":"Skills",
         "singlejobCategory":"Job Category",
         "date" : "Date",
-        "status" : "Status"        
+        "status" : "Status" ,
+        "skillsRequired" : "Skills Required",
+        "optionalSkills" : "Optional Skills"       
         
 
     }

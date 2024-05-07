@@ -562,6 +562,56 @@ const RegisterDeveloper = () => {
                     </p>
                   </Form.Group>
                 </Col>
+                <Col md="6" className="mb-4">
+              <Form.Group>
+                <Form.Label>{t("experienceRequired")}*</Form.Label>
+                <Form.Select
+                  className="common-field"
+                  {...register("experience", {
+                    required: {
+                      value: true,
+                      message: "Experienced is required",
+                    },
+                  })}
+                >
+                  <option disabled selected>
+                    {t("select")} {t("experienceRequired")}
+                  </option>
+                  <option value="Less_than_one">{t("lessThan1Year")}</option>
+                  <option value="1-2_Years">1 - 2 {t("years")}</option>
+                  <option value="2-3_Years">2 - 3 {t("years")}</option>
+                  <option value="3-4_Years">3 - 4 {t("years")}</option>
+                  <option value="4-5_Years">4 - 5 {t("years")}</option>
+                  <option value="5_more">5+ {t("years")}</option>
+                </Form.Select>
+              </Form.Group>
+              <p className="error-message">{errors.experience?.message}</p>
+            </Col>
+                {/* <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="common-label">
+                      {t("experience")} *
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className="common-field"
+                      name="experience"
+                      {...register("professional_title", {
+                        required: {
+                          value: true,
+                          message: t("experienceValidation"),
+                        },
+                        // pattern: {
+                        //     value: /^[A-Za-z\s]+$/,
+                        //     message: "Country should not contain numbers or special character",
+                        // }
+                      })}
+                    />
+                    <p className="error-message">
+                      {errors.professional_title?.message}{" "}
+                    </p>
+                  </Form.Group>
+                </Col> */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">

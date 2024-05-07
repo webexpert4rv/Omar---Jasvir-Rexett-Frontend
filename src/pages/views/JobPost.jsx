@@ -12,7 +12,7 @@ import {
   getSkillList,
   singleJobPostData,
 } from "../../redux/slices/clientDataSlice";
-import { useNavigate,useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { IoArrowBack } from "react-icons/io5";
@@ -25,8 +25,9 @@ const createOption = (label) => ({
 
 const JobPost = () => {
   const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedOptional, setSelectedOptional] = useState([]);
   const navigate = useNavigate();
-  const location=useLocation();
+  const location = useLocation();
   const { skillList, jobCategoryList, smallLoader } = useSelector(
     (state) => state.clientData
   );
@@ -37,7 +38,7 @@ const JobPost = () => {
   const { t } = useTranslation()
 
   const dispatch = useDispatch();
-  let id=location.pathname.split("/")[2]
+  let id = location.pathname.split("/")[2]
   const {
     register,
     setValue,
@@ -46,14 +47,14 @@ const JobPost = () => {
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
 
-  
 
 
-  useEffect(()=>{
-    if(id){
-        dispatch(singleJobPostData(id,()=>{}))
+console.log(selectedOptional,"selectedOptional")
+  useEffect(() => {
+    if (id) {
+      dispatch(singleJobPostData(id, () => { }))
     }
-    },[])
+  }, [])
 
   useEffect(() => {
     dispatch(getSkillList());
@@ -68,40 +69,41 @@ const JobPost = () => {
   // }, [data]);
 
   const getCategory = (cat) => {
-    if(cat!==undefined){
-      console.log(cat,"cat")
+    if (cat !== undefined) {
+      console.log(cat, "cat")
       let data = jobCategoryList.find((item) => item.value == cat)
-      console.log(data,"|d")
-      if(data){
-        setOtherCategory({label:data.label,value:data.value})
+      console.log(data, "|d")
+      if (data) {
+        setOtherCategory({ label: data.label, value: data.value })
       }
     }
-   
-}
 
+  }
 
+console.log(jobPostedData, "selectedOption")
   useEffect(() => {
-    if(id){
+    if (id) {
       setValue("title", jobPostedData?.data?.title)
       setValue("experience", jobPostedData?.data?.experience)
       setValue("contract_type", jobPostedData?.data?.contract_type)
       setValue("job_type", jobPostedData?.data?.job_type)
       setValue("description", jobPostedData?.data?.description)
-      getCategory(jobPostedData?.data?.category)
-      convertToArray(jobPostedData?.data?.skills)
-    }else{
+      convertToArray("optional_skills",jobPostedData?.data?.optional_skills)
+      convertToArray("skills" ,jobPostedData?.data?.skills)
+    } else {
       reset()
       setOtherCategory(null)
       setSelectedOption([])
+      setSelectedOptional([])
 
     }
-  }, [jobPostedData,jobCategoryList ,id])
+  }, [jobPostedData, jobCategoryList, id])
 
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });
 
-console.log(skillCate , "skillCate----")
+  console.log(skillCate, "skillCate----")
   useEffect(() => {
     setOptions(jobCategoryList);
     setSkillsCate(skillListMapped)
@@ -121,11 +123,12 @@ console.log(skillCate , "skillCate----")
   };
 
   const onSubmit = (values) => {
+    let convertedArr = selectedOptional.map((val)=> val.label)
     let convertArr = selectedOption.map((item) => item.label);
     let data = {
       ...values,
       skills: convertArr.toString(),
-      category: otherCategory?.value,
+      optional_skills: convertedArr.toString(),
     };
     if (id) {
       dispatch(clientUpdatePost(data, id, () => {
@@ -138,8 +141,8 @@ console.log(skillCate , "skillCate----")
         })
       );
     };
-    
-}
+
+  }
   const onChangeSelect = (val) => {
     setTimeout(() => {
       const newOption = createOption(val);
@@ -149,28 +152,28 @@ console.log(skillCate , "skillCate----")
   };
 
   const convertToArray = (arr) => {
-    if(arr){
+    if (arr) {
       const skillsArray = arr?.split(",");
-      console.log(skillsArray,"skillsArray")
-      let data=skillsArray?.map((item)=>{
-       return {
-         value: item, label: item
-       }
+      let data = skillsArray?.map((item) => {
+        return {
+          value: item, label: item
+        }
       })
       setSelectedOption(data)
+      setSelectedOptional(data)
     }
-  
-}
+
+  }
 
 
   return (
     <>
       <section className="job-post-section card-box">
         <h2 className="mb-4 section-head d-flex align-items-center gap-3">
-          <Link className="main-btn outline-main-btn mb-0" to="/job-posted"> 
+          <Link className="main-btn outline-main-btn mb-0" to="/job-posted">
             <IoArrowBack />
           </Link>{" "}
-          { id ? "Edit Post" :"Job Post"}
+          {id ? "Edit Post" : "Job Post"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Row>
@@ -191,8 +194,7 @@ console.log(skillCate , "skillCate----")
               </Form.Group>
               <p className="error-message ">{errors.title?.message}</p>
             </Col>
-
-            <Col md="6" className="mb-4">
+            {/* <Col md="6" className="mb-4">
               <Form.Group>
                 <Form.Label>{t("jobCategory")}</Form.Label>
 
@@ -207,8 +209,23 @@ console.log(skillCate , "skillCate----")
                   value={otherCategory}
                 />
               </Form.Group>
+            </Col> */}
+            <Col md="6" className="mb-4">
+              <Form.Group>
+                <Form.Label>{t("skillsRequired")}</Form.Label>
+                <CreatableSelect
+                  isMulti
+                  isClearable
+                  name={selectedOption}
+                  onChange={(newValue) => {
+                    setSelectedOption(newValue)
+                  }}
+                  onCreateOption={onChangeSelect}
+                  options={skillCate}
+                  value={selectedOption}
+                />
+              </Form.Group>
             </Col>
-
             <Col md="6" className="mb-4">
               <Form.Group>
                 <Form.Label>{t("experienceRequired")}</Form.Label>
@@ -221,7 +238,7 @@ console.log(skillCate , "skillCate----")
                     },
                   })}
                 >
-                  <option  disabled selected>
+                  <option disabled selected>
                     {t("select")} {t("experienceRequired")}
                   </option>
                   <option value="Less_than_one">{t("lessThan1Year")}</option>
@@ -233,6 +250,22 @@ console.log(skillCate , "skillCate----")
                 </Form.Select>
               </Form.Group>
               <p className="error-message">{errors.experience?.message}</p>
+            </Col>
+            <Col md="6" className="mb-4">
+              <Form.Group>
+                <Form.Label>{t("optionalSkills")}</Form.Label>
+                <CreatableSelect
+                  isMulti
+                  isClearable
+                  name="optional_skills"
+                  onChange={(newValue) => {
+                    setSelectedOptional(newValue)
+                  }}
+                  onCreateOption={onChangeSelect}
+                  options={skillCate}
+                  value={selectedOptional}
+                />
+              </Form.Group>
             </Col>
             <Col md="6" className="mb-4">
               <Form.Group>
@@ -293,7 +326,7 @@ console.log(skillCate , "skillCate----")
                     required: {
                       value: true,
                       message: "Contract Type is required",
-                    },  
+                    },
                   })}
                 >
                   <option value="" selected disabled>
@@ -302,24 +335,24 @@ console.log(skillCate , "skillCate----")
                   <option value="Hourly">{t("hourly")}</option>
                   <option value="Project Base">{t("projectBase")}</option>
                   <option value="Six month contract">6 {t("MonthContract")}</option>
-                  <option value="one Year Contract">1 {t("yearContract")}</option>
-                  <option value="one Year Contract">1 {t("yearAndAbove")}</option>
-                  <option value="permanent">{t("permanent")}</option>
+                  <option value="One Year Contract">1 {t("yearContract")}</option>
+                  <option value="One Year Contract">1 {t("yearAndAbove")}</option>
+                  <option value="Permanent">{t("permanent")}</option>
                 </Form.Select>
               </Form.Group>
               <p className="error-message ">{errors.contract_type?.message}</p>
             </Col>
-            <Col md="6" className="mb-4">
+            {/* <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label>{t("skills")}</Form.Label>
-                {/* <Select
+                <Form.Label>{t("skills")}</Form.Label> */}
+            {/* <Select
                   options={skillListMapped}
                   onChange={(val) => onChangeSelect(val)}
                   name="skills"
                   isMulti
                
                 /> */}
-                <CreatableSelect
+            {/* <CreatableSelect
                   isMulti
                   isClearable
                   name={selectedOption}
@@ -330,11 +363,11 @@ console.log(skillCate , "skillCate----")
                   options={skillCate}
                   value={selectedOption}
                 />
-              </Form.Group>
-              {/* <p className="error-message ">
+              </Form.Group> */}
+            {/* <p className="error-message ">
                                 {errors.skills?.message}
                             </p> */}
-            </Col>
+            {/* </Col> */}
             <Col md="12" className="mb-4">
               <Form.Group>
                 <Form.Label>{t("jobDescription")}</Form.Label>
