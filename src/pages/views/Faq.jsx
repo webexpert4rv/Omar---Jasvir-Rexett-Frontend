@@ -8,6 +8,7 @@ import { TiEdit } from "react-icons/ti";
 import AddFaq from "./Modals/AddFaq";
 import ConfirmationModal from "./Modals/ConfirmationModal";
 import { deleteFaq } from "../../redux/slices/adminDataSlice";
+import { useLocation } from "react-router-dom";
 const Faq = () => {
   const [activeTab, setActiveTab] = useState("general");
   const [show, setShow] = useState(false);
@@ -19,6 +20,7 @@ const Faq = () => {
   const dispatch = useDispatch();
   const { faqsData } = useSelector((state) => state.clientData);
   const { smallLoader } = useSelector((state) => state.adminData);
+  let {pathname} =useLocation()
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -73,7 +75,7 @@ const Faq = () => {
   return (
     <>
       <section
-        className={`faq-section admin-faq-section ${
+        className={`faq-section ${pathname=="/admin-faq"? "admin-faq-section":""} ${
           activeTab === "general" ? "general-active" : ""
         } ${activeTab === "jobposting" ? "jobposting-active" : ""} ${
           activeTab === "timereporting" ? "timereporting-active" : ""
@@ -128,11 +130,11 @@ const Faq = () => {
                   </Nav.Link>
                 </Nav.Item>
               </Nav>
-                <OverlayTrigger placement="bottom" overlay={newtooltip}>
+               { pathname=="/admin-faq" ? <OverlayTrigger placement="bottom" overlay={newtooltip}>
                     <button className="main-btn add-new-job-btn" onClick={showFaqModal}>
                     +
                     </button>
-                </OverlayTrigger>
+                </OverlayTrigger>:""}
             </div>
             <Tab.Content>
               <Tab.Pane eventKey="general">
@@ -141,8 +143,12 @@ const Faq = () => {
                   {faqsData?.data?.general?.map((item, index) => (
                     <Accordion.Item key={index} eventKey={`general-${index}`}>
                       <Accordion.Header className="faq-accordion-header">
-                        {item?.question} <Button className="delete-btn ms-auto me-3" onClick={(e)=>trashFaq(e,item?.id)}><FaTrash /></Button>
-                        <Button className="edit-job-btn" onClick={(e)=>editFaq(e,item)}><TiEdit /></Button>
+                        {item?.question} 
+                      { pathname=="/admin-faq" && <>
+                        <Button className="delete-btn ms-auto me-3" onClick={(e)=>trashFaq(e,item?.id)}><FaTrash /></Button>
+                        <Button className="edit-job-btn me-3" onClick={(e)=>editFaq(e,item)}><TiEdit /></Button>
+                        </>}
+                        
                       </Accordion.Header>
                       <Accordion.Body className="faq-accordion-body">
                         <div
@@ -161,7 +167,11 @@ const Faq = () => {
                       eventKey={`jobposting-${index}`}
                     >
                       <Accordion.Header className="faq-accordion-header">
-                        {item?.question}
+                        {item?.question} 
+                        { pathname=="/admin-faq" && <>
+                        <Button className="delete-btn ms-auto me-3" onClick={(e)=>trashFaq(e,item?.id)}><FaTrash /></Button>
+                        <Button className="edit-job-btn me-3" onClick={(e)=>editFaq(e,item)}><TiEdit /></Button>
+                        </>}
                       </Accordion.Header>
                       <Accordion.Body className="faq-accordion-body">
                         <div
@@ -180,7 +190,11 @@ const Faq = () => {
                       eventKey={`timereporting-${index}`}
                     >
                       <Accordion.Header className="faq-accordion-header">
-                        {item?.question}
+                        {item?.question} 
+                        { pathname=="/admin-faq" && <>
+                        <Button className="delete-btn ms-auto me-3" onClick={(e)=>trashFaq(e,item?.id)}><FaTrash /></Button>
+                        <Button className="edit-job-btn me-3" onClick={(e)=>editFaq(e,item)}><TiEdit /></Button>
+                        </>}
                       </Accordion.Header>
                       <Accordion.Body className="faq-accordion-body">
                         <div
@@ -194,7 +208,7 @@ const Faq = () => {
             </Tab.Content>
           </Tab.Container>
         </div>
-        <AddFaq show={show} showFaqModal={showFaqModal} isEdit={isEditId} />
+        <AddFaq show={show} showFaqModal={showFaqModal} isEdit={isEditId} smallLoader={smallLoader} />
         <ConfirmationModal show={deleteModal?.isDelete} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Faq"} text={"Are you sure ,you want to delete this Question?"} smallLoader={smallLoader}/>
       </section>
     </>
