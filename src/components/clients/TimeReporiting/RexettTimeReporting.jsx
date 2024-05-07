@@ -194,10 +194,11 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div>
                             </Form>
                             <div>
+                                <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button>
                                 <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `${t("editTimeReport")}` : `${t("addBulkTime")}`}</Button>
                             </div>
                         </div>
-                        <div className="d-flex justify-content-between align-items-center mt-3">
+                        {/* <div className="d-flex justify-content-between align-items-center mt-3">
                             <div>
                                 <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap">
                                     <div className="d-inline-flex align-items-center gap-1">
@@ -210,7 +211,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <RexettTable headerColumn={weeklyTimeReports(timeReportingData[0], selectedPeriod)} selectedPeriod={selectedPeriod} data={timeReportingData} role={role} />
