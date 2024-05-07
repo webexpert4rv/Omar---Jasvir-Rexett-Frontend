@@ -19,7 +19,7 @@ const EditDeveloperProfile = () => {
     const userId = localStorage.getItem("userId");
     const [selectedImage, setSelectedImage] = useState(null);
     const { t } = useTranslation()
-    console.log(userId,"userIs")
+    console.log(userId, "userIs")
     const {
         register,
         setValue,
@@ -29,7 +29,7 @@ const EditDeveloperProfile = () => {
     } = useForm({});
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
-    const [status,setStatus] = useState("inactive")
+    const [status, setStatus] = useState("inactive")
     const [isPassword, setPassword] = useState({
         firstPass: false,
         secondPass: false
@@ -41,7 +41,7 @@ const EditDeveloperProfile = () => {
         setStatus(!status)
         setShowModal(false)
     }
-    console.log(status,"status")
+    console.log(status, "status")
     const handleToggle = () => {
         setStatus("active")
         setShowModal(true)
@@ -49,7 +49,7 @@ const EditDeveloperProfile = () => {
     const handleAction = () => {
         let data = {
             user_id: +userId,
-            status : status
+            status: status
         }
         dispatch(getEnableDisableAccount(data))
     }
@@ -178,9 +178,9 @@ const EditDeveloperProfile = () => {
                                         <p className="error-message">
                                             {errors.email?.message} </p>
                                     </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("phone")}*</Form.Label>
-                                        {/* <Form.Control type="tel" className="common-field"
+                                    {/* <Form.Group className="mb-3">
+                                        <Form.Label className="common-label">{t("phone")}*</Form.Label> */}
+                                    {/* <Form.Control type="tel" className="common-field"
                                             name="phone_number"
                                             {...register("phone_number", {
                                                 required: {
@@ -192,7 +192,7 @@ const EditDeveloperProfile = () => {
                                                     message: "Please enter a valid phone number"
                                                 }
                                         /> */}
-                                        <Controller
+                                    {/* <Controller
                                             name="phone_number"
                                             control={control}
                                             rules={{
@@ -222,7 +222,7 @@ const EditDeveloperProfile = () => {
                                         />
                                         <p className="error-message">
                                             {errors.phone_number?.message} </p>
-                                    </Form.Group>
+                                    </Form.Group> */}
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">{t("previousPassword")}</Form.Label>
                                         <div className="position-relative">
@@ -266,8 +266,6 @@ const EditDeveloperProfile = () => {
                                             {errors.address?.message} </p>
                                     </Form.Group>
                                 </div>
-                            </Col>
-                            <Col md="6">
                                 <div>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">{t("address")} 2</Form.Label>

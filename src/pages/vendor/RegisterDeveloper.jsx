@@ -564,7 +564,7 @@ const RegisterDeveloper = () => {
                 </Col>
                 <Col md="6" className="mb-4">
               <Form.Group>
-                <Form.Label>{t("experienceRequired")}</Form.Label>
+                <Form.Label>{t("experienceRequired")}*</Form.Label>
                 <Form.Select
                   className="common-field"
                   {...register("experience", {
