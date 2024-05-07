@@ -70,6 +70,10 @@ console.log(accountDeletionList,"accountDeletionList")
     const handleClose = () => {
         setShowModal(!showModal)
     }
+    
+    const handleToggle = () => {
+        setShowModal(true)
+    }
     return (
         <>
             <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
@@ -107,7 +111,9 @@ console.log(accountDeletionList,"accountDeletionList")
                                                 <td>{item?.role}</td>
                                                 <td>
                                                     <OverlayTrigger placement="bottom" overlay={deleteApplication}>
-                                                        <Button className="delete-btn app-del-btn" onClick={(e) => handleDelete(e, item?.user?.role, item?.user?.id)} ><MdOutlineDelete /></Button>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" onClick={handleToggle} checked />
+                        </div>
                                                     </OverlayTrigger>
                                                 </td>
                                             </tr>
