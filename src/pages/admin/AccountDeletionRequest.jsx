@@ -11,6 +11,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
 import { getDeleteDeveloper } from "../../redux/slices/vendorDataSlice";
+import userImage from "../../assets/img/user-img.jpg"
 const AccountDeletionRequest = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
@@ -103,7 +104,7 @@ console.log(accountDeletionList,"accountDeletionList")
                                             <tr>
                                                 <td>
                                                     <div className="user-imgbx application-imgbx my-0 mx-auto">
-                                                        <img src={item?.user?.profile_picture} className="user-img" />
+                                                        <img src={item?.user?.profile_picture ? item?.user?.profile_picture:userImage } className="user-img" />
                                                     </div>
                                                 </td>
                                                 <td>{item?.name}</td>

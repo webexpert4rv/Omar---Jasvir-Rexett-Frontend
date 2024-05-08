@@ -109,7 +109,7 @@ const   SingleJob = () => {
     }
 
     const handleEdit = () => {
-        if (singleJobDescription?.status == "published") {
+        if (singleJobDescription?.status == "Unpublished") {
             navigate(`/job-edit-post/${id}`)
         }
     }
@@ -137,22 +137,22 @@ const   SingleJob = () => {
     );
     const deletejob = (
         <Tooltip id="tooltip">
-            {singleJobDescription?.status == "published" ? "Delete Job" : "Unpublish Job to delete"}
+            {singleJobDescription?.status == "Unpublished" ? "Delete Job" : "Unpublish Job to delete"}
         </Tooltip>
     );
     const editjob = (
         <Tooltip id="tooltip">
-            {singleJobDescription?.status == "published" ? "Edit Job" : "Unpublish Job to edit"}
+            {singleJobDescription?.status == "Unpublished" ? "Edit Job" : "Unpublish Job to edit"}
         </Tooltip>
     );
 
     const publishjob = (
         <Tooltip id="tooltip">
-            {singleJobDescription?.status == "published" ? "Unpublish Job" : "Publish Job"}
+            {singleJobDescription?.status == "Unpublished" ? "Unpublish Job" : "Publish Job"}
         </Tooltip>
     )
     const handleDelete = (status, id) => {
-        if (singleJobDescription?.status == "published") {
+        if (singleJobDescription?.status == "Unpublished") {
             setStatusModal({
                 [status]: !statusModal.isTrue,
                 id: id

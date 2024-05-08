@@ -104,16 +104,17 @@ const RegisterDeveloper = () => {
   }, [skillList]);
 
   const handleAppend = () => {
-    const expertise = watch("skills");
-    const index = expertise.findIndex(
-      (curElem) => curElem.experience === "" || curElem.skill === ""
-    );
-    if (index === -1) {
-      append({
-        skill: "",
-        experience: "",
-      });
-    }
+    const expertise = watch("expertise");
+
+      setExpertiseFields([
+        ...expertise,
+        {
+          skill: "",
+          experience: "",
+        }
+       
+      ]);
+    
   };
 
   function generateYears() {
@@ -128,15 +129,15 @@ const RegisterDeveloper = () => {
   const yearsArray = generateYears();
 
   const onSubmit = (data) => {
+    console.log(data,"dtat")
     let formattedExpertise = [];
-    let convertedExpertise = expertSkill.map((val) => val.label)
-    formattedExpertise = convertedExpertise.map((val) => {
-      return { skill: val, experience: "" }
+    formattedExpertise = data?.expertise?.map((val) => {
+      return { skill: val?.skill?.label, experience: val?.experience }
     })
     let formattedSkills = [];
-    let convertString = selectedOption.map((item) => item.label);
+    let convertString = selectedOption?.map((item) => item.label);
     formattedSkills = convertString.map((item) => {
-      return { skill: item, experience: "" }
+      return { skill: item, experience: null }
     })
     if (data) {
       let formData = {
@@ -144,12 +145,12 @@ const RegisterDeveloper = () => {
         skills: formattedSkills,
         expertise: formattedExpertise
       };
-      console.log(formData, "formdata")
-      dispatch(filePreassignedUrlGenerate(formData))
-      dispatch(getAddNewDeveloper(formData, () => {
-        navigate("/vendor-dashboard");
-      })
-      );
+      console.log(formData,"formData")
+      // dispatch(filePreassignedUrlGenerate(formData))
+      // dispatch(getAddNewDeveloper(formData, () => {
+      //   navigate("/vendor-dashboard");
+      // })
+      // );
     };
   }
 
@@ -226,6 +227,7 @@ const RegisterDeveloper = () => {
     }
   };
   const handleDeleteField = (id) => {
+    console.log(id,"id-----")
     const updatedEducationFields = educationFields.filter(
       (field) => field.id !== id
     );
@@ -296,12 +298,11 @@ const RegisterDeveloper = () => {
   const onChangeSelect = (val,arg) => {
     
     const newOption = createOption(val);
-    if(arg=="skill"){
+    if(arg=="skills"){
       setSelectedOption((prev) => [...prev, newOption]);
       setSkillsCate((prev) => [...prev, newOption]);
     }else{
       setExpertSkill((prev) => [...prev, newOption])
-
     }
   
   };
@@ -588,15 +589,17 @@ const RegisterDeveloper = () => {
                         },
                       })}
                     >
-                      <option disabled selected>
+                      <option disabled selected value="">
                         {t("select")} {t("experienceRequired")}
                       </option>
                       <option value="Less_than_one">{t("lessThan1Year")}</option>
-                      <option value="1-2_Years">1 - 2 {t("years")}</option>
-                      <option value="2-3_Years">2 - 3 {t("years")}</option>
-                      <option value="3-4_Years">3 - 4 {t("years")}</option>
-                      <option value="4-5_Years">4 - 5 {t("years")}</option>
-                      <option value="5_more">5+ {t("years")}</option>
+                      <option value="1">1 {t("year")}</option>
+                      <option value="2">2 {t("year")}</option>
+                      <option value="3">3 {t("year")}</option>
+                      <option value="4">4 {t("year")}</option>
+                      <option value="5 ">5 {t("year")}</option>
+                      <option value="6+">6 +{t("year")}</option>
+
                     </Form.Select>
                   </Form.Group>
                   <p className="error-message">{errors.experience?.message}</p>
@@ -892,7 +895,7 @@ const RegisterDeveloper = () => {
                             isClearable
                             options={skillCate}
                             onChange={(newValue) => {
-                              setExpertSkill(newValue);
+                              setExpertSkill([newValue]);
                               setValue(`expertise.${index}.skill`, newValue);
                               clearErrors(`expertise.${index}.skill`);
                             }}
@@ -911,7 +914,7 @@ const RegisterDeveloper = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex-none">
+                  <div className="flex-none mt-3">
                     <Form.Label className="common-label">
                       {t("experience")}
                     </Form.Label>
@@ -936,13 +939,13 @@ const RegisterDeveloper = () => {
                       </p>
                     )}
                   </div>
-                  {/* {watch("skills")?.length !== 1 && (
+                  {watch("skills")?.length !== 1 && (
                   <Col md="12" className="d-flex justify-content-end">
                     <Button variant="danger" onClick={() => remove(index)}>
                       <FaTrash />
                     </Button>
                   </Col>
-                )} */}
+                )}
                 </Fragment>
               )
             })}
