@@ -1,12 +1,26 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { HiUpload } from "react-icons/hi";
-import { Button, Col, Form, InputGroup, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Form,
+  InputGroup,
+  OverlayTrigger,
+  Row,
+  Tooltip,
+} from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getAddNewDeveloper, getSkillList } from "../../redux/slices/clientDataSlice";
+import {
+  getAddNewDeveloper,
+  getSkillList,
+} from "../../redux/slices/clientDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
-import { addDegree, getDegreeList } from "../../redux/slices/developerDataSlice";
+import {
+  addDegree,
+  getDegreeList,
+} from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
@@ -17,7 +31,6 @@ import { INVALID_FILE_TYPE } from "../../components/clients/TimeReporiting/const
 import { Controller } from "react-hook-form";
 import { min } from "moment";
 import { EXPERIENCE_OPTIONS } from "../../helper/utlis";
-
 
 const createOption = (label) => ({
   label,
@@ -37,7 +50,7 @@ const RegisterDeveloper = () => {
   const skillSet = skillLabels?.toString();
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState([]);
-  const [expertSkill, setExpertSkill] = useState([])
+  const [expertSkill, setExpertSkill] = useState([]);
   const [fileTypeError, setFileTypeError] = useState(false);
   const navigate = useNavigate();
   const [socialMediaRows, setSocialMediaRows] = useState([
@@ -59,8 +72,8 @@ const RegisterDeveloper = () => {
     setError,
     formState: { errors },
   } = useForm();
-  console.log(selectedOption, "select-----")
-  console.log(expertSkill, "experskilll")
+  console.log(selectedOption, "select-----");
+  console.log(expertSkill, "experskilll");
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "educations",
@@ -68,7 +81,6 @@ const RegisterDeveloper = () => {
     name: "expertise",
     name: "social_links",
     name: "skills",
-
   });
 
   const [experienceFields, setExperienceFields] = useState([
@@ -84,37 +96,34 @@ const RegisterDeveloper = () => {
   const [expertiseFields, setExpertiseFields] = useState([
     {
       skill: "",
-      experience: ""
+      experience: "",
     },
   ]);
   const skillListMapped = skillList.map((item) => {
-    return { value: item.id, label: item.title }
+    return { value: item.id, label: item.title };
   });
 
   useEffect(() => {
     dispatch(getDegreeList());
   }, []);
 
-
   useEffect(() => {
     dispatch(getSkillList());
   }, [dispatch]);
   useEffect(() => {
-    setSkillsCate(skillListMapped)
+    setSkillsCate(skillListMapped);
   }, [skillList]);
 
   const handleAppend = () => {
     const expertise = watch("expertise");
 
-      setExpertiseFields([
-        ...expertise,
-        {
-          skill: "",
-          experience: "",
-        }
-       
-      ]);
-    
+    setExpertiseFields([
+      ...expertise,
+      {
+        skill: "",
+        experience: "",
+      },
+    ]);
   };
 
   function generateYears() {
@@ -129,37 +138,32 @@ const RegisterDeveloper = () => {
   const yearsArray = generateYears();
 
   const onSubmit = (data) => {
-    console.log(data,"dtat")
+    console.log(data, "dtat");
     let formattedExpertise = [];
     formattedExpertise = data?.expertise?.map((val) => {
-      return { skill: val?.skill?.label, experience: val?.experience }
-    })
+      return { skill: val?.skill?.label, experience: val?.experience };
+    });
     let formattedSkills = [];
     let convertString = selectedOption?.map((item) => item.label);
     formattedSkills = convertString.map((item) => {
-      return { skill: item, experience: null }
-    })
+      return { skill: item, experience: null };
+    });
     if (data) {
       let formData = {
         ...data,
         skills: formattedSkills,
-        expertise: formattedExpertise
+        expertise: formattedExpertise,
       };
-      console.log(formData,"formData")
+      console.log(formData, "formData");
       // dispatch(filePreassignedUrlGenerate(formData))
       // dispatch(getAddNewDeveloper(formData, () => {
       //   navigate("/vendor-dashboard");
       // })
       // );
-    };
-  }
+    }
+  };
 
-
-  const addtooltip = (
-    <Tooltip id="tooltip">
-      {t("addRow")}
-    </Tooltip>
-  );
+  const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
 
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
@@ -227,7 +231,7 @@ const RegisterDeveloper = () => {
     }
   };
   const handleDeleteField = (id) => {
-    console.log(id,"id-----")
+    console.log(id, "id-----");
     const updatedEducationFields = educationFields.filter(
       (field) => field.id !== id
     );
@@ -295,25 +299,36 @@ const RegisterDeveloper = () => {
     }
   };
 
-  const onChangeSelect = (val,arg) => {
-    
+  const onChangeSelect = (val, arg) => {
     const newOption = createOption(val);
-    if(arg=="skills"){
+    if (arg == "skills") {
       setSelectedOption((prev) => [...prev, newOption]);
       setSkillsCate((prev) => [...prev, newOption]);
-    }else{
-      setExpertSkill((prev) => [...prev, newOption])
+    } else {
+      setExpertSkill((prev) => [...prev, newOption]);
     }
-  
   };
   const handleCreate = (inputValue) => {
     const payload = {
-      title: inputValue
-    }
-    dispatch(addDegree(payload, () => {
-      dispatch(getDegreeList());
-    }))
-  }
+      title: inputValue,
+    };
+    dispatch(
+      addDegree(payload, () => {
+        dispatch(getDegreeList());
+      })
+    );
+  };
+
+  const handleDelete = (id ,index) => {
+    console.log(index,"index")
+    let expertiseFieldsCopy=[...expertiseFields]
+    console.log(expertiseFieldsCopy,"expertiseFieldsCopy")
+    expertiseFieldsCopy.splice(index, 1)
+    // delete expertiseFieldsCopy[index]
+    setExpertiseFields(expertiseFieldsCopy)
+  
+    
+  };
 
   return (
     <>
@@ -592,14 +607,15 @@ const RegisterDeveloper = () => {
                       <option disabled selected value="">
                         {t("select")} {t("experienceRequired")}
                       </option>
-                      <option value="Less_than_one">{t("lessThan1Year")}</option>
+                      <option value="Less_than_one">
+                        {t("lessThan1Year")}
+                      </option>
                       <option value="1">1 {t("year")}</option>
                       <option value="2">2 {t("year")}</option>
                       <option value="3">3 {t("year")}</option>
                       <option value="4">4 {t("year")}</option>
                       <option value="5 ">5 {t("year")}</option>
                       <option value="6+">6 +{t("year")}</option>
-
                     </Form.Select>
                   </Form.Group>
                   <p className="error-message">{errors.experience?.message}</p>
@@ -874,14 +890,16 @@ const RegisterDeveloper = () => {
                 </Button>
               </div>
             </div>
-            <h3 className="overview-card-heading border-bottom-grey pb-2 mb-3">{t("enterExpertise")}</h3>
+            <h3 className="overview-card-heading border-bottom-grey pb-2 mb-3">
+              {t("enterExpertise")}
+            </h3>
             {expertiseFields.map((field, index) => {
               return (
-                <Fragment key={field.id}>
+                <Fragment key={field?.id}>
                   <div>
                     <Row>
-                      <Col >
-                        <Form.Group >
+                      <Col>
+                        <Form.Group>
                           <Form.Label className="common-label">
                             {t("enterSkill")}
                           </Form.Label>
@@ -925,7 +943,8 @@ const RegisterDeveloper = () => {
                           message: t("required_message"),
                         },
                       })}
-                      className="filter-select shadow-none">
+                      className="filter-select shadow-none"
+                    >
                       <option value=""> {t("selectExperience")} </option>
                       {EXPERIENCE_OPTIONS.map(({ label, value }, index) => (
                         <option value={value} key={index}>
@@ -939,15 +958,18 @@ const RegisterDeveloper = () => {
                       </p>
                     )}
                   </div>
-                  {watch("skills")?.length !== 1 && (
-                  <Col md="12" className="d-flex justify-content-end">
-                    <Button variant="danger" onClick={() => remove(index)}>
-                      <FaTrash />
-                    </Button>
-                  </Col>
-                )}
+                  {watch("expertise")?.length >1  && (
+                    <Col md="12" className="d-flex justify-content-end">
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDelete(field?.id,index)}
+                      >
+                        <FaTrash />
+                      </Button>
+                    </Col>
+                  )}
                 </Fragment>
-              )
+              );
             })}
             <div className="text-end mb-3">
               <OverlayTrigger placement="bottom" overlay={addtooltip}>
