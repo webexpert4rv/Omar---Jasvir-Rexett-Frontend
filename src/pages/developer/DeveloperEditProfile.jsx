@@ -333,7 +333,7 @@ const EditDeveloperProfile = () => {
                     </form>}
                 </div>
             </section>
-            <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} />
+            <EndJobModal show={showModal}  handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} />
         </>
     )
 }

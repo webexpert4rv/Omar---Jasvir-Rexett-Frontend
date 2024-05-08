@@ -1660,7 +1660,8 @@ ul {
     border-radius: 40px;
 }
 
-.status-text.inprogress {
+.status-text.inprogress,
+.status-text.published {
     background-color: #00a1a9;
     color: #fff;
 }
@@ -2484,9 +2485,9 @@ input[type="radio"]:checked {
     align-items: center;
     width: 25px;
     height: 25px;
-    color: #fff;
+    color: #5f5f5f;
     border-radius: 50%;
-    background-color: #656565;
+    background-color: #c5c5c5;
     font-size: 13px;
     margin-left: 5px;
 }
@@ -2905,9 +2906,9 @@ input[type="radio"]:checked {
     display: inline-block;
     padding: 4px 12px;
     font-size: 12px;
-    color: #fff;
+    color: #000;
     border-radius: 30px;
-    background-color: #037563;
+    background-color: #f2f5f7;
     margin-right: 3px;
     margin-bottom: 3px;
 }
@@ -3118,6 +3119,10 @@ input[type="radio"]:checked {
 {
     background-color: #f8e9d3;
 }
+.faq-section.askquestion-active .faq-pill
+{
+    background-color: #ffe4e4;
+}
 .faq-pill .faq-link
 {
     color: #121212;
@@ -3178,22 +3183,35 @@ input[type="radio"]:checked {
 }
 .faq-accordion-body
 {
-    background-color: #D3F8D3;
+    background-color: #f2f5f7;
 }
-.faq-section.jobposting-active .faq-accordion-body
+/* .faq-section.jobposting-active .faq-accordion-body
 {
     background-color: #d3eef8;
-}
+} */
 .faq-section.jobposting-active .faq-banner
 {
     background-color: #d3eef8;
     /* color: #00719f; */
     color: #121212;
 }
-.faq-section.timereporting-active .faq-accordion-body
+/* .faq-section.askquestion-active .faq-accordion-body
+{
+    background: #ffe4e4;
+} */
+.faq-section.askquestion-active .faq-banner
+{
+    background-color: #ffe4e4;
+    color: #121212;
+}
+.faq-section.askquestion-active .faq-pill .faq-link.active
+{
+    background-color: #b70000;
+}
+/* .faq-section.timereporting-active .faq-accordion-body
 {
     background-color: #f8e9d3;
-}
+} */
 .faq-section.timereporting-active .faq-banner
 {
     background-color: #f8e9d3;
@@ -3289,6 +3307,66 @@ input[type="radio"]:checked {
 .language-select.lang-swd {
     background-image: url('../img/swedish.svg');
 }
+.question-head
+{
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+}
+.as-question-card
+{
+    max-width: 1200px;
+    margin: auto;
+    width: 100%;
+    border-radius: 30px;
+    background-color: #fff;
+    box-shadow: 0px 4px 16px rgba(96,97,112,0.08);
+    padding: 30px;
+}
+.contact-support
+{
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    text-decoration: none;
+    right: -43px;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+    background: #037563;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #fff;
+    transition: .4s ease;
+    border: 1px solid #037563;
+    /* animation: pulse-animation 2s infinite; */
+}
+.contact-support:hover
+{
+    background-color: #fff;
+    color: #037563;
+}
+.no-anwser
+{
+    display: inline-block;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 30px;
+    background-color: #fff3f3;
+    color: #b70000;
+    margin-left: 10px;
+}
+/* @keyframes pulse-animation {
+    0% {
+      box-shadow: 0 0 0 0px rgba(3, 117, 99, 0.2);
+    }
+    100% {
+      box-shadow: 0 0 0 20px rgba(3,117, 99, 0);
+    }
+  } */
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -3417,7 +3495,7 @@ input[type="radio"]:checked {
     }
 
     .skills-listing li {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .single-job-title {

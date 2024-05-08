@@ -69,6 +69,7 @@ import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
 import Otp from './pages/Authentication/Otp';
 import Faq from './pages/views/Faq';
+import ContactSupport from './pages/views/ContactSupport';
 
 
 Chart.register(ArcElement);
@@ -105,6 +106,7 @@ function App() {
           <Route path="/time-reporting" exact element={<DashboardLayout><TimeReporting /></DashboardLayout>} />
           <Route path="/earned-back" exact element={<DashboardLayout><EarnedBack /></DashboardLayout>} />
           <Route path="/invoice" exact element={<DashboardLayout><Invoice /></DashboardLayout>} />
+          <Route path="/contact-support" exact element={<DashboardLayout><ContactSupport /></DashboardLayout>} />
           <Route path="/admin-dashboard" exact element={<AdminDashboardLayout><AdminDashboard /></AdminDashboardLayout>} />
           <Route path="/developer-list" exact element={<AdminDashboardLayout><DeveloperList /></AdminDashboardLayout>} />
           <Route path="/list-clients" exact element={<AdminDashboardLayout><ListClient /></AdminDashboardLayout>} />

@@ -27,7 +27,7 @@ const Invoice = () => {
                     <div className="filter-section">
                         <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <Form>
-                                <div className="d-flex gap-3 align-items-end">
+                                <div className="d-flex gap-3 flex-wrap align-items-end">
                                     <div>
                                         <Form.Select className="w-auto w-1 shadow-none" >
                                             <option value="">Select Developer</option>
