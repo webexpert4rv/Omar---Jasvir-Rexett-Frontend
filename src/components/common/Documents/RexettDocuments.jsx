@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, Button, Col, Form, Row, Tabs, Tab, Nav,OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Collapse, Button, Col, Form, Row, Tabs, Tab, Nav, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FaFolder } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 
 const RexettDocuments = ({ currentRole }) => {
     const dispatch = useDispatch();
-    const [fileId,setFileID]=useState(null)
+    const [fileId, setFileID] = useState(null)
     const [bradCrump, setBradCrum] = useState([])
     const [allFilterValue, setAllCurrentFilterValue] = useState({});
     const [editFolderName, setEditFolderName] = useState({})
@@ -50,7 +50,6 @@ const RexettDocuments = ({ currentRole }) => {
 
 
 
-
     const handleShowUploadFileModal = (id, name) => {
         setOpen(!open)
         if (id) {
@@ -66,7 +65,7 @@ const RexettDocuments = ({ currentRole }) => {
     const handleShowShareFileModal = (id) => {
         setShareFileModal(true);
         setFileID(id)
-        dispatch(getDocumentShare())
+
     }
     const handleCloseShareFileModal = () => {
         setShareFileModal(false)
@@ -85,7 +84,6 @@ const RexettDocuments = ({ currentRole }) => {
             parent_id: item?.parent_id
         }
         setBradCrum([...bradCrump, data])
-        setCurrentFolderDetails(item)
         setShowFolderView(true);
         let filterData = {
             parent_id: item.id
@@ -125,16 +123,15 @@ const RexettDocuments = ({ currentRole }) => {
         let fileName = url?.split("/")
         let splitWithDot = fileName[fileName.length - 1]
         let fileExtWithDot = splitWithDot.split(".")
-
         let fileExt = fileExtWithDot[fileExtWithDot.length - 1]
         switch (fileExt) {
             case "ts":
             case "js":
             case "txt":
             case "docx":
-                return <FaFileAlt />
+            // return <FaFileAlt />
             case "pdf":
-                return <MdPictureAsPdf />
+            // return <MdPictureAsPdf />
             case "png":
             case "jpg":
             case "jpeg":
@@ -153,7 +150,7 @@ const RexettDocuments = ({ currentRole }) => {
         e.preventDefault()
         dispatch(_deleteFileAndFolder(isDelete?.id, () => {
             let filterData = {
-                parent_id: currentFolderDetails?.id
+                parent_id: currentFolderDetails?.id,
             }
             setDelete({ isDelete: false, id: "" })
             dispatch(getFolderData(filterData, currentRole))
@@ -182,6 +179,7 @@ const RexettDocuments = ({ currentRole }) => {
         }
 
     }
+    console.log(allFilterValue, "allFilterValue")
     const clearAllFilter = () => {
         setAllCurrentFilterValue({
             date: "dd-mm-yyyy",
@@ -207,9 +205,7 @@ const RexettDocuments = ({ currentRole }) => {
             dispatch(getFolderData(filterData, currentRole))
         }, 500);
         setTimerValue(timer);
-
     }
-
     const bradCrumpHandle = (id) => {
         let copyBrdCrmb = [...bradCrump]
         let index = copyBrdCrmb.findIndex(item => item.parent_id == id)
@@ -233,9 +229,9 @@ const RexettDocuments = ({ currentRole }) => {
     }
     const doctooltip = (
         <Tooltip id="tooltip">
-          Create folder or Upload files
+            Create folder or Upload files
         </Tooltip>
-      );
+    );
     return (
         <>
             <section>
@@ -359,14 +355,14 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 <FaFolder className="folder-icon" />
                                                                                 <div className="name-folder">
                                                                                     <span className="name_folder_text">{item?.s3_path}</span>
-                                                                                   {item?.user? <div className="shared-doc">
+                                                                                    {item?.user ? <div className="shared-doc">
                                                                                         <p className="shared-text">{t("sharedBy")} {item?.user?.name}</p>
-                                                                                    </div>:""}
+                                                                                    </div> : ""}
                                                                                 </div>
                                                                                 <div className="doc-action">
                                                                                     <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "folder")}><FaTrashCan /></button>
                                                                                     <button className="view-btn doc-action-btn" onClick={() => handleShowUploadFileModal(item.id, item?.s3_path)}><MdEdit /></button>
-                                                                                    <button onClick={()=>handleShowShareFileModal(item?.id)} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
+                                                                                    <button onClick={() => handleShowShareFileModal(item?.id)} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
                                                                                 </div>
 
                                                                             </div>
@@ -387,7 +383,7 @@ const RexettDocuments = ({ currentRole }) => {
                                                                                 {/* <button className="view-btn doc-action-btn"><MdEdit /></button> */}
                                                                                 <button className="download-btn doc-action-btn" onClick={() => handleDownload(item?.s3_path)}><FaDownload /></button>
                                                                                 <button className="trash-btn doc-action-btn" onClick={() => deleteFileAndFolder(item.id, "file")}><FaTrashCan /></button>
-                                                                                <button onClick={()=>handleShowShareFileModal(item?.id)} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
+                                                                                <button onClick={() => handleShowShareFileModal(item?.id)} className="view-btn doc-action-btn"><IoIosShareAlt /></button>
                                                                             </div>
                                                                         </div>
                                                                     </>
@@ -410,9 +406,9 @@ const RexettDocuments = ({ currentRole }) => {
                     </Row>
                 </div>
             </section>
-            <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} currentRole={currentRole}  setOpen={setOpen}/>
+            <CreateFolder show={showUploadFileModal} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} data={editFolderName} folderData={folderData} currentRole={currentRole} setOpen={setOpen} />
             <RexettUploadFile show={show} handleClose={handleCloseUploadFileModal} currentFolderDetails={currentFolderDetails} currentRole={currentRole} setOpen={setOpen} />
-            <ShareModal show={sharefileModal}  handleClose={handleCloseShareFileModal} fileId={fileId} />
+            <ShareModal show={sharefileModal} handleClose={handleCloseShareFileModal} fileId={fileId} />
             <ConfirmationModal
                 text={isDelete?.name == "folder" ? `Deleting this folder will also delete all the files and subfolders contained within it` : `Are you sure to delete this ${isDelete?.name}?`}
                 show={isDelete?.isDelete} handleClose={handleCloseUploadFileModal} onClick={handleDelete}

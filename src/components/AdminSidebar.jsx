@@ -27,7 +27,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
                         <div className="sidebar-logo mt-3 mb-4">
-                            <img src={sidebarLogo} alt="Sidebar Logo" />
+                        <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
                         </div>
                         <NavLink to={"/admin-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
@@ -56,7 +56,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><FaFileInvoice /> Account Deletion Request</NavLink>
+                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("accountDeletionRequest")}</NavLink>
                             </li>
                         </ul>
                     </div>
@@ -65,7 +65,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                         <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                         <div>
-                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
+                            <NavLink to={"/admin-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
                         </div>
                     </div>
                 </div>

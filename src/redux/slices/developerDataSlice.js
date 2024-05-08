@@ -121,7 +121,7 @@ export function updateDeveloperProfile(payload, callback) {
 
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-profile/', { ...payload })
+            let result = await clientInstance.post('common/update-profile/', { ...payload })
             if (result.status === 200) {
                 dispatch(setActionSuccessFully())
                 toast.success("Profile is Updated", { position: "top-center" })
@@ -189,10 +189,11 @@ export function getDeveloperDashboard(payload, callback) {
 }
 
 export function updateDeveloperCvBio(payload, callback) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/update-bio', { ...payload })
+            let result = await clientInstance.post('common/update-bio', { ...payload })
             if (result.status === 200) {
                 toast.success("Bio is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -210,9 +211,9 @@ export function updateDeveloperCvExperience(payload, id, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`developer/update-experience/${id}`, { ...payload })
+            let result = await clientInstance.put(`common/update-experience/${id}`, { ...payload })
             if (result.status === 200) {
-                // toast.success("Experience is Updated", { position: "top-center" })
+                toast.success("Experience is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
             }
@@ -228,7 +229,7 @@ export function addDeveloperCvExperience(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/add-experience', [...payload])
+            let result = await clientInstance.post('common/add-experience', {...payload})
             toast.success("Experience is Added", { position: "top-center" })
             dispatch(setSuccessActionData())
             return callback()
@@ -264,7 +265,7 @@ export function addDeveloperCvEducation(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post('developer/add-education', [...payload])
+            let result = await clientInstance.post('common/add-education', {...payload})
 
             toast.success("Education is Added", { position: "top-center" })
             dispatch(setSuccessActionData())
@@ -282,9 +283,9 @@ export function updateDeveloperCvEducation(payload, id, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`developer/update-education/${id}`, { ...payload })
+            let result = await clientInstance.put(`common/update-education/${id}`, { ...payload })
             if (result.status === 200) {
-                // toast.success("Education is Updated", { position: "top-center" })
+                toast.success("Education is Updated", { position: "top-center" })
                 dispatch(setSuccessActionData())
                 return callback()
             }
@@ -299,7 +300,7 @@ export function updateDeveloperCvEducation(payload, id, callback) {
 export function getDegreeList(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        // dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get(`common/degree-list`)
             dispatch(setDegreeList(result.data.data))
@@ -317,7 +318,7 @@ export function deleteEducationCv(payload, callback) {
     return async (dispatch) => {
         //  dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`developer/delete-education/${payload}`)
+            let result = await clientInstance.delete(`common/delete-education/${payload}`)
             if (result.status === 200) {
                 toast.success("Education is Deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -331,11 +332,19 @@ export function deleteEducationCv(payload, callback) {
     };
 }
 
-export function updateDeveloperSkills(payload, callback) {
+export function updateDeveloperSkills(payload, callback,method ="post") {
+    console.log(payload,"skillspayload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`developer/update-developer-skills`, { skills: payload })
+            let result;
+             if(method === "post")
+                {
+                     result = await clientInstance.post(`common/update-developer-skills`, {... payload })
+                }
+                else{
+                    result = await clientInstance.put(`common/update-developer-skills`, {... payload })
+                }
             if (result.status === 200) {
                 toast.success("Skills updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -355,7 +364,7 @@ export function addDeveloperSocialMedia(payload, callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.post(`developer/add-social-links`, [...payload])
+            let result = await clientInstance.post(`common/add-social-links`, {...payload})
             if (result.status === 200) {
                 toast.success("Media is updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -369,23 +378,7 @@ export function addDeveloperSocialMedia(payload, callback) {
     };
 }
 
-export function updateDeveloperCvDetails(payload, callback) {
-    return async (dispatch) => {
-        dispatch(setBtnLoader())
-        try {
-            let result = await clientInstance.put(`developer/update-cv-profile`, { ...payload })
-            if (result.status === 200) {
-                toast.success("Media is updated successfully", { position: "top-center" })
-                dispatch(setSuccessActionData())
-                return callback()
-            }
-        } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailDeveloperData())
-        }
-    };
-}
+
 
 export function developertimeReporting(payload,) {
     return async (dispatch) => {
@@ -468,7 +461,7 @@ export function getDocumentShare() {
                 dispatch(setShareDocument(result.data))
             }
         } catch (error) {
-            console.log(error, "error")
+          console.log(error)
         }
     };
 }
@@ -482,7 +475,24 @@ export function shareBelongisFile(paylaod) {
             toast.success(result?.data?.message, { position: "top-center" })
             dispatch(setSuccessActionData())
         } catch (error) {
-            console.log(error, "error")
+            console.log(error.response.data.message ,"error.response.data.message")
+            const message = error.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
         }
     };
 }
+
+// add degree
+export function addDegree(paylaod,callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`common/add-degree`, { ...paylaod })
+            return callback();
+        } catch (error) {
+            console.log(error, "error");
+        }
+    };
+}
+

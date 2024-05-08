@@ -82,7 +82,8 @@ const RentedDevelopers = () => {
         e.stopPropagation()
         setShowModal(!showModal)
     }
-    const handleDeleteAction=()=>{
+    const handleDeleteAction=(e)=>{
+        e.preventDefault()
         dispatch(getDeleteDeveloper())
     }
     const handleClose=()=>{
@@ -103,7 +104,7 @@ const RentedDevelopers = () => {
                             </Nav.Item>
                         </Nav>
                     </div>
-                    <div className="filter-section mb-4">
+                  { false&& <div className="filter-section mb-4">
                         <Form className="mb-4 filter-section">
                             <div className="d-flex gap-3">
                                 <div className="flex-none">
@@ -123,15 +124,6 @@ const RentedDevelopers = () => {
 
                                     </Form.Select>
                                 </div>
-                                {/* <div className="flex-none"> */}
-                                {/* <Form.Label className="common-label">Developers</Form.Label> */}
-                                {/* <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
-                                        <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
-                                        <option value="assigned" onClick={(e) => e.stopPropagation()} >{t("assigned")}</option>
-                                        <option value="unassigned" onClick={(e) => e.stopPropagation()}>{t("unAssigned")}</option>
-                                        <option value="all_developers" onClick={(e) => e.stopPropagation()}>{t("allDevelopers")}</option>
-                                    </Form.Select> */}
-                                {/* </div> */}
                                 <div className="flex-none">
                                     {/* <Form.Label className="common-label">Experience</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
@@ -148,7 +140,7 @@ const RentedDevelopers = () => {
                                 </div>
                             </div>
                         </Form>
-                    </div>
+                    </div>}
                     <Tab.Content>
                         <Tab.Pane eventKey="grid-view">
                             <div className="developers-list">
@@ -234,7 +226,9 @@ const RentedDevelopers = () => {
                                                                 </li> */}
                                                             </ul>
                                                         </td>
-                                                        <Button onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></Button>
+                                                        <td>
+                                                            <Button className="delete-btn" onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></Button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </>
@@ -246,14 +240,14 @@ const RentedDevelopers = () => {
                     </Tab.Content>
                 </Tab.Container>
 
-                {rentedDevelopers?.pagination?.totalDevelopers >= 5 ? (
+                {rentedDevelopers?.pagination?.totalDevelopers >= 5 && rentedDevelopers?.pagination?.totalDevelopers !==rentedDevelopers?.data?.developers.length ? (
                     <div className="text-center mt-3">
                         <SeeMore setCount={setCount} />
                     </div>
                 ) : (
                     ""
                 )}
-                <ConfirmationModal show={showModal} handleClose={setShowModal} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to delete this developer"} />
+                <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to delete this developer"} />
             </>
             }
         </>

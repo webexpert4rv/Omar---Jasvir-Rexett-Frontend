@@ -103,12 +103,11 @@ const EarnedBack = () => {
                         <tbody>
                             <tr>
                                 <td className="time-table-data">{earnedBack?.totalContracts}</td>
-                                <td className="time-table-data">{earnedBack?.totalHours}</td>
+                                <td className="time-table-data">{earnedBack?.totalHours?.toFixed(2)}</td>
                                 <td className="time-table-data">{earnedBack?.earnedBackHours} {t("hrs")}</td>
                                 <td className="time-table-data">
                                     <Form.Select className="status-select shadow-none">
                                         <option value="finished">{t("Yes")}</option>
-                                        <option value="progress">{t("No")}</option>
                                         <option value="progress">{t("No")}</option>
                                     </Form.Select>
                                 </td>

@@ -82,3 +82,5 @@ export const TABLE_HEADER = [
     monthly: dates,
   },
 ];
+
+export const INVALID_FILE_TYPE = "invalid_file_type";

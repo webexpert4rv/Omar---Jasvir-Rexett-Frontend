@@ -69,8 +69,14 @@ import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
 import Otp from './pages/Authentication/Otp';
 import Faq from './pages/views/Faq';
+<<<<<<< HEAD
 import ContactSupport from './pages/views/ContactSupport';
 
+=======
+import TimeReportingDetail from './components/clients/TimeReporiting/TimeReportingDetail';
+import DeveloperUpdatedCV from './pages/developer/DeveloperUpdatedCV';
+import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
+>>>>>>> 974b28f71010dc07624db021808ccf4617c8a761
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -116,10 +122,13 @@ function App() {
           <Route path="/revenue" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
           <Route path="/account-deletion-request" exact element={<AdminDashboardLayout><AccountDeletionRequest/></AdminDashboardLayout>} />
           <Route path="/admin-invoice" exact element={<AdminDashboardLayout><AdminInvoice /></AdminDashboardLayout>} />
+          <Route path="/profile-updation-request" exact element={<DeveloperDashboardLayout><ProfileUpdationRequest /></DeveloperDashboardLayout>} />
           <Route path="/developer-dashboard" exact element={<DeveloperDashboardLayout><DeveloperDashboard /></DeveloperDashboardLayout>} />
           <Route path="/edit-developer-profile" exact element={<DeveloperDashboardLayout><EditDeveloperProfile /></DeveloperDashboardLayout>} />
           <Route path="/developer-documents" exact element={<DeveloperDashboardLayout><DeveloperDocuments /></DeveloperDashboardLayout>} />
           <Route path="/developer-time-reporting" exact element={<DeveloperDashboardLayout><DeveloperTimeReporting /></DeveloperDashboardLayout>} />
+          <Route path="/time-reporting-detail" exact element={<DeveloperDashboardLayout><TimeReportingDetail /></DeveloperDashboardLayout>} />
+          <Route path="/developer-updated-cv" exact element={<DeveloperDashboardLayout><DeveloperUpdatedCV /></DeveloperDashboardLayout>} />
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
@@ -127,7 +136,7 @@ function App() {
           <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
-          <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper /></DashboardLayout>} />
+          <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper/></DashboardLayout>} />
           <Route path="/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
           <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
           <Route path="/vendor-single-developer/:id" exact element={<VendorDashboardLayout><VendorSingleDeveloper /></VendorDashboardLayout>} />
@@ -149,6 +158,9 @@ function App() {
           <Route path="/notification-vendor" exact element={<VendorDashboardLayout><NotificationVendor /></VendorDashboardLayout>} />
           <Route path="/register-developer" exact element={<VendorDashboardLayout><RegisterDeveloper /></VendorDashboardLayout>} />
           <Route path='/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
+          <Route path='/vendor-faq' exact element={<VendorDashboardLayout><Faq /></VendorDashboardLayout>}></Route>
+          <Route path='/admin-faq' exact element={<AdminDashboardLayout><Faq /></AdminDashboardLayout>}></Route>
+          <Route path='/developer-faq' exact element={<DeveloperDashboardLayout><Faq /></DeveloperDashboardLayout>}></Route>
         </Routes>
       </Router>
      

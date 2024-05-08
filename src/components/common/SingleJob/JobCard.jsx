@@ -30,7 +30,6 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
       ); 
 
       const suggestedCardToolTip = (status)=>{
-        console.log(status)
         return (
             <Tooltip id="tooltip">
             {status ? " Remove from suggestion" :"Suggest the developer"}
@@ -39,8 +38,13 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
       } 
 
       const handleDeveloperCard=(e,id)=>{
+        console.log("kk")
                if(role=="client"){
                 navigate(`/client-single-developer/${id}`)
+               }
+               else if(role === "admin")
+               {
+                navigate(`/admin-single-developer/${id}`)
                }
       }
     return (
@@ -51,10 +55,10 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                     {data?.map((item, index) => {
                         return (
                             <>
-                                <div className={item?.recommed ? "developer-card recomed-dev p-0" : "developer-card p-0"} onClick={(e)=>handleDeveloperCard(e,item?.developer?.id)}>
-                                    <div className="tag-developer">{item?.recommed ? "Recommended" : type}</div>
+                                <div className={item?.recommed ? "developer-card recomed-dev p-0" : "developer-card p-0"}>
+                                    <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div>
                                     <div className='overflow-hidden inner-dev-card'>
-                                        <div className="user-imgbx">
+                                        <div className="user-imgbx"  onClick={(e)=>handleDeveloperCard(e,item?.developer?.id)} >
                                             <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg } alt='developer'  className="user-img" />
                                         </div>
                                         <div className="text-center">

@@ -56,6 +56,7 @@ const StepOne = () => {
                                     <Form.Control type="text" className="common-field" />
                                 </Form.Group>
                             </Col>
+                            
                         </Row>
                     </div>
                 </Form>

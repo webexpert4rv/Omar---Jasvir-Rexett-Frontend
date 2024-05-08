@@ -38,6 +38,7 @@ export const vendorDataSlice = createSlice({
         setVendorProfile: (state, action) => {
             state.vendorProfile = action.payload.data
             state.screenLoader = false;
+            state.smallLoader = false;
         },
         setVendorTimeReport: (state, action) => {
             state.vendorTimeReport = action.payload
@@ -65,6 +66,7 @@ export const vendorDataSlice = createSlice({
             state.allDevelopersList = action.payload
         },
         setRevenueData:(state, action) =>{
+            state.smallLoader=false;
             state.screenLoader = false;
             state.revenueData = action.payload.data
         },
@@ -97,6 +99,13 @@ export function getVendorDashboard() {
 
 export function getDevelopersList(payload ,page) {
     return async (dispatch) => {
+        if(payload?.skill_title=="Select Skills"){
+            delete payload.skill_title
+        }
+        if(payload?.experience_years=="Select Experience"){
+            delete payload?.experience_years
+        }
+
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload, `vendor/developers`))
@@ -152,24 +161,7 @@ export function getVendorTimeReporting() {
         }
     }
 }
-export function getAddNewDeveloper(payload) {
-    return async (dispatch) => {
-        dispatch(setSmallLoader())
-        try {
-            let result = await clientInstance.post('/vendor/add-developer', {...payload})
-         
-                dispatch(setVendorSuccess())
-                toast.success("New Developer is Added", {position:"top-center"})
-         
-        } catch (error) {
-            const message = error.message
-            toast.error(error.response.data.message, { position: "top-center" })
-            dispatch(setFailVendorData())
 
-        }
-    }
-
-}
 
 export function getClientList(payload) {
     return async (dispatch) => {
@@ -290,7 +282,12 @@ export function getDeleteDeveloper(id) {
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.delete(`vendor/delete-developer/${id}`)
+            dispatch(setVendorSuccess())
+            toast.success("Developer is deleted", { position: "top-center" })
         } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
            
         }
     }

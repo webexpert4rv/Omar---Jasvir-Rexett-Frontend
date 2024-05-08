@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 const initialAuthData = {
     screenLoader: false,
     smallLoader: false,
+    otpLoader:false
    
 }
 
@@ -16,13 +17,18 @@ export const authenticationDataSlice = createSlice({
         setScreenLoader: (state, action) => {
             state.smallLoader = true;
         },
+        setOtpLoader: (state, action) => {
+            state.otpLoader = true;
+        },
 
         setSuccessAuthData: (state, action) => {
             state.smallLoader = false;
+            state.otpLoader = false;
         },
 
         setFailAuthData: (state, action) => {
             state.smallLoader = false;
+            state.otpLoader = false;
         },
         
 
@@ -30,7 +36,7 @@ export const authenticationDataSlice = createSlice({
     }
 })
 
-export const { setScreenLoader,setLoginUserName , setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
+export const { setScreenLoader,setLoginUserName , setOtpLoader, setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
 
 export default authenticationDataSlice.reducer
 
@@ -150,6 +156,8 @@ export function getVerifyOtp(payload) {
 
         } catch (error) {
             console.log(error, "error")
+                toast.error(error?.response.data.message, { position: "top-center" })
+                dispatch(setFailAuthData())
         }
     }
 }
@@ -194,6 +202,31 @@ export function resetPassword(payload, callback) {
                 } else {
                     window.location.href = "/admin-login"
                 }
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            if (error?.response?.status === 404) {
+                toast.error(error?.response.data.message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            } else {
+                toast.error(message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            }
+
+        }
+    };
+}
+
+
+export function resendOtpDispatch(payload, callback) {
+    return async (dispatch) => {
+
+        dispatch(setOtpLoader())
+        try {
+            let result = await authInstance.post(`auth/resend-otp`,payload )
+            if (result.status === 200) {
+                toast.success(result?.data.message, { position: "top-center" })
+                dispatch(setSuccessAuthData())
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

@@ -43,6 +43,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     "contract_id": time?.contract_id,
     "total_hours": hours
   }
+  console.log(time.contractId,"contractId");
   await dispatch(editTimeReporting(paylaod))
   dispatch(adminTimeReporting())
   setTime(null)

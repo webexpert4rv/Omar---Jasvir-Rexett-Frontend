@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../redux/slices/authenticationDataSlice";
 import sidebarLogo from '../../../assets/img/rexett-logo-white.png'
 import { useTranslation } from "react-i18next";
+import { FaEyeSlash } from "react-icons/fa6";
 
 
 const RexetLogin = ({userType}) => {
@@ -103,7 +104,7 @@ const RexetLogin = ({userType}) => {
                             <div className="inner-auth-wrapper h-100 d-flex justify-content-center flex-column position-relative">
                                 <div>
                                     <div className="text-center mb-5 logo-auth-wrapper">
-                                        <img src={sidebarLogo} className="logo-white" />
+                                    <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center mb-4 text-white">
                                       
@@ -143,10 +144,14 @@ const RexetLogin = ({userType}) => {
                                                       value: true,
                                                       message: "Password is required",
                                                     },
-                                                    
+                                                  
                                                   })}
                                                 />
-                                                <span className="eye-btn" onClick={()=>setPassword(!isPassword)}><FaEye /></span>
+                                                <span className="eye-btn" onClick={()=>setPassword(!isPassword)}>
+                                                    {
+                                                      isPassword ? <FaEyeSlash/> : <FaEye/>
+                                                    }
+                                                </span>
                                             </div>
                                             <p className="error-message">
                                                 {errors.password?.message}

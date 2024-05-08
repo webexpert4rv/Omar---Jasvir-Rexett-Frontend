@@ -116,7 +116,7 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
             state.singleClient = action.payload
         },
-        setAccountDeletion:(state, action) =>{
+        setAccountEnableDisable:(state, action) =>{
             state.screenLoader = false;
             state.accountDeletionList = action.payload
         },
@@ -129,7 +129,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setSuggestedDeveloper,setAccountDeletion ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -178,6 +178,16 @@ export function getAdminDashboard() {
 
 export function adminListAssignedDeveloper(payload, callback) {
     return async (dispatch) => {
+        if(payload?.skill_title=="Select Skills"){
+            delete payload.skill_title
+        }
+        if(payload?.experience_years=="Select Experience"){
+            delete payload?.experience_years
+        }
+        if(payload?.assignment_filter=="Select Developers"){
+            delete payload?.assignment_filter
+        }
+
 
         dispatch(setScreenLoader())
         try {
@@ -450,13 +460,57 @@ export function markAsRead(payload, callback) {
         }
     };
 }
-export function getAccountDeletion() {
+export function getAccountEnableDisable() {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get("admin/delete-account-requests")
+            let result = await clientInstance.get("admin/users-list?page=1")
             if (result.status === 200) {
-              dispatch(setAccountDeletion(result.data))
+              dispatch(setAccountEnableDisable(result.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+export function getDeletionByAdmin(role , id) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`/admin/delete-user/${role}/${id}`)
+        } catch (error) {
+            console.log(error,"errrrr")
+        }
+    };
+}
+
+export function createFaq(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post("admin/create-faqs",{...payload})
+            if (result.status === 200) {
+                toast.success("Question has been added")
+                dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function deleteFaq(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.delete(`admin/delete-faq/${payload}`)
+            if (result.status === 200) {
+                toast.success("Question has been deleted", { position: "top-center" })
+              dispatch(setSuccessAdminData())
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

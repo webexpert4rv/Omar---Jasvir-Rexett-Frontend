@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import userImg from '../../assets/img/user-img.jpg'
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Nav, Tab } from "react-bootstrap";
 import { FaCircleCheck, FaTrashCan } from "react-icons/fa6";
@@ -12,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDeleteDeveloper, getDevelopersList } from "../../redux/slices/vendorDataSlice";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
-import RexettPagination from "../../components/atomic/RexettPagination";
 import { SeeMore } from "../../components/atomic/SeeMore";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
@@ -20,23 +18,21 @@ import ConfirmationModal from ".././views/Modals/ConfirmationModal";
 
 
 const AllDeveloperList = () => {
-    const { allDevelopersList, screenLoader } = useSelector(state => state.vendorData)
+    const { allDevelopersList, screenLoader,smallLoader } = useSelector(state => state.vendorData)
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
     const [selectedFilter, setSelectedFilter] = useState({});
     const [count, setCount] = useState(1);
     const [devId , setDevId] =  useState()
+    const [timerValue, setTimerValue] = useState("");
+    const [search,setSearch]=useState()
     const navigate = useNavigate()
     const { t } = useTranslation()
-
-    console.log(allDevelopersList,"allDevelopersList")
-    // console.log(allDevelopersList?.data?.developers[0]?.developer_skills?.developer_id, "allDevelopersList-----")
+    
 
     useEffect(() => {
         dispatch(getDevelopersList({ page: count }))
     }, [count])
-
-
 
     const handleSkill = (e) => {
         let filterData = {
@@ -47,18 +43,10 @@ const AllDeveloperList = () => {
         dispatch(getDevelopersList(filterData))
     };
 
-    const handleAssignment = (e) => {
-        let filterData = {
-            ...selectedFilter,
-            assignment_filter: e.target.value
-        }
-        setSelectedFilter(filterData)
-        dispatch(getDevelopersList(filterData))
-    };
     const handleExperience = (e) => {
         let filterData = {
             ...selectedFilter,
-            experience_years: e.target.value
+            experience_years: +e.target.value
         }
         setSelectedFilter(filterData)
         dispatch(getDevelopersList(filterData))
@@ -66,10 +54,8 @@ const AllDeveloperList = () => {
 
     const handleClear = () => {
         setSelectedFilter({
-            skill_title: "Select Filter",
-            assignment_filter: "Select Developers ",
+            skill_title: "Select Skills",
             experience_years: "Select Experience",
-
         })
         dispatch(getDevelopersList());
     }
@@ -91,13 +77,27 @@ const AllDeveloperList = () => {
         setDevId(id)
         setShowModal(!showModal)
     }
-    console.log(devId , "devId")
-    const handleDeleteAction=()=>{
-        dispatch(getDeleteDeveloper(devId))
+    const handleDeleteAction=async(e)=>{
+        e.preventDefault()
+      await  dispatch(getDeleteDeveloper(devId))
+      setShowModal(!showModal)
+      dispatch(getDevelopersList({ page: count }))
+    }
+    const handleSearchChange = (e) => {
+        clearTimeout(timerValue);
+        setSearch(e.target.value)
+        const timer = setTimeout(() => {
+            let filterData = {
+                ...selectedFilter,
+                search:e.target.value
+            }
+            dispatch(getDevelopersList(filterData))
+        }, 500);
+        setTimerValue(timer);
+
     }
     return (
         <>
-            {screenLoader ? <ScreenLoader /> : <>
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
                         <h3 className="section-head-sub mb-0">{t("listOfAllDevelopers")}</h3>
@@ -114,9 +114,8 @@ const AllDeveloperList = () => {
                         <Form className="mb-4 filter-section">
                             <div className="d-flex gap-3">
                                 <div className="flex-none">
-                                    {/* <Form.Label className="common-label">Category</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.skill_title} onChange={(e) => handleSkill(e)}>
-                                        <option value="" onClick={(e) => e.stopPropagation()}>{t("selectSkills")}</option>
+                                        <option disabled selected onClick={(e) => e.stopPropagation()}>{t("selectSkills")}</option>
                                         {allDevelopersList?.data?.skills?.map((item , index)=>{
                                             return(
                                             <option  key = {index} >{item?.title}</option>
@@ -124,33 +123,27 @@ const AllDeveloperList = () => {
 
                                     </Form.Select>
                                 </div>
+                               
                                 <div className="flex-none">
-                                    {/* <Form.Label className="common-label">Developers</Form.Label> */}
-                                    {/* <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
-                                        <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
-                                        <option value="assigned" onClick={(e) => e.stopPropagation()} >{t("assigned")}</option>
-                                        <option value="unassigned" onClick={(e) => e.stopPropagation()}>{t("unassigned")}</option>
-                                        <option value="all_developers" onClick={(e) => e.stopPropagation()}>{t("allDevelopers")}</option>
-                                    </Form.Select> */}
-                                </div>
-                                <div className="flex-none">
-                                    {/* <Form.Label className="common-label">Experience</Form.Label> */}
                                     <Form.Select className="filter-select shadow-none" value={selectedFilter?.experience_years} onChange={(e) => handleExperience(e)}>
-                                        <option value="" > {t("selectExperience")} </option>
-                                        <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
-                                        <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
-                                        <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
-                                        <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
-                                        <option value="10 years" onClick={(e) => e.stopPropagation()}>10 {t("years")}</option>
+                                        <option disabled selected > {t("selectExperience")} </option>
+                                        <option value="1" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
+                                        <option value="2" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
+                                        <option value="3" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
+                                        <option value="5" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
+                                        <option value="10" onClick={(e) => e.stopPropagation()}>10 {t("years")}</option>
                                     </Form.Select>
                                 </div>
+                                <div className="flex-none">
+                                <Form.Control type="email" placeholder="Search Developer" value={search}  onChange={handleSearchChange} />
+                                </div>
                                 <div>
-                                    <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>{t("clear")}</Button>
+                                    <Button variant="transparent" className="main-btn px-3 py-2" onClick={handleClear}>{t("clear")}</Button>
                                 </div>
                             </div>
                         </Form>
                     </div>
-                    <Tab.Content>
+                  {screenLoader ? <ScreenLoader /> :  <Tab.Content>
                         <Tab.Pane eventKey="grid-view">
                             <div className="developers-list">
                                 {allDevelopersList?.data?.developers.length > 0 ? allDevelopersList?.data?.developers.map((item, index) => {
@@ -166,15 +159,12 @@ const AllDeveloperList = () => {
                                                     <p className="designation-user">{item?.developer_detail?.professional_title}</p>
                                                     <p className="email-user">{item?.email}</p>
                                                     <ul className="social-icons">
-                                                        <li>
+                                                        {item?.developer_detail?.github_url &&<li>
                                                             <Link to={item?.developer_detail?.github_url}><FaGithub /></Link>
-                                                        </li>
-                                                        <li>
+                                                        </li>}
+                                                       {item?.developer_detail?.linkedin_url && <li>
                                                             <Link to={item?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
-                                                        </li>
-                                                        {/* <li>
-                                                            <Link to={item?.email}><MdEmail /></Link>
-                                                        </li> */}
+                                                        </li>}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -199,7 +189,7 @@ const AllDeveloperList = () => {
 
                                         </tr>
                                     </thead>
-                                    {allDevelopersList?.data?.developers?.map((value, index) => {
+                                    {allDevelopersList?.data?.developers.length>0?allDevelopersList?.data?.developers?.map((value, index) => {
                                         return (
                                             <>
                                                 <tbody>
@@ -208,7 +198,6 @@ const AllDeveloperList = () => {
                                                             <span className="d-flex align-items-center gap-3">
                                                                 <img src={value?.profile_picture ? value?.profile_picture : userImg} />
                                                                 <h3 className="user-name color-121212 mb-0">{value?.name}</h3>
-                                                                <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span>
                                                             </span>
 
                                                         </td>
@@ -224,41 +213,39 @@ const AllDeveloperList = () => {
                                                         </td>
                                                         <td>
                                                             <ul className="social-icons mb-0 justify-content-start">
-                                                                <li>
+                                                              { value?.developer_detail?.github_url && <li>
                                                                     <Link to={`${value?.developer_detail?.github_url}`}><FaGithub /></Link>
-                                                                </li>
-                                                                <li>
+                                                                </li>}
+                                                               {value?.developer_detail?.linkedin_url && <li>
                                                                     <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link>
-                                                                </li>
+                                                                </li>}
                                                                 {/* <li>
                                                                     <Link to={`${value?.email}`}><MdEmail /></Link>
                                                                 </li> */}
                                                             </ul>
                                                         </td>
-
-
-                                                        <Button onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></Button>
+                                                        <td>
+                                                            <span  className="delete-btn d-inline-block" onClick={(e)=>handleDelete(e,value?.id)}><FaTrashCan /></span>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </>
                                         )
-                                    })}
+                                    }) : <td colSpan={6}><NoDataFound/></td>}
                                 </table>
                             </div>
                         </Tab.Pane>
-                    </Tab.Content>
+                    </Tab.Content>}
                 </Tab.Container>
-                {allDevelopersList?.data?.developers?.length >= 5 ? (
+                {!screenLoader && allDevelopersList?.data?.developers?.length >= 5 && allDevelopersList?.data?.developers?.length!== allDevelopersList?.pagination?.totalDevelopers  ? (
                     <div className="text-center mt-3">
                         <SeeMore setCount={setCount} />
                     </div>
                 ) : (
                     ""
                 )}
-                <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete developer"} text={"Are you sure ,you want to delete this developer"} />
+                <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete developer"} text={"Are you sure you want to delete this developer ?"}  smallLoader={smallLoader} />
             </>
-            }
-        </>
     )
 }
 export default AllDeveloperList;
