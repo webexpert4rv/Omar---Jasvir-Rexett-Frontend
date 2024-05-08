@@ -345,8 +345,8 @@
         "required_message" :"This field is required",
         "enterSkill" :"Enter Skill",
         "skillsRequired" : "Skills Required",
-        "optionalSkills" : "Optional Skills"       
-        
+        "optionalSkills" : "Optional Skills",
+        "viewJob" : "View Job"         
 
     }
 }

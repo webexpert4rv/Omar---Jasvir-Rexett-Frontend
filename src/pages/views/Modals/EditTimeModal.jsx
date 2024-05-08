@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch } from "react-redux";
 import { editTimeReportOfDev } from "../../../redux/slices/clientDataSlice";
+import { useTranslation } from "react-i18next";
 
 const EditTimeModal = ({ show, handleClose, data ,smallLoader}) => {
+    const { t } = useTranslation()
     const dispatch=useDispatch()
     const {
         register,
@@ -28,7 +30,7 @@ const EditTimeModal = ({ show, handleClose, data ,smallLoader}) => {
             </Modal.Header>
 
             <Modal.Body>
-                <h3 className="popup-heading">Time Reports</h3>
+                <h3 className="popup-heading">{t("timeReports")}</h3>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div>
                         <Form.Group className="mb-4">
@@ -36,7 +38,7 @@ const EditTimeModal = ({ show, handleClose, data ,smallLoader}) => {
                             <Form.Select
                                 {...register("contract_id", { required: "Please select a developer" })}
                             >
-                                <option value="" selected disabled>Select Developer</option>
+                                <option value="" selected disabled>{t("selectDeveloper")}</option>
                                 {
                                     data?.map((item) => {
                                         return (

@@ -5,8 +5,10 @@ import { FaEye } from "react-icons/fa6";
 import amazonImg from "../../assets/img/amazon.png";
 import NoDataFound from "./NoDataFound";
 import ScreenLoader from "./ScreenLoader";
+import { useTranslation } from "react-i18next";
 
 const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
+  const { t } = useTranslation() 
   const getCategory = (cat) => {
     let data = jobCategoryList.find((item) => item.id == cat);
     return data?.title;
@@ -56,7 +58,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                     <Row>
                       <Col md="12">
                         <div className="info-grid">
-                          <h4 className="grid-heading">Skills Req.</h4> 
+                          <h4 className="grid-heading">{t("skillsRequired")}</h4> 
                           {item?.skills.length>0?<ul className="need-skill-list">
                             {convertToArray(item?.skills)?.map((item) => {
                               return (
