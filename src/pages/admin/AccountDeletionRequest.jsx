@@ -22,7 +22,7 @@ const AccountDeletionRequest = () => {
         id: ""
     })
     const { t } = useTranslation()
-console.log(accountDeletionList,"accountDeletionList")
+    console.log(accountDeletionList, "accountDeletionList")
 
     useEffect(() => {
         dispatch(getAccountEnableDisable())
@@ -57,8 +57,8 @@ console.log(accountDeletionList,"accountDeletionList")
         setShowModal(!showModal)
         setDetails(prevDetails => ({
             ...prevDetails,
-            role: newRole ,
-            id : newId
+            role: newRole,
+            id: newId
         }));
 
     }
@@ -71,7 +71,7 @@ console.log(accountDeletionList,"accountDeletionList")
     const handleClose = () => {
         setShowModal(!showModal)
     }
-    
+
     const handleToggle = () => {
         setShowModal(true)
     }
@@ -88,7 +88,6 @@ console.log(accountDeletionList,"accountDeletionList")
             <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
                     <thead>
-                        <th>{t("")}</th>
                         <th>{t("userName")}</th>
                         <th>{t("userEmail")}</th>
                         <th>{t("role")}</th>
@@ -103,18 +102,16 @@ console.log(accountDeletionList,"accountDeletionList")
                                         <>
                                             <tr>
                                                 <td>
-                                                    <div className="user-imgbx application-imgbx my-0 mx-auto">
-                                                        <img src={item?.user?.profile_picture ? item?.user?.profile_picture:userImage } className="user-img" />
-                                                    </div>
-                                                </td>
-                                                <td>{item?.name}</td>
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <div className="user-imgbx application-imgbx mx-0 mb-0"><img src={item?.user?.profile_picture ? item?.user?.profile_picture : userImage} className="user-img" /></div>{item?.name}
+                                                    </div></td>
                                                 <td>{item?.email}</td>
                                                 <td>{item?.role}</td>
                                                 <td>
                                                     <OverlayTrigger placement="bottom" overlay={deleteApplication}>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" onClick={handleToggle} checked />
-                        </div>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input class="form-check-input toggle-switch-custom" type="checkbox" role="switch" onClick={handleToggle} checked />
+                                                        </div>
                                                     </OverlayTrigger>
                                                 </td>
                                             </tr>

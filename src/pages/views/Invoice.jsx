@@ -42,45 +42,6 @@ const Invoice = () => {
     dispatch(getInvoice(data));
   }, [page, selectedFilters]);
 
-<<<<<<< HEAD
-    return (
-        <>
-            <section style={{ display: showFolderView ? 'none' : 'block' }}>
-                <div>
-                    <div className="filter-section">
-                        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <Form>
-                                <div className="d-flex gap-3 flex-wrap align-items-end">
-                                    <div>
-                                        <Form.Select className="w-auto w-1 shadow-none" >
-                                            <option value="">Select Developer</option>
-                                            <option value="rohit">Rohit Sharma</option>
-                                            <option value="rohit">Rohit Sharma</option>
-                                            <option value="rohit">Rohit Sharma</option>
-                                        </Form.Select>
-                                    </div>
-                                    <div>
-                                        <Form.Select className="w-auto w-1 shadow-none" >
-                                            <option value="">Select Status</option>
-                                            <option value="approved">Approved</option>
-                                            <option value="pending">Pending</option>
-                                        </Form.Select>
-                                    </div>
-                                    <div>
-                                        {/* <Form.Label className="common-label">Select Year</Form.Label> */}
-                                        <Form.Select className="w-auto shadow-none" >
-                                            <option value="">Select Year</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2022">2022</option>
-                                            <option value="2021">2021</option>
-                                            <option value="2020">2020</option>
-                                            <option value="2019">2019</option>
-                                            <option value="2018">2018</option>
-                                            <option value="2017">2017</option>
-                                        </Form.Select>
-                                    </div>
-=======
   const { t } = useTranslation();
  
   const handleDownload = (url) => {
@@ -92,7 +53,6 @@ const Invoice = () => {
         alert('Please allow pop-ups for this site to download the file in a new tab.');
     }
 };
->>>>>>> 974b28f71010dc07624db021808ccf4617c8a761
 
   return (
     <>

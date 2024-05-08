@@ -69,14 +69,10 @@ import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
 import Otp from './pages/Authentication/Otp';
 import Faq from './pages/views/Faq';
-<<<<<<< HEAD
-import ContactSupport from './pages/views/ContactSupport';
-
-=======
 import TimeReportingDetail from './components/clients/TimeReporiting/TimeReportingDetail';
 import DeveloperUpdatedCV from './pages/developer/DeveloperUpdatedCV';
 import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
->>>>>>> 974b28f71010dc07624db021808ccf4617c8a761
+import ContactSupport from './pages/views/ContactSupport';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);

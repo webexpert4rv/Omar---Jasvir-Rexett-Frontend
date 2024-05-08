@@ -13,6 +13,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { FaListUl } from "react-icons/fa6";
 import { PiUsersFourFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
+import { BsToggles } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 
 const AdminSidebar = ({ sideBarActive }) => {
@@ -56,7 +57,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("accountDeletionRequest")}</NavLink>
+                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><BsToggles /> {t("accountDeletionRequest")}</NavLink>
                             </li>
                         </ul>
                     </div>
