@@ -7,10 +7,7 @@ import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import moment from "moment";
-import ScreenLoader from "./ScreenLoader";
-import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { tab } from "@testing-library/user-event/dist/tab";
 
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch();
@@ -27,7 +24,10 @@ const Notification = ({ route, job, doc, timeReport }) => {
 
   useEffect(() => {
     dispatch(getNotification());
-  }, []);
+    setNewJobPost(null)
+  }, [newJobPost]);
+
+  console.log(notificationList,"notificationList")
 
   useEffect(() => {
     if (newJobPost !== null) {
@@ -191,7 +191,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
                       </Dropdown.Item>
                     )}
                   </div>
-                  {nottificationData?.length > 0 ? (
                     <Dropdown.Item
                       onClick={redirectToallScreen}
                       className="see-all-notify mt-4"
@@ -199,9 +198,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
                       {" "}
                       {t("seeAll")}
                     </Dropdown.Item>
-                  ) : (
-                    ""
-                  )}
                 </Dropdown.Menu>
               )}
             </Dropdown>

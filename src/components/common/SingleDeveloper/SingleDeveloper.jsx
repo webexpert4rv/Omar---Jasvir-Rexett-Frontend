@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import resumeImg from '../../../assets/img/user-img.jpg'
 import { Link } from "react-router-dom";
-import { FaFacebookF } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
-import { FaGitlab } from "react-icons/fa6";
-import { FaPinterest } from "react-icons/fa6";
 import { MdEditNote, MdEmail } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { FaLinkedin } from "react-icons/fa";
@@ -105,22 +102,6 @@ const SingleDeveloper = ({ data ,role}) => {
     const handleClosDeveloperDetails = () => {
         setDeveloperDetails(false)
     }
-    const generateSocailLinks = (link) => {
-        switch (link) {
-            // case "Facebook":
-            //     return <FaFacebookF />
-            case "LinkedIn":
-                return <FaLinkedinIn />
-            // case "Twitter":
-            //     return <FaTwitter />
-            case "GitHub":
-                return <FaGithub />
-            // case "Instagram":
-            //     return <FaInstagram />
-            default:
-        }
-    }
-
     
     return (
         <>
@@ -269,7 +250,7 @@ const SingleDeveloper = ({ data ,role}) => {
                 {showEducationModal ? <EducationCV show={showEducationModal} handleClose={handleCloseEducationModal} data={data?.developer_educations} smallLoader={smallLoader} id={data?.id} role = {role}/> : ""}
                 {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id={data?.id} role = {role}/> : ""}
                 {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.social_links} id={data?.id} role = {role}/> : ""}
-                {showExpertiseModal ? <ExpertiseModal data = {data.developer_skill_and_experience} show={showExpertiseModal} handleClose={handleCloseExpertiseModal} />:""}
+                {showExpertiseModal ? <ExpertiseModal data = {data.developer_skill_and_experience} show={showExpertiseModal} handleClose={handleCloseExpertiseModal} id={data?.id} role = {role} />:""}
                 <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id={data?.id} role = {role} />
             </>}
         </>
