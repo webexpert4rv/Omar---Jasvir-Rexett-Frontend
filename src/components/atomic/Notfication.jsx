@@ -102,8 +102,13 @@ const Notification = ({ route, job, doc, timeReport }) => {
       navigate(`/${doc}`)
     } else if (data == "Jobs") {
       navigate(`/${job}/${id}`)
-    } else if (data == "Time_reports")
+    } else if (data == "Time_reports"){
       navigate(`/${timeReport}`)
+
+    }else if(data=="Users"){
+      navigate(`/admin-single-developer/${id}`)
+    }
+
   }
 
   const redirectToallScreen = () => {

@@ -116,7 +116,6 @@ const RegisterDeveloper = () => {
     }
   };
 
-  console.log(skillCate, "skillCate")
   function generateYears() {
     const currentYear = new Date().getFullYear();
     const years = [];
@@ -294,11 +293,17 @@ const RegisterDeveloper = () => {
     }
   };
 
-  const onChangeSelect = (item, val) => {
+  const onChangeSelect = (val,arg) => {
+    
     const newOption = createOption(val);
-    setExpertSkill((prev) => [...prev, newOption])
-    setSelectedOption((prev) => [...prev, newOption]);
-    setSkillsCate((prev) => [...prev, newOption]);
+    if(arg=="skill"){
+      setSelectedOption((prev) => [...prev, newOption]);
+      setSkillsCate((prev) => [...prev, newOption]);
+    }else{
+      setExpertSkill((prev) => [...prev, newOption])
+
+    }
+  
   };
   const handleCreate = (inputValue) => {
     const payload = {
@@ -892,7 +897,7 @@ const RegisterDeveloper = () => {
                               clearErrors(`expertise.${index}.skill`);
                             }}
                             onCreateOption={(val) => {
-                              onChangeSelect(val, index);
+                              onChangeSelect(val, "expertise");
                             }}
                             value={expertSkill}
                             name={expertSkill}
@@ -1180,7 +1185,9 @@ const RegisterDeveloper = () => {
                       onChange={(newValue) => {
                         setSelectedOption(newValue);
                       }}
-                      onCreateOption={onChangeSelect}
+                      onCreateOption={(val) => {
+                        onChangeSelect(val, "skills");
+                      }}
                       options={skillCate}
                       value={selectedOption}
                     />
