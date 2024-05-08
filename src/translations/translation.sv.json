@@ -339,7 +339,8 @@
         "enterSkill" :"Ange Skill",
         "skillsRequired" : "Färdigheter som krävs",
         "optionalSkills" : "valfria färdigheter",
-        "viewJob" : "se jobb"    
+        "viewJob" : "se jobb",
+        "endTimeReport" : "Sluttidsrapport"  
 
         }
 }

@@ -320,6 +320,7 @@ const RegisterDeveloper = () => {
   };
 
   const handleDelete = (id ,index) => {
+    console.log(id,"id")
     console.log(index,"index")
     let expertiseFieldsCopy=[...expertiseFields]
     console.log(expertiseFieldsCopy,"expertiseFieldsCopy")

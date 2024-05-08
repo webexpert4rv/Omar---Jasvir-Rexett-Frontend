@@ -346,7 +346,8 @@
         "enterSkill" :"Enter Skill",
         "skillsRequired" : "Skills Required",
         "optionalSkills" : "Optional Skills",
-        "viewJob" : "View Job"         
+        "viewJob" : "View Job" ,
+        "endTimeReport":"End Time Report"        
 
     }
 }

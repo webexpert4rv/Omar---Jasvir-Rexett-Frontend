@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 
 
-const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
+const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     const dispatch = useDispatch()
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({ filter: "weekly" });
@@ -194,7 +194,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 </div>
                             </Form>
                             <div>
-                                <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button>
+                                {/* <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button> */}
                                 <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `${t("editTimeReport")}` : `${t("addBulkTime")}`}</Button>
                             </div>
                         </div>

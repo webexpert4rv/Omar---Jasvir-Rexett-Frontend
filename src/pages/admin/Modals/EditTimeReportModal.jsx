@@ -3,12 +3,14 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { adminTimeReporting, editTimeReporting } from "../../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     const [devloperState,setDeveloperState]=useState([])
     const {smallLoader}=useSelector(state=>state.adminData)
     const dispatch =useDispatch()
     const [time,setTime]=useState(null)
     const [hours,setHours]=useState(null)
+    const { t } = useTranslation()
 
     const handleClient=(e)=>{
      let copyList=[...adminTimeReportingList]
@@ -64,10 +66,10 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <h3 className="popup-heading">End Time Report</h3>
+                <h3 className="popup-heading">{t("endTimeReport")}</h3>
                 <Form>
-                    <Row>
-                        <Col md="12">
+                    <Row>   
+                        {/* <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Select className="common-field" onChange={handleClient}>
                                     <option selected disabled>Select Client</option>
@@ -80,7 +82,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                                      }
                                 </Form.Select>
                             </Form.Group>
-                        </Col>
+                        </Col> */}
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Select className="common-field" onChange={handleDeveloper}>
