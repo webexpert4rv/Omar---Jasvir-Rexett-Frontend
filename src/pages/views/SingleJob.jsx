@@ -86,6 +86,104 @@ const SingleJob = () => {
     setSelectedTabsData(jobPostedData[key]);
     if (key == "suggested") {
       setCurrnetTabsStatus("shortlisted");
+
+    }
+    const handleSelect = (key) => {
+        setCurrentTab(key)
+        setSelectedTabsData(jobPostedData[key])
+        if (key == "suggested") {
+            setCurrnetTabsStatus("shortlisted")
+        }
+        if (key == "shortlisted") {
+            setCurrnetTabsStatus("interviewing")
+        }
+        if (key == "interviewing") {
+            setCurrnetTabsStatus("hired")
+        }
+        if (key == "application") {
+            setCurrnetTabsStatus("application")
+        }
+
+    }
+    const handleJobStatusAction = (e, data) => {
+        console.log("jkk")
+        e.preventDefault()
+        if (data.status == "ended") {
+            dispatch(publishedPost(singleJobDescription?.id, data, () => {
+                setStatusModal({})
+                dispatch(singleJobPostData(id, () => {
+
+                }))
+            }
+            ))
+        } else if (data.status == "application") {
+            dispatch(getDeleteJob(statusModal?.id, () => {
+                setStatusModal({})
+                navigate("/job-posted")
+            }))
+        } else {
+            dispatch(changeJobStatus(currentTab, statusModal?.id, data, () => {
+                dispatch(singleJobPostData(id, () => {
+                    setStatusModal({})
+                    let prevData = { ...jobPostedData }
+                    let d = prevData[currentTab]?.filter(item => item.id !== statusModal?.id)
+                    prevData[currentTab] = d
+                    setSelectedTabsData(prevData[currentTab])
+                }))
+            }))
+        }
+    }
+
+    const handleEdit = () => {
+        if (singleJobDescription?.status == "Unpublished") {
+            navigate(`/job-edit-post/${id}`)
+        }
+    }
+
+    const handleJobStatusModal = (e, id, status) => {
+        if (e == undefined) {
+            setStatusModal({
+                [status]: !statusModal.isTrue,
+                id: id
+            })
+        } else {
+            e.stopPropagation();
+
+            setStatusModal({
+                [status]: !statusModal.isTrue,
+                id: id
+            })
+        }
+
+    }
+    const endjob = (
+        <Tooltip id="tooltip">
+            End Job
+        </Tooltip>
+    );
+    const deletejob = (
+        <Tooltip id="tooltip">
+            {singleJobDescription?.status == "Unpublished" ? "Delete Job" : "Unpublish Job to delete"}
+        </Tooltip>
+    );
+    const editjob = (
+        <Tooltip id="tooltip">
+            {singleJobDescription?.status == "Unpublished" ? "Edit Job" : "Unpublish Job to edit"}
+        </Tooltip>
+    );
+
+    const publishjob = (
+        <Tooltip id="tooltip">
+            {singleJobDescription?.status == "Unpublished" ? "Unpublish Job" : "Publish Job"}
+        </Tooltip>
+    )
+    const handleDelete = (status, id) => {
+        if (singleJobDescription?.status == "Unpublished") {
+            setStatusModal({
+                [status]: !statusModal.isTrue,
+                id: id
+            })
+        }
     }
     if (key == "shortlisted") {
       setCurrnetTabsStatus("interviewing");
@@ -98,7 +196,6 @@ const SingleJob = () => {
     }
   };
   const handleJobStatusAction = (e, data) => {
-    console.log("jkk");
     e.preventDefault();
     if (data.status == "ended") {
       dispatch(
@@ -154,7 +251,7 @@ const SingleJob = () => {
       });
     }
   };
-  const endjob = <Tooltip id="tooltip">End Job</Tooltip>;
+  const endjob = <Tooltip id="tooltip">{t("endJob")}</Tooltip>;
   const deletejob = (
     <Tooltip id="tooltip">
       {singleJobDescription?.status == "published"
