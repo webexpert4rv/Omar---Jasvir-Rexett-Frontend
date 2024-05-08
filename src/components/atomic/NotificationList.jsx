@@ -38,7 +38,6 @@ const NotificationList = ({ job, doc }) => {
     }
   };
 
-  console.log(nottificationData , "nottificationData")
   const handleSelect = (key) => {
     setNotificationData(notificationList[key])
   }

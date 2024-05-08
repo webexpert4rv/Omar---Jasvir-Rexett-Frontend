@@ -123,7 +123,14 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role
                         </p>
                         <div className="flex-none">
                                     <Form.Label className="common-label">{t("experience")}</Form.Label>
-                                    <Form.Select className="filter-select shadow-none"  onChange={(e) => handleExperience(e)}>
+                                    <Form.Select className="filter-select shadow-none"  onChange={(e) => handleExperience(e)}
+                                      {...register("total_experience", {
+                                        required: {
+                                            value: true,
+                                            message: "Please Enter Experience",
+                                        },
+                                    })}
+                                    >
                                         <option value="" > {t("selectExperience")} </option>
                                         <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
                                         <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>

@@ -74,9 +74,9 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
   });
   useEffect(() => {
     setSkillOptions(skillListMapped);
-    if (data.length) {
+    if (data?.length) {
       let formattedData = [];
-      formattedData = data.map((curElem) => {
+      formattedData = data?.map((curElem) => {
         const skill = { label: curElem.skill, value: curElem.skill };
         return {
           ...curElem,
@@ -195,7 +195,11 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     };
     dispatch(
       updateDeveloperSkills(payload, () => {
-        dispatch(fetchDeveloperCv());
+        if(role=="developer"){
+          dispatch(fetchDeveloperCv());
+        }else{
+          dispatch(getDeveloperDetails(id));
+        }
         handleClose();
       })
     );
