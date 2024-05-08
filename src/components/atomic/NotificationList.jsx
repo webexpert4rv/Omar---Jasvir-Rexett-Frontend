@@ -7,6 +7,7 @@ import ScreenLoader from "./ScreenLoader";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../atomic/NoDataFound"
 import { useTranslation } from "react-i18next";
+import { timeReporting } from "../../redux/slices/clientDataSlice";
 
 const NotificationList = ({ job, doc }) => {
   console.log(job , "job")
@@ -27,11 +28,15 @@ const NotificationList = ({ job, doc }) => {
       dispatch(getNotification())
     }))
     if (data == "Documents") {
-      navigate(`/${doc}`)
+      navigate(`/${doc}`);
     } else if (data == "Jobs") {
-      navigate(`/${job}/${id}`)
+      navigate(`/${job}/${id}`);
+    } else if (data == "Time_reports") {
+      navigate(`/${timeReporting}`);
+    } else if (data == "Users") {
+      navigate(`/admin-single-developer/${id}`);
     }
-  }
+  };
 
   console.log(nottificationData , "nottificationData")
   const handleSelect = (key) => {
