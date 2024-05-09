@@ -12,6 +12,7 @@ import Select from "react-select";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteSkill,
   fetchDeveloperCv,
   updateDeveloperSkills,
 } from "../../../redux/slices/developerDataSlice";
@@ -24,7 +25,6 @@ import CreatableSelect from "react-select/creatable";
 import { useFieldArray, useForm } from "react-hook-form";
 import { FaTrash } from "react-icons/fa6";
 import { EXPERIENCE_OPTIONS } from "../../../helper/utlis";
-
 
 const createOption = (label) => ({
   label,
@@ -65,6 +65,8 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     },
   });
 
+  console.log(data, "data");
+
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "skills",
@@ -77,7 +79,11 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     if (data?.length) {
       let formattedData = [];
       formattedData = data?.map((curElem) => {
-        const skill = { label: curElem.skill, value: curElem.skill };
+        const skill = {
+          label: curElem.skill,
+          value: curElem.skill,
+          id: curElem.id,
+        };
         return {
           ...curElem,
           skill: skill,
@@ -105,6 +111,19 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
         skill: "",
         experience: "",
       });
+    }
+  };
+  const handleDelete = (skill_id, index) => {
+    // const id=data?.map((val)=>val.id)
+    console.log(id, "id00000");
+    let payload = {
+      skill_id: skill_id,
+      user_id: id,
+    };
+    if (skill_id) {
+      dispatch(deleteSkill(payload, skill_id));
+    } else {
+      remove(index);
     }
   };
   // const skillListMapped = skillList.map((item) => {
@@ -195,9 +214,9 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     };
     dispatch(
       updateDeveloperSkills(payload, () => {
-        if(role=="developer"){
+        if (role == "developer") {
           dispatch(fetchDeveloperCv());
-        }else{
+        } else {
           dispatch(getDeveloperDetails(id));
         }
         handleClose();
@@ -228,7 +247,7 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     //   );
     // }
   };
-
+  console.log(fields, ";fields");
   return (
     <Modal
       show={show}
@@ -261,6 +280,7 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
                         options={skillOptions}
                         // name={selectedOption}
                         onChange={(newValue) => {
+                          console.log(newValue, "newvalue");
                           setSelectedOption(newValue);
                           setValue(`skills.${index}.skill`, newValue);
                           clearErrors(`skills.${index}.skill`);
@@ -306,9 +326,12 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
                   </p>
                 )}
               </div>
-              {watch("skills").length !== 1 && (
+              {watch("skills")?.length !== 1 && (
                 <Col md="12" className="d-flex justify-content-end">
-                  <Button variant="danger" onClick={() => remove(index)}>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(field?.skill?.id, index)}
+                  >
                     <FaTrash />
                   </Button>
                 </Col>

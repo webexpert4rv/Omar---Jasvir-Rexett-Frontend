@@ -246,7 +246,7 @@ export function deleteExperience(payload, callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`developer/delete-experience/${payload}`)
+            let result = await clientInstance.delete(`common/delete-experience/${payload}`)
             if (result.status === 200) {
                 toast.success("Experience is deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -340,10 +340,10 @@ export function updateDeveloperSkills(payload, callback,method ="post") {
             let result;
              if(method === "post")
                 {
-                     result = await clientInstance.post(`common/update-developer-skills`, {... payload })
+                     result = await clientInstance.post(`common/edit-developer-skills`, {... payload })
                 }
                 else{
-                    result = await clientInstance.put(`common/update-developer-skills`, {... payload })
+                    result = await clientInstance.put(`common/edit-developer-skills`, {... payload })
                 }
             if (result.status === 200) {
                 toast.success("Skills updated successfully", { position: "top-center" })
@@ -490,6 +490,17 @@ export function addDegree(paylaod,callback) {
         try {
             let result = await clientInstance.post(`common/add-degree`, { ...paylaod })
             return callback();
+        } catch (error) {
+            console.log(error, "error");
+        }
+    };
+}
+export function deleteSkill(paylaod,id) {
+    console.log(paylaod,"poaloaddd")
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.delete(`common/delete-developer-skill/${id}`,{ ...paylaod })
         } catch (error) {
             console.log(error, "error");
         }

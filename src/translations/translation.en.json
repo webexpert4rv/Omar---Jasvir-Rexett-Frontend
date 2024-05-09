@@ -345,7 +345,7 @@
         "required_message" :"This field is required",
         "enterSkill" :"Enter Skill",
         "skillsRequired" : "Skills Required",
-        "optionalSkills" : "Optional Skills",
+        "optionalSkills" : "Good to have skills",
         "viewJob" : "View Job" ,
         "endTimeReport":"End Time Report"        
 
