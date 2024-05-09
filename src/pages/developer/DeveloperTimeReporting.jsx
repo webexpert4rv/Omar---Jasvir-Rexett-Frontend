@@ -10,6 +10,7 @@ const DeveloperTimeReporting = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({});
+    const [currentAction,setCurrentAction]=useState(null)
     const { timeReportingData, smallLoader } = useSelector(state => state.clientData)   
     useEffect(() => {
         let filterData = {
@@ -19,8 +20,9 @@ const DeveloperTimeReporting = () => {
         dispatch(timeReporting(filterData,"developer"))
     }, [dispatch])
 
-    const handleShowModal = () => {
+    const handleShowModal = (crntAct) => {
         setShowModal(true);
+        setCurrentAction(crntAct)
     };
 
     const handleCloseAddTimingModal = () => {
@@ -30,7 +32,7 @@ const DeveloperTimeReporting = () => {
     return (
         <>
             <RexettTimeReporting  timeReportingData={timeReportingData} handleShowModal={handleShowModal} role="developer"/>
-            {showModal?<AddTimingModal show={showModal} handleClose={handleCloseAddTimingModal} role="developer" />:""}
+            {showModal?<AddTimingModal show={showModal} handleClose={handleCloseAddTimingModal} role="developer" currentAction={currentAction} />:""}
         </>
     )
 }

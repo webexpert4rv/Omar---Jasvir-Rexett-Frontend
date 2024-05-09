@@ -5,13 +5,11 @@ import { Link } from "react-router-dom";
 import { MdPictureAsPdf } from "react-icons/md";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
-import { HiDownload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvoice } from "../../redux/slices/clientDataSlice";
 import SingleInvoiceRow from "../../components/common/Single Invoice/SingleInvoiceRow";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import RexettInvoiceFilter from "../../components/common/Invoice filter/RexettInvoiceFilter";
-import { buildQueryFromSelectedFilters } from "../../helper/utlis";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 const INVOICE_HEADER_DATA = [
   "developerName",

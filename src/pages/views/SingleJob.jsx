@@ -156,27 +156,8 @@ const SingleJob = () => {
         }
 
     }
-    const endjob = (
-        <Tooltip id="tooltip">
-            End Job
-        </Tooltip>
-    );
-    const deletejob = (
-        <Tooltip id="tooltip">
-            {singleJobDescription?.status == "Unpublished" ? "Delete Job" : "Unpublish Job to delete"}
-        </Tooltip>
-    );
-    const editjob = (
-        <Tooltip id="tooltip">
-            {singleJobDescription?.status == "Unpublished" ? "Edit Job" : "Unpublish Job to edit"}
-        </Tooltip>
-    );
 
-    const publishjob = (
-        <Tooltip id="tooltip">
-            {singleJobDescription?.status == "Unpublished" ? "Unpublish Job" : "Publish Job"}
-        </Tooltip>
-    )
+
     const handleDelete = (status, id) => {
         if (singleJobDescription?.status == "Unpublished") {
             setStatusModal({
@@ -254,14 +235,14 @@ const SingleJob = () => {
   const endjob = <Tooltip id="tooltip">{t("endJob")}</Tooltip>;
   const deletejob = (
     <Tooltip id="tooltip">
-      {singleJobDescription?.status == "published"
+      {singleJobDescription?.status == "Unpublished"
         ? "Delete Job"
         : "Unpublish Job to delete"}
     </Tooltip>
   );
   const editjob = (
     <Tooltip id="tooltip">
-      {singleJobDescription?.status == "published"
+      {singleJobDescription?.status == "Unpublished"
         ? "Edit Job"
         : "Unpublish Job to edit"}
     </Tooltip>
@@ -269,13 +250,13 @@ const SingleJob = () => {
 
   const publishjob = (
     <Tooltip id="tooltip">
-      {singleJobDescription?.status == "published"
+      {singleJobDescription?.status == "Unpublished"
         ? "Unpublish Job"
         : "Publish Job"}
     </Tooltip>
   );
   const handleDelete = (status, id) => {
-    if (singleJobDescription?.status == "published") {
+    if (singleJobDescription?.status == "Unpublished") {
       setStatusModal({
         [status]: !statusModal.isTrue,
         id: id,

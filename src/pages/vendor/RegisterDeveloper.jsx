@@ -10,9 +10,9 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
-import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  filePreassignedUrlGenerate,
   getAddNewDeveloper,
   getSkillList,
 } from "../../redux/slices/clientDataSlice";
@@ -23,13 +23,9 @@ import {
 } from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
-import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 import { useNavigate } from "react-router-dom";
-import { type } from "@testing-library/user-event/dist/type";
-import { INVALID_FILE_TYPE } from "../../components/clients/TimeReporiting/constant";
 import { Controller } from "react-hook-form";
-import { min } from "moment";
 import { EXPERIENCE_OPTIONS } from "../../helper/utlis";
 
 const createOption = (label) => ({
@@ -52,13 +48,13 @@ const RegisterDeveloper = () => {
   const [selectedOption, setSelectedOption] = useState([]);
   const [expertSkill, setExpertSkill] = useState([]);
   const [fileTypeError, setFileTypeError] = useState(false);
-  const navigate = useNavigate();
   const [socialMediaRows, setSocialMediaRows] = useState([
     {
       name: "",
       url: "",
     },
   ]);
+  const navigate=useNavigate()
 
   const {
     register,
@@ -94,7 +90,7 @@ const RegisterDeveloper = () => {
     },
   ]);
   const [expertiseFields, setExpertiseFields] = useState([
-    {
+    { id:0,
       skill: "",
       experience: "",
     },
@@ -110,20 +106,36 @@ const RegisterDeveloper = () => {
   useEffect(() => {
     dispatch(getSkillList());
   }, [dispatch]);
+
   useEffect(() => {
     setSkillsCate(skillListMapped);
   }, [skillList]);
 
   const handleAppend = () => {
     const expertise = watch("expertise");
-
+    console.log(expertise,"expertise")
+    let index=expertise?.findIndex((item=>item.skill==undefined || item.experience==''))
+    console.log(index,"inde")
+  if(index==-1){
     setExpertiseFields([
-      ...expertise,
-      {
+      ...expertiseFields,
+      {id:expertise.length+1,
         skill: "",
         experience: "",
       },
     ]);
+  }
+  };
+
+  const handleDelete = (id ,index) => {
+    const expertise = watch("expertise");
+    expertise.splice(index,1)
+    let expertiseFieldsCopy=[...expertiseFields]
+    expertiseFieldsCopy.splice(index,1)
+    // const updatedExpertFields = expertiseFieldsCopy.filter(
+    //   (field) => field.id !== id
+    // );
+    setExpertiseFields(expertiseFieldsCopy);
   };
 
   function generateYears() {
@@ -138,7 +150,9 @@ const RegisterDeveloper = () => {
   const yearsArray = generateYears();
 
   const onSubmit = (data) => {
-    console.log(data, "dtat");
+    console.log(data,"dat")
+    let fileData = new FormData();
+    fileData.append("file",file);
     let formattedExpertise = [];
     formattedExpertise = data?.expertise?.map((val) => {
       return { skill: val?.skill?.label, experience: val?.experience };
@@ -149,20 +163,24 @@ const RegisterDeveloper = () => {
       return { skill: item, experience: null };
     });
     if (data) {
-      let formData = {
-        ...data,
-        skills: formattedSkills,
-        expertise: formattedExpertise,
-      };
-      console.log(formData, "formData");
-      // dispatch(filePreassignedUrlGenerate(formData))
-      // dispatch(getAddNewDeveloper(formData, () => {
-      //   navigate("/vendor-dashboard");
-      // })
-      // );
+      console.log(data, "formData");
+      dispatch(filePreassignedUrlGenerate(fileData,(url)=>{
+        let formData = {
+          ...data,
+          skills: formattedSkills,
+          expertise: formattedExpertise,
+          profile_picture:url
+        };
+        dispatch(getAddNewDeveloper(formData, () => {
+          navigate("/vendor-dashboard");
+        })
+        );
+      }))
+      
     }
   };
 
+  console.log(expertiseFields,"expertiseFields")
   const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
 
   const handleAddMoreExp = async () => {
@@ -186,11 +204,15 @@ const RegisterDeveloper = () => {
       setExperienceFields([...experienceFields, newExperienceField]);
     }
   };
-  const handleDeleteFieldExp = (id) => {
-    const updatedExperienceFields = experienceFields.filter(
-      (field) => field.id !== id
-    );
-    setExperienceFields(updatedExperienceFields);
+  const handleDeleteFieldExp = (index,id) => {
+    const experiences = watch("experiences");
+    experiences.splice(index,1)
+    let expCop=[...experienceFields]
+    expCop.splice(index,1)
+    // const updatedExperienceFields = experienceFields.filter(
+    //   (field) => field.id !== id
+    // );
+    setExperienceFields(expCop);
   };
   const [educationFields, setEducationFields] = useState([
     {
@@ -230,12 +252,15 @@ const RegisterDeveloper = () => {
       setEducationFields([...educationFields, newEducationField]);
     }
   };
-  const handleDeleteField = (id) => {
-    console.log(id, "id-----");
-    const updatedEducationFields = educationFields.filter(
-      (field) => field.id !== id
-    );
-    setEducationFields(updatedEducationFields);
+  const handleDeleteField = (index,id) => {
+    const educations = watch("educations");
+    educations.splice(index,1)
+    let educationFieldsCpy=[...educationFields]
+    educationFieldsCpy.splice(index,1)
+    // const updatedEducationFields = educationFields.filter(
+    //   (field) => field.id !== id
+    // );
+    setEducationFields(educationFieldsCpy);
   };
 
   const handleAddMoreSocial = () => {
@@ -319,16 +344,7 @@ const RegisterDeveloper = () => {
     );
   };
 
-  const handleDelete = (id ,index) => {
-    console.log(index,"index")
-    let expertiseFieldsCopy=[...expertiseFields]
-    console.log(expertiseFieldsCopy,"expertiseFieldsCopy")
-    expertiseFieldsCopy.splice(index, 1)
-    // delete expertiseFieldsCopy[index]
-    setExpertiseFields(expertiseFieldsCopy)
-  
-    
-  };
+
 
   return (
     <>
@@ -454,25 +470,6 @@ const RegisterDeveloper = () => {
                   </Form.Group>
                 </Col>
 
-                {/* <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("address")} 
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="address_2"
-                      {...register("address", {
-                        required: {
-                          value: false,
-                          message: false,
-                        },
-                      })}
-                    />
-                    <p className="error-message">{errors.address?.message} </p>
-                  </Form.Group>
-                </Col> */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -597,7 +594,7 @@ const RegisterDeveloper = () => {
                     <Form.Label>{t("experienceRequired")}*</Form.Label>
                     <Form.Select
                       className="common-field"
-                      {...register("experience", {
+                      {...register("total_experience", {
                         required: {
                           value: true,
                           message: "Experienced is required",
@@ -610,12 +607,12 @@ const RegisterDeveloper = () => {
                       <option value="Less_than_one">
                         {t("lessThan1Year")}
                       </option>
-                      <option value="1">1 {t("year")}</option>
-                      <option value="2">2 {t("year")}</option>
-                      <option value="3">3 {t("year")}</option>
-                      <option value="4">4 {t("year")}</option>
-                      <option value="5 ">5 {t("year")}</option>
-                      <option value="6+">6 +{t("year")}</option>
+                      <option value="1 year">1 {t("year")}</option>
+                      <option value="2 years">2 {t("year")}</option>
+                      <option value="3 years">3 {t("year")}</option>
+                      <option value="4 years">4 {t("year")}</option>
+                      <option value="5 years">5 {t("year")}</option>
+                      <option value="6+ years ">6 +{t("year")}</option>
                     </Form.Select>
                   </Form.Group>
                   <p className="error-message">{errors.experience?.message}</p>
@@ -663,22 +660,6 @@ const RegisterDeveloper = () => {
                       })}
                       className="d-none"
                     />
-                    {/* <Controller
-                      name="profile_picture"
-                      control={control}
-                      rules={{ required: t("profilePictureValidation") }}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="file"
-                          className="d-none"
-                          onChange={(e) => {
-                            field.onChange(e);
-                            handleFileChange(e);
-                          }}
-                        />
-                      )}
-                    /> */}
 
                     <Form.Label
                       htmlFor="developer-image"
@@ -698,11 +679,6 @@ const RegisterDeveloper = () => {
                       </p>
                     )
                   )}
-                  {/* {errors?.profile_picture && (
-                    <p className="error-message">
-                      {errors?.profile_picture?.message}
-                    </p>
-                  )} */}
                   {selectedImage && (
                     <div>
                       <img
@@ -868,11 +844,11 @@ const RegisterDeveloper = () => {
                         </Form.Label>
                       </Form.Group>
                     </Col>
-                    {index !== 0 && (
+                    {experienceFields?.length>1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
                           variant="danger"
-                          onClick={() => handleDeleteFieldExp(id)}
+                          onClick={() => handleDeleteFieldExp(index,id)}
                         >
                           <FaTrash />
                         </Button>
@@ -913,15 +889,15 @@ const RegisterDeveloper = () => {
                             isClearable
                             options={skillCate}
                             onChange={(newValue) => {
-                              setExpertSkill([newValue]);
+                              // setExpertSkill([newValue]);x
                               setValue(`expertise.${index}.skill`, newValue);
                               clearErrors(`expertise.${index}.skill`);
                             }}
                             onCreateOption={(val) => {
                               onChangeSelect(val, "expertise");
                             }}
-                            value={expertSkill}
-                            name={expertSkill}
+                            // value={expertSkill}
+                            // name={expertSkill}
                           />
                         </Form.Group>
                       </Col>
@@ -958,7 +934,7 @@ const RegisterDeveloper = () => {
                       </p>
                     )}
                   </div>
-                  {watch("expertise")?.length >1  && (
+                  {expertiseFields?.length >1  && (
                     <Col md="12" className="d-flex justify-content-end">
                       <Button
                         variant="danger"
@@ -1152,11 +1128,11 @@ const RegisterDeveloper = () => {
                         {t("currentlyAttending")}
                       </Form.Label>
                     </Form.Group>
-                    {index !== 0 && (
+                    {educationFields?.length>1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
                           variant="danger"
-                          onClick={() => handleDeleteField(id)}
+                          onClick={() => handleDeleteField(index,id)}
                         >
                           <FaTrash />
                         </Button>
