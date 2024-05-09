@@ -136,10 +136,10 @@ const DeveloperList = () => {
                         </div>
 
                         <div className="flex-none">
-                            <Form.Control type="email" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
+                            <Form.Control type="text" className="shadow-none" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
                         </div>
                         <div>
-                            <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>{t("clear")}</Button>
+                            <Button variant="transparent" className="main-btn px-3 py-2 font-14" onClick={handleClear}>{t("clear")}</Button>
                         </div>
                     </div>
                 </Form>

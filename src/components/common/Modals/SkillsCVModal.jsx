@@ -11,16 +11,7 @@ import { useTranslation } from "react-i18next";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 
-const options = [
-  { value: "HTML", label: "HTML" },
-  { value: "CSS", label: "CSS" },
-  { value: "JavaScript", label: "JavaScript" },
-  { value: "jQuery", label: "jQuery" },
-  { value: "ReactJS", label: "ReactJS" },
-  { value: "VueJS", label: "VueJS" },
-  { value: "AngularJS", label: "AngularJS" },
-  { value: "Bootstrap", label: "Bootstrap" },
-];
+
 
 const createOption = (label) => ({
     label,
@@ -28,9 +19,13 @@ const createOption = (label) => ({
   });
 
 const SkillsModal = ({ show, handleClose, data, id, role }) => {
+  const { skillList } = useSelector((state) => state.clientData);
   const [selectedOption, setSelectedOption] = useState([]);
   const { smallLoader } = useSelector((state) => state.developerData);
-  const [skillCate, setSkillsCate] = useState(options)
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title };
+  });
+  const [skillCate, setSkillsCate] = useState(skillListMapped)
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -77,10 +72,7 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
     }
   };
 
-  const filteredOptions = options.filter(
-    (option) =>
-      !selectedOption.find((selected) => selected.value === option.value)
-  );
+
 
   const onChangeSelect = (val) => {
     setTimeout(() => {

@@ -75,10 +75,11 @@ const AddFaq = ({ show, showFaqModal,isEdit,smallLoader}) => {
         <Modal.Body>
           <Form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Form.Group className="mb-4">
-              <Form.Label className="d-block text-center">{isEdit? "Edit Faq" : "Add Faq"}</Form.Label>
+              <h3 className="popup-heading">{isEdit? "Edit Faq" : "Add Faq"}</h3>
               <div>
-                <Form.Label className="font-14">Add your question</Form.Label>
+                {/* <Form.Label className="font-14">Add your question</Form.Label> */}
                 <Form.Control
+                  className="common-field"
                   placeholder="Enter your Question"
                   name="question"
                   {...register("question", {
@@ -92,10 +93,8 @@ const AddFaq = ({ show, showFaqModal,isEdit,smallLoader}) => {
               </div>
 
               <div>
-                <Form.Label htmlFor="user_type" className="font-14">
-                  Role
-                </Form.Label>
                 <Form.Select
+                  className="common-field"
                   {...register("user_type", {
                     required: {
                     value:true,
@@ -114,8 +113,8 @@ const AddFaq = ({ show, showFaqModal,isEdit,smallLoader}) => {
               </div>
 
               <div>
-                <Form.Label className="font-14">Type</Form.Label>
                 <Form.Select
+                  className="common-field"
                   {...register("type", {
                     required: {
                       value: true,
@@ -132,18 +131,21 @@ const AddFaq = ({ show, showFaqModal,isEdit,smallLoader}) => {
                 </Form.Select>
               </div>
 
-              <div>
-                <Form.Label className="font-14">Status</Form.Label>
-                <Form.Check
-                  type="switch"
-                  id="custom-switch"
-                  {...register("status", {
-                    required: {
-                      value: false,
-                      message: "Status is required",
-                    },
-                  })}
-                />
+              <div className="d-flex gap-3 align-items-center my-3">
+                <Form.Label className="font-14 mb-0">Status</Form.Label>
+                <div className="form-check form-switch toggle-switch-wrapper">
+                  <input
+                    type="checkbox"
+                    className="form-check-input toggle-switch-custom shadow-none"
+                    id="custom-switch"
+                    {...register("status", {
+                      required: {
+                        value: false,
+                        message: "Status is required",
+                      },
+                    })}
+                  />
+                </div>
                 <p className="error-message">{errors.status?.message}</p>
               </div>
 

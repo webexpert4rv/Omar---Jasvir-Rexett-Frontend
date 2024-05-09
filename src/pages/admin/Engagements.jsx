@@ -46,7 +46,7 @@ const Engagements = () => {
 
                 <div className="d-flex gap-3">
                     <Form.Control type="text" className="form-field font-14 shadow-none" placeholder={t("enterSearchKeywords") }onChange={handleSearchChange}></Form.Control>
-                    <Button variant="transparent" className="main-btn px-3 search-btn" onClick={handleSearch}><IoSearch /></Button>
+                    <Button variant="transparent" className="main-btn search-btn" onClick={handleSearch}><IoSearch /></Button>
                 </div>
             </div>
             <div className="table-responsive">

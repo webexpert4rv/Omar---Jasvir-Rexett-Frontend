@@ -86,7 +86,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Select className="common-field" onChange={handleDeveloper}>
-                                    <option selected disabled>Select Client</option>
+                                    <option selected disabled>Select Developer</option>
                                      {
                                        devloperState?.map((item)=>{
                                         return( <>

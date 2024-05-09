@@ -147,9 +147,9 @@ const EditDeveloperProfile = () => {
             {t("updateYourProfile")}
           </h2>
           <OverlayTrigger placement="bottom" overlay={disableProfile}>
-            <div class="form-check form-switch">
+            <div class="form-check form-switch toggle-switch-wrapper">
               <input
-                class="form-check-input"
+                class="form-check-input toggle-switch-custom"
                 type="checkbox"
                 role="switch"
                 onClick={handleToggle}

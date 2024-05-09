@@ -1173,7 +1173,7 @@ ul {
 }
 
 .subheading-resume {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 600;
     color: var(--primary-color);
 }
@@ -1198,11 +1198,11 @@ ul {
     position: relative;
 }
 
-.add_more_section_education {
+/* .add_more_section_education {
     position: absolute;
     top: 1;
     right: 0
-}
+} */
 
 .mainheading-resume {
     font-size: 30px;
@@ -1211,7 +1211,7 @@ ul {
 }
 
 .resume-text {
-    font-size: 18px;
+    font-size: 15px;
     color: #121212;
 }
 
@@ -1220,7 +1220,7 @@ ul {
 }
 
 .exp-wrapper .exp-year {
-    font-size: 20px;
+    font-size: 18px;
     color: #121212;
     font-weight: 600;
 }
@@ -1236,11 +1236,19 @@ ul {
     position: relative;
 }
 
-.add_more_section {
+.add_more_section_detail {
     position: absolute;
     right: 19px;
     top: 12px;
     cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-color: #037563;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
 }
 
 .skills-pill li {
@@ -1699,7 +1707,8 @@ ul {
     border-radius: 40px;
 }
 
-.status-text.inprogress {
+.status-text.inprogress,
+.status-text.published {
     background-color: #00a1a9;
     color: #fff;
 }
@@ -2045,6 +2054,10 @@ ul {
     flex: none;
     transition: .3s ease;
 }
+.main-btn.search-btn
+{
+    padding: 7px 13px;
+}
 .edit-job-btn:hover
 {
     color: #037563 !important;
@@ -2166,7 +2179,7 @@ ul {
 }
 .job-card .developer-card.recomed-dev:before
 {
-    width: 154px;
+    width: 134px;
 }
 
 .primary-bg {
@@ -2546,9 +2559,9 @@ input[type="radio"]:checked {
     align-items: center;
     width: 25px;
     height: 25px;
-    color: #fff;
+    color: #5f5f5f;
     border-radius: 50%;
-    background-color: #656565;
+    background-color: #c5c5c5;
     font-size: 13px;
     margin-left: 5px;
 }
@@ -2944,6 +2957,24 @@ input[type="radio"]:checked {
     margin-bottom: 0px;
     font-size: 14px;
 }
+.application-text.status-text
+{
+    padding: 3px 13px;
+    line-height: 1.7;
+    text-transform: capitalize;
+    color: #fff;
+    border-radius: 30px;
+    background-color: #037563;
+}
+.application-text.status-text.active
+{
+    background-color: #037563;
+}
+.application-text.status-text.inactive,
+.application-text.status-text.deactive
+{
+    background-color: #cc0000;
+}
 
 .application-row {
     cursor: pointer;
@@ -2967,9 +2998,9 @@ input[type="radio"]:checked {
     display: inline-block;
     padding: 4px 12px;
     font-size: 12px;
-    color: #fff;
+    color: #000;
     border-radius: 30px;
-    background-color: #037563;
+    background-color: #f2f5f7;
     margin-right: 3px;
     margin-bottom: 3px;
 }
@@ -3180,6 +3211,10 @@ input[type="radio"]:checked {
 {
     background-color: #f8e9d3;
 }
+.faq-section.askquestion-active .faq-pill
+{
+    background-color: #ffe4e4;
+}
 .faq-pill .faq-link
 {
     color: #121212;
@@ -3244,22 +3279,35 @@ input[type="radio"]:checked {
 }
 .faq-accordion-body
 {
-    background-color: #D3F8D3;
+    background-color: #f2f5f7;
 }
-.faq-section.jobposting-active .faq-accordion-body
+/* .faq-section.jobposting-active .faq-accordion-body
 {
     background-color: #d3eef8;
-}
+} */
 .faq-section.jobposting-active .faq-banner
 {
     background-color: #d3eef8;
     /* color: #00719f; */
     color: #121212;
 }
-.faq-section.timereporting-active .faq-accordion-body
+/* .faq-section.askquestion-active .faq-accordion-body
+{
+    background: #ffe4e4;
+} */
+.faq-section.askquestion-active .faq-banner
+{
+    background-color: #ffe4e4;
+    color: #121212;
+}
+.faq-section.askquestion-active .faq-pill .faq-link.active
+{
+    background-color: #b70000;
+}
+/* .faq-section.timereporting-active .faq-accordion-body
 {
     background-color: #f8e9d3;
-}
+} */
 .faq-section.timereporting-active .faq-banner
 {
     background-color: #f8e9d3;
@@ -3355,6 +3403,66 @@ input[type="radio"]:checked {
 .language-select.lang-swd {
     background-image: url('../img/swedish.svg');
 }
+.question-head
+{
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+}
+.as-question-card
+{
+    max-width: 1200px;
+    margin: auto;
+    width: 100%;
+    border-radius: 30px;
+    background-color: #fff;
+    box-shadow: 0px 4px 16px rgba(96,97,112,0.08);
+    padding: 30px;
+}
+.contact-support
+{
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    text-decoration: none;
+    right: -43px;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+    background: #037563;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #fff;
+    transition: .4s ease;
+    border: 1px solid #037563;
+    /* animation: pulse-animation 2s infinite; */
+}
+.contact-support:hover
+{
+    background-color: #fff;
+    color: #037563;
+}
+.no-anwser
+{
+    display: inline-block;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 30px;
+    background-color: #fff3f3;
+    color: #b70000;
+    margin-left: 10px;
+}
+/* @keyframes pulse-animation {
+    0% {
+      box-shadow: 0 0 0 0px rgba(3, 117, 99, 0.2);
+    }
+    100% {
+      box-shadow: 0 0 0 20px rgba(3,117, 99, 0);
+    }
+  } */
 .select-radiolabel input
 {
     display: none;
@@ -3604,6 +3712,57 @@ input[type="radio"]:checked {
     align-items: center;
     gap: 10px;
 }
+.toggle-switch-wrapper .toggle-switch-custom
+{
+    width: 41px;
+    height: 21px;
+}
+.toggle-switch-custom:checked
+{
+    background-color: #037563;
+}
+.expertise-card
+{
+    margin-bottom: 9px;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    min-width: 117px;
+    margin-right: 10px;
+}
+.expertise-card img {
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: auto;
+}
+.expertise-card .expertise-exp
+{
+    width: auto;
+    padding: 3px 10px;
+    background: #f3f3f3;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    line-height: 1;
+    margin-bottom: 0;
+    font-size: 13px;
+}
+.expertise-card .expertise-skill
+{
+    font-size: 13px;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+.cv-header-wrapper
+{
+    padding: 13px;
+    background: #037563;
+    border-radius: 14px;
+    color: #fff;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -3732,7 +3891,7 @@ input[type="radio"]:checked {
     }
 
     .skills-listing li {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .single-job-title {
@@ -3781,12 +3940,8 @@ input[type="radio"]:checked {
         font-size: 14px;
     }
 
-    .subheading-resume {
-        font-size: 18px;
-    }
-
     .resume-text {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .exp-wrapper .exp-year {
@@ -3794,10 +3949,10 @@ input[type="radio"]:checked {
         margin-bottom: 7px;
     }
 
-    .add_more_section {
+    /* .add_more_section {
         top: 7px;
         right: 9px;
-    }
+    } */
 
     .form-check-label {
         font-size: 14px;
