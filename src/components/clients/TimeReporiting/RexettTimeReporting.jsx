@@ -36,7 +36,6 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
     const handlePeriodChange = (value) => {
         setSelectedView(value)
         const selectedPeriodValue = value;
-        console.log(selectedPeriodValue , "selectedPeriodValue")
         setSelectedPeriod(selectedPeriodValue);
         let filterData = {
             ...selectedFilter,
@@ -166,19 +165,6 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
                                             <option value="4">{t("week")} 4</option>
                                         </Form.Select>
                                     </div> : ""}
-                                    {/* <div>
-                                        <Form.Label>Select Day</Form.Label>
-                                        <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap mb-4">
-                                            <div className="d-inline-flex align-items-center gap-1">
-                                                <input className="slot-indicate offday" type="radio" value="off_day" />
-                                                <span>Off Day</span>
-                                            </div>
-                                            <div className="d-inline-flex align-items-center gap-1">
-                                                <input className="slot-indicate workday" type="radio" value="work_day"/>
-                                                <span>Work Day</span>
-                                            </div>
-                                        </div>
-                                    </div> */}
                                     <div className="d-flex gap-3">
                                         {/* <Form.Control type="text" placeholder="Search" className="search-field" onChange={handleSearchChange}></Form.Control> */}
                                         <RexettButton
@@ -194,8 +180,8 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
                                 </div>
                             </Form>
                             <div>
-                                {/* <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button> */}
-                                <Button variant="transparent" onClick={handleShowModal} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `${t("editTimeReport")}` : `${t("addBulkTime")}`}</Button>
+                                {role === "developer" ?<Button variant="transparent" onClick={()=>handleShowModal("Edit")} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button>:""}
+                                <Button variant="transparent" onClick={()=>handleShowModal("AddTime")} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `${t("editTimeReport")}` : `${t("addBulkTime")}`}</Button>
                             </div>
                         </div>
                         {/* <div className="d-flex justify-content-between align-items-center mt-3">

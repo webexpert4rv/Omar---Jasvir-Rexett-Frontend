@@ -46,6 +46,7 @@ export const developerDataSlice = createSlice({
         setAddTimeReports: (state, action) => {
             state.addTimeReports = action.payload
             state.smallLoader = false;
+            state.btnLoader=false
         },
         setSuccessProfileData: (state, action) => {
             state.developerProfileData = action.payload
@@ -400,7 +401,7 @@ export function developertimeReporting(payload,) {
 export function getPreviousTimeReports(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        dispatch(setBtnLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload, `developer/get-previous-report`))
             if (result.status === 200) {
