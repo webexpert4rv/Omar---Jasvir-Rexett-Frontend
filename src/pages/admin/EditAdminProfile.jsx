@@ -63,7 +63,7 @@ const EditAdminProfile = () => {
     return (
         <>
             <section className="card-box">
-                <h2 className="section-head mb-4">{t("updateYourProfile")}</h2>
+                <h2 className="section-head mb-4 pb-3">{t("updateYourProfile")}</h2>
                 <div>
                   {screenLoader?<ScreenLoader/>:  <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-4">

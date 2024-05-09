@@ -10,6 +10,7 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { main } from '@popperjs/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRevenue } from '../redux/slices/vendorDataSlice';
+import { IoMdCall } from "react-icons/io";
 const growthData = {
     labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
     datasets: [
@@ -119,10 +120,13 @@ const DashboardLayout = ({ children }) => {
         <>
             <div className="dashboard-layout">
                 <Sidebar sideBarActive={mainSidebar} closemainSidebar={handleMainSidebar} />
+                <div className=''></div>
                 <main className={sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper '}>
                     <Navigation sidebaractive={sidebarwrapper} handlemainSidebar={handleMainSidebar} handleSidebar={handleSidebar} />
                     {token && role == "client" ? children : <Navigate to="/" />}
-
+                    <Link to={'/contact-support'} className='contact-support'>
+                        Feedback
+                    </Link>
                     {!sidebarwrapper ? <div className={sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
                         <div className='text-end d-lg-none mb-4'>
                             {/* <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button> */}

@@ -812,7 +812,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                         </div>
                         <div className='remark-input-wrapper'>
                             <div>
-                                <Form.Control type='text' as="textarea" className='common-field font-14' />
+                                <Form.Control type='text' as="textarea" placeholder="Enter your remark" className='common-field font-14' />
                                 <Button className='main-btn font-14 mt-2 py-2 px-3'>Send</Button>
                             </div>
                         </div>
