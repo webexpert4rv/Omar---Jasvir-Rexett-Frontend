@@ -345,8 +345,6 @@ const RegisterDeveloper = () => {
       })
     );
   };
-
-
   return (
     <>
       <section className="register-developer card-box">
