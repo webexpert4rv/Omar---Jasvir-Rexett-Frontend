@@ -196,7 +196,9 @@ const Notification = ({ route, job, doc, timeReport }) => {
                       className="see-all-notify mt-4"
                     >
                       {" "}
-                      {t("seeAll")}
+
+
+                  {nottificationData?.length > 0 ? `${t("seeAll")}`:""}
                     </Dropdown.Item>
                 </Dropdown.Menu>
               )}

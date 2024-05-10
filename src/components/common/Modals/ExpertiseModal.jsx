@@ -114,16 +114,18 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     }
   };
   const handleDelete = (skill_id, index) => {
-    // const id=data?.map((val)=>val.id)
-    console.log(id, "id00000");
-    let payload = {
-      skill_id: skill_id,
-      user_id: id,
-    };
+    remove(index);
     if (skill_id) {
-      dispatch(deleteSkill(payload, skill_id));
-    } else {
-      remove(index);
+      dispatch(
+        deleteSkill(id, skill_id, () => {
+          if (role == "developer") {
+            dispatch(fetchDeveloperCv());
+          } else {
+            dispatch(getDeveloperDetails(id));
+          }
+          handleClose();
+        })
+      );
     }
   };
   // const skillListMapped = skillList.map((item) => {
@@ -278,7 +280,6 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
                         })}
                         isClearable
                         options={skillOptions}
-                        // name={selectedOption}
                         onChange={(newValue) => {
                           console.log(newValue, "newvalue");
                           setSelectedOption(newValue);

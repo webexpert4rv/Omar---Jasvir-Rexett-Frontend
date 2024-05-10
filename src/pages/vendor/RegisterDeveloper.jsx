@@ -187,8 +187,8 @@ const RegisterDeveloper = () => {
     const experiences = watch("experiences");
     // to check if any of the field inside experiences array is empty
     const index = experiences?.findIndex(
-      ({ job_title, company_name, description, start_date, end_date }) =>
-        !company_name || !job_title || !description || !start_date || !end_date
+      ({ job_title, company_name, description, start_date, end_date ,is_still_working }) =>
+        !company_name || !job_title || !description || !start_date || !end_date || is_still_working=== false
     );
     // if index is greater than -1 means there is field inside element that is empty
     if (index === -1) {

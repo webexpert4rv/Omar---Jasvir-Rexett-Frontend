@@ -19,10 +19,13 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
     const [selectedWeek, setSelectedWeek] = useState("")
     const [selectedYear, setSelectedYear] = useState("")
     const [selectedMonth, setSelectedMonth] = useState("")
-    const [selectedView, setSelectedView] = useState("")
     const [page, setPage] = useState(1)
     const { screenLoader, timeReportingPage } = useSelector(state => state.clientData)
 
+
+    console.log(selectedWeek,"selectedWeek")
+    console.log(selectedYear,"selectedYear")
+    console.log(selectedMonth,"selectedMonth")
     useEffect(() => {
         let filterData = {
             ...selectedFilter,
@@ -34,12 +37,11 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
     const { t } = useTranslation();
    
     const handlePeriodChange = (value) => {
-        setSelectedView(value)
-        const selectedPeriodValue = value;
-        setSelectedPeriod(selectedPeriodValue);
+        console.log(value,"value")
+        setSelectedPeriod(value);
         let filterData = {
             ...selectedFilter,
-            filter: selectedPeriodValue,
+            filter: selectedPeriod,
             page: page
         };
 
@@ -50,7 +52,7 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
         setSelectedMonth("")
         setSelectedYear("")
         setSelectedWeek("")
-        setSelectedFilter({ filter: selectedPeriodValue })
+        setSelectedFilter({ filter: selectedPeriod })
         dispatch(timeReporting(filterData, role));
     }
 
@@ -116,8 +118,8 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
                                 <div className="d-flex gap-3 flex-wrap align-items-end">
                                     <div className="flex-none">
                                         {/* <Form.Label className="common-label">Select View</Form.Label> */}
-                                        <Form.Select className=" time-filter-select shadow-none" value={selectedView} onChange={(e)=>handlePeriodChange(e.target.value)} >
-                                            <option selected disabled>{t("selectView")}</option>
+                                        <Form.Select className=" time-filter-select shadow-none" value={selectedPeriod} onChange={(e)=>handlePeriodChange(e.target.value)} >
+                                            <option value="">{t("selectView")}</option>
                                             <option value="weekly">{t("weekly")}</option>
                                             <option value="monthly">{t("monthly")}</option>
                                             <option value="yearly">{t("yearly")}</option>
@@ -125,7 +127,7 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
                                     </div>
                                     <div>
                                         {/* <Form.Label className="common-label">Select Year</Form.Label> */}
-                                        <Form.Select className="time-filter-select shadow-none" value={selectedYear} onChange={(e) => handleChange(e, "year")}>
+                                        <Form.Select className="time-filter-select shadow-none"  onChange={(e) => handleChange(e, "year")}>
                                             <option selected disabled>{t("selectYear")}</option>
                                             <option value="2024">2024</option>
                                             <option value="2023">2023</option>
@@ -139,7 +141,7 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
                                     </div>
                                     {selectedPeriod !== "yearly" ? <div>
                                         {/* <Form.Label className="common-label">Select Month</Form.Label> */}
-                                        <Form.Select className="time-filter-select shadow-none" value={selectedMonth} onChange={(e) => handleChange(e, "month")}>
+                                        <Form.Select className="time-filter-select shadow-none"  onChange={(e) => handleChange(e, "month")}>
                                             <option selected disabled >{t("selectMonth")}</option>
                                             <option value="1">{t("january")}</option>
                                             <option value="2">{t("feburary")}</option>
@@ -157,8 +159,8 @@ const   RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => 
                                     </div> : ""}
                                     {selectedPeriod !== "yearly" && selectedPeriod !== "monthly" ? <div>
                                         {/* <Form.Label className="common-label">Select Week</Form.Label> */}
-                                        <Form.Select className="time-filter-select shadow-none" value={selectedWeek} onChange={(e) => handleChange(e, "week")}>
-                                            <option selected disabled>{t("selectWeek")}</option>
+                                        <Form.Select className="time-filter-select shadow-none" onChange={(e) => handleChange(e, "week")}>
+                                            <option value="">{t("selectWeek")}</option>
                                             <option value="1">{t("week")} 1</option>
                                             <option value="2">{t("week")} 2</option>
                                             <option value="3">{t("week")} 3</option>
