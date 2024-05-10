@@ -513,7 +513,7 @@ const EditDeveloperProfile = () => {
               <div className="text-center">
                 <RexettButton
                   type="submit"
-                  text="Update Profile"
+                  text={t("updateProfile")}
                   className="main-btn px-5"
                   variant="transparent"
                   disabled={smallLoader}

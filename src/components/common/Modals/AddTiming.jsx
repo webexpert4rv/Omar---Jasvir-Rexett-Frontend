@@ -12,7 +12,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { current } from "@reduxjs/toolkit";
 import { timeReporting } from "../../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
-const AddTimingModal = ({ show, handleClose, role }) => {
+const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
   const dispatch = useDispatch();
   // const [selectDay, setDaySelection] = useState(null);
   const [disabledWorkDay, setDisabledWorkDay] = useState([]);
@@ -34,7 +34,7 @@ const AddTimingModal = ({ show, handleClose, role }) => {
     control,
     name: "addTime",
   });
-  const { allContracts, addTimeReports, smallLoader } = useSelector(
+  const { allContracts, addTimeReports, btnLoader } = useSelector(
     (state) => state.developerData
   );
 
@@ -163,22 +163,11 @@ const AddTimingModal = ({ show, handleClose, role }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <h3 className="popup-heading">{t("addTime")}</h3>
+        <h3 className="popup-heading">{ currentAction=="AddTime"  ?  t("addTime") :"Edit Time"}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="experience-container">
-            <div className="mb-3">
-              {!open ? <div className="text-end">
-                <Button
-                  variant="transparent"
-                  className="main-btn px-3"
-                  onClick={() => setOpen(!open)}
-                  aria-controls="example-collapse-text"
-                  aria-expanded={open}
-                >
-                  {t("updatePreviousTime")} ?
-                </Button>
-              </div> : ""}
-              <Collapse in={open}>
+           {currentAction!=="AddTime"? <div className="mb-3">
+              <Collapse in={true}>
                 <div className="mt-2">
                   <Row>
                     <Col md={4} className="mb-0">
@@ -256,7 +245,7 @@ const AddTimingModal = ({ show, handleClose, role }) => {
                   </Row>
                 </div>
               </Collapse>
-            </div>
+            </div>:""}
             <Row>
               <Col md={12} className="border-bottom mb-2 pb-4">
                 <Form.Group>
@@ -281,7 +270,7 @@ const AddTimingModal = ({ show, handleClose, role }) => {
                 {!selectedFilter?.contract_id?.length > 0 && details ? (
                   <p style={{ color: 'red' }}>{t("enterClientName")}</p>
                 ) : ""}
-                {open ? (
+                 
                   <div className="text-center mt-2">
                     <RexettButton
                       type="submit"
@@ -289,16 +278,15 @@ const AddTimingModal = ({ show, handleClose, role }) => {
                       className="main-btn px-4"
                       variant="transparent"
                       onClick={handlePrevTimeReporting}
-                      isLoading={smallLoader}
+                      isLoading={btnLoader}
                     />
 
                   </div>
-                ) : (
-                  ""
-                )}
+                
+                
               </Col>
             </Row>
-            {!open ? fields?.map((item, index) => {
+            {!open && currentAction!=="Edit" ? fields?.map((item, index) => {
               return (
                 <>
                   <div className="time-row">
@@ -418,7 +406,8 @@ const AddTimingModal = ({ show, handleClose, role }) => {
                 text="Submit"
                 className="main-btn py-2 px-4 font-14 fw-semibold"
                 variant="transparent"
-                isLoading={smallLoader}
+                disabled={btnLoader}
+                isLoading={btnLoader}
               /> : ""}
             </div>
           </div>
