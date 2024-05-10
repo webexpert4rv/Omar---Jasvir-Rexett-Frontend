@@ -2116,6 +2116,8 @@ ul {
 .profile-req .grid-text {
     margin-bottom: 6px;
     font-size: 14px;
+    font-weight: 600;
+    color: #037563;
 }
 
 .profile-req .grid-text:not(:last-child):after {
@@ -3113,6 +3115,7 @@ input[type="radio"]:checked {
     font-size: 19px;
     transform: rotate(0deg);
     transition: .4s ease;
+    margin-right: 6px;
 }
 
 .row-arrow.active {
@@ -3636,7 +3639,7 @@ input[type="radio"]:checked {
 }
 .time-detail-sidepanel
 {
-    width: 450px !important;
+    width: 470px !important;
 }
 .edited-pill
 {
