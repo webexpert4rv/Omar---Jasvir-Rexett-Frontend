@@ -211,7 +211,7 @@ const DeveloperList = () => {
                                                         <span className="d-flex align-items-center gap-3">
                                                             <img src={value?.profile_picture ? value?.profile_picture : userImg} />
                                                             <h3 className="user-name color-121212 mb-0">{value?.name}</h3>
-                                                            <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span>
+                                                            {/* <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span> */}
                                                         </span>
 
                                                     </td>

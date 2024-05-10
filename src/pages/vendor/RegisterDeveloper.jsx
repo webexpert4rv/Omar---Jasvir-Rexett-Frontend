@@ -187,8 +187,8 @@ const RegisterDeveloper = () => {
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
     const index = experiences?.findIndex(
-      ({ job_title, company_name, description, start_date, end_date }) =>
-        !company_name || !job_title || !description || !start_date || !end_date
+      ({ job_title, company_name, description, start_date, end_date ,is_still_working }) =>
+        !company_name || !job_title || !description || !start_date || !end_date || is_still_working=== false
     );
     console.log(index,"index")
     if (index === -1) {
@@ -345,7 +345,6 @@ const RegisterDeveloper = () => {
       })
     );
   };
-
 
 
   return (
