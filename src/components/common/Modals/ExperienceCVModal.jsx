@@ -106,9 +106,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
   };
 
   const handleAppend = async () => {
-    // Trigger validation for all fields
     const isValid = await trigger();
-    // Check if all fields are valid
     if (isValid) {
       append({
         company_name: "",

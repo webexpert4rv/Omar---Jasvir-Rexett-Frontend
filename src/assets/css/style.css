@@ -327,23 +327,23 @@ ul {
 }
 .delete-btn
 {
-    width: 29px;
-    height: 29px;
+    width: 37px;
+    height: 37px;
     font-size: 14px;
-    background-color: #c00;
-    color: #fff;
+    background-color: #FDE0E7;
+    color: #F1416C;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0px;
     border-radius: 50%;
-    border: 1px solid #c00 !important;
-    transition: .4s ease;
+    border: 1px solid #F1416C !important;
+    transition: .4s ease
 }
 .delete-btn:hover
 {
     background-color: transparent;
-    color: #c00;
+    color: #F1416C;
 }
 .pagination-item.active {
     font-weight: bold;
