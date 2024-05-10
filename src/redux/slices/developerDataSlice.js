@@ -315,11 +315,11 @@ export function getDegreeList(payload, callback) {
     };
 }
 
-export function deleteEducationCv(payload, callback) {
+export function deleteEducationCv(id,payload, callback) {
     return async (dispatch) => {
         //  dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`common/delete-education/${payload}`)
+            let result = await clientInstance.delete(`common/delete-education/${id}?developerId=${payload}`)
             if (result.status === 200) {
                 toast.success("Education is Deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())

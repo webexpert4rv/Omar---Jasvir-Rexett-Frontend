@@ -25,6 +25,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
         }
         return years;
     }
+    console.log(data,"data")
 
     // Example usage:
     const yearsArray = generateYears();
@@ -39,7 +40,8 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                     address: item.address,
                     start_year: item.start_year,
                     end_year: item.end_year,
-                    currently_attending: item.currently_attending
+                    currently_attending: item.currently_attending,
+                    developerId:item?.developer_id
                 });
                 setDisbaleYear(prevState => [...prevState, item.currently_attending]);
             });
@@ -82,15 +84,17 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
     };
 
 
-    const deleteDeveloperExperience = (id, index) => {
+    const deleteDeveloperExperience = (id,devId, index) => {
         remove(index)
         if (id) {
-            dispatch(deleteEducationCv(id, () => {
+            dispatch(deleteEducationCv(id,devId, () => {
                 if (role == "developer") {
                     dispatch(fetchDeveloperCv())
                 } else {
-                    dispatch(getDeveloperDetails(id))
+                    dispatch(getDeveloperDetails(devId))
                 }
+                handleClose()
+
             }))
         }
     }
@@ -284,7 +288,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                         {index !== 0 && (
                                             <div>
                                                 <OverlayTrigger placement="bottom" overlay={deletetooltip}>
-                                                    <Button variant="danger" onClick={() => deleteDeveloperExperience(item.new_id, index)}><FaTrashAlt /></Button>
+                                                    <Button variant="danger" onClick={() => deleteDeveloperExperience(item.new_id,item?.developerId, index)}><FaTrashAlt /></Button>
                                                 </OverlayTrigger>
                                             </div>
                                         )}
