@@ -224,7 +224,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                         <p className="exp-year">{item?.start_year} - {item?.end_year ? item?.end_year : "Present"} | {item?.Degree?.title}</p>
                                                         <ul className="exp-role">
                                                             <li className="resume-text">{item?.university_name}</li>
-                                                            <li className="resume-text">{item?.Degree?.description}</li>
+                                                            <li className="resume-text">{item?.Degree?.title}</li>
                                                         </ul>
                                                     </div>
                                                 </React.Fragment>
@@ -236,12 +236,12 @@ const SingleDeveloper = ({ data, role }) => {
                                         {role !== "client" && <div className="add_more_section_education pointer" onClick={handleShowExpertiseModal}><MdEditNote size={25} /></div>}
                                     </div>
                                     {data?.developer_skill_and_experience ? <>
-                                        {data?.developer_skill_and_experience?.map(({ experience, skill }, index) => {
+                                        {data?.developer_skill_and_experience?.map(({ experience, skill ,skill_icon }, index) => {
                                             return (
                                                 <React.Fragment key={index}>
                                                     <div className="exp-wrapper expertise-card">
                                                         {/* <p className="exp-year">{} - {} | {}</p> */}
-                                                        <img src="https://rexett-prod.s3.eu-north-1.amazonaws.com/skill_icons/Javascript.svg" />
+                                                        <img src={skill_icon?.icon_url} />
                                                         <p className="expertise-skill">{skill}</p>
                                                         <p className="expertise-exp">{experience}</p>
 
@@ -265,7 +265,7 @@ const SingleDeveloper = ({ data, role }) => {
                 {showSkillsModal ? <SkillsModal show={showSkillsModal} handleClose={handleCloseSkillsModal} data={data?.developer_skills?.skills} id={data?.id} role={role} /> : ""}
                 {showSocialMediaModal ? <SocialMediaModal show={showSocialMediaModal} handleClose={handleCloseSocialMediaModal} data={data?.social_links} id={data?.id} role={role} /> : ""}
                 {showExpertiseModal ? <ExpertiseModal data={data.developer_skill_and_experience} show={showExpertiseModal} handleClose={handleCloseExpertiseModal} id={data?.id} role={role} /> : ""}
-                <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} smallLoader={smallLoader} id={data?.id} role={role} />
+                <DeveloperDetails show={developerDetails} handleClose={handleClosDeveloperDetails} position={data?.developer_detail?.professional_title} name={data?.name} profile={data?.profile_picture} experience = {data?.developer_detail?.total_experience} smallLoader={smallLoader} id={data?.id} role={role} />
             </>}
         </>
     )

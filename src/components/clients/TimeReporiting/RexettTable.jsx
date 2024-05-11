@@ -12,11 +12,23 @@ import userImage from "../../../assets/img/user-img.jpg"
 import { FiCalendar } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa6";
 import moment from 'moment';
+import SingleTimeReporting from './SingleTimeReporting';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const [show, setShow] = useState(false);
+    const [currentDetails,setCurrentDetails]=useState(null)
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = (data,index) =>{ 
+        console.log(data,"dta")
+        let memoDetails=data?.timeReports[index]
+        let newData={
+            ...data,
+            timeReports:memoDetails
+
+        }
+        setCurrentDetails(newData)
+        setShow(true)
+    };
     
     const [remarkshow, setremarkShow] = useState(false);
     const handleremarkClose = () => setremarkShow(false);
@@ -79,20 +91,20 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                         if (reprt.report_date) {
                                                             return (
                                                                 <>
-                                                                    <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                    <td onClick={()=>handleShow(item,index)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
                                                                 </>
                                                             )
                                                         } else if (reprt.month) {
                                                             return (
                                                                 <>
-                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text mt-1'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                           <td onClick={()=>handleShow(item,index)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text mt-1'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
                                                         } else {
                                                             return (
                                                                 <>
-                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                           <td onClick={()=>handleShow(item,index)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
@@ -133,30 +145,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                 <Offcanvas.Title>Time Reporting</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                  { selectedPeriod == "weekly" && <div className='detail-view day-view'>
-                            <div className='client-info mb-3'>
-                                <h4 className='sidebar-heading'>Client Name</h4>
-                                <p className='client-name-heading'><img src={userImage}/> Pankaj Pundir</p>
-                            </div>
-                            <div className='client-info mb-3 d-flex gap-5'>
-                                <div className='mb-0'>
-                                    <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                </div>
-                                <div className='d-flex gap-4 justify-content-between'>
-                                    <div className='d-flex gap-3 align-items-center'>
-                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                        <p className='client-name-heading'>-</p>
-                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                    </div>
-                                </div>
-                            </div>
-                        <div class="weekly-detail">
-                            <div className='client-info'>
-                                <h4 className='sidebar-heading'>Memo</h4>
-                                <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                            </div>
-                        </div>
-                    </div>}
+                  { selectedPeriod == "weekly" && 
+                  <SingleTimeReporting currentDetails={currentDetails}/>
+                  }
                     
                 {  selectedPeriod == "monthly" &&  <div className='detail-view weekly-view'>
                         <div className='client-info mb-3'>

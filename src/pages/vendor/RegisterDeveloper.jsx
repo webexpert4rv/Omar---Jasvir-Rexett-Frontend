@@ -81,6 +81,7 @@ const RegisterDeveloper = () => {
 
   const [experienceFields, setExperienceFields] = useState([
     {
+      id:0,
       job_title: "",
       company_name: "",
       start_date: "",
@@ -119,7 +120,7 @@ const RegisterDeveloper = () => {
   if(index==-1){
     setExpertiseFields([
       ...expertiseFields,
-      {id:expertise.length+1,
+      {id:expertiseFields?.id+1,
         skill: "",
         experience: "",
       },
@@ -185,15 +186,14 @@ const RegisterDeveloper = () => {
 
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
-    // to check if any of the field inside experiences array is empty
     const index = experiences?.findIndex(
-      ({ job_title, company_name, description, start_date, end_date }) =>
-        !company_name || !job_title || !description || !start_date || !end_date
+      ({ job_title, company_name, description, start_date, end_date ,is_still_working }) =>
+        !company_name || !job_title || !description || !start_date || !end_date || is_still_working=== false
     );
-    // if index is greater than -1 means there is field inside element that is empty
+    console.log(index,"index")
     if (index === -1) {
       const newExperienceField = {
-        id: experienceFields.length + 1,
+        id: experienceFields.length+ 1,
         company_name: "",
         job_title: "",
         description: "",
@@ -204,15 +204,17 @@ const RegisterDeveloper = () => {
       setExperienceFields([...experienceFields, newExperienceField]);
     }
   };
-  const handleDeleteFieldExp = (index,id) => {
-    const experiences = watch("experiences");
-    experiences.splice(index,1)
-    let expCop=[...experienceFields]
-    expCop.splice(index,1)
-    // const updatedExperienceFields = experienceFields.filter(
-    //   (field) => field.id !== id
-    // );
-    setExperienceFields(expCop);
+  const handleDeleteFieldExp = (index, id) => {
+    const experiencesCopy = watch("experiences"); // Copy the experiences array
+    const expCop = [...experienceFields]; // Copy the experienceFields array
+    experiencesCopy.splice(index,1);
+   const updatedExpertFields = expCop.filter(
+      (field) => field.id !== id
+    );
+  
+    // Set the state with the updated arrays
+    setExperienceFields([...updatedExpertFields]);
+    console.log(experiencesCopy,"experiencesCopy")
   };
   const [educationFields, setEducationFields] = useState([
     {
@@ -343,9 +345,6 @@ const RegisterDeveloper = () => {
       })
     );
   };
-
-
-
   return (
     <>
       <section className="register-developer card-box">
