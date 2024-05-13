@@ -198,7 +198,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
                       {" "}
 
 
-                  {nottificationData?.length > 0 ? `${t("seeAll")}`:""}
+                  {t("seeAll")}
                     </Dropdown.Item>
                 </Dropdown.Menu>
               )}

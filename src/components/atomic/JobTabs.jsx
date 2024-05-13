@@ -2,7 +2,6 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
-import amazonImg from "../../assets/img/amazon.png";
 import NoDataFound from "./NoDataFound";
 import ScreenLoader from "./ScreenLoader";
 import { useTranslation } from "react-i18next";
@@ -18,8 +17,9 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
     const skillsArray = arr?.split(",");
     return skillsArray;
   };
+
+
   const currentStatusCssClass = (status) => {
-    console.log(status,"st")
     switch (status) {
       case "ended":
         return "endcontract";

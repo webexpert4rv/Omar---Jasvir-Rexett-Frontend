@@ -19,7 +19,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const [currentDetails,setCurrentDetails]=useState(null)
     const handleClose = () => setShow(false);
     const handleShow = (data,index) =>{ 
-        console.log(data,"dta")
         let memoDetails=data?.timeReports[index]
         let newData={
             ...data,
