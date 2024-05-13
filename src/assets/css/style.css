@@ -1751,7 +1751,7 @@ ul {
     display: inline-flex;
     padding: 5px;
     background: #e5e5e5;
-    border-radius: 10px;
+    border-radius: .5rem;
 }
 
 .notification-tabs li {
@@ -1760,14 +1760,15 @@ ul {
 
 .notification-tabs li .nav-link {
     min-width: 100px;
-    border-radius: 10px;
+    border-radius: calc(.5rem - 2px);
     padding: 5px 20px;
     border: none;
     color: #656565;
 }
 .notification-tabs li .nav-link.active {
-    background: var(--primary-color);
-    color: var(--white);
+    background: #fff;
+    color: #037563;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
 }
 
 .notification-wrapper {
@@ -3632,6 +3633,18 @@ input[type="radio"]:checked {
     color: #037563;
     font-size: 14px;
 }
+.weekly-tab-link .number
+{
+    font-size: 12px;
+    color: #037563;
+    background-color: #fff;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
 .weekly-tabs .weekly-tab-item .weekly-tab-link.active
 {
     background-color: #037563;
@@ -3765,6 +3778,10 @@ input[type="radio"]:checked {
     background: #037563;
     border-radius: 14px;
     color: #fff;
+}
+.invoice-details .table-ui-custom td
+{
+    background: #f7f7f7;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {

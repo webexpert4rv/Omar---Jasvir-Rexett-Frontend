@@ -99,7 +99,57 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                         </Col>
                         <Col md="12">
                             <Form.Group className="mb-4">
+                                <Form.Select className="common-field" onChange={handleDeveloper}>
+                                    <option selected disabled>Select Client</option>
+                                    <option>Amazon</option>
+                                    <option>Google</option>
+                                    <option>Volvo</option>
+                                    <option>BMW</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col md="6">
+                            <Form.Group className="mb-4">
+                                <Form.Select className="common-field" onChange={handleDeveloper}>
+                                    <option selected disabled>Select Month</option>
+                                    <option>January</option>
+                                    <option>Feburary</option>
+                                    <option>March</option>
+                                    <option>April</option>
+                                    <option>May</option>
+                                    <option>June</option>
+                                    <option>July</option>
+                                    <option>August</option>
+                                    <option>September</option>
+                                    <option>October</option>
+                                    <option>November</option>
+                                    <option>December</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col md="6">
+                            <Form.Group className="mb-4">
+                                <Form.Select className="common-field" onChange={handleDeveloper}>
+                                    <option selected disabled>Select Year</option>
+                                    <option>2024</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
+                                    <option>2021</option>
+                                    <option>2020</option>
+                                    <option>2019</option>
+                                    <option>2018</option>
+                                    <option>2017</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col md="12">
+                            <Form.Group className="mb-4">
                                 <Form.Control type="text" className="common-field" placeholder="Enter Total Hours" value={time?.time} name="name" onChange={handleChange} />
+                            </Form.Group>
+                        </Col>
+                        <Col md="12">
+                            <Form.Group className="mb-4">
+                                <Form.Control type="text" as="textarea" className="common-field" placeholder="Enter reason for edit time sheet" />
                             </Form.Group>
                         </Col>
                     </Row>
