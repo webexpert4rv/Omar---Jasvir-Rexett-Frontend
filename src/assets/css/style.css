@@ -1751,7 +1751,7 @@ ul {
     display: inline-flex;
     padding: 5px;
     background: #e5e5e5;
-    border-radius: .5rem;
+    border-radius: 10px;
 }
 
 .notification-tabs li {
@@ -1760,15 +1760,14 @@ ul {
 
 .notification-tabs li .nav-link {
     min-width: 100px;
-    border-radius: calc(.5rem - 2px);
+    border-radius: 10px;
     padding: 5px 20px;
     border: none;
     color: #656565;
 }
 .notification-tabs li .nav-link.active {
-    background: #fff;
-    color: #037563;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    background: var(--primary-color);
+    color: var(--white);
 }
 
 .notification-wrapper {
