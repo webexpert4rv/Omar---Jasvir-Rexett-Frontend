@@ -8,7 +8,7 @@ import { filePreassignedUrlGenerate, getDeveloperDetails, updateDeveloperCvDetai
 import { fetchDeveloperCv } from "../../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
 
-const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role }) => {
+const DeveloperDetails = ({ show, handleClose, name, position, profile ,experience, id,role }) => {
     const dispatch = useDispatch();
     const { smallLoader } = useSelector(state => state.clientData)
     const [file, setFile] = useState(null)
@@ -25,7 +25,8 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role
         setValue("name", name);
         setValue("professional_title", position);
         setValue("profile_picture", profile);
-    }, [name, position])
+        setValue("total_experience" , experience)
+    }, [name, position ,experience])
 
     const handleChange = (e) => {
         const file = e.target.files[0];
@@ -39,9 +40,7 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role
         }
     };
 
-    const handleExperience = () =>{
-
-    }
+   
 
     const onSubmit = (values) => {
         console.log(values , "values")
@@ -123,7 +122,14 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile , id,role
                         </p>
                         <div className="flex-none">
                                     <Form.Label className="common-label">{t("experience")}</Form.Label>
-                                    <Form.Select className="filter-select shadow-none"  onChange={(e) => handleExperience(e)}>
+                                    <Form.Select className="filter-select shadow-none"
+                                      {...register("total_experience", {
+                                        required: {
+                                            value: true,
+                                            message: "Please Enter Experience",
+                                        },
+                                    })}
+                                    >
                                         <option value="" > {t("selectExperience")} </option>
                                         <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
                                         <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>

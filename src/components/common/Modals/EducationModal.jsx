@@ -25,13 +25,15 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
         }
         return years;
     }
+    console.log(data,"data")
+    console.log(degreeList,"degreeeelist")
 
     // Example usage:
     const yearsArray = generateYears();
 
     useEffect(() => {
-        if (data) {
-            data.forEach((item) => {
+        if (data) { 
+            data.forEach((item , index) => {
                 append({
                     new_id: item.id,
                     university_name: item.university_name,
@@ -39,7 +41,8 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                     address: item.address,
                     start_year: item.start_year,
                     end_year: item.end_year,
-                    currently_attending: item.currently_attending
+                    currently_attending: item.currently_attending,
+                    developerId:item?.developer_id
                 });
                 setDisbaleYear(prevState => [...prevState, item.currently_attending]);
             });
@@ -48,6 +51,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
 
     useEffect(() => {
         dispatch(getDegreeList())
+        
     }, [])
 
     const handleCurrentlyWorkingChange = (e, index) => {
@@ -82,15 +86,18 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
     };
 
 
-    const deleteDeveloperExperience = (id, index) => {
+    const deleteDeveloperEducation = (id,devId, index) => {
+        console.log(id,"id------")
         remove(index)
         if (id) {
-            dispatch(deleteEducationCv(id, () => {
+            dispatch(deleteEducationCv(id,devId, () => {
                 if (role == "developer") {
                     dispatch(fetchDeveloperCv())
                 } else {
-                    dispatch(getDeveloperDetails(id))
+                    dispatch(getDeveloperDetails(devId))
                 }
+                handleClose()
+
             }))
         }
     }
@@ -152,6 +159,9 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
             Add Row
         </Tooltip>
     );
+    console.log(fields,"----educationfirld")
+   const next= degreeList.find(option => option.value === fields.degree_id)
+   console.log(next,"next")
     return (
         <Modal show={show} onHide={handleClose} centered scrollable className="custom-modal" animation size="lg">
             <Modal.Header closeButton className="border-0 pb-3">
@@ -185,7 +195,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                         <CreatableSelect
                                         isClearable
                                         onChange={(val) => setValue(`educations.${index}.degree_id`, val ? val.value : '')}
-                                        defaultValue={degreeList.find(option => option.value === item.degree_id)}
+                                        value={degreeList.find(option => option.value === item.degree_id)}
                                         onCreateOption={handleCreate}
                                         options={degreeList}
                                         />
@@ -284,7 +294,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                         {index !== 0 && (
                                             <div>
                                                 <OverlayTrigger placement="bottom" overlay={deletetooltip}>
-                                                    <Button variant="danger" onClick={() => deleteDeveloperExperience(item.new_id, index)}><FaTrashAlt /></Button>
+                                                    <Button variant="danger" onClick={() => deleteDeveloperEducation(item.new_id,item?.developerId, index)}><FaTrashAlt /></Button>
                                                 </OverlayTrigger>
                                             </div>
                                         )}
@@ -294,7 +304,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                         </div>
                     ))}
                     <div className="text-end mb-3">
-                        <OverlayTrigger placement="bottom" overlay={deletetooltip}>
+                        <OverlayTrigger placement="bottom" overlay={addtooltip}>
                             <Button className="main-btn
                         py-2 px-3" onClick={handleAddMore}>+</Button>
                         </OverlayTrigger>

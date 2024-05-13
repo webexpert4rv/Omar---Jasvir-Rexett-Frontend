@@ -106,6 +106,7 @@ export const clientDataSlice = createSlice({
         },
         setFaqs : (state ,action) =>{
             state.faqsData = action.payload
+            state.screenLoader = false;
         },
         setInvoiceList: (state,action) => {
             state.invoiceList = action.payload;
@@ -503,16 +504,31 @@ export function getDeveloperDetails(id) {
         }
     }
 }
-export function getDeleteAccount(payload) {
+// export function getDeleteAccount(payload) {
+//     return async (dispatch) => {
+//         dispatch(setSmallLoader())
+//         try {
+//             let result = await clientInstance.post("/common/delete-account",{...payload})
+            
+//         } catch (error) {
+//             const message = error.message || "Something went wrong";
+//             toast.error( "Delete account request already exists for this user", { position: "top-center" })
+//             dispatch(setFailClientData())
+//         }
+//     }
+// }
+export function getEnableDisableAccount(payload) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post("/common/delete-account",{...payload})
+            let result = await clientInstance.post(`/common/enable-disable-user`,{...payload})
             
         } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error( "Delete account request already exists for this user", { position: "top-center" })
-            dispatch(setFailClientData())
+            console.log(error)
+            // const message = error.message || "Something went wrong";
+            // toast.error( "Delete account request already exists for this user", { position: "top-center" })
+            // dispatch(setFailClientData())
         }
     }
 }
@@ -585,6 +601,7 @@ export function getFaq() {
 }
 
 export function getAddNewDeveloper(payload,callback) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {

@@ -136,10 +136,10 @@ const DeveloperList = () => {
                         </div>
 
                         <div className="flex-none">
-                            <Form.Control type="email" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
+                            <Form.Control type="text" className="shadow-none" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
                         </div>
                         <div>
-                            <Button variant="transparent" className="main-btn px-3 py-2 " onClick={handleClear}>{t("clear")}</Button>
+                            <Button variant="transparent" className="main-btn px-3 py-2 font-14" onClick={handleClear}>{t("clear")}</Button>
                         </div>
                     </div>
                 </Form>
@@ -211,7 +211,7 @@ const DeveloperList = () => {
                                                         <span className="d-flex align-items-center gap-3">
                                                             <img src={value?.profile_picture ? value?.profile_picture : userImg} />
                                                             <h3 className="user-name color-121212 mb-0">{value?.name}</h3>
-                                                            <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span>
+                                                            {/* <span className="check-icon list-dev-check position-static"><FaCircleCheck /></span> */}
                                                         </span>
 
                                                     </td>

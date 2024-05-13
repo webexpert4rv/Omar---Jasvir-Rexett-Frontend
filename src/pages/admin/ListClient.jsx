@@ -43,15 +43,8 @@ const ListClient = () => {
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">{t("overview")}</h2>
+                {/* <h2 className="section-head mb-4">{t("overview")}</h2>
                 <div className="overview-card-wrapper mb-5">
-                    {/* <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Fund</h4>
-                        <h3 className="overview-card-heading mb-0">Spent</h3>
-                    </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
-                </div> */}
                     <div className="overview-card">
                         <div>
                             <h4 className="overview-card-subhead">{t("income")}</h4>
@@ -59,10 +52,10 @@ const ListClient = () => {
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
-                </div>
+                </div> */}
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
-                        <h2 className="section-head-sub mb-0">{t("listOfClients")}</h2>
+                        <h2 className="section-head border-0 mb-0 pb-0">{t("listOfClients")}</h2>
                         {/* <h2 className="section-head-sub mb-0">List of clients who hire developers from Rexett</h2> */}
                         <Nav variant="pills" className="document-view-pill">
                             <Nav.Item className="document-view-item">

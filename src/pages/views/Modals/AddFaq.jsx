@@ -7,40 +7,58 @@ import { Modal, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm } from "react-hook-form";
 import { createFaq } from "../../../redux/slices/adminDataSlice";
-const AddFaq = ({ show, showFaqModal,isEdit}) => {
+import { getFaq } from "../../../redux/slices/clientDataSlice";
+const AddFaq = ({ show, showFaqModal,isEdit,smallLoader}) => {
   const [content, setContent] = useState("");
   const dispatch = useDispatch();
-  const { faqsData } = useSelector((state) => state.clientData);
   const { t } = useTranslation();
   const {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid, isSubmitting },
-  } = useForm({});
+  } = useForm({
+    defaultValues:{
+      question:"",
+      status:"",
+      type:""
+    }
+  });
 
   useEffect(()=>{
-    if(isEdit){
+  
+    if(isEdit!==null){
+      console.log("hell")
         setValue("question",isEdit?.question)
         setValue("status",isEdit?.status)
         setValue("type",isEdit?.type)
         setValue("user_type",isEdit?.user_type)
         setContent(isEdit?.answer)
+    }else{
+      setValue("question",'')
+      setContent('')
+      setValue("type",'')
+      setValue("status",'')
+      setValue("user_type",'')
     }
 
   },[isEdit])
 
-  console.log(isEdit,"isEdit")
 
-  const onSubmit = (value) => {
+
+  const onSubmit = async (value) => {
     let payload = {
+      id:isEdit? isEdit?.id:null,
       question: value?.question,
-      status: value?.status,
+      status: value?.status ?  value?.status :"not-active",
       type: value?.type,
       user_type:value?.user_type,
       answer: content,
     };
-    dispatch(createFaq(payload));
+    await dispatch(createFaq(payload));
+    dispatch(getFaq());
+    showFaqModal()
   };
 
   return (
@@ -57,10 +75,11 @@ const AddFaq = ({ show, showFaqModal,isEdit}) => {
         <Modal.Body>
           <Form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Form.Group className="mb-4">
-              <Form.Label className="d-block text-center">{isEdit? "Edit Faq" : "Add Faq"}</Form.Label>
+              <h3 className="popup-heading">{isEdit? "Edit Faq" : "Add Faq"}</h3>
               <div>
-                <Form.Label className="font-14">Add your question</Form.Label>
+                {/* <Form.Label className="font-14">Add your question</Form.Label> */}
                 <Form.Control
+                  className="common-field"
                   placeholder="Enter your Question"
                   name="question"
                   {...register("question", {
@@ -74,10 +93,8 @@ const AddFaq = ({ show, showFaqModal,isEdit}) => {
               </div>
 
               <div>
-                <Form.Label htmlFor="user_type" className="font-14">
-                  Role
-                </Form.Label>
                 <Form.Select
+                  className="common-field"
                   {...register("user_type", {
                     required: {
                     value:true,
@@ -96,8 +113,8 @@ const AddFaq = ({ show, showFaqModal,isEdit}) => {
               </div>
 
               <div>
-                <Form.Label className="font-14">Type</Form.Label>
                 <Form.Select
+                  className="common-field"
                   {...register("type", {
                     required: {
                       value: true,
@@ -114,18 +131,21 @@ const AddFaq = ({ show, showFaqModal,isEdit}) => {
                 </Form.Select>
               </div>
 
-              <div>
-                <Form.Label className="font-14">Status</Form.Label>
-                <Form.Check
-                  type="switch"
-                  id="custom-switch"
-                  {...register("status", {
-                    required: {
-                      value: false,
-                      message: "Status is required",
-                    },
-                  })}
-                />
+              <div className="d-flex gap-3 align-items-center my-3">
+                <Form.Label className="font-14 mb-0">Status</Form.Label>
+                <div className="form-check form-switch toggle-switch-wrapper">
+                  <input
+                    type="checkbox"
+                    className="form-check-input toggle-switch-custom shadow-none"
+                    id="custom-switch"
+                    {...register("status", {
+                      required: {
+                        value: false,
+                        message: "Status is required",
+                      },
+                    })}
+                  />
+                </div>
                 <p className="error-message">{errors.status?.message}</p>
               </div>
 
@@ -190,8 +210,8 @@ const AddFaq = ({ show, showFaqModal,isEdit}) => {
                 // onClick={callBackBtn}
                 className="main-btn px-4 me-3 font-14 fw-semibold"
                 variant="transparent"
-                // disabled={smallLoader}
-                // isLoading={smallLoader}
+                disabled={smallLoader}
+                isLoading={smallLoader}
               />
             </div>
           </Form>

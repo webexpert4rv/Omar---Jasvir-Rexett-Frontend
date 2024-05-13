@@ -129,7 +129,7 @@ const Applications = () => {
             placeholder={t("enterSearchKeywords")}
             onChange={handleSearchChange}
           />
-          <Button variant="transparent" className="main-btn px-3 search-btn">
+          <Button variant="transparent" className="main-btn search-btn">
             <IoSearch />
           </Button>
         </div>
@@ -360,7 +360,7 @@ const Applications = () => {
                                           <h3 className="application-heading">
                                             {t("status")}
                                           </h3>
-                                          <p className="application-text">
+                                          <p className="application-text status-text">
                                             {item?.status}
                                           </p>
                                         </div>
@@ -642,7 +642,7 @@ const Applications = () => {
                                           <h3 className="application-heading">
                                             {t("status")}
                                           </h3>
-                                          <p className="application-text">
+                                          <p className="application-text status-text">
                                             {item?.status}
                                           </p>
                                         </div>
@@ -861,7 +861,7 @@ const Applications = () => {
                                           <h3 className="application-heading">
                                             {t("status")}
                                           </h3>
-                                          <p className="application-text">
+                                          <p className="application-text status-text">
                                             {item?.status}
                                           </p>
                                         </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row, Table, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { adminEngagementList, getAccountDeletion, getDeletionByAdmin } from "../../redux/slices/adminDataSlice";
+import { adminEngagementList, getAccountDeletion, getAccountEnableDisable, getDeletionByAdmin } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { IoSearch } from "react-icons/io5";
@@ -11,6 +11,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
 import { getDeleteDeveloper } from "../../redux/slices/vendorDataSlice";
+import userImage from "../../assets/img/user-img.jpg"
 const AccountDeletionRequest = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
@@ -21,10 +22,10 @@ const AccountDeletionRequest = () => {
         id: ""
     })
     const { t } = useTranslation()
-
+    console.log(accountDeletionList, "accountDeletionList")
 
     useEffect(() => {
-        dispatch(getAccountDeletion())
+        dispatch(getAccountEnableDisable())
     }, [])
 
     // const handleSearch = () => {
@@ -56,8 +57,8 @@ const AccountDeletionRequest = () => {
         setShowModal(!showModal)
         setDetails(prevDetails => ({
             ...prevDetails,
-            role: newRole ,
-            id : newId
+            role: newRole,
+            id: newId
         }));
 
     }
@@ -69,6 +70,10 @@ const AccountDeletionRequest = () => {
     }
     const handleClose = () => {
         setShowModal(!showModal)
+    }
+
+    const handleToggle = () => {
+        setShowModal(true)
     }
     return (
         <>
@@ -83,33 +88,30 @@ const AccountDeletionRequest = () => {
             <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
                     <thead>
-                        <th>{t("")}</th>
                         <th>{t("userName")}</th>
                         <th>{t("userEmail")}</th>
                         <th>{t("role")}</th>
-                        <th>{t("reason")}</th>
                         <th>{t("action")}</th>
 
                     </thead>
                     <tbody>
                         {screenLoader ? <ScreenLoader /> : <>
-                            {accountDeletionList?.data?.length > 0 ?
-                                accountDeletionList?.data?.map((item, index) => {
+                            {accountDeletionList?.data?.users?.length > 0 ?
+                                accountDeletionList?.data?.users?.map((item, index) => {
                                     return (
                                         <>
                                             <tr>
                                                 <td>
-                                                    <div className="user-imgbx application-imgbx my-0 mx-auto">
-                                                        <img src={item?.user?.profile_picture} className="user-img" />
-                                                    </div>
-                                                </td>
-                                                <td>{item?.user?.name}</td>
-                                                <td>{item?.user?.email}</td>
-                                                <td>{item?.user?.role}</td>
-                                                <td>{item?.reason}</td>
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <div className="user-imgbx application-imgbx mx-0 mb-0"><img src={item?.user?.profile_picture ? item?.user?.profile_picture : userImage} className="user-img" /></div>{item?.name}
+                                                    </div></td>
+                                                <td>{item?.email}</td>
+                                                <td>{item?.role}</td>
                                                 <td>
                                                     <OverlayTrigger placement="bottom" overlay={deleteApplication}>
-                                                        <Button className="delete-btn app-del-btn" onClick={(e) => handleDelete(e, item?.user?.role, item?.user?.id)} ><MdOutlineDelete /></Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input class="form-check-input toggle-switch-custom" type="checkbox" role="switch" onClick={handleToggle} checked />
+                                                        </div>
                                                     </OverlayTrigger>
                                                 </td>
                                             </tr>

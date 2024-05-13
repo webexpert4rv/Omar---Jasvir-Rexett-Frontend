@@ -69,7 +69,10 @@ import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
 import Otp from './pages/Authentication/Otp';
 import Faq from './pages/views/Faq';
-
+import TimeReportingDetail from './components/clients/TimeReporiting/TimeReportingDetail';
+import DeveloperUpdatedCV from './pages/developer/DeveloperUpdatedCV';
+import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
+import ContactSupport from './pages/views/ContactSupport';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -105,6 +108,7 @@ function App() {
           <Route path="/time-reporting" exact element={<DashboardLayout><TimeReporting /></DashboardLayout>} />
           <Route path="/earned-back" exact element={<DashboardLayout><EarnedBack /></DashboardLayout>} />
           <Route path="/invoice" exact element={<DashboardLayout><Invoice /></DashboardLayout>} />
+          <Route path="/contact-support" exact element={<DashboardLayout><ContactSupport /></DashboardLayout>} />
           <Route path="/admin-dashboard" exact element={<AdminDashboardLayout><AdminDashboard /></AdminDashboardLayout>} />
           <Route path="/developer-list" exact element={<AdminDashboardLayout><DeveloperList /></AdminDashboardLayout>} />
           <Route path="/list-clients" exact element={<AdminDashboardLayout><ListClient /></AdminDashboardLayout>} />
@@ -114,10 +118,13 @@ function App() {
           <Route path="/revenue" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
           <Route path="/account-deletion-request" exact element={<AdminDashboardLayout><AccountDeletionRequest/></AdminDashboardLayout>} />
           <Route path="/admin-invoice" exact element={<AdminDashboardLayout><AdminInvoice /></AdminDashboardLayout>} />
+          <Route path="/profile-updation-request" exact element={<DeveloperDashboardLayout><ProfileUpdationRequest /></DeveloperDashboardLayout>} />
           <Route path="/developer-dashboard" exact element={<DeveloperDashboardLayout><DeveloperDashboard /></DeveloperDashboardLayout>} />
           <Route path="/edit-developer-profile" exact element={<DeveloperDashboardLayout><EditDeveloperProfile /></DeveloperDashboardLayout>} />
           <Route path="/developer-documents" exact element={<DeveloperDashboardLayout><DeveloperDocuments /></DeveloperDashboardLayout>} />
           <Route path="/developer-time-reporting" exact element={<DeveloperDashboardLayout><DeveloperTimeReporting /></DeveloperDashboardLayout>} />
+          <Route path="/time-reporting-detail" exact element={<DeveloperDashboardLayout><TimeReportingDetail /></DeveloperDashboardLayout>} />
+          <Route path="/developer-updated-cv" exact element={<DeveloperDashboardLayout><DeveloperUpdatedCV /></DeveloperDashboardLayout>} />
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />

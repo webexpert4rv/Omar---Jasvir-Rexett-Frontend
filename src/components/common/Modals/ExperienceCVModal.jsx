@@ -121,11 +121,19 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
     }
   };
 
-  const deleteDeveloperExperience = (id, index) => {
+  const deleteDeveloperExperience = ( devId,index) => {
+    console.log(id,"experienceid")
+    console.log(devId,"deviddddd-----------")
     remove(index)
     if (id) {
-      dispatch(deleteExperience(id, () => {
-        dispatch(fetchDeveloperCv())
+      dispatch(deleteExperience(id,devId, () => {
+          if (role == "developer") {
+              dispatch(fetchDeveloperCv())
+          } else {
+              dispatch(getDeveloperDetails(devId))
+          }
+          handleClose()
+
       }))
     }
   }
@@ -140,7 +148,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
     </Tooltip>
   );
 
-
+console.log(fields,"firldssssss")
   return (
     <Modal
       show={show}
@@ -275,7 +283,8 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
                     {index !== 0 && (
                       <div>
                         <OverlayTrigger placement="bottom" overlay={deletetooltip}>
-                          <Button variant="danger" className="font-14" onClick={() => deleteDeveloperExperience(item.newId, index)}><FaTrashAlt /></Button>
+                          <Button variant="danger" className="font-14" onClick={() => deleteDeveloperExperience(item.newId , index)
+                          }><FaTrashAlt /></Button>
                         </OverlayTrigger>
                       </div>
                     )}

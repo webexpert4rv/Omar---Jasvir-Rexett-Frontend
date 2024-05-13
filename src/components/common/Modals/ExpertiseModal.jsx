@@ -12,6 +12,7 @@ import Select from "react-select";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteSkill,
   fetchDeveloperCv,
   updateDeveloperSkills,
 } from "../../../redux/slices/developerDataSlice";
@@ -23,33 +24,7 @@ import {
 import CreatableSelect from "react-select/creatable";
 import { useFieldArray, useForm } from "react-hook-form";
 import { FaTrash } from "react-icons/fa6";
-
-const EXPERIENCE_OPTIONS = [
-  {
-    label: "1",
-    value: "1 year",
-  },
-  {
-    label: "2",
-    value: "2 years",
-  },
-  {
-    label: "3",
-    value: "3 years",
-  },
-  {
-    label: "4",
-    value: "4 years",
-  },
-  {
-    label: "5",
-    value: "5 years",
-  },
-  {
-    label: "above 5",
-    value: "above 5 years",
-  },
-];
+import { EXPERIENCE_OPTIONS } from "../../../helper/utlis";
 
 const createOption = (label) => ({
   label,
@@ -90,6 +65,8 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     },
   });
 
+  console.log(data, "data");
+
   const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "skills",
@@ -99,10 +76,14 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
   });
   useEffect(() => {
     setSkillOptions(skillListMapped);
-    if (data.length) {
+    if (data?.length) {
       let formattedData = [];
-      formattedData = data.map((curElem) => {
-        const skill = { label: curElem.skill, value: curElem.skill };
+      formattedData = data?.map((curElem) => {
+        const skill = {
+          label: curElem.skill,
+          value: curElem.skill,
+          id: curElem.id,
+        };
         return {
           ...curElem,
           skill: skill,
@@ -130,6 +111,21 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
         skill: "",
         experience: "",
       });
+    }
+  };
+  const handleDelete = (skill_id, index) => {
+    remove(index);
+    if (skill_id) {
+      dispatch(
+        deleteSkill(id, skill_id, () => {
+          if (role == "developer") {
+            dispatch(fetchDeveloperCv());
+          } else {
+            dispatch(getDeveloperDetails(id));
+          }
+          handleClose();
+        })
+      );
     }
   };
   // const skillListMapped = skillList.map((item) => {
@@ -220,7 +216,11 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     };
     dispatch(
       updateDeveloperSkills(payload, () => {
-        dispatch(fetchDeveloperCv());
+        if (role == "developer") {
+          dispatch(fetchDeveloperCv());
+        } else {
+          dispatch(getDeveloperDetails(id));
+        }
         handleClose();
       })
     );
@@ -249,7 +249,7 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     //   );
     // }
   };
-
+  console.log(fields, ";fields");
   return (
     <Modal
       show={show}
@@ -280,8 +280,8 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
                         })}
                         isClearable
                         options={skillOptions}
-                        // name={selectedOption}
                         onChange={(newValue) => {
+                          console.log(newValue, "newvalue");
                           setSelectedOption(newValue);
                           setValue(`skills.${index}.skill`, newValue);
                           clearErrors(`skills.${index}.skill`);
@@ -327,9 +327,12 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
                   </p>
                 )}
               </div>
-              {watch("skills").length !== 1 && (
+              {watch("skills")?.length !== 1 && (
                 <Col md="12" className="d-flex justify-content-end">
-                  <Button variant="danger" onClick={() => remove(index)}>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(field?.skill?.id, index)}
+                  >
                     <FaTrash />
                   </Button>
                 </Col>

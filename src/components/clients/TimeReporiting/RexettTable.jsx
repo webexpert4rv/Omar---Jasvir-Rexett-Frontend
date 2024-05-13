@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { Form, Button } from "react-bootstrap";
 import RexettButton from '../../atomic/RexettButton';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Nav from 'react-bootstrap/Nav';
@@ -16,6 +17,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    
+    const [remarkshow, setremarkShow] = useState(false);
+    const handleremarkClose = () => setremarkShow(false);
+    const handleremarkShow = () => setremarkShow(true);
     const { approvedLoader, smallLoader } = useSelector(state => state.developerData)
     const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
     const dispatch = useDispatch()
@@ -55,10 +60,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                     <span>Status</span>
                                 </th>
                                 <th className="time-table-head">
-                                    <span>Client's Remarks</span>
+                                    <span>Remarks</span>
                                 </th>
                                 {selectedPeriod == "weekly" ? <th className="time-table-head">
-                                    <span>Time Report Submit</span>
+                                    <span>Submit</span>
                                 </th> : ""}
                             </thead>
 
@@ -74,20 +79,20 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                         if (reprt.report_date) {
                                                             return (
                                                                 <>
-                                                                    <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='timing-text'>9:30 AM - 7:00 PM</p><p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                    <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
                                                                 </>
                                                             )
                                                         } else if (reprt.month) {
                                                             return (
                                                                 <>
-                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='timing-text'>9:30 AM - 7:00 PM</p><p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text mt-1'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
                                                         } else {
                                                             return (
                                                                 <>
-                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "-"}<p className='timing-text'>9:30 AM - 7:00 PM</p><p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                           <td onClick={handleShow} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
@@ -95,12 +100,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
 
                                                     })
                                                 }
-                                                <td className='time-table-data'>{item?.totalDuration}hr</td>
+                                                <td className='time-table-data'>{item?.totalDuration>0?item?.totalDuration.toFixed("2"):item?.totalDuration}hr</td>
                                                 {/* <td className="time-table-data white-nowrap">{item?.contractDetails?.employment_type}</td> */}
                                                 <td className="time-table-data">
                                                     <span className={item?.contractDetails?.status ? "status-progress" : "status-finished"}>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>
                                                 </td>
-                                                <td className="time-table-data"><p className='remarks-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></td>
+                                                <td className="time-table-data"><p onClick={handleremarkShow} className='remarks-text white-nowrap'>View Remarks</p></td>
                                                 {selectedPeriod == "weekly" ? <td className="time-table-data">
                                                     <RexettButton
                                                         type="submit"
@@ -762,6 +767,56 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                             </Tab.Content>
                         </Tab.Container>
                     </div>}
+                </Offcanvas.Body>
+            </Offcanvas>
+            <Offcanvas className="time-detail-sidepanel" show={remarkshow} onHide={handleremarkClose} placement='end'>
+                <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Remarks</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <div className='remarks-section'>
+                        <div className='remark-card-wrapper'>
+                            <div className='remark-card'>
+                                <div className='remark-user'>
+                                    <div className='d-flex justify-content-between align-items-center gap-2'>
+                                        <img src={userImage} /> Client Name
+                                    </div>
+                                    <p>25 Apr, 11:20 AM</p>
+                                </div>
+                                <div className='remark-content'>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
+                                </div>
+                            </div>
+                            <div className='remark-card'>
+                                <div className='remark-user'>
+                                    <div className='d-flex justify-content-between align-items-center gap-2'>
+                                        <img src={userImage} /> Admin
+                                    </div>
+                                    <p>25 Apr, 11:20 AM</p>
+                                </div>
+                                <div className='remark-content'>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
+                                </div>
+                            </div>
+                            <div className='remark-card'>
+                                <div className='remark-user'>
+                                    <div className='d-flex justify-content-between align-items-center gap-2'>
+                                        <img src={userImage} /> Me (Rohit Sharma)
+                                    </div>
+                                    <p>25 Apr, 11:20 AM</p>
+                                </div>
+                                <div className='remark-content'>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='remark-input-wrapper'>
+                            <div>
+                                <Form.Control type='text' as="textarea" placeholder="Enter your remark" className='common-field font-14' />
+                                <Button className='main-btn font-14 mt-2 py-2 px-3'>Send</Button>
+                            </div>
+                        </div>
+                    </div>
                 </Offcanvas.Body>
             </Offcanvas>
         </div>

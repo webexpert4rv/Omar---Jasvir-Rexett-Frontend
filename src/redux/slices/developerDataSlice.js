@@ -46,6 +46,7 @@ export const developerDataSlice = createSlice({
         setAddTimeReports: (state, action) => {
             state.addTimeReports = action.payload
             state.smallLoader = false;
+            state.btnLoader=false
         },
         setSuccessProfileData: (state, action) => {
             state.developerProfileData = action.payload
@@ -242,11 +243,11 @@ export function addDeveloperCvExperience(payload, callback) {
     };
 }
 
-export function deleteExperience(payload, callback) {
+export function deleteExperience(payload, id,callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`developer/delete-experience/${payload}`)
+            let result = await clientInstance.delete(`common/delete-experience/${id}?developerId=${payload}`)
             if (result.status === 200) {
                 toast.success("Experience is deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -259,6 +260,26 @@ export function deleteExperience(payload, callback) {
         }
     };
 }
+
+export function deleteSkill(payload,id , callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.delete(`common/delete-developer-skill/${id}?user_id=${payload}`)
+            if (result.status === 200) {
+                toast.success(" Expertise is deleted", { position: "top-center" })
+                dispatch(setSuccessActionData())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+
+
 
 
 export function addDeveloperCvEducation(payload, callback) {
@@ -314,11 +335,11 @@ export function getDegreeList(payload, callback) {
     };
 }
 
-export function deleteEducationCv(payload, callback) {
+export function deleteEducationCv(id,payload, callback) {
     return async (dispatch) => {
         //  dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.delete(`common/delete-education/${payload}`)
+            let result = await clientInstance.delete(`common/delete-education/${id}?developerId=${payload}`)
             if (result.status === 200) {
                 toast.success("Education is Deleted", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -338,13 +359,14 @@ export function updateDeveloperSkills(payload, callback,method ="post") {
         dispatch(setSmallLoader())
         try {
             let result;
-             if(method === "post")
-                {
-                     result = await clientInstance.post(`common/update-developer-skills`, {... payload })
-                }
-                else{
-                    result = await clientInstance.put(`common/update-developer-skills`, {... payload })
-                }
+            //  if(method === "post")
+            //     {
+            //          result = await clientInstance.post(`common/edit-developer-skills`, {... payload })
+                // }
+                // else{
+                //     result = await clientInstance.put(`common/edit-developer-skills`, {... payload })
+                // }
+                result = await clientInstance.post(`common/update-developer-skills`, {... payload })
             if (result.status === 200) {
                 toast.success("Skills updated successfully", { position: "top-center" })
                 dispatch(setSuccessActionData())
@@ -400,7 +422,7 @@ export function developertimeReporting(payload,) {
 export function getPreviousTimeReports(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        dispatch(setBtnLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload, `developer/get-previous-report`))
             if (result.status === 200) {

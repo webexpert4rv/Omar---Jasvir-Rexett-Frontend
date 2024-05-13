@@ -220,6 +220,7 @@
         "enterNewPassword" : "Enter New Password",
         "enterVendorName" : "Enter Vendor Name",
         "enterEmail" : "Enter Email",
+        "engagement":"Engagement",
         "enterPassword" : "Enter Password",
         "enterCountryName" : "Enter Country Name",
         "enterCompanyName" : "Enter Company Name",
@@ -283,7 +284,7 @@
         "userEmail" : "User Email",
         "role" : "Role",
         "reason" : "Reason" ,
-        "accountDeletionList" : "Account Deletion List",
+        "accountDeletionList" : "Manage Accounts List",
         "uploadImage" : "Upload Image, Image must be jpg or png",
         "addTime" : "Add Time",
         "updatePreviousTime" : "Update Previous Time",
@@ -302,7 +303,7 @@
         "notification" : "Notification",
         "aboutSection" : "About Section",
         "charactersRemaining" : "Characters Remaining",
-        "accountDeletionRequest" : "Account Deletion Request",
+        "accountDeletionRequest" : "Manage Accounts",
         "new" :"New",
         "profilePicture" : "Profile Picture",
         "general" : "General",
@@ -342,8 +343,11 @@
         "date" : "Date",
         "status" : "Status",
         "required_message" :"This field is required",
-        "enterSkill" :"Enter Skill"
-        
+        "enterSkill" :"Enter Skill",
+        "skillsRequired" : "Skills Required",
+        "optionalSkills" : "Good to have skills",
+        "viewJob" : "View Job" ,
+        "endTimeReport":"End Time Report"        
 
     }
 }
