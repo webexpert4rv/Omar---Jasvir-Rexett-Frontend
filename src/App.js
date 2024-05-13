@@ -69,7 +69,7 @@ import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
 import Otp from './pages/Authentication/Otp';
 import Faq from './pages/views/Faq';
-import TimeReportingDetail from './components/clients/TimeReporiting/TimeReportingDetail';
+import TimeReportingDetail from './pages/admin/SingleTimeReporting';
 import DeveloperUpdatedCV from './pages/developer/DeveloperUpdatedCV';
 import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
 import ContactSupport from './pages/views/ContactSupport';
@@ -123,7 +123,6 @@ function App() {
           <Route path="/edit-developer-profile" exact element={<DeveloperDashboardLayout><EditDeveloperProfile /></DeveloperDashboardLayout>} />
           <Route path="/developer-documents" exact element={<DeveloperDashboardLayout><DeveloperDocuments /></DeveloperDashboardLayout>} />
           <Route path="/developer-time-reporting" exact element={<DeveloperDashboardLayout><DeveloperTimeReporting /></DeveloperDashboardLayout>} />
-          <Route path="/time-reporting-detail" exact element={<DeveloperDashboardLayout><TimeReportingDetail /></DeveloperDashboardLayout>} />
           <Route path="/developer-updated-cv" exact element={<DeveloperDashboardLayout><DeveloperUpdatedCV /></DeveloperDashboardLayout>} />
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
@@ -135,6 +134,7 @@ function App() {
           <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper/></DashboardLayout>} />
           <Route path="/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
           <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
+          <Route path="/time-reporting-detail" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
           <Route path="/vendor-single-developer/:id" exact element={<VendorDashboardLayout><VendorSingleDeveloper /></VendorDashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />

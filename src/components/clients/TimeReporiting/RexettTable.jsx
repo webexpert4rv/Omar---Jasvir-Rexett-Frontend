@@ -166,10 +166,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                 <span className="status-progress">Progress</span>
                             </div>
                         </div>
-                        <div className='client-info mb-3'>
-                            <h4 className='sidebar-heading'>Your Remark</h4>
-                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                        </div>
                         <div className='weekly-detail mb-3 p-3'>
                             <div>
                                 <div className='client-info mb-3 gap-5'>
@@ -408,14 +404,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                        <div className='client-info'>
-                                            <h4 className='sidebar-heading'>Client's Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
                                     </div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="week-second">
@@ -519,10 +507,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                     <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
                                         </div>
                                         <div className='client-info'>
                                             <h4 className='sidebar-heading'>Client's Remark</h4>
@@ -632,10 +616,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
                                         <div className='client-info'>
                                             <h4 className='sidebar-heading'>Client's Remark</h4>
                                             <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
@@ -743,10 +723,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                     <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
                                         </div>
                                         <div className='client-info'>
                                             <h4 className='sidebar-heading'>Client's Remark</h4>
