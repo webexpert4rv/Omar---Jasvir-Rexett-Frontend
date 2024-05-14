@@ -72,9 +72,7 @@ export const developerDataSlice = createSlice({
             state.btnLoader = false
             state.screenLoader = false;
         },
-        setActionSuccessFully: (state, action) => {
-            state.smallLoader = false;
-        },
+
         setDeveloperDashboard: (state, action) => {
             state.developerDashboard = action.payload;
             state.screenLoader = false;
@@ -151,7 +149,7 @@ export function getDeveloperProfileDetails(payload, callback) {
         }
     };
 }
-export function approvedClient(payload, role) {
+export function approvedClient(payload, role,callback) {
     return async (dispatch) => {
         dispatch(setApprovedLoader())
         let result;
@@ -165,6 +163,7 @@ export function approvedClient(payload, role) {
                 dispatch(setActionSuccessFully())
                 toast.success("Time reports approved successfully", { position: "top-center" })
             }
+            return callback()
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
