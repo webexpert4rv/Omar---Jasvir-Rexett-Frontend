@@ -9,6 +9,7 @@ import { BsClockFill } from "react-icons/bs";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
+import { FaFileInvoice } from "react-icons/fa6";
 
 const AdminSidebar = ({sideBarActive}) => {
     const  { t } = useTranslation()
@@ -37,6 +38,9 @@ const AdminSidebar = ({sideBarActive}) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/developer-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/developer-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
                             </li>
                         </ul>
                     </div>

@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import { Form, Button, Row, Col, Table, Tooltip, OverlayTrigger, Collapse, Offcanvas } from "react-bootstrap";
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
@@ -12,6 +12,7 @@ import companyLogo from "../../assets/img/amazon.png"
 import associateLogo from "../../assets/img/aviox-logo.png"
 import { HiDownload } from "react-icons/hi";
 import InvoicePaidModal from "./Modals/InvoicePaid";
+import { FaRegEye } from "react-icons/fa";
 const TimeReportingDetail = () => {
     const [open, setOpen] = useState(false);
     const [remarkshow, setremarkShow] = useState(false);
@@ -19,10 +20,10 @@ const TimeReportingDetail = () => {
     const handleremarkShow = () => setremarkShow(true);
     const [openSecond, setOpenSecond] = useState(false);
     const [showInvoicePaidModal, setShowInvoicePaidModal] = useState(false);
-    const handleInvoicePaid = () =>{
+    const handleInvoicePaid = () => {
         setShowInvoicePaidModal(true);
     }
-    const handleCloseInvoicePaid = () =>{
+    const handleCloseInvoicePaid = () => {
         setShowInvoicePaidModal(false);
     }
     const companyname = (
@@ -34,6 +35,11 @@ const TimeReportingDetail = () => {
     const downloadinvoice = (
         <Tooltip id="tooltip">
             Download Invoice
+        </Tooltip>
+    );
+    const viewtimesheet = (
+        <Tooltip id="tooltip">
+            View Timesheet
         </Tooltip>
     );
     return (
@@ -204,7 +210,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -221,7 +226,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -238,7 +242,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -255,7 +258,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -272,7 +274,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -289,7 +290,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -306,7 +306,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -333,7 +332,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -350,7 +348,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -367,7 +364,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -384,7 +380,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -401,7 +396,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -418,7 +412,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                             <div className="developer-card">
@@ -435,7 +428,6 @@ const TimeReportingDetail = () => {
                                                             <a href=""><FaLinkedinIn /></a>
                                                         </li>
                                                     </ul>
-                                                    <p className="remarks-text mt-2">View Timesheet</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -533,36 +525,38 @@ const TimeReportingDetail = () => {
                                                 <div className="table-responsive">
                                                     <table className="table time-table table-bordered table-ui-custom">
                                                         <thead>
-                                                            <th className="time-table-head text-start">
-                                                                Developer Name
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Project
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Total Hours
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Invoice Month
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Associated with
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Time Reporting
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Remarks
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Invoice Status
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Project Status
-                                                            </th>
-                                                            <th className="time-table-head text-start">
-                                                                Action
-                                                            </th>
+                                                            <tr>
+                                                                <th className="time-table-head text-start">
+                                                                    Developer Name
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Project
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Total Hours
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Invoice Month
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Associated with
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Timesheet
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Remarks
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Invoice Status
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Project Status
+                                                                </th>
+                                                                <th className="time-table-head text-start">
+                                                                    Action
+                                                                </th>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
@@ -577,10 +571,17 @@ const TimeReportingDetail = () => {
                                                                 <td className="time-table-data text-start white-nowrap">Figma to UI</td>
                                                                 <td className="time-table-data text-start">140 hrs</td>
                                                                 <td className="time-table-data text-start">Jan 2024</td>
-                                                                <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                                                <td className="time-table-data text-start"><span className="status-finished white-nowrap">Approved</span></td>
+                                                                <td className="time-table-data"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
                                                                 <td className="time-table-data text-start">
-                                                                <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
+                                                                    <div className="d-flex gap-2 align-items-center justify-content-between">
+                                                                        <span className="status-finished white-nowrap">Approved</span>
+                                                                        <OverlayTrigger placement="bottom" overlay={viewtimesheet}>
+                                                                            <Button variant="transparent" className="main-btn view-time-btn"><FaRegEye /></Button>
+                                                                        </OverlayTrigger>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="time-table-data text-start">
+                                                                    <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Unpaid</span></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Progress</span></td>
                                                                 <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14 white-nowrap" onClick={handleInvoicePaid}>Invoice Paid</Button></td>
@@ -597,10 +598,17 @@ const TimeReportingDetail = () => {
                                                                 <td className="time-table-data text-start white-nowrap">Figma to UI</td>
                                                                 <td className="time-table-data text-start">140 hrs</td>
                                                                 <td className="time-table-data text-start">Jan 2024</td>
-                                                                <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                                                <td className="time-table-data text-start"><span className="status-progress white-nowrap">Under Review</span></td>
+                                                                <td className="time-table-data"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
                                                                 <td className="time-table-data text-start">
-                                                                <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
+                                                                    <div className="d-flex gap-2 align-items-center justify-content-between">
+                                                                        <span className="status-progress white-nowrap">Under Review</span>
+                                                                        <OverlayTrigger placement="bottom" overlay={viewtimesheet}>
+                                                                            <Button variant="transparent" className="main-btn view-time-btn"><FaRegEye /></Button>
+                                                                        </OverlayTrigger>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="time-table-data text-start">
+                                                                    <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Unpaid</span></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Progress</span></td>
                                                                 <td className="time-table-data text-start white-nowrap"><Button className="main-btn px-3 py-1 font-14" disabled>Paid</Button></td>
@@ -617,10 +625,17 @@ const TimeReportingDetail = () => {
                                                                 <td className="time-table-data text-start">Figma to UI</td>
                                                                 <td className="time-table-data text-start">140 hrs</td>
                                                                 <td className="time-table-data text-start">Jan 2024</td>
-                                                                <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                                                <td className="time-table-data text-start"><span className="status-finished white-nowrap">Approved</span></td>
+                                                                <td className="time-table-data"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
                                                                 <td className="time-table-data text-start">
-                                                                <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
+                                                                    <div className="d-flex gap-2 align-items-center justify-content-between">
+                                                                        <span className="status-finished white-nowrap">Approved</span>
+                                                                        <OverlayTrigger placement="bottom" overlay={viewtimesheet}>
+                                                                            <Button variant="transparent" className="main-btn view-time-btn"><FaRegEye /></Button>
+                                                                        </OverlayTrigger>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="time-table-data text-start">
+                                                                    <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Unpaid</span></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Progress</span></td>
                                                                 <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14 white-nowrap" onClick={handleInvoicePaid}>Invoice Paid</Button></td>
@@ -637,10 +652,17 @@ const TimeReportingDetail = () => {
                                                                 <td className="time-table-data text-start">Figma to UI</td>
                                                                 <td className="time-table-data text-start">140 hrs</td>
                                                                 <td className="time-table-data text-start">Jan 2024</td>
-                                                                <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                                                <td className="time-table-data text-start"><span className="status-finished white-nowrap">Approved</span></td>
+                                                                <td className="time-table-data"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
                                                                 <td className="time-table-data text-start">
-                                                                <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
+                                                                    <div className="d-flex gap-2 align-items-center justify-content-between">
+                                                                        <span className="status-finished white-nowrap">Approved</span>
+                                                                        <OverlayTrigger placement="bottom" overlay={viewtimesheet}>
+                                                                            <Button variant="transparent" className="main-btn view-time-btn"><FaRegEye /></Button>
+                                                                        </OverlayTrigger>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="time-table-data text-start">
+                                                                    <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
                                                                 <td className="time-table-data text-start"><span className="status-finished white-nowrap">Paid</span></td>
                                                                 <td className="time-table-data text-start"><span className="status-finished white-nowrap">Completed</span></td>
                                                                 <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14 white-nowrap" disabled>Paid</Button></td>
@@ -659,17 +681,23 @@ const TimeReportingDetail = () => {
                                                                 <td className="time-table-data text-start">Jan 2024</td>
                                                                 <td className="time-table-data text-start">
                                                                     <OverlayTrigger placement="bottom" overlay={companyname}>
-                                                                        <div className="white-nowrap text-overflow">
-                                                                            <div className="user-imgbx d-inline-block me-2 application-imgbx mx-0 mb-0">
+                                                                        <div className="text-center">
+                                                                            <div className="user-imgbx d-inline-block associated-logo application-imgbx mx-0 mb-0">
                                                                                 <img src={associateLogo} className="user-img" />
                                                                             </div>
-                                                                            Aviox Technologies Pvt Ltd.
                                                                         </div>
                                                                     </OverlayTrigger>
                                                                 </td>
-                                                                <td className="time-table-data text-start"><span className="status-finished white-nowrap">Approved</span></td>
                                                                 <td className="time-table-data text-start">
-                                                                <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
+                                                                    <div className="d-flex gap-2 align-items-center justify-content-between">
+                                                                        <span className="status-finished white-nowrap">Approved</span>
+                                                                        <OverlayTrigger placement="bottom" overlay={viewtimesheet}>
+                                                                            <Button variant="transparent" className="main-btn view-time-btn"><FaRegEye /></Button>
+                                                                        </OverlayTrigger>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="time-table-data text-start">
+                                                                    <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
                                                                 <td className="time-table-data text-start"><span className="status-finished white-nowrap">Paid</span></td>
                                                                 <td className="time-table-data text-start"><span className="status-finished white-nowrap">Completed</span></td>
                                                                 <td className="time-table-data text-start white-nowrap"><Button className="main-btn px-3 py-1 font-14" disabled>Paid</Button></td>
@@ -688,17 +716,23 @@ const TimeReportingDetail = () => {
                                                                 <td className="time-table-data text-start">Jan 2024</td>
                                                                 <td className="time-table-data text-start">
                                                                     <OverlayTrigger placement="bottom" overlay={companyname}>
-                                                                        <div className="white-nowrap text-overflow">
-                                                                            <div className="user-imgbx d-inline-block me-2 application-imgbx mx-0 mb-0">
+                                                                        <div className="text-center">
+                                                                            <div className="user-imgbx d-inline-block application-imgbx associated-logo mx-0 mb-0">
                                                                                 <img src={associateLogo} className="user-img" />
                                                                             </div>
-                                                                            Aviox Technologies Pvt Ltd.
                                                                         </div>
                                                                     </OverlayTrigger>
                                                                 </td>
-                                                                <td className="time-table-data text-start"><span className="status-progress white-nowrap">Under Review</span></td>
                                                                 <td className="time-table-data text-start">
-                                                                <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
+                                                                    <div className="d-flex gap-2 align-items-center justify-content-between">
+                                                                        <span className="status-progress white-nowrap">Under Review</span>
+                                                                        <OverlayTrigger placement="bottom" overlay={viewtimesheet}>
+                                                                            <Button variant="transparent" className="main-btn view-time-btn"><FaRegEye /></Button>
+                                                                        </OverlayTrigger>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="time-table-data text-start">
+                                                                    <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Unpaid</span></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Progress</span></td>
                                                                 <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14 white-nowrap">Raise Invoice</Button></td>
@@ -820,7 +854,7 @@ const TimeReportingDetail = () => {
                                                                 </td>
                                                                 <td className="time-table-data text-start">140 hrs</td>
                                                                 <td className="time-table-data text-start">Jan 2024</td>
-                                                                <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
+                                                                <td className="time-table-data"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Unpaid</span></td>
                                                                 <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14">Raise Invoice</Button></td>
                                                             </tr>
@@ -836,7 +870,7 @@ const TimeReportingDetail = () => {
                                                                 </td>
                                                                 <td className="time-table-data text-start">140 hrs</td>
                                                                 <td className="time-table-data text-start">Jan 2024</td>
-                                                                <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
+                                                                <td className="time-table-data"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Unpaid</span></td>
                                                                 <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14" disabled>Invoice Raised</Button></td>
                                                             </tr>
@@ -854,11 +888,10 @@ const TimeReportingDetail = () => {
                                                                 <td className="time-table-data text-start">Jan 2024</td>
                                                                 <td className="time-table-data text-start">
                                                                     <OverlayTrigger placement="bottom" overlay={companyname}>
-                                                                        <div className="white-nowrap text-overflow">
-                                                                            <div className="user-imgbx d-inline-block me-2 application-imgbx mx-0 mb-0">
+                                                                        <div className="text-center">
+                                                                            <div className="user-imgbx d-inline-block application-imgbx associated-logo mx-0 mb-0">
                                                                                 <img src={associateLogo} className="user-img" />
                                                                             </div>
-                                                                            Aviox Technologies Pvt Ltd.
                                                                         </div>
                                                                     </OverlayTrigger>
                                                                 </td>
@@ -884,7 +917,7 @@ const TimeReportingDetail = () => {
             </section>
             <Offcanvas className="time-detail-sidepanel" show={remarkshow} onHide={handleremarkClose} placement='end'>
                 <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Remarks</Offcanvas.Title>
+                    <Offcanvas.Title>Remarks</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <div className='remarks-section'>
@@ -933,6 +966,11 @@ const TimeReportingDetail = () => {
                 </Offcanvas.Body>
             </Offcanvas>
             <InvoicePaidModal show={showInvoicePaidModal} handleClose={handleCloseInvoicePaid} />
+            
+            <div className="helper-text-section mt-4">
+                <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
+                <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
+            </div>
         </>
     )
 }

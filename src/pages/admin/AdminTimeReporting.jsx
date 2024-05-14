@@ -160,6 +160,10 @@ const AdminTimeReporting = () => {
                             </tbody>
                         </table>
                     </div>
+                    <div className="helper-text-section">
+                        <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
+                        <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
+                    </div>
                 </div>
             </section>
             <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} adminTimeReportingList={adminTimeReportingList} />

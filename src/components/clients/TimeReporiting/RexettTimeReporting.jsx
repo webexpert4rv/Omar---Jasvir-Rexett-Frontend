@@ -112,15 +112,6 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                         <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <Form>
                                 <div className="d-flex gap-3 flex-wrap align-items-end">
-                                    <div className="flex-none">
-                                        {/* <Form.Label className="common-label">Select View</Form.Label> */}
-                                        <Form.Select className=" time-filter-select shadow-none" value={selectedView} onChange={(e)=>handlePeriodChange(e.target.value)} >
-                                            <option selected disabled>{t("selectView")}</option>
-                                            <option value="weekly">{t("weekly")}</option>
-                                            <option value="monthly">{t("monthly")}</option>
-                                            <option value="yearly">{t("yearly")}</option>
-                                        </Form.Select>
-                                    </div>
                                     <div>
                                         {/* <Form.Label className="common-label">Select Year</Form.Label> */}
                                         <Form.Select className="time-filter-select shadow-none"  onChange={(e) => handleChange(e, "year")}>
@@ -190,8 +181,17 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     </div>
                                 </div>
                             </Form>
-                            <div>
-                                {role === "developer" ?<Button variant="transparent" onClick={()=>handleShowModal("Edit")} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button>:""}
+                            <div className="d-flex gap-2">
+                                <div className="flex-none">
+                                    {/* <Form.Label className="common-label">Select View</Form.Label> */}
+                                    <Form.Select className=" time-filter-select shadow-none" value={selectedView} onChange={(e)=>handlePeriodChange(e.target.value)} >
+                                        <option selected disabled>{t("selectView")}</option>
+                                        <option value="weekly">{t("weekly")}</option>
+                                        <option value="monthly">{t("monthly")}</option>
+                                        <option value="yearly">{t("yearly")}</option>
+                                    </Form.Select>
+                                </div>
+                                {role === "developer" ?<Button variant="transparent" onClick={()=>handleShowModal("Edit")} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `` : `${t("editTimeReport")}`}</Button>:""}
                                 <Button variant="transparent" onClick={()=>handleShowModal("AddTime")} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `${t("editTimeReport")}` : `${t("addBulkTime")}`}</Button>
                             </div>
                         </div>

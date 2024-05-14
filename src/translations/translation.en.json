@@ -109,10 +109,10 @@
         "vendorJoined": "Vendor Joined",
         "totalJobsPosted": "Total Jobs Posted",
         "listOfClients": "List Of Clients",
-        "applications": "New Applicants",
+        "applications": "New Applicants ",
         "engagements": "Engagements",
         "jobListing": "Job Listing",
-        "revenue": "Revenue",
+        "stats": "Stats",
         "connects": "Connects",
         "fullStackDeveloper": "Full stack developer",
         "phoneNumber": "Phone Number",
@@ -347,13 +347,7 @@
         "skillsRequired" : "Skills Required",
         "optionalSkills" : "Good to have skills",
         "viewJob" : "View Job" ,
-        "endTimeReport":"End Time Report",
-        "addRow" : "Add Row",
-        "projects" : "Projects" ,
-        "projectTitle" : "Project Title",
-        "projectDescription" : "Project Description" ,
-        "techStackUsed" : "Tech Stack Used",
-        "projectLink" : "Project Link",
-        "roleInProject" : "Role In Project"
+        "endTimeReport":"End Time Report"        
+
     }
 }
