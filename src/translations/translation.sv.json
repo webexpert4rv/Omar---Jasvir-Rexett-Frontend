@@ -349,7 +349,8 @@
         "techStackUsed" : "Tech Stack används" ,
         "projectTitle" : "Projekt Titel",
         "projectLink" : "Projektlänk" ,
-        "roleInProject" : "Roll i projektet"
+        "roleInProject" : "Roll i projektet",
+        "projectTeamSize":"Projektets teamstorlek"
 
         }
 }
