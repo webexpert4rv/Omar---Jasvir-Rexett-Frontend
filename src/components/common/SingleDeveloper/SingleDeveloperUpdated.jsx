@@ -173,22 +173,7 @@ const SingleDeveloperUpdated = ({ data, role }) => {
                                                     </div>
                                                     <div className="connect-social-media">
                                                         <h3 className="subheading-resume text-center mb-3">{t("connectWithMe")}</h3>
-                                                        {/* <ul className="social-media">
-                                    {developerDetails?.social_links?.map((item)=>{
-                                        return(
-                                            <>
-                                             <li>
-                                        <Link to={item.url} className="social-media-link">
-                                            {generateSocailLinks(item.slug)}
-                                        </Link>
-                                    </li>
-                                            </>
-                                        )
-                                    })
-                                       }
-
-                                </ul> */}
-
+                                                        
                                                         <ul className="social-media">
                                                             <li>
                                                                 {data?.developer_detail?.github_url ? <Link to={data?.developer_detail?.github_url} ><FaGithub /></Link> : ""}
@@ -196,9 +181,7 @@ const SingleDeveloperUpdated = ({ data, role }) => {
                                                             <li>
                                                                 {data?.developer_detail?.linkedin_url ? <Link to={data?.developer_detail?.linkedin_url}><FaLinkedin /></Link> : ""}
                                                             </li>
-                                                            {/* <li>
-                                            <Link to={developerDetails?.developer_detail?.email}><MdEmail /></Link>
-                                        </li> */}
+                                                            
                                                         </ul>
                                                     </div>
                                                 </Col>
