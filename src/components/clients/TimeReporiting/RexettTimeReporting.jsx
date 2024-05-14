@@ -57,7 +57,6 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
   const handlePeriodChange = (value) => {
     setSelectedView(value);
     const selectedPeriodValue = value;
-    console.log(selectedPeriodValue, "selectedPeriodValue");
     setSelectedPeriod(selectedPeriodValue);
     let filterData = {
       ...selectedFilter,
