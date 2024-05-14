@@ -196,7 +196,7 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                                <td className="white-nowrap">
+                              <td className="white-nowrap">
                                 <div className="d-flex align-items-center">
                                   <span
                                     className={
@@ -227,9 +227,9 @@ const Applications = () => {
                                 </span>
                               </td>
                               <td>{item?.phone_number}</td>
-                              <td>{item?.jobs[0]?.engagement_type}</td>
-                              <td>{item?.jobs[0]?.project_length}</td>
-                              <td>{item?.jobs[0]?.status}</td>
+                              <td>{item?.jobs[0]?.engagement_type }</td>
+                              <td>{item?.jobs[0]?.project_length }</td>
+                              <td>{item?.jobs[0]?.status }</td>
                               <td>
                                 <div className="d-flex gap-3">
                                   <OverlayTrigger
@@ -303,7 +303,6 @@ const Applications = () => {
                                 <td colSpan="8">
                                   <div>
                                     <Row>
-                                
                                       <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
@@ -312,7 +311,8 @@ const Applications = () => {
                                           <p className="application-text">
                                             {
                                               item?.jobs[0]
-                                                ?.development_should_start_in
+                                                ?.development_should_start_in ?   item?.jobs[0]
+                                                ?.development_should_start_in :"Not Mentioned"
                                             }
                                           </p>
                                         </div>
@@ -323,7 +323,7 @@ const Applications = () => {
                                             {t("skillsetNeeded")}
                                           </h3>
                                           <ul className="need-skill-list">
-                                            {convertToArray(
+                                            { item?.jobs[0]?.skills ? convertToArray(
                                               item?.jobs[0]?.skills
                                             )?.map((item, index) => {
                                               return (
@@ -331,7 +331,7 @@ const Applications = () => {
                                                   <li key={index}>{item}</li>
                                                 </>
                                               );
-                                            })}
+                                            }):"Not Mentioned"}
                                           </ul>
                                         </div>
                                       </Col>
@@ -351,7 +351,7 @@ const Applications = () => {
                                             {t("jobTitle")}
                                           </h3>
                                           <p className="application-text">
-                                            {item?.jobs[0]?.title}
+                                            {item?.jobs[0]?.title ? item?.jobs[0]?.title :"Not Mentioned"}
                                           </p>
                                         </div>
                                       </Col>
@@ -381,7 +381,7 @@ const Applications = () => {
                                             {t("projectLength")}
                                           </h3>
                                           <p className="application-text">
-                                            {item?.jobs[0]?.project_length}
+                                            {item?.jobs[0]?.project_length ? item?.jobs[0]?.project_length : "Not Mentioned"}
                                           </p>
                                         </div>
                                       </Col>
@@ -391,7 +391,7 @@ const Applications = () => {
                                             {t("experience")}
                                           </h3>
                                           <p className="application-text">
-                                            {item?.jobs[0]?.experience}
+                                            {item?.jobs[0]?.experience ? item?.jobs[0]?.experience : "Not Mentioned"}
                                           </p>
                                         </div>
                                       </Col>
@@ -401,7 +401,7 @@ const Applications = () => {
                                             {t("contractType")}
                                           </h3>
                                           <p className="application-text">
-                                            {item?.jobs[0]?.contract_type}
+                                            {item?.jobs[0]?.contract_type ? item?.jobs[0]?.contract_type : "Not Mentioned"}
                                           </p>
                                         </div>
                                       </Col>
@@ -476,7 +476,7 @@ const Applications = () => {
                               className="application-row"
                               onClick={() => handleRowClick(index)}
                             >
-                                    <td className="white-nowrap">
+                              <td className="white-nowrap">
                                 <div className="d-flex align-items-center">
                                   <span
                                     className={
@@ -760,14 +760,10 @@ const Applications = () => {
                               </td>
                               <td>
                                 <span className="application-mail">
-                                  {item?.email ? item?.email : "----"}
+                                  {item?.email}
                                 </span>
                               </td>
-                              <td>
-                                {item?.phone_number
-                                  ? item?.phone_number
-                                  : "----"}{" "}
-                              </td>
+                              <td>{item?.phone_number}</td>
                               <td>
                                 <div className="d-flex gap-3">
                                   <RexettButton
@@ -838,7 +834,8 @@ const Applications = () => {
                                           <p className="application-text">
                                             {
                                               item?.developer_experiences[0]
-                                                ?.company_name
+                                                ?.company_name ?     item?.developer_experiences[0]
+                                                ?.company_name : "Not Mentioned"
                                             }
                                           </p>
                                         </div>
@@ -849,10 +846,11 @@ const Applications = () => {
                                             {t("jobTitle")}
                                           </h3>
                                           <p className="application-text">
-                                            {
-                                              item?.developer_experiences[0]
-                                                ?.job_title
-                                            }
+                                            {item?.developer_experiences[0]
+                                              ?.job_title
+                                              ? item?.developer_experiences[0]
+                                                  ?.job_title
+                                              : "Not Mentioned"}
                                           </p>
                                         </div>
                                       </Col>
@@ -882,10 +880,11 @@ const Applications = () => {
                                             {t("jobDescription")}
                                           </h3>
                                           <p className="application-text">
-                                            {
-                                              item?.developer_experiences[0]
-                                                ?.description
-                                            }
+                                            {item?.developer_experiences[0]
+                                              ?.description
+                                              ? item?.developer_experiences[0]
+                                                  ?.description
+                                              : "Not Mentioned"}
                                           </p>
                                         </div>
                                       </Col>
@@ -905,19 +904,23 @@ const Applications = () => {
                                             {t("skillsetNeeded")}
                                           </h3>
                                           <ul className="need-skill-list">
-                                            {convertToArray(
-                                              item?.developer_skills?.skills
-                                            )?.map((item, index) => {
-                                              return (
-                                                <>
-                                                  <li key={index}>{item}</li>
-                                                </>
-                                              );
-                                            })}
+                                            {item?.developer_skills?.skills
+                                              ? convertToArray(
+                                                  item?.developer_skills?.skills
+                                                )?.map((item, index) => {
+                                                  return (
+                                                    <>
+                                                      <li key={index}>
+                                                        {item}
+                                                      </li>
+                                                    </>
+                                                  );
+                                                })
+                                              : "Not Mentioned"}
                                           </ul>
                                         </div>
                                       </Col>
-                                      <Col md={3} className="mb-3">
+                                      {/* <Col md={3} className="mb-3">
                                         <div>
                                           <h3 className="application-heading">
                                             {t("maritalStatus")}
@@ -926,17 +929,18 @@ const Applications = () => {
                                             {item?.marital_status}
                                           </p>
                                         </div>
-                                      </Col>
+                                      </Col> */}
                                       <Col md={3}>
                                         <div>
                                           <h3 className="application-heading">
                                             {t("professtionalTitle")}
                                           </h3>
                                           <p className="application-text">
-                                            {
-                                              item?.developer_detail
-                                                ?.professional_title
-                                            }
+                                            {item?.developer_detail
+                                              ?.professional_title
+                                              ? item?.developer_detail
+                                                  ?.professional_title
+                                              : "Not mentioned"}
                                           </p>
                                         </div>
                                       </Col>
