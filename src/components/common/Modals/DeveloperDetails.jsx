@@ -8,7 +8,7 @@ import { filePreassignedUrlGenerate, getDeveloperDetails, updateDeveloperCvDetai
 import { fetchDeveloperCv } from "../../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
 
-const DeveloperDetails = ({ show, handleClose, name, position, profile ,experience, id,role }) => {
+const DeveloperDetails = ({ show, handleClose, name, position, profile ,experience, id,role,isEdited }) => {
     const dispatch = useDispatch();
     const { smallLoader } = useSelector(state => state.clientData)
     const [file, setFile] = useState(null)

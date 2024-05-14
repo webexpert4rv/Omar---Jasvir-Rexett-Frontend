@@ -127,10 +127,10 @@ const AdminTimeReporting = () => {
                                     {t("redeem")}
                                 </th>
                                 <th className="time-table-head">
-                                    {t("invoice")}
+                                    {t("contract")}
                                 </th>
                                 <th className="time-table-head">
-                                    {t("contract")}
+                                    {t("invoice")}
                                 </th>
                             </thead>
                             <tbody>
@@ -143,7 +143,7 @@ const AdminTimeReporting = () => {
                                                         <td className="time-table-data">{item?.client_details?.name}</td>
                                                         <td className="time-table-data">{item?.contracts?.length}</td>
                                                         <td className="time-table-data">
-                                                            <Form.Select className="status-select shadow-none" onChange={(e) => handleDeveloper(e, index)}>
+                                                            <Form.Select className="status-select shadow-none common-field font-14" onChange={(e) => handleDeveloper(e, index)}>
                                                                 {
                                                                     contractName(item?.contracts)?.map((el, inx) => {
                                                                         return (
@@ -158,10 +158,11 @@ const AdminTimeReporting = () => {
                                                         <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
                                                         <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
                                                         <td className="time-table-data">N/A</td>
-                                                        <td className="time-table-data">
-                                                            <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
-                                                        </td>
                                                         <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
+                                                        <td className="time-table-data">
+                                                            {/* <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label> */}
+                                                            <Button className="main-btn py-2 px-3 font-14">Generate Invoice</Button>
+                                                        </td>
                                                     </tr>
                                                 </>
                                             )

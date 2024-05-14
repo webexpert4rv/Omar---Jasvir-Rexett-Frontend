@@ -537,3 +537,36 @@ export function addProjects(paylaod,callback) {
     };
 }
 
+export function deleteProjects(projectId,callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.delete(`/developer/delete-developer-project/${projectId}`)
+            toast.success("Project is Deleted", { position: "top-center" })
+            dispatch(setSuccessActionData())
+            return callback();
+        } catch (error) {
+            console.log(error.response.data.message ,"error.response.data.message")
+            const message = error.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+export function updateProjects(projectId,callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`/developer/update-developer-project/${projectId}`)
+            toast.success("Project is updated", { position: "top-center" })
+            dispatch(setSuccessActionData())
+            return callback();
+        } catch (error) {
+            console.log(error.response.data.message ,"error.response.data.message")
+            const message = error.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailDeveloperData())
+        }
+    };
+}
+

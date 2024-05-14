@@ -13,13 +13,13 @@ import { FiCalendar } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa6";
 import moment from 'moment';
 import SingleTimeReporting from './SingleTimeReporting';
+import TimeReportRemark from './TimeReportRemark';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const [show, setShow] = useState(false);
     const [currentDetails,setCurrentDetails]=useState(null)
     const handleClose = () => setShow(false);
     const handleShow = (data,index) =>{ 
-        console.log(data,"dta")
         let memoDetails=data?.timeReports[index]
         let newData={
             ...data,
@@ -32,7 +32,17 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     
     const [remarkshow, setremarkShow] = useState(false);
     const handleremarkClose = () => setremarkShow(false);
-    const handleremarkShow = () => setremarkShow(true);
+    const handleremarkShow = (data,index) =>{
+
+        let memoDetails=data?.timeReports[index]
+        let newData={
+            ...data,
+            timeReports:memoDetails
+
+        }
+        setCurrentDetails(newData)
+        setremarkShow(true)
+    } ;
     const { approvedLoader, smallLoader } = useSelector(state => state.developerData)
     const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
     const dispatch = useDispatch()
@@ -97,14 +107,14 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                         } else if (reprt.month) {
                                                             return (
                                                                 <>
-                                                                           <td onClick={()=>handleShow(item,index)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text mt-1'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                           <td onClick={()=>handleShow(item,index)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}</div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
                                                         } else {
                                                             return (
                                                                 <>
-                                                                           <td onClick={()=>handleShow(item,index)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}<p className='memo-text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p></div></td>
+                                                                           <td onClick={()=>handleShow(item,index)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "workday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}</div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
@@ -117,7 +127,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                 <td className="time-table-data">
                                                     <span className={item?.contractDetails?.status ? "status-progress" : "status-finished"}>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>
                                                 </td>
-                                                <td className="time-table-data"><p onClick={handleremarkShow} className='remarks-text white-nowrap'>View Remarks</p></td>
+                                              { item?.contractDetails?.remarks?.length>0?  <td className="time-table-data"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?"View Remarks":"No Remarks"}</p></td>
+                                            :  <td className="time-table-data"><p className='white-nowrap'>No Remarks</p></td>
+                                            }
                                                 {selectedPeriod == "weekly" ? <td className="time-table-data">
                                                     <RexettButton
                                                         type="submit"
@@ -146,670 +158,18 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                   { selectedPeriod == "weekly" && 
-                  <SingleTimeReporting currentDetails={currentDetails}/>
+                  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} />
                   }
                     
-                {  selectedPeriod == "monthly" &&  <div className='detail-view weekly-view'>
-                        <div className='client-info mb-3'>
-                            <h4 className='sidebar-heading'>Client Name</h4>
-                            <p className='client-name-heading'><img src={userImage}/> Pankaj Pundir</p>
-                        </div>
-                        <div className='client-info mb-3 gap-5 d-flex align-items-center'>
-                            <div className='mb-0'>
-                                <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar />Week 1 Jan 2024</p>
-                            </div>
-                            <div className='d-flex gap-4 justify-content-between'>
-                                <div className='d-flex gap-3 align-items-center'>
-                                    <p className='client-name-heading d-flex gap-1 align-items-center fw-semibold'><FaRegClock /> 40 hrs</p>
-                                </div>
-                            </div>
-                            <div>
-                                <span className="status-progress">Progress</span>
-                            </div>
-                        </div>
-                        <div className='client-info mb-3'>
-                            <h4 className='sidebar-heading'>Your Remark</h4>
-                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                        </div>
-                        <div className='weekly-detail mb-3 p-3'>
-                            <div>
-                                <div className='client-info mb-3 gap-5'>
-                                    <div className='mb-2'>
-                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                    </div>
-                                    <div className='d-flex gap-4 justify-content-between'>
-                                        <div className='d-flex gap-3 align-items-center'>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                            <p className='client-name-heading'>-</p>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='client-info'>
-                                    <h4 className='sidebar-heading'>Memo</h4>
-                                    <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='weekly-detail mb-3 p-3'>
-                            <div>
-                                <div className='client-info mb-3 gap-5'>
-                                    <div className='mb-2'>
-                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                    </div>
-                                    <div className='d-flex gap-4 justify-content-between'>
-                                        <div className='d-flex gap-3 align-items-center'>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                            <p className='client-name-heading'>-</p>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='client-info'>
-                                    <h4 className='sidebar-heading'>Memo</h4>
-                                    <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='weekly-detail mb-3 p-3'>
-                            <div>
-                                <div className='client-info mb-3 gap-5'>
-                                    <div className='mb-2'>
-                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                    </div>
-                                    <div className='d-flex gap-4 justify-content-between'>
-                                        <div className='d-flex gap-3 align-items-center'>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                            <p className='client-name-heading'>-</p>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='client-info'>
-                                    <h4 className='sidebar-heading'>Memo</h4>
-                                    <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='weekly-detail mb-3 p-3'>
-                            <div>
-                                <div className='client-info mb-3 gap-5'>
-                                    <div className='mb-2'>
-                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                    </div>
-                                    <div className='d-flex gap-4 justify-content-between'>
-                                        <div className='d-flex gap-3 align-items-center'>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                            <p className='client-name-heading'>-</p>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='client-info'>
-                                    <h4 className='sidebar-heading'>Memo</h4>
-                                    <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='weekly-detail p-3'>
-                            <div>
-                                <div className='client-info mb-3 gap-5'>
-                                    <div className='mb-2'>
-                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                    </div>
-                                    <div className='d-flex gap-4 justify-content-between'>
-                                        <div className='d-flex gap-3 align-items-center'>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                            <p className='client-name-heading'>-</p>
-                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='client-info'>
-                                    <h4 className='sidebar-heading'>Memo</h4>
-                                    <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>}
+                {  selectedPeriod == "monthly" &&  
+                    <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>
+                }
 
-                  { selectedPeriod == "yearly" &&  <div className='detail-view monthly-view'>
-                        <div className='client-info mb-3'>
-                            <h4 className='sidebar-heading'>Client Name</h4>
-                            <p className='client-name-heading'><img src={userImage}/> Pankaj Pundir</p>
-                        </div>
-                        <div className='client-info mb-3 gap-5 d-flex align-items-center'>
-                            <div className='mb-0'>
-                                <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar />Jan 2024</p>
-                            </div>
-                            <div className='d-flex gap-4 justify-content-between'>
-                                <div className='d-flex gap-3 align-items-center'>
-                                    <p className='client-name-heading d-flex gap-1 align-items-center fw-semibold'><FaRegClock /> 140 hrs</p>
-                                </div>
-                            </div>
-                            <div>
-                                <span className="status-progress">Progress</span>
-                            </div>
-                        </div>
-                        <Tab.Container id="left-tabs-example" defaultActiveKey="week-first">
-                            <Nav variant="pills" className="weekly-tabs">
-                                <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="week-first">Week 1</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="week-second">Week 2</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="week-third">Week 3</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item className='weekly-tab-item'>
-                                    <Nav.Link className='weekly-tab-link' eventKey="week-forth">Week 4</Nav.Link>
-                                </Nav.Item>
-                            </Nav>
-                            <Tab.Content>
-                                <Tab.Pane eventKey="week-first">
-                                    <div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                        <div className='client-info'>
-                                            <h4 className='sidebar-heading'>Client's Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                    </div>
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="week-second">
-                                    <div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                        <div className='client-info'>
-                                            <h4 className='sidebar-heading'>Client's Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                    </div>
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="week-third">
-                                    <div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                        <div className='client-info'>
-                                            <h4 className='sidebar-heading'>Client's Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                    </div>
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="week-forth">
-                                    <div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='weekly-detail mb-3 p-3'>
-                                            <div>
-                                                <div className='client-info mb-3 gap-5'>
-                                                    <div className='mb-2'>
-                                                        <p className='client-name-heading d-flex gap-1 align-items-center'><FiCalendar /> SUN-28</p>
-                                                    </div>
-                                                    <div className='d-flex gap-4 justify-content-between'>
-                                                        <div className='d-flex gap-3 align-items-center'>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 9:30 AM</p>
-                                                            <p className='client-name-heading'>-</p>
-                                                            <p className='client-name-heading d-flex gap-1 align-items-center'><FaRegClock /> 7:00 PM</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='client-info'>
-                                                    <h4 className='sidebar-heading'>Memo</h4>
-                                                    <p className='client-name-heading memo-text-sidebar'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='client-info mb-3'>
-                                            <h4 className='sidebar-heading'>Your Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                        <div className='client-info'>
-                                            <h4 className='sidebar-heading'>Client's Remark</h4>
-                                            <p className='client-name-heading'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                                        </div>
-                                    </div>
-                                </Tab.Pane>
-                            </Tab.Content>
-                        </Tab.Container>
-                    </div>}
+                  {/* { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/> } */}
+                    { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>}
                 </Offcanvas.Body>
             </Offcanvas>
-            <Offcanvas className="time-detail-sidepanel" show={remarkshow} onHide={handleremarkClose} placement='end'>
-                <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Remarks</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <div className='remarks-section'>
-                        <div className='remark-card-wrapper'>
-                            <div className='remark-card'>
-                                <div className='remark-user'>
-                                    <div className='d-flex justify-content-between align-items-center gap-2'>
-                                        <img src={userImage} /> Client Name
-                                    </div>
-                                    <p>25 Apr, 11:20 AM</p>
-                                </div>
-                                <div className='remark-content'>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
-                                </div>
-                            </div>
-                            <div className='remark-card'>
-                                <div className='remark-user'>
-                                    <div className='d-flex justify-content-between align-items-center gap-2'>
-                                        <img src={userImage} /> Admin
-                                    </div>
-                                    <p>25 Apr, 11:20 AM</p>
-                                </div>
-                                <div className='remark-content'>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
-                                </div>
-                            </div>
-                            <div className='remark-card'>
-                                <div className='remark-user'>
-                                    <div className='d-flex justify-content-between align-items-center gap-2'>
-                                        <img src={userImage} /> Me (Rohit Sharma)
-                                    </div>
-                                    <p>25 Apr, 11:20 AM</p>
-                                </div>
-                                <div className='remark-content'>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='remark-input-wrapper'>
-                            <div>
-                                <Form.Control type='text' as="textarea" placeholder="Enter your remark" className='common-field font-14' />
-                                <Button className='main-btn font-14 mt-2 py-2 px-3'>Send</Button>
-                            </div>
-                        </div>
-                    </div>
-                </Offcanvas.Body>
-            </Offcanvas>
+          {remarkshow ?<TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails}/>:""}
         </div>
         
     )
