@@ -103,9 +103,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
         // setSelectedFilter({filter:''})
         dispatch(timeReporting(filterData, role))
     }
-
-
-
+    
     return (
         <>
             {screenLoader ? <ScreenLoader /> :
