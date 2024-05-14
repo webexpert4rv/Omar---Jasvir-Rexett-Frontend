@@ -109,8 +109,7 @@ const SingleDeveloper = ({ data, role }) => {
     setDeveloperDetails(false);
   };
 
-
-  console.log(data?.developer_projects,"projectssss----------")
+  console.log(data?.developer_projects, "projectssss----------");
   return (
     <>
       {screenLoader ? (
@@ -423,44 +422,61 @@ const SingleDeveloper = ({ data, role }) => {
                     {/* </div> */}
                   </div>
                   {data?.developer_projects ? (
-                      <>
-                        {data?.developer_projects?.map(
-                          ({ project_title, project_link,project_start_date,role_in_project ,project_end_date ,tech_stacks_used}, index) => {
-                            return (
-                              <React.Fragment key={index}>
-                                {/* <div className="exp-wrapper expertise-card"> */}
-                                  {/* <p className="exp-year">{} - {} | {}</p> */}
-                                  {/* <img src={skill_icon?.icon_url} /> */}
-                                  <label  >Project Name</label><br></br>
-                                   <p className="expertise-skill">{project_title}</p>
-                                   <label>Project Link</label>
-                                  <p className="expertise-exp">{project_link}</p>
-                                  <label>Project start date</label>
-                                  <p className="expertise-exp">{`${project_start_date?.slice(0, 10)}`}</p>
-                                  <label>Project end date</label>
-                                  <p className="expertise-exp">{`${project_end_date?.slice(0, 10)}`}</p>
-                                  <label>Role in project</label>
-                                  <p className="expertise-exp">{role_in_project}</p>
-                                  <label>Tech Skill Used</label>
-                                  <p className="expertise-exp">{tech_stacks_used}</p> 
-                                  
+                    <>
+                      {data?.developer_projects?.map(
+                        (
+                          {
+                            project_title,
+                            project_link,
+                            project_start_date,
+                            role_in_project,
+                            project_end_date,
+                            tech_stacks_used,
+                          },
+                          index
+                        ) => {
+                          return (
+                            <React.Fragment key={index}>
+                              {/* <div className="exp-wrapper expertise-card"> */}
+                              {/* <p className="exp-year">{} - {} | {}</p> */}
+                              {/* <img src={skill_icon?.icon_url} /> */}
+                              <label>Project Name</label>
+                              <br></br>
+                              <p className="expertise-skill">{project_title}</p>
+                              <label>Project Link</label>
+                              <p className="expertise-exp">{project_link}</p>
+                              <label>Project start date</label>
+                              <p className="expertise-exp">{`${project_start_date?.slice(
+                                0,
+                                10
+                              )}`}</p>
+                              <label>Project end date</label>
+                              <p className="expertise-exp">{`${project_end_date?.slice(
+                                0,
+                                10
+                              )}`}</p>
+                              <label>Role in project</label>
+                              <p className="expertise-exp">{role_in_project}</p>
+                              <label>Tech Skill Used</label>
+                              <p className="expertise-exp">
+                                {tech_stacks_used}
+                              </p>
 
-                                  {/* <ul className="exp-role">
+                              {/* <ul className="exp-role">
                                                             <li className="resume-text">{}</li>
                                                             <li className="resume-text">{}</li>
                                                         </ul> */}
-                                {/* </div> */}
+                              {/* </div> */}
 
-                                {/* <div className="about-info px-4 pt-4"> */}
-                              </React.Fragment>
-                            );
-                          }
-                        )}
-                      </>
-                    ) : (
-                      ""
-                    )}
-
+                              {/* <div className="about-info px-4 pt-4"> */}
+                            </React.Fragment>
+                          );
+                        }
+                      )}
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </Col>
               </Row>
             </div>
@@ -541,7 +557,7 @@ const SingleDeveloper = ({ data, role }) => {
             id={data?.id}
             role={role}
           />
-          {showProjectModal ? (
+          {showProjectModal && (
             <ProjectsModal
               data={data.developer_projects}
               show={showProjectModal}
@@ -549,8 +565,6 @@ const SingleDeveloper = ({ data, role }) => {
               id={data?.id}
               role={role}
             />
-          ) : (
-            ""
           )}
         </>
       )}
