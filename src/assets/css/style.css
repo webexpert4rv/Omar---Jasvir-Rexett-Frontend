@@ -69,6 +69,10 @@ ul {
     color: var(--white);
     font-weight: 400;
 }
+.text-green
+{
+    color: #037563 !important;
+}
 
 .label-form {
     font-size: 16px;
@@ -595,6 +599,7 @@ ul {
     border-radius: 50%;
     margin-left: auto;
     margin-right: auto;
+    flex: none;
     margin-bottom: 20px;
 }
 .application-userbx
@@ -2770,6 +2775,14 @@ input[type="radio"]:checked {
     background-color: #d1fff8;
     color: #037563;
 }
+.status-rejected {
+    font-size: 13px;
+    border-radius: 30px;
+    padding: 5px 17px;
+    display: inline-block;
+    background-color: #ffd1d1;
+    color: #750303;
+}
 
 .status-progress {
     font-size: 13px;
@@ -3778,9 +3791,98 @@ input[type="radio"]:checked {
     border-radius: 14px;
     color: #fff;
 }
-.invoice-details .table-ui-custom td
+.card-box .table-ui-custom td
 {
-    background: #f7f7f7;
+    background: #f4f4f5;
+}
+.detail-view .company-name-heading .company-logo
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.associate-text .associate
+{
+    font-size: 12px;
+    display: inline-block;
+    color: #121212;
+    padding: 3px 10px;
+    background: #f4f4f5;
+    border-radius: 10px;
+}
+.associate-text img
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.associate-text span.white-nowrap
+{
+    width: 100%;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.card-box .associate-text .associate
+{
+    background-color: #fff;
+}
+.heading-box
+{
+    padding: 13px;
+    background: #037563;
+    border-radius: 14px;
+    color: #fff;
+}
+.heading-box h3
+{
+    font-size: 17px;
+    font-weight: 600;
+}
+.white-btn:hover
+{
+    color: #fff !important;
+    text-decoration: underline;
+}
+.number-count-light
+{
+    min-width: 25px;
+    height: 25px;
+    background-color: #fff;
+    color: #037563;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+.row-hover
+{
+    cursor: pointer;
+    transition: .4s ease;
+}
+.row-hover:hover
+{
+    color: #fff;
+    background: var(--primary-color);
+}
+.row-hover:hover td
+{
+    background-color: transparent;
+    color: #fff;
+}
+.cursor-pointer
+{
+    cursor: pointer;
+}
+.text-overflow
+{
+    width: 250px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
