@@ -72,7 +72,7 @@ const ListClient = () => {
                                 <table className="table developer-table">
                                     <thead>
                                         <tr>
-                                            <th><span>{t("ClientName")}</span></th>
+                                            <th><span>{t("clientName")}</span></th>
                                             <th><span>{t("email")}</span></th>
                                         </tr>
                                     </thead>

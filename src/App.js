@@ -139,7 +139,7 @@ function App() {
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
-          <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} />
+          {/* <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} /> */}
           <Route path="/applications" exact element={<AdminDashboardLayout><Applications /></AdminDashboardLayout>} />
           <Route path="/admin-single-client/:id" exact element={<AdminDashboardLayout><SingleClient /></AdminDashboardLayout>} />
           <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
