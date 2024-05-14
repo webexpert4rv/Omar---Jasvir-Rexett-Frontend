@@ -347,7 +347,8 @@
         "skillsRequired" : "Skills Required",
         "optionalSkills" : "Good to have skills",
         "viewJob" : "View Job" ,
-        "endTimeReport":"End Time Report"        
+        "endTimeReport":"End Time Report",
+        "degree_name_required_msg":"Degree name is required"        
 
     }
 }

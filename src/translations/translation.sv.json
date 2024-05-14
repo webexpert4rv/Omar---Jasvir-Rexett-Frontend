@@ -340,7 +340,9 @@
         "skillsRequired" : "Färdigheter som krävs",
         "optionalSkills" : "Bra att ha kompetens",
         "viewJob" : "se jobb",
-        "endTimeReport" : "Sluttidsrapport"  
+        "endTimeReport" : "Sluttidsrapport",
+        "degree_name_required_msg":"Namn på examen krävs"        
+
 
         }
 }

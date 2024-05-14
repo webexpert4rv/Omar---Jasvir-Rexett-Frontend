@@ -54,8 +54,7 @@ const RegisterDeveloper = () => {
       url: "",
     },
   ]);
-  const navigate=useNavigate()
-
+  const navigate = useNavigate();
   const {
     register,
     control,
@@ -67,16 +66,38 @@ const RegisterDeveloper = () => {
     trigger,
     setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      educations: [
+        {
+          university_name: "",
+          degree_id: "",
+          address: "",
+          start_year: "",
+          end_year: "",
+          currently_attending: false,
+          description: "",
+        },
+      ],
+    },
+  });
   console.log(selectedOption, "select-----");
   console.log(expertSkill, "experskilll");
   const { fields, append, remove, replace } = useFieldArray({
     control,
-    name: "educations",
+    // name: "educations",
     name: "experiences",
     name: "expertise",
     name: "social_links",
     name: "skills",
+  });
+  const {
+    fields: educationField,
+    append: appendEducationField,
+    remove: removeEducationField,
+  } = useFieldArray({
+    control,
+    name: "educations",
   });
 
   const [experienceFields, setExperienceFields] = useState([
@@ -90,10 +111,7 @@ const RegisterDeveloper = () => {
     },
   ]);
   const [expertiseFields, setExpertiseFields] = useState([
-    { id:0,
-      skill: "",
-      experience: "",
-    },
+    { id: 0, skill: "", experience: "" },
   ]);
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
@@ -113,25 +131,24 @@ const RegisterDeveloper = () => {
 
   const handleAppend = () => {
     const expertise = watch("expertise");
-    console.log(expertise,"expertise")
-    let index=expertise?.findIndex((item=>item.skill==undefined || item.experience==''))
-    console.log(index,"inde")
-  if(index==-1){
-    setExpertiseFields([
-      ...expertiseFields,
-      {id:expertise.length+1,
-        skill: "",
-        experience: "",
-      },
-    ]);
-  }
+    console.log(expertise, "expertise");
+    let index = expertise?.findIndex(
+      (item) => item.skill == undefined || item.experience == ""
+    );
+    console.log(index, "inde");
+    if (index == -1) {
+      setExpertiseFields([
+        ...expertiseFields,
+        { id: expertise.length + 1, skill: "", experience: "" },
+      ]);
+    }
   };
 
-  const handleDelete = (id ,index) => {
+  const handleDelete = (id, index) => {
     const expertise = watch("expertise");
-    expertise.splice(index,1)
-    let expertiseFieldsCopy=[...expertiseFields]
-    expertiseFieldsCopy.splice(index,1)
+    expertise.splice(index, 1);
+    let expertiseFieldsCopy = [...expertiseFields];
+    expertiseFieldsCopy.splice(index, 1);
     // const updatedExpertFields = expertiseFieldsCopy.filter(
     //   (field) => field.id !== id
     // );
@@ -150,9 +167,8 @@ const RegisterDeveloper = () => {
   const yearsArray = generateYears();
 
   const onSubmit = (data) => {
-    console.log(data,"dat")
     let fileData = new FormData();
-    fileData.append("file",file);
+    fileData.append("file", file);
     let formattedExpertise = [];
     formattedExpertise = data?.expertise?.map((val) => {
       return { skill: val?.skill?.label, experience: val?.experience };
@@ -162,33 +178,61 @@ const RegisterDeveloper = () => {
     formattedSkills = convertString.map((item) => {
       return { skill: item, experience: null };
     });
-    if (data) {
-      console.log(data, "formData");
-      dispatch(filePreassignedUrlGenerate(fileData,(url)=>{
-        let formData = {
-          ...data,
-          skills: formattedSkills,
-          expertise: formattedExpertise,
-          profile_picture:url
-        };
-        dispatch(getAddNewDeveloper(formData, () => {
-          navigate("/vendor-dashboard");
-        })
-        );
-      }))
-      
-    }
+
+    const EducationFieldCpy = [...data.educations];
+    let formattedEducationField = [];
+    formattedEducationField = EducationFieldCpy.map((curElem) => {
+      return { ...curElem, degree_id: curElem.degree_id.value };
+    });
+    let formData = {
+      ...data,
+      skills: formattedSkills,
+      expertise: formattedExpertise,
+      // profile_picture: url,
+      educations: formattedEducationField,
+    };
+    // if (data) {
+    //   console.log(data, "formData");
+    //   dispatch(
+    //     filePreassignedUrlGenerate(fileData, (url) => {
+    //       let formData = {
+    //         ...data,
+    //         skills: formattedSkills,
+    //         expertise: formattedExpertise,
+    //         profile_picture: url,
+    //            educations:formattedEducationField
+    //       };
+    //       dispatch(
+    //         getAddNewDeveloper(formData, () => {
+    //           navigate("/vendor-dashboard");
+    //         })
+    //       );
+    //     })
+    //   );
+    // }
   };
 
-  console.log(expertiseFields,"expertiseFields")
+  console.log(expertiseFields, "expertiseFields");
   const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
 
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
     // to check if any of the field inside experiences array is empty
     const index = experiences?.findIndex(
-      ({ job_title, company_name, description, start_date, end_date ,is_still_working }) =>
-        !company_name || !job_title || !description || !start_date || !end_date || is_still_working=== false
+      ({
+        job_title,
+        company_name,
+        description,
+        start_date,
+        end_date,
+        is_still_working,
+      }) =>
+        !company_name ||
+        !job_title ||
+        !description ||
+        !start_date ||
+        !end_date ||
+        is_still_working === false
     );
     // if index is greater than -1 means there is field inside element that is empty
     if (index === -1) {
@@ -204,11 +248,11 @@ const RegisterDeveloper = () => {
       setExperienceFields([...experienceFields, newExperienceField]);
     }
   };
-  const handleDeleteFieldExp = (index,id) => {
+  const handleDeleteFieldExp = (index, id) => {
     const experiences = watch("experiences");
-    experiences.splice(index,1)
-    let expCop=[...experienceFields]
-    expCop.splice(index,1)
+    experiences.splice(index, 1);
+    let expCop = [...experienceFields];
+    expCop.splice(index, 1);
     // const updatedExperienceFields = experienceFields.filter(
     //   (field) => field.id !== id
     // );
@@ -249,18 +293,31 @@ const RegisterDeveloper = () => {
         end_year: "",
         currently_attending: false,
       };
-      setEducationFields([...educationFields, newEducationField]);
+      // setEducationFields([...educationFields, newEducationField]);
+      appendEducationField({
+        // id: educationFields.length + 1,
+        university_name: "",
+        degree_id: "",
+        address: "",
+        start_year: "",
+        end_year: "",
+        currently_attending: false,
+      });
+      setEducationFields([...watch("educations"), newEducationField]);
     }
   };
-  const handleDeleteField = (index,id) => {
+  const handleDeleteField = (index, id) => {
     const educations = watch("educations");
-    educations.splice(index,1)
-    let educationFieldsCpy=[...educationFields]
-    educationFieldsCpy.splice(index,1)
+    educations.splice(index, 1);
+    console.log(educationFields, "educationfield");
+
+    // const educationFieldsCpy=[...educationFields];
+    const temp = [...educationFields];
+    temp.splice(index, 1);
     // const updatedEducationFields = educationFields.filter(
     //   (field) => field.id !== id
     // );
-    setEducationFields(educationFieldsCpy);
+    setEducationFields(temp);
   };
 
   const handleAddMoreSocial = () => {
@@ -333,17 +390,17 @@ const RegisterDeveloper = () => {
       setExpertSkill((prev) => [...prev, newOption]);
     }
   };
-  const handleCreate = (inputValue) => {
+  const handleCreate = (inputValue,index) => {
     const payload = {
       title: inputValue,
     };
+    
     dispatch(
       addDegree(payload, () => {
         dispatch(getDegreeList());
       })
     );
   };
-
 
   return (
     <>
@@ -843,11 +900,11 @@ const RegisterDeveloper = () => {
                         </Form.Label>
                       </Form.Group>
                     </Col>
-                    {experienceFields?.length>1 && (
+                    {experienceFields?.length > 1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
                           variant="danger"
-                          onClick={() => handleDeleteFieldExp(index,id)}
+                          onClick={() => handleDeleteFieldExp(index, id)}
                         >
                           <FaTrash />
                         </Button>
@@ -933,11 +990,11 @@ const RegisterDeveloper = () => {
                       </p>
                     )}
                   </div>
-                  {expertiseFields?.length >1  && (
+                  {expertiseFields?.length > 1 && (
                     <Col md="12" className="d-flex justify-content-end">
                       <Button
                         variant="danger"
-                        onClick={() => handleDelete(field?.id,index)}
+                        onClick={() => handleDelete(field?.id, index)}
                       >
                         <FaTrash />
                       </Button>
@@ -957,20 +1014,21 @@ const RegisterDeveloper = () => {
               {t("enterEducationDetails")}
             </h2>
             <div className="inner-form mb-3">
-              {educationFields.map(
+              {educationField.map(
                 (
-                  {
-                    id,
-                    university_name,
-                    degree_id,
-                    address,
-                    start_year,
-                    end_year,
-                    currently_attending,
-                  },
+                  item,
+                  // {
+                  //   id,
+                  //   university_name,
+                  //   degree_id,
+                  //   address,
+                  //   start_year,
+                  //   end_year,
+                  //   currently_attending,
+                  // },
                   index
                 ) => (
-                  <Row>
+                  <Row key={item.id}>
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>{t("universityName")} *</Form.Label>
@@ -1005,20 +1063,70 @@ const RegisterDeveloper = () => {
                             (option) => option.value === degree_id
                           )}
                         /> */}
-                        <CreatableSelect
-                          isClearable
-                          onChange={(val) =>
-                            setValue(
-                              `educations[${index}].degree_id`,
-                              val ? val.value : ""
-                            )
-                          }
-                          defaultValue={degreeList.find(
-                            (option) => option.value === degree_id
+                        {/* <Controller
+                          name={`educations.${index}.degree_id`}
+                          control={control}
+                          rules={{required:{
+                            value:true,
+                            message:t("required_message")
+                          }}}
+                          render={({ field }) => (
+                            <CreatableSelect
+                              {...field}
+                              value={watch(`educations?.${index}.degree_id`)}
+                              isClearable
+                              onChange={(val) => {
+                                setValue(`educations.${index}.degree_id`, val);
+                              }}
+                              // defaultValue={degreeList.find(
+                              //   (option) => option.value === watch(`educations.${index}.degree_id`)
+                              // )}
+                              onCreateOption={handleCreate}
+                              options={degreeList}
+                            />
                           )}
-                          onCreateOption={handleCreate}
+                        /> */}
+                        <CreatableSelect
+                          {...register(`educations.${index}.degree_id`, {
+                            required: {
+                              value: true,
+                              message: t("degree_name_required_msg"),
+                            },
+                          })}
+                          // value={watch(`educations.${index}.degree_id`)}
+                          isClearable
+                          onChange={(val) => {
+                            setValue(`educations.${index}.degree_id`, val);
+                          }}
+                        // value={degreeList.find((curElem)=>curElem.label === item.label)}
+                         onCreateOption={handleCreate}
                           options={degreeList}
                         />
+                        {errors?.educations?.[index]?.degree_id && (
+                          <p className="error-message">
+                            {errors.educations[index].degree_id.message}
+                          </p>
+                        )}
+                        {/* <CreatableSelect
+                            {...register(`expertise.${index}.skill`, {
+                              required: {
+                                value: true,
+                                message: t("required_message"),
+                              },
+                            })}
+                            isClearable
+                            options={skillCate}
+                            onChange={(newValue) => {
+                              // setExpertSkill([newValue]);x
+                              setValue(`expertise.${index}.skill`, newValue);
+                              clearErrors(`expertise.${index}.skill`);
+                            }}
+                            onCreateOption={(val) => {
+                              onChangeSelect(val, "expertise");
+                            }}
+                            // value={expertSkill}
+                            // name={expertSkill}
+                          /> */}
                       </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -1127,11 +1235,14 @@ const RegisterDeveloper = () => {
                         {t("currentlyAttending")}
                       </Form.Label>
                     </Form.Group>
-                    {educationFields?.length>1 && (
+                    {watch("educations")?.length > 1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
                           variant="danger"
-                          onClick={() => handleDeleteField(index,id)}
+                          // onClick={() => handleDeleteField(index,id)}
+                          onClick={() => {
+                            removeEducationField(index);
+                          }}
                         >
                           <FaTrash />
                         </Button>
