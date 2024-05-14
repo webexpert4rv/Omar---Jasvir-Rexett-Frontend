@@ -519,3 +519,53 @@ export function deleteFaq(payload) {
         }
     };
 }
+
+export function sendRemarkOnTimeReport(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post(`common/add-time-report-remark`,{...payload})
+                toast.success("Remark has been added", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function approvedEditAction(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.put(`/admin/approve-all-changes/${payload}`)
+            if (result.status === 200) {
+                toast.success("Edit Request has been approved", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function rejectEditAction(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.put(`/admin/approve-all-changes/${payload}`)
+            if (result.status === 200) {
+                toast.success("Edit Request has been approved", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}

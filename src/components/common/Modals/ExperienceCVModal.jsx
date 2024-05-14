@@ -71,9 +71,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
         return { ...item}
       }
     }).filter((item) => item)
-    let data ={
-
-    }
+  
     if (addExp.length > 0) {
       let data={
         experiences:addExp,
@@ -91,7 +89,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
 
     test?.forEach((item) => {
       if (item.newId) {
-        
+        console.log(item.newId,"-------------========")
         dispatch(updateDeveloperCvExperience(item, item.newId, () => {
           if(role=="developer"){
             dispatch(fetchDeveloperCv())

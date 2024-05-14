@@ -1219,6 +1219,14 @@ ul {
     font-size: 15px;
     color: #121212;
 }
+.resume-text.active {
+    font-size: 15px;
+    color: #121212;
+    background-color: #ead4ab;
+}
+.resume-edit {
+    background-color: #ead4ab; 
+}
 
 .exp-wrapper {
     margin-bottom: 29px;
