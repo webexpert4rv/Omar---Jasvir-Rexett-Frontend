@@ -257,8 +257,8 @@ const SingleDeveloper = ({ data, role }) => {
               className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
               onClick={approvedEdit}
-              disabled={smallLoader}
-              isLoading={smallLoader}
+            //   disabled={smallLoader}
+            //   isLoading={smallLoader}
             />
              <RexettButton
               type="submit"
@@ -266,8 +266,8 @@ const SingleDeveloper = ({ data, role }) => {
               className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
               onClick={rejectEdit}
-              disabled={smallLoader}
-              isLoading={smallLoader}
+            //   disabled={smallLoader}
+            //   isLoading={smallLoader}
             />
                     </div>
                     
