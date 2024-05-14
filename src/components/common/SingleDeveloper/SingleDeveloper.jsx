@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import resumeImg from "../../../assets/img/user-img.jpg";
 import { Link, useLocation } from "react-router-dom";
-import { FaLinkedinIn } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { MdEditNote, MdEmail } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";

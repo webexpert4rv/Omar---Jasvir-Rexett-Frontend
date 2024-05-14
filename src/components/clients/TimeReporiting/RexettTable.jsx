@@ -18,67 +18,67 @@ import ConfirmationModal from '../../../pages/views/Modals/ConfirmationModal';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
     const [show, setShow] = useState(false);
-    const [approvedConfirmation,setApprovedConfirmation]=useState({
-      isApproved:false,
-      approvedId:null
+    const [approvedConfirmation, setApprovedConfirmation] = useState({
+        isApproved: false,
+        approvedId: null
     })
-    const [currentDetails,setCurrentDetails]=useState(null)
+    const [currentDetails, setCurrentDetails] = useState(null)
     const handleClose = () => setShow(false);
-    const handleShow = (data,index,isOff) =>{ 
-        if(!isOff?.is_off_day){
-            let memoDetails=data?.timeReports[index]
-            let newData={
+    const handleShow = (data, index, isOff) => {
+        if (!isOff?.is_off_day) {
+            let memoDetails = data?.timeReports[index]
+            let newData = {
                 ...data,
-                timeReports:memoDetails
-    
+                timeReports: memoDetails
+
             }
             setCurrentDetails(newData)
             setShow(true)
         }
-       
+
     };
-    
+
     const [remarkshow, setremarkShow] = useState(false);
     const handleremarkClose = () => setremarkShow(false);
-    const handleremarkShow = (data,index) =>{
+    const handleremarkShow = (data, index) => {
 
-        let memoDetails=data?.timeReports[index]
-        let newData={
+        let memoDetails = data?.timeReports[index]
+        let newData = {
             ...data,
-            timeReports:memoDetails
+            timeReports: memoDetails
 
         }
         setCurrentDetails(newData)
         setremarkShow(true)
-    } ;
+    };
     const { approvedLoader, smallLoader } = useSelector(state => state.developerData)
     const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
     const dispatch = useDispatch()
     const submitApproved = (id, index) => {
         setApprovedConfirmation({
-            isApproved:true,
-            approvedId:id
-              
+            isApproved: true,
+            approvedId: id
+
         })
         // setSelectedApprovedBtn(index)
         // dispatch(approvedClient(id,role))
     }
 
-    const handleCloseApproveModal=()=>{
+    const handleCloseApproveModal = () => {
         setApprovedConfirmation({
-            isApproved:false,
-            approvedId:null
-              
+            isApproved: false,
+            approvedId: null
+
         })
     }
 
-    const handleTimeSheetApprove=(e)=>{
+    const handleTimeSheetApprove = (e) => {
         e.preventDefault()
-        dispatch(approvedClient(approvedConfirmation?.approvedId ,role,()=>{
+        dispatch(approvedClient(approvedConfirmation?.approvedId, role, () => {
             setApprovedConfirmation({
-                isApproved:false,
-                approvedId:null
-                  
+                isApproved: false,
+                approvedId: null
+
             })
         }))
     }
@@ -123,32 +123,32 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
 
                             <tbody>
 
-                                {data.length>0 ? data?.map((item, index) => {
+                                {data.length > 0 ? data?.map((item, index) => {
                                     return (
                                         <>
                                             <tr>
-                                                <td className="time-table-data"><div className='d-flex gap-2 align-items-center white-nowrap'><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage } className="developer-img" alt="" /> {item?.contractDetails?.user_details?.name}</div></td>
+                                                <td className="time-table-data"><div className='d-flex gap-2 align-items-center white-nowrap'><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage} className="developer-img" alt="" /> {item?.contractDetails?.user_details?.name}</div></td>
                                                 {
                                                     item?.timeReports?.map((reprt) => {
                                                         if (reprt.report_date) {
                                                             return (
                                                                 <>
-                                                                    <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "00:00"}
-                                                                    {reprt?.memo &&<p className='memo-text'>{reprt?.memo?reprt?.memo:""}</p>}
+                                                                    <td onClick={() => handleShow(item, index, reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm:ss').format('h:mm:ss A')} - ${moment(reprt?.end_time, 'HH:mm:ss').format('h:mm:ss A')} ` : "00:00"}
+                                                                        {reprt?.memo && <p className='memo-text'>{reprt?.memo ? reprt?.memo : ""}</p>}
                                                                     </div></td>
                                                                 </>
                                                             )
-                                                        } else if (reprt.month) {
+                                                        } else if (reprt.week) {
                                                             return (
                                                                 <>
-                                                                           <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}</div></td>
+                                                                    <td onClick={() => handleShow(item, index, reprt)} className={`time-table-data white-nowrap ${reprt.is_off_week ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "00:00"}</div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
                                                         } else {
                                                             return (
                                                                 <>
-                                                                           <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}</div></td>
+                                                                    <td onClick={() => handleShow(item, index, reprt)} className={`time-table-data white-nowrap ${reprt.is_off_month ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "00:00"}</div></td>
                                                                     {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                 </>
                                                             )
@@ -156,17 +156,17 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
 
                                                     })
                                                 }
-                                                <td className='time-table-data'>{item?.totalDuration>0?item?.totalDuration.toFixed("2"):item?.totalDuration}hr</td>
+                                                <td className='time-table-data'>{item?.totalDuration > 0 ? item?.totalDuration.toFixed("2") : item?.totalDuration}hr</td>
                                                 {/* <td className="time-table-data white-nowrap">{item?.contractDetails?.employment_type}</td> */}
                                                 <td className="time-table-data">
                                                     <span className={item?.contractDetails?.status ? "status-progress" : "status-finished"}>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>
                                                 </td>
-                                             <td className="time-table-data"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?"View Remarks":"Add Remarks"}</p></td>
-                                            
+                                                <td className="time-table-data"><p onClick={() => handleremarkShow(item, index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length > 0 ? "View Remarks" : "Add Remarks"}</p></td>
+
                                                 {selectedPeriod == "weekly" ? <td className="time-table-data">
                                                     <RexettButton
                                                         type="submit"
-                                                        text={role=="client"? "Submit & Approved":"Submit"}
+                                                        text={role == "client" ? "Submit & Approved" : "Submit"}
                                                         className="outline-main-btn white-nowrap px-2 font-13"
                                                         variant="transparent"
                                                         onClick={() => submitApproved(item?.contractDetails?.contract_id, index)}
@@ -177,7 +177,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                         </>
                                     )
                                 })
-                                :<td colSpan={17}><NoDataFound/></td> }
+                                    : <td colSpan={17}><NoDataFound /></td>}
 
                             </tbody>
 
@@ -187,31 +187,31 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
             </div>
             <Offcanvas className="time-detail-sidepanel" show={show} onHide={handleClose} placement='end'>
                 <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Time Reporting</Offcanvas.Title>
+                    <Offcanvas.Title>Time Reporting</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                  { selectedPeriod == "weekly" && 
-                  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} />
-                  }
-                    
-                {  selectedPeriod == "monthly" &&  
-                    <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>
-                }
+                    {selectedPeriod == "weekly" &&
+                        <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role} />
+                    }
 
-                  {/* { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/> } */}
-                    { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>}
+                    {selectedPeriod == "monthly" &&
+                        <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role} />
+                    }
+
+                    {/* { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/> } */}
+                    {selectedPeriod == "yearly" && <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role} />}
                 </Offcanvas.Body>
             </Offcanvas>
-          {remarkshow ?<TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails}/>:""}
-          <ConfirmationModal
-        text={`Are you sure to Approve this time sheet?`}
-        show={approvedConfirmation?.isApproved}
-        handleClose={handleCloseApproveModal}
-        onClick={handleTimeSheetApprove}
-        smallLoader={approvedLoader}
-      />
+            {remarkshow ? <TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails} role={role} /> : ""}
+            <ConfirmationModal
+                text={`Are you sure to Approve this time sheet?`}
+                show={approvedConfirmation?.isApproved}
+                handleClose={handleCloseApproveModal}
+                onClick={handleTimeSheetApprove}
+                smallLoader={approvedLoader}
+            />
         </div>
-        
+
     )
 }
 

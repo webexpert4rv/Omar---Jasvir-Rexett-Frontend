@@ -4,7 +4,7 @@ import userImage from "../../../assets/img/user-img.jpg"
 import { sendRemarkOnTimeReport } from '../../../redux/slices/adminDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import RexettButton from '../../atomic/RexettButton';
-const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails}) => {
+const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) => {
     let {contractDetails:{user_details,contract_id,remarks}}=currentDetails
     const [addRemark,setRemark]=useState(null);
     const dispatch =useDispatch()

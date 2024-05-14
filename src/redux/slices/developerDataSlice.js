@@ -440,7 +440,7 @@ export function getPreviousTimeReports(payload, callback) {
 export function getAllContracts(payload, callback) {
     return async (dispatch) => {
 
-        dispatch(setSmallLoader())
+        // dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get(`developer/contracts`)
             if (result.status === 200) {
