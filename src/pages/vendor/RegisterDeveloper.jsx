@@ -102,6 +102,7 @@ const RegisterDeveloper = () => {
 
   const [experienceFields, setExperienceFields] = useState([
     {
+      id: 0,
       job_title: "",
       company_name: "",
       start_date: "",
@@ -131,15 +132,13 @@ const RegisterDeveloper = () => {
 
   const handleAppend = () => {
     const expertise = watch("expertise");
-    console.log(expertise, "expertise");
     let index = expertise?.findIndex(
       (item) => item.skill == undefined || item.experience == ""
     );
-    console.log(index, "inde");
     if (index == -1) {
       setExpertiseFields([
         ...expertiseFields,
-        { id: expertise.length + 1, skill: "", experience: "" },
+        { id: expertiseFields?.id + 1, skill: "", experience: "" },
       ]);
     }
   };
@@ -165,7 +164,6 @@ const RegisterDeveloper = () => {
   }
 
   const yearsArray = generateYears();
-
   const onSubmit = (data) => {
     let fileData = new FormData();
     fileData.append("file", file);
@@ -191,25 +189,25 @@ const RegisterDeveloper = () => {
       // profile_picture: url,
       educations: formattedEducationField,
     };
-    // if (data) {
-    //   console.log(data, "formData");
-    //   dispatch(
-    //     filePreassignedUrlGenerate(fileData, (url) => {
-    //       let formData = {
-    //         ...data,
-    //         skills: formattedSkills,
-    //         expertise: formattedExpertise,
-    //         profile_picture: url,
-    //            educations:formattedEducationField
-    //       };
-    //       dispatch(
-    //         getAddNewDeveloper(formData, () => {
-    //           navigate("/vendor-dashboard");
-    //         })
-    //       );
-    //     })
-    //   );
-    // }
+    if (data) {
+      console.log(data, "formData");
+      dispatch(
+        filePreassignedUrlGenerate(fileData, (url) => {
+          let formData = {
+            ...data,
+            skills: formattedSkills,
+            expertise: formattedExpertise,
+            profile_picture: url,
+               educations:formattedEducationField
+          };
+          dispatch(
+            getAddNewDeveloper(formData, () => {
+              navigate("/vendor-dashboard");
+            })
+          );
+        })
+      );
+    }
   };
 
   console.log(expertiseFields, "expertiseFields");
@@ -217,7 +215,6 @@ const RegisterDeveloper = () => {
 
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
-    // to check if any of the field inside experiences array is empty
     const index = experiences?.findIndex(
       ({
         job_title,
@@ -231,10 +228,8 @@ const RegisterDeveloper = () => {
         !job_title ||
         !description ||
         !start_date ||
-        !end_date ||
-        is_still_working === false
+        (!is_still_working && !end_date)
     );
-    // if index is greater than -1 means there is field inside element that is empty
     if (index === -1) {
       const newExperienceField = {
         id: experienceFields.length + 1,
@@ -248,15 +243,17 @@ const RegisterDeveloper = () => {
       setExperienceFields([...experienceFields, newExperienceField]);
     }
   };
+  console.log(experienceFields, "experienceFields----- ");
   const handleDeleteFieldExp = (index, id) => {
-    const experiences = watch("experiences");
-    experiences.splice(index, 1);
-    let expCop = [...experienceFields];
-    expCop.splice(index, 1);
-    // const updatedExperienceFields = experienceFields.filter(
-    //   (field) => field.id !== id
-    // );
-    setExperienceFields(expCop);
+    console.log(index, "--------------------indexx-------");
+    console.log(id, "iddddd--------------");
+    const experiencesCopy = watch("experiences"); // Copy the experiences array
+    const expCop = [...experienceFields]; // Copy the experienceFields array
+    experiencesCopy.splice(index, 1);
+    const updatedExpertFields = expCop.filter((field) => field.id !== parseInt (id));
+
+    // Set the state with the updated arrays
+    setExperienceFields([...updatedExpertFields]);
   };
   const [educationFields, setEducationFields] = useState([
     {
@@ -401,7 +398,6 @@ const RegisterDeveloper = () => {
       })
     );
   };
-
   return (
     <>
       <section className="register-developer card-box">
@@ -914,12 +910,14 @@ const RegisterDeveloper = () => {
                 )
               )}
               <div className="text-end my-3">
-                <Button
-                  className="main-btn py-2 px-3"
-                  onClick={handleAddMoreExp}
-                >
-                  +
-                </Button>
+                <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                  <Button
+                    className="main-btn py-2 px-3"
+                    onClick={handleAddMoreExp}
+                  >
+                    +
+                  </Button>
+                </OverlayTrigger>
               </div>
             </div>
             <h3 className="overview-card-heading border-bottom-grey pb-2 mb-3">
@@ -1252,9 +1250,14 @@ const RegisterDeveloper = () => {
                 )
               )}
               <div className="text-end my-3">
-                <Button className="main-btn py-2 px-3" onClick={handleAddMore}>
-                  +
-                </Button>
+                <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                  <Button
+                    className="main-btn py-2 px-3"
+                    onClick={handleAddMore}
+                  >
+                    +
+                  </Button>
+                </OverlayTrigger>
               </div>
             </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
@@ -1351,12 +1354,14 @@ const RegisterDeveloper = () => {
                 </div>
               ))}
               <div className="text-end mb-3">
-                <Button
-                  className="main-btn py-2 px-3"
-                  onClick={handleAddMoreSocial}
-                >
-                  +
-                </Button>
+                <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                  <Button
+                    className="main-btn py-2 px-3"
+                    onClick={handleAddMoreSocial}
+                  >
+                    +
+                  </Button>
+                </OverlayTrigger>
               </div>
             </div>
             <div className="text-center">

@@ -327,23 +327,23 @@ ul {
 }
 .delete-btn
 {
-    width: 29px;
-    height: 29px;
+    width: 37px;
+    height: 37px;
     font-size: 14px;
-    background-color: #c00;
-    color: #fff;
+    background-color: #FDE0E7;
+    color: #F1416C;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0px;
     border-radius: 50%;
-    border: 1px solid #c00 !important;
-    transition: .4s ease;
+    border: 1px solid #F1416C !important;
+    transition: .4s ease
 }
 .delete-btn:hover
 {
     background-color: transparent;
-    color: #c00;
+    color: #F1416C;
 }
 .pagination-item.active {
     font-weight: bold;
@@ -1213,6 +1213,14 @@ ul {
 .resume-text {
     font-size: 15px;
     color: #121212;
+}
+.resume-text.active {
+    font-size: 15px;
+    color: #121212;
+    background-color: #ead4ab;
+}
+.resume-edit {
+    background-color: #ead4ab; 
 }
 
 .exp-wrapper {
@@ -2116,6 +2124,8 @@ ul {
 .profile-req .grid-text {
     margin-bottom: 6px;
     font-size: 14px;
+    font-weight: 600;
+    color: #037563;
 }
 
 .profile-req .grid-text:not(:last-child):after {
@@ -3113,6 +3123,7 @@ input[type="radio"]:checked {
     font-size: 19px;
     transform: rotate(0deg);
     transition: .4s ease;
+    margin-right: 6px;
 }
 
 .row-arrow.active {
@@ -3182,9 +3193,9 @@ input[type="radio"]:checked {
     padding: 50px 0;
     text-align: center;
     margin-bottom: 40px;
-    background-color: #D3F8D3;
+    background: linear-gradient(to right, #057763, #59cb73);
     /* color: #0E580E; */
-    color: #121212;
+    color: #fff;
     border-radius: 30px;
     transition: .3s ease;
 }
@@ -3203,7 +3214,7 @@ input[type="radio"]:checked {
     background-color: #D3F8D3;
     transition: .3s ease;
 }
-.faq-section.jobposting-active .faq-pill
+/* .faq-section.jobposting-active .faq-pill
 {
     background-color: #d3eef8;
 }
@@ -3214,7 +3225,7 @@ input[type="radio"]:checked {
 .faq-section.askquestion-active .faq-pill
 {
     background-color: #ffe4e4;
-}
+} */
 .faq-pill .faq-link
 {
     color: #121212;
@@ -3223,14 +3234,14 @@ input[type="radio"]:checked {
     border-radius: 15px;
     transition: .3s ease;
 }
-.faq-section.jobposting-active .faq-pill .faq-link.active
+/* .faq-section.jobposting-active .faq-pill .faq-link.active
 {
     background-color: #00719f;
 }
 .faq-section.timereporting-active .faq-pill .faq-link.active
 {
     background-color: #cb6900;
-}
+} */
 .faq-pill .faq-link.active
 {
     background-color: #0E580E;
@@ -3285,21 +3296,21 @@ input[type="radio"]:checked {
 {
     background-color: #d3eef8;
 } */
-.faq-section.jobposting-active .faq-banner
+/* .faq-section.jobposting-active .faq-banner
 {
     background-color: #d3eef8;
-    /* color: #00719f; */
+    color: #00719f;
     color: #121212;
-}
+} */
 /* .faq-section.askquestion-active .faq-accordion-body
 {
     background: #ffe4e4;
 } */
-.faq-section.askquestion-active .faq-banner
+/* .faq-section.askquestion-active .faq-banner
 {
     background-color: #ffe4e4;
     color: #121212;
-}
+} */
 .faq-section.askquestion-active .faq-pill .faq-link.active
 {
     background-color: #b70000;
@@ -3308,12 +3319,12 @@ input[type="radio"]:checked {
 {
     background-color: #f8e9d3;
 } */
-.faq-section.timereporting-active .faq-banner
+/* .faq-section.timereporting-active .faq-banner
 {
     background-color: #f8e9d3;
-    /* color: #cb6900; */
+    color: #cb6900;
     color: #121212;
-}
+} */
 .popup-heading
 {
     font-size: 25px;
@@ -3629,6 +3640,18 @@ input[type="radio"]:checked {
     color: #037563;
     font-size: 14px;
 }
+.weekly-tab-link .number
+{
+    font-size: 12px;
+    color: #037563;
+    background-color: #fff;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
 .weekly-tabs .weekly-tab-item .weekly-tab-link.active
 {
     background-color: #037563;
@@ -3636,7 +3659,7 @@ input[type="radio"]:checked {
 }
 .time-detail-sidepanel
 {
-    width: 450px !important;
+    width: 470px !important;
 }
 .edited-pill
 {
@@ -3762,6 +3785,10 @@ input[type="radio"]:checked {
     background: #037563;
     border-radius: 14px;
     color: #fff;
+}
+.invoice-details .table-ui-custom td
+{
+    background: #f7f7f7;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
