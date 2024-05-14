@@ -22,6 +22,7 @@ import {
   updateProjects,
 } from "../../../redux/slices/developerDataSlice";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
+import moment from "moment";
 
 const createOption = (label) => ({
   label,
@@ -54,107 +55,141 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
     trigger,
     setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      projects: [
+        {
+          project_title: "",
+          project_description: "",
+          tech_stacks_used: "",
+          project_start_date: "",
+          project_end_date: "",
+          project_link: "",
+          role_in_project: "",
+        },
+      ],
+    },
+  });
 
   const { fields, append, remove, replace } = useFieldArray({
     control,
-    name: "test",
+    name: "projects",
   });
-
+  console.log(watch("projects"), "these are project");
   useEffect(() => {
-    if (data) {
-      data?.forEach((item, index) => {
-        console.log(item.project_start_date , "-------------------")
-        append({
-          project_title: item.project_title,
-          project_description: item.project_description,
-          tech_stacks_used: item.tech_stacks_used,
-          project_start_date: item.project_start_date,
-          project_end_date: item.project_end_date,
-          project_link: item.project_link,
-          role_in_project: item.role_in_project
-
-        });
-      });
+    if (data.length) {
+      setValue("projects", data);
     }
+    // else {
+    //   setValue("projects", [
+    //     {
+    //       project_title: "",
+    //       project_description: "",
+    //       tech_stacks_used: "",
+    //       project_start_date: "",
+    //       project_end_date: "",
+    //       // project_link: "",
+    //       role_in_project: "",
+    //     },
+    //   ]);
+    // }
   }, [renderModalData]);
   useEffect(() => {
     // setSkillOptions(skillListMapped);
-      let formattedData = [];
-      formattedData = data?.map((curElem) => {
-        const skill = {
-          label: curElem.skill,
-          value: curElem.skill,
-          id: curElem.id,
-        };
-        return {
-          ...curElem,
-          skill: skill,
-        };
-      });
-      setValue("skills", formattedData)
-   
+    let formattedData = [];
+    formattedData = data?.map((curElem) => {
+      const skill = {
+        label: curElem.skill,
+        value: curElem.skill,
+        id: curElem.id,
+      };
+      return {
+        ...curElem,
+        skill: skill,
+      };
+    });
+    setValue("skills", formattedData);
   }, [dispatch]);
-
-
 
   const onSubmit = (values) => {
     console.log(values, "values-----");
 
+    let { projects } = values;
+    let addExp = projects
+      ?.map((item) => {
+        if (!item.newId) {
+          return { ...item };
+        }
+      })
+      .filter((item) => item);
 
-    let { test } = values
-    let addExp = test?.map((item) => {
-      if (!item.newId) {
-        return { ...item}
-      }
-    }).filter((item) => item)
-  
     let payload = {
       ...values,
       user_id: +id,
     };
     console.log(payload, "payload");
-    dispatch(
-      addProjects(payload, () => {
-        if (role == "developer") {
-          dispatch(fetchDeveloperCv());
-        } else {
-          dispatch(getDeveloperDetails(id));
-        }
-        handleClose();
-      })
-    );
+    // dispatch(
+    //   addProjects(payload, () => {
+    //     if (role == "developer") {
+    //       dispatch(fetchDeveloperCv());
+    //     } else {
+    //       dispatch(getDeveloperDetails(id));
+    //     }
+    //     handleClose();
+    //   })
+    // );
 
-
-
-    test?.forEach((item) => {
+    projects?.forEach((item) => {
       if (item.newId) {
-        console.log(item.newId,"-------------========")
-        dispatch(updateProjects(item, item.newId, () => {
-          if(role=="developer"){
-            dispatch(fetchDeveloperCv())
-          }else{
-            dispatch(getDeveloperDetails(id))
-          }
-          handleClose()
-        }))
+        console.log(item.newId, "-------------========");
+        dispatch(
+          updateProjects(item, item.newId, () => {
+            if (role == "developer") {
+              dispatch(fetchDeveloperCv());
+            } else {
+              dispatch(getDeveloperDetails(id));
+            }
+            handleClose();
+          })
+        );
       }
-    })
+    });
   };
 
   const handleAppend = async () => {
-    const isValid = await trigger();
-    if (isValid) {
+    const index = watch("projects").findIndex(
+      (curElem) =>
+        curElem.project_description === "" ||
+        curElem.project_title === "" ||
+        curElem.tech_stacks_used === "" ||
+        curElem.role_in_project === "" ||
+        // curElem.project_link === "" ||
+        curElem.project_start_date === "" ||
+        curElem.project_end_date === ""
+    );
+    if (index === -1) {
       append({
         project_title: "",
         project_description: "",
         tech_stacks_used: "",
         role_in_project: "",
-        project_link: "",
+        // project_link: "",
         project_start_date: "",
         project_end_date: "",
       });
     }
+    // const isValid = await trigger();
+    // if (isValid) {
+    //   append({
+    //     project_title: "",
+    //     project_description: "",
+    //     tech_stacks_used: "",
+    //     role_in_project: "",
+    //     project_link: "",
+    //     project_start_date: "",
+    //     project_end_date: "",
+    //   });
+    // }
   };
 
   const deleteDeveloperProject = (project_id, index) => {
@@ -172,10 +207,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
         })
       );
     }
-
-   
   };
-  
 
   const onChangeSelect = (val) => {
     setTimeout(() => {
@@ -187,7 +219,6 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
   const deletetooltip = <Tooltip id="tooltip">{t("deleteRow")}</Tooltip>;
   const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
 
-  console.log(fields, "fieldsssss");
   return (
     <Modal
       show={show}
@@ -213,13 +244,13 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     name="name"
                     className="common-field"
                     placeholder="Enter Project Title"
-                    {...register(`test[${index}].project_title`, {
-                      required: "Company name is required",
+                    {...register(`projects.${index}.project_title`, {
+                      required: "Project title is required",
                     })}
                   ></Form.Control>
-                  {errors?.test?.[index]?.project_title && (
+                  {errors?.projects?.[index]?.project_title && (
                     <p className="error-message">
-                      {errors.test[index].project_title.message}
+                      {errors.projects[index].project_title.message}
                     </p>
                   )}
                 </Form.Group>
@@ -233,13 +264,13 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     rows={3}
                     className="common-field"
                     placeholder="Enter Project Description"
-                    {...register(`test[${index}].project_description`, {
+                    {...register(`projects.${index}.project_description`, {
                       required: " Project Description is required",
                     })}
                   />
-                  {errors?.test?.[index]?.project_description && (
+                  {errors?.projects?.[index]?.project_description && (
                     <p className="error-message">
-                      {errors.test[index].project_description.message}
+                      {errors.projects[index].project_description.message}
                     </p>
                   )}
                 </Form.Group>
@@ -251,11 +282,18 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     <Row>
                       <Col md="12">
                         <CreatableSelect
+                          {...register(`projects.${index}.tech_stacks_used`, {
+                            required: "Tech stacks used are required",
+                          })}
                           isMulti
                           isClearable
                           name={selectedOption}
                           onChange={(newValue) => {
                             setSelectedOption(newValue);
+                            setValue(
+                              `projects.${index}.tech_stacks_used`,
+                              newValue
+                            );
                           }}
                           onCreateOption={onChangeSelect}
                           options={skillCate}
@@ -263,6 +301,11 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                         />
                       </Col>
                     </Row>
+                    {errors?.projects?.[index]?.tech_stacks_used && (
+                      <p className="error-message">
+                        {errors.projects[index].tech_stacks_used.message}
+                      </p>
+                    )}
                   </Form.Group>
                   <Form.Group className="mb-4">
                     <Form.Label className="font-14">
@@ -272,14 +315,14 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       name="name"
                       className="common-field"
                       placeholder="Enter your Role In Project"
-                      {...register(`test[${index}].role_in_project`, {
-                        required: " Project Description is required",
+                      {...register(`projects.${index}.role_in_project`, {
+                        required: " Role in project required",
                       })}
                     ></Form.Control>
                     <p className="error-message">
-                      {errors?.test?.[index]?.project_description && (
+                      {errors?.projects?.[index]?.role_in_project && (
                         <p className="error-message">
-                          {errors.test[index]?.project_description.message}
+                          {errors.projects[index]?.role_in_project.message}
                         </p>
                       )}
                     </p>
@@ -292,12 +335,12 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       name="name"
                       className="common-field"
                       placeholder="Enter Project Link"
-                      {...register(`test[${index}].project_link`, {
+                      {...register(`projects[${index}].project_link`, {
                         required: " Project link is required",
                       })}
                     ></Form.Control>
                     <p className="error-message">
-                      {errors.test[index]?.project_link.message}
+                      {errors.projects[index]?.project_link.message}
                     </p>
                   </Form.Group> */}
                   <Row>
@@ -311,12 +354,21 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                           className="common-field"
                           placeholder="Enter Start Date"
                           max={new Date().toISOString().split("T")[0]}
-                          {...register(`test[${index}].start_date`, {
+                          onChange={(e) => {
+                            const formattedDate = moment(e.target.value).format(
+                              "MM/dd/yyyy"
+                            );
+                            setValue(
+                              `projects.${index}.project_start_date`,
+                              formattedDate
+                            );
+                          }}
+                          {...register(`projects.${index}.project_start_date`, {
                             required: "Start Date is required",
                             validate: {
                               dateRange: (value) => {
                                 const endDate = watch(
-                                  `test[${index}].end_date`
+                                  `projects.${index}.end_date`
                                 ); // Get the value of the end date field
                                 if (!endDate || value <= endDate) {
                                   return true;
@@ -326,9 +378,9 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                             },
                           })}
                         />
-                        {errors?.test?.[index]?.start_date && (
+                        {errors?.projects?.[index]?.project_start_date && (
                           <p className="error-message">
-                            {errors.test[index].start_date.message}
+                            {errors.projects[index].project_start_date.message}
                           </p>
                         )}
                       </Form.Group>
@@ -343,21 +395,30 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                           className="common-field"
                           placeholder="Enter End Date"
                           max={new Date().toISOString().split("T")[0]}
-                          {...register(`test[${index}].end_date`, {
+                          {...register(`projects.${index}.project_end_date`, {
                             required: {
                               value: disabledEndDates[index] ? false : true,
                               message: "End Date is required",
                             },
                           })}
+                          onChange={(e) => {
+                            const formattedDate = moment(e.target.value).format(
+                              "MM/dd/yyyy"
+                            );
+                            setValue(
+                              `projects.${index}.project_end_date`,
+                              formattedDate
+                            );
+                          }}
                           disabled={disabledEndDates[index]}
                         />
-                        {errors?.test?.[index]?.end_date && (
+                        {errors?.projects?.[index]?.end_date && (
                           <p className="error-message">
-                            {errors.test[index].end_date.message}
+                            {errors.projects[index].end_date.message}
                           </p>
                         )}
                       </Form.Group>
-                      {index !== 0 && (
+                      {watch("projects").length !== 1 && (
                         <div>
                           <OverlayTrigger
                             placement="bottom"
@@ -366,7 +427,12 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                             <Button
                               variant="danger"
                               className="font-14"
-                              onClick={() => deleteDeveloperProject(index)}
+                              onClick={() => {
+                                deleteDeveloperProject(
+                                  watch(`projects.${index}.id`),
+                                  index
+                                );
+                              }}
                             >
                               <FaTrashAlt />
                             </Button>

@@ -542,7 +542,7 @@ export function deleteProjects(projectId,callback) {
         dispatch(setSmallLoader())
         try {
             let result = await clientInstance.delete(`/developer/delete-developer-project/${projectId}`)
-            toast.success("Project is Deleted", { position: "top-center" })
+            toast.success("Project deleted successfully", { position: "top-center" })
             dispatch(setSuccessActionData())
             return callback();
         } catch (error) {

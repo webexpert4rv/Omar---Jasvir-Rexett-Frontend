@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import resumeImg from "../../../assets/img/user-img.jpg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa6";
 import { MdEditNote, MdEmail } from "react-icons/md";
@@ -17,6 +17,11 @@ import SocialMediaModal from "../Modals/SocialMediaModal";
 import DeveloperDetails from "../Modals/DeveloperDetails";
 import ExpertiseModal from "../Modals/ExpertiseModal";
 import { getSkillList } from "../../../redux/slices/clientDataSlice";
+import RexettButton from "../../atomic/RexettButton";
+import {
+  approvedEditAction,
+  rejectEditAction,
+} from "../../../redux/slices/adminDataSlice";
 import ProjectsModal from "../Modals/ProjectModal";
 
 const SingleDeveloper = ({ data, role }) => {
@@ -29,6 +34,9 @@ const SingleDeveloper = ({ data, role }) => {
   const [readmore, setReadMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
+  let { pathname } = useLocation();
+  let userId = pathname.split("/")[2];
+  console.log(pathname.split("/")[2], "pathj");
 
   useEffect(() => {
     dispatch(getSkillList());
@@ -68,16 +76,17 @@ const SingleDeveloper = ({ data, role }) => {
   const handleShowExpertiseModal = () => {
     setShowExpertiseModal(true);
   };
+
+  const handleCloseExpertiseModal = () => {
+    setShowExpertiseModal(false);
+  };
+
   const [showProjectModal, setShowProjectModal] = useState(false);
   const handleProjectModal = () => {
     setShowProjectModal(true);
   };
   const handleCloseProjectModal = () => {
     setShowProjectModal(false);
-  };
-
-  const handleCloseExpertiseModal = () => {
-    setShowExpertiseModal(false);
   };
 
   const handleCloseEducationModal = () => {
@@ -109,8 +118,14 @@ const SingleDeveloper = ({ data, role }) => {
     setDeveloperDetails(false);
   };
 
+  const approvedEdit = () => {
+    dispatch(approvedEditAction(userId));
+  };
 
-  console.log(data?.developer_projects,"projectssss----------")
+  const rejectEdit = () => {
+    dispatch(rejectEditAction(userId));
+  };
+
   return (
     <>
       {screenLoader ? (
@@ -197,21 +212,6 @@ const SingleDeveloper = ({ data, role }) => {
                         </div>
                       )}
                     </div>
-                    {/* <ul className="social-media">
-                                    {developerDetails?.social_links?.map((item)=>{
-                                        return(
-                                            <>
-                                             <li>
-                                        <Link to={item.url} className="social-media-link">
-                                            {generateSocailLinks(item.slug)}
-                                        </Link>
-                                    </li>
-                                            </>
-                                        )
-                                    })
-                                       }
-
-                                </ul> */}
 
                     <ul className="social-media">
                       <li>
@@ -238,9 +238,6 @@ const SingleDeveloper = ({ data, role }) => {
                           ""
                         )}
                       </li>
-                      {/* <li>
-                                            <Link to={developerDetails?.developer_detail?.email}><MdEmail /></Link>
-                                        </li> */}
                     </ul>
                   </div>
                 </Col>
@@ -262,28 +259,22 @@ const SingleDeveloper = ({ data, role }) => {
                         )}
                       </div>
                       {data?.developer_detail?.bio?.length > 300 ? (
-                        <p className="resume-text">
+                        <p
+                          className={`resume-text ${
+                            data?.developer_detail?.is_edited ? "active" : ""
+                          }  `}
+                        >
                           {readmore &&
                           developerDetails?.developer_detail?.bio?.length >
                             300 ? (
                             <>
                               {data?.developer_detail?.bio.slice(0, 300)}
-                              <span className="readLess" onClick={readMoreLess}>
-                                {" "}
-                                {readmore
-                                  ? "[Read more...]"
-                                  : "[Read Less]"}{" "}
-                              </span>
+                              {/* <span className="readLess" onClick={readMoreLess}> {readmore ? '[Read more...]' : '[Read Less]'} </span> */}
                             </>
                           ) : (
                             <>
                               {data?.developer_detail?.bio}
-                              <span className="readLess" onClick={readMoreLess}>
-                                {" "}
-                                {readmore
-                                  ? "[Read more...]"
-                                  : "[Read Less]"}{" "}
-                              </span>
+                              {/* <span className="readLess" onClick={readMoreLess}> {readmore ? '[Read more...]' : '[Read Less]'} </span> */}
                             </>
                           )}
                         </p>
@@ -311,7 +302,11 @@ const SingleDeveloper = ({ data, role }) => {
                       return (
                         <>
                           <div className="exp-wrapper">
-                            <p className="exp-year">
+                            <p
+                              className={`exp-year ${
+                                item?.is_edited ? "resume-edit" : ""
+                              }`}
+                            >
                               {`${item?.start_date?.slice(0, 4)}-${
                                 item?.is_still_working
                                   ? "Present"
@@ -320,7 +315,11 @@ const SingleDeveloper = ({ data, role }) => {
                               | {item?.job_title}{" "}
                             </p>
                             <ul className="exp-role">
-                              <li className="resume-text">
+                              <li
+                                className={`resume-text ${
+                                  item?.is_edited ? "resume-edit" : ""
+                                }`}
+                              >
                                 {item?.company_name} |{" "}
                                 <span>{item?.description}</span>
                               </li>
@@ -348,16 +347,28 @@ const SingleDeveloper = ({ data, role }) => {
                           return (
                             <React.Fragment key={item.id}>
                               <div className="exp-wrapper">
-                                <p className="exp-year">
+                                <p
+                                  className={`exp-year ${
+                                    item?.is_edited ? "resume-edit" : ""
+                                  }`}
+                                >
                                   {item?.start_year} -{" "}
                                   {item?.end_year ? item?.end_year : "Present"}{" "}
                                   | {item?.Degree?.title}
                                 </p>
                                 <ul className="exp-role">
-                                  <li className="resume-text">
+                                  <li
+                                    className={`resume-text ${
+                                      item?.is_edited ? "resume-edit" : ""
+                                    }`}
+                                  >
                                     {item?.university_name}
                                   </li>
-                                  <li className="resume-text">
+                                  <li
+                                    className={`resume-text ${
+                                      item?.is_edited ? "resume-edit" : ""
+                                    }`}
+                                  >
                                     {item?.Degree?.title}
                                   </li>
                                 </ul>
@@ -399,8 +410,6 @@ const SingleDeveloper = ({ data, role }) => {
                                                             <li className="resume-text">{}</li>
                                                         </ul> */}
                                 </div>
-
-                                {/* <div className="about-info px-4 pt-4"> */}
                               </React.Fragment>
                             );
                           }
@@ -423,46 +432,73 @@ const SingleDeveloper = ({ data, role }) => {
                     {/* </div> */}
                   </div>
                   {data?.developer_projects ? (
-                      <>
-                        {data?.developer_projects?.map(
-                          ({ project_title, project_link,project_start_date,role_in_project ,project_end_date ,tech_stacks_used}, index) => {
-                            return (
-                              <React.Fragment key={index}>
-                                {/* <div className="exp-wrapper expertise-card"> */}
-                                  {/* <p className="exp-year">{} - {} | {}</p> */}
-                                  {/* <img src={skill_icon?.icon_url} /> */}
-                                  <label  >Project Name</label><br></br>
-                                   <p className="expertise-skill">{project_title}</p>
-                                   <label>Project Link</label>
-                                  <p className="expertise-exp">{project_link}</p>
-                                  <label>Project start date</label>
-                                  <p className="expertise-exp">{`${project_start_date?.slice(0, 10)}`}</p>
-                                  <label>Project end date</label>
-                                  <p className="expertise-exp">{`${project_end_date?.slice(0, 10)}`}</p>
-                                  <label>Role in project</label>
-                                  <p className="expertise-exp">{role_in_project}</p>
-                                  <label>Tech Skill Used</label>
-                                  <p className="expertise-exp">{tech_stacks_used}</p> 
-                                  
-
-                                  {/* <ul className="exp-role">
-                                                            <li className="resume-text">{}</li>
-                                                            <li className="resume-text">{}</li>
-                                                        </ul> */}
-                                {/* </div> */}
-
-                                {/* <div className="about-info px-4 pt-4"> */}
-                              </React.Fragment>
-                            );
-                          }
-                        )}
-                      </>
-                    ) : (
-                      ""
-                    )}
-
+                    <>
+                      {data?.developer_projects?.map(
+                        (
+                          {
+                            project_title,
+                            project_link,
+                            project_start_date,
+                            role_in_project,
+                            project_end_date,
+                            tech_stacks_used,
+                          },
+                          index
+                        ) => {
+                          return (
+                            <React.Fragment key={index}>
+                              {/* <div className="exp-wrapper expertise-card"> */}
+                              {/* <p className="exp-year">{} - {} | {}</p> */}
+                              {/* <img src={skill_icon?.icon_url} /> */}
+                              <label>Project Name</label>
+                              <br></br>
+                              <p className="expertise-skill">{project_title}</p>
+                              <label>Project Link</label>
+                              <p className="expertise-exp">{project_link}</p>
+                              <label>Project start date</label>
+                              <p className="expertise-exp">{`${project_start_date?.slice(
+                                0,
+                                10
+                              )}`}</p>
+                              <label>Project end date</label>
+                              <p className="expertise-exp">{`${project_end_date?.slice(
+                                0,
+                                10
+                              )}`}</p>
+                              <label>Role in project</label>
+                              <p className="expertise-exp">{role_in_project}</p>
+                              <label>Tech Skill Used</label>
+                              <p className="expertise-exp">
+                                {tech_stacks_used}
+                              </p>
+                            </React.Fragment>
+                          );
+                        }
+                      )}
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </Col>
               </Row>
+              <RexettButton
+                type="submit"
+                text={t("Accept")}
+                className="main-btn px-4 font-14 fw-semibold"
+                variant="transparent"
+                onClick={approvedEdit}
+                //   disabled={smallLoader}
+                //   isLoading={smallLoader}
+              />
+              <RexettButton
+                type="submit"
+                text={t("Reject")}
+                className="main-btn px-4 font-14 fw-semibold"
+                variant="transparent"
+                onClick={rejectEdit}
+                //   disabled={smallLoader}
+                //   isLoading={smallLoader}
+              />
             </div>
           </section>
           <AboutCV
@@ -471,6 +507,7 @@ const SingleDeveloper = ({ data, role }) => {
             data={data?.developer_detail?.bio}
             id={data?.id}
             role={role}
+            isEdited={data?.developer_detail?.is_edited}
           />
           {showExperienceModal ? (
             <ExperienceCV
@@ -529,7 +566,6 @@ const SingleDeveloper = ({ data, role }) => {
           ) : (
             ""
           )}
-
           <DeveloperDetails
             show={developerDetails}
             handleClose={handleClosDeveloperDetails}
@@ -540,19 +576,18 @@ const SingleDeveloper = ({ data, role }) => {
             smallLoader={smallLoader}
             id={data?.id}
             role={role}
+            isEdited={data?.developer_detail?.is_edited}
           />
-          {showProjectModal ? (
-            <ProjectsModal
-              data={data.developer_projects}
-              show={showProjectModal}
-              handleClose={handleCloseProjectModal}
-              id={data?.id}
-              role={role}
-            />
-          ) : (
-            ""
-          )}
         </>
+      )}
+      {showProjectModal && (
+        <ProjectsModal
+          data={data.developer_projects}
+          show={showProjectModal}
+          handleClose={handleCloseProjectModal}
+          id={data?.id}
+          role={role}
+        />
       )}
     </>
   );
