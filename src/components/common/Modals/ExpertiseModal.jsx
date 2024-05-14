@@ -89,13 +89,7 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
           skill: skill,
         };
       });
-      setValue("skills", formattedData);
-      // let tempData = [];
-      //   tempData = data.map((curElem)=>{
-      //     return {...data,skill:{label :data.skill,value:data.skill}}
-      //  })
-      //  console.log(tempData,"tempData")
-      // setValue("skills",tempData);
+      setValue("skills", formattedData)
     } else {
       setValue("skills", [{ skill: "", experience: "" }]);
     }

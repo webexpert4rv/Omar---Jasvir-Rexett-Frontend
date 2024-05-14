@@ -89,7 +89,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
 
     test?.forEach((item) => {
       if (item.newId) {
-        
+        console.log(item.newId,"-------------========")
         dispatch(updateDeveloperCvExperience(item, item.newId, () => {
           if(role=="developer"){
             dispatch(fetchDeveloperCv())
