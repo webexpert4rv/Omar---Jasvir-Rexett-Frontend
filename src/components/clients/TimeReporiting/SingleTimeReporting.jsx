@@ -38,6 +38,7 @@ const SingleTimeReporting = ({ currentDetails, selectedPeriod, role }) => {
   };
 
   console.log(currentDetails,"weeklyDetails")
+  console.log(role,"role")
   return (
     <>
       {selectedPeriod == "weekly" ? (

@@ -203,15 +203,15 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                     { selectedPeriod == "weekly" && 
-                    <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} />
+                    <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role}  />
                     }
                         
                     {  selectedPeriod == "monthly" &&  
-                        <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>
+                        <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role}/>
                     }
 
                     {/* { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/> } */}
-                        { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>}
+                        { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role}/>}
                     </Offcanvas.Body>
                 </Offcanvas>
             {remarkshow ?<TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails}/>:""}

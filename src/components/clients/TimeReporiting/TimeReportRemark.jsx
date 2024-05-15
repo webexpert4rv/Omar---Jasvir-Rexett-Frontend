@@ -18,7 +18,7 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) =>
         e.preventDefault()
       let payload={
             "contract_id": contract_id,
-            "client_remarks": addRemark
+            "remarks": addRemark
           }
           dispatch(sendRemarkOnTimeReport(payload))
     }
@@ -37,12 +37,12 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) =>
                         <div className='remark-card'>
                         <div className='remark-user'>
                             <div className='d-flex justify-content-between align-items-center gap-2'>
-                                <img src={userImage} /> Client Name
+                                <img src={item?.user?.profile_picture} /> {item?.user?.name}
                             </div>
                             <p>25 Apr, 11:20 AM</p>
                         </div>
                         <div className='remark-content'>
-                            <p>{item?.client_remarks || item?.developer_remarks }</p>
+                            <p>{item?.remark}</p>
                         </div>
                     </div>
                     )
