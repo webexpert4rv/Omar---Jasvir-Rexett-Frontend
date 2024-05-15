@@ -850,17 +850,13 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3} className="mb-3">
+                                        <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("jobTitle")}
+                                              Address
                                             </h3>
                                             <p className="application-text">
-                                              {item?.developer_experiences[0]
-                                                ?.job_title
-                                                ? item?.developer_experiences[0]
-                                                    ?.job_title
-                                                : "Not Mentioned"}
+                                            Not Mentioned
                                             </p>
                                           </div>
                                         </Col>
