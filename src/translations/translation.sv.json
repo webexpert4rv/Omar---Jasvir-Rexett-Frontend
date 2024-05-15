@@ -112,7 +112,7 @@
         "applications": "Ansökningar",
         "engagements": "Engagemang",
         "jobListing": "Jobblista",
-        "revenue": "Inkomst",
+        "stats": "Statistik",
         "connects": "Ansluter",
         "fullStackDeveloper": "Full stack utvecklare",
         "phoneNumber": "Telefonnummer",
@@ -349,7 +349,8 @@
         "projectTitle" : "Projekt Titel",
         "projectLink" : "Projektlänk" ,
         "roleInProject" : "Roll i projektet",
-        "projectTeamSize":"Projektets teamstorlek"
+        "projectTeamSize":"Projektets teamstorlek",
+        "revenue" : "Inkomst"
 
         }
 }

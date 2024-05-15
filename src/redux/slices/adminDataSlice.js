@@ -525,10 +525,9 @@ export function sendRemarkOnTimeReport(payload) {
         dispatch(setBtnLoader())
         try {
             let result = await clientInstance.post(`common/add-time-report-remark`,{...payload})
-            if (result.status === 200) {
                 toast.success("Remark has been added", { position: "top-center" })
               dispatch(setSuccessAdminData())
-            }
+            
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })

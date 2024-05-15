@@ -38,9 +38,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                             <li className="sidebar-item">
                                 <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">{t("applications")} </span></NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={"/engagements"} className="side-link" activeClassName="active"><PiUsersFourFill /> {t("engagements")}</NavLink>
-                            </li>
+                            </li> */}
                             <li className="sidebar-item">
                                 <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> {t("jobListing")}</NavLink>
                             </li>
@@ -54,7 +54,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/admin-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
+                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("stats")} / Invoice</NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><BsToggles /> {t("accountDeletionRequest")}</NavLink>

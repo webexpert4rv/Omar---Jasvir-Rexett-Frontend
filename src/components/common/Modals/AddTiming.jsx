@@ -38,6 +38,8 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
     (state) => state.developerData
   );
 
+  console.log(addTimeReports,"addTimeReports")
+
   useEffect(() => {
     dispatch(getAllContracts());
   }, []);
@@ -78,7 +80,6 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
   useEffect((formattedDate) => {
     if (timeReportingData?.length > 0) {
       timeReportingData?.forEach((item) => {
-        // const currrentDate = selectedFilter?.length > 0 ? item?.report_date :formattedDate ;
         append({
           report_date: item?.report_date,
           is_off_day: true,
@@ -271,7 +272,7 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
                   <p style={{ color: 'red' }}>{t("enterClientName")}</p>
                 ) : ""}
                  
-                  <div className="text-center mt-2">
+                  {currentAction=="Edit" &&<div className="text-center mt-2">
                     <RexettButton
                       type="submit"
                       text="Get Previous Time Report"
@@ -281,12 +282,12 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
                       isLoading={btnLoader}
                     />
 
-                  </div>
+                  </div>}
                 
                 
               </Col>
             </Row>
-            {!open && currentAction!=="Edit" ? fields?.map((item, index) => {
+            {(!open && currentAction!=="Edit") || addTimeReports?.length>0 ? fields?.map((item, index) => {
               return (
                 <>
                   <div className="time-row">
@@ -401,7 +402,7 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
             }) :
               ""}
             <div className="text-center">
-              {!open ? <RexettButton
+              {addTimeReports?.length>0  || (timeReportingData.length>0 &&  currentAction!=="Edit")  ? <RexettButton
                 type="submit"
                 text="Submit"
                 className="main-btn py-2 px-4 font-14 fw-semibold"

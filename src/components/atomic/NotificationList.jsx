@@ -70,7 +70,7 @@ const NotificationList = ({ job, doc }) => {
         <Tabs
           defaultActiveKey="allNotifications"
           id="justify-tab-example"
-          className="mb-3 notification-tabs"
+          className="mb-3 notification-tabs notify-tabs"
           justify
           onSelect={handleSelect}
         >

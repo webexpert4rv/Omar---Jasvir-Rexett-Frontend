@@ -93,8 +93,7 @@ const DeveloperList = () => {
 
     }
 
-
-    return (
+   return (
         <>
 
             <div>
@@ -136,7 +135,7 @@ const DeveloperList = () => {
                         </div>
 
                         <div className="flex-none">
-                            <Form.Control type="text" className="shadow-none" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
+                            <Form.Control type="text" className="shadow-none search-dev-field" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
                         </div>
                         <div>
                             <Button variant="transparent" className="main-btn px-3 py-2 font-14" onClick={handleClear}>{t("clear")}</Button>
@@ -228,14 +227,13 @@ const DeveloperList = () => {
                                                     <td>
                                                         <ul className="social-icons mb-0 justify-content-start">
                                                             <li>
-                                                                {value?.developer_detail?.github_url ? <Link to={`${value?.developer_detail?.github_url}`}><FaGithub /></Link> : ""}
+                                                               <Link to={`${value?.developer_detail?.github_url}`} className={value?.developer_detail?.github_url ? "" : "disable-cursor"} onClick = {(e) => e.stopPropagation()}><FaGithub /></Link> 
+                                                             
                                                             </li>
                                                             <li>
-                                                                {value?.developer_detail?.linkedin_url ? <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link> : ""}
+                                                              <Link to={`${value?.developer_detail?.linkedin_url}`  } className={value?.developer_detail?.linkedin_url ? "" : "disable-cursor"}  onClick = {(e) => e.stopPropagation()}><FaLinkedin /></Link>
+                                                               
                                                             </li>
-                                                            {/* <li>
-                                                                <Link to={`${value?.email}`}><MdEmail /></Link>
-                                                            </li> */}
                                                         </ul>
                                                     </td>
                                                 </tr>
