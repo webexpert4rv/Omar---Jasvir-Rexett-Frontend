@@ -160,7 +160,6 @@ const DeveloperList = () => {
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
                             {assignedDeveloper?.developers?.length > 0 ? assignedDeveloper?.developers?.map((item, index) => {
-                                console.log(item, "item")
                                 return (
                                     <>
                                         <div className="developer-card" onClick={() => handleCardClick(item?.id)}>
@@ -174,10 +173,11 @@ const DeveloperList = () => {
                                                 <p className="email-user">{item?.email}</p>
                                                 <ul className="social-icons">
                                                     <li>
-                                                        {item?.developer_detail?.github_url ? <Link to={`${item?.developer_detail?.github_url}`}><FaGithub /></Link> : ""}
+                                                    <Link to={`${item?.developer_detail?.github_url}`} className={item?.developer_detail?.github_url ? "" : "disable-cursor"} onClick = {(e) => e.stopPropagation()}><FaGithub /></Link> 
+                                                             
                                                     </li>
                                                     <li>
-                                                        {item?.developer_detail?.linkedin_url ? <Link to={`${item?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link> : ""}
+                                                    <Link to={`${item?.developer_detail?.linkedin_url}`  } className={item?.developer_detail?.linkedin_url ? "" : "disable-cursor"}  onClick = {(e) => e.stopPropagation()}><FaLinkedin /></Link>
                                                     </li>
                                                     {/* <li>
                                                         <Link to={`${item?.email}`}><MdEmail /></Link>
