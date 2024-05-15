@@ -356,7 +356,7 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3} className="mb-3">
+                                       { <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Company Tax id
@@ -365,7 +365,7 @@ const Applications = () => {
                                               {item?.company_tax_id}
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col>}
                                         {/* <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
