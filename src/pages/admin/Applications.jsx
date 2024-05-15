@@ -558,8 +558,8 @@ const Applications = () => {
                                           <IoCloseOutline />
                                         )
                                       }
-                                      className="arrow-btn"
-                                      variant={"danger"}
+                                      className="arrow-btn danger-arrow"
+                                      variant={"transparent"}
                                       onClick={(e) =>
                                         handleClick(
                                           e,
@@ -811,8 +811,7 @@ const Applications = () => {
                                           <IoCloseOutline />
                                         )
                                       }
-                                      className="arrow-btn"
-                                      variant={"danger"}
+                                      className="arrow-btn danger-arrow"
                                       onClick={(e) =>
                                         handleClick(
                                           e,

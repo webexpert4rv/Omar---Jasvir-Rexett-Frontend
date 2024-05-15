@@ -10,10 +10,10 @@ const StartDayModal = ({ show, handleClose }) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <h3 className="popup-heading">Are you sure want to start your day?</h3>
+                    <h3 className="popup-heading">Are you want to CheckIn?</h3>
                     <div className="text-center">
-                        <Button variant="transparent" onClick={handleClose} className="main-btn outline-main-btn px-4 me-2 font-14 fw-semibold">No</Button>
-                        <Button variant="transparent" onClick={handleClose} className="main-btn px-4 font-14 fw-semibold">Yes</Button>
+                        <Button variant="transparent" onClick={()=>handleClose("no")} className="main-btn outline-main-btn px-4 me-2 font-14 fw-semibold">No</Button>
+                        <Button variant="transparent" onClick={()=>handleClose("yes")} className="main-btn px-4 font-14 fw-semibold">Yes</Button>
                     </div>
                 </Modal.Body>
             </Modal>
