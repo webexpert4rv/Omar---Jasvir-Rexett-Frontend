@@ -22,13 +22,13 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
   const currentStatusCssClass = (status) => {
     switch (status) {
       case "ended":
-        return "endcontract";
+        return "status-rejected";
       case "Initiated":
-        return "inprogress";
+        return "status-progress";
       case "completed":
-        return "completed";
+        return "status-finished";
       case "published":
-        return "completed";
+        return "status-finished";
       case "Unpublished":
           return "unpublished";
       default:
@@ -76,7 +76,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                 <div className="status-wrapper">
                   <div>
                     <p
-                      className={`status-text ${currentStatusCssClass(
+                      className={`${currentStatusCssClass(
                         item?.status
                       )}`}
                     >
@@ -89,7 +89,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
 
                   <Link
                     to={`/admin-single-job/${item?.id}`}
-                    className="px-3 mb-2 main-btn text-decoration-none"
+                    className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                   >
                     <FaEye />
                   </Link>

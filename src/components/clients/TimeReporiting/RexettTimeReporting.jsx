@@ -52,11 +52,11 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
     };
     dispatch(timeReporting(filterData, role));
   }, [page]);
-  
 
   const handlePeriodChange = (value) => {
     setSelectedView(value);
     const selectedPeriodValue = value;
+    console.log(selectedPeriodValue, "selectedPeriodValue");
     setSelectedPeriod(selectedPeriodValue);
     let filterData = {
       ...selectedFilter,
@@ -76,7 +76,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
   };
 
   const handleChange = (e, select) => {
-    const selectedValue= e.target.value;
+    const selectedValue = e.target.value;
     e.preventDefault();
     setSelectedFilter({
       ...selectedFilter,
@@ -144,10 +144,10 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                     <Form.Select
                       className="time-filter-select shadow-none"
                       onChange={(e) => handleChange(e, "year")}
-                      value= {selectedYear}
+                      value={selectedYear}
                     >
                       <option value="" disabled selected>
-                       { t("selectYear")}
+                        {t("selectYear")}
                       </option>
                       <option value="2024">2024</option>
                       <option value="2023">2023</option>
@@ -228,8 +228,26 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                 </div>
               </Form>
               <div>
-              {role === "developer" ?<Button variant="transparent" onClick={()=>handleShowModal("Edit")} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button>:""}
-              <Button variant="transparent" onClick={()=>handleShowModal("AddTime")} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `${t("editTimeReport")}` : `${t("addBulkTime")}`}</Button>
+                {role === "developer" ? (
+                  <Button
+                    variant="transparent"
+                    onClick={() => handleShowModal("Edit")}
+                    className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2"
+                  >
+                    {role === "client" ? `` : `${t("editTimeReport")}`}
+                  </Button>
+                ) : (
+                  ""
+                )}
+                <Button
+                  variant="transparent"
+                  onClick={() => handleShowModal("AddTime")}
+                  className="outline-main-btn px-xxl-4 px-3 py-1_5"
+                >
+                  {role === "client"
+                    ? `${t("editTimeReport")}`
+                    : `${t("addBulkTime")}`}
+                </Button>
               </div>
             </div>
             <div className="d-flex justify-content-between align-items-center mt-3">

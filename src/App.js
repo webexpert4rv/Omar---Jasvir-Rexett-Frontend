@@ -73,6 +73,7 @@ import TimeReportingDetail from './pages/admin/SingleTimeReporting';
 import DeveloperUpdatedCV from './pages/developer/DeveloperUpdatedCV';
 import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
 import ContactSupport from './pages/views/ContactSupport';
+import DeveloperInvoice from './pages/developer/DeveloperInvoice';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -126,6 +127,7 @@ function App() {
           <Route path="/developer-updated-cv" exact element={<DeveloperDashboardLayout><DeveloperUpdatedCV /></DeveloperDashboardLayout>} />
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
+          <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
           <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
           <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
