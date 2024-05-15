@@ -354,7 +354,6 @@ export function deleteEducationCv(id,payload, callback) {
 }
 
 export function updateDeveloperSkills(payload, callback,method ="post") {
-    console.log(payload,"skillspayload")
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
@@ -553,11 +552,11 @@ export function deleteProjects(projectId,callback) {
         }
     };
 }
-export function updateProjects(projectId,callback) {
+export function updateProjects(projectId,payload,callback) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.post(`/developer/update-developer-project/${projectId}`)
+            let result = await clientInstance.post(`/developer/update-developer-project?projectId=${projectId}`,payload)
             toast.success("Project is updated", { position: "top-center" })
             dispatch(setSuccessActionData())
             return callback();
