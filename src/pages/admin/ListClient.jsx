@@ -73,6 +73,9 @@ const ListClient = () => {
                                     <thead>
                                         <tr>
                                             <th><span>{t("clientName")}</span></th>
+                                            <th><span>Company/Individual</span></th>
+                                            <th><span>Phone Number</span></th>
+                                            <th><span>Address</span></th>
                                             <th><span>{t("email")}</span></th>
                                         </tr>
                                     </thead>
@@ -86,6 +89,17 @@ const ListClient = () => {
                                                                 <img src={val.profile_picture ? val.profile_picture : userImg} />
                                                                 <h3 className="user-name color-121212 mb-0">{val?.name}</h3>
                                                             </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="associate-text">
+                                                                <span className="associate">Individual</span>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="font-14">+1234567890</span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="font-14">20 Cooper Square, New York, NY 10003, USA</span>
                                                         </td>
                                                         <td>
                                                             <span>

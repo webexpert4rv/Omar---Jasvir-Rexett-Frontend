@@ -131,7 +131,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                         return (
                                             <>
                                                 <tr>
-                                                    <td className="time-table-data"><div className='d-flex gap-2 align-items-center white-nowrap'><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage } className="developer-img" alt="" /> {item?.contractDetails?.user_details?.name}</div></td>
+                                                    <td className="time-table-data">
+                                                        <div className="d-flex align-items-center gap-2">
+                                                            <div className='d-flex gap-2 align-items-center white-nowrap'><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage } className="developer-img" alt="" /> {item?.contractDetails?.user_details?.name}</div>
+                                                            <span className="number-count">1</span>
+                                                        </div>
+                                                    </td>
                                                     {
                                                         item?.timeReports?.map((reprt) => {
                                                             if (reprt.report_date) {
@@ -168,7 +173,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                     <td className="time-table-data">
                                                         <span className="status-progress">Under Review</span>
                                                     </td>
-                                                <td className="time-table-data"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?"View Remarks":"Add Remarks"}</p></td>
+                                                <td className="time-table-data"><div className="d-flex gap-1 align-items-center"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?"View Remarks":"Add Remarks"}</p><span className="number-count">1</span></div></td>
                                                 
                                                     {selectedPeriod == "weekly" ? <td className="time-table-data">
                                                         <RexettButton

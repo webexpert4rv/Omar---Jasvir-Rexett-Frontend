@@ -17,6 +17,7 @@ import DeveloperDetails from "../Modals/DeveloperDetails";
 import ExpertiseModal from "../Modals/ExpertiseModal";
 import { getSkillList } from "../../../redux/slices/clientDataSlice";
 import RexettButton from "../../atomic/RexettButton";
+import { FiExternalLink } from "react-icons/fi";
 import {
     approvedEditAction,
     rejectEditAction,
@@ -340,6 +341,32 @@ const SingleDeveloper = ({ data, role }) => {
                                                                 <span>{item?.description}</span>
                                                             </li>
                                                         </ul>
+                                                        <div className="exp-timeline">
+                                                            <div className="sub-exp">
+                                                                <div>
+                                                                    <h4 className="role-text">Team Lead </h4>
+                                                                    <p className="exp-date">Apr 2017 - Apr 2018</p>
+                                                                    <p className="loc-text">SAS Nagar, Punjab, India</p>
+                                                                    <p className="exp-desc">Worked as Team Lead to deliver quality work. Responsible for the end product to meet quality requirements within deliveries.</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="sub-exp">
+                                                                <div>
+                                                                    <h4 className="role-text">Team Lead </h4>
+                                                                    <p className="exp-date">Apr 2017 - Apr 2018</p>
+                                                                    <p className="loc-text">SAS Nagar, Punjab, India</p>
+                                                                    <p>Worked as Team Lead to deliver quality work. Responsible for the end product to meet quality requirements within deliveries.</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="sub-exp currently">
+                                                                <div>
+                                                                    <h4 className="role-text">Team Lead </h4>
+                                                                    <p className="exp-date">Apr 2017 - Apr 2018</p>
+                                                                    <p className="loc-text">SAS Nagar, Punjab, India</p>
+                                                                    <p>Worked as Team Lead to deliver quality work. Responsible for the end product to meet quality requirements within deliveries.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </>
                                             );
@@ -433,65 +460,88 @@ const SingleDeveloper = ({ data, role }) => {
                                                 ""
                                             )}
                                         </div>
-                                        <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
-                                            <h3 className="subheading-resume mb-0">{t("projects")}</h3>
-                                            {role !== "client" && (
-                                                <div
-                                                    className="add_more_section_education pointer"
-                                                    onClick={handleProjectModal}
-                                                >
-                                                    <MdEditNote size={25} />
-                                                </div>
-                                            )}
+                                        <div>
+                                            <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-3">
+                                                <h3 className="subheading-resume mb-0">{t("projects")}</h3>
+                                                {role !== "client" && (
+                                                    <div
+                                                        className="add_more_section_education pointer"
+                                                        onClick={handleProjectModal}
+                                                    >
+                                                        <MdEditNote size={25} />
+                                                    </div>
+                                                )}
+                                            </div>
                                             {/* </div> */}
-                                            {data?.developer_projects ? (
-                                                <>
-                                                    {data?.developer_projects?.map(
-                                                        (
-                                                            {
-                                                                project_title,
-                                                                project_link,
-                                                                project_start_date,
-                                                                role_in_project,
-                                                                project_end_date,
-                                                                tech_stacks_used,
-                                                            },
-                                                            index
-                                                        ) => {
-                                                            return (
-                                                                <React.Fragment key={index}>
-                                                                    {/* <div className="exp-wrapper expertise-card"> */}
-                                                                    {/* <p className="exp-year">{} - {} | {}</p> */}
-                                                                    {/* <img src={skill_icon?.icon_url} /> */}
-                                                                    <label>Project Name</label>
-                                                                    <br></br>
-                                                                    <p className="expertise-skill">{project_title}</p>
-                                                                    <label>Project Link</label>
-                                                                    <p className="expertise-exp">{project_link}</p>
-                                                                    <label>Project start date</label>
-                                                                    <p className="expertise-exp">{`${project_start_date?.slice(
-                                                                        0,
-                                                                        10
-                                                                    )}`}</p>
-                                                                    <label>Project end date</label>
-                                                                    <p className="expertise-exp">{`${project_end_date?.slice(
-                                                                        0,
-                                                                        10
-                                                                    )}`}</p>
-                                                                    <label>Role in project</label>
-                                                                    <p className="expertise-exp">{role_in_project}</p>
-                                                                    <label>Tech Skill Used</label>
-                                                                    <p className="expertise-exp">
-                                                                        {tech_stacks_used}
-                                                                    </p>
-                                                                </React.Fragment>
-                                                            );
-                                                        }
-                                                    )}
-                                                </>
-                                            ) : (
-                                                ""
-                                            )}
+                                            <div>
+                                                {data?.developer_projects ? (
+                                                    <>
+                                                        {data?.developer_projects?.map(
+                                                            (
+                                                                {
+                                                                    project_title,
+                                                                    project_link,
+                                                                    project_start_date,
+                                                                    role_in_project,
+                                                                    project_end_date,
+                                                                    tech_stacks_used,
+                                                                },
+                                                                index
+                                                            ) => {
+                                                                return (
+                                                                    <React.Fragment key={index}>
+                                                                        <div className="project-wrapper">
+                                                                            {/* <div className="exp-wrapper expertise-card"> */}
+                                                                            {/* <p className="exp-year">{} - {} | {}</p> */}
+                                                                            {/* <img src={skill_icon?.icon_url} /> */}
+                                                                            <div className="d-flex justify-content-between align-items-start mb-1">
+                                                                                <div>
+                                                                                    <p className="project-title mb-1">{project_title}</p>
+                                                                                    <p className="project-role mb-0">{role_in_project}</p>
+                                                                                </div>
+                                                                                <div className="d-flex align-items-center gap-2 project-date-wrapper status-finished">
+
+                                                                                    <p className="project-date mb-0">{`${project_start_date?.slice(
+                                                                                        0,
+                                                                                        10
+                                                                                    )}`}</p> -
+                                                                                    <p className="project-date mb-0">{`${project_end_date?.slice(
+                                                                                        0,
+                                                                                        10
+                                                                                    )}`}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="my-2">
+                                                                                <a href={project_link} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">Show Project <FiExternalLink /></a>
+                                                                            </div>
+                                                                            {/* <label>Tech Skill Used</label> */}
+                                                                            <p className="expertise-exp tech-stacks mb-0">
+                                                                                {tech_stacks_used}
+                                                                            </p>
+                                                                            <ul className="skills-pill text-start">
+                                                                                <li>
+                                                                                    <span>Ruby on rails</span>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <span>Django</span>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <span>React Native</span>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <span>Nest.js</span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </React.Fragment>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </>
+                                                ) : (
+                                                    ""
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </Col>

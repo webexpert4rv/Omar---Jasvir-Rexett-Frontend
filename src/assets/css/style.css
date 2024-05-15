@@ -16,7 +16,10 @@ body {
     padding: 0;
     background: #f6f4f4;
 }
-
+h1, h2, h3, h4, h5, h6, p
+{
+    overflow-wrap: anywhere;
+}
 img {
     width: 100%;
 }
@@ -1294,6 +1297,7 @@ ul {
     color: var(--white);
     background: var(--primary-color);
     border-radius: 6px;
+    font-size: 14px;
 }
 
 .bars-btn {
@@ -3977,6 +3981,10 @@ input[type="radio"]:checked {
 {
     width: 18px;
 }
+.download-btn:hover
+{
+    background-color: #037563 !important;
+}
 .helper-text-section
 {
     font-size: 13px;
@@ -4034,6 +4042,104 @@ input[type="radio"]:checked {
     font-weight: 600;
     margin-bottom: 0px;
     color: #cc0000;
+}
+.project-wrapper
+{
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+.project-wrapper .project-title
+{
+    font-size: 18px;
+    font-weight: 600;
+}
+.project-wrapper .project-date
+{
+    font-size: 13px;
+}
+.project-role
+{
+    font-size: 12px;
+    display: inline-block;
+    color: #121212;
+    padding: 3px 10px;
+    background: #f4f4f5;
+    border-radius: 10px;
+}
+.exp-timeline
+{
+    margin-top: 20px;
+}
+.role-text
+{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1;
+}
+.exp-timeline .exp-date
+{
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #646464;
+}
+.exp-timeline .loc-text
+{
+    font-size: 14px;
+    color: #646464;
+    max-block-size: 10px;
+}
+.exp-timeline .exp-desc
+{
+    font-size: 15px;
+    margin-bottom: 0px;
+}
+.exp-timeline .sub-exp
+{
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 16px;
+}
+.exp-timeline .sub-exp::before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #d3d3d3;
+    border: 1px solid #fff;
+}
+.exp-timeline .sub-exp::after
+{
+    content: '';
+    position: absolute;
+    top: 17px;
+    left: 4px;
+    width: 1px;
+    height: calc(100% - 8px);
+    border: 1px solid #d3d3d3;
+}
+.exp-timeline .sub-exp.currently::after
+{
+    height: calc(100% - 18px);
+    border: 1px dashed #d3d3d3;
+}
+.number-count
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    height: 20px;
+    font-size: 12px;
+    background-color: #037563;
+    color: #fff;
+    border-radius: 20px;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
