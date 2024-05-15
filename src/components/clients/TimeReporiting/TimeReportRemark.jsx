@@ -39,7 +39,9 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) =>
                             <div className='d-flex justify-content-between align-items-center gap-2'>
                                 <img src={item?.user?.profile_picture} /> {item?.user?.name}
                             </div>
-                            <p>25 Apr, 11:20 AM</p>
+                            {/* <p>25 Apr, 11:20 AM</p> */}
+                            <p>{item.created_at?.slice(0,10)}</p>
+                            
                         </div>
                         <div className='remark-content'>
                             <p>{item?.remark}</p>
