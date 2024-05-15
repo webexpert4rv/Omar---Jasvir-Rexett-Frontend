@@ -27,7 +27,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null)
   }, [newJobPost]);
 
-  console.log(notificationList,"notificationList")
 
   useEffect(() => {
     if (newJobPost !== null) {
@@ -74,7 +73,9 @@ const Notification = ({ route, job, doc, timeReport }) => {
     socket.on("time_report_added_" + userId, (jobPost) => {
       setNewJobPost(jobPost);
     });
-
+    socket.on("addedRemark_" + userId, (jobPost) => {
+      setNewJobPost(jobPost);
+    });
     socket.on("disconnect", () => {
       console.log("Disconnected from Socket.IO server");
     });

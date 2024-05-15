@@ -84,7 +84,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                     </p>
                   </div>
                   <p className="font-15">
-                    Posted Date:<strong>{item.created_at.slice(0, 10)}</strong>
+                    Posted Date: <strong>{item.created_at.slice(0, 10)}</strong>
                   </p>
 
                   <Link

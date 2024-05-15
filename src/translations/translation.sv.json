@@ -350,7 +350,8 @@
         "projectLink" : "Projektlänk" ,
         "roleInProject" : "Roll i projektet",
         "projectTeamSize":"Projektets teamstorlek",
-        "revenue" : "Inkomst"
+        "revenue" : "Inkomst",
+        "postedDate" : "Postat datum"
 
         }
 }
