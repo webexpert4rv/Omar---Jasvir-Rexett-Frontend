@@ -4,7 +4,8 @@ import userImage from "../../../assets/img/user-img.jpg"
 import { sendRemarkOnTimeReport } from '../../../redux/slices/adminDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import RexettButton from '../../atomic/RexettButton';
-const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) => {
+import { timeReporting } from '../../../redux/slices/clientDataSlice';
+const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role,page}) => {
     let {contractDetails:{user_details,contract_id,remarks}}=currentDetails
     const [addRemark,setRemark]=useState(null);
     const dispatch =useDispatch()
@@ -14,13 +15,18 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) =>
         setRemark(e.target.value)
     }
 
-    const handleRemarkSend=(e)=>{
+    const handleRemarkSend=async(e)=>{
         e.preventDefault()
       let payload={
             "contract_id": contract_id,
-            "client_remarks": addRemark
+            "remarks": addRemark
           }
-          dispatch(sendRemarkOnTimeReport(payload))
+         await dispatch(sendRemarkOnTimeReport(payload))
+         let filterData={
+            page:page
+         }
+         dispatch(timeReporting(filterData, role));
+         handleremarkClose()
     }
 
   return (
@@ -37,12 +43,14 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) =>
                         <div className='remark-card'>
                         <div className='remark-user'>
                             <div className='d-flex justify-content-between align-items-center gap-2'>
-                                <img src={userImage} /> Client Name
+                                <img src={item?.user?.profile_picture} /> {item?.user?.name}
                             </div>
-                            <p>25 Apr, 11:20 AM</p>
+                            {/* <p>25 Apr, 11:20 AM</p> */}
+                            <p>{item.created_at?.slice(0,10)}</p>
+                            
                         </div>
                         <div className='remark-content'>
-                            <p>{item?.client_remarks || item?.developer_remarks }</p>
+                            <p>{item?.remark}</p>
                         </div>
                     </div>
                     )

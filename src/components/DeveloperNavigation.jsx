@@ -19,15 +19,22 @@ const DeveloperNavigation = ({ onClick }) => {
   const [showStartDay, setShowStartDay] = useState(false);
   const [showTimeReport, setShowTimeReport] = useState(false);
   const [isColorfulChecked, setIsColorfulChecked] = useState(false);
+  const [checked , setChecked] = useState(false)
 
 
-  const handleCloseEndDay = () => {
-    setIsColorfulChecked(true);
-  };
+  // const handleCloseEndDay = () => {
+  //   setIsColorfulChecked(true);
+  // };
 
-  const handleCloseStartDay = () => {
+  const handleCloseStartDay = (text) => {
     setIsColorfulChecked(false);
+    if(text==="yes"){
+      setChecked(!checked)
+    }
   };
+
+  const handleCheckout=(values)=>{
+  }
 
   const handleTimeReport = () => {
     setShowTimeReport(true);
@@ -38,7 +45,7 @@ const DeveloperNavigation = ({ onClick }) => {
   };
 
   const handleColorfulChange = (e) => {
-    setIsColorfulChecked(e.target.checked);
+    setIsColorfulChecked(true);
   };
 
   return (
@@ -64,7 +71,7 @@ const DeveloperNavigation = ({ onClick }) => {
                 type="checkbox"
                 role="switch"
                 className="colorful"
-                checked={isColorfulChecked}
+                checked={checked}
                 onChange={handleColorfulChange}
               />
               <span className="checkin-text">CheckIn</span>
@@ -83,10 +90,10 @@ const DeveloperNavigation = ({ onClick }) => {
       <div className="rotate-text">
         <marquee>Please CheckIn to start the day</marquee>
       </div>
-      {/* {
-        isColorfulChecked?<StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} />
-        : <EndDayModal show={isColorfulChecked} handleClose={handleCloseEndDay} />
-      } */}
+      {
+        isColorfulChecked    &&  <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout}  />
+        // : <EndDayModal show={isColorfulChecked} handleClose={handleCloseEndDay} />
+      }
       
      
       <SubmitTimeReport

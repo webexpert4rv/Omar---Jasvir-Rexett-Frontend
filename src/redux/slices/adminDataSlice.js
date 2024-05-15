@@ -336,6 +336,24 @@ export function allApplicationsList(payload) {
     };
 }
 
+export function allMemberList(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(generateApiUrl(payload, `admin/members`))
+            if (result.status === 200) {
+                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
+                dispatch(setSuccessApplicationList(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
 export function adminEngagementList(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
@@ -475,11 +493,11 @@ export function getAccountEnableDisable() {
         }
     };
 }
-export function getDeletionByAdmin(role , id) {
+export function getAccountDisableEnable(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`/admin/delete-user/${role}/${id}`)
+            let result = await clientInstance.post(`/common/enable-disable-user`,{...payload})
         } catch (error) {
             console.log(error,"errrrr")
         }

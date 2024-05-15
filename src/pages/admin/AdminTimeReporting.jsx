@@ -10,6 +10,7 @@ import { getClientList } from "../../redux/slices/vendorDataSlice";
 import { useTranslation } from "react-i18next";
 import { IoSearch } from "react-icons/io5";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import { useNavigate } from "react-router-dom";
 
 
 const AdminTimeReporting = () => {
@@ -20,6 +21,7 @@ const AdminTimeReporting = () => {
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
     const { t } = useTranslation()
+    const navigate=useNavigate()
 
 
     useEffect(() => {
@@ -78,6 +80,10 @@ const AdminTimeReporting = () => {
 
     const handleClientClick = (e) => {
         dispatch(adminTimeReporting(e))
+    }
+    
+    const redirectToTimeReporting=()=>{
+        navigate("/time-reporting-detail")
     }
     return (
         <>
@@ -144,7 +150,7 @@ const AdminTimeReporting = () => {
                                         developerData?.map((item, index) => {
                                             return (
                                                 <>
-                                                    <tr className="row-hover">
+                                                    <tr className="row-hover" onClick={redirectToTimeReporting}>
                                                         <td className="time-table-data">{item?.client_details?.name}</td>
                                                         <td className="time-table-data">{item?.contracts?.length}</td>
                                                         <td className="time-table-data">5</td>

@@ -15,8 +15,9 @@ import moment from 'moment';
 import SingleTimeReporting from './SingleTimeReporting';
 import TimeReportRemark from './TimeReportRemark';
 import ConfirmationModal from '../../../pages/views/Modals/ConfirmationModal';
+import { timeReporting } from '../../../redux/slices/clientDataSlice';
 
-const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
+const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
     const [show, setShow] = useState(false);
     const [approvedConfirmation, setApprovedConfirmation] = useState({
         isApproved: false,
@@ -80,8 +81,15 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                 approvedId: null
 
             })
+            let filterData={
+                page:page
+
+            } 
+            dispatch(timeReporting(filterData, role));
         }))
     }
+
+    console.log(currentDetails,"currentDetailsuuu")
     return (
         <>
             <div className={`weekly-report-table ${selectedPeriod}`}>
@@ -147,17 +155,17 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                                         </div></td>
                                                                     </>
                                                                 )
-                                                            } else if (reprt.month) {
+                                                            } else if (reprt.week) {
                                                                 return (
                                                                     <>
-                                                                            <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}</div></td>
+                                                                            <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_week ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "Holiday"}</div></td>
                                                                         {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                     </>
                                                                 )
                                                             } else {
                                                                 return (
                                                                     <>
-                                                                            <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "-"}</div></td>
+                                                                            <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_month ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "Holiday"}</div></td>
                                                                         {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                     </>
                                                                 )
@@ -168,17 +176,17 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                                                     <td className='time-table-data'>{item?.totalDuration>0?item?.totalDuration.toFixed("2"):item?.totalDuration}hr</td>
                                                     {/* <td className="time-table-data white-nowrap">{item?.contractDetails?.employment_type}</td> */}
                                                     <td className="time-table-data">
-                                                        <span className={item?.contractDetails?.status ? "status-progress" : "status-finished"}>{item?.contractDetails?.status ? "Progress" : "Finished"}</span>
+                                                        <span className={item?.is_complete ? "status-progress" : "status-finished"}>{item?.is_complete ? "Progress" : "Finished"}</span>
                                                     </td>
                                                     <td className="time-table-data">
                                                         <span className="status-progress">Under Review</span>
                                                     </td>
                                                 <td className="time-table-data"><div className="d-flex gap-1 align-items-center"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?"View Remarks":"Add Remarks"}</p><span className="number-count">1</span></div></td>
                                                 
-                                                    {selectedPeriod == "weekly" ? <td className="time-table-data">
+                                                    {selectedPeriod == "weekly"  ? <td className="time-table-data">
                                                         <RexettButton
                                                             type="submit"
-                                                            text={role=="client"? "Submit & Approved":"Submit"}
+                                                            text={role=="client"? "Submit & Approve":"Submit"}
                                                             className="outline-main-btn white-nowrap px-2 font-13"
                                                             variant="transparent"
                                                             onClick={() => submitApproved(item?.contractDetails?.contract_id, index)}
@@ -203,18 +211,18 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role }) => {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                     { selectedPeriod == "weekly" && 
-                    <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} />
+                    <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role}  />
                     }
                         
                     {  selectedPeriod == "monthly" &&  
-                        <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>
+                        <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role}/>
                     }
 
                     {/* { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/> } */}
-                        { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod}/>}
+                        { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role}/>}
                     </Offcanvas.Body>
                 </Offcanvas>
-            {remarkshow ?<TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails}/>:""}
+            {remarkshow ?<TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails} page={page}/>:""}
             <ConfirmationModal
             text={`Are you sure to Approve this time sheet?`}
             show={approvedConfirmation?.isApproved}

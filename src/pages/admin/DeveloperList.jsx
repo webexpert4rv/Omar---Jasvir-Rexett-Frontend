@@ -93,8 +93,7 @@ const DeveloperList = () => {
 
     }
 
-
-    return (
+   return (
         <>
 
             <div>
@@ -115,7 +114,6 @@ const DeveloperList = () => {
                             </Form.Select>
                         </div>
                         <div className="flex-none">
-                            {/* <Form.Label className="common-label">Developers</Form.Label> */}
                             <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
                                 <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
                                 <option value="assigned" onClick={(e) => e.stopPropagation()} >{t("assigned")}</option>
@@ -136,7 +134,7 @@ const DeveloperList = () => {
                         </div>
 
                         <div className="flex-none">
-                            <Form.Control type="text" className="shadow-none" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
+                            <Form.Control type="text" className="shadow-none search-dev-field" placeholder="Search Developer" value={search} onChange={handleSearchChange} />
                         </div>
                         <div>
                             <Button variant="transparent" className="main-btn px-3 py-2 font-14" onClick={handleClear}>{t("clear")}</Button>
@@ -161,7 +159,6 @@ const DeveloperList = () => {
                     <Tab.Pane eventKey="grid-view">
                         <div className="developers-list">
                             {assignedDeveloper?.developers?.length > 0 ? assignedDeveloper?.developers?.map((item, index) => {
-                                console.log(item, "item")
                                 return (
                                     <>
                                         <div className="developer-card" onClick={() => handleCardClick(item?.id)}>
@@ -175,10 +172,11 @@ const DeveloperList = () => {
                                                 <p className="email-user">{item?.email}</p>
                                                 <ul className="social-icons">
                                                     <li>
-                                                        {item?.developer_detail?.github_url ? <Link to={`${item?.developer_detail?.github_url}`}><FaGithub /></Link> : ""}
+                                                    <Link to={`${item?.developer_detail?.github_url}`} className={item?.developer_detail?.github_url ? "" : "disable-cursor"} onClick = {(e) => e.stopPropagation()}><FaGithub /></Link> 
+                                                             
                                                     </li>
                                                     <li>
-                                                        {item?.developer_detail?.linkedin_url ? <Link to={`${item?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link> : ""}
+                                                    <Link to={`${item?.developer_detail?.linkedin_url}`  } className={item?.developer_detail?.linkedin_url ? "" : "disable-cursor"}  onClick = {(e) => e.stopPropagation()}><FaLinkedin /></Link>
                                                     </li>
                                                     {/* <li>
                                                         <Link to={`${item?.email}`}><MdEmail /></Link>
@@ -228,14 +226,13 @@ const DeveloperList = () => {
                                                     <td>
                                                         <ul className="social-icons mb-0 justify-content-start">
                                                             <li>
-                                                                {value?.developer_detail?.github_url ? <Link to={`${value?.developer_detail?.github_url}`}><FaGithub /></Link> : ""}
+                                                               <Link to={`${value?.developer_detail?.github_url}`} className={value?.developer_detail?.github_url ? "" : "disable-cursor"} onClick = {(e) => e.stopPropagation()}><FaGithub /></Link> 
+                                                             
                                                             </li>
                                                             <li>
-                                                                {value?.developer_detail?.linkedin_url ? <Link to={`${value?.developer_detail?.linkedin_url}`}><FaLinkedin /></Link> : ""}
+                                                              <Link to={`${value?.developer_detail?.linkedin_url}`  } className={value?.developer_detail?.linkedin_url ? "" : "disable-cursor"}  onClick = {(e) => e.stopPropagation()}><FaLinkedin /></Link>
+                                                               
                                                             </li>
-                                                            {/* <li>
-                                                                <Link to={`${value?.email}`}><MdEmail /></Link>
-                                                            </li> */}
                                                         </ul>
                                                     </td>
                                                 </tr>

@@ -19,7 +19,7 @@ const EndDayModal = ({ show, handleClose }) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <h3 className="popup-heading">Are you sure want to end your day?</h3>
+                    <h3 className="popup-heading">Are you want to checkout?</h3>
                     <div className="text-center">
                         <Button variant="transparent" onClick={handleClose} className="main-btn outline-main-btn px-4 me-2 font-14 fw-semibold">No</Button>
                         <Button variant="transparent" onClick={() => {

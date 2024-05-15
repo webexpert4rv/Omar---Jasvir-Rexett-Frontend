@@ -72,8 +72,8 @@ const ListClient = () => {
                                 <table className="table developer-table">
                                     <thead>
                                         <tr>
-                                            <th><span>{t("clientName")}</span></th>
-                                            <th><span>Company/Individual</span></th>
+                                          <th><span>{t("client/comapanyname")}</span></th>
+                                          <th><span>Company/Individual</span></th>
                                             <th><span>Phone Number</span></th>
                                             <th><span>Address</span></th>
                                             <th><span>{t("email")}</span></th>
@@ -86,20 +86,20 @@ const ListClient = () => {
                                                     <tr  onClick={() => handleClientRowClick(val?.id)}>
                                                         <td>
                                                             <span className="d-flex align-items-center gap-3">
-                                                                <img src={val.profile_picture ? val.profile_picture : userImg} />
-                                                                <h3 className="user-name color-121212 mb-0">{val?.name}</h3>
+                                                                <img src={val.profile_picture ? val.profile_picture : val?.client_type=="company"?val?.company_logo :userImg} />
+                                                                <h3 className="user-name color-121212 mb-0">{val?.client_type=="company"? val?.company_name: val?.name }</h3>
                                                             </span>
                                                         </td>
                                                         <td>
                                                             <span className="associate-text">
-                                                                <span className="associate">Individual</span>
+                                                                <span className="associate">{val?.client_type}</span>
                                                             </span>
                                                         </td>
                                                         <td>
                                                             <span className="font-14">+1234567890</span>
                                                         </td>
                                                         <td>
-                                                            <span className="font-14">20 Cooper Square, New York, NY 10003, USA</span>
+                                                            <span className="font-14">{val?.client_type=="company"? val?.company_address:"-"}</span>
                                                         </td>
                                                         <td>
                                                             <span>

@@ -38,7 +38,6 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
     (state) => state.developerData
   );
 
-  console.log(addTimeReports,"addTimeReports")
 
   useEffect(() => {
     dispatch(getAllContracts());
@@ -77,7 +76,7 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
     }
   }, [addTimeReports]);
 
-  useEffect((formattedDate) => {
+  useEffect(() => {
     if (timeReportingData?.length > 0) {
       timeReportingData?.forEach((item) => {
         append({
@@ -227,7 +226,7 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
                       <div>
                         <Form.Select
                           className="shadow-none common-field"
-                          onChange={(e) => handleChange(e, "week")}
+                          onChange={(e) => handleChange(e, "week_number")}
                         >
                           <option disabled selected>
                             {t("selectWeek")}
@@ -239,7 +238,7 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
                         </Form.Select>
 
                       </div>
-                      {!selectedFilter?.week?.length > 0 && details ? (
+                      {!selectedFilter?.week_number?.length > 0 && details ? (
                         <p style={{ color: 'red' }}>{t("selectAWeek")}</p>
                       ) : ""}
                     </Col>

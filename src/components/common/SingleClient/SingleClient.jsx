@@ -25,10 +25,10 @@ const SingleClient = () => {
                         <div className="single-client-wrapper">
                             <div className="client-container">
                                 <div className="client-imgBx">
-                                    <img src={singleClient?.profile_picture ? singleClient?.profile_picture : clientImg} className="client-img" />
+                                    <img src={singleClient?.profile_picture ? singleClient?.profile_picture : singleClient?.client_type=="company"? singleClient?.company_logo: clientImg} className="client-img" />
                                 </div>
                                 <div className="client-infobx">
-                                    <h3 className="client-name">{singleClient?.name}</h3>
+                                    <h3 className="client-name">{ singleClient?.client_type=="company"? singleClient?.company_name :singleClient?.name}</h3>
                                     <div className="d-flex gap-2">
                                         <p className="client-email">{singleClient?.email}</p> | <p className="client-number">+1 123-456-789</p>
                                     </div>
@@ -41,28 +41,28 @@ const SingleClient = () => {
                                     <h4 className="additional-heading">Company/Individual</h4>
                                     <div>
                                         <span className="associate-text">
-                                            <span className="associate">Individual</span>
+                                            <span className="associate">{singleClient?.client_type}</span>
                                         </span>
                                     </div>
                                     <div>
-                                        <p className="additional-text">Aviox Technologies Pvt. Ltd.</p>
+                                        <p className="additional-text">{singleClient?.company_name}</p>
                                     </div>
                                 </Col>
-                                <Col md={4}>
+                                {/* <Col md={4}>
                                     <h4 className="additional-heading">Company Logo</h4>
                                     <div>
                                         <div className="user-imgbx d-inline-block associated-logo application-imgbx mx-0 mb-0">
                                             <img src={associateLogo} className="user-img" />
                                         </div>
                                     </div>
-                                </Col>
+                                </Col> */}
                                 <Col md={4}>
                                     <h4 className="additional-heading">Address</h4>
-                                    <p className="additional-text">20 Cooper Square, New York, NY 10003, USA</p>
+                                    <p className="additional-text">{singleClient?.company_name}</p>
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">Tax ID</h4>
-                                    <p className="additional-text">3QKNTG9501R3Z3</p>
+                                    <p className="additional-text">{singleClient?.company_tax_id}</p>
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">Assignment</h4>

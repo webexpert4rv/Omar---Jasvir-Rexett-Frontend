@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row, Table, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { adminEngagementList, getAccountDeletion, getAccountEnableDisable, getDeletionByAdmin } from "../../redux/slices/adminDataSlice";
+import { adminEngagementList, getAccountDeletion, getAccountDisableEnable, getAccountEnableDisable, getDeletionByAdmin } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { IoSearch } from "react-icons/io5";
@@ -49,32 +49,33 @@ const AccountDeletionRequest = () => {
     // }
     const deleteApplication = (
         <Tooltip id="tooltip">
-            Delete Application
+            Disabled Accounts
         </Tooltip>
     );
-    const handleDelete = (e, newRole, newId) => {
+    const handleToggle = (e,item) => {
         e.stopPropagation()
         setShowModal(!showModal)
         setDetails(prevDetails => ({
             ...prevDetails,
-            role: newRole,
-            id: newId
+            active: !showModal,
+            id: item?.id
         }));
 
     }
-    console.log(details, "details")
     const handleDeleteAction = (e) => {
         e.preventDefault()
-        const { role, id } = details;
-        dispatch(getDeletionByAdmin(role, id))
+       let data= {
+            "user_id": details?.id,
+            "status": details?.active
+          }
+
+        dispatch(getAccountDisableEnable(data))
     }
     const handleClose = () => {
         setShowModal(!showModal)
     }
 
-    const handleToggle = () => {
-        setShowModal(true)
-    }
+
     return (
         <>
             <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
@@ -110,7 +111,7 @@ const AccountDeletionRequest = () => {
                                                 <td>
                                                     <OverlayTrigger placement="bottom" overlay={deleteApplication}>
                                                         <div class="form-check form-switch toggle-switch-wrapper">
-                                                            <input class="form-check-input toggle-switch-custom" type="checkbox" role="switch" onClick={handleToggle} checked />
+                                                            <input class="form-check-input toggle-switch-custom" type="checkbox" role="switch" onClick={(e)=>handleToggle(e,item)} checked />
                                                         </div>
                                                     </OverlayTrigger>
                                                 </td>
@@ -127,7 +128,7 @@ const AccountDeletionRequest = () => {
                             <RexettPagination  number = {engagement?.total_pages} setPage={setPage} page={page}/>
                         </div> */}
             </div>
-            <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to delete this developer"} />
+            <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to disable this account?"} />
         </>
     )
 }
