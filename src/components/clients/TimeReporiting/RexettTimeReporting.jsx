@@ -218,11 +218,11 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                         <div className="indicator-time-slot d-flex gap-3 align-items-center flex-wrap">
                                             <div className="d-inline-flex align-items-center gap-1">
                                                 <span className="slot-indicate offday"></span>
-                                                <span className="font-15 fw-semibold">{t("offDay")}</span>
+                                                <span className="font-14 fw-semibold">{t("offDay")}</span>
                                             </div>
                                             <div className="d-inline-flex align-items-center gap-1">
                                                 <span className="slot-indicate workday"></span>
-                                                <span className="font-15 fw-semibold">{t("workDay")}</span>
+                                                <span className="font-14 fw-semibold">{t("workDay")}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -246,7 +246,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     <Button
                                         variant="transparent"
                                         onClick={() => handleShowModal("Edit")}
-                                        className="outline-main-btn px-xxl-4 px-3 py-1_5"
+                                        className="outline-main-btn px-xxl-3 px-2 py-1_5"
                                     >
                                         {role === "client" ? `` : `${t("editTimeReport")}`}
                                     </Button>
@@ -256,7 +256,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                 <Button
                                     variant="transparent"
                                     onClick={() => handleShowModal("AddTime")}
-                                    className="outline-main-btn px-xxl-4 px-3 py-1_5"
+                                    className="outline-main-btn px-xxl-3 px-2 py-1_5"
                                 >
                                     {role === "client"
                                         ? `${t("editTimeReport")}`

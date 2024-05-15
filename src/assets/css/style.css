@@ -915,8 +915,8 @@ ul {
 
 .indicator-time-slot .slot-indicate {
     display: inline-block;
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
 }
 
@@ -3060,9 +3060,9 @@ input[type="radio"]:checked {
     display: inline-block;
     padding: 4px 12px;
     font-size: 12px;
-    color: #000;
+    color: #fff;
     border-radius: 30px;
-    background-color: #f2f5f7;
+    background-color: #037563;
     margin-right: 3px;
     margin-bottom: 3px;
 }
@@ -3215,6 +3215,7 @@ input[type="radio"]:checked {
 .danger-arrow
 {
     background-color: #fbdddd;
+    border-color: #fbdddd;
     color: #cc0000;
 }
 .danger-arrow:hover {
@@ -3991,6 +3992,7 @@ input[type="radio"]:checked {
 }
 .helper-text-section
 {
+    margin-top: 10px;
     font-size: 13px;
     padding: 10px;
     background: #e5e5e5;
@@ -4145,6 +4147,115 @@ input[type="radio"]:checked {
     color: #fff;
     border-radius: 20px;
 }
+.rotate-text
+{
+    background-color: #fbdddd;
+    color: #cc0000;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+}
+.rotate-text marquee
+{
+    margin-bottom: 0;
+}
+.check-text
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    padding: 4px 10px;
+    background-color: #f7f7f7;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+.checkout-text
+{
+    font-weight: 600;
+    color: #636363;
+}
+.checkin-text
+{
+    font-weight: 600;
+    color: #037563;
+}
+.colorful {
+    appearance: none;
+    position: relative;
+    width: 55px;
+    aspect-ratio: 2;
+    background: red;
+    border-radius: 100vmax;
+    font-size: 1em;
+    background: linear-gradient(90deg, #12dbd6, #0ae1c4, #ed992e, #e76439) 0 0 / 7.5em 100%;
+    background: linear-gradient(90deg, #636363, #636363, #10b1a4, #00A0B0) 0 0 / 10em 100%;
+    transition: background-position 0.5s linear;
+    border: 1px solid #0000;
+    background-clip: content-box;
+    cursor: pointer;
+    
+    &::before, &::after {
+      content: "";
+      position: absolute;
+      width: 0.1em;
+      height: 0.8em;
+      background: #fff;
+      top: 50%;
+      left: 25%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      border-radius: 1em;
+      transition: all 0.4s 0.25s;
+      border: 1px solid #0000;
+      box-sizing: border-box;
+    }
+    
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+    
+    &:checked {
+      background-position: -6em 0;
+      
+      &::before {
+        left: 75%;
+        transform: translate(-50%, -50%) rotate(225deg);
+      }
+      
+      &::after {
+        height: 0.4em;
+        top: 60%;
+        left: 63%;
+        transform: translate(-50%, -50%) rotate(-225deg);
+      }
+    }
+    
+    &[disabled] {
+      opacity: 0.25;
+    }
+  }
+  
+  @media print {
+    .colorful {
+      &, &::before, &::after {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  }
+  
+  @media (prefers-reduced-motion) {
+    .colorful {
+      &, &::before, &::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;

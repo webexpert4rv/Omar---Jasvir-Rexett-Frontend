@@ -304,20 +304,32 @@ const Applications = () => {
                                   <td colSpan="8">
                                     <div>
                                       <Row>
-                                        <Col md={3} className="mb-3">
+                                        {item?.client_type=="company" &&<Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("newTeamMemberStart")}{" "}
+                                              {/* {t("newTeamMemberStart")}{" "} */}
+                                              Company Name
                                             </h3>
                                             <p className="application-text">
                                               {
-                                                item?.jobs[0]
-                                                  ?.development_should_start_in ?   item?.jobs[0]
-                                                  ?.development_should_start_in :"Not Mentioned"
+                                                item?.company_name ? item?.company_name : "Not Mentioned"
                                               }
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col>}
+                                        {item?.client_type=="company" &&<Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {/* {t("newTeamMemberStart")}{" "} */}
+                                              Company Address
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company_address ? item?.company_address : "Not Mentioned"
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>}
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -362,11 +374,11 @@ const Applications = () => {
                                               {t("status")}
                                             </h3>
                                             <p className="status-progress text-capitalize">
-                                              {item?.status}
+                                              Under Review
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3} className="mb-3">
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("role")}
@@ -375,7 +387,7 @@ const Applications = () => {
                                               {item?.role}
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -386,7 +398,7 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        {/* <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
                                               {t("experience")}
@@ -395,7 +407,7 @@ const Applications = () => {
                                               {item?.jobs[0]?.experience ? item?.jobs[0]?.experience : "Not Mentioned"}
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -546,8 +558,8 @@ const Applications = () => {
                                           <IoCloseOutline />
                                         )
                                       }
-                                      className="arrow-btn"
-                                      variant={"danger"}
+                                      className="arrow-btn danger-arrow"
+                                      variant={"transparent"}
                                       onClick={(e) =>
                                         handleClick(
                                           e,
@@ -799,8 +811,7 @@ const Applications = () => {
                                           <IoCloseOutline />
                                         )
                                       }
-                                      className="arrow-btn"
-                                      variant={"danger"}
+                                      className="arrow-btn danger-arrow"
                                       onClick={(e) =>
                                         handleClick(
                                           e,
@@ -830,28 +841,22 @@ const Applications = () => {
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("companyName")}
+                                              {t("developerName")}
                                             </h3>
                                             <p className="application-text">
                                               {
-                                                item?.developer_experiences[0]
-                                                  ?.company_name ?     item?.developer_experiences[0]
-                                                  ?.company_name : "Not Mentioned"
+                                                item?.name ? item?.name :"Not Mentioned"
                                               }
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3} className="mb-3">
+                                        <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("jobTitle")}
+                                              Address
                                             </h3>
                                             <p className="application-text">
-                                              {item?.developer_experiences[0]
-                                                ?.job_title
-                                                ? item?.developer_experiences[0]
-                                                    ?.job_title
-                                                : "Not Mentioned"}
+                                            Not Mentioned
                                             </p>
                                           </div>
                                         </Col>
@@ -861,11 +866,11 @@ const Applications = () => {
                                               {t("status")}
                                             </h3>
                                             <p className="status-progress text-capitalize">
-                                              {item?.status}
+                                              Under Review
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3} className="mb-3">
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("role")}
@@ -874,8 +879,8 @@ const Applications = () => {
                                               {item?.role}
                                             </p>
                                           </div>
-                                        </Col>
-                                        <Col md={3} className="mb-3">
+                                        </Col> */}
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("jobDescription")}
@@ -888,8 +893,8 @@ const Applications = () => {
                                                 : "Not Mentioned"}
                                             </p>
                                           </div>
-                                        </Col>
-                                        <Col md={3} className="mb-3">
+                                        </Col> */}
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("phoneNumber")}
@@ -898,7 +903,7 @@ const Applications = () => {
                                               {item?.phone_number}
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -934,7 +939,8 @@ const Applications = () => {
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("professtionalTitle")}
+                                              {/* {t("professtionalTitle")} */}
+                                              Designation
                                             </h3>
                                             <p className="application-text">
                                               {item?.developer_detail
@@ -945,16 +951,16 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3}>
+                                        <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                              Type Of Company
+                                              Experience
                                             </h3>
                                             <p className="application-text">
-                                              {item?.company?.type_of_company}
+                                             2 years
                                             </p>
                                           </div>
-                                        </Col> */}
+                                        </Col>
                                       </Row>
                                     </div>
                                   </td>
