@@ -31,15 +31,6 @@ const DeveloperInvoice = () => {
                 <div className="d-flex align-items-center gap-2 flex-wrap">
                     <div>
                         <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Week</option>
-                            <option>Week 1</option>
-                            <option>Week 2</option>
-                            <option>Week 3</option>
-                            <option>Week 4</option>
-                        </Form.Select>
-                    </div>
-                    <div>
-                        <Form.Select className="time-filter-select shadow-none">
                             <option>Select Month</option>
                             <option>January</option>
                             <option>Feburary</option>
@@ -64,16 +55,6 @@ const DeveloperInvoice = () => {
                             <option>2021</option>
                             <option>2020</option>
                             <option>2019</option>
-                        </Form.Select>
-                    </div>
-                    <div>
-                        <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Developer</option>
-                            <option>Rohit Sharma</option>
-                            <option>Rohit Sharma</option>
-                            <option>Rohit Sharma</option>
-                            <option>Rohit Sharma</option>
-                            <option>Rohit Sharma</option>
                         </Form.Select>
                     </div>
                     <div>
@@ -123,7 +104,7 @@ const DeveloperInvoice = () => {
                         </th>
                         <th className="time-table-head text-start">
                             Invoice Month
-                        </th>
+                    </th>
                         <th className="time-table-head text-start">
                             Invoice Status
                         </th>

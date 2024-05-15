@@ -735,7 +735,7 @@ const TimeReportingDetail = () => {
                                                                     <p className='remarks-text white-nowrap' onClick={handleremarkShow}>View Remarks</p></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Unpaid</span></td>
                                                                 <td className="time-table-data text-start"><span className="status-progress white-nowrap">Progress</span></td>
-                                                                <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14 white-nowrap">Raise Invoice</Button></td>
+                                                                <td className="time-table-data text-start"><Button className="main-btn px-3 py-1 font-14 white-nowrap">Invoice Paid</Button></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
