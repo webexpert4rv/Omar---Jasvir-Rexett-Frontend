@@ -64,14 +64,14 @@ const SingleTimeReporting = ({ currentDetails, selectedPeriod, role }) => {
                 <p className="client-name-heading d-flex gap-1 align-items-center">
                   <FaRegClock />
                   {start_time
-                    ? moment(start_time, "HH:mm:ss").format("h:mm:ss A")
+                    ? moment(start_time, "HH:mm").format("h:mm A")
                     : "00:00"}
                 </p>
                 <p className="client-name-heading">-</p>
                 <p className="client-name-heading d-flex gap-1 align-items-center">
                   <FaRegClock />
                   {start_time
-                    ? moment(end_time, "HH:mm:ss").format("h:mm:ss A")
+                    ? moment(end_time, "HH:mm").format("h:mm A")
                     : "00:00"}
                 </p>
               </div>
