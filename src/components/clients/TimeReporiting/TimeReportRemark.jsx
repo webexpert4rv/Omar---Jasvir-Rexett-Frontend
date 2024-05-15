@@ -42,7 +42,7 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) =>
                             <p>25 Apr, 11:20 AM</p>
                         </div>
                         <div className='remark-content'>
-                            <p>{item?.client_remarks}</p>
+                            <p>{item?.client_remarks || item?.developer_remarks }</p>
                         </div>
                     </div>
                     )

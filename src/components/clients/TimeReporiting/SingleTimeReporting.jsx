@@ -36,6 +36,8 @@ const SingleTimeReporting = ({ currentDetails, selectedPeriod, role }) => {
     let montData = monthlyDetails?.find((item) => item.week == select);
     setUpdateWeeklyData(montData?.weeklyDetails);
   };
+
+  console.log(currentDetails,"weeklyDetails")
   return (
     <>
       {selectedPeriod == "weekly" ? (
@@ -90,7 +92,7 @@ const SingleTimeReporting = ({ currentDetails, selectedPeriod, role }) => {
       {selectedPeriod == "monthly" ? (
         <div className="detail-view weekly-view">
           <div className="client-info mb-3">
-            <h4 className="sidebar-heading">Developer Name</h4>
+          {role !== "developer" ? "Developer Name" : "Client Name"}
             <p className="client-name-heading">
               <img src={user_details?.profile_picture} />
               {user_details?.name}
@@ -134,7 +136,7 @@ const SingleTimeReporting = ({ currentDetails, selectedPeriod, role }) => {
       {selectedPeriod == "yearly" ? (
         <div className="detail-view monthly-view">
           <div className="client-info mb-3">
-            <h4 className="sidebar-heading">Developer Name</h4>
+          {role !== "developer" ? "Developer Name" : "Client Name"}
             <p className="client-name-heading">
               <img src={user_details?.profile_picture} />
               {user_details?.name}

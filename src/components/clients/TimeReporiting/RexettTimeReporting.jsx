@@ -228,15 +228,8 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                 </div>
               </Form>
               <div>
-                <Button
-                  variant="transparent"
-                  onClick={handleShowModal}
-                  className="outline-main-btn px-xxl-4 px-3 py-1_5"
-                >
-                  {role === "client"
-                    ? `${t("editTimeReport")}`
-                    : `${t("addBulkTime")}`}
-                </Button>
+              {role === "developer" ?<Button variant="transparent" onClick={()=>handleShowModal("Edit")} className="outline-main-btn px-xxl-4 px-3 py-1_5 me-2">{role === "client" ? `` : `${t("editTimeReport")}`}</Button>:""}
+              <Button variant="transparent" onClick={()=>handleShowModal("AddTime")} className="outline-main-btn px-xxl-4 px-3 py-1_5">{role === "client" ? `${t("editTimeReport")}` : `${t("addBulkTime")}`}</Button>
               </div>
             </div>
             <div className="d-flex justify-content-between align-items-center mt-3">
