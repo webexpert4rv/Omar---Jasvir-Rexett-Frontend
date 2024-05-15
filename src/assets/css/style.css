@@ -3845,6 +3845,10 @@ input[type="radio"]:checked {
     margin-bottom: 0;
     font-weight: 600;
 }
+.search-dev-field
+{
+    max-width: 200px;
+}
 .cv-header-wrapper
 {
     padding: 13px;

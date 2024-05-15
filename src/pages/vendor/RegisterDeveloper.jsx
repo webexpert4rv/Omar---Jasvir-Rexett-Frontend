@@ -210,7 +210,6 @@ const RegisterDeveloper = () => {
     }
   };
 
-  console.log(expertiseFields, "expertiseFields");
   const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
 
   const handleAddMoreExp = async () => {
@@ -243,10 +242,7 @@ const RegisterDeveloper = () => {
       setExperienceFields([...experienceFields, newExperienceField]);
     }
   };
-  console.log(experienceFields, "experienceFields----- ");
   const handleDeleteFieldExp = (index, id) => {
-    console.log(index, "--------------------indexx-------");
-    console.log(id, "iddddd--------------");
     const experiencesCopy = watch("experiences"); // Copy the experiences array
     const expCop = [...experienceFields]; // Copy the experienceFields array
     experiencesCopy.splice(index, 1);
