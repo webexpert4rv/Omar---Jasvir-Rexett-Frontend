@@ -3060,9 +3060,9 @@ input[type="radio"]:checked {
     display: inline-block;
     padding: 4px 12px;
     font-size: 12px;
-    color: #000;
+    color: #fff;
     border-radius: 30px;
-    background-color: #f2f5f7;
+    background-color: #037563;
     margin-right: 3px;
     margin-bottom: 3px;
 }

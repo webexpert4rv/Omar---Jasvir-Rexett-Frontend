@@ -318,7 +318,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                 </div>
                                             )}
                                         </div>
-                                        {/* {data?.developer_experiences?.map((item) => {
+                                        {data?.developer_experiences?.map((item) => {
                                             return (
                                                 <>
                                                     <div className="exp-wrapper">
@@ -370,7 +370,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                     </div>
                                                 </>
                                             );
-                                        })} */}
+                                        })}
                                         {data?.developer_educations ? (
                                             <>
                                                 <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
