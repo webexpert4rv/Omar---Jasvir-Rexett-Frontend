@@ -355,6 +355,7 @@
         "techStackUsed" : "Tech Stack Used",
         "projectLink" : "Project Link",
         "roleInProject" : "Role In Project",
-        "projectTeamSize":"Project's team size"
+        "projectTeamSize":"Project's team size",
+        "revenue" : "Revenue"
     }
 }

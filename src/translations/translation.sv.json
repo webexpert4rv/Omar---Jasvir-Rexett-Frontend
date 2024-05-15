@@ -342,7 +342,6 @@
         "viewJob" : "se jobb",
         "endTimeReport" : "Sluttidsrapport",
         "degree_name_required_msg":"Namn på examen krävs",
-
         "addRow" : "Lägg till rad",
         "projects" : "Projekt",
         "projectDescription" : "projekt beskrivning" ,
@@ -350,7 +349,8 @@
         "projectTitle" : "Projekt Titel",
         "projectLink" : "Projektlänk" ,
         "roleInProject" : "Roll i projektet",
-        "projectTeamSize":"Projektets teamstorlek"
+        "projectTeamSize":"Projektets teamstorlek",
+        "revenue" : "Inkomst"
 
         }
 }
