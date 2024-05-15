@@ -131,7 +131,6 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
   }, [dispatch]);
   const onSubmit = (values) => {
     let { projects } = values;
-
     const formattedProjects = projects?.map((curElem, index) => {
       const tempTechStack = curElem?.tech_stacks_used.map(
         (curElem) => curElem.label
@@ -140,7 +139,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       return {
         ...curElem,
         tech_stacks_used: convertedTechStack,
-        project_team_size: 5,
+        // project_team_size: 5,
       };
     });
 
@@ -168,7 +167,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       );
     }
 
-    formattedProjects?.forEach((item) => {
+    formattedProjects?.forEach((item,idx) => {
       if (item.id) {
         dispatch(
           updateProjects(item.id,item, () => {
@@ -178,7 +177,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
               dispatch(getDeveloperDetails(id));
             }
             handleClose();
-          })
+          },idx === formattedProjects.length-1)
         );
       }
     });
@@ -187,7 +186,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
   const handleAppend = async () => {
     const index = watch("projects").findIndex(
       (curElem) =>
-        curElem.project_description === "" ||
+        curElem.project_description === "" || 
         curElem.project_title === "" ||
         curElem.tech_stacks_used === "" ||
         curElem.role_in_project === "" ||
@@ -259,7 +258,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       <Modal.Body>
         <div>
           <h3 className="popup-heading">
-            {t("projects")} {t("section")}
+            {t("projects")} 
           </h3>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {fields.map((field, index) => (
@@ -273,7 +272,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     className="common-field"
                     placeholder="Enter Project Title"
                     {...register(`projects.${index}.project_title`, {
-                      required: "Project title is required",
+                      required: t("project_title_required_msg"),
                     })}
                   ></Form.Control>
                   {errors?.projects?.[index]?.project_title && (
@@ -293,10 +292,10 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     className="common-field"
                     placeholder="Enter Project Description"
                     {...register(`projects.${index}.project_description`, {
-                      required: " Project Description is required",
+                      required: t("project_description_required_msg"),
                     })}
                   />
-                  {errors?.projects?.[index]?.project_description && (
+                  {errors?.projects?.[index]?.project_description && (  
                     <p className="error-message">
                       {errors.projects[index].project_description.message}
                     </p>
@@ -313,7 +312,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                           name={`projects.${index}.tech_stacks_used`}
                           control={control}
                           rules={{
-                            required: "Tech stacks used are required",
+                            required: t("tech_stack_required_msg"),
                           }}
                           render={({ field }) => (
                             <CreatableSelect
@@ -354,7 +353,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       className="common-field"
                       placeholder="Enter your Role In Project"
                       {...register(`projects.${index}.role_in_project`, {
-                        required: " Role in project required",
+                        required: t("project_role_required_msg"),
                       })}
                     ></Form.Control>
                     <p className="error-message">
@@ -370,7 +369,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     <Form.Label>{t("projectTeamSize")}</Form.Label>
                     <Form.Select
                       {...register(`projects.${index}.project_team_size`, {
-                        required: "Project's team size is required",
+                        required: t("project_team_size_required_msg")
                       })}
                       className="filter-select width-full shadow-none "
                     >
@@ -398,7 +397,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       className="common-field"
                       placeholder="Enter Project Link"
                       {...register(`projects.${index}.project_link`, {
-                        required: "Project link is required",
+                        required: t("project_link_required_msg"),
                       })}
                     ></Form.Control>
                     {errors?.projects?.[index]?.project_link && (
@@ -419,7 +418,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                           placeholder="Enter Start Date"
                           max={new Date().toISOString().split("T")[0]}
                           {...register(`projects.${index}.project_start_date`, {
-                            required: "Start Date is required",
+                            required: t("startDateValidation"),
                             onChange: (e) => {
                               setValue(
                                 `projects.${index}.project_start_date`,
@@ -458,7 +457,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                           {...register(`projects.${index}.project_end_date`, {
                             required: {
                               value: disabledEndDates[index] ? false : true,
-                              message: "End Date is required",
+                              message: t("endDateValidation"),
                             },
                             onChange: (e) => {
                               setValue(
