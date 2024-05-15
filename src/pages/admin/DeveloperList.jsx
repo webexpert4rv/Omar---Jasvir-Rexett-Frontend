@@ -114,7 +114,6 @@ const DeveloperList = () => {
                             </Form.Select>
                         </div>
                         <div className="flex-none">
-                            {/* <Form.Label className="common-label">Developers</Form.Label> */}
                             <Form.Select className="filter-select shadow-none" value={selectedFilter?.assignment_filter} onChange={(e) => handleAssignment(e)}>
                                 <option value="" onClick={(e) => e.stopPropagation()}>{t("selectDevelopers")}</option>
                                 <option value="assigned" onClick={(e) => e.stopPropagation()} >{t("assigned")}</option>

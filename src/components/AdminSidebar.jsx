@@ -38,9 +38,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                             <li className="sidebar-item">
                                 <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">{t("applications")} </span></NavLink>
                             </li>
-                            {/* <li className="sidebar-item">
-                                <NavLink to={"/engagements"} className="side-link" activeClassName="active"><PiUsersFourFill /> {t("engagements")}</NavLink>
-                            </li> */}
+                            <li className="sidebar-item">
+                                <NavLink to={"/members"} className="side-link" activeClassName="active"><PiUsersFourFill /> {t("members")}</NavLink>
+                            </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> {t("jobListing")}</NavLink>
                             </li>

@@ -357,6 +357,9 @@
         "roleInProject" : "Role In Project",
         "projectTeamSize":"Project's team size",
         "revenue" : "Revenue",
-        "postedDate": "Posted Date"
+        "postedDate": "Posted Date",
+        "members":"Members",
+        "client/comapanyname" :"Client/Company",
+        "individual/comapanyname": "Individual/Company"
     }
 }

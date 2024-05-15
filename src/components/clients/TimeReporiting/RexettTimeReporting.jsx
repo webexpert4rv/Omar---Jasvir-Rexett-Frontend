@@ -274,6 +274,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                         selectedPeriod={selectedPeriod}
                         data={timeReportingData}
                         role={role}
+                        page={page}
                     />
 
                     {timeReportingPage?.totalPages > 1 ? (

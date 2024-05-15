@@ -4,7 +4,8 @@ import userImage from "../../../assets/img/user-img.jpg"
 import { sendRemarkOnTimeReport } from '../../../redux/slices/adminDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import RexettButton from '../../atomic/RexettButton';
-const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) => {
+import { timeReporting } from '../../../redux/slices/clientDataSlice';
+const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role,page}) => {
     let {contractDetails:{user_details,contract_id,remarks}}=currentDetails
     const [addRemark,setRemark]=useState(null);
     const dispatch =useDispatch()
@@ -14,13 +15,18 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role}) =>
         setRemark(e.target.value)
     }
 
-    const handleRemarkSend=(e)=>{
+    const handleRemarkSend=async(e)=>{
         e.preventDefault()
       let payload={
             "contract_id": contract_id,
             "remarks": addRemark
           }
-          dispatch(sendRemarkOnTimeReport(payload))
+         await dispatch(sendRemarkOnTimeReport(payload))
+         let filterData={
+            page:page
+         }
+         dispatch(timeReporting(filterData, role));
+         handleremarkClose()
     }
 
   return (
