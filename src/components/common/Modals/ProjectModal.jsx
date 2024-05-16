@@ -113,6 +113,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       ]);
     }
   }, [renderModalData]);
+  
   useEffect(() => {
     // setSkillOptions(skillListMapped);
     let formattedData = [];
