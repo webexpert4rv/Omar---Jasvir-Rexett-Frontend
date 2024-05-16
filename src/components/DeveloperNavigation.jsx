@@ -55,7 +55,7 @@ const DeveloperNavigation = ({ onClick }) => {
           <div className="d-flex gap-2 align-items-center">
             <p className="time-counter">00:00:00 hrs</p>
             <Button
-              className="main-btn px-3 py-2 font-14"
+              className="main-btn px-3 py-2 font-14 shadow-none"
               onClick={handleTimeReport}
             >
               Submit your report

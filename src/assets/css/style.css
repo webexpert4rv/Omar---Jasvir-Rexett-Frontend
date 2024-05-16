@@ -4147,6 +4147,17 @@ input[type="radio"]:checked {
     color: #fff;
     border-radius: 20px;
 }
+.number-count.overlay
+{
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 10px;
+    min-width: 17px;
+    height: 17px;
+    z-index: 2;
+    border: 1px solid #fff;
+}
 .rotate-text
 {
     background-color: #fbdddd;
@@ -4255,6 +4266,30 @@ input[type="radio"]:checked {
         animation: none !important;
       }
     }
+  }
+  .remark-icon
+  {
+    width: 30px;
+  }
+  .break-icon
+  {
+    width: 29px;
+  }
+  .checkout-icon
+  {
+    width: 16px;
+  }
+  .green-checkout
+  {
+    display: none;
+  }
+  .checkout-btn:hover img:not(.green-checkout)
+  {
+    display: none;
+  }
+  .checkout-btn:hover .green-checkout
+  {
+    display: inline-block;
   }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
