@@ -126,9 +126,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                     {/* <th className="time-table-head">
                                         <span>Contract</span>
                                     </th> */}
-                                    <th className="time-table-head">
+                                    {/* <th className="time-table-head">
                                         <span>Project</span>
-                                    </th>
+                                    </th> */}
                                     <th className="time-table-head">
                                         <span>Timesheet</span>
                                     </th>
@@ -181,13 +181,13 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                                     }
                                                     <td className='time-table-data'>{item?.totalDuration>0?item?.totalDuration.toFixed("2"):item?.totalDuration}hr</td>
                                                     {/* <td className="time-table-data white-nowrap">{item?.contractDetails?.employment_type}</td> */}
-                                                    <td className="time-table-data">
+                                                    {/* <td className="time-table-data">
                                                         <span className={item?.is_complete ? "status-progress white-nowrap" : "status-finished white-nowrap"}>{item?.is_complete ? "Progress" : "Finished"}</span>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="time-table-data">
                                                         <span className="status-progress white-nowrap">Under Review</span>
                                                     </td>
-                                                <td className="time-table-data"><div className="d-flex gap-1 align-items-center justify-content-center"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?<OverlayTrigger placement="bottom" overlay={viewremark}><img src={remarkIcon} className="remark-icon" /></OverlayTrigger>:"Add Remarks"}</p><span className="number-count">1</span></div></td>
+                                                <td className="time-table-data"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text position-relative white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?<OverlayTrigger placement="bottom" overlay={viewremark}><img src={remarkIcon} className="remark-icon" /></OverlayTrigger>:"Add Remarks"} <span className="number-count overlay">1</span></p></td>
                                                 
                                                     {selectedPeriod == "weekly"  ? <td className="time-table-data">
                                                         <RexettButton
