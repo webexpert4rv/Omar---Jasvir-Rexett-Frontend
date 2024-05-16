@@ -89,6 +89,21 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
         }))
     }
 
+    const currentTextData=(role,isApproved)=>{
+        if(role=="client"){
+            if(isApproved){
+                return "Submitted"
+            }else{
+                return "Submit & Approve"
+            }
+        }else 
+        {
+            return "Submit"
+        }
+
+
+    }
+
     console.log(currentDetails,"currentDetailsuuu")
     return (
         <>
@@ -186,7 +201,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                                     {selectedPeriod == "weekly"  ? <td className="time-table-data">
                                                         <RexettButton
                                                             type="submit"
-                                                            text={role=="client"? "Submit & Approve":"Submit"}
+                                                            text={currentTextData(role,item?.isisApproved)}
                                                             className="outline-main-btn white-nowrap px-2 font-13"
                                                             variant="transparent"
                                                             onClick={() => submitApproved(item?.contractDetails?.contract_id, index)}
