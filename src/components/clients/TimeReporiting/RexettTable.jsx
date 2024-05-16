@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Tooltip } from "react-bootstrap";
 import RexettButton from '../../atomic/RexettButton';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Nav from 'react-bootstrap/Nav';
@@ -16,6 +16,8 @@ import SingleTimeReporting from './SingleTimeReporting';
 import TimeReportRemark from './TimeReportRemark';
 import ConfirmationModal from '../../../pages/views/Modals/ConfirmationModal';
 import { timeReporting } from '../../../redux/slices/clientDataSlice';
+import remarkIcon from '../../../assets/img/remarks-icon.svg'
+import { OverlayTrigger } from 'react-bootstrap/esm';
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
     const [show, setShow] = useState(false);
@@ -38,6 +40,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
         }
 
     };
+    const viewremark = (
+        <Tooltip id="tooltip">
+          View Remarks
+        </Tooltip>
+      );
 
     const [remarkshow, setremarkShow] = useState(false);
     const handleremarkClose = () => setremarkShow(false);
@@ -135,10 +142,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                         <span>Contract</span>
                                     </th> */}
                                     <th className="time-table-head">
-                                        <span>Project Status</span>
+                                        <span>Project</span>
                                     </th>
                                     <th className="time-table-head">
-                                        <span>Timesheet Status</span>
+                                        <span>Timesheet</span>
                                     </th>
                                     <th className="time-table-head">
                                         <span>Remarks</span>
@@ -156,8 +163,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                                 <tr>
                                                     <td className="time-table-data">
                                                         <div className="d-flex align-items-center gap-2">
-                                                            <div className='d-flex gap-2 align-items-center white-nowrap'><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage } className="developer-img" alt="" /> {item?.contractDetails?.user_details?.name}</div>
-                                                            <span className="number-count">1</span>
+                                                            <div className='d-flex gap-2 align-items-center white-nowrap'><div className="position-relative"><img src={item?.contractDetails?.user_details?.profile_picture ? item?.contractDetails?.user_details?.profile_picture : userImage } className="developer-img" alt="" /><span className="number-count overlay">1</span></div> {item?.contractDetails?.user_details?.name}</div>
                                                         </div>
                                                     </td>
                                                     {
@@ -191,12 +197,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                                     <td className='time-table-data'>{item?.totalDuration>0?item?.totalDuration.toFixed("2"):item?.totalDuration}hr</td>
                                                     {/* <td className="time-table-data white-nowrap">{item?.contractDetails?.employment_type}</td> */}
                                                     <td className="time-table-data">
-                                                        <span className={item?.is_complete ? "status-progress" : "status-finished"}>{item?.is_complete ? "Progress" : "Finished"}</span>
+                                                        <span className={item?.is_complete ? "status-progress white-nowrap" : "status-finished white-nowrap"}>{item?.is_complete ? "Progress" : "Finished"}</span>
                                                     </td>
                                                     <td className="time-table-data">
-                                                        <span className="status-progress">Under Review</span>
+                                                        <span className="status-progress white-nowrap">Under Review</span>
                                                     </td>
-                                                <td className="time-table-data"><div className="d-flex gap-1 align-items-center"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?"View Remarks":"Add Remarks"}</p><span className="number-count">1</span></div></td>
+                                                <td className="time-table-data"><div className="d-flex gap-1 align-items-center justify-content-center"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?<OverlayTrigger placement="bottom" overlay={viewremark}><img src={remarkIcon} className="remark-icon" /></OverlayTrigger>:"Add Remarks"}</p><span className="number-count">1</span></div></td>
                                                 
                                                     {selectedPeriod == "weekly"  ? <td className="time-table-data">
                                                         <RexettButton
@@ -248,7 +254,17 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
             </div>
             <div className="helper-text-section">
                 <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
-                <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
+                <ol className="ps-3 mb-0">
+                    <li className="mb-2">
+                        <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
+                    </li>
+                    <li className="mb-2">
+                        <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
+                    </li>
+                    <li className="mb-0">
+                        <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
+                    </li>
+                </ol>
             </div>
         </>
     )

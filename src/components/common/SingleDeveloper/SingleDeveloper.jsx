@@ -22,46 +22,35 @@ import {
   approvedEditAction,
   rejectEditAction,
 } from "../../../redux/slices/adminDataSlice";
-import ProjectsModal from "../Modals/ProjectModal";
 import SingleExperienceCard from "./SingleExperienceCard";
+import ProjectsModal from "../Modals/ProjectModal";
 
 const SingleDeveloper = ({ data, role }) => {
   const dispatch = useDispatch();
-  const { screenLoader, smallLoader, skillList } = useSelector(
+  const { screenLoader, smallLoader } = useSelector(
     (state) => state.clientData
   );
-  const skillListMapped = skillList.map((item) => {
-    return { value: item.id, label: item.title };
-  });
   const [selectedTemplate, setSelectedTemplate] = useState("cv-template1");
-  const [skillCate, setSkillsCate] = useState(skillListMapped);
   const [developerDetails, setDeveloperDetails] = useState(false);
-  const [techStackArray, setTechStackArray] = useState([]);
   const [readmore, setReadMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
   let { pathname } = useLocation();
   let userId = pathname.split("/")[2];
+  console.log(pathname.split("/")[2], "pathj");
 
   useEffect(() => {
     dispatch(getSkillList());
   }, []);
 
   const splitSkills = (data) => {
-    let skills = data?.skills?.split(",");
+    let skills = data?.skills?.split(",") || data?.split(',');
     return skills;
-  };
-  const splitTechStack = (techStack) => {
-    const arr = techStack.split(",");
-    return arr;
   };
   const handleShowModal = () => {
     setShowModal(true);
   };
 
-  const readMoreLess = () => {
-    setReadMore(!readmore);
-  };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -229,6 +218,138 @@ const SingleDeveloper = ({ data, role }) => {
                   </div>
                   <div className="connect-social-media px-3">
                     <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
+                      <h3 className="subheading-resume mb-0">
+                        {t("expertise")}
+                      </h3>
+                      {role !== "client" && (
+                        <div
+                          className="add_more_section_education pointer"
+                          onClick={handleShowExpertiseModal}
+                        >
+                          <MdEditNote size={25} />
+                        </div>
+                      )}
+                    </div>
+                    <div className="">
+                      {data?.developer_skill_and_experience ? (
+                        <>
+                          {data?.developer_skill_and_experience?.map(
+                            ({ experience, skill, skill_icon }, index) => {
+                              return (
+                                <React.Fragment key={index}>
+                                  <div className="exp-wrapper expertise-card">
+                                    {/* <p className="exp-year">{} - {} | {}</p> */}
+                                    <img src={skill_icon?.icon_url} />
+                                    <p className="expertise-skill">{skill}</p>
+                                    <p className="expertise-exp">
+                                      {experience ? experience:"1 year" }
+                                    </p>
+                                  </div>
+                                </React.Fragment>
+                              );
+                            }
+                          )}
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                  <div className="connect-social-media px-3">
+                    <div>
+                      <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-3">
+                        <h3 className="subheading-resume mb-0">
+                          {t("projects")}
+                        </h3>
+                        {role !== "client" && (
+                          <div
+                            className="add_more_section_education pointer"
+                            onClick={handleProjectModal}
+                          >
+                            <MdEditNote size={25} />
+                          </div>
+                        )}
+                      </div>
+                      {/* </div> */}
+                      <div>
+                        {data?.developer_projects ? (
+                          <>
+                            {data?.developer_projects?.map(
+                              (
+                                {
+                                  project_title,
+                                  project_link,
+                                  project_start_date,
+                                  role_in_project,
+                                  project_end_date,
+                                  tech_stacks_used,
+                                },
+                                index
+                              ) => {
+                                return (
+                                  <React.Fragment key={index}>
+                                    <div className="project-wrapper">
+                                      {/* <div className="exp-wrapper expertise-card"> */}
+                                      {/* <p className="exp-year">{} - {} | {}</p> */}
+                                      {/* <img src={skill_icon?.icon_url} /> */}
+                                      <div className="d-flex justify-content-between align-items-start mb-1">
+                                        <div>
+                                          <p className="project-title mb-1">
+                                            {project_title}
+                                          </p>
+                                          <p className="project-role mb-0">
+                                            {role_in_project}
+                                          </p>
+                                        </div>
+                                        <div className="d-flex align-items-center gap-2 project-date-wrapper status-finished">
+                                          <p className="project-date mb-0">{`${project_start_date?.slice(
+                                            0,
+                                            10
+                                          )}`}</p>{" "}
+                                          -
+                                          <p className="project-date mb-0">{`${project_end_date?.slice(
+                                            0,
+                                            10
+                                          )}`}</p>
+                                        </div>
+                                      </div>
+                                      <div className="my-2">
+                                        <a
+                                          href={project_link}
+                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
+                                        >
+                                          Show Project <FiExternalLink />
+                                        </a>
+                                      </div>
+                                      <label>Tech Skill Used</label>
+                                
+                                      <ul className="skills-pill text-start mt-2">
+                                        {splitSkills(tech_stacks_used)?.map(
+                                          (item, index) => {
+                                            return (
+                                              <>
+                                                <li key={index}>
+                                                  <span>{item}</span>
+                                                </li>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                      </ul>
+                                    </div>
+                                  </React.Fragment>
+                                );
+                              }
+                            )}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="connect-social-media px-3">
+                    <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
                       <h3 className="subheading-resume text-center mb-0">
                         {t("connectWithMe")}
                       </h3>
@@ -327,70 +448,21 @@ const SingleDeveloper = ({ data, role }) => {
                         </div>
                       )}
                     </div>
-                    {/* {data?.developer_experiences?.map((item) => {
-                                            return (
-                                                <>
-                                                    <div className="exp-wrapper">
-                                                        <p
-                                                            className={`exp-year ${item?.is_edited ? "resume-edit" : ""
-                                                                }`}
-                                                        >
-                                                            {`${item?.start_date?.slice(0, 4)}-${item?.is_still_working
-                                                                ? "Present"
-                                                                : item?.end_date?.slice(0, 4)
-                                                                }`}{" "}
-                                                            | {item?.job_title}{" "}
-                                                        </p>
-                                                        <ul className="exp-role">
-                                                            <li
-                                                                className={`resume-text ${item?.is_edited ? "resume-edit" : ""
-                                                                    }`}
-                                                            >
-                                                                {item?.company_name} |{" "}
-                                                                <span>{item?.description}</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </>
-                                            );
-                                        })} */}
                     {data?.user_experience &&
                       Object.keys(data?.user_experience).length > 0 &&
                       Object.keys(data?.user_experience).map((key) => (
                         <div className="exp-timeline">
                           <SingleExperienceCard
                             companyName={key}
-                            totalExperience = {data?.user_experience[key]["total_experience"]}
+                            totalExperience={
+                              data?.user_experience[key]["total_experience"]
+                            }
                             experienceData={
                               data?.user_experience[key]["experiences"]
                             }
                           />
                         </div>
                       ))}
-                    {/* <div className="sub-exp">
-                                                                <div>
-                                                                    <h4 className="role-text">Team Lead </h4>
-                                                                    <p className="exp-date">Apr 2017 - Apr 2018</p>
-                                                                    <p className="loc-text">SAS Nagar, Punjab, India</p>
-                                                            <p className="exp-desc">Worked as Team Lead to deliver quality work. Responsible for the end product to meet quality requirements within deliveries.</p>
-                                                                </div>
-                                                            </div>
-                                                            <div className="sub-exp">
-                                                                <div>
-                                                                    <h4 className="role-text">Team Lead </h4>
-                                                                    <p className="exp-date">Apr 2017 - Apr 2018</p>
-                                                                    <p className="loc-text">SAS Nagar, Punjab, India</p>
-                                                                    <p>Worked as Team Lead to deliver quality work. Responsible for the end product to meet quality requirements within deliveries.</p>
-                                                                </div>
-                                                            </div>
-                                                            <div className="sub-exp currently">
-                                                                <div>
-                                                                    <h4 className="role-text">Team Lead </h4>
-                                                                    <p className="exp-date">Apr 2017 - Apr 2018</p>
-                                                                    <p className="loc-text">SAS Nagar, Punjab, India</p>
-                                                                    <p>Worked as Team Lead to deliver quality work. Responsible for the end product to meet quality requirements within deliveries.</p>
-                                                                </div>
-                                                            </div> */}
                     {data?.developer_educations ? (
                       <>
                         <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
@@ -409,7 +481,7 @@ const SingleDeveloper = ({ data, role }) => {
                         {data?.developer_educations?.map((item) => {
                           return (
                             <React.Fragment key={item.id}>
-                              <div className={`exp-wrapper`}>
+                              <div className="exp-wrapper">
                                 <p
                                   className={`exp-year ${
                                     item?.is_edited ? "resume-edit" : ""
@@ -443,158 +515,6 @@ const SingleDeveloper = ({ data, role }) => {
                     ) : (
                       ""
                     )}
-                    <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
-                      <h3 className="subheading-resume mb-0">
-                        {t("expertise")}
-                      </h3>
-                      {role !== "client" && (
-                        <div
-                          className="add_more_section_education pointer"
-                          onClick={handleShowExpertiseModal}
-                        >
-                          <MdEditNote size={25} />
-                        </div>
-                      )}
-                    </div>
-                    <div className="mb-xxl-4 mb-3">
-                      {data?.developer_skill_and_experience ? (
-                        <>
-                          {data?.developer_skill_and_experience?.map(
-                            (
-                              { experience, skill, skill_icon, is_edited },
-                              index
-                            ) => {
-                              return (
-                                <React.Fragment key={index}>
-                                  <div
-                                    className={`exp-wrapper expertise-card ${
-                                      is_edited && "resume-edit"
-                                    }`}
-                                  >
-                                    {/* <p className="exp-year">{} - {} | {}</p> */}
-                                    <img src={skill_icon?.icon_url} />
-                                    <p className="expertise-skill">{skill}</p>
-                                    <p className="expertise-exp">
-                                      {experience}
-                                    </p>
-
-                                    {/* <ul className="exp-role">
-                                                                <li className="resume-text">{}</li>
-                                                                <li className="resume-text">{}</li>
-                                                            </ul> */}
-                                  </div>
-                                </React.Fragment>
-                              );
-                            }
-                          )}
-                        </>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div>
-                      <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-3">
-                        <h3 className="subheading-resume mb-0">
-                          {t("projects")}
-                        </h3>
-                        {role !== "client" && (
-                          <div
-                            className="add_more_section_education pointer"
-                            onClick={handleProjectModal}
-                          >
-                            <MdEditNote size={25} />
-                          </div>
-                        )}
-                      </div>
-                      {/* </div> */}
-                      <div>
-                        {data?.developer_projects ? (
-                          <>
-                            {data?.developer_projects?.map(
-                              (
-                                {
-                                  project_title,
-                                  project_link,
-                                  project_start_date,
-                                  role_in_project,
-                                  project_end_date,
-                                  tech_stacks_used,
-                                  is_edited,
-                                },
-                                index
-                              ) => {
-                                return (
-                                  <React.Fragment key={index}>
-                                    <div
-                                      className={`project-wrapper ${
-                                        is_edited && "resume-edit"
-                                      }`}
-                                    >
-                                      {/* <div className="exp-wrapper expertise-card"> */}
-                                      {/* <p className="exp-year">{} - {} | {}</p> */}
-                                      {/* <img src={skill_icon?.icon_url} /> */}
-                                      <div className="d-flex justify-content-between align-items-start mb-1">
-                                        <div>
-                                          <p className="project-title mb-1">
-                                            {project_title}
-                                          </p>
-                                          <p className="project-role mb-0">
-                                            {role_in_project}
-                                          </p>
-                                        </div>
-                                        <div className="d-flex align-items-center gap-2 project-date-wrapper status-finished">
-                                          <p className="project-date mb-0">{`${project_start_date?.slice(
-                                            0,
-                                            10
-                                          )}`}</p>{" "}
-                                          -
-                                          <p className="project-date mb-0">{`${project_end_date?.slice(
-                                            0,
-                                            10
-                                          )}`}</p>
-                                        </div>
-                                      </div>
-                                      <div className="my-2">
-                                        <a
-                                          href={project_link}
-                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
-                                        >
-                                          Show Project <FiExternalLink />
-                                        </a>
-                                      </div>
-                                      {/* <label>Tech Skill Used</label> */}
-                                      <ul className="skills-pill text-start">
-                                        {splitTechStack(tech_stacks_used)?.map(
-                                          (tech, idx) => (
-                                            <li key={idx}>
-                                              <span>{tech}</span>
-                                            </li>
-                                          )
-                                        )}
-                                        {/* <li>
-                                                                                    <span>Ruby on rails</span>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <span>Django</span>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <span>React Native</span>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <span>Nest.js</span>
-                                                                                </li> */}
-                                      </ul>
-                                    </div>
-                                  </React.Fragment>
-                                );
-                              }
-                            )}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    </div>
                   </div>
                 </Col>
               </Row>

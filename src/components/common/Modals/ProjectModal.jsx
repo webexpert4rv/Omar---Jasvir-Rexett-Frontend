@@ -23,7 +23,7 @@ import {
 } from "../../../redux/slices/developerDataSlice";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import moment from "moment";
-const TEAM_SIZE_OPTIONS = ["1-5", "5-10", "10-15", "15-20"];
+const TEAM_SIZE_OPTIONS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 
 const createOption = (label) => ({
   label,
@@ -139,7 +139,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       return {
         ...curElem,
         tech_stacks_used: convertedTechStack,
-        // project_team_size: 5,
+        project_team_size: 5,
       };
     });
 
