@@ -349,6 +349,17 @@ const Applications = () => {
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
+                                              {t("email")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.email}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
                                               {t("status")}
                                             </h3>
                                             <p className="status-progress text-capitalize">
@@ -356,7 +367,7 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                       { <Col md={3} className="mb-3">
+                                       { item?.client_type=="company" && <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Company Tax id
@@ -366,16 +377,27 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>}
-                                        {/* <Col md={3}>
+
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("projectLength")}
+                                              Contact Person name
                                             </h3>
                                             <p className="application-text">
-                                              {item?.jobs[0]?.project_length ? item?.jobs[0]?.project_length : "Not Mentioned"}
+                                              ---
                                             </p>
                                           </div>
-                                        </Col> */}
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                             Contact Person Email
+                                            </h3>
+                                            <p className="application-text">
+                                             ---
+                                            </p>
+                                          </div>
+                                        </Col>
                                         {/* <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">

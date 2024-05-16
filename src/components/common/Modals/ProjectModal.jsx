@@ -23,7 +23,7 @@ import {
 } from "../../../redux/slices/developerDataSlice";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import moment from "moment";
-const TEAM_SIZE_OPTIONS = ["1-5", "5-10", "10-15", "15-20"];
+const TEAM_SIZE_OPTIONS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 
 const createOption = (label) => ({
   label,
@@ -32,7 +32,6 @@ const createOption = (label) => ({
 
 const ProjectsModal = ({ show, handleClose, data, id, role }) => {
   const [renderModalData, setRenderModalData] = useState(data);
-  console.log(data, "Editdata");
   const { skillList } = useSelector((state) => state.clientData);
   const { smallLoader } = useSelector((state) => state.developerData);
   const [selectedOption, setSelectedOption] = useState([]);
@@ -56,20 +55,20 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      projects: [
-        {
-          project_title: "",
-          project_description: "",
-          tech_stacks_used: "",
-          project_start_date: "",
-          project_end_date: "",
-          project_team_size: "",
-          project_link: "",
-          role_in_project: "",
-        },
-      ],
-    },
+    // defaultValues: {
+    //   projects: [
+    //     {
+    //       project_title: "",
+    //       project_description: "",
+    //       tech_stacks_used: "",
+    //       project_start_date: "",
+    //       project_end_date: "",
+    //       project_team_size: "",
+    //       project_link: "",
+    //       role_in_project: "",
+    //     },
+    //   ],
+    // },
   });
 
   const { fields, append, remove, replace } = useFieldArray({
@@ -83,36 +82,36 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
         for (let key in curElem) {
           if (key === "tech_stacks_used") {
             const techStackArray = curElem[key].split(",");
-            const techStackArrayForSelect = skillCate.map((curElem) => {
-              if (techStackArray.includes(curElem.label)) {
-                return curElem;
-              }
-            });
-            setValue(`projects?.${index}?.${key}`,techStackArrayForSelect);
-          }
-          if (key === "project_start_date" || key === "project_end_date") {
-            const formattedDate = moment(curElem[key]).format("MM/DD/YYYY'");
-            setValue(`projects?.${index}?.project_start_date`, formattedDate);
+            const techStackArrayForSelect = skillCate.filter((curElem) =>
+              techStackArray.includes(curElem?.label)
+            );
+            setValue(`projects.${index}.${key}`, techStackArrayForSelect);
+          } else if (
+            key === "project_start_date" ||
+            key === "project_end_date"
+          ) {
+            const temp = moment(curElem[key]).format("MM/DD/YYYY");
+            const formattedDate = new Date(temp).toISOString().split("T")[0];
+            setValue(`projects.${index}.${key}`, formattedDate);
           } else {
-            setValue(`projects?.${index}?.${key}`, curElem[key]);
+            setValue(`projects.${index}.${key}`, curElem[key]);
           }
         }
       });
+    } else {
+      setValue("projects", [
+        {
+          project_title: "",
+          project_description: "",
+          tech_stacks_used: "",
+          project_start_date: "",
+          project_end_date: "",
+          project_team_size: "",
+          project_link: "",
+          role_in_project: "",
+        },
+      ]);
     }
-
-    // else {
-    //   setValue("projects", [
-    //     {
-    //       project_title: "",
-    //       project_description: "",
-    //       tech_stacks_used: "",
-    //       project_start_date: "",
-    //       project_end_date: "",
-    //       // project_link: "",
-    //       role_in_project: "",
-    //     },
-    //   ]);
-    // }
   }, [renderModalData]);
   useEffect(() => {
     // setSkillOptions(skillListMapped);
@@ -130,18 +129,10 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
     });
     setValue("skills", formattedData);
   }, [dispatch]);
-
   const onSubmit = (values) => {
     let { projects } = values;
-    let addExp = projects
-      ?.map((item) => {
-        if (!item.newId) {
-          return { ...item };
-        }
-      })
-      .filter((item) => item);
-    const formattedProjects = projects.map((curElem, index) => {
-      const tempTechStack = curElem.tech_stacks_used.map(
+    const formattedProjects = projects?.map((curElem, index) => {
+      const tempTechStack = curElem?.tech_stacks_used.map(
         (curElem) => curElem.label
       );
       const convertedTechStack = tempTechStack.toString();
@@ -152,32 +143,41 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       };
     });
 
-    let payload = {
-      projects: [...formattedProjects],
-      user_id: +id,
-    };
-    dispatch(
-      addProjects(payload, () => {
-        if (role == "developer") {
-          dispatch(fetchDeveloperCv());
-        } else {
-          dispatch(getDeveloperDetails(id));
+    let temp = formattedProjects
+      ?.map((item) => {
+        if (!item.id) {
+          return { ...item };
         }
-        handleClose();
       })
-    );
+      .filter((item) => item);
+    if (temp.length > 0) {
+      let payload = {
+        projects: [...temp],
+        user_id: +id,
+      };
+      dispatch(
+        addProjects(payload, () => {
+          if (role == "developer") {
+            dispatch(fetchDeveloperCv());
+          } else {
+            dispatch(getDeveloperDetails(id));
+          }
+          handleClose();
+        })
+      );
+    }
 
-    projects?.forEach((item) => {
+    formattedProjects?.forEach((item,idx) => {
       if (item.id) {
         dispatch(
-          updateProjects(item.id, () => {
+          updateProjects(item.id,item, () => {
             if (role == "developer") {
               dispatch(fetchDeveloperCv());
             } else {
               dispatch(getDeveloperDetails(id));
             }
             handleClose();
-          })
+          },idx === formattedProjects.length-1)
         );
       }
     });
@@ -186,7 +186,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
   const handleAppend = async () => {
     const index = watch("projects").findIndex(
       (curElem) =>
-        curElem.project_description === "" ||
+        curElem.project_description === "" || 
         curElem.project_title === "" ||
         curElem.tech_stacks_used === "" ||
         curElem.role_in_project === "" ||
@@ -244,7 +244,6 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       setSkillsCate((prev) => [...prev, newOption]);
     }, 1000);
   };
-  console.log(watch("projects"), "projects");
   const deletetooltip = <Tooltip id="tooltip">{t("deleteRow")}</Tooltip>;
   const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
   return (
@@ -259,7 +258,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       <Modal.Body>
         <div>
           <h3 className="popup-heading">
-            {t("projects")} {t("section")}
+            {t("projects")} 
           </h3>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {fields.map((field, index) => (
@@ -273,7 +272,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     className="common-field"
                     placeholder="Enter Project Title"
                     {...register(`projects.${index}.project_title`, {
-                      required: "Project title is required",
+                      required: t("project_title_required_msg"),
                     })}
                   ></Form.Control>
                   {errors?.projects?.[index]?.project_title && (
@@ -293,10 +292,10 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     className="common-field"
                     placeholder="Enter Project Description"
                     {...register(`projects.${index}.project_description`, {
-                      required: " Project Description is required",
+                      required: t("project_description_required_msg"),
                     })}
                   />
-                  {errors?.projects?.[index]?.project_description && (
+                  {errors?.projects?.[index]?.project_description && (  
                     <p className="error-message">
                       {errors.projects[index].project_description.message}
                     </p>
@@ -312,7 +311,9 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                         <Controller
                           name={`projects.${index}.tech_stacks_used`}
                           control={control}
-                          rules={{ required: "Tech stacks used are required" }}
+                          rules={{
+                            required: t("tech_stack_required_msg"),
+                          }}
                           render={({ field }) => (
                             <CreatableSelect
                               {...field}
@@ -352,7 +353,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       className="common-field"
                       placeholder="Enter your Role In Project"
                       {...register(`projects.${index}.role_in_project`, {
-                        required: " Role in project required",
+                        required: t("project_role_required_msg"),
                       })}
                     ></Form.Control>
                     <p className="error-message">
@@ -368,12 +369,12 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                     <Form.Label>{t("projectTeamSize")}</Form.Label>
                     <Form.Select
                       {...register(`projects.${index}.project_team_size`, {
-                        required: "Project's team size is required",
+                        required: t("project_team_size_required_msg")
                       })}
                       className="filter-select width-full shadow-none "
                     >
                       <option disabled selected>
-                        Please select project's team size
+                        {t("projectTeamSize")}
                       </option>
                       {TEAM_SIZE_OPTIONS.map((val, idx) => (
                         <option key={idx} value={val}>
@@ -396,7 +397,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       className="common-field"
                       placeholder="Enter Project Link"
                       {...register(`projects.${index}.project_link`, {
-                        required: "Project link is required",
+                        required: t("project_link_required_msg"),
                       })}
                     ></Form.Control>
                     {errors?.projects?.[index]?.project_link && (
@@ -417,7 +418,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                           placeholder="Enter Start Date"
                           max={new Date().toISOString().split("T")[0]}
                           {...register(`projects.${index}.project_start_date`, {
-                            required: "Start Date is required",
+                            required: t("startDateValidation"),
                             onChange: (e) => {
                               setValue(
                                 `projects.${index}.project_start_date`,
@@ -456,7 +457,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                           {...register(`projects.${index}.project_end_date`, {
                             required: {
                               value: disabledEndDates[index] ? false : true,
-                              message: "End Date is required",
+                              message: t("endDateValidation"),
                             },
                             onChange: (e) => {
                               setValue(
@@ -465,25 +466,18 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                               );
                             },
                           })}
-                          min={
-                            watch(`projects?.${index}?.project_start_date`)
-                              ? new Date(
-                                  watch(`projects.${index}.project_start_date`)
-                                )
-                                  ?.toISOString()
-                                  ?.split("T")[0]
-                              : undefined
-                          }
+                          // min={
+                          //   watch(`projects.${index}.project_start_date`)
+                          //     ? new Date(
+                          //         watch(
+                          //           `projects.${index}.project_start_date`
+                          //         )
+                          //       )
+                          //         ?.toISOString()
+                          //         ?.split("T")[0]
+                          //     : undefined
+                          // }
                           max={new Date().toISOString().split("T")[0]}
-                          // onChange={(e) => {
-                          //   const formattedDate = moment(e.target.value).format(
-                          //     "MM/DD/yyyy"
-                          //   );
-                          //   setValue(
-                          //     `projects.${index}.project_end_date`,
-                          //     formattedDate
-                          //   );
-                          // }}
                           disabled={disabledEndDates[index]}
                         />
                         {errors?.projects?.[index]?.project_end_date && (

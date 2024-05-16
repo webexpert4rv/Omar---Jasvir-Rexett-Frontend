@@ -243,7 +243,6 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
     //   );
     // }
   };
-  console.log(fields, ";fields");
   return (
     <Modal
       show={show}

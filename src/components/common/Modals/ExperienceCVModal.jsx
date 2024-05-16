@@ -86,18 +86,18 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
         handleClose()
       }))
     }
-
-    test?.forEach((item) => {
+    // Promise.all([...test]).then(())
+    test?.forEach((item,idx) => {
       if (item.newId) {
-        console.log(item.newId,"-------------========")
-        dispatch(updateDeveloperCvExperience(item, item.newId, () => {
+        console.log(item.newId,"-------------========")   
+        dispatch(updateDeveloperCvExperience( item, item.newId, () => {
           if(role=="developer"){
             dispatch(fetchDeveloperCv())
           }else{
             dispatch(getDeveloperDetails(id))
           }
           handleClose()
-        }))
+        },idx === test.length-1))
       }
     })
 
@@ -117,16 +117,14 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
     }
   };
 
-  const deleteDeveloperExperience = ( devId,index) => {
-    console.log(id,"experienceid")
-    console.log(devId,"deviddddd-----------")
+  const deleteDeveloperExperience = ( itemId,index) => {
     remove(index)
-    if (id) {
-      dispatch(deleteExperience(id,devId, () => {
+    if (itemId) {
+      dispatch(deleteExperience(itemId,id, () => {
           if (role == "developer") {
               dispatch(fetchDeveloperCv())
           } else {
-              dispatch(getDeveloperDetails(devId))
+              dispatch(getDeveloperDetails(id))
           }
           handleClose()
 
