@@ -245,7 +245,7 @@ const Members = () => {
                                 <td>{item?.phone_number}</td>
                                 {/* <td>{item?.jobs[0]?.engagement_type}</td>
                                 <td>{item?.jobs[0]?.project_length}</td> */}
-                                <td>{item?.approval_status}</td>
+                                <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
                                 {/* <td>
                                   <div className="d-flex gap-3">
                                     <OverlayTrigger
@@ -553,7 +553,7 @@ const Members = () => {
                                 <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
                                 {/* <td>{item?.company?.yearly_revenue}</td> */}
-                                <td>{item?.approval_status}</td>
+                                <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
                                 {/* <td>
                                   <div className="d-flex gap-3">
                                     <RexettButton
@@ -808,7 +808,7 @@ const Members = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
-                                <td>{item?.approval_status}</td>
+                                <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
                                 {/* <td>
                                   <div className="d-flex gap-3">
                                     <RexettButton
