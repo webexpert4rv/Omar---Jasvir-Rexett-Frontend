@@ -40,7 +40,7 @@ const AdminSidebar = ({sideBarActive}) => {
                                 <NavLink to={'/developer-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/developer-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
+                                <NavLink to={'/developer-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("invoice")}</NavLink>
                             </li>
                         </ul>
                     </div>
