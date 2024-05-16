@@ -12,6 +12,7 @@ const StartDayModal = ({ show, handleClose, checked, handleSubmit }) => {
     const [showTimeReport, setShowTimeReport] = useState(false);
     const handleTimeReport = () => {
         setShowTimeReport(true);
+       
     }
     const handleCloseTimeReport = () => {
         setShowTimeReport(false);
@@ -57,10 +58,7 @@ const StartDayModal = ({ show, handleClose, checked, handleSubmit }) => {
                             <h3 className="popup-heading"> Do you want to</h3>
                             <div className="d-flex justify-content-center align-items-center gap-4">
                                 <Button onClick={handleClose} className="main-btn outline-main-btn py-2 px-3 font-14 d-flex align-items-center gap-2">Take a break <img src={breakIcon} className="break-icon" /></Button>
-                                <Button onClick={() => {
-                                    handleTimeReport();
-                                    handleClose();
-                                }} className="main-btn checkout-btn py-2 px-3 font-14 d-flex align-items-center gap-2">Checkout <img src={exitIcon} className="checkout-icon" /><img src={exitIconGreen} className="checkout-icon green-checkout" /></Button>
+                                <Button onClick={handleTimeReport} className="main-btn checkout-btn py-2 px-3 font-14 d-flex align-items-center gap-2">Checkout <img src={exitIcon} className="checkout-icon" /><img src={exitIconGreen} className="checkout-icon green-checkout" /></Button>
                             </div>
                             <Form>
                                 {/* <Row>
@@ -99,7 +97,7 @@ const StartDayModal = ({ show, handleClose, checked, handleSubmit }) => {
                     )}
                 </Modal.Body>
             </Modal>
-            <SubmitTimeReport show={showTimeReport} handleClose={handleCloseTimeReport} />
+            <SubmitTimeReport show={showTimeReport} handleCloseTimeReport={handleCloseTimeReport} handleClose = {handleClose} />
         </>
     );
 };
