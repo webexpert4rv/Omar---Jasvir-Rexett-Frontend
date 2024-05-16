@@ -59,10 +59,6 @@ const SingleDeveloper = ({ data, role }) => {
     setShowModal(true);
   };
 
-  const readMoreLess = () => {
-    setReadMore(!readmore);
-  };
-
   const handleCloseModal = () => {
     setShowModal(false);
   };
