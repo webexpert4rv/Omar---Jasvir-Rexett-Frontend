@@ -17,9 +17,9 @@ const AdminSingleDeveloper = () => {
     },[])
 
 
-
+    console.log(developerDetails , "adminsingledeveloperDetails")
     return(<>
-    <SingleDeveloper  developerDetails={developerDetails}/>
+    <SingleDeveloper  data={developerDetails} role={"admin"}/>
     </>
     )
 }

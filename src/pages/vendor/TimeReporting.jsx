@@ -3,15 +3,18 @@ import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
-import { getVendorTimeReporting } from "../../redux/slices/vendorDataSlice";
-
+import { getClientList, getVendorTimeReporting, getVendorWithClient } from "../../redux/slices/vendorDataSlice";
+import UploadInvoice from "../admin/Modals/UploadInvoice";
+import NoDataFound from "../../components/atomic/NoDataFound"
+import { useTranslation } from "react-i18next";
 
 const VendorTimeReporting = () => {
     const dispatch = useDispatch()
-    const { vendorTimeReport, screenLoader } = useSelector(state => state.vendorData)
+    const { vendorTimeReport, screenLoader,clientList} = useSelector(state => state.vendorData)
     const [contractId, setContractID] = useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
+    const { t } = useTranslation()
 
     useEffect(() => {
         let newContacts = [...vendorTimeReport]
@@ -25,6 +28,11 @@ const VendorTimeReporting = () => {
         setDeveloperData(d)
 
     }, [vendorTimeReport])
+
+    useEffect(()=>{
+        dispatch(getClientList())
+         },[])
+
 
     const handleShowEditTimeModal = () => {
         setShowEditTimeModal(true);
@@ -59,6 +67,10 @@ const VendorTimeReporting = () => {
         newDev[inx].newData = newDev[inx].contracts[newInx]
         setDeveloperData(newDev)
     }
+
+    const handleClient=(e)=>{
+    dispatch(getVendorWithClient(e.target.value))
+    }
     return (
         <>
             <section>
@@ -67,12 +79,12 @@ const VendorTimeReporting = () => {
                         <div className="d-flex gap-3 justify-content-between align-items-end">
                             <div className="d-flex gap-3">
                                 <div>
-                                    <Form.Select className="filter-select shadow-none">
-                                        <option value="" selected disabled>Select Clients</option>
+                                    <Form.Select className="filter-select shadow-none" onChange={handleClient} >
+                                        <option value="" selected disabled>{t("selectClients")}</option>
                                         {
-                                            (vendorTimeReport)?.map((item) => {
+                                            clientList?.map((item) => {
                                                 return (<>
-                                                    <option value={item?.client_details?.name}>{item?.client_details?.name}</option>
+                                                    <option value={item?.id}>{item?.name}</option>
                                                 </>)
                                             })
                                         }
@@ -87,33 +99,33 @@ const VendorTimeReporting = () => {
                         <table className="table time-table table-bordered table-ui-custom">
                             <thead>
                                 <th className="time-table-head">
-                                    Client Name
+                                    {t("clientName")}
                                 </th>
                                 <th className="time-table-head">
-                                    No of Developers Hired
+                                    {t("noOfDevelopersHired")}
                                 </th>
                                 <th className="time-table-head">
-                                    Name of Developers
+                                    {t("nameOfDevelopers")}
                                 </th>
                                 <th className="time-table-head">
-                                    Total Hours
+                                    {t("totalHours")}
                                 </th>
                                 <th className="time-table-head">
-                                    Location
+                                    {t("location")}
                                 </th>
                                 <th className="time-table-head">
-                                    Redeem
+                                    {t("redeem")}
                                 </th>
                                 <th className="time-table-head">
-                                    Invoice
+                                    {t("invoice")}
                                 </th>
                                 <th className="time-table-head">
-                                    Contract
+                                    {t("contract")}
                                 </th>
                             </thead>
                             {screenLoader ? <ScreenLoader /> : <tbody>
                                 {
-                                    developerData?.map((item, index) => {
+                                   developerData.length>0? developerData?.map((item, index) => {
                                         return (
                                             <>
                                                 <tr>
@@ -134,22 +146,26 @@ const VendorTimeReporting = () => {
                                                     </td>
                                                     <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
                                                     <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
-                                                    <td className="time-table-data">N/A</td>
+                                                    <td className="time-table-data">{t("N/A")}</td>
                                                     <td className="time-table-data">
-                                                        <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
+                                                        <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>
+                                                             {!(item?.newData?.contractDetails?.has_invoice) ? t("uploadInvoice") : t("invoiceUploaded")}
+                                                            <HiUpload />
+                                                    </label>
                                                     </td>
                                                     <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
                                                 </tr>
                                             </>
                                         )
                                     })
-                                }
+                                :<td colSpan={9}><NoDataFound/></td>}
 
                             </tbody>}
                         </table>
                     </div>
                 </div>
             </section>
+            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} role = {"vendor"}/>
         </>
     )
 }

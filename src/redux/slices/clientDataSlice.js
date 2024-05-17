@@ -2,15 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import clientInstance from '../../services/client.instance';
 import { generateApiUrl } from '../../helper/utlis';
-import developerInstance from '../../services/developer.instance';
-import commanInstance from '../../services/commanInstance';
-import adminInstance from '../../services/admin.instance';
+
 
 const initialClientData = {
     screenLoader: false,
     approvedLoader: false,
     smallLoader: false,
     assignedDeveloperList: [],
+    invoiceList: [],
     clientProfileDetails: {},
     timeReportingData: [],
     folderData: [],
@@ -20,6 +19,8 @@ const initialClientData = {
     jobPostedData: {},
     earnedBack: {},
     developerDetails:{},
+    timeReportingPage:{},
+    faqsData:{}
 }
 
 export const clientDataSlice = createSlice({
@@ -59,8 +60,14 @@ export const clientDataSlice = createSlice({
         },
 
         setTimeReporting: (state, action) => {
-            state.timeReportingData = action.payload
+            let data={
+                totalPages:action.payload.totalPages,
+                totalRecords:action.payload.totalRecords
+            }
+            state.timeReportingPage=data
+            state.timeReportingData = action.payload.data
             state.smallLoader = false;
+            state.screenLoader = false;
 
 
         },
@@ -70,7 +77,8 @@ export const clientDataSlice = createSlice({
             state.screenLoader = false;
         },
         setJobCategory: (state, action) => {
-            state.jobCategoryList = action.payload
+            let newData= action.payload.map((item)=>{return { label:item.title , value:item.id}})
+            state.jobCategoryList = newData
         },
         setSkillList: (state, action) => {
             state.skillList = action.payload
@@ -95,12 +103,20 @@ export const clientDataSlice = createSlice({
         setDeveloperDetails:(state,action) =>{
             state.developerDetails = action.payload
             state.screenLoader = false;
+        },
+        setFaqs : (state ,action) =>{
+            state.faqsData = action.payload
+            state.screenLoader = false;
+        },
+        setInvoiceList: (state,action) => {
+            state.invoiceList = action.payload;
+            state.screenLoader = false;
         }
 
     }
 })
 
-export const { setAllJobPostedList, setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList, setFaqs ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -133,7 +149,8 @@ export function updateClientProfile(payload, callback) {
                 toast.success("Profile is Updated", { position: "top-center" })
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message = error.response.data.message || "Something went wrong";
+            console.log(error,"err")
             toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
@@ -158,8 +175,9 @@ export function getClientProfile(payload, callback) {
 
 
 export function timeReporting(payload, role, callback) {
+    console.log(payload , "payload")
     return async (dispatch) => {
-        dispatch(setSmallLoader())
+        dispatch(setScreenLoader())
         try {
             let result
             if (role === "client") {
@@ -168,7 +186,7 @@ export function timeReporting(payload, role, callback) {
                 result = await clientInstance.get(generateApiUrl(payload, `developer/time-reports`))
             }
             if (result.status === 200) {
-                dispatch(setTimeReporting(result.data.data))
+                dispatch(setTimeReporting(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -179,7 +197,7 @@ export function timeReporting(payload, role, callback) {
 }
 
 
-export function getFolderData(payload, role, callback) {
+export function getFolderData(payload, role) {
     return async (dispatch) => {
 
         dispatch(setScreenLoader())
@@ -204,6 +222,24 @@ export function clientJobPost(payload, callback) {
         try {
             let result = await clientInstance.post(`client/post-job`, { ...payload })
             toast.success("Job successfully Posted", { position: "top-center" })
+            dispatch(setActionSuccessFully())
+            return callback()
+
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+export function clientUpdatePost(payload,id, callback) {
+    console.log(payload , "payload")
+    console.log(id , "id")
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`client/update-job/${id}`,{ ...payload })
+            toast.success("Job successfully Updated", { position: "top-center" })
             dispatch(setActionSuccessFully())
             return callback()
 
@@ -305,23 +341,7 @@ export function publishedPost(payload, status, callback) {
     };
 }
 
-export function approvedClient(payload, role) {
-    return async (dispatch) => {
 
-        dispatch(setApprovedLoader())
-        try {
-            let result = await clientInstance.post(`${role}/approve-time-reports/${payload}`)
-            if (result.status === 200) {
-                dispatch(setActionSuccessFully())
-                toast.success("Time reports approved successfully", { position: "top-center" })
-            }
-        } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailClientData())
-        }
-    };
-}
 
 export function editTimeReportOfDev(payload, callback) {
     return async (dispatch) => {
@@ -483,4 +503,138 @@ export function getDeveloperDetails(id) {
             dispatch(setFailClientData())
         }
     }
+}
+// export function getDeleteAccount(payload) {
+//     return async (dispatch) => {
+//         dispatch(setSmallLoader())
+//         try {
+//             let result = await clientInstance.post("/common/delete-account",{...payload})
+            
+//         } catch (error) {
+//             const message = error.message || "Something went wrong";
+//             toast.error( "Delete account request already exists for this user", { position: "top-center" })
+//             dispatch(setFailClientData())
+//         }
+//     }
+// }
+export function getEnableDisableAccount(payload) {
+    console.log(payload,"payload")
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`/common/enable-disable-user`,{...payload})
+            
+        } catch (error) {
+            console.log(error)
+            // const message = error.message || "Something went wrong";
+            // toast.error( "Delete account request already exists for this user", { position: "top-center" })
+            // dispatch(setFailClientData())
+        }
+    }
+}
+export function getDeleteJob(payload ,callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.delete(`/client/delete-job/${payload}`)
+            toast.success("Job deleted successfully", { position: "top-center" })
+            dispatch(setActionSuccessFully())
+            return callback()
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error( "Delete account request already exists for this user", { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    }
+}
+
+export function createNewJobCategory(payload,callback) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post(`/common/add-job-category`,{...payload})
+            return callback()
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    }
+}
+
+// export function getInvoice() {
+//     return async (dispatch) => {
+//         dispatch(setScreenLoader())
+//         try {
+//             let result = await clientInstance.get("/client/invoices")
+//         } catch (error) {
+//             const message = error.message || "Something went wrong";
+//         }
+//     }
+// }
+
+export function getInvoice(payload) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader()) 
+        try {
+            let result = await clientInstance.get(generateApiUrl(payload, `client/invoices`))
+            if (result.status === 200) {
+                dispatch(setInvoiceList(result.data ))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+        }
+    };
+}
+
+export function getFaq() {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get("/web/faqs")
+            dispatch(setFaqs(result.data))
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+        }
+    }
+}
+
+export function getAddNewDeveloper(payload,callback) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post('/vendor/add-developer', {...payload})
+         
+                dispatch(setActionSuccessFully())
+                 toast.success("New Developer is Added", {position:"top-center"})
+                return callback()   
+            
+        } catch (error) {
+            const message = error.message
+            toast.error(error.response.data.message, { position: "top-center" })
+            dispatch(setFailClientData())
+
+        }
+    }
+
+}
+
+export function updateDeveloperCvDetails(payload, callback) {
+    console.log(payload , "payload")
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.put(`common/update-cv-profile`, { ...payload })
+            if (result.status === 200) {
+                toast.success("Media is updated successfully", { position: "top-center" })
+                dispatch(setActionSuccessFully())
+                return callback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
 }

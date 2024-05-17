@@ -3,6 +3,7 @@ import { Form, Button, Pagination } from "react-bootstrap";
 import { Doughnut } from 'react-chartjs-2';
 import { useDispatch, useSelector } from "react-redux";
 import { earnedBackOfDeveloper } from "../../redux/slices/clientDataSlice";
+import { useTranslation } from "react-i18next";
 const data = {
     labels: ['Earned Back', 'Developers'],
     datasets: [
@@ -33,16 +34,27 @@ const options = {
             backgroundColor: '#000',
             borderColor: '#ddd',
             cornerRadius: 5,
+            callbacks: {
+                label: function (context) {
+                    let label = context.label || '';
+                    if (label) {
+                        label += ': ';
+                    }
+                    label += Math.round(context.parsed * 100) + '%';
+                    return label;
+                }
+            }
         },
     },
 };
 
 const EarnedBack = () => {
-    const dispatch =useDispatch()
-    const {earnedBack,screenLoader}=useSelector(state=>state.clientData)
-    useEffect(()=>{
-     dispatch(earnedBackOfDeveloper())
-    },[])
+    const dispatch = useDispatch()
+    const { t } = useTranslation();
+    const { earnedBack, screenLoader } = useSelector(state => state.clientData)
+    useEffect(() => {
+        dispatch(earnedBackOfDeveloper())
+    }, [])
     return (
         <>
             <section>
@@ -68,61 +80,46 @@ const EarnedBack = () => {
                         </div>
                     </Form> */}
                 </div>
-                <p className="mb-3">To hire a rexett developers for more than 500 hours Rexett will return you 5% of your investment</p>
+                <p className="mb-3">{t("hiring")}</p>
                 <div className="table-responsive mb-3">
                     <table className="table time-table table-ui-custom">
                         <thead>
                             <th className="time-table-head">
-                                Total Number of Developers Hired
+                                {t("hiredDevelopers")}
                             </th>
                             <th className="time-table-head">
-                                Total Hours
+                                {t("totalHours")}
                             </th>
                             <th className="time-table-head">
-                                Earned Back 5%
+                                {t("earnedBack")} 5%
                             </th>
                             <th className="time-table-head">
-                                Redeem
+                                {t("redeem")}
                             </th>
                             <th className="time-table-head">
-                                Report
+                                {t("report")}
                             </th>
                         </thead>
                         <tbody>
                             <tr>
                                 <td className="time-table-data">{earnedBack?.totalContracts}</td>
-                                <td className="time-table-data">{earnedBack?.totalHours}</td>
-                                <td className="time-table-data">{earnedBack?.earnedBackHours} hrs</td>
+                                <td className="time-table-data">{earnedBack?.totalHours?.toFixed(2)}</td>
+                                <td className="time-table-data">{earnedBack?.earnedBackHours} {t("hrs")}</td>
                                 <td className="time-table-data">
                                     <Form.Select className="status-select shadow-none">
-                                        <option value="finished">Yes</option>
-                                        <option value="progress">No</option>
-                                        <option value="progress">No</option>
+                                        <option value="finished">{t("Yes")}</option>
+                                        <option value="progress">{t("No")}</option>
                                     </Form.Select>
                                 </td>
                                 <td className="time-table-data">
-                                    <Button variant="transparent" className="outline-main-btn font-14">Submit</Button>
+                                    <Button variant="transparent" className="outline-main-btn font-14">{t("submit")}</Button>
                                 </td>
                             </tr>
 
                         </tbody>
                     </table>
                 </div>
-                {/* <div className="d-flex justify-content-between align-items-center mb-4">
-                    <p className="showing-result">Showing 1 - 10 results</p>
-                    <Pagination className="custom-pagination">
-                        <Pagination.Prev className="custom-pagination-item custom-pagination-arrow" />
-                        <Pagination.Item className="custom-pagination-item" active>{1}</Pagination.Item>
-                        <Pagination.Item className="custom-pagination-item">{2}</Pagination.Item>
-                        <Pagination.Item className="custom-pagination-item">{3}</Pagination.Item>
-                        <Pagination.Ellipsis className="custom-pagination-item" />
-                        <Pagination.Item className="custom-pagination-item">{8}</Pagination.Item>
-                        <Pagination.Item className="custom-pagination-item">{9}</Pagination.Item>
-                        <Pagination.Item className="custom-pagination-item">{10}</Pagination.Item>
-                        <Pagination.Next className="custom-pagination-item custom-pagination-arrow" />
-                    </Pagination>
-                </div> */}
-                <h5 className="section-head-sub border-bottom-grey pb-2 mb-4">Statistic Earned Back</h5>
+                <h5 className="section-head-sub border-bottom-grey pb-2 mb-4">{t("statisticEarnedBack")}</h5>
             </section>
             <div className="stats-chart-wrapper">
                 <Doughnut data={data} options={options} />

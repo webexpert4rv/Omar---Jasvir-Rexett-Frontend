@@ -6,14 +6,22 @@ import UploadInvoice from "./Modals/UploadInvoice";
 import { useDispatch, useSelector } from "react-redux";
 import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { getClientList } from "../../redux/slices/vendorDataSlice";
+import { useTranslation } from "react-i18next";
+import { IoSearch } from "react-icons/io5";
+import NoDataFound from "../../components/atomic/NoDataFound";
+import { useNavigate } from "react-router-dom";
 
 
 const AdminTimeReporting = () => {
     const dispatch = useDispatch()
-    const { adminTimeReportingList, screenLoader } = useSelector(state => state.adminData)
+    const { adminTimeReportingList, screenLoader, adminClientList } = useSelector(state => state.adminData)
+    const { clientList } = useSelector(state => state.vendorData)
     const [contractId, setContractID] = useState(null)
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
+    const { t } = useTranslation()
+    const navigate=useNavigate()
 
 
     useEffect(() => {
@@ -28,6 +36,13 @@ const AdminTimeReporting = () => {
         setDeveloperData(d)
 
     }, [adminTimeReportingList])
+
+
+    console.log(adminClientList, "adminClientList")
+    // useEffect(()=>{
+    //     dispatch(getClientList())
+    //      },[])
+
 
     const handleShowEditTimeModal = () => {
         setShowEditTimeModal(true);
@@ -62,6 +77,14 @@ const AdminTimeReporting = () => {
         newDev[inx].newData = newDev[inx].contracts[newInx]
         setDeveloperData(newDev)
     }
+
+    const handleClientClick = (e) => {
+        dispatch(adminTimeReporting(e))
+    }
+    
+    const redirectToTimeReporting=()=>{
+        navigate("/time-reporting-detail")
+    }
     return (
         <>
             <section>
@@ -69,22 +92,32 @@ const AdminTimeReporting = () => {
                     <Form>
                         <div className="d-md-flex gap-3 justify-content-between align-items-end">
                             <div className="mb-md-0 mb-3">
-                                <div>
-                                    <Form.Select className="filter-select shadow-none">
-                                        <option value="" selected disabled>Select Clients</option>
+                                {/* <div>
+                                    <Form.Select className="filter-select shadow-none" onClick={(e) => handleClientClick(e.target.value)}>
+                                        <option value="" selected disabled>{t("selectClients")}</option>
                                         {
-                                            adminTimeReportingList?.map((item) => {
+                                            adminClientList?.map((item, index) => {
                                                 return (<>
-                                                    <option value={item?.client_details?.name}>{item?.client_details?.name}</option>
+                                                    <option key={index} value={item.id}  >{item?.name}</option>
                                                 </>)
                                             })
                                         }
                                     </Form.Select>
-                                </div>
+                                </div> */}
                             </div>
-                            <div>
-                                <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>Edit Time Report</Button>
+                            <div className="d-flex align-items-center gap-3">
+                                <Form.Control
+                                    type="text"
+                                    className="common-field font-14 shadow-none"
+                                    placeholder="Enter Keyword..."
+                                />
+                                <Button variant="transparent" className="main-btn px-3 search-btn">
+                                    <IoSearch />
+                                </Button>
                             </div>
+                            {/* <div>
+                                <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>{t("editTimeReport")}</Button>
+                            </div> */}
                         </div>
                     </Form>
                 </div>
@@ -93,71 +126,54 @@ const AdminTimeReporting = () => {
                         <table className="table time-table table-bordered table-ui-custom">
                             <thead>
                                 <th className="time-table-head">
-                                    Client Name
+                                    {t("clientName")}
                                 </th>
                                 <th className="time-table-head">
-                                    No of Developers Hired
+                                    Total Hired Developers
                                 </th>
                                 <th className="time-table-head">
-                                    Name of Developers
+                                    Total Projects
                                 </th>
                                 <th className="time-table-head">
-                                    Total Hours
+                                    Total Vendor's Dev
                                 </th>
                                 <th className="time-table-head">
-                                    Location
+                                    Total Individual Dev
                                 </th>
                                 <th className="time-table-head">
-                                    Redeem
-                                </th>
-                                <th className="time-table-head">
-                                    Invoice
-                                </th>
-                                <th className="time-table-head">
-                                    Contract
+                                    {t("contract")}
                                 </th>
                             </thead>
-                            {screenLoader ? <ScreenLoader /> : <tbody>
-                                {
-                                    developerData?.map((item, index) => {
-                                        return (
-                                            <>
-                                                <tr>
-                                                    <td className="time-table-data">{item?.client_details?.name}</td>
-                                                    <td className="time-table-data">{item?.contracts?.length}</td>
-                                                    <td className="time-table-data">
-                                                        <Form.Select className="status-select shadow-none" onChange={(e) => handleDeveloper(e, index)}>
-                                                            {
-                                                                contractName(item?.contracts)?.map((el, inx) => {
-                                                                    return (
-                                                                        <>
-                                                                            <option value={inx}>{el?.dev}</option>
-                                                                        </>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </Form.Select>
-                                                    </td>
-                                                    <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
-                                                    <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
-                                                    <td className="time-table-data">N/A</td>
-                                                    <td className="time-table-data">
-                                                        <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
-                                                    </td>
-                                                    <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
-                                                </tr>
-                                            </>
-                                        )
-                                    })
-                                }
-
-                            </tbody>}
+                            <tbody>
+                                {screenLoader ? <ScreenLoader /> : <>
+                                    {developerData?.length > 0 ?
+                                        developerData?.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <tr className="row-hover" onClick={redirectToTimeReporting}>
+                                                        <td className="time-table-data">{item?.client_details?.name}</td>
+                                                        <td className="time-table-data">{item?.contracts?.length}</td>
+                                                        <td className="time-table-data">5</td>
+                                                        <td className="time-table-data">4</td>
+                                                        <td className="time-table-data">3</td>
+                                                        <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })
+                                        : <td colSpan={6}><NoDataFound /></td>}
+                                </>}
+                            </tbody>
                         </table>
+                    </div>
+                    <div className="helper-text-section">
+                        <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
+                        <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
                     </div>
                 </div>
             </section>
             <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} adminTimeReportingList={adminTimeReportingList} />
-            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} />
+            <UploadInvoice show={showUploadInvoice} handleClose={handleCloseUploadInvoice} contractId={contractId} role={"admin"} />
         </>
     )
 }

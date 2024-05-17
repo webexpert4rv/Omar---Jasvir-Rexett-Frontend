@@ -2,36 +2,12 @@ import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { Bar } from 'react-chartjs-2';
-const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
-    datasets: [
-        {
-            label: 'Revenue',
-            data: [20000, 50000, 150000, 180000, 100000, 80000, 50000, 20000, 16000, 150000],
-            borderColor: 'blue',
-            backgroundColor: '#180049',
-        },
-    ],
-};
+import Revenue from "../admin/Revenue";
 
-const incomeData = {
-    labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
-    datasets: [
-        {
-            label: 'Revenue',
-            data: [20000, 50000, 150000, 180000, 100000, 80000, 50000, 20000, 16000, 150000],
-            borderColor: 'blue',
-            backgroundColor: '#180049',
-        },
-    ],
-};
-const options = {
-    indexAxis: 'y',
-  };
 const VendorRevenue = () => {
     return (
         <>
-            <div className="overview-card-wrapper mb-5">
+            {/* <div className="overview-card-wrapper mb-5">
                 <div className="overview-card active">
                     <div>
                         <h4 className="overview-card-subhead">Income</h4>
@@ -71,7 +47,10 @@ const VendorRevenue = () => {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </div> */}
+
+
+            <Revenue />
         </>
     )
 }

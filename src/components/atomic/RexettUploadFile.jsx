@@ -4,8 +4,9 @@ import { callPreSignedUrlResponse, createNewFolderAndFile, filePreassignedUrlGen
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "./RexettButton";
 import { useForm } from "react-hook-form";
-const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,setOpen }) => {
+const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole, setOpen }) => {
     const [selectedFile, setSelectedFile] = useState(null)
+    const[details,setDetails] = useState()
     const dispatch = useDispatch()
     const { smallLoader } = useSelector(state => state.clientData);
     const {
@@ -16,9 +17,19 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
     } = useForm({});
 
 
+    console.log(currentFolderDetails , "currentFolderDetails")
+   
     const onSubmit = async (values) => {
-        let formData = new FormData()
-        formData.append("file", values.file_name[0])
+        console.log(values ,"values")
+        setDetails(values)
+        let formData = new FormData();
+        formData.append("file", values.file_name[0]);
+        console.log(selectedFile , "selectedFile")
+        
+        if (values?.category === "3" && values?.file_name[0]?.type !== "application/pdf") {
+            alert("Only PDF files are allowed for Invoices category.");
+            return; 
+        }
         dispatch(filePreassignedUrlGenerate(formData, (url) => {
             let fileData = {
                 "contract_id": currentFolderDetails.contract_id,
@@ -32,29 +43,28 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
                 let data = {
                     parent_id: parent_id
                 }
-                handleClose()
-                setOpen(false)
-                setSelectedFile(null)
-                dispatch(getFolderData(data,currentRole))
-            }))
-
-
-        }))
-    }
+                handleClose();
+                setOpen(false);
+                setSelectedFile(null);
+                dispatch(getFolderData(data, currentRole));
+            }));
+        }));
+    };
+    
     return (
-        <Modal show={show} onHide={handleClose} centered animation size="lg">
-            <Modal.Header closeButton>
-                <Modal.Title>Upload File</Modal.Title>
+        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
+            <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
+                <h3 className="popup-heading">Upload file</h3>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className="experience-container">
                         <Row>
                             <Col md="12">
                                 <Form.Group className="mb-4">
-                                    <Form.Label>Select Category</Form.Label>
-                                    <Form.Select
+                                    {/* <Form.Label>Select Category</Form.Label> */}
+                                    <Form.Select className="common-field"
                                         {...register("category", { required: "Please select a Category" })}
                                     >
                                         <option value="" selected disabled>Select Category</option>
@@ -81,9 +91,10 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails,currentRole,
                     <div className="text-center">
                         <RexettButton
                             type="submit"
-                            text="Create"
-                            className="main-btn px-4"
+                            text="Upload"
+                            className="main-btn px-4 font-14 fw-semibold"
                             variant="transparent"
+                            disabled={smallLoader && details?.category==="3" ? true : false}
                             isLoading={smallLoader}
                         />
                     </div>

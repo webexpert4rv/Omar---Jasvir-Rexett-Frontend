@@ -1,5 +1,5 @@
 import React from "react";
-import sidebarLogo from '../assets/img/logo-white-new.png'
+import sidebarLogo from '../assets/img/rexett-logo-white.png'
 import { Link, NavLink, useNavigate } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
@@ -8,8 +8,11 @@ import { IoDocuments } from "react-icons/io5";
 import { BsClockFill } from "react-icons/bs";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
+import { FaFileInvoice } from "react-icons/fa6";
 
 const AdminSidebar = ({sideBarActive}) => {
+    const  { t } = useTranslation()
     const logout=()=>{
        localStorage.clear()
         window.location.href="/developer-login"
@@ -19,31 +22,34 @@ const AdminSidebar = ({sideBarActive}) => {
             <aside className="sidebar">
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
-                    <div className="sidebar-logo mb-3">
-                            <img src={sidebarLogo} alt="Sidebar Logo" />
+                    <div className="sidebar-logo mt-3 mb-4">
+                    <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
                         </div>
-                        <NavLink to={"/developer-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> Dashboard</NavLink>
+                        <NavLink to={"/developer-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
                             <li className="sidebar-item">
-                                <NavLink to={"/developer-cv"} className="side-link" activeClassName="active"><FaUserLarge /> CV</NavLink>
+                                <NavLink to={"/developer-cv"} className="side-link" activeClassName="active"><FaUserLarge /> {t("cv")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/edit-developer-profile"} className="side-link" activeClassName="active"><IoIosSettings /> Edit Profile</NavLink>
+                                <NavLink to={"/edit-developer-profile"} className="side-link" activeClassName="active"><IoIosSettings /> {t("editProfile")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/developer-documents"} className="side-link" activeClassName="active"><IoDocuments /> Documents</NavLink>
+                                <NavLink to={"/developer-documents"} className="side-link" activeClassName="active"><IoDocuments /> {t("documents")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/developer-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> Time Reporting</NavLink>
+                                <NavLink to={'/developer-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/developer-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
                             </li>
                         </ul>
                     </div>
                     <div className="w-100 px-3 mt-3">
                         <div>
-                            <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> Sign Out</Link>
+                            <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                         <div>
-                            <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> FAQ</NavLink>
+                            <NavLink to={"/developer-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
                         </div>
                     </div>
                 </div>

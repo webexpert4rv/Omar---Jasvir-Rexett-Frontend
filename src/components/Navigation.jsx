@@ -1,13 +1,29 @@
 import React from "react";
-import { Button, Dropdown } from "react-bootstrap";
-import { FaBell } from "react-icons/fa6";
 import { HiBars3 } from "react-icons/hi2";
 import { useNavigate } from "react-router";
-import { PiArrowLineRight } from "react-icons/pi";
+import { Tooltip , OverlayTrigger } from "react-bootstrap";
 import Notification from "./atomic/Notfication";
+import { useTranslation } from "react-i18next";
+import LanguageChange from "./atomic/LanguageChange";
+
+const str = String(localStorage.getItem("userName"));
+const clientName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())
+const newtooltip = (
+    
+    <Tooltip id="tooltip">
+      Create Job
+    </Tooltip>
+  );
+
+const clientname = (
+    <Tooltip id="tooltip">
+      {clientName}
+    </Tooltip>
+  );
 const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
     const navigate = useNavigate()
-    return (
+    const [t,i18n] = useTranslation("global")
+    return (    
         <>
             <header className="mb-4 zIndex3">
                 <div className="d-flex align-items-center justify-content-lg-end justify-content-between gap-3">
@@ -15,10 +31,18 @@ const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
                         <button onClick={handlemainSidebar} className="bars-btn"><HiBars3 /></button>
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                      <Notification/>
-                        <button className="main-btn" onClick={() => navigate("/job-post")}>+ Add new Job</button>
+                       <LanguageChange/>
+                      <Notification route="notification-client" job="single-job" doc="documents"/>
+                        <OverlayTrigger placement="bottom" overlay={newtooltip}>
+                            <button className="main-btn add-new-job-btn" onClick={() => navigate("/job-post")}>+</button>
+                        </OverlayTrigger>
+                        <OverlayTrigger placement="bottom" overlay={clientname}>
+                            <div className="profile-view">
+                                <span> {clientName?.split("")[0]}</span>
+                            </div>
+                        </OverlayTrigger>
                         <div>
-                            <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button>
+                            {/* <Button variant="transparent" onClick={handleSidebar} className={sidebaractive ? "right-btn active" : "right-btn"}><PiArrowLineRight /></Button> */}
                         </div>
                     </div>
                 </div>

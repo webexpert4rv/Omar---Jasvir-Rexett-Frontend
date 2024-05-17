@@ -6,17 +6,19 @@ import { FaDownload } from "react-icons/fa6";
 import { FaFolder } from "react-icons/fa";
 import NoDataFound from '../../atomic/NoDataFound';
 import { IoIosShareAlt } from 'react-icons/io';
+import { useTranslation } from 'react-i18next';
 
 const DocumentListView = ({folderData,deleteFileAndFolder,handleDownload,getFileName,generateFileImage,toggleFolderView,handleShowShareFileModal}) => {
-  return (
+  const { t } = useTranslation()
+    return (
     <div>
     <div className="table-responsive">
         <table className="table document-table table-ui-custom">
             <thead>
-                <th className="document-th filename-th px-3">Name</th>
-                <th className="document-th owner-th">Owner</th>
-                <th className="document-th location-th">Location</th>
-                <th className="document-th action-th">Action</th>
+                <th className="document-th filename-th px-3">{t("name")}</th>
+                <th className="document-th owner-th">{t("owner")}</th>
+                <th className="document-th location-th">{t("location")}</th>
+                <th className="document-th action-th">{t("action")}</th>
             </thead>
             <tbody>
                {folderData.length>0?folderData?.map((item,index)=>{
