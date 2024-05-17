@@ -366,6 +366,7 @@
         "tech_stack_required_msg":"Tech stacks used are required",
         "project_role_required_msg":"Role in project required",
         "project_team_size_required_msg":"Project's team size is required",
-        "project_link_required_msg":"Project link is required"
+        "project_link_required_msg":"Project link is required",
+        "projectType" : "Project's Type"
 }
 }

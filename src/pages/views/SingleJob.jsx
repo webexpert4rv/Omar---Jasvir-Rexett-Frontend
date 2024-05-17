@@ -251,8 +251,8 @@ const SingleJob = () => {
   const publishjob = (
     <Tooltip id="tooltip">
       {singleJobDescription?.status == "Unpublished"
-        ? "Unpublish Job"
-        : "Publish Job"}
+        ? "Publish Job"
+        : "Unpublish Job"}
     </Tooltip>
   );
   const handleDelete = (status, id) => {
