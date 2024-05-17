@@ -1,13 +1,17 @@
+import moment from "moment";
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-const SubmitTimeReport = ({ show, handleCloseTimeReport  ,handleClose  }) => {
+const SubmitTimeReport = ({ show, handleCloseTimeReport  ,handleClose ,setChecked }) => {
     const { t } = useTranslation()
     const [selectedOption, setSelectedOption] = useState(null);
+
+    const today = moment().format('YYYY-MM-DD');
 
     const handleSubmit=()=>{
         handleCloseTimeReport()
         handleClose()
+        setChecked(false)
     }
     return(
         <Modal show={show} onHide={handleCloseTimeReport} centered animation className="custom-modal">
@@ -21,7 +25,7 @@ const SubmitTimeReport = ({ show, handleCloseTimeReport  ,handleClose  }) => {
                         <Row>
                             <Col md={6}>
                                 <h4 className="">Date</h4>
-                                <p>02-March-2024</p>
+                                <p>{today}</p>
                             </Col>
                             <Col md={6}>
                                 <h4 className="">Total Hours</h4>
