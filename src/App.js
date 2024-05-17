@@ -76,6 +76,7 @@ import ContactSupport from './pages/views/ContactSupport';
 import DeveloperInvoice from './pages/developer/DeveloperInvoice';
 import Members from './pages/admin/Members';
 import ScreenLoader from './components/atomic/ScreenLoader';
+import JobPostStepContainer from './pages/views/Job post step form/JobPostStepContainer';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -130,7 +131,7 @@ function App() {
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
-          <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
+          <Route path="/job-post" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
           <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
