@@ -77,12 +77,9 @@ import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
 import ContactSupport from './pages/views/ContactSupport';
 import DeveloperInvoice from './pages/developer/DeveloperInvoice';
 import Members from './pages/admin/Members';
-<<<<<<< HEAD
 import LeavePlan from './pages/developer/PlanLeave';
-=======
 import ScreenLoader from './components/atomic/ScreenLoader';
 import JobPostStepContainer from './pages/views/Job post step form/JobPostStepContainer';
->>>>>>> 6897d0e06ca2e94baca33cbd05521354c7adcf0a
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
