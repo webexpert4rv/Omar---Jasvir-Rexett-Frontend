@@ -14,7 +14,7 @@ const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role,page
     const handleRemarkChange=(e)=>{
         setRemark(e.target.value)
     }
-
+console.log(role,"role")
     const handleRemarkSend=async(e)=>{
         e.preventDefault()
       let payload={
