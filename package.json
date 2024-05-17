@@ -35,13 +35,8 @@
     "redux": "^5.0.1",
     "rexett": "github:webexpert4rv/Omar---Jasvir-Rexett-Frontend",
     "socket.io-client": "^4.7.5",
-<<<<<<< HEAD
-    "svgo": "^3.2.0",
-    "web-vitals": "^2.1.4"
-=======
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453
   },
   "scripts": {
     "start": "react-scripts start",

@@ -9,19 +9,11 @@ import { FaTrashAlt } from "react-icons/fa";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 
-<<<<<<< HEAD:src/pages/developer/Modals/EducationModal.jsx
-const EducationCV = ({ show, handleClose, data, smallLoader }) => {
-    const dispatch = useDispatch();
-    const [disbaleYear, setDisbaleYear] = useState([]);
-    const [renderModalData, setRenderModalData] = useState(data)
-    const { degreeList } = useSelector(state => state.developerData)
-=======
 const EducationCV = ({ show, handleClose, data, id, role }) => {
     const dispatch = useDispatch();
     const [disbaleYear, setDisbaleYear] = useState([]);
     const [renderModalData, setRenderModalData] = useState(data)
     const { degreeList,smallLoader } = useSelector(state => state.developerData)
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453:src/components/common/Modals/EducationModal.jsx
     const { register, control, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm();
     const { fields, append, remove } = useFieldArray({ control, name: "educations" });
 
@@ -94,13 +86,6 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
     };
 
 
-<<<<<<< HEAD:src/pages/developer/Modals/EducationModal.jsx
-    const deleteDeveloperExperience = (id, index) => {
-        remove(index)
-        if (id) {
-            dispatch(deleteEducationCv(id, () => {
-                dispatch(fetchDeveloperCv())
-=======
     const deleteDeveloperEducation = (id,devId, index) => {
         console.log(id,"id------")
         remove(index)
@@ -113,7 +98,6 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                 }
                 handleClose()
 
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453:src/components/common/Modals/EducationModal.jsx
             }))
         }
     }
@@ -127,11 +111,6 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                 return { ...item }
             }
         }).filter((item) => item)
-<<<<<<< HEAD:src/pages/developer/Modals/EducationModal.jsx
-        if (addEdu.length > 0) {
-            dispatch(addDeveloperCvEducation(addEdu, () => {
-                dispatch(fetchDeveloperCv())
-=======
         if (addEdu.length > 0){
             let data={
                 educations:addEdu,
@@ -143,24 +122,10 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                 } else {
                     dispatch(getDeveloperDetails(id))
                 }
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453:src/components/common/Modals/EducationModal.jsx
                 handleClose()
             }))
         }
 
-<<<<<<< HEAD:src/pages/developer/Modals/EducationModal.jsx
-        educations?.forEach((item) => {
-            if (item.new_id) {
-                dispatch(updateDeveloperCvEducation(item, item.new_id, () => {
-                    dispatch(fetchDeveloperCv())
-                    handleClose()
-                }))
-
-            }
-        })
-
-    };
-=======
 
     educations?.forEach((item) => {
         if (item.new_id) {
@@ -197,7 +162,6 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
     console.log(fields,"----educationfirld")
    const next= degreeList.find(option => option.value === fields.degree_id)
    console.log(next,"next")
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453:src/components/common/Modals/EducationModal.jsx
     return (
         <Modal show={show} onHide={handleClose} centered scrollable className="custom-modal" animation size="lg">
             <Modal.Header closeButton className="border-0 pb-3">
@@ -241,11 +205,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                             onChange={(val) => setValue(`educations.${index}.degree_id`, val ? val.value : '')}
                                             defaultValue={degreeList.find(option => option.value === item.degree_id)}
 
-<<<<<<< HEAD:src/pages/developer/Modals/EducationModal.jsx
-                                        />
-=======
                                         /> */}
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453:src/components/common/Modals/EducationModal.jsx
 
                                     </Form.Group>
 
@@ -300,11 +260,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                             {...register(`educations.${index}.end_year`, {
                                                 required: {
                                                     value: disbaleYear[index] ? false : true,
-<<<<<<< HEAD:src/pages/developer/Modals/EducationModal.jsx
-                                                    message: "End Date is required",
-=======
                                                     message: "End year is required",
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453:src/components/common/Modals/EducationModal.jsx
                                                 },
 
                                             })}
@@ -322,25 +278,6 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                     </Form.Group>
                                 </Col> : ""}
                                 <Col md="12">
-<<<<<<< HEAD:src/pages/developer/Modals/EducationModal.jsx
-                                    <Form.Group className="mb-4 d-flex gap-2 align-items-center">
-                                        <Form.Check
-                                            type="checkbox"
-                                            className="cv-field"
-                                            id={`currently_attending_${index}`}
-                                            {...register(`educations.${index}.currently_attending`)}
-                                            defaultChecked={item.currently_attending}
-                                            onChange={(e) => handleCurrentlyWorkingChange(e, index)}
-                                        />
-                                        <Form.Label htmlFor={`currently_attending_${index}`} className="mb-0">Currently Attending</Form.Label>
-                                    </Form.Group>
-                                </Col>
-                                {index !== 0 && (
-                                    <Col md="12" className="d-flex justify-content-end">
-                                        <Button variant="danger" onClick={() => deleteDeveloperExperience(item.new_id, index)}>Delete</Button>
-                                    </Col>
-                                )}
-=======
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                         <Form.Group className="d-flex gap-2 align-items-center">
                                             <Form.Check
@@ -363,7 +300,6 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                         )}
                                     </div>
                                 </Col>
->>>>>>> 0eaab4e61f74dde94ccea768db9464b94852b453:src/components/common/Modals/EducationModal.jsx
                             </Row>
                         </div>
                     ))}
