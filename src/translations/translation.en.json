@@ -370,6 +370,9 @@
         "emailAddress":"Email Address",
         "engagementslast":"Engagements Last",
         "companyAddress" :"Company Address",
-        "companyTaxId" :"Company tax is"
+        "companyTaxId" :"Company tax is",
+        "previous" :"Previous",
+        "next":"Next",
+        "jobTitleRequired":"Job title is required"
 }
 }
