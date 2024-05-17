@@ -560,7 +560,7 @@ export function addProjects(paylaod, callback) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(
-        `/developer/add-developer-project`,
+        `/common/add-developer-project`,
         { ...paylaod }
       );
       toast.success("Project is Added", { position: "top-center" });
@@ -580,7 +580,7 @@ export function deleteProjects(projectId, callback) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.delete(
-        `/developer/delete-developer-project/${projectId}`
+        `/common/delete-developer-project/${projectId}`
       );
       toast.success("Project deleted successfully", { position: "top-center" });
       dispatch(setSuccessActionData());
@@ -598,7 +598,7 @@ export function updateProjects(projectId, payload, callback,isLast = true) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(
-        `/developer/update-developer-project?projectId=${projectId}`,
+        `/common/update-developer-project?projectId=${projectId}`,
         payload
       );
       if (isLast) {

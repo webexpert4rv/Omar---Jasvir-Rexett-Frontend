@@ -5,6 +5,7 @@ import LanguageChange from "./atomic/LanguageChange";
 import EndDayModal from "./common/Modals/EndTime";
 import StartDayModal from "./common/Modals/StartDay";
 import SubmitTimeReport from "./common/Modals/SubmitTimeSheet";
+import Timer from "./atomic/Timer";
 
 const str = String(localStorage.getItem("userName"));
 const developerName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
@@ -65,7 +66,7 @@ const DeveloperNavigation = ({ onClick }) => {
                         </Button>
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                        <p className="time-counter">00:00:00 hrs</p>
+                        <p className="time-counter"><Timer checked={checked}/></p>
                         <div className="check-text">
                             <span className="checkout-text">CheckOut</span>
                             <input
@@ -89,7 +90,7 @@ const DeveloperNavigation = ({ onClick }) => {
                 </div>
             </header>
             {
-                isColorfulChecked && <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} />
+                isColorfulChecked && <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} setChecked={setChecked} />
                 // : <EndDayModal show={isColorfulChecked} handleClose={handleCloseEndDay} />
             }
 

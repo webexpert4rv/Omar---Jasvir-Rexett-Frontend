@@ -5,7 +5,7 @@ import './assets/css/style.css'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css'; 
 import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import { Suspense, lazy } from "react"; 
+import { Fragment, Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
 import Login from './pages/Authentication/Login';
@@ -77,7 +77,12 @@ import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
 import ContactSupport from './pages/views/ContactSupport';
 import DeveloperInvoice from './pages/developer/DeveloperInvoice';
 import Members from './pages/admin/Members';
+<<<<<<< HEAD
 import LeavePlan from './pages/developer/PlanLeave';
+=======
+import ScreenLoader from './components/atomic/ScreenLoader';
+import JobPostStepContainer from './pages/views/Job post step form/JobPostStepContainer';
+>>>>>>> 6897d0e06ca2e94baca33cbd05521354c7adcf0a
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -133,7 +138,7 @@ function App() {
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
           <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
-          <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
+          <Route path="/job-post" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
           <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
@@ -167,6 +172,40 @@ function App() {
           <Route path='/developer-faq' exact element={<DeveloperDashboardLayout><Faq /></DeveloperDashboardLayout>}></Route>
         </Routes>
       </Router>
+
+      {/* <Suspense fallback={<ScreenLoader />}>
+        <Routes>
+          {route.map((item, index) =>
+            item.private ? (
+              <Fragment key={index}>
+                {item.isClient ? (
+                  <Route key={index} element={<DashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isDeveloper ? (
+                  <Route key={index} element={<DeveloperDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isVendor ? (
+                  <Route key={index} element={<VendorDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isAdmin ? (
+                  <Route key={index} element={<AdminDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : (
+                 ""
+                )}
+              </Fragment>
+            ) : item.public && (
+              <Route key={index} element={<PublicLayout />}>
+                <Route path={item.path} element={item.element} />
+              </Route>
+            ) 
+          )}
+        </Routes>
+      </Suspense> */}
      
       {/* <Suspense fallback={<Loader />}>
         <Router>

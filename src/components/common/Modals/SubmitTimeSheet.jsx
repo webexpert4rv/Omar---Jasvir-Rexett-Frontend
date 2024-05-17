@@ -1,11 +1,20 @@
+import moment from "moment";
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-const SubmitTimeReport = ({ show, handleClose }) => {
+const SubmitTimeReport = ({ show, handleCloseTimeReport  ,handleClose ,setChecked }) => {
     const { t } = useTranslation()
     const [selectedOption, setSelectedOption] = useState(null);
+
+    const today = moment().format('YYYY-MM-DD');
+
+    const handleSubmit=()=>{
+        handleCloseTimeReport()
+        handleClose()
+        setChecked(false)
+    }
     return(
-        <Modal show={show} onHide={handleClose} centered animation className="custom-modal">
+        <Modal show={show} onHide={handleCloseTimeReport} centered animation className="custom-modal">
             <Modal.Header className="border-0 pb-3">
             </Modal.Header>
 
@@ -16,7 +25,7 @@ const SubmitTimeReport = ({ show, handleClose }) => {
                         <Row>
                             <Col md={6}>
                                 <h4 className="">Date</h4>
-                                <p>02-March-2024</p>
+                                <p>{today}</p>
                             </Col>
                             <Col md={6}>
                                 <h4 className="">Total Hours</h4>
@@ -34,7 +43,7 @@ const SubmitTimeReport = ({ show, handleClose }) => {
                     </div>
                     <Form.Control as="textarea" placeholder="Enter Memo" className="common-field font-14 mb-4" />
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold">Submit</Button>
+                        <Button variant="transparent" onClick= {handleSubmit} className="main-btn px-4 font-14 fw-semibold">Submit</Button>
                     </div>
                 </Form>
             </Modal.Body>

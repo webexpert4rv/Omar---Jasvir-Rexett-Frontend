@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import CommonApplicationTable from "../../components/common/Admin Application/CommonApplicationTable";
 import {
   adminApproveReject,
   allApplicationsList,
@@ -25,6 +26,30 @@ import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
+const COLUMNS = {
+  vendors: [
+    { header: "clientName", key: "name" },
+    { header: "emailAddress", key: "email" },
+    { header: "phoneNumber", key: "phone_number" },
+    { header: "typeOfCompany", key: "company", subKey: "type_of_company" },
+    { header: "engagements", key: "company", subKey: "total_employees" },
+    { header: "engagementsLast", key: "company", subkey: "website" },
+    { header: "availablity", key: "company", subkey: "yearly_revenue" },
+    { header: "status", key: "", type: "status" },
+  ],
+  developers: [
+    { header: "developerName", key: "name", type: "image" },
+    { header: "emailAddress", key: "email" },
+    { header: "phoneNumber", key: "phone_number" },
+    { header: "status", key: "approval_status", type: "status" },
+  ],
+  clients: [
+    { header: "individual/comapanyname", key: "name", type: "image" },
+    { header: "emailAddress", key: "email" },
+    { header: "phoneNumber", key: "phone_number" },
+    { header: "status", key: "approval_status", type: "status" },
+  ],
+};
 
 const Members = () => {
   const dispatch = useDispatch();
@@ -61,8 +86,8 @@ const Members = () => {
   const handleSelect = (key) => {
     setCurrentTab(key);
     setApplication(allApplications[key]);
-    setArrowActive(null)
-    setExpandedRow(null)
+    setArrowActive(null);
+    setExpandedRow(null);
   };
 
   const convertToArray = (arr) => {
@@ -135,7 +160,7 @@ const Members = () => {
               Rejected
             </option>
             <option value="unassigned" onClick={(e) => e.stopPropagation()}>
-             Approved
+              Approved
             </option>
           </Form.Select>
           <Form.Control
@@ -182,6 +207,21 @@ const Members = () => {
             </Nav.Item>
           </Nav>
           <Tab.Content>
+            {/* {currentTab === "clients" && (
+              <CommonApplicationTable
+                arrowActive={arrowactive}
+                handleRowClick={handleRowClick}
+                application={application}
+                approvedLoader={approvedLoader}
+                expandedRow={expandedRow}
+                selectedApprovedBtn={selectedApprovedBtn}
+                selectedRejectedBtn={selectedRejectedBtn}
+                screenLoader={screenLoader}
+                handleClick={handleClick}
+                currentTab={currentTab}
+                columns={COLUMNS[currentTab]}
+              />
+            )} */}
             <Tab.Pane eventKey="clients" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -192,11 +232,6 @@ const Members = () => {
                         {t("email")} {t("address")}
                       </th>
                       <th>{t("phoneNumber")}</th>
-                      {/* <th>{t("engagement")}</th>
-                      <th>
-                        {t("engagement")} {t("last")}
-                      </th>
-                      <th>{t("status")}</th> */}
                       <th>{t("status")}</th>
                     </tr>
                   </thead>
@@ -243,72 +278,7 @@ const Members = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
-                                {/* <td>{item?.jobs[0]?.engagement_type}</td>
-                                <td>{item?.jobs[0]?.project_length}</td> */}
                                 <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
-                                {/* <td>
-                                  <div className="d-flex gap-3">
-                                    <OverlayTrigger
-                                      placement="top"
-                                      delay={{ show: 250, hide: 400 }}
-                                      overlay={approvedTooltip}
-                                    >
-                                      <RexettButton
-                                        icon={
-                                          selectedApprovedBtn === index ? (
-                                            approvedLoader
-                                          ) : (
-                                            <IoCheckmark />
-                                          )
-                                        }
-                                        className="arrow-btn primary-arrow"
-                                        variant="transparent"
-                                        onClick={(e) =>
-                                          handleClick(
-                                            e,
-                                            item?.id,
-                                            "approved",
-                                            index
-                                          )
-                                        }
-                                        isLoading={
-                                          selectedApprovedBtn === index
-                                            ? approvedLoader
-                                            : false
-                                        }
-                                      />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger
-                                      placement="top"
-                                      overlay={rejectedTooltip}
-                                    >
-                                      <RexettButton
-                                        icon={
-                                          selectedRejectedBtn === index ? (
-                                            approvedLoader
-                                          ) : (
-                                            <IoCloseOutline />
-                                          )
-                                        }
-                                        className="arrow-btn danger-arrow"
-                                        variant="transparent"
-                                        onClick={(e) =>
-                                          handleClick(
-                                            e,
-                                            item?.id,
-                                            "rejected",
-                                            index
-                                          )
-                                        }
-                                        isLoading={
-                                          selectedRejectedBtn === index
-                                            ? approvedLoader
-                                            : false
-                                        }
-                                      />
-                                    </OverlayTrigger>
-                                  </div>
-                                </td> */}
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -323,7 +293,6 @@ const Members = () => {
                                           <Col md={3} className="mb-3">
                                             <div>
                                               <h3 className="application-heading">
-                                                {/* {t("newTeamMemberStart")}{" "} */}
                                                 Company Name
                                               </h3>
                                               <p className="application-text">
@@ -338,7 +307,6 @@ const Members = () => {
                                           <Col md={3} className="mb-3">
                                             <div>
                                               <h3 className="application-heading">
-                                                {/* {t("newTeamMemberStart")}{" "} */}
                                                 Company Address
                                               </h3>
                                               <p className="application-text">
@@ -393,26 +361,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("status")}
-                                            </h3>
-                                            <p className="status-progress text-capitalize">
-                                              Under Review
-                                            </p>
-                                          </div>
-                                        </Col> */}
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("role")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.role}
-                                            </p>
-                                          </div>
-                                        </Col> */}
+                                       
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -425,16 +374,6 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("experience")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.jobs[0]?.experience ? item?.jobs[0]?.experience : "Not Mentioned"}
-                                            </p>
-                                          </div>
-                                        </Col> */}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -487,6 +426,22 @@ const Members = () => {
                 ""
               )}
             </Tab.Pane>
+
+            {/* {currentTab === "vendors" && (
+              <CommonApplicationTable
+                arrowActive={arrowactive}
+                handleRowClick={handleRowClick}
+                application={application}
+                approvedLoader={approvedLoader}
+                expandedRow={expandedRow}
+                selectedApprovedBtn={selectedApprovedBtn}
+                selectedRejectedBtn={selectedRejectedBtn}
+                screenLoader={screenLoader}
+                handleClick={handleClick}
+                currentTab={currentTab}
+                columns={COLUMNS[currentTab]}
+              />
+            )} */}
             <Tab.Pane eventKey="vendors" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -503,7 +458,6 @@ const Members = () => {
                         {t("engagements")} {t("last")}
                       </th>
                       <th>{t("status")}</th>
-                      {/* <th>{t("action")}</th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -552,60 +506,7 @@ const Members = () => {
                                 <td>{item?.company?.type_of_company}</td>
                                 <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
-                                {/* <td>{item?.company?.yearly_revenue}</td> */}
                                 <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
-                                {/* <td>
-                                  <div className="d-flex gap-3">
-                                    <RexettButton
-                                      icon={
-                                        selectedApprovedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCheckmark />
-                                        )
-                                      }
-                                      className="arrow-btn primary-arrow"
-                                      variant="transparent"
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "approved",
-                                          index
-                                        )
-                                      }
-                                      isLoading={
-                                        selectedApprovedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                    <RexettButton
-                                      icon={
-                                        selectedRejectedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCloseOutline />
-                                        )
-                                      }
-                                      className="arrow-btn danger-arrow"
-                                      variant={"transparent"}
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "rejected",
-                                          index
-                                        )
-                                      }
-                                      isLoading={
-                                        selectedRejectedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                  </div>
-                                </td> */}
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -680,16 +581,6 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("status")}
-                                            </h3>
-                                            <p className="status-progress text-capitalize">
-                                              {item?.status}
-                                            </p>
-                                          </div>
-                                        </Col> */}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -750,7 +641,21 @@ const Members = () => {
                 ""
               )}
             </Tab.Pane>
-
+                {/* {currentTab === "developers" && (
+              <CommonApplicationTable
+                arrowActive={arrowactive}
+                handleRowClick={handleRowClick}
+                application={application}
+                approvedLoader={approvedLoader}
+                expandedRow={expandedRow}
+                selectedApprovedBtn={selectedApprovedBtn}
+                selectedRejectedBtn={selectedRejectedBtn}
+                screenLoader={screenLoader}
+                handleClick={handleClick}
+                currentTab={currentTab}
+                columns={COLUMNS[currentTab]}
+              />
+            )} */}
             <Tab.Pane eventKey="developers" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -808,58 +713,17 @@ const Members = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
-                                <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
-                                {/* <td>
-                                  <div className="d-flex gap-3">
-                                    <RexettButton
-                                      icon={
-                                        selectedApprovedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCheckmark />
-                                        )
-                                      }
-                                      className="arrow-btn primary-arrow"
-                                      variant="transparent"
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "approved",
-                                          index
-                                        )
-                                      }
-                                      isLoading={
-                                        selectedApprovedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                    <RexettButton
-                                      icon={
-                                        selectedRejectedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCloseOutline />
-                                        )
-                                      }
-                                      className="arrow-btn danger-arrow"
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "rejected",
-                                          index
-                                        )
-                                      }
-                                      isLoading={
-                                        selectedRejectedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                  </div>
-                                </td> */}
+                                <td>
+                                  <span
+                                    className={`${
+                                      item?.approval_status == "approved"
+                                        ? "status-finished text-capitalize"
+                                        : "status-rejected text-capitalize"
+                                    }`}
+                                  >
+                                    {item?.approval_status}
+                                  </span>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -892,41 +756,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                       
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("role")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.role}
-                                            </p>
-                                          </div>
-                                        </Col> */}
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("jobDescription")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.developer_experiences[0]
-                                                ?.description
-                                                ? item?.developer_experiences[0]
-                                                    ?.description
-                                                : "Not Mentioned"}
-                                            </p>
-                                          </div>
-                                        </Col> */}
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("phoneNumber")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.phone_number}
-                                            </p>
-                                          </div>
-                                        </Col> */}
+
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -950,20 +780,9 @@ const Members = () => {
                                             </ul>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("maritalStatus")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.marital_status}
-                                            </p>
-                                          </div>
-                                        </Col> */}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                              {/* {t("professtionalTitle")} */}
                                               Designation
                                             </h3>
                                             <p className="application-text">

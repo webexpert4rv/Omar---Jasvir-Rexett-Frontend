@@ -243,7 +243,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                         { selectedPeriod == "yearly" &&  <SingleTimeReporting currentDetails={currentDetails} selectedPeriod={selectedPeriod} role={role}/>}
                     </Offcanvas.Body>
                 </Offcanvas>
-            {remarkshow ?<TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails} page={page}/>:""}
+            {remarkshow ?<TimeReportRemark remarkshow={remarkshow} handleremarkClose={handleremarkClose} currentDetails={currentDetails} page={page} role={role}/>:""}
             <ConfirmationModal
             text={`Are you sure to Approve this time sheet?`}
             show={approvedConfirmation?.isApproved}

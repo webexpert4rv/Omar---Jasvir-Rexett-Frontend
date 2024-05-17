@@ -143,7 +143,7 @@
         "adminName": "Adminnamn",
         "nameOfDevelopers": "Namn på utvecklare",
         "noOfDevelopersHired": "Antal utvecklare anställda",
-        "invoice": "Faktura",
+        "pay_slip": "Lönebesked",
         "filterByMonth": "Filtrera efter månad",
         "filterByYear": "Filtrera efter år",
         "selectClients": "Välj kunder",
@@ -351,7 +351,11 @@
         "roleInProject" : "Roll i projektet",
         "projectTeamSize":"Projektets teamstorlek",
         "revenue" : "Inkomst",
-        "postedDate" : "Postat datum"
+        "postedDate" : "Postat datum",
+        "emailAddress":"E-postadress",
+        "engagementslast":"Förlovningar sist"
+
+
 
         }
 }

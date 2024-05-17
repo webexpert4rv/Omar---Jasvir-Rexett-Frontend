@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import Timer from "./Timer";
 
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch();
@@ -120,6 +121,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null);
     setNotificationModal(true);
   };
+  
 
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
