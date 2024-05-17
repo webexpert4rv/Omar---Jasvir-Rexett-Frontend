@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css'; 
 import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
@@ -75,6 +77,7 @@ import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
 import ContactSupport from './pages/views/ContactSupport';
 import DeveloperInvoice from './pages/developer/DeveloperInvoice';
 import Members from './pages/admin/Members';
+import LeavePlan from './pages/developer/PlanLeave';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -129,6 +132,7 @@ function App() {
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
+          <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
           <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
           <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />

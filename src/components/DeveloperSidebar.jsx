@@ -10,6 +10,7 @@ import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { FaFileInvoice } from "react-icons/fa6";
+import { GiPalmTree } from "react-icons/gi";
 
 const AdminSidebar = ({sideBarActive}) => {
     const  { t } = useTranslation()
@@ -40,7 +41,10 @@ const AdminSidebar = ({sideBarActive}) => {
                                 <NavLink to={'/developer-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/developer-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
+                                <NavLink to={'/leave-plan'} className="side-link" activeClassName="active"><GiPalmTree /> Apply Leave</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/developer-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Pay Slip</NavLink>
                             </li>
                         </ul>
                     </div>

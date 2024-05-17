@@ -267,15 +267,15 @@ const SingleJob = () => {
     console.log(status, "st");
     switch (status) {
       case "ended":
-        return "endcontract";
+        return "status-rejected";
       case "Initiated":
-        return "inprogress";
+        return "status-progress";
       case "completed":
-        return "completed";
+        return "status-finished";
       case "published":
-        return "completed";
+        return "status-finished";
       case "Unpublished":
-        return "unpublished";
+        return "status-rejected";
       default:
         return;
     }
@@ -293,20 +293,22 @@ const SingleJob = () => {
           <section className="single-job-section">
             <div className="single-job-card job-information-wrapper">
               <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
-                <h2 className="single-job-title text-start mb-0">
-                  {singleJobDescription?.title}
-                </h2>
-                <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
+                <div className="d-flex align-items-center gap-3">
+                  <h2 className="single-job-title text-start mb-0">
+                    {singleJobDescription?.title}
+                  </h2>
                   <p
-                    className={`status-text ${currentStatusCssClass(
+                    className={`mb-0 ${currentStatusCssClass(
                       singleJobDescription?.status
                     )}`}
                   >
-                    <span className="status-text  status-info">
+                    <span>
                       {singleJobDescription?.status?.charAt(0)?.toUpperCase() +
                         singleJobDescription?.status?.slice(1)}
                     </span>
                   </p>
+                </div>
+                <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
                   {singleJobDescription?.status !== "ended" ? (
                     <>
                       <OverlayTrigger placement="top" overlay={endjob}>
@@ -319,7 +321,7 @@ const SingleJob = () => {
                               "ended"
                             )
                           }
-                          className="closed-job-btn"
+                          className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                         >
                           <MdOutlineDoNotDisturbAlt />
                         </Button>
@@ -327,7 +329,7 @@ const SingleJob = () => {
                       <OverlayTrigger placement="top" overlay={publishjob}>
                         <Button
                           variant="transparent"
-                          className="py-2 main-btn publish-job-btn"
+                          className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                           onClick={() => {
                             let data = {
                               status:
@@ -354,7 +356,7 @@ const SingleJob = () => {
                   {singleJobDescription?.status !== "ended" ? (
                     <OverlayTrigger placement="top" overlay={deletejob}>
                       <Button
-                        className="closed-job-btn"
+                        className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                         variant="transparent"
                         onClick={() =>
                           handleDelete("application", singleJobDescription?.id)
@@ -369,7 +371,7 @@ const SingleJob = () => {
                   {singleJobDescription?.status !== "ended" ? (
                     <OverlayTrigger placement="top" overlay={editjob}>
                       <Button
-                        className="edit-job-btn"
+                        className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
                         variant="transparent"
                         onClick={() =>
                           handleEdit("application", singleJobDescription?.id)

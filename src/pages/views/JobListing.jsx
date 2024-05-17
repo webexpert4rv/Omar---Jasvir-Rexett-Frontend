@@ -42,15 +42,15 @@ const JobListing = () => {
   const currentStatusCssClass = (status) => {
     switch (status) {
       case "ended":
-        return "endcontract";
+        return "status-rejected";
       case "Initiated":
-        return "inprogress";
+        return "status-progress";
       case "completed":
-        return "completed";
+        return "status-finished";
       case "published":
-        return "completed";
+        return "status-finished";
       case "Unpublished":
-        return "unpublished";
+        return "status-rejected";
       default:
         return;
     }
@@ -99,7 +99,7 @@ const JobListing = () => {
                         <div className="status-wrapper">
                           <div className="d-flex gap-3 align-items-center mb-2">
                             <p
-                              className={`status-text ${currentStatusCssClass(
+                              className={`${currentStatusCssClass(
                                 item?.status
                               )}`}
                             >
@@ -117,7 +117,7 @@ const JobListing = () => {
                           >
                             <Link
                               to={`/single-job/${item.id}`}
-                              className="px-3 font-14 mb-2 main-btn text-decoration-none"
+                              className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                             >
                               <FaEye />
                             </Link>

@@ -5,8 +5,10 @@ import companyLogo from "../../assets/img/amazon.png"
 import associateLogo from "../../assets/img/aviox-logo.png"
 import { IoSearch } from "react-icons/io5";
 import { HiDownload } from "react-icons/hi";
-import timeSheetIcon from '../../assets/img/timesheet-icon.svg';
-import invoiceIcon from '../../assets/img/invoice-icon.svg'
+import timeSheetIcon from '../../assets/img/timesheet_approved.png';
+import invoiceIcon from '../../assets/img/invoice_paid.png'
+import timeSheetNotApproved from '../../assets/img/timesheet_notapproved.png';
+import invoiceUnpaid from '../../assets/img/invoice_unpaid.png'
 
 const DeveloperInvoice = () => {
     const downloadinvoice = (
@@ -104,9 +106,6 @@ const DeveloperInvoice = () => {
                         </th>
                         <th className="time-table-head text-start">
                             Invoice Month
-                    </th>
-                        <th className="time-table-head text-start">
-                            Invoice Status
                         </th>
                         <th className="time-table-head text-start">
                             Project Status
@@ -128,19 +127,14 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">AI Bot Project</td>
                             <td className="time-table-data text-start">140 hrs</td>
                             <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
                             <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={timeSheetIcon} />
-                                        </Button>
+                                        <img src={timeSheetIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={invoiceIcon} />
-                                        </Button>
+                                        <img src={invoiceIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                 </div>
                             </td>
@@ -157,19 +151,34 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">Figma to UI</td>
                             <td className="time-table-data text-start">140 hrs</td>
                             <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Paid</span></td>
+                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
+                            <td className="time-table-data text-start">
+                                <div className="d-flex align-items-center gap-2">
+                                    <img src={timeSheetNotApproved} className="approved_icon" />
+                                    <img src={invoiceUnpaid} className="approved_icon" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="time-table-data text-start">
+                                <div className="d-flex align-items-center gap-2">
+                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                    </div>
+                                    Amazon
+                                </div>
+                            </td>
+                            <td className="time-table-data text-start">Figma to UI</td>
+                            <td className="time-table-data text-start">140 hrs</td>
+                            <td className="time-table-data text-start">Jan 2024</td>
                             <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={timeSheetIcon} />
-                                        </Button>
+                                        <img src={timeSheetIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={invoiceIcon} />
-                                        </Button>
+                                        <img src={invoiceIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                 </div>
                             </td>
@@ -186,48 +195,14 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">Figma to UI</td>
                             <td className="time-table-data text-start">140 hrs</td>
                             <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
-                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={timeSheetIcon} />
-                                        </Button>
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={invoiceIcon} />
-                                        </Button>
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                    </div>
-                                    Amazon
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Paid</span></td>
                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={timeSheetIcon} />
-                                        </Button>
+                                        <img src={timeSheetIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={invoiceIcon} />
-                                        </Button>
+                                        <img src={invoiceIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                 </div>
                             </td>
@@ -244,19 +219,14 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">Figma to UI</td>
                             <td className="time-table-data text-start">140 hrs</td>
                             <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Paid</span></td>
                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={timeSheetIcon} />
-                                        </Button>
+                                        <img src={timeSheetIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={invoiceIcon} />
-                                        </Button>
+                                        <img src={invoiceIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                 </div>
                             </td>
@@ -273,19 +243,14 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">Figma to UI</td>
                             <td className="time-table-data text-start">140 hrs</td>
                             <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={timeSheetIcon} />
-                                        </Button>
+                                        <img src={timeSheetIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                            <img src={invoiceIcon} />
-                                        </Button>
+                                        <img src={invoiceIcon} className="approved_icon" />
                                     </OverlayTrigger>
                                 </div>
                             </td>
