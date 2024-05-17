@@ -351,7 +351,11 @@
         "roleInProject" : "Roll i projektet",
         "projectTeamSize":"Projektets teamstorlek",
         "revenue" : "Inkomst",
-        "postedDate" : "Postat datum"
+        "postedDate" : "Postat datum",
+        "emailAddress":"E-postadress",
+        "engagementslast":"Förlovningar sist"
+
+
 
         }
 }

@@ -24,7 +24,36 @@ import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
+import CommonApplicationTable from "../../components/common/Admin Application/CommonApplicationTable";
+const COLUMNS = {
+  vendors: [
+    { header: "clientName", key: "name" },
+    { header: "emailAddress", key: "email" },
+    { header: "phoneNumber", key: "phone_number" },
+    { header: "typeOfCompany", key: "company",subKey:"type_of_company" },
+    { header: "engagements", key: "company",subKey:"total_employees"},
+    { header: "engagementsLast", key: "company",subkey:"website" },
+    { header: "availablity", key: "company",subkey:"yearly_revenue" },
+    { header: "action",type:"action" },
 
+  ],
+  developers: [
+    { header: "developerName", key: "name", type: "image" },
+    { header: "emailAddress", key: "email" },
+    { header: "phoneNumber", key: "phone_number" },
+    { header: "action", key: "", type: "action" },
+  ],
+  clients: [
+    { header: "individual/comapanyname", key: "name", type: "image" },
+    { header: "emailAddress", key: "email" },
+    { header: "phoneNumber", key: "phone_number" },
+    { header: "action", key: "", type: "action" },
+  ],
+  clientsExpanded: [
+    { label: "companyName", key: "" },
+    { label: "", key: "" },
+  ],
+};
 const Applications = () => {
   const dispatch = useDispatch();
   const { allApplications, approvedLoader, screenLoader } = useSelector(
@@ -57,13 +86,11 @@ const Applications = () => {
     setApplication(allApplications[currentTab]);
   }, [allApplications]);
 
-  console.log(arrowactive,"arrowactive")
-
   const handleSelect = (key) => {
     setCurrentTab(key);
     setApplication(allApplications[key]);
-    setArrowActive(null)
-    setExpandedRow(null)
+    setArrowActive(null);
+    setExpandedRow(null);
   };
 
   const convertToArray = (arr) => {
@@ -171,6 +198,36 @@ const Applications = () => {
             </Nav.Item>
           </Nav>
           <Tab.Content>
+            {/* {currentTab === "clients" && (
+              <CommonApplicationTable
+                arrowActive={arrowactive}
+                handleRowClick={handleRowClick}
+                application={application}
+                approvedLoader={approvedLoader}
+                expandedRow={expandedRow}
+                selectedApprovedBtn={selectedApprovedBtn}
+                selectedRejectedBtn={selectedRejectedBtn}
+                screenLoader={screenLoader}
+                handleClick={handleClick}
+                currentTab={currentTab}
+                columns={COLUMNS[currentTab]}
+              />
+            )} */}
+              {/* {currentTab === "vendors" && (
+              <CommonApplicationTable
+                arrowActive={arrowactive}
+                handleRowClick={handleRowClick}
+                application={application}
+                approvedLoader={approvedLoader}
+                expandedRow={expandedRow}
+                selectedApprovedBtn={selectedApprovedBtn}
+                selectedRejectedBtn={selectedRejectedBtn}
+                screenLoader={screenLoader}
+                handleClick={handleClick}
+                currentTab={currentTab}
+                columns={COLUMNS[currentTab]}
+              />
+            )} */}
             <Tab.Pane eventKey="clients" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -181,11 +238,6 @@ const Applications = () => {
                         {t("email")} {t("address")}
                       </th>
                       <th>{t("phoneNumber")}</th>
-                      {/* <th>{t("engagement")}</th>
-                      <th>
-                        {t("engagement")} {t("last")}
-                      </th>
-                      <th>{t("availability")}</th> */}
                       <th>{t("action")}</th>
                     </tr>
                   </thead>
@@ -218,7 +270,9 @@ const Applications = () => {
                                         src={
                                           item?.profile_picture
                                             ? item?.profile_picture
-                                            :item?.client_type=="company"?item?.company_logo :userImg
+                                            : item?.client_type == "company"
+                                            ? item?.company_logo
+                                            : userImg
                                         }
                                         className="user-img"
                                       />
@@ -232,9 +286,7 @@ const Applications = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
-                                {/* <td>{item?.jobs[0]?.engagement_type }</td>
-                                <td>{item?.jobs[0]?.project_length }</td> */}
-                                {/* <td>{item?.jobs[0]?.status }</td> */}
+
                                 <td>
                                   <div className="d-flex gap-3">
                                     <OverlayTrigger
@@ -308,32 +360,34 @@ const Applications = () => {
                                   <td colSpan="8">
                                     <div>
                                       <Row>
-                                        {item?.client_type=="company" &&<Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {/* {t("newTeamMemberStart")}{" "} */}
-                                              Company Name
-                                            </h3>
-                                            <p className="application-text">
-                                              {
-                                                item?.company_name ? item?.company_name : "Not Mentioned"
-                                              }
-                                            </p>
-                                          </div>
-                                        </Col>}
-                                        {item?.client_type=="company" &&<Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {/* {t("newTeamMemberStart")}{" "} */}
-                                              Company Address
-                                            </h3>
-                                            <p className="application-text">
-                                              {
-                                                item?.company_address ? item?.company_address : "Not Mentioned"
-                                              }
-                                            </p>
-                                          </div>
-                                        </Col>}
+                                        {item?.client_type == "company" && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Company Name
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company_name
+                                                  ? item?.company_name
+                                                  : "Not Mentioned"}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.client_type == "company" && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Company Address
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company_address
+                                                  ? item?.company_address
+                                                  : "Not Mentioned"}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
 
                                         <Col md={3} className="mb-3">
                                           <div>
@@ -367,16 +421,18 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                       { item?.client_type=="company" && <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              Company Tax id
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.company_tax_id}
-                                            </p>
-                                          </div>
-                                        </Col>}
+                                        {item?.client_type == "company" && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Company Tax id
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company_tax_id}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
 
                                         <Col md={3} className="mb-3">
                                           <div>
@@ -391,33 +447,13 @@ const Applications = () => {
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                             Contact Person Email
+                                              Contact Person Email
                                             </h3>
                                             <p className="application-text">
-                                             ---
+                                              ---
                                             </p>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("experience")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.jobs[0]?.experience ? item?.jobs[0]?.experience : "Not Mentioned"}
-                                            </p>
-                                          </div>
-                                        </Col> */}
-                                        {/* <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("contractType")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.jobs[0]?.contract_type ? item?.jobs[0]?.contract_type : "Not Mentioned"}
-                                            </p>
-                                          </div>
-                                        </Col> */}
                                       </Row>
                                     </div>
                                   </td>
@@ -720,7 +756,21 @@ const Applications = () => {
                 ""
               )}
             </Tab.Pane>
-
+            {/* {currentTab === "developers" && (
+              <CommonApplicationTable
+                arrowActive={arrowactive}
+                handleRowClick={handleRowClick}
+                application={application}
+                approvedLoader={approvedLoader}
+                expandedRow={expandedRow}
+                selectedApprovedBtn={selectedApprovedBtn}
+                selectedRejectedBtn={selectedRejectedBtn}
+                screenLoader={screenLoader}
+                handleClick={handleClick}
+                currentTab={currentTab}
+                columns={COLUMNS[currentTab]}
+              />
+            )} */}
             <Tab.Pane eventKey="developers" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -739,7 +789,8 @@ const Applications = () => {
                       <ScreenLoader />
                     ) : (
                       <>
-                        {currentTab == "developers" && application?.length > 0 ? (
+                        {currentTab == "developers" &&
+                        application?.length > 0 ? (
                           application?.map((item, index) => (
                             <React.Fragment key={index}>
                               <tr
@@ -844,9 +895,9 @@ const Applications = () => {
                                               {t("developerName")}
                                             </h3>
                                             <p className="application-text">
-                                              {
-                                                item?.name ? item?.name :"Not Mentioned"
-                                              }
+                                              {item?.name
+                                                ? item?.name
+                                                : "Not Mentioned"}
                                             </p>
                                           </div>
                                         </Col>
@@ -856,7 +907,7 @@ const Applications = () => {
                                               Address
                                             </h3>
                                             <p className="application-text">
-                                            Not Mentioned
+                                              Not Mentioned
                                             </p>
                                           </div>
                                         </Col>
@@ -880,31 +931,7 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                       
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("jobDescription")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.developer_experiences[0]
-                                                ?.description
-                                                ? item?.developer_experiences[0]
-                                                    ?.description
-                                                : "Not Mentioned"}
-                                            </p>
-                                          </div>
-                                        </Col> */}
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("phoneNumber")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.phone_number}
-                                            </p>
-                                          </div>
-                                        </Col> */}
+
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -913,7 +940,8 @@ const Applications = () => {
                                             <ul className="need-skill-list">
                                               {item?.developer_skills?.skills
                                                 ? convertToArray(
-                                                    item?.developer_skills?.skills
+                                                    item?.developer_skills
+                                                      ?.skills
                                                   )?.map((item, index) => {
                                                     return (
                                                       <>
@@ -927,20 +955,10 @@ const Applications = () => {
                                             </ul>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("maritalStatus")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.marital_status}
-                                            </p>
-                                          </div>
-                                        </Col> */}
+
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                              {/* {t("professtionalTitle")} */}
                                               Designation
                                             </h3>
                                             <p className="application-text">
@@ -958,7 +976,7 @@ const Applications = () => {
                                               Experience
                                             </h3>
                                             <p className="application-text">
-                                             2 years
+                                              2 years
                                             </p>
                                           </div>
                                         </Col>

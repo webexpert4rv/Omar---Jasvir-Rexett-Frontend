@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
 import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import { Suspense, lazy } from "react"; 
+import { Fragment, Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
 import Login from './pages/Authentication/Login';
@@ -75,6 +75,7 @@ import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
 import ContactSupport from './pages/views/ContactSupport';
 import DeveloperInvoice from './pages/developer/DeveloperInvoice';
 import Members from './pages/admin/Members';
+import ScreenLoader from './components/atomic/ScreenLoader';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -163,6 +164,40 @@ function App() {
           <Route path='/developer-faq' exact element={<DeveloperDashboardLayout><Faq /></DeveloperDashboardLayout>}></Route>
         </Routes>
       </Router>
+
+      {/* <Suspense fallback={<ScreenLoader />}>
+        <Routes>
+          {route.map((item, index) =>
+            item.private ? (
+              <Fragment key={index}>
+                {item.isClient ? (
+                  <Route key={index} element={<DashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isDeveloper ? (
+                  <Route key={index} element={<DeveloperDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isVendor ? (
+                  <Route key={index} element={<VendorDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isAdmin ? (
+                  <Route key={index} element={<AdminDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : (
+                 ""
+                )}
+              </Fragment>
+            ) : item.public && (
+              <Route key={index} element={<PublicLayout />}>
+                <Route path={item.path} element={item.element} />
+              </Route>
+            ) 
+          )}
+        </Routes>
+      </Suspense> */}
      
       {/* <Suspense fallback={<Loader />}>
         <Router>
