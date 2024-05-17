@@ -50,7 +50,7 @@ import VendorDashboardLayout from './layout/VendorDashboardLayout';
 import VendorDashboard from './pages/vendor/Dashboard';
 import VendorDocuments from './pages/vendor/VendorDocuments';
 import VendorRevenue from './pages/vendor/VendorRevenue';
-import VendorUploadInvoice from './pages/vendor/UploadInvoice';
+import VendorInvoice from './pages/vendor/VendorInvoice';
 import VendorTimeReporting from './pages/vendor/TimeReporting';
 import EditVendorProfile from './pages/vendor/EditProfile';
 import AllDeveloperList from './pages/vendor/ListAllDeveloper';
@@ -80,6 +80,7 @@ import Members from './pages/admin/Members';
 import LeavePlan from './pages/developer/PlanLeave';
 import ScreenLoader from './components/atomic/ScreenLoader';
 import JobPostStepContainer from './pages/views/Job post step form/JobPostStepContainer';
+import LeaveRequest from './pages/views/LeaveRequests';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
@@ -141,6 +142,7 @@ function App() {
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
           <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper/></DashboardLayout>} />
+          <Route path="/leave-request" exact element={<DashboardLayout><LeaveRequest/></DashboardLayout>} />
           <Route path="/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
           <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
           <Route path="/time-reporting-detail" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
@@ -156,7 +158,7 @@ function App() {
           <Route path="/vendor-login" exact element={<VendorPublicLayout><VendorLogin /></VendorPublicLayout>} />
           <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
           <Route path="/vendor-revenue" exact element={<VendorDashboardLayout><VendorRevenue /></VendorDashboardLayout>} />
-          <Route path="/vendor-upload-invoice" exact element={<VendorDashboardLayout><VendorUploadInvoice /></VendorDashboardLayout>} />
+          <Route path="/vendor-upload-invoice" exact element={<VendorDashboardLayout><VendorInvoice /></VendorDashboardLayout>} />
           <Route path="/vendor-time-reporting" exact element={<VendorDashboardLayout><VendorTimeReporting /></VendorDashboardLayout>} />
           <Route path="/edit-vendor-profile" exact element={<VendorDashboardLayout><EditVendorProfile /></VendorDashboardLayout>} />
           <Route path="/list-all-developers" exact element={<VendorDashboardLayout><AllDeveloperList /></VendorDashboardLayout>} />

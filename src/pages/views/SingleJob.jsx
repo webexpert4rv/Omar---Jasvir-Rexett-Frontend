@@ -385,7 +385,8 @@ const SingleJob = () => {
                   )}
                 </div>
               </div>
-              <p className="single-job-description">
+              <p className="req-heading mb-1 mt-3">About this job</p>
+              <p className="single-job-description mb-0">
                 {singleJobDescription?.description}
               </p>
             </div>
@@ -434,7 +435,6 @@ const SingleJob = () => {
                   ) : (
                     "Not Mentioned"
                   )}{" "}
-                  <br></br>
                 </Col>
                 <Col md="4">
                   <h3 className="req-heading">{t("optionalSkills")}</h3>
@@ -459,6 +459,9 @@ const SingleJob = () => {
           </section>
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
+          <div className="text-end">
+            <Button className="main-btn px-4 py-2 font-14">Make Suggestion Request</Button>
+          </div>
           <JobCard
             handleJobStatusModal={handleJobStatusModal}
             type="Suggested"

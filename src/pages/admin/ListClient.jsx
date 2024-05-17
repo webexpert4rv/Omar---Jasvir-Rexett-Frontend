@@ -96,10 +96,10 @@ const ListClient = () => {
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span className="font-14">+1234567890</span>
+                                                            <span className="font-14 phoneNumber-text">+1234567890</span>
                                                         </td>
                                                         <td>
-                                                            <span className="font-14">{val?.client_type=="company"? val?.company_address:"-"}</span>
+                                                            <span className="font-14 address-text">{val?.client_type=="company"? val?.company_address:"-"}</span>
                                                         </td>
                                                         <td>
                                                             <span>

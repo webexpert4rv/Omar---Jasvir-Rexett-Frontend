@@ -58,12 +58,12 @@ const DeveloperNavigation = ({ onClick }) => {
             <header className="mb-4">
                 <div className="d-flex align-items-center justify-content-between gap-3">
                     <div className="d-flex gap-2 align-items-center">
-                        <Button
+                        {/* <Button
                             className="main-btn px-3 py-2 font-14 shadow-none"
                             onClick={handleTimeReport}
                         >
                             Submit your report
-                        </Button>
+                        </Button> */}
                     </div>
                     <div className="d-flex align-items-center gap-3">
                         <p className="time-counter"><Timer checked={checked}/></p>

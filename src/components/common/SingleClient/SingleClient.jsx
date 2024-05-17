@@ -84,10 +84,10 @@ const SingleClient = () => {
                                     <h4 className="additional-heading">Total Job Posted</h4>
                                     <p className="additional-text">3</p>
                                 </Col>
-                                <Col md={4}>
+                                {/* <Col md={4}>
                                     <h4 className="additional-heading">Rexett Date Joined</h4>
                                     <p className="additional-text">03-04-2024</p>
-                                </Col>
+                                </Col> */}
                             </Row>
                         </div>
                     </> : <NoDataFound />}

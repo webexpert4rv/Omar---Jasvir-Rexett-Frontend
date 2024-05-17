@@ -42,7 +42,7 @@ const VendorDashboardLayout = lazy(() =>
 );
 const VendorDocuments = lazy(() => import("./pages/vendor/VendorDocuments"));
 const VendorRevenue = lazy(() => import("./pages/vendor/VendorRevenue"));
-const VendorUploadInvoice = lazy(() => import("./pages/vendor/UploadInvoice"));
+const VendorUploadInvoice = lazy(() => import("./pages/vendor/VendorInvoice"));
 const VendorTimeReporting = lazy(() => import("./pages/vendor/TimeReporting"));
 const EditVendorProfile = lazy(() => import("./pages/vendor/EditProfile"));
 const RentedDevelopers = lazy(() => import("./pages/vendor/RentedDevelopers"));

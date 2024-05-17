@@ -14,6 +14,7 @@ import { IoBriefcase } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { GiPalmTree } from "react-icons/gi";
 
 const Sidebar = ({sideBarActive , closemainSidebar}) => {
     const logout=()=>{
@@ -45,6 +46,9 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/leave-request'} className="side-link" activeClassName="active"><GiPalmTree /> Leave Requests</NavLink>
                             </li>
                             {/* <li className="sidebar-item">
                                 <NavLink to={'/job-post'} className="side-link" activeClassName="active"><IoBriefcase /> Job Post</NavLink>
