@@ -121,6 +121,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null);
     setNotificationModal(true);
   };
+  
 
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
