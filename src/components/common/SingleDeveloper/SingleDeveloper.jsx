@@ -15,19 +15,23 @@ import SkillsModal from "../Modals/SkillsCVModal";
 import SocialMediaModal from "../Modals/SocialMediaModal";
 import DeveloperDetails from "../Modals/DeveloperDetails";
 import ExpertiseModal from "../Modals/ExpertiseModal";
-import { getSkillList } from "../../../redux/slices/clientDataSlice";
+import {
+  getDeveloperDetails,
+  getSkillList,
+} from "../../../redux/slices/clientDataSlice";
 import RexettButton from "../../atomic/RexettButton";
 import { FiExternalLink } from "react-icons/fi";
 import {
   approvedEditAction,
   rejectEditAction,
+  smallLoader
 } from "../../../redux/slices/adminDataSlice";
 import SingleExperienceCard from "./SingleExperienceCard";
 import ProjectsModal from "../Modals/ProjectModal";
 
 const SingleDeveloper = ({ data, role }) => {
   const dispatch = useDispatch();
-  const { screenLoader, smallLoader } = useSelector(
+  const { screenLoader  } = useSelector(
     (state) => state.clientData
   );
   const [selectedTemplate, setSelectedTemplate] = useState("cv-template1");
@@ -39,18 +43,21 @@ const SingleDeveloper = ({ data, role }) => {
   let userId = pathname.split("/")[2];
   console.log(pathname.split("/")[2], "pathj");
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     dispatch(getSkillList());
   }, []);
 
+  console.log(data?.isEdit, "data---------------");
+
   const splitSkills = (data) => {
-    let skills = data?.skills?.split(",") || data?.split(',');
+    let skills = data?.skills?.split(",") || data?.split(",");
     return skills;
   };
   const handleShowModal = () => {
     setShowModal(true);
   };
-
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -116,8 +123,9 @@ const SingleDeveloper = ({ data, role }) => {
     setDeveloperDetails(false);
   };
 
-  const approvedEdit = () => {
-    dispatch(approvedEditAction(userId));
+  const approvedEdit = async () => {
+    await dispatch(approvedEditAction(userId));
+    dispatch(getDeveloperDetails(userId));
   };
 
   const rejectEdit = () => {
@@ -138,26 +146,30 @@ const SingleDeveloper = ({ data, role }) => {
                   : "cv-template-section cv-template3 d-none"
               }
             >
-              <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
-                <RexettButton
-                  type="submit"
-                  text={t("Approve")}
-                  className="main-btn px-4 font-14 fw-semibold"
-                  variant="transparent"
-                  onClick={approvedEdit}
-                  //   disabled={smallLoader}
-                  //   isLoading={smallLoader}
-                />
-                <RexettButton
-                  type="submit"
-                  text={t("Reject")}
-                  className="red-btn px-4 font-14 fw-semibold"
-                  variant="transparent"
-                  onClick={rejectEdit}
-                  //   disabled={smallLoader}
-                  //   isLoading={smallLoader}
-                />
-              </div>
+              {data?.isEdit ? (
+                <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
+                  <RexettButton
+                    type="submit"
+                    text={t("Approve")}
+                    className="main-btn px-4 font-14 fw-semibold"
+                    variant="transparent"
+                    onClick={approvedEdit}
+                      // disabled={smallLoader}
+                      isLoading={smallLoader}
+                  />
+                  <RexettButton
+                    type="submit"
+                    text={t("Reject")}
+                    className="red-btn px-4 font-14 fw-semibold"
+                    variant="transparent"
+                    onClick={rejectEdit}
+                      // disabled={smallLoader}
+                      isLoading={smallLoader}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
               <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 className="section-head mb-0 border-0">{t("overview")}</h2>
                 {/* <button className="main-btn px-xxl-5 px-4" onClick={()=>downloadResume(data?.developer_detail?.resume)}>Download Resume</button> */}
@@ -242,7 +254,7 @@ const SingleDeveloper = ({ data, role }) => {
                                     <img src={skill_icon?.icon_url} />
                                     <p className="expertise-skill">{skill}</p>
                                     <p className="expertise-exp">
-                                      {experience ? experience:"1 year" }
+                                      {experience ? experience : "1 year"}
                                     </p>
                                   </div>
                                 </React.Fragment>
@@ -322,7 +334,7 @@ const SingleDeveloper = ({ data, role }) => {
                                         </a>
                                       </div>
                                       <label>Tech Skill Used</label>
-                                
+
                                       <ul className="skills-pill text-start mt-2">
                                         {splitSkills(tech_stacks_used)?.map(
                                           (item, index) => {

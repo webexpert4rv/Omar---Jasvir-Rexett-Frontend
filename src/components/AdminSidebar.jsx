@@ -32,9 +32,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                         </div>
                         <NavLink to={"/admin-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
-                            <li className="sidebar-item">
-                                <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> {t("listOfClients")}</NavLink>
-                            </li>
+                            {/* <li className="sidebar-item"> */}
+                                {/* <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> {t("listOfClients")}</NavLink> */}
+                            {/* </li> */}
                             <li className="sidebar-item">
                                 <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">{t("applications")} </span></NavLink>
                             </li>

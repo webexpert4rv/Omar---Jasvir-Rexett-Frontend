@@ -18,6 +18,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
     (state) => state.adminData
   );
   const [newJobPost, setNewJobPost] = useState(null);
+  console.log(newJobPost,"newJobPost")
   const [notificationModal, setNotificationModal] = useState(false);
   const [notifId, setNotifId] = useState();
   const { t } = useTranslation();
@@ -27,7 +28,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
     dispatch(getNotification());
     setNewJobPost(null)
   }, [newJobPost]);
-
 
   useEffect(() => {
     if (newJobPost !== null) {
@@ -92,7 +92,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
     dispatch(
       markAsRead(notificationId, () => {
         dispatch(getNotification());
-        setNewJobPost(null);
+        // setNewJobPost(null);
         setNotificationData([]);
       })
     );
