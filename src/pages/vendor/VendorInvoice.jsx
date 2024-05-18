@@ -1,16 +1,71 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Row, Button, Tooltip, OverlayTrigger } from "react-bootstrap";
-import userImage from "../../assets/img/user-img.jpg"
-import companyLogo from "../../assets/img/amazon.png"
-import associateLogo from "../../assets/img/aviox-logo.png"
-import { IoSearch } from "react-icons/io5";
-import { HiDownload } from "react-icons/hi";
+import { Button, OverlayTrigger, Tooltip, Col, Form, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux"
+import { addFileInvoice, getDeveloperList, getClientList } from "../../redux/slices/vendorDataSlice";
+import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
+import RexettButton from "../../components/atomic/RexettButton";
+import { useTranslation } from "react-i18next";
 import timeSheetIcon from '../../assets/img/timesheet_approved.png';
+import companyLogo from "../../assets/img/amazon.png"
 import invoiceIcon from '../../assets/img/invoice_paid.png'
 import timeSheetNotApproved from '../../assets/img/timesheet_notapproved.png';
 import invoiceUnpaid from '../../assets/img/invoice_unpaid.png'
+import { IoSearch } from "react-icons/io5";
+import userImage from "../../assets/img/user-img.jpg"
+const VendorInvoice = () => {
+    const dispatch = useDispatch()
+    const [ids, setIds] = useState({
+        client: '',
+        developer: ''
+    })
+    const [file, setFile] = useState(null)
+    const { clientList, developerList, } = useSelector(state => state.vendorData)
+    const { smallLoader } = useSelector(state => state.clientData)
+    const { t } = useTranslation()
 
-const DeveloperInvoice = () => {
+    useEffect(() => {
+        dispatch(getClientList())
+    }, [])
+
+
+    const handleClient = (e) => {
+        setIds({ ...ids, client: e.target.value })
+        dispatch(getDeveloperList(e.target.value))
+    }
+
+    const handleDeveloper = (e) => {
+        setIds({ ...ids, developer: e.target.value })
+    }
+
+
+    const handleFile = (e) => {
+        setFile(e.target.files[0])
+    }
+
+    const submitFile = (e) => {
+        e.preventDefault()
+        let fileData = new FormData();
+        fileData.append("file", file);
+        console.log(file?.type, "file")
+        if (file?.type !== "application/pdf") {
+            alert("Only PDF files are allowed for Invoices .");
+            return;
+        }
+        if (ids.client !== '' && ids.developer !== '' && file !== null) {
+            dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+                let payload = {
+                    "client_id": +ids.client,
+                    "developer_id": +ids.developer,
+                    "file_type": 1,
+                    "parent_id": 0,
+                    "type": 3,
+                    "s3_path": url,
+                    "file_extension": "0"
+                }
+                dispatch(addFileInvoice(payload))
+            }))
+        }
+    }
     const downloadinvoice = (
         <Tooltip id="tooltip">
             Download Invoice
@@ -21,12 +76,12 @@ const DeveloperInvoice = () => {
             Download Timesheet
         </Tooltip>
     );
-    const companyname = (
+    //   const companyname = (
 
-        <Tooltip id="tooltip">
-            Aviox Technologies Pvt Ltd
-        </Tooltip>
-    );
+    //     <Tooltip id="tooltip">
+    //       Aviox Technologies Pvt Ltd
+    //     </Tooltip>
+    //   );
     return (
         <>
             <div className="filter-section d-lg-flex align-items-center mt-3 justify-content-between mb-3">
@@ -61,12 +116,18 @@ const DeveloperInvoice = () => {
                     </div>
                     <div>
                         <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Project</option>
-                            <option>Figma to UI</option>
-                            <option>Figma to UI</option>
-                            <option>Figma to UI</option>
-                            <option>Figma to UI</option>
-                            <option>Figma to UI</option>
+                            <option>Select Client</option>
+                            <option>Amazon</option>
+                            <option>Amazon</option>
+                            <option>Amazon</option>
+                            <option>Amazon</option>
+                            <option>Amazon</option>
+                        </Form.Select>
+                    </div>
+                    <div>
+                        <Form.Select className="time-filter-select shadow-none">
+                            <option>Select Developer</option>
+                            <option>Rohit Sharma</option>
                         </Form.Select>
                     </div>
                     <div>
@@ -74,7 +135,6 @@ const DeveloperInvoice = () => {
                             <option>Invoice Status</option>
                             <option>Paid</option>
                             <option>Unpaid</option>
-                            <option>Cancelled</option>
                         </Form.Select>
                     </div>
                     <div>
@@ -95,6 +155,9 @@ const DeveloperInvoice = () => {
             <div className="table-responsive">
                 <table className="table time-table table-bordered table-ui-custom">
                     <thead>
+                        <th className="time-table-head text-start">
+                            Developer Name
+                        </th>
                         <th className="time-table-head text-start">
                             Client Name
                         </th>
@@ -119,9 +182,17 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
+                                        <img src={userImage} className="user-img" />
                                     </div>
-                                    Amazon
+                                    Rohit Sharma
+                                </div>
+                            </td>
+                            <td className="time-table-data text-start">
+                                <div className="text-start">
+                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                        Amazon
+                                    </div>
                                 </div>
                             </td>
                             <td className="time-table-data text-start">AI Bot Project</td>
@@ -143,9 +214,17 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
+                                        <img src={userImage} className="user-img" />
                                     </div>
-                                    Amazon
+                                    Rohit Sharma
+                                </div>
+                            </td>
+                            <td className="time-table-data text-start">
+                                <div className="text-start">
+                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                        Amazon
+                                    </div>
                                 </div>
                             </td>
                             <td className="time-table-data text-start">Figma to UI</td>
@@ -163,9 +242,17 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
+                                        <img src={userImage} className="user-img" />
                                     </div>
-                                    Amazon
+                                    Rohit Sharma
+                                </div>
+                            </td>
+                            <td className="time-table-data text-start">
+                                <div className="text-start">
+                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                        Amazon
+                                    </div>
                                 </div>
                             </td>
                             <td className="time-table-data text-start">Figma to UI</td>
@@ -187,9 +274,17 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
+                                        <img src={userImage} className="user-img" />
                                     </div>
-                                    Amazon
+                                    Rohit Sharma
+                                </div>
+                            </td>
+                            <td className="time-table-data text-start">
+                                <div className="text-start">
+                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                        Amazon
+                                    </div>
                                 </div>
                             </td>
                             <td className="time-table-data text-start">Figma to UI</td>
@@ -211,9 +306,17 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
+                                        <img src={userImage} className="user-img" />
                                     </div>
-                                    Amazon
+                                    Rohit Sharma
+                                </div>
+                            </td>
+                            <td className="time-table-data text-start">
+                                <div className="text-start">
+                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                        Amazon
+                                    </div>
                                 </div>
                             </td>
                             <td className="time-table-data text-start">Figma to UI</td>
@@ -235,9 +338,17 @@ const DeveloperInvoice = () => {
                             <td className="time-table-data text-start">
                                 <div className="d-flex align-items-center gap-2">
                                     <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
+                                        <img src={userImage} className="user-img" />
                                     </div>
-                                    Amazon
+                                    Rohit Sharma
+                                </div>
+                            </td>
+                            <td className="time-table-data text-start">
+                                <div className="text-start">
+                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                        Amazon
+                                    </div>
                                 </div>
                             </td>
                             <td className="time-table-data text-start">Figma to UI</td>
@@ -262,4 +373,4 @@ const DeveloperInvoice = () => {
         </>
     )
 }
-export default DeveloperInvoice;
+export default VendorInvoice;

@@ -198,7 +198,7 @@ const RegisterDeveloper = () => {
             skills: formattedSkills,
             expertise: formattedExpertise,
             profile_picture: url,
-               educations:formattedEducationField
+            educations: formattedEducationField
           };
           dispatch(
             getAddNewDeveloper(formData, () => {
@@ -246,7 +246,7 @@ const RegisterDeveloper = () => {
     const experiencesCopy = watch("experiences"); // Copy the experiences array
     const expCop = [...experienceFields]; // Copy the experienceFields array
     experiencesCopy.splice(index, 1);
-    const updatedExpertFields = expCop.filter((field) => field.id !== parseInt (id));
+    const updatedExpertFields = expCop.filter((field) => field.id !== parseInt(id));
 
     // Set the state with the updated arrays
     setExperienceFields([...updatedExpertFields]);
@@ -383,11 +383,11 @@ const RegisterDeveloper = () => {
       setExpertSkill((prev) => [...prev, newOption]);
     }
   };
-  const handleCreate = (inputValue,index) => {
+  const handleCreate = (inputValue, index) => {
     const payload = {
       title: inputValue,
     };
-    
+
     dispatch(
       addDegree(payload, () => {
         dispatch(getDegreeList());
@@ -764,6 +764,7 @@ const RegisterDeveloper = () => {
                         </Form.Label>
                         <Form.Control
                           type="text"
+                          className="common-field"
                           {...register(`experiences[${index}].company_name`, {
                             required: {
                               value: true,
@@ -786,7 +787,7 @@ const RegisterDeveloper = () => {
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          className="cv-field"
+                          className="common-field"
                           name="job_title"
                           placeholder={t("enterJobPosition")}
                           {...register(`experiences[${index}].job_title`, {
@@ -808,6 +809,7 @@ const RegisterDeveloper = () => {
                         <Form.Control
                           type="text"
                           as="textarea"
+                          className="common-field"
                           rows={3}
                           // placeholder="Enter Job Description"
                           {...register(`experiences[${index}].description`, {
@@ -826,6 +828,7 @@ const RegisterDeveloper = () => {
                         <Form.Label>{t("startDate")} *</Form.Label>
                         <Form.Control
                           type="date"
+                          className="common-field"
                           placeholder={t("enterStartDate")}
                           max={new Date().toISOString().split("T")[0]}
                           {...register(`experiences[${index}].start_date`, {
@@ -855,7 +858,7 @@ const RegisterDeveloper = () => {
                         <Form.Label>{t("endDate")} *</Form.Label>
                         <Form.Control
                           type="date"
-                          className="cv-field"
+                          className="common-field"
                           placeholder={t("enterEndDate")}
                           max={new Date().toISOString().split("T")[0]}
                           {...register(`experiences[${index}].end_date`, {
@@ -877,6 +880,8 @@ const RegisterDeveloper = () => {
                       <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                         <Form.Check
                           type="checkbox"
+                          className="job-post-checkbox"
+                          id="exp_current"
                           {...register(
                             `experiences[${index}].is_still_working`,
                             {
@@ -887,7 +892,7 @@ const RegisterDeveloper = () => {
                             handleCurrentlyWorkingChange(e, index)
                           }
                         />
-                        <Form.Label className="mb-0">
+                        <Form.Label className="mb-0" htmlFor="exp_current">
                           {t("currentlyWorking")}
                         </Form.Label>
                       </Form.Group>
@@ -895,7 +900,7 @@ const RegisterDeveloper = () => {
                     {experienceFields?.length > 1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
-                          variant="danger"
+                          className="arrow-btn danger-arrow"
                           onClick={() => handleDeleteFieldExp(index, id)}
                         >
                           <FaTrash />
@@ -908,7 +913,7 @@ const RegisterDeveloper = () => {
               <div className="text-end my-3">
                 <OverlayTrigger placement="bottom" overlay={addtooltip}>
                   <Button
-                    className="main-btn py-2 px-3"
+                    className="arrow-btn primary-arrow ms-auto"
                     onClick={handleAddMoreExp}
                   >
                     +
@@ -923,13 +928,14 @@ const RegisterDeveloper = () => {
               return (
                 <Fragment key={field?.id}>
                   <div>
-                    <Row>
-                      <Col>
+                    <Row className="mb-3">
+                      <Col md={6}>
                         <Form.Group>
                           <Form.Label className="common-label">
                             {t("enterSkill")}
                           </Form.Label>
                           <CreatableSelect
+                            className="common-field"
                             {...register(`expertise.${index}.skill`, {
                               required: {
                                 value: true,
@@ -946,10 +952,39 @@ const RegisterDeveloper = () => {
                             onCreateOption={(val) => {
                               onChangeSelect(val, "expertise");
                             }}
-                            // value={expertSkill}
-                            // name={expertSkill}
+                          // value={expertSkill}
+                          // name={expertSkill}
                           />
                         </Form.Group>
+                      </Col>
+                      <Col md={6}>
+
+                        <div className="flex-none">
+                          <Form.Label className="common-label">
+                            {t("experience")}
+                          </Form.Label>
+                          <Form.Select
+                            {...register(`expertise.${index}.experience`, {
+                              required: {
+                                value: true,
+                                message: t("required_message"),
+                              },
+                            })}
+                            className="common-field shadow-none"
+                          >
+                            <option value=""> {t("selectExperience")} </option>
+                            {EXPERIENCE_OPTIONS.map(({ label, value }, index) => (
+                              <option value={value} key={index}>
+                                {label} {t("years")}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          {errors?.skills?.[index]?.experience && (
+                            <p className="error-message">
+                              {errors?.skills[index]?.experience?.message}
+                            </p>
+                          )}
+                        </div>
                       </Col>
                     </Row>
                     {errors?.skills?.[index]?.skill && (
@@ -958,36 +993,10 @@ const RegisterDeveloper = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex-none mt-3">
-                    <Form.Label className="common-label">
-                      {t("experience")}
-                    </Form.Label>
-                    <Form.Select
-                      {...register(`expertise.${index}.experience`, {
-                        required: {
-                          value: true,
-                          message: t("required_message"),
-                        },
-                      })}
-                      className="filter-select shadow-none"
-                    >
-                      <option value=""> {t("selectExperience")} </option>
-                      {EXPERIENCE_OPTIONS.map(({ label, value }, index) => (
-                        <option value={value} key={index}>
-                          {label} {t("years")}
-                        </option>
-                      ))}
-                    </Form.Select>
-                    {errors?.skills?.[index]?.experience && (
-                      <p className="error-message">
-                        {errors?.skills[index]?.experience?.message}
-                      </p>
-                    )}
-                  </div>
                   {expertiseFields?.length > 1 && (
                     <Col md="12" className="d-flex justify-content-end">
                       <Button
-                        variant="danger"
+                        className="arrow-btn danger-arrow ms-auto"
                         onClick={() => handleDelete(field?.id, index)}
                       >
                         <FaTrash />
@@ -999,7 +1008,7 @@ const RegisterDeveloper = () => {
             })}
             <div className="text-end mb-3">
               <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                <Button className="main-btn py-2 px-3" onClick={handleAppend}>
+                <Button className="arrow-btn primary-arrow ms-auto" onClick={handleAppend}>
                   +
                 </Button>
               </OverlayTrigger>
@@ -1028,6 +1037,7 @@ const RegisterDeveloper = () => {
                         <Form.Label>{t("universityName")} *</Form.Label>
                         <Form.Control
                           type="text"
+                          className="common-field shadow-none"
                           {...register(`educations[${index}].university_name`, {
                             required: {
                               value: true,
@@ -1081,6 +1091,7 @@ const RegisterDeveloper = () => {
                           )}
                         /> */}
                         <CreatableSelect
+                          className="common-field"
                           {...register(`educations.${index}.degree_id`, {
                             required: {
                               value: true,
@@ -1092,8 +1103,8 @@ const RegisterDeveloper = () => {
                           onChange={(val) => {
                             setValue(`educations.${index}.degree_id`, val);
                           }}
-                        // value={degreeList.find((curElem)=>curElem.label === item.label)}
-                         onCreateOption={handleCreate}
+                          // value={degreeList.find((curElem)=>curElem.label === item.label)}
+                          onCreateOption={handleCreate}
                           options={degreeList}
                         />
                         {errors?.educations?.[index]?.degree_id && (
@@ -1127,6 +1138,7 @@ const RegisterDeveloper = () => {
                       <Form.Group className="mb-3">
                         <Form.Label>{t("address")} *</Form.Label>
                         <Form.Control
+                          className="common-field"
                           type="text"
                           {...register(`educations[${index}].address`, {
                             required: {
@@ -1146,6 +1158,7 @@ const RegisterDeveloper = () => {
                       <Form.Group>
                         <Form.Label>{t("startYear")} *</Form.Label>
                         <Form.Select
+                          className="common-field"
                           {...register(`educations.${index}.start_year`, {
                             required: t("startYearValidation"),
                             validate: {
@@ -1184,6 +1197,7 @@ const RegisterDeveloper = () => {
                       <Form.Group className="mb-3">
                         <Form.Label>{t("endYear")} *</Form.Label>
                         <Form.Select
+                          className="common-field"
                           {...register(`educations.${index}.end_year`, {
                             required: {
                               value: disbaleYear[index] ? false : true,
@@ -1214,7 +1228,8 @@ const RegisterDeveloper = () => {
                     <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                       <Form.Check
                         type="checkbox"
-                        className="cv-field"
+                        className="job-post-checkbox"
+                        id="edu-checkbox"
                         {...register(
                           `educations[${index}].currently_attending`,
                           {
@@ -1225,14 +1240,14 @@ const RegisterDeveloper = () => {
                           handleCurrentlyAttendingChange(e, index)
                         }
                       />
-                      <Form.Label className="mb-0">
+                      <Form.Label className="mb-0" htmlFor="edu-checkbox">
                         {t("currentlyAttending")}
                       </Form.Label>
                     </Form.Group>
                     {watch("educations")?.length > 1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
-                          variant="danger"
+                          className="arrow-btn danger-arrow"
                           // onClick={() => handleDeleteField(index,id)}
                           onClick={() => {
                             removeEducationField(index);
@@ -1248,7 +1263,7 @@ const RegisterDeveloper = () => {
               <div className="text-end my-3">
                 <OverlayTrigger placement="bottom" overlay={addtooltip}>
                   <Button
-                    className="main-btn py-2 px-3"
+                    className="arrow-btn primary-arrow ms-auto"
                     onClick={handleAddMore}
                   >
                     +
@@ -1289,6 +1304,7 @@ const RegisterDeveloper = () => {
                 <Col md="12">
                   <Form.Group className="mb-4">
                     <CreatableSelect
+                      className="common-field"
                       isMulti
                       isClearable
                       name={selectedOption}
@@ -1329,7 +1345,7 @@ const RegisterDeveloper = () => {
                         </InputGroup.Text>
                         <Form.Control
                           type="text"
-                          className="cv-field"
+                          className="common-field"
                           placeholder={t("enterUrl")}
                           {...register(`social_links[${index}].url`, {
                             required: {
@@ -1352,7 +1368,7 @@ const RegisterDeveloper = () => {
               <div className="text-end mb-3">
                 <OverlayTrigger placement="bottom" overlay={addtooltip}>
                   <Button
-                    className="main-btn py-2 px-3"
+                    className="arrow-btn primary-arrow ms-auto"
                     onClick={handleAddMoreSocial}
                   >
                     +

@@ -52,7 +52,8 @@ const DeveloperNavigation = ({ onClick }) => {
     return (
         <>
             <div className="rotate-text">
-                <marquee>Please CheckIn to start the day. Before start your day, please submit yesterday report</marquee>
+                {/* <marquee>Please CheckIn to start the day. Before start your day, please submit yesterday report</marquee> */}
+                <marquee>Please CheckIn to start the day.</marquee>
             </div>
             <header className="mb-4">
                 <div className="d-flex align-items-center justify-content-between gap-3">

@@ -13,14 +13,14 @@ import { toast } from "react-toastify";
 export const JOB_POST_STEP_LABELS = [
   {
     step_key: "step_1",
-    step_title_key: "Job Post Step1 ",
+    step_title_key: "1 of 3 Post a Job",
     //   img: ,
     svgIcon: "",
     activeKey:"1"
   },
   {
     step_key: "step_2",
-    step_title_key: "Job Post Step 2",
+    step_title_key: "2 of 3 Tell us about the role",
     //   img: ,
     svgIcon: "",
     activeKey:"2"
@@ -28,7 +28,7 @@ export const JOB_POST_STEP_LABELS = [
   },
   {
     step_key: "step_3",
-    step_title_key: "Job Post Step 3",
+    step_title_key: "3 of 3 Receive qualified applicants",
     //   img: ,
     svgIcon: "",
     activeKey:"3"
@@ -111,12 +111,12 @@ const JobPostStepContainer = () => {
   console.log(activeStep, "active step");
 
   return (
-    <div>
-      <div className="stepLabels">
+    <div className="job-post-container card-box">
+      <div>
         {JOB_POST_STEP_LABELS?.map(({ step_title_key, svgIcon,activeKey}, idx) => (
           <Fragment key={idx}>
-            <div className="l d-flex gap-2">
-                {activeStep == activeKey && <h5>{step_title_key}</h5>}
+            <div className="">
+                {activeStep == activeKey && <h5 className="section-head mb-4">{step_title_key}</h5>}
               {/* <h5 className={activeStep == activeKey ? "activeIconClass" :"inactiveIconClass"}>{step_title_key}</h5> */}
             </div>
           </Fragment>
@@ -128,21 +128,21 @@ const JobPostStepContainer = () => {
         {/* {activeStep === 1 && <JobPostStep1 />}
         {activeStep === 2 && <JobPostStep2 />}
         {activeStep === 3 && <JobPostStep3 />} */}
-        <div>
+        <div className="d-flex align-items-center gap-3 justify-content-center">
           {activeStep !== 1 && (
             <RexettButton
               type="button"
-              text={t("previous")}
+              text="Back"
               onClick={() => setActiveStep((prev) => prev - 1)}
-              className="main-btn px-5 m-4"
+              className="main-btn outline-main-btn px-5"
               disabled={smallLoader}
               isLoading={smallLoader}
             />
           )}
           <RexettButton
             type="submit"
-            text={activeStep < 3 ? t("next") : t("submit")}
-            className="main-btn px-5 m-2"
+            text={activeStep < 3 ? "Continue" : t("submit")}
+            className="main-btn px-5"
             disabled={smallLoader}
             isLoading={smallLoader}
           />

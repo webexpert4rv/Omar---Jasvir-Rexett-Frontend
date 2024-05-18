@@ -126,9 +126,9 @@ const DashboardLayout = ({ children }) => {
                 <main className={sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper '}>
                     <Navigation sidebaractive={sidebarwrapper} handlemainSidebar={handleMainSidebar} handleSidebar={handleSidebar} />
                     {token && role == "client" ? children : <Navigate to="/" />}
-                    <Link to={'/contact-support'} className='contact-support'>
+                    {/* <Link to={'/contact-support'} className='contact-support'>
                         {t("feedback")}
-                    </Link>
+                    </Link> */}
                     {!sidebarwrapper ? <div className={sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
                         <div className='text-end d-lg-none mb-4'>
                             {/* <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button> */}
