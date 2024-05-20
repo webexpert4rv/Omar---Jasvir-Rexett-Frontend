@@ -143,20 +143,20 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
         project_team_size: Number (curElem?.project_team_size),
       };
     });
-    // let temp = formattedProjects
-    //   ?.map((item) => {
-    //     if (!item.id) {
-    //       return { ...item ,project_team_size : Number(item.project_team_size)};
-    //     }
-    //   })
-    //   .filter((item) => item);
-    // if (temp.length > 0) {
-    //   let payload = {
-    //     projects: [...temp],
-    //     user_id: +id,
-    //   };
+    let temp = formattedProjects
+      ?.map((item) => {
+        if (!item.id) {
+          return { ...item ,project_team_size : Number(item.project_team_size)};
+        }
+      })
+      .filter((item) => item);
+    if (temp.length > 0) {
+      let payload = {
+        projects: [...temp],
+        user_id: +id,
+      };
       dispatch(
-        addProjects(formattedProjects, () => {
+        addProjects(payload, () => {
           if (role == "developer") {
             dispatch(fetchDeveloperCv());
           } else {
@@ -165,22 +165,22 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
           handleClose();
         })
       );
-    // }
+    }
 
-    // formattedProjects?.forEach((item,idx) => {
-    //   if (item.id) {
-    //     dispatch(
-    //       updateProjects(item.id,item, () => {
-    //         if (role == "developer") {
-    //           dispatch(fetchDeveloperCv());
-    //         } else {
-    //           dispatch(getDeveloperDetails(id));
-    //         }
-    //         handleClose();
-    //       },idx === formattedProjects.length-1)
-    //     );
-    //   }
-    // });
+    formattedProjects?.forEach((item,idx) => {
+      if (item.id) {
+        dispatch(
+          updateProjects(item.id,item, () => {
+            if (role == "developer") {
+              dispatch(fetchDeveloperCv());
+            } else {
+              dispatch(getDeveloperDetails(id));
+            }
+            handleClose();
+          },idx === formattedProjects.length-1)
+        );
+      }
+    });
   };
 
   const handleAppend = async () => {
