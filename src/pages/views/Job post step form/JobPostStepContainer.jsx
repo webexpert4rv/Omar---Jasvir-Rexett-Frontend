@@ -113,37 +113,39 @@ const JobPostStepContainer = () => {
 
 
   return (
-    <div>
+    <>
       <div className="stepLabels">
       <h5>{STEP_LABELS[activeStep]}</h5>
       </div>
+    <div className="job-post-container card-box">
       <form onSubmit={handleSubmit(onSubmit)}>
         {getActiveStepComponent()}
 
         {/* {activeStep === 1 && <JobPostStep1 />}
         {activeStep === 2 && <JobPostStep2 />}
         {activeStep === 3 && <JobPostStep3 />} */}
-        <div>
+        <div className="d-flex align-items-center gap-3 justify-content-center">
           {activeStep !== 1 && (
             <RexettButton
               type="button"
-              text={t("previous")}
+              text="Back"
               onClick={() => setActiveStep((prev) => prev - 1)}
-              className="main-btn px-5 m-4"
+              className="main-btn outline-main-btn px-5"
               disabled={smallLoader}
               isLoading={smallLoader}
             />
           )}
           <RexettButton
             type="submit"
-            text={activeStep < 3 ? t("next") : t("submit")}
-            className="main-btn px-5 m-2"
+            text={activeStep < 3 ? "Continue" : t("submit")}
+            className="main-btn px-5"
             disabled={smallLoader}
             isLoading={smallLoader}
           />
         </div>
       </form>
-    </div>
+      </div>
+    </>
   );
 };
 

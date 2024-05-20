@@ -18,6 +18,7 @@ const initialDeveloperData = {
   allContracts: [],
   shareDocument: [],
   approvedLoader: false,
+  lastTimeLog:{}
 };
 
 export const developerDataSlice = createSlice({
@@ -90,6 +91,9 @@ export const developerDataSlice = createSlice({
       state.smallLoader = false;
       state.approvedLoader = false;
     },
+    setLastTimeLog:(state,action)=>{
+      state.lastTimeLog=action.payload
+    }
   },
 });
 
@@ -109,6 +113,7 @@ export const {
   setActionSuccessFully,
   setSuccessProfileData,
   setDeveloperDashboard,
+  setLastTimeLog
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -215,7 +220,7 @@ export function updateDeveloperCvBio(payload, callback) {
         ...payload,
       });
       if (result.status === 200) {
-        toast.success("Bio is Updated", { position: "top-center" });
+        toast.success("", { position: "top-center" });
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -227,17 +232,13 @@ export function updateDeveloperCvBio(payload, callback) {
   };
 }
 
-export function updateDeveloperCvExperience(payload, id, callback,isLastItem = true) {
+export function updateDeveloperCvExperience(payload,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.put(`common/update-experience/${id}`, {
-        ...payload,
-      });
+      let result = await clientInstance.post(`common/update-experiences`, {...payload} );
       if (result.status === 200) {
-        if (isLastItem) {
-          toast.success("Experience is Updated", { position: "top-center" });
-        }
+        toast.success("Experience is Updated", { position: "top-center" });
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -327,11 +328,11 @@ export function addDeveloperCvEducation(payload, callback) {
   };
 }
 
-export function updateDeveloperCvEducation(payload, id, callback) {
+export function updateDeveloperCvEducation(payload,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.put(`common/update-education/${id}`, {
+      let result = await clientInstance.post(`common/update-educations`, {
         ...payload,
       });
       if (result.status === 200) {
@@ -612,6 +613,37 @@ export function updateProjects(projectId, payload, callback,isLast = true) {
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
       return;
+    }
+  };
+}
+
+
+export function addLogTime(paylaod, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`developer/add-time-log`, {
+        ...paylaod,
+      });
+      dispatch(setSuccessActionData());
+      return callback();
+    } catch (error) {
+      console.log(error, "error");
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function getLastTimeLog(paylaod, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`developer/get-last-time-log`);
+      dispatch(setLastTimeLog(result.data));
+      return callback();
+    } catch (error) {
+      console.log(error, "error");
+      dispatch(setFailDeveloperData());
     }
   };
 }

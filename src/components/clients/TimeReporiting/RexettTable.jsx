@@ -202,7 +202,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                                     <td className="time-table-data">
                                                         <span className="status-progress white-nowrap">Under Review</span>
                                                     </td>
-                                                <td className="time-table-data"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text position-relative white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?<OverlayTrigger placement="bottom" overlay={viewremark}><img src={remarkIcon} className="remark-icon" /></OverlayTrigger>:"Add Remarks"} <span className="number-count overlay">1</span></p></td>
+                                                <td className="time-table-data"><p onClick={()=>handleremarkShow(item,index)} className='remarks-text position-relative white-nowrap'>{item?.contractDetails?.remarks?.length>0 ?<OverlayTrigger placement="bottom" overlay={viewremark}><img src={remarkIcon} className="remark-icon" /></OverlayTrigger>:<OverlayTrigger placement="bottom" overlay={viewremark}><img src={remarkIcon} className="remark-icon" /></OverlayTrigger>} <span className="number-count overlay">1</span></p></td>
                                                 
                                                     {selectedPeriod == "weekly"  ? <td className="time-table-data">
                                                         <RexettButton

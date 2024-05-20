@@ -155,6 +155,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
         projects: [...temp],
         user_id: +id,
       };
+      console.log(payload,"payload")
       dispatch(
         addProjects(payload, () => {
           if (role == "developer") {

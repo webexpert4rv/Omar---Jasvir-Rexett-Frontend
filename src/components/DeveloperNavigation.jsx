@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Notification from "./atomic/Notfication";
 import { Tooltip, OverlayTrigger, Button } from "react-bootstrap";
 import LanguageChange from "./atomic/LanguageChange";
 import EndDayModal from "./common/Modals/EndTime";
 import StartDayModal from "./common/Modals/StartDay";
 import SubmitTimeReport from "./common/Modals/SubmitTimeSheet";
+import Timer from "./atomic/Timer";
+import { useDispatch, useSelector } from "react-redux";
+import { addLogTime, getLastTimeLog } from "../redux/slices/developerDataSlice";
 
 const str = String(localStorage.getItem("userName"));
 const developerName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
@@ -15,21 +18,48 @@ const tooltip = (
 );
 
 const DeveloperNavigation = ({ onClick }) => {
-    const [showEndDay, setShowEndDay] = useState(false);
-    const [showStartDay, setShowStartDay] = useState(false);
+    const dispatch =useDispatch()
     const [showTimeReport, setShowTimeReport] = useState(false);
     const [isColorfulChecked, setIsColorfulChecked] = useState(false);
     const [checked, setChecked] = useState(false)
+    const [totalSeconds, setTotalSeconds] = useState(0);
+    const {lastTimeLog}=useSelector(state=>state.developerData)
+     let localTimer= localStorage.getItem("time")
+    
+
+    useEffect(()=>{
+        dispatch(getLastTimeLog())
+        
+    },[])
+
+    const convertHourToSecond=(hours)=>{
+        const seconds = hours * 3600;
+        console.log(seconds,"ooo")
+        return  localTimer>seconds ?localTimer:seconds
+        
+    }
+
+    useEffect(()=>{
+       if(lastTimeLog){
+        setChecked(lastTimeLog?.data?.type=="break" || lastTimeLog?.data?.type=="check-out" ?false:true)
+        setTotalSeconds(convertHourToSecond(lastTimeLog?.data?.hours_worked_till_time))
+       }
 
 
-    // const handleCloseEndDay = () => {
-    //   setIsColorfulChecked(true);
-    // };
+    },[lastTimeLog?.data?.hours_worked_till_time])
+    
 
-    const handleCloseStartDay = (text) => {
+
+    const handleCloseStartDay = (text,currStatus) => {
         setIsColorfulChecked(false);
         if (text === "yes") {
             setChecked(!checked)
+            let data={
+                "type": currStatus=="check-in"?"resumed":currStatus,
+                "timer_seconds_till_time": totalSeconds==0?null:totalSeconds,
+                "memo": null
+              }
+            dispatch(addLogTime(data))
         }
     };
 
@@ -51,7 +81,8 @@ const DeveloperNavigation = ({ onClick }) => {
     return (
         <>
             <div className="rotate-text">
-                <marquee>Please CheckIn to start the day. Before start your day, please submit yesterday report</marquee>
+                {/* <marquee>Please CheckIn to start the day. Before start your day, please submit yesterday report</marquee> */}
+                <marquee>Please CheckIn to start the day.</marquee>
             </div>
             <header className="mb-4">
                 <div className="d-flex align-items-center justify-content-between gap-3">
@@ -64,7 +95,7 @@ const DeveloperNavigation = ({ onClick }) => {
                         </Button> */}
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                        <p className="time-counter">00:00:00 hrs</p>
+                        <p className="time-counter"><Timer checked={checked} totalSeconds={totalSeconds} setTotalSeconds={setTotalSeconds} lastTimeLog={lastTimeLog}/></p>
                         <div className="check-text">
                             <span className="checkout-text">CheckOut</span>
                             <input
@@ -88,7 +119,7 @@ const DeveloperNavigation = ({ onClick }) => {
                 </div>
             </header>
             {
-                isColorfulChecked && <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} />
+                isColorfulChecked && <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} setChecked={setChecked} />
                 // : <EndDayModal show={isColorfulChecked} handleClose={handleCloseEndDay} />
             }
 

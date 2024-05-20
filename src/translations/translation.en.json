@@ -143,7 +143,7 @@
         "adminName": "Admin Name",
         "nameOfDevelopers": "Name Of Developers",
         "noOfDevelopersHired": "No Of Developers Hired",
-        "invoice": "Invoice",
+        "pay_slip": "Pay Slip",
         "filterByMonth": "Filter By Month",
         "filterByYear": "Filter By Year",
         "selectClients": "Select Clients",
