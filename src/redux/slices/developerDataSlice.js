@@ -18,7 +18,8 @@ const initialDeveloperData = {
   allContracts: [],
   shareDocument: [],
   approvedLoader: false,
-  lastTimeLog:{}
+  lastTimeLog:{},
+  leaveHistory:[]
 };
 
 export const developerDataSlice = createSlice({
@@ -93,8 +94,11 @@ export const developerDataSlice = createSlice({
     },
     setLastTimeLog:(state,action)=>{
       state.lastTimeLog=action.payload
-    }
-  },
+    }, 
+    setLeaveHistory: (state,action) =>{
+      state.leaveHistory = action.payload
+  }
+},
 });
 
 export const {
@@ -113,7 +117,8 @@ export const {
   setActionSuccessFully,
   setSuccessProfileData,
   setDeveloperDashboard,
-  setLastTimeLog
+  setLastTimeLog,
+  setLeaveHistory
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -216,11 +221,9 @@ export function updateDeveloperCvBio(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post("common/update-bio", {
-        ...payload,
-      });
+      let result = await clientInstance.post("common/update-bio", {...payload,});
       if (result.status === 200) {
-        toast.success("", { position: "top-center" });
+        toast.success("Bio is updated", { position: "top-center" });
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -232,6 +235,38 @@ export function updateDeveloperCvBio(payload, callback) {
   };
 }
 
+export function applyLeave(payload) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("/developer/apply-for-leave", {...payload,});
+      if (result.status === 200) {
+        toast.success("Leave Applied", { position: "top-center" });
+        dispatch(setSuccessActionData());
+      }
+    } catch (error) {
+      const message = error.response.data.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function getLeaveHistory(id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`/common/get-leave-history/${id}`);
+      console.log(result.data.data, "result==")
+      if (result.status === 200) {
+        dispatch(setLeaveHistory(result?.data?.data))
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
 export function updateDeveloperCvExperience(payload,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
@@ -634,13 +669,12 @@ export function addLogTime(paylaod, callback) {
   };
 }
 
-export function getLastTimeLog(paylaod, callback) {
+export function getLastTimeLog() {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.get(`developer/get-last-time-log`);
       dispatch(setLastTimeLog(result.data));
-      return callback();
     } catch (error) {
       console.log(error, "error");
       dispatch(setFailDeveloperData());

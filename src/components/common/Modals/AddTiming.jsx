@@ -145,7 +145,6 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
     }
   };
   const handleCloseModal = () => {
-    console.log("hloo")
     setSelectedFilter({})
     setTimeReportingData([])
     setAddTimeReports([])

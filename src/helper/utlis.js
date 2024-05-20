@@ -66,7 +66,7 @@ export function getToken(tokenKey) {
         value: "5 years",
       },
       {
-        label: "above 5",
+        label: "5+",
         value: "above 5 years",
       },
     ];
