@@ -443,7 +443,7 @@ export function getNotification(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`common/notifications`)
+            let result = await clientInstance.get(generateApiUrl(payload, `common/notifications`))
             if (result.status === 200) {
                 dispatch(setNotificationList(result.data))
             }
@@ -575,7 +575,7 @@ export function rejectEditAction(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
-            let result = await clientInstance.put(`/admin/approve-all-changes/${payload}`)
+            let result = await clientInstance.delete(`/admin/reject-all-changes/${payload}`)
             if (result.status === 200) {
                 toast.success("Edit Request has been approved", { position: "top-center" })
               dispatch(setSuccessAdminData())

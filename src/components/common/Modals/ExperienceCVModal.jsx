@@ -40,7 +40,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
           start_date: item.start_date?.slice(0, 10),
           end_date: item.end_date?.slice(0, 10),
           is_still_working: item.is_still_working,
-          newId: item.id
+          experience_id: item.id
 
         });
         setDisabledEndDates(prevState => [...prevState, item.is_still_working]);
@@ -66,41 +66,19 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
 
   const onSubmit = (value) => {
     let { test } = value
-    let addExp = test?.map((item) => {
-      if (!item.newId) {
-        return { ...item}
-      }
-    }).filter((item) => item)
-  
-    if (addExp.length > 0) {
-      let data={
-        experiences:addExp,
-        user_id:+id
+    let data={
+      developer_id:id,
+      experiences:test
     }
-      dispatch(addDeveloperCvExperience(data, () => {
-        if(role=="developer"){
+    dispatch(updateDeveloperCvExperience(data,()=>{
+      if(role=="developer"){
         dispatch(fetchDeveloperCv())
-        }else{
-          dispatch(getDeveloperDetails(id))
-        }
-        handleClose()
-      }))
-    }
-    // Promise.all([...test]).then(())
-    test?.forEach((item,idx) => {
-      if (item.newId) {
-        console.log(item.newId,"-------------========")   
-        dispatch(updateDeveloperCvExperience( item, item.newId, () => {
-          if(role=="developer"){
-            dispatch(fetchDeveloperCv())
-          }else{
-            dispatch(getDeveloperDetails(id))
-          }
-          handleClose()
-        },idx === test.length-1))
+      }else{
+        dispatch(getDeveloperDetails(id))
       }
-    })
-
+      handleClose()
+    }))
+  
   };
 
   const handleAppend = async () => {
@@ -126,7 +104,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
           } else {
               dispatch(getDeveloperDetails(id))
           }
-          handleClose()
+          // handleClose()
 
       }))
     }
@@ -277,7 +255,7 @@ console.log(fields,"firldssssss")
                     {index !== 0 && (
                       <div>
                         <OverlayTrigger placement="bottom" overlay={deletetooltip}>
-                          <Button variant="danger" className="font-14" onClick={() => deleteDeveloperExperience(item.newId , index)
+                          <Button variant="danger" className="font-14" onClick={() => deleteDeveloperExperience(item.experience_id , index)
                           }><FaTrashAlt /></Button>
                         </OverlayTrigger>
                       </div>

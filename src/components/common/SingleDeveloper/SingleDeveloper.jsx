@@ -15,46 +15,52 @@ import SkillsModal from "../Modals/SkillsCVModal";
 import SocialMediaModal from "../Modals/SocialMediaModal";
 import DeveloperDetails from "../Modals/DeveloperDetails";
 import ExpertiseModal from "../Modals/ExpertiseModal";
-import { getSkillList } from "../../../redux/slices/clientDataSlice";
+import {
+  getDeveloperDetails,
+  getSkillList,
+} from "../../../redux/slices/clientDataSlice";
 import RexettButton from "../../atomic/RexettButton";
 import { FiExternalLink } from "react-icons/fi";
 import {
-    approvedEditAction,
-    rejectEditAction,
+  approvedEditAction,
+  rejectEditAction,
 } from "../../../redux/slices/adminDataSlice";
 import SingleExperienceCard from "./SingleExperienceCard";
 import ProjectsModal from "../Modals/ProjectModal";
 
 const SingleDeveloper = ({ data, role }) => {
-    const dispatch = useDispatch();
-    const { screenLoader, smallLoader } = useSelector(
-        (state) => state.clientData
-    );
-    const [selectedTemplate, setSelectedTemplate] = useState("cv-template1");
-    const [developerDetails, setDeveloperDetails] = useState(false);
-    const [readmore, setReadMore] = useState(true);
-    const [showModal, setShowModal] = useState(false);
-    const { t } = useTranslation();
-    let { pathname } = useLocation();
-    let userId = pathname.split("/")[2];
-    console.log(pathname.split("/")[2], "pathj");
+  const dispatch = useDispatch();
+  const { screenLoader,  smallLoader  } = useSelector(
+    (state) => state.clientData
+  );
+  const [selectedTemplate, setSelectedTemplate] = useState("cv-template1");
+  const [developerDetails, setDeveloperDetails] = useState(false);
+  const [readmore, setReadMore] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const { t } = useTranslation();
+  let { pathname } = useLocation();
+  let userId = pathname.split("/")[2];
+  console.log(pathname.split("/")[2], "pathj");
 
-    useEffect(() => {
-        dispatch(getSkillList());
-    }, []);
+  const token = localStorage.getItem("token");
 
-    const splitSkills = (data) => {
-        let skills = data?.skills?.split(",") || data?.split(',');
-        return skills;
-    };
-    const handleShowModal = () => {
-        setShowModal(true);
-    };
+  useEffect(() => {
+    dispatch(getSkillList());
+  }, []);
 
+  console.log(data?.isEdit, "data---------------");
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
+  const splitSkills = (data) => {
+    let skills = data?.skills?.split(",") || data?.split(",");
+    return skills;
+  };
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
     const [showExperienceModal, setShowExperienceModal] = useState(false);
     const handleShowExperienceModal = () => {
@@ -116,12 +122,14 @@ const SingleDeveloper = ({ data, role }) => {
         setDeveloperDetails(false);
     };
 
-    const approvedEdit = () => {
-        dispatch(approvedEditAction(userId));
-    };
+  const approvedEdit = async () => {
+    await dispatch(approvedEditAction(userId));
+    dispatch(getDeveloperDetails(userId));
+  };
 
-    const rejectEdit = () => {
-        dispatch(rejectEditAction(userId));
+    const rejectEdit = async () => {
+       await dispatch(rejectEditAction(userId));
+        dispatch(getDeveloperDetails(userId));
     };
 
     return (
@@ -138,15 +146,15 @@ const SingleDeveloper = ({ data, role }) => {
                                     : "cv-template-section cv-template3 d-none"
                             }
                         >
-                            <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
+                            {role!=="developer" && data?.isEdit ? <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
                                 <RexettButton
                                     type="submit"
                                     text={t("Approve")}
                                     className="main-btn px-4 font-14 fw-semibold"
                                     variant="transparent"
                                     onClick={approvedEdit}
-                                //   disabled={smallLoader}
-                                //   isLoading={smallLoader}
+                                  disabled={smallLoader}
+                                  isLoading={smallLoader}
                                 />
                                 <RexettButton
                                     type="submit"
@@ -154,10 +162,10 @@ const SingleDeveloper = ({ data, role }) => {
                                     className="red-btn px-4 font-14 fw-semibold"
                                     variant="transparent"
                                     onClick={rejectEdit}
-                                //   disabled={smallLoader}
-                                //   isLoading={smallLoader}
+                                  disabled={smallLoader}
+                                  isLoading={smallLoader}
                                 />
-                            </div>
+                            </div>:""}
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h2 className="section-head mb-0 border-0">{t("overview")}</h2>
                                 {/* <button className="main-btn px-xxl-5 px-4" onClick={()=>downloadResume(data?.developer_detail?.resume)}>Download Resume</button> */}
@@ -203,12 +211,12 @@ const SingleDeveloper = ({ data, role }) => {
                                             )}
                                         </div>
                                         <ul className="skills-pill text-center">
-                                            {splitSkills(data?.developer_skills)?.map(
+                                            {data?.other_skills?.map(
                                                 (item, index) => {
                                                     return (
                                                         <>
                                                             <li key={index}>
-                                                                <span>{item}</span>{" "}
+                                                                <span>{item?.skill}</span>{" "}
                                                             </li>
                                                         </>
                                                     );
@@ -231,14 +239,13 @@ const SingleDeveloper = ({ data, role }) => {
                                             )}
                                         </div>
                                         <div className="">
-                                            {data?.developer_skill_and_experience ? (
+                                            {data?.expertises ? (
                                                 <>
-                                                    {data?.developer_skill_and_experience?.map(
+                                                    {data?.expertises?.map(
                                                         ({ experience, skill, skill_icon }, index) => {
                                                             return (
                                                                 <React.Fragment key={index}>
                                                                     <div className="exp-wrapper expertise-card">
-                                                                        {/* <p className="exp-year">{} - {} | {}</p> */}
                                                                         <img src={skill_icon?.icon_url} />
                                                                         <p className="expertise-skill">{skill}</p>
                                                                         <p className="expertise-exp">
@@ -457,7 +464,7 @@ const SingleDeveloper = ({ data, role }) => {
                                         {data?.user_experience &&
                                             Object.keys(data?.user_experience).length > 0 &&
                                             Object.keys(data?.user_experience).map((key) => (
-                                                <div className="exp-timeline">
+                                                <div className={`exp-timeline ${data?.isEdited ? "resume-edit" :""} ` }>
                                                     <SingleExperienceCard
                                                         companyName={key}
                                                         totalExperience={
@@ -559,7 +566,7 @@ const SingleDeveloper = ({ data, role }) => {
                         <SkillsModal
                             show={showSkillsModal}
                             handleClose={handleCloseSkillsModal}
-                            data={data?.developer_skills?.skills}
+                            data={data?.other_skills}
                             id={data?.id}
                             role={role}
                         />
@@ -579,7 +586,7 @@ const SingleDeveloper = ({ data, role }) => {
                     )}
                     {showExpertiseModal ? (
                         <ExpertiseModal
-                            data={data.developer_skill_and_experience}
+                            data={data?.expertises}
                             show={showExpertiseModal}
                             handleClose={handleCloseExpertiseModal}
                             id={data?.id}

@@ -43,7 +43,7 @@ const StartDayModal = ({ show, handleClose, checked, handleSubmit,setChecked }) 
                                 </Button>
                                 <Button
                                     variant="transparent"
-                                    onClick={() => handleClose("yes")}
+                                    onClick={() => handleClose("yes","check-in")}
                                     className="main-btn px-4 font-14 fw-semibold"
                                 >
                                     Yes
@@ -54,7 +54,7 @@ const StartDayModal = ({ show, handleClose, checked, handleSubmit,setChecked }) 
                         <>
                             <h3 className="popup-heading"> Do you want to</h3>
                             <div className="d-flex justify-content-center align-items-center gap-4">
-                                <Button onClick={()=>handleClose("yes")} className="main-btn outline-main-btn py-2 px-3 font-14 d-flex align-items-center gap-2">Take a break <img src={breakIcon} className="break-icon" /></Button>
+                                <Button onClick={()=>handleClose("yes","break")} className="main-btn outline-main-btn py-2 px-3 font-14 d-flex align-items-center gap-2">Take a break <img src={breakIcon} className="break-icon" /></Button>
                                 <Button onClick={handleTimeReport} className="main-btn checkout-btn py-2 px-3 font-14 d-flex align-items-center gap-2">Checkout <img src={exitIcon} className="checkout-icon" /><img src={exitIconGreen} className="checkout-icon green-checkout" /></Button>
                             </div>
                         </>

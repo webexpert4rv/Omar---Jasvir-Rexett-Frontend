@@ -140,14 +140,14 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       return {
         ...curElem,
         tech_stacks_used: convertedTechStack,
-        project_team_size: 5,
+        project_team_size: Number (curElem?.project_team_size),
       };
     });
 
     let temp = formattedProjects
       ?.map((item) => {
         if (!item.id) {
-          return { ...item };
+          return { ...item ,project_team_size : Number(item.project_team_size)};
         }
       })
       .filter((item) => item);
@@ -156,6 +156,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
         projects: [...temp],
         user_id: +id,
       };
+      console.log(payload,"payload")
       dispatch(
         addProjects(payload, () => {
           if (role == "developer") {

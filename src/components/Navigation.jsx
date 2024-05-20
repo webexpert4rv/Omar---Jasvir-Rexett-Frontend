@@ -1,6 +1,6 @@
 import React from "react";
 import { HiBars3 } from "react-icons/hi2";
-import { useNavigate } from "react-router";
+import { useNavigate,useLocation } from "react-router";
 import { Tooltip , OverlayTrigger, Button } from "react-bootstrap";
 import Notification from "./atomic/Notfication";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { GoArrowLeft } from "react-icons/go";
 
 const str = String(localStorage.getItem("userName"));
 const clientName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())
+
 const newtooltip = (
     
     <Tooltip id="tooltip">
@@ -23,14 +24,20 @@ const clientname = (
   );
 const Navigation = ({ handleSidebar, handlemainSidebar , sidebaractive }) => {
     const navigate = useNavigate()
-    const [t,i18n] = useTranslation("global")
+    const {pathname}=useLocation()
+    let url=pathname.split("/")[1]
+
+    const backBtn=()=>{
+        navigate("/job-posted")
+    }
+    
+
     return (    
         <>
             <header className="mb-4 zIndex3">
                 <div className="d-flex align-items-center justify-content-between gap-3">
                     <div>
-                        <Button className="outline-main-btn px-3 py-2 font-14"><GoArrowLeft /> Back</Button>
-                        {/* <button onClick={handlemainSidebar} className="bars-btn"><HiBars3 /></button> */}
+                       {url=="single-job" ? <Button onClick={backBtn} className="outline-main-btn px-3 py-2 font-14"><GoArrowLeft /> Back</Button>:""}
                     </div>
                     <div className="d-flex align-items-center gap-3">
                        <LanguageChange/>
