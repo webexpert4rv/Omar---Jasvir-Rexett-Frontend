@@ -8,32 +8,15 @@ import { useTranslation } from "react-i18next";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getActiveStepKeys, step1keys, step2keys, step3keys } from "./constant";
+
 // add this inside constant file later
 
-export const JOB_POST_STEP_LABELS = [
-  {
-    step_key: "step_1",
-    step_title_key: "Job Post Step1 ",
-    //   img: ,
-    svgIcon: "",
-    activeKey:"1"
-  },
-  {
-    step_key: "step_2",
-    step_title_key: "Job Post Step 2",
-    //   img: ,
-    svgIcon: "",
-    activeKey:"2"
-
-  },
-  {
-    step_key: "step_3",
-    step_title_key: "Job Post Step 3",
-    //   img: ,
-    svgIcon: "",
-    activeKey:"3"
-
-  },
+export const STEP_LABELS = [
+    "",
+    "Job post step 1",
+    "Job post step 2",
+    "Job post step 3"
 ];
 
 const JobPostStepContainer = () => {
@@ -70,27 +53,48 @@ const JobPostStepContainer = () => {
   const getActiveStepComponent = () => {
     switch (activeStep) {
       case 1:
-        return <JobPostStep1 register={register} errors={errors} watch = {watch} setValue ={setValue} />;
+        return (
+          <JobPostStep1
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+          />
+        );
       case 2:
-        return <JobPostStep2 register={register} errors={errors} watch = {watch} setValue ={setValue} control = {control}/>;
+        return (
+          <JobPostStep2
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+            control={control}
+          />
+        );
       case 3:
-        return <JobPostStep3 register={register} errors={errors} watch = {watch} setValue ={setValue}/>;
+        return (
+          <JobPostStep3
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+          />
+        );
     }
   };
   const onSubmit = (stepData) => {
     let payload = {};
-    console.log(stepData, "stepData");
     // add these inside a constant and get active step using a switch inside a method
-    const step1keys = ["jobTitle"];
-    const step2keys = ["skill","skillDescription"];
-    const step3keys = ["email"];
-    const activeStepKeys =
-      activeStep === 1
-        ? step1keys
-        : activeStep === 2
-        ? step2keys
-        : activeStep === 3 && step3keys;
-    activeStepKeys.map((curKey) => {
+    // const activeStepKeys =
+    //   activeStep === 1
+    //     ? step1keys
+    //     : activeStep === 2
+    //     ? step2keys
+    //     : activeStep === 3 && step3keys;
+    // activeStepKeys.map((curKey) => {
+    
+    // for getting data of active step only
+    getActiveStepKeys(activeStep).map((curKey) => {
       if (curKey in stepData) {
         payload = {
           ...payload,
@@ -98,29 +102,20 @@ const JobPostStepContainer = () => {
         };
       }
     });
-
-    console.log(payload, "payload");
     if (activeStep < 3) {
       setActiveStep((prev) => prev + 1);
     } else {
-        toast.success("Form submitted successfully")
+      toast.success("Form submitted successfully");
       navigate("/dashboard");
     }
     // reset();
   };
-  console.log(activeStep, "active step");
+
 
   return (
     <div>
       <div className="stepLabels">
-        {JOB_POST_STEP_LABELS?.map(({ step_title_key, svgIcon,activeKey}, idx) => (
-          <Fragment key={idx}>
-            <div className="l d-flex gap-2">
-                {activeStep == activeKey && <h5>{step_title_key}</h5>}
-              {/* <h5 className={activeStep == activeKey ? "activeIconClass" :"inactiveIconClass"}>{step_title_key}</h5> */}
-            </div>
-          </Fragment>
-        ))}
+      <h5>{STEP_LABELS[activeStep]}</h5>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         {getActiveStepComponent()}

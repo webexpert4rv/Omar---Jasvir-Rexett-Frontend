@@ -140,24 +140,23 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       return {
         ...curElem,
         tech_stacks_used: convertedTechStack,
-        project_team_size: 5,
+        project_team_size: Number (curElem?.project_team_size),
       };
     });
-
-    let temp = formattedProjects
-      ?.map((item) => {
-        if (!item.id) {
-          return { ...item };
-        }
-      })
-      .filter((item) => item);
-    if (temp.length > 0) {
-      let payload = {
-        projects: [...temp],
-        user_id: +id,
-      };
+    // let temp = formattedProjects
+    //   ?.map((item) => {
+    //     if (!item.id) {
+    //       return { ...item ,project_team_size : Number(item.project_team_size)};
+    //     }
+    //   })
+    //   .filter((item) => item);
+    // if (temp.length > 0) {
+    //   let payload = {
+    //     projects: [...temp],
+    //     user_id: +id,
+    //   };
       dispatch(
-        addProjects(payload, () => {
+        addProjects(formattedProjects, () => {
           if (role == "developer") {
             dispatch(fetchDeveloperCv());
           } else {
@@ -166,22 +165,22 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
           handleClose();
         })
       );
-    }
+    // }
 
-    formattedProjects?.forEach((item,idx) => {
-      if (item.id) {
-        dispatch(
-          updateProjects(item.id,item, () => {
-            if (role == "developer") {
-              dispatch(fetchDeveloperCv());
-            } else {
-              dispatch(getDeveloperDetails(id));
-            }
-            handleClose();
-          },idx === formattedProjects.length-1)
-        );
-      }
-    });
+    // formattedProjects?.forEach((item,idx) => {
+    //   if (item.id) {
+    //     dispatch(
+    //       updateProjects(item.id,item, () => {
+    //         if (role == "developer") {
+    //           dispatch(fetchDeveloperCv());
+    //         } else {
+    //           dispatch(getDeveloperDetails(id));
+    //         }
+    //         handleClose();
+    //       },idx === formattedProjects.length-1)
+    //     );
+    //   }
+    // });
   };
 
   const handleAppend = async () => {
@@ -374,7 +373,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       })}
                       className="filter-select width-full shadow-none "
                     >
-                      <option disabled selected>
+                      <option value ="" disabled selected>
                         {t("projectTeamSize")}
                       </option>
                       {TEAM_SIZE_OPTIONS.map((val, idx) => (
