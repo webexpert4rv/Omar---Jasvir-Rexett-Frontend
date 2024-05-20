@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
 import { IoTrendingUpSharp } from "react-icons/io5";
 import { useDispatch } from "react-redux"
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { getRevenue } from "../../redux/slices/vendorDataSlice";
 import { useSelector } from 'react-redux'
 import { useTranslation } from "react-i18next";
@@ -68,15 +68,63 @@ const Revenue = () => {
     }
 
     const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
             {
-                label: 'Revenue',
-                data: monthlyData(revenueData?.monthly_revenue),
-                borderColor: 'blue',
-                backgroundColor: '#180049',
+                label: 'Total Revenue',
+                data: [1000, 20000, 15000, 14000, 12500, 12300, 4000, 3000, 5000, 6000, 5500, 12000],
+                fill: false,
+                borderColor: 'rgb(3, 117, 99)',
+                lineTension: 0.4, // Set line tension to create a curved line
             },
         ],
+    };
+    const joinedWeeklyClient = {
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        datasets: [
+            {
+                label: 'Joined Client',
+                data: [70, 40, 10, 20, 33, 44, 55],
+                fill: false,
+                borderColor: 'rgb(3, 117, 99)',
+                lineTension: 0.4, // Set line tension to create a curved line
+            },
+        ],
+    };
+    const joinedMonthlyClient = {
+        labels: ['1 May', '2 May', '3 May', '4 May', '5 May', '6 May', '7 May', '8 May', '9 May', '10 May', '11 May', '12 May'],
+        datasets: [
+            {
+                label: 'Joined Client',
+                data: [70, 40, 10, 20, 33, 44, 55, 11, 80, 100, 59, 33],
+                fill: false,
+                borderColor: 'rgb(3, 117, 99)',
+                lineTension: 0.4, // Set line tension to create a curved line
+            },
+        ],
+    };
+    const joinedYearlyClient = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [
+            {
+                label: 'Joined Client',
+                data: [70, 40, 10, 20, 33, 44, 55, 11, 80, 100, 59, 33],
+                fill: false,
+                borderColor: 'rgb(3, 117, 99)',
+                lineTension: 0.4, // Set line tension to create a curved line
+            },
+        ],
+    };
+    const options = {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+        tooltip: {
+            enabled: true,
+            mode: 'index',
+        },
     };
     useEffect(() => {
         dispatch(getRevenue())
@@ -111,7 +159,7 @@ const Revenue = () => {
                 </Nav>
                 <Tab.Content>
                     <Tab.Pane eventKey="revenue">
-                        <Form className="mb-4 d-block filter-section">
+                        {/* <Form className="mb-4 d-block filter-section">
                             <div className="d-flex gap-3">
                                 <div className="d-flex gap-3">
                                     <div>
@@ -138,21 +186,122 @@ const Revenue = () => {
                                     </div>
                                 </div>
                             </div>
-                        </Form>
-                        <div className="card-box">
+                        </Form> */}
+                        {/* <div className="card-box">
                             <Row>
                                 <Col md={6}>
                                     <div>
-                                        {/* <h2 className="section-head-sub">Statistic Revenue</h2> */}
                                         <Bar data={data} />
                                     </div>
                                 </Col>
-                                {/* <Col md={6}>
+                            </Row>
+                        </div> */}
+                        <div>
+                            <div className="overview-card-wrapper mb-5">
+                                <div className="overview-card active">
                                     <div>
-                                        <h2 className="section-head-sub">Statistic Income Earned</h2>
-                                        <Bar data={incomeData} options={options} />
+                                        <h4 className="overview-card-subhead">This Month Revenue</h4>
+                                        <h3 className="overview-card-heading mb-0">$1,000</h3>
                                     </div>
-                                </Col> */}
+                                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                                </div>
+                                <div className="overview-card">
+                                    <div>
+                                        <h4 className="overview-card-subhead">Invoice Raised</h4>
+                                        <h3 className="overview-card-heading mb-0">900</h3>
+                                    </div>
+                                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                                </div>
+                                <div className="overview-card">
+                                    <div>
+                                        <h4 className="overview-card-subhead">New Clients</h4>
+                                        <h3 className="overview-card-heading mb-0">50</h3>
+                                    </div>
+                                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                                </div>
+                                <div className="overview-card">
+                                    <div>
+                                        <h4 className="overview-card-subhead">Developers Hired</h4>
+                                        <h3 className="overview-card-heading mb-0">545</h3>
+                                    </div>
+                                    <span className="over-icon"><IoTrendingUpSharp /></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <Row>
+                                <Col md={6} className="mb-4">
+                                    <div className="card-box h-100">
+                                        <h3 className="section-head pb-0 border-0 mb-4">Total Revenue</h3>
+                                        <Line data={data} options={options} />
+                                    </div>
+                                </Col>
+                                <Col md={6} className="mb-4">
+                                    <div className="card-box">
+                                        <Tab.Container defaultActiveKey="weekly_joined">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="section-head pb-0 border-0 mb-0">Client Joined</h3>
+                                                <Nav variant="pills" className="weekly-tabs mb-0">
+                                                    <Nav.Item className='weekly-tab-item'>
+                                                        <Nav.Link className='weekly-tab-link d-flex align-items-center gap-2' eventKey="weekly_joined">Weekly</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item className='weekly-tab-item'>
+                                                        <Nav.Link className='weekly-tab-link' eventKey="monthly_joined">Monthly</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item className='weekly-tab-item'>
+                                                        <Nav.Link className='weekly-tab-link' eventKey="yearly_joined">Yearly</Nav.Link>
+                                                    </Nav.Item>
+                                                </Nav>
+                                            </div>
+                                            <div>
+                                                <Tab.Content>
+                                                    <Tab.Pane eventKey="weekly_joined">
+                                                        <Line data={joinedWeeklyClient} options={options} />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="monthly_joined">
+                                                        <Line data={joinedMonthlyClient} options={options} />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="yearly_joined">
+                                                        <Line data={joinedYearlyClient} options={options} />
+                                                    </Tab.Pane>
+                                                </Tab.Content>
+                                            </div>
+                                        </Tab.Container>
+                                    </div>
+                                </Col>
+                                <Col md={6} className="mb-4">
+                                    <div className="card-box">
+                                        <Tab.Container defaultActiveKey="weekly_joined">
+                                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                                <h3 className="section-head pb-0 border-0 mb-0">Invoice Raised</h3>
+                                                <Nav variant="pills" className="weekly-tabs mb-0">
+                                                    <Nav.Item className='weekly-tab-item'>
+                                                        <Nav.Link className='weekly-tab-link d-flex align-items-center gap-2' eventKey="weekly_joined">Weekly</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item className='weekly-tab-item'>
+                                                        <Nav.Link className='weekly-tab-link' eventKey="monthly_joined">Monthly</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item className='weekly-tab-item'>
+                                                        <Nav.Link className='weekly-tab-link' eventKey="yearly_joined">Yearly</Nav.Link>
+                                                    </Nav.Item>
+                                                </Nav>
+                                            </div>
+                                            <div>
+                                                <Tab.Content>
+                                                    <Tab.Pane eventKey="weekly_joined">
+                                                        <Line data={joinedWeeklyClient} options={options} />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="monthly_joined">
+                                                        <Line data={joinedMonthlyClient} options={options} />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="yearly_joined">
+                                                        <Line data={joinedYearlyClient} options={options} />
+                                                    </Tab.Pane>
+                                                </Tab.Content>
+                                            </div>
+                                        </Tab.Container>
+                                    </div>
+                                </Col>
                             </Row>
                         </div>
                     </Tab.Pane>
