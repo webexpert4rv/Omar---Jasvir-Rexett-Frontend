@@ -1,29 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Form, Button, Nav, Tab, OverlayTrigger, Tooltip } from "react-bootstrap";
 import associateLogo from "../../assets/img/aviox-logo.png"
 import userImage from "../../assets/img/user-img.jpg"
 import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
-const LeaveRequest = () => {
-    const approveLeave = (
-        <Tooltip id="tooltip">
-            Approve
-        </Tooltip>
-    );
-    const rejectLeave = (
-        <Tooltip id="tooltip">
-            Reject
-        </Tooltip>
-    );
-    const companyname = (
+import { useDispatch } from "react-redux";
+import { getLeaveHistory } from "../../redux/slices/developerDataSlice";
+import Header from "../../components/common/TableHeader/Header";
 
-        <Tooltip id="tooltip">
-            Aviox Technologies Pvt Ltd
-        </Tooltip>
-    );
+const HEADER = ["Developer Name" ,"Leave Type","Leave Date","Reason","Project","Associated With","Action"]
+const LeaveRequest = () => {
+    const dispatch = useDispatch()
+    const user_id = localStorage.getItem("userId")
+    useEffect(()=>{
+        dispatch(getLeaveHistory(user_id))
+    },[])
+    // const approveLeave = (
+    //     <Tooltip id="tooltip">
+    //         Approve
+    //     </Tooltip>
+    // );
+    // const rejectLeave = (
+    //     <Tooltip id="tooltip">
+    //         Reject
+    //     </Tooltip>
+    // );
+    // const companyname = (
+
+    //     <Tooltip id="tooltip">
+    //         Aviox Technologies Pvt Ltd
+    //     </Tooltip>
+    // );
     return (
         <>
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            {/* <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Nav variant="pills" className="mb-4 application-pills">
                     <Nav.Item className="application-item">
                         <Nav.Link className="application-link" eventKey="first">Applied Leave Request</Nav.Link>
@@ -993,7 +1003,8 @@ const LeaveRequest = () => {
                         </div>
                     </Tab.Pane>
                 </Tab.Content>
-            </Tab.Container>
+            </Tab.Container> */}
+            <Header   data ={HEADER}/>
         </>
     )
 }
