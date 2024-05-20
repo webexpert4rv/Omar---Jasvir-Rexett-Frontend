@@ -287,6 +287,7 @@ const Members = () => {
                                   }`}
                                 >
                                   <td colSpan="8">
+                                  <td colSpan="8">
                                     <div>
                                       <Row>
                                         {item?.client_type == "company" && (
@@ -317,28 +318,7 @@ const Members = () => {
                                             </div>
                                           </Col>
                                         )}
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("skillsetNeeded")}
-                                            </h3>
-                                            <ul className="need-skill-list">
-                                              {item?.jobs[0]?.skills
-                                                ? convertToArray(
-                                                    item?.jobs[0]?.skills
-                                                  )?.map((item, index) => {
-                                                    return (
-                                                      <>
-                                                        <li key={index}>
-                                                          {item}
-                                                        </li>
-                                                      </>
-                                                    );
-                                                  })
-                                                : "Not Mentioned"}
-                                            </ul>
-                                          </div>
-                                        </Col>
+
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -349,45 +329,53 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
+
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("jobTitle")}
+                                              {t("email")}
                                             </h3>
                                             <p className="application-text">
-                                              {item?.jobs[0]?.title
-                                                ? item?.jobs[0]?.title
-                                                : "Not Mentioned"}
+                                              {item?.email}
                                             </p>
                                           </div>
                                         </Col>
-                                       
-                                        <Col md={3}>
+                                        {item?.client_type == "company" && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Company Tax id
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company_tax_id}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("projectLength")}
+                                              Contact Person name
                                             </h3>
                                             <p className="application-text">
-                                              {item?.jobs[0]?.project_length
-                                                ? item?.jobs[0]?.project_length
-                                                : "Not Mentioned"}
+                                              ---
                                             </p>
                                           </div>
                                         </Col>
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
-                                              {t("contractType")}
+                                              Contact Person Email
                                             </h3>
                                             <p className="application-text">
-                                              {item?.jobs[0]?.contract_type
-                                                ? item?.jobs[0]?.contract_type
-                                                : "Not Mentioned"}
+                                              ---
                                             </p>
                                           </div>
                                         </Col>
                                       </Row>
                                     </div>
+                                  </td>
                                   </td>
                                 </tr>
                               )}

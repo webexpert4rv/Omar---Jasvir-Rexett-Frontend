@@ -18,7 +18,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
     (state) => state.adminData
   );
   const [newJobPost, setNewJobPost] = useState(null);
-  console.log(newJobPost,"newJobPost")
   const [notificationModal, setNotificationModal] = useState(false);
   const [notifId, setNotifId] = useState();
   const { t } = useTranslation();
@@ -126,6 +125,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
   }
+
   return (
     <>
       <header>
@@ -157,8 +157,8 @@ const Notification = ({ route, job, doc, timeReport }) => {
               {notificationModal && (
                 <Dropdown.Menu className="notification-dropdown-menu">
                   <div className="dropdown-notify-wrapper">
-                    {nottificationData?.length > 0 ? (
-                      [...nottificationData]
+                    {nottificationData?.notifications?.length > 0 ? (
+                      [...nottificationData?.notifications]
                         ?.sort(compareDates)
                         ?.map((item) => {
                           return (

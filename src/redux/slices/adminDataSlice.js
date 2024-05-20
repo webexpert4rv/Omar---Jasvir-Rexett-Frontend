@@ -443,7 +443,7 @@ export function getNotification(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`common/notifications`)
+            let result = await clientInstance.get(generateApiUrl(payload, `common/notifications`))
             if (result.status === 200) {
                 dispatch(setNotificationList(result.data))
             }

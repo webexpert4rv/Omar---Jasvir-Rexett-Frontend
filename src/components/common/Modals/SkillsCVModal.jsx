@@ -30,46 +30,38 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  console.log(data,"data,,,,")
+
   useEffect(() => {
     if (data) {
-      const array = data
-        .split(",")
-        .map((tech) => ({ label: tech.trim(), value: tech.trim() }));
+      const array = data?.map((tech) => ({ label: tech.skill, value: tech.skill,id:tech.id }));
       setSelectedOption(array);
     }
   }, [data]);
-
+console.log(selectedOption,"selectedOption")
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let formattedSkills = [];
-    let convertString = selectedOption.map((item) => item.label);
-     formattedSkills = convertString.map((item)=>{
-      return { skill : item, experience :""}
+    // let convertString = selectedOption.map((item) => item.label);
+     formattedSkills = selectedOption.map((item)=>{
+      return { skill : item.label, experience :""}
     })
-    if (role === "developer") {
+  
       let data = {
         skills: formattedSkills,
         user_id: +id,
       };
       dispatch(
         updateDeveloperSkills(data, () => {
-          dispatch(fetchDeveloperCv());
+          if (role === "developer") {
+            dispatch(fetchDeveloperCv());
+          }else{
+            dispatch(getDeveloperDetails(id));
+          }
           handleClose();
         })
       );
-    } else {
-      let data = {
-        skills: formattedSkills,
-        user_id: +id,
-      };
-      dispatch(
-        updateDeveloperSkills(data, () => {
-          dispatch(getDeveloperDetails(id));
-          handleClose();
-        })
-      );
-    }
   };
 
 
