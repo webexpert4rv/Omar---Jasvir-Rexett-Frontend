@@ -7,7 +7,7 @@ import breakIcon from '../../../assets/img/break-time-icon.svg'
 import exitIcon from '../../../assets/img/logout-line-icon.svg'
 import exitIconGreen from '../../../assets/img/logout-line-icon-green.svg'
 import SubmitTimeReport from "./SubmitTimeSheet";
-const StartDayModal = ({ show, handleClose, checked, handleSubmit,setChecked }) => {
+const StartDayModal = ({ show, handleClose, checked, totalSeconds,setChecked }) => {
     const { t } = useTranslation();
     const [showTimeReport, setShowTimeReport] = useState(false);
     const handleTimeReport = () => {
@@ -61,7 +61,7 @@ const StartDayModal = ({ show, handleClose, checked, handleSubmit,setChecked }) 
                     )}
                 </Modal.Body>
             </Modal>
-            <SubmitTimeReport show={showTimeReport} handleCloseTimeReport={handleCloseTimeReport} handleClose = {handleClose} setChecked={setChecked} />
+            <SubmitTimeReport show={showTimeReport} handleCloseTimeReport={handleCloseTimeReport} handleClose = {handleClose} setChecked={setChecked} totalSeconds={totalSeconds} />
         </>
     );
 };

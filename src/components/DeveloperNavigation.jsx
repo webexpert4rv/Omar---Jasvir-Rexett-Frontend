@@ -24,8 +24,6 @@ const DeveloperNavigation = ({ onClick }) => {
     const [checked, setChecked] = useState(false)
     const [totalSeconds, setTotalSeconds] = useState(0);
     const {lastTimeLog}=useSelector(state=>state.developerData)
-     let localTimer= localStorage.getItem("time")
-    
 
     useEffect(()=>{
         dispatch(getLastTimeLog())
@@ -34,9 +32,7 @@ const DeveloperNavigation = ({ onClick }) => {
 
     const convertHourToSecond=(hours)=>{
         const seconds = hours * 3600;
-        console.log(seconds,"ooo")
-        return  localTimer>seconds ?localTimer:seconds
-        
+        return  seconds
     }
 
     useEffect(()=>{
@@ -44,8 +40,6 @@ const DeveloperNavigation = ({ onClick }) => {
         setChecked(lastTimeLog?.data?.type=="break" || lastTimeLog?.data?.type=="check-out" ?false:true)
         setTotalSeconds(convertHourToSecond(lastTimeLog?.data?.hours_worked_till_time))
        }
-
-
     },[lastTimeLog?.data?.hours_worked_till_time])
     
 
@@ -55,7 +49,7 @@ const DeveloperNavigation = ({ onClick }) => {
         if (text === "yes") {
             setChecked(!checked)
             let data={
-                "type": currStatus=="check-in"?"resumed":currStatus,
+                  "type": lastTimeLog?.data?.hours_worked_till_time==null? "check-in": currStatus=="check-in"?"resumed":currStatus,
                 "timer_seconds_till_time": totalSeconds==0?null:totalSeconds,
                 "memo": null
               }
@@ -119,15 +113,10 @@ const DeveloperNavigation = ({ onClick }) => {
                 </div>
             </header>
             {
-                isColorfulChecked && <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} setChecked={setChecked} />
+                isColorfulChecked && <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} setChecked={setChecked} totalSeconds={totalSeconds} />
                 // : <EndDayModal show={isColorfulChecked} handleClose={handleCloseEndDay} />
             }
 
-
-            <SubmitTimeReport
-                show={showTimeReport}
-                handleClose={handleCloseTimeReport}
-            />
         </>
     );
 };

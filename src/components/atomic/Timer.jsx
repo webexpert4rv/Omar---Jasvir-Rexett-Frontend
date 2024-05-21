@@ -2,11 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 function Timer({ checked, totalSeconds, setTotalSeconds }) {
   const intervalRef = useRef(null);
-  let localTimer= localStorage.getItem("time")
-
-  console.log(localTimer,"ipppp")
-
-
 
   const startTimer = () => {
     if (!intervalRef.current) {

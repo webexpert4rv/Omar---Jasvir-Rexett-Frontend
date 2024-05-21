@@ -11,6 +11,8 @@ const TimeReportRemark = ({ remarkshow, handleremarkClose, currentDetails, role,
     let { contractDetails: { user_details, contract_id, remarks } } = currentDetails
     const [addRemark, setRemark] = useState(null);
     const dispatch = useDispatch()
+
+    console.log(currentDetails,"currentDetails")
     const { smallLoader } = useSelector(state => state.adminData)
 
     const handleRemarkChange = (e) => {
