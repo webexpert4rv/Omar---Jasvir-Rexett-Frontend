@@ -194,14 +194,14 @@ const LeavePlan = () => {
                       <div className="d-flex gap-3">
                         <div>
                           <Form.Select
-                            className="common-field font-14 mb-4"
+                            className="common-field  font-10 mb-4"
                             {...register("leave_type", {
                               required: t("leaveRequired"),
                             })}
                           >
                             <option value="" selected>
                               Select leave type
-                            </option>
+                            </option> 
                             {LEAVE_TYPE.map((item, idx) => (
                               <option key={idx} value={item}>
                                 {item}

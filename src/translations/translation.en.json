@@ -373,6 +373,9 @@
         "companyTaxId" :"Company tax is",
         "previous" :"Previous",
         "next":"Next",
-        "jobTitleRequired":"Job title is required"
+        "jobTitleRequired":"Job title is required",
+        "checkInQuote" : "Please CheckIn to start the day",
+        "checkOut":"Checkout",
+        "checkIn" : "Checkin"
 }
 }

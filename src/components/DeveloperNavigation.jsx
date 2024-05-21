@@ -8,6 +8,7 @@ import SubmitTimeReport from "./common/Modals/SubmitTimeSheet";
 import Timer from "./atomic/Timer";
 import { useDispatch, useSelector } from "react-redux";
 import { addLogTime, getLastTimeLog } from "../redux/slices/developerDataSlice";
+import { useTranslation } from "react-i18next";
 
 const str = String(localStorage.getItem("userName"));
 const developerName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
@@ -25,7 +26,7 @@ const DeveloperNavigation = ({ onClick }) => {
     const [totalSeconds, setTotalSeconds] = useState(0);
     const {lastTimeLog}=useSelector(state=>state.developerData)
      let localTimer= localStorage.getItem("time")
-    
+    const { t } = useTranslation()
 
     useEffect(()=>{
         dispatch(getLastTimeLog())
@@ -82,7 +83,7 @@ const DeveloperNavigation = ({ onClick }) => {
         <>
             <div className="rotate-text">
                 {/* <marquee>Please CheckIn to start the day. Before start your day, please submit yesterday report</marquee> */}
-                <marquee>Please CheckIn to start the day.</marquee>
+                <marquee>{t("checkInQuote")}.</marquee>
             </div>
             <header className="mb-4">
                 <div className="d-flex align-items-center justify-content-between gap-3">
@@ -97,7 +98,7 @@ const DeveloperNavigation = ({ onClick }) => {
                     <div className="d-flex align-items-center gap-3">
                         <p className="time-counter"><Timer checked={checked} totalSeconds={totalSeconds} setTotalSeconds={setTotalSeconds} lastTimeLog={lastTimeLog}/></p>
                         <div className="check-text">
-                            <span className="checkout-text">CheckOut</span>
+                            <span className="checkout-text">{t("checkOut")}</span>
                             <input
                                 type="checkbox"
                                 role="switch"
@@ -105,7 +106,7 @@ const DeveloperNavigation = ({ onClick }) => {
                                 checked={checked}
                                 onChange={handleColorfulChange}
                             />
-                            <span className="checkin-text">CheckIn</span>
+                            <span className="checkin-text">{t("checkIn")}</span>
                         </div>
                         <LanguageChange />
                         <Notification route="notification-developer" job="" doc="documents" />

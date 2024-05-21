@@ -20,7 +20,8 @@ const initialClientData = {
     earnedBack: {},
     developerDetails:{},
     timeReportingPage:{},
-    faqsData:{}
+    faqsData:{},
+    clientLeaveHIstory:[]
 }
 
 export const clientDataSlice = createSlice({
@@ -111,12 +112,15 @@ export const clientDataSlice = createSlice({
         setInvoiceList: (state,action) => {
             state.invoiceList = action.payload;
             state.screenLoader = false;
+        },
+        setLeaveHistory : (state,action) => {
+            state.clientLeaveHIstory =  action.payload
         }
 
     }
 })
 
-export const { setInvoiceList,setAllJobPostedList, setFaqs ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList, setFaqs ,setLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
 
@@ -195,6 +199,45 @@ export function timeReporting(payload, role, callback) {
         }
     };
 }
+
+export function getClientLeaveHistory(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get('/client/leave-history')
+            if (result.status === 200) {
+                dispatch(setLeaveHistory(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+export function getClientLeaveStatus(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post('/common/leave/status')
+            // if (result.status === 200) {
+            //     dispatch(setLeaveHistory(result.data.data))
+            // }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+
+
+
+
+
+
+
+
 
 
 export function getFolderData(payload, role) {
