@@ -28,6 +28,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
     const [currentDetails, setCurrentDetails] = useState(null)
     const handleClose = () => setShow(false);
     const handleShow = (data, index, isOff) => {
+        console.log(data,index,"dat")
         if (!isOff?.is_off_day) {
             let memoDetails = data?.timeReports[index]
             let newData = {
@@ -167,11 +168,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                                         </div>
                                                     </td>
                                                     {
-                                                        item?.timeReports?.map((reprt) => {
+                                                        item?.timeReports?.map((reprt,inx) => {
                                                             if (reprt.report_date) {
                                                                 return (
                                                                     <>
-                                                                        <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div><span className={`${reprt.is_off_day ? "" : "timing-text d-inline-block"}`}>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm').format('h:mm A')} - ${moment(reprt?.end_time, 'HH:mm').format('h:mm A')} ` : "Holiday"}</span>
+                                                                        <td onClick={()=>handleShow(item,inx,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_day ? "offday-data" : "workday-data"}`} ><div><span className={`${reprt.is_off_day ? "" : "timing-text d-inline-block"}`}>{reprt.start_time && reprt?.end_time ? `${moment(reprt?.start_time, 'HH:mm').format('h:mm A')} - ${moment(reprt?.end_time, 'HH:mm').format('h:mm A')} ` : "Holiday"}</span>
                                                                         {reprt?.memo &&<p className='memo-text'>{reprt?.memo?reprt?.memo:""}</p>}
                                                                         </div></td>
                                                                     </>
@@ -179,14 +180,14 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                                             } else if (reprt.week) {
                                                                 return (
                                                                     <>
-                                                                            <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_week ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "Holiday"}</div></td>
+                                                                            <td onClick={()=>handleShow(item,inx,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_week ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "Holiday"}</div></td>
                                                                         {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                     </>
                                                                 )
                                                             } else {
                                                                 return (
                                                                     <>
-                                                                            <td onClick={()=>handleShow(item,index,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_month ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "Holiday"}</div></td>
+                                                                            <td onClick={()=>handleShow(item,inx,reprt)} className={`time-table-data white-nowrap ${reprt.is_off_month ? "offday-data" : "workday-data"}`} ><div>{reprt?.duration ? `${reprt?.duration.toFixed("2")} hr` : "Holiday"}</div></td>
                                                                         {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
                                                                     </>
                                                                 )
