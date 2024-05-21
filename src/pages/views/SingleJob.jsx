@@ -62,7 +62,7 @@ const SingleJob = () => {
   }, []);
 
   useEffect(() => {
-    setSingleJobDescription(jobPostedData?.data);
+    setSingleJobDescription(jobPostedData?.job);
   }, [jobPostedData]);
 
   const getCategory = (cat) => {
@@ -263,6 +263,7 @@ const SingleJob = () => {
       });
     }
   };
+  console.log(singleJobDescription,"singleJobDescription")
   const currentStatusCssClass = (status) => {
     console.log(status, "st");
     switch (status) {

@@ -1,6 +1,6 @@
-export const step1keys = ["jobTitle"];
-export const step2keys = ["skill","skillDescription"];
-export const step3keys = ["email"];
+export const step1keys = ["title","job_location","company_name","job_type","contract_type"];
+export const step2keys = ["skills","description","optional_skills"];
+export const step3keys = ["screening_questions","qualification_filter_out"];
 export const getActiveStepKeys = (activeStep) => {
     switch (activeStep) {
       case 1:
@@ -11,3 +11,32 @@ export const getActiveStepKeys = (activeStep) => {
         return step3keys;
     }
   };
+ export const WORKPLACE_TYPES_OPTIONS = [
+    {
+      value: "hybrid",
+      label: "Hybrid",
+    },
+    {
+      value: "remote",
+      label: "Remote",
+    },
+    {
+      value: "on-site",
+      label: "On Site",
+    },
+  ];
+  
+ export const JOB_TYPES_OPTIONS = [
+    {
+      value: "full-time",
+      label: "Full Time",
+    },
+    {
+      value: "part-time",
+      label: "Part Time",
+    },
+    {
+      value: "contract",
+      label: "Contract",
+    },
+  ];

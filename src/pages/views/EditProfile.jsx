@@ -220,7 +220,7 @@ const EditProfile = () => {
                                                         name="address_2"
                                                         {...register("address_2", {
                                                             required: {
-                                                                value: false,
+                                                                value: false,   
                                                                 message: "Address 2 is required",
                                                             },
                                                         })}
