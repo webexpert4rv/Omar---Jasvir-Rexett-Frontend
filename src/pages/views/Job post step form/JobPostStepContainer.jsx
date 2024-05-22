@@ -32,7 +32,6 @@ const JobPostStepContainer = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { skillList, jobId } = useSelector((state) => state.clientData);
-  console.log(jobId, "jobId");
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });

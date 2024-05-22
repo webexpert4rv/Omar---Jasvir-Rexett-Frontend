@@ -16,45 +16,61 @@ import { HEADER } from "../../components/clients/TimeReporiting/constant";
 import { tabText } from "../../components/clients/TimeReporiting/constant";
 import RejectModal from "./Modals/EndJob";
 
-
 const LeaveRequest = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("first");
-  const { clientLeaveHIstory } = useSelector((state) => state.clientData);
-  const [showRejectModal,setShowRejectModal] =  useState(false)
+  const { clientLeaveHistory } = useSelector((state) => state.clientData);
+  const [leaveId,setLeaveId] = useState()
+  const [showRejectModal, setShowRejectModal] = useState(false);
   const handleSelect = (selectedTab) => {
-    setCurrentTab(selectedTab)
+    setCurrentTab(selectedTab);
   };
-  const handleClose=()=>{
-    setShowRejectModal(!showRejectModal)
-  }
-  const handleClick=(reason)=>{
-    let payload={
-      leaveId: "",
-      approval_status: "",
+  const handleClose = () => {
+    setShowRejectModal(!showRejectModal);
+  };
+  const handleClick = (e,reason) => {
+    console.log(reason,"reason")
+    let payload = {
+      leaveId: leaveId,
+      approval_status: null,
       rejection_reason: reason,
-    }
+    };
+    console.log(payload,"payload")
     dispatch(getClientLeaveStatus(payload));
-    setShowRejectModal(!showRejectModal)
-  }
-
-  const handleApproveReject = (status) => {
-    if (status === "approve") {
-      let data = {
-        leaveId: "",
-        approval_status: status,
-        rejection_reason: "",
-      };
-      dispatch(getClientLeaveStatus(data));
-    }else{
-      setShowRejectModal(true)
-    }
+    setShowRejectModal(!showRejectModal);
   };
 
+  const handleApproveReject = (id,status) => {
+    setLeaveId(id)
+    if (status === "Approved") {
+      let payload = {
+        leaveId: id,
+        approval_status: status,
+        rejection_reason: null,
+      };
+      dispatch(getClientLeaveStatus(payload));
+    } else {
+      setShowRejectModal(true);
+    }
+  };
 
   useEffect(() => {
-    dispatch(getClientLeaveHistory());
-  }, []);
+    let data;
+    if (currentTab === "first") {
+      data = {
+        approval_status: "Under Approval",
+      };
+    } else if (currentTab === "second") {
+      data = {
+        approval_status: "Not Approved",
+      };
+    } else {
+      data = {
+        approval_status: "Approved",
+      };
+    }
+    dispatch(getClientLeaveHistory(data));
+  }, [currentTab]);
 
   const tableHeader = () => {
     if (currentTab === "third") {
@@ -67,14 +83,27 @@ const LeaveRequest = () => {
 
   return (
     <>
-      <Tabs handleSelect={handleSelect} tabText={tabText} currentTab={currentTab}/>
+      <Tabs
+        handleSelect={handleSelect}
+        tabText={tabText}
+        currentTab={currentTab}
+      />
       <Header data={tableHeader()} />
       <HeaderTable
-        tableData={clientLeaveHIstory}
+        tableData={clientLeaveHistory}
         currentTab={currentTab}
         handleApproveReject={handleApproveReject}
       />
-      {showRejectModal && <RejectModal show={showRejectModal} handleClose={handleClose} header={"Rejection Reason"} feedbacks={"Reasons"}  submit={"Submit"} onClick={handleClick}/>}
+      {showRejectModal && (
+        <RejectModal
+          show={showRejectModal}
+          handleClose={handleClose}
+          header={"Rejection Reason"}
+          feedbacks={"Reasons"}
+          submit={"Submit"}
+          handleClick={handleClick}
+        />
+      )}
     </>
   );
 };

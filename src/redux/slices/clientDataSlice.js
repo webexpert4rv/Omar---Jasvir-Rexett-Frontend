@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import clientInstance from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
-import { setLeaveHistory } from "./developerDataSlice";
 
 const initialClientData = {
 
@@ -23,7 +22,7 @@ const initialClientData = {
   developerDetails: {},
   timeReportingPage: {},
   faqsData: {},
-  clientLeaveHIstory:[]
+  clientLeaveHistory:[]
 };
  
 export const clientDataSlice = createSlice({
@@ -120,7 +119,10 @@ export const clientDataSlice = createSlice({
       state.invoiceList = action.payload;
       state.screenLoader = false;
     },
-  },
+    setLeaveClientHistory : (state,action) => {
+      state.clientLeaveHistory =  action.payload
+    },
+  
   setFolderData: (state, action) => {
       let comibedFile = [...action.payload.files, ...action.payload.shared_files]
       state.folderData = comibedFile;
@@ -162,8 +164,6 @@ export const clientDataSlice = createSlice({
       state.invoiceList = action.payload;
       state.screenLoader = false;
   },
-  setClientLeaveHistory : (state,action) => {
-      state.clientLeaveHIstory =  action.payload
   }
 });
 
@@ -171,7 +171,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,  setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList,  setFaqs ,setHistoryClientLeave ,setLeaveClientHistory,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -276,25 +276,26 @@ export function getClientLeaveHistory(payload, callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get('/client/leave-history')
-            if (result.status === 200) {
-                dispatch(setClientLeaveHistory(result.data.data))
-            }
+            let result = await clientInstance.get(generateApiUrl(payload,'client/leave-history'))
+              dispatch(setLeaveClientHistory(result.data.data))
+               
         } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailClientData())
+          console.log(error,"error")
+            // const message = error.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
+            // dispatch(setFailClientData())
         }
     };
 }
 export function getClientLeaveStatus(payload, callback) {
+  console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.post('/common/leave/status')
+            let result = await clientInstance.post('/common/leave/status',payload)
         } catch (error) {
             const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };
@@ -323,7 +324,6 @@ export function clientJobPost(payload, activeStep, callback) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`client/post-job`, { ...payload });
-      console.log(result,"result")
       dispatch(setJobId(result?.data?.job?.id));
       if (activeStep === 3) {
         toast.success("Job successfully Posted", { position: "top-center" });

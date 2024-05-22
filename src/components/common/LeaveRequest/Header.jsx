@@ -1,6 +1,5 @@
 import React from "react";
 import { Nav, Tab } from "react-bootstrap";
-import ToolTip from "../Tooltip/ToolTip";
 
 const Header = ({ data }) => {
   return (
