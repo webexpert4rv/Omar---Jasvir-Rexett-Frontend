@@ -16,6 +16,7 @@ import {
   singleJobPostData,
 } from "../../../redux/slices/clientDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { current } from "@reduxjs/toolkit";
 
 // add this inside constant file later
 
@@ -51,6 +52,10 @@ const JobPostStepContainer = () => {
     formState: { errors },
   } = useForm();
   useEffect(() => {
+    // const savedStep = localStorage.getItem("activeStep");
+    // if (savedStep) {
+    //   setActiveStep(savedStep);
+    // }
     if (id) {
       dispatch(singleJobPostData(id, () => {}));
     }
@@ -76,8 +81,8 @@ const JobPostStepContainer = () => {
             convertedArray?.includes(curElem?.label)
           );
           setValue(key, arrayForSelect);
-        }  
-          setValue(key, jobPostedData?.job?.[key]);
+        }
+        setValue(key, jobPostedData?.job?.[key]);
       });
     }
     // getActiveStepKeys(activeStep).map((key) => {
@@ -204,6 +209,7 @@ const JobPostStepContainer = () => {
 
     if (activeStep < 3) {
       setActiveStep((prev) => prev + 1);
+      // localStorage.setItem("activeStep", activeStep + 1);
     } else {
       let data = {
         ...stepData,
@@ -257,7 +263,10 @@ const JobPostStepContainer = () => {
               <RexettButton
                 type="button"
                 text="Back"
-                onClick={() => setActiveStep((prev) => prev - 1)}
+                onClick={() => {
+                  setActiveStep((prev) => prev - 1);
+                  localStorage.setItem("activeStep", activeStep - 1);
+                }}
                 className="main-btn outline-main-btn px-5"
                 disabled={smallLoader}
                 isLoading={smallLoader}

@@ -7,11 +7,20 @@ import breakIcon from '../../../assets/img/break-time-icon.svg'
 import exitIcon from '../../../assets/img/logout-line-icon.svg'
 import exitIconGreen from '../../../assets/img/logout-line-icon-green.svg'
 import SubmitTimeReport from "./SubmitTimeSheet";
-const StartDayModal = ({ show, handleClose, checked, totalSeconds,setChecked }) => {
+import moment from "moment";
+const StartDayModal = ({ type , show, handleClose, checked, totalSeconds,setChecked }) => {
+    console.log(type,"type")
     const { t } = useTranslation();
     const [showTimeReport, setShowTimeReport] = useState(false);
-    const handleTimeReport = () => {
+    const [endTime,setEndTime] = useState(null);
+    const [startTime,setStartTime] = useState(null);
+    const handleTimeReport = () => {     
         setShowTimeReport(true);
+        const now = moment();
+        const endTime = now.format('h:mm a');
+        setEndTime(endTime);    
+        // const startTime = endTime.subtract(totalSeconds, 'seconds');
+        // setStartTime(startTime);
         // setChecked(false)
        
     }
@@ -32,7 +41,7 @@ const StartDayModal = ({ show, handleClose, checked, totalSeconds,setChecked }) 
                 <Modal.Body>
                     {!checked ? (
                         <>
-                            <h3 className="popup-heading"> Are you want to CheckIn?</h3>
+                            <h3 className="popup-heading"> Are you want to {type === "break" ? "Resume" : "CheckIn"}?</h3>
                             <div className="text-center">
                                 <Button
                                     variant="transparent"
@@ -61,7 +70,7 @@ const StartDayModal = ({ show, handleClose, checked, totalSeconds,setChecked }) 
                     )}
                 </Modal.Body>
             </Modal>
-            <SubmitTimeReport show={showTimeReport} handleCloseTimeReport={handleCloseTimeReport} handleClose = {handleClose} setChecked={setChecked} totalSeconds={totalSeconds} />
+            <SubmitTimeReport  endTime = {endTime} show={showTimeReport} handleCloseTimeReport={handleCloseTimeReport} handleClose = {handleClose} setChecked={setChecked} totalSeconds={totalSeconds} />
         </>
     );
 };

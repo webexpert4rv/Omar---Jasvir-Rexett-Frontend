@@ -662,7 +662,7 @@ export function addLogTime(paylaod, callback) {
       // toast.success(result)
       return callback();
     } catch (error) {
-      toast.error(error.response.data.message,{position: "top-center"})
+      toast.error(error?.response?.data?.message,{position: "top-center"})
       dispatch(setFailDeveloperData());
     }
   };

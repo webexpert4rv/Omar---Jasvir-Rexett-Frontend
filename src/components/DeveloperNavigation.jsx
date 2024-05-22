@@ -8,6 +8,7 @@ import SubmitTimeReport from "./common/Modals/SubmitTimeSheet";
 import Timer from "./atomic/Timer";
 import { useDispatch, useSelector } from "react-redux";
 import { addLogTime, getLastTimeLog } from "../redux/slices/developerDataSlice";
+import { toast } from "react-toastify";
 
 const str = String(localStorage.getItem("userName"));
 const developerName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
@@ -43,17 +44,23 @@ const DeveloperNavigation = ({ onClick }) => {
     },[lastTimeLog?.data?.hours_worked_till_time])
     
 
-
     const handleCloseStartDay = (text,currStatus) => {
         setIsColorfulChecked(false);
         if (text === "yes") {
-            setChecked(!checked)
-            let data={
-                  "type": lastTimeLog?.data?.hours_worked_till_time==null? "check-in": currStatus=="check-in"?"resumed":currStatus,
-                "timer_seconds_till_time": totalSeconds==0?null:totalSeconds,
-                "memo": null
-              }
-            dispatch(addLogTime(data))
+            if(lastTimeLog?.data?.type === "check-out")
+                {
+                   toast.error("You have already checked out. You cannot check in again ")
+                }
+                else{
+                    setChecked(!checked)
+                    let data={
+                          "type": lastTimeLog?.data?.hours_worked_till_time==null ? "check-in": currStatus=="check-in" ? "resumed":currStatus,
+                        "timer_seconds_till_time": totalSeconds==0?null:totalSeconds,
+                        "memo": null
+                      }
+                    dispatch(addLogTime(data))
+
+                }
         }
     };
 
@@ -99,7 +106,7 @@ const DeveloperNavigation = ({ onClick }) => {
                                 checked={checked}
                                 onChange={handleColorfulChange}
                             />
-                            <span className="checkin-text">CheckIn</span>
+                            <span className="checkin-text">{lastTimeLog?.data?.type === "break" ? "Resume" : "CheckIn"}</span>
                         </div>
                         <LanguageChange />
                         <Notification route="notification-developer" job="" doc="documents" />
@@ -113,7 +120,7 @@ const DeveloperNavigation = ({ onClick }) => {
                 </div>
             </header>
             {
-                isColorfulChecked && <StartDayModal show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} setChecked={setChecked} totalSeconds={totalSeconds} />
+                isColorfulChecked && <StartDayModal type = {lastTimeLog?.data?.type} show={isColorfulChecked} handleClose={handleCloseStartDay} checked={checked} handleSubmit={handleCheckout} setChecked={setChecked} totalSeconds={totalSeconds} />
                 // : <EndDayModal show={isColorfulChecked} handleClose={handleCloseEndDay} />
             }
 

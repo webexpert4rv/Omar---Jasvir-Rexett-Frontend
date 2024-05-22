@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { addLogTime } from "../../../redux/slices/developerDataSlice";
-const SubmitTimeReport = ({ show, handleCloseTimeReport  ,handleClose ,setChecked,totalSeconds }) => {
+import { addLogTime } from "../../../redux/slices/developerDataSlice"; 
+const SubmitTimeReport = ({endTime , show, handleCloseTimeReport  ,handleClose ,setChecked,totalSeconds }) => {
     const { t } = useTranslation()
     const [memo, setMemo] = useState("");
     const dispatch=useDispatch()
@@ -17,7 +17,7 @@ const SubmitTimeReport = ({ show, handleCloseTimeReport  ,handleClose ,setChecke
         setChecked(false)
         let payload={
                 "type": "check-out",
-                "hours_worked_till_time": totalSeconds,
+                "timer_seconds_till_time": totalSeconds,
                 "memo": memo
               }
 
@@ -44,10 +44,14 @@ const SubmitTimeReport = ({ show, handleCloseTimeReport  ,handleClose ,setChecke
                             <Col md={6}>
                                 <h4 className="">Start Time</h4>
                                 <p className="mb-0">09:00 AM</p>
+                                {/* <p className="mb-0">{startTime}</p> */}
+
                             </Col>
                             <Col md={6}>
                                 <h4 className="">End Time</h4>
-                                <p className="mb-0">07:00 PM</p>
+                                {/* <p className="mb-0">07:00 PM</p> */}
+                                <p className="mb-0">{endTime && endTime}</p>
+
                             </Col>
                         </Row>
                     </div>
