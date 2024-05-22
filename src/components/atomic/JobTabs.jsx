@@ -59,7 +59,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       <Col md="12">
                         <div className="info-grid">
                           <h4 className="grid-heading">{t("skillsRequired")}</h4> 
-                          {item?.skills.length>0?<ul className="need-skill-list">
+                          {item?.skills?.length>0?<ul className="need-skill-list">
                             {convertToArray(item?.skills)?.map((item) => {
                               return (
                                 <>

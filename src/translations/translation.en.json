@@ -377,6 +377,9 @@
         "workplaceType" : "Workplace Type",
         "jobLocation" :"Job location",
         "jobType":"Job Type",
-        "goodToHaveSkills":"Good to have skills"
+        "goodToHaveSkills":"Good to have skills",
+        "checkInQuote" : "Please CheckIn to start the day",
+        "checkOut":"Checkout",
+        "checkIn" : "Checkin"
 }
 }

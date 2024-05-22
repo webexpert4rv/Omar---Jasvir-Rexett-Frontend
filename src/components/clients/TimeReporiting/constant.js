@@ -84,3 +84,28 @@ export const TABLE_HEADER = [
 ];
 
 export const INVALID_FILE_TYPE = "invalid_file_type";
+export const HEADER = [
+  "Developer Name",
+  "Leave Type",
+  "Leave Date",
+  "Reason",
+  "Project",
+  "Associated With",
+  "Action",
+];
+export const tabText= [
+  {
+    key:"first",
+    value:"Applied Leave Request"
+  },
+  { 
+    key:"second",
+    value: "Leave Cancel Request"
+   },
+   {
+    key:"third",
+    value:"Leave History"
+  }
+
+]
+

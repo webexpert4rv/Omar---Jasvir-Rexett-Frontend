@@ -353,9 +353,9 @@
         "revenue" : "Inkomst",
         "postedDate" : "Postat datum",
         "emailAddress":"E-postadress",
-        "engagementslast":"Förlovningar sist"
-
-
-
+        "engagementslast":"Förlovningar sist",
+        "checkInQuote": "Vänligen checka in för att starta dagen",
+        "checkOut" :"Kolla upp",
+        "checkIn" : "Checka in"
         }
 }
