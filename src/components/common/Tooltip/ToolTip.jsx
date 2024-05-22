@@ -1,18 +1,15 @@
 import React from "react";
-import { Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
-function ToolTip() {
-  const approveLeave = <Tooltip id="tooltip">Approve</Tooltip>;
-  const rejectLeave = <Tooltip id="tooltip">Reject</Tooltip>;
-  const companyname = (
-    <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
-  );
-
+function ToolTip({ text, children }) {
+  const toolText = <Tooltip id="tooltip">{text}</Tooltip>;
   return (
-  <div>
-    
-  </div>
-  )
+    <div>
+      <OverlayTrigger placement="bottom" overlay={toolText}>
+        <span>{children}</span>
+      </OverlayTrigger>
+    </div>
+  );
 }
 
 export default ToolTip;

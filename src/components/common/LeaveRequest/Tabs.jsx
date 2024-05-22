@@ -18,6 +18,7 @@ const Tabs = ({ handleSelect, tabText ,currentTab }) => {
               </Nav.Link>
             </Nav.Item>
           </Nav> ))}
+
         </Tab.Container>
      
     </div>

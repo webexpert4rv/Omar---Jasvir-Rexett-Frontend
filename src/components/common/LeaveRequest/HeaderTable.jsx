@@ -3,9 +3,14 @@ import React from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import associateLogo from "../../../assets/img/aviox-logo.png";
+import ToolTip from "../Tooltip/ToolTip";
 
 function HeaderTable({ tableData, currentTab, handleApproveReject }) {
-  
+  const approveLeave = <Tooltip id="tooltip">Approve</Tooltip>;
+  const rejectLeave = <Tooltip id="tooltip">Reject</Tooltip>;
+  const companyname = (
+    <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
+  );  
   return (
     <div>
       <table className="table time-table table-bordered table-ui-custom">
@@ -38,13 +43,13 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                 AI Bot Project
               </td>
               <td className="time-table-data text-start">
-                <OverlayTrigger placement="bottom" overlay={Tooltip}>
+                {/* <OverlayTrigger placement="bottom" overlay={companyname}> */}
                   <div className="text-start">
                     <div className="user-imgbx d-inline-block associated-logo application-imgbx mx-0 mb-0">
                       <img src={associateLogo} className="user-img" />
                     </div>
                   </div>
-                </OverlayTrigger>
+                {/* </OverlayTrigger> */}
               </td>
               <td className="time-table-data text-start">
                 {currentTab === "third" ? (
@@ -53,7 +58,7 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                   </span>
                 ) : (
                   <div className="d-flex justify-content-start gap-2">
-                    <OverlayTrigger placement="bottom" overlay={Tooltip}>
+                    <OverlayTrigger placement="bottom" overlay={approveLeave}>
                       <Button
                         variant="transparent"
                         className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
@@ -62,7 +67,7 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                         <IoCheckmark />
                       </Button>
                     </OverlayTrigger>
-                    <OverlayTrigger placement="bottom" overlay={Tooltip}>
+                    <OverlayTrigger placement="bottom" overlay={rejectLeave}>
                       <Button
                         variant="transparent"
                         className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
