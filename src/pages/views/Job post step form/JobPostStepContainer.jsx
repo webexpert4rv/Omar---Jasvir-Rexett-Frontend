@@ -12,13 +12,22 @@ import { getActiveStepKeys, step1keys, step2keys, step3keys } from "./constant";
 import {
   clientJobPost,
   clientUpdatePost,
+  getJobPostData,
+  getSkillList,
   postJob,
+  setJobId,
   singleJobPostData,
 } from "../../../redux/slices/clientDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { current } from "@reduxjs/toolkit";
+import ScreenLoader from "../../../components/atomic/ScreenLoader";
 
 // add this inside constant file later
+const hasNullOrUndefinedProperties = (obj) => {
+  return Object.values(obj).some( 
+    (value) => value === null || value === false
+  );
+};
 
 export const STEP_LABELS = [
   "",
@@ -31,15 +40,18 @@ const JobPostStepContainer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { skillList, jobId } = useSelector((state) => state.clientData);
-  console.log(jobId, "jobId");
-  const skillListMapped = skillList.map((item) => {
-    return { value: item.id, label: item.title };
-  });
-  const [skillCate, setSkillsCate] = useState(skillListMapped);
-
+  const [isEdit, setIsEdit] = useState(false);
+  const [jobID, setJobID] = useState(null);
+  // const { skillList } = useSelector((state) => state.clientData);
+  // const skillListMapped = skillList.map((item) => {
+  //   return { value: item.id, label: item.title };
+  // });
+  const [skillCate, setSkillsCate] = useState([]);
   const [activeStep, setActiveStep] = useState(1);
-  const { jobPostedData } = useSelector((state) => state.clientData);
+  const ACTIVE_STEP_API_KEYS = ["", "step1", "step2", "step3"];
+  const { jobPostedData, screenLoader } = useSelector(
+    (state) => state.clientData
+  );
   const navigate = useNavigate();
   const [smallLoader, setSmallLoader] = useState(false);
   const {
@@ -51,79 +63,105 @@ const JobPostStepContainer = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  // order of the useEffects must be same
   useEffect(() => {
-    // const savedStep = localStorage.getItem("activeStep");
-    // if (savedStep) {
-    //   setActiveStep(savedStep);
-    // }
-    if (id) {
-      dispatch(singleJobPostData(id, () => {}));
+    const savedStep = localStorage.getItem("activeStep");
+    if (savedStep) {
+      setActiveStep(Number(savedStep));
     }
-  }, [activeStep]);
+  }, []);
   useEffect(() => {
-    const keysToMap = [
-      "title",
-      "job_location",
-      "company_name",
-      "job_type",
-      "contract_type",
-      "skills",
-      "description",
-      "optional_skills",
-      "screening_questions",
-      "qualification_filter_out",
-    ];
-    if (id) {
-      keysToMap?.map((key) => {
-        if (key === "skills" || key === "optional_skills") {
-          const convertedArray = jobPostedData?.job?.[key]?.split(",");
-          const arrayForSelect = skillCate.filter((curElem) =>
-            convertedArray?.includes(curElem?.label)
-          );
-          setValue(key, arrayForSelect);
-        }
-        setValue(key, jobPostedData?.job?.[key]);
-      });
+    let tempSkills = [];
+    if (activeStep === 2) {
+      dispatch(
+        getSkillList((sklls) => {
+          const skillListMapped = sklls.map((item) => {
+            return { value: item.id, label: item.title };
+          });
+          tempSkills = skillListMapped;
+          setSkillsCate(tempSkills);
+        })
+      );
     }
-    // getActiveStepKeys(activeStep).map((key) => {
-    //   if (key === "skills" || key === "optional_skills") {
-    //     const convertedArray = jobPostedData?.job?.[key]?.split(",");
-    //     const arrayForSelect = skillCate.filter((curElem) =>
-    //       convertedArray.includes(curElem?.label)
-    //     );
-    //     setValue(key, arrayForSelect);
-    //   } else {
-    //     setValue(key, jobPostedData?.job?.[key]);
-    //   }
-    // if (activeStep === 1) {
-    //   setValue(key, jobPostedData?.job?.[key]);
-    // }
+  }, [activeStep, dispatch]);
+
+  useEffect(() => {
+    localStorage.setItem("activeStep", activeStep);
+    // let tempSkills = [];
     // if (activeStep === 2) {
-    //   if (key === "skills" || key === "optional_skills") {
-    //     const convertedArray = jobPostedData?.job?.[key].split(",");
-    //     const arrayForSelect = skillCate.filter((curElem) =>
-    //       convertedArray.includes(curElem?.label)
-    //     );
-    //     setValue(key, arrayForSelect);
-    //   } else {
-    //     setValue(key, jobPostedData?.job?.[key]);
-    //   }
+    //   dispatch(
+    //     getSkillList((sklls) => {
+    //       const skillListMapped = sklls.map((item) => {
+    //         return { value: item.id, label: item.title };
+    //       });
+    //       tempSkills = skillListMapped;
+    //       // setSkillsCate(tempSkills);
+    //       console.log(tempSkills, "tempSkills inside iiii");
+    //     })
+    //   );
     // }
-    // if (activeStep === 3) {
-    //   setValue(key, jobPostedData?.job?.[key]);
-    // }
-    // });
-  }, [activeStep]);
-  const getValues = () => {
-    switch (activeStep) {
-      case 1:
-        return { key: "jobTitle", value: "Random job title" };
-      case 2:
-        return { key: "skill", value: "Random skill name" };
-      case 3:
-        return { key: "email", value: "random email" };
+    let jobId = localStorage.getItem("jobId");
+    if (jobId) {
+      setJobID(Number(jobId));
+    } else {
+      if (id) {
+        setJobID(id);
+        jobId = id;
+      }
     }
-  };
+
+    if (jobId) {
+      dispatch(
+        getJobPostData(jobId, (jobpost) => {
+          // managing is edit or not
+          if (
+            jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
+            Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length
+          ) {
+            const IsNull = hasNullOrUndefinedProperties(
+              jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]
+            );
+            setIsEdit(!IsNull);
+          }
+          if (
+            jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
+            Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length
+          ) {
+            Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]).map(
+              (key) => {
+                if (activeStep === 2) {
+                  if (key === "skills" || key === "optional_skills") {
+                    if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]) {
+                      const convertedArray =
+                        jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[
+                          key
+                        ]?.split(",");
+                      const arrayForSelect = skillCate?.filter((curElem) =>
+                        convertedArray?.includes(curElem?.label)
+                      );
+                      setValue(key, arrayForSelect);
+                    }
+                  } else {
+                    if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]) {
+                      setValue(
+                        key,
+                        jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
+                      );
+                    }
+                  }
+                } else {
+                  setValue(
+                    key,
+                    jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
+                  );
+                }
+              }
+            );
+          }
+        })
+      );
+    }
+  }, [activeStep, dispatch, skillCate]);
 
   const getActiveStepComponent = () => {
     switch (activeStep) {
@@ -160,41 +198,51 @@ const JobPostStepContainer = () => {
     }
   };
   const onSubmit = (stepData) => {
-    // let payload = {};
-    // add these inside a constant and get active step using a switch inside a method
-    // const activeStepKeys =
-    //   activeStep === 1
-    //     ? step1keys
-    //     : activeStep === 2
-    //     ? step2keys
-    //     : activeStep === 3 && step3keys;
-    // activeStepKeys.map((curKey) => {
+    let payload = {};
 
     // for getting data of active step only
-    // getActiveStepKeys(activeStep).map((curKey) => {
-    //   if (curKey in stepData) {
-    //     payload = {
-    //       ...payload,
-    //       [curKey]: stepData[curKey],
-    //     };
-    //   }
-    // });
-    // payload = {
-    //   ...payload,
-    //   step: activeStep,
-    // };
-    // if (activeStep === 2) {
-    //   // converting skills fields array of objects into string
-    //   const skills = payload["skills"];
-    //   const arrayOfSkills = skills?.map((curElem) => curElem.label);
-    //   const formattedSkills = arrayOfSkills.toString();
-    //   payload["skills"] = formattedSkills;
-    //   // converting option_skills fields array of objects into string
-    //   const optionSkills = payload["optional_skills"];
-    //   const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
-    //   const formattedOptionSkills = arrayOfOptionSkills.toString();
-    //   payload["optional_skills"] = formattedOptionSkills;
+    getActiveStepKeys(activeStep).map((curKey) => {
+      if (curKey in stepData) {
+        payload = {
+          ...payload,
+          [curKey]: stepData[curKey],
+        };
+      }
+    });
+    payload = {
+      ...payload,
+      step: activeStep,
+      job_id: jobID,
+    };
+    if (activeStep === 2) {
+      // converting skills fields array of objects into string
+      const skills = payload["skills"];
+      const arrayOfSkills = skills?.map((curElem) => curElem.label);
+      const formattedSkills = arrayOfSkills.toString();
+      payload["skills"] = formattedSkills;
+      // converting option_skills fields array of objects into string
+      const optionSkills = payload["optional_skills"];
+      const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
+      const formattedOptionSkills = arrayOfOptionSkills.toString();
+      payload["optional_skills"] = formattedOptionSkills;
+    }
+    if (isEdit) {
+      dispatch(clientUpdatePost(payload,isEdit, activeStep, jobID, () => {}));
+    } else {
+      dispatch(clientJobPost(payload, activeStep, () => {}));
+    }
+
+    // if (jobID) {
+    //   dispatch(clientUpdatePost(payload, activeStep, jobID, () => {}));
+    // } else {
+    //   dispatch(clientJobPost(payload, activeStep, () => {}));
     // }
+    // dispatch(clientUpdatePost(payload, activeStep, jobID, () => {}));
+    if (activeStep < 3) {
+      setActiveStep((prev) => prev + 1);
+    } else {
+      navigate("/job-posted");
+    }
 
     // if (jobId) {
     //   dispatch(clientUpdatePost(payload, jobId, () => {}));
@@ -207,81 +255,81 @@ const JobPostStepContainer = () => {
     //   navigate("/job-posted");
     // }
 
-    if (activeStep < 3) {
-      setActiveStep((prev) => prev + 1);
-      // localStorage.setItem("activeStep", activeStep + 1);
-    } else {
-      let data = {
-        ...stepData,
-      };
-      // converting skills fields array of objects into string
-      const skills = data["skills"];
-      const arrayOfSkills = skills?.map((curElem) => curElem.label);
-      const formattedSkills = arrayOfSkills.toString();
-      data["skills"] = formattedSkills;
+    // if (activeStep < 3) {
+    //   setActiveStep((prev) => prev + 1);
+    // } else {
+    //   let data = {
+    //     ...stepData,
+    //   };
+    //   // converting skills fields array of objects into string
+    //   const skills = data["skills"];
+    //   const arrayOfSkills = skills?.map((curElem) => curElem.label);
+    //   const formattedSkills = arrayOfSkills.toString();
+    //   data["skills"] = formattedSkills;
 
-      // converting option_skills fields array of objects into string
-      const optionSkills = data["optional_skills"];
-      const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
-      const formattedOptionSkills = arrayOfOptionSkills.toString();
-      data["optional_skills"] = formattedOptionSkills;
-      console.log(data, "data");
-      data = {
-        ...data,
-        step: 1,
-      };
-      if (id) {
-        clientUpdatePost(data, id, (res) => {
-          setJobId(res?.job?.id);
-          navigate("/job-posted");
-        });
-      } else {
-        dispatch(
-          postJob(data, () => {
-            navigate("/job-posted");
-          })
-        );
-      }
-    }
+    //   // converting option_skills fields array of objects into string
+    //   const optionSkills = data["optional_skills"];
+    //   const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
+    //   const formattedOptionSkills = arrayOfOptionSkills.toString();
+    //   data["optional_skills"] = formattedOptionSkills;
+    //   console.log(data, "data");
+    //   data = {
+    //     ...data,
+    //     step: 1,
+    //   };
+    //   if (id) {
+    //     clientUpdatePost(data, id, (res) => {
+    //       setJobId(res?.job?.id);
+    //       navigate("/job-posted");
+    //     });
+    //   } else {
+    //     dispatch(
+    //       postJob(data, () => {
+    //         navigate("/job-posted");
+    //       })
+    //     );
+    //   }
+    // }
     // reset();
   };
 
   return (
     <>
-      <div className="stepLabels">
-        <h5>{STEP_LABELS[activeStep]}</h5>
-      </div>
-      <div className="job-post-container card-box">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {getActiveStepComponent()}
-
-          {/* {activeStep === 1 && <JobPostStep1 />}
-        {activeStep === 2 && <JobPostStep2 />}
-        {activeStep === 3 && <JobPostStep3 />} */}
-          <div className="d-flex align-items-center gap-3 justify-content-center">
-            {activeStep !== 1 && (
-              <RexettButton
-                type="button"
-                text="Back"
-                onClick={() => {
-                  setActiveStep((prev) => prev - 1);
-                  localStorage.setItem("activeStep", activeStep - 1);
-                }}
-                className="main-btn outline-main-btn px-5"
-                disabled={smallLoader}
-                isLoading={smallLoader}
-              />
-            )}
-            <RexettButton
-              type="submit"
-              text={activeStep < 3 ? "Continue" : t("submit")}
-              className="main-btn px-5"
-              disabled={smallLoader}
-              isLoading={smallLoader}
-            />
+      {screenLoader ? (
+        <ScreenLoader />
+      ) : (
+        <>
+          <div className="stepLabels">
+            <h5>{STEP_LABELS[activeStep]}</h5>
           </div>
-        </form>
-      </div>
+          <div className="job-post-container card-box">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {getActiveStepComponent()}
+              <div className="d-flex align-items-center gap-3 justify-content-center">
+                {activeStep !== 1 && (
+                  <RexettButton
+                    type="button"
+                    text="Back"
+                    onClick={() => {
+                      setActiveStep((prev) => prev - 1);
+                    }}
+                    className="main-btn outline-main-btn px-5"
+                    disabled={smallLoader}
+                    isLoading={smallLoader}
+                  />
+                )}
+                <RexettButton
+                  type="submit"
+                  text={activeStep < 3 ? "Continue" : t("submit")}
+                  className="main-btn px-5"
+                  disabled={smallLoader}
+                  isLoading={smallLoader}
+                />
+              </div>
+            </form>
+          </div>
+        </>
+      )}
     </>
   );
 };

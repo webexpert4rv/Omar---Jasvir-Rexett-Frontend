@@ -17,7 +17,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
     // this does not work
     // setValue("job_location", null);
     // this works
-    if (!watch("job_location").length) {
+    if (!watch("job_location")?.length) {
       setValue("job_location", "");
     }
   };
@@ -92,7 +92,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                   required: "Workplace type is required",
                 })}
               >
-                <option value="" disabled >
+                <option value="" disabled selected >
                   Please select workplace options
                 </option>
                 {WORKPLACE_TYPES_OPTIONS?.map(({ value, label }, idx) => (
@@ -190,7 +190,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                 })}
                 className="common-field font-14"
               >
-                <option value="" disabled >
+                <option value="" disabled selected >
                   Please select job type
                 </option>
                 {JOB_TYPES_OPTIONS?.map(({ value, label }) => (

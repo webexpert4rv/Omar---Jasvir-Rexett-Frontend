@@ -387,8 +387,7 @@ const SingleJob = () => {
                 </div>
               </div>
               <p className="req-heading mb-1 mt-3">About this job</p>
-              <p className="single-job-description mb-0">
-                {singleJobDescription?.description}
+              <p className="single-job-description mb-0" dangerouslySetInnerHTML={{__html:singleJobDescription?.description}}>
               </p>
             </div>
             <div className="single-job-card">
