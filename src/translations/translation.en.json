@@ -364,7 +364,7 @@
         "project_title_required_msg" :"Project title is required",
         "project_description_required_msg":"Project Description is required",
         "tech_stack_required_msg":"Tech stacks used are required",
-        "project_role_required_msg":"Role in project required",
+        "project_role_required_msg":"Role in project required", 
         "project_team_size_required_msg":"Project's team size is required",
         "project_link_required_msg":"Project link is required",
         "emailAddress":"Email Address",
@@ -376,6 +376,10 @@
         "jobTitleRequired":"Job title is required",
         "checkInQuote" : "Please CheckIn to start the day",
         "checkOut":"Checkout",
-        "checkIn" : "Checkin"
+        "checkIn" : "Checkin",
+        "workplaceType" : "Workplace Type",
+        "jobLocation" :"Job location",
+        "jobType":"Job Type",
+        "goodToHaveSkills":"Good to have skills"
 }
 }

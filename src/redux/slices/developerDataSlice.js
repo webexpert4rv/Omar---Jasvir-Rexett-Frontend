@@ -657,24 +657,24 @@ export function addLogTime(paylaod, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`developer/add-time-log`, {
-        ...paylaod,
-      });
+      let result = await clientInstance.post(`developer/add-time-log`, {...paylaod, });
       dispatch(setSuccessActionData());
+      // toast.success(result)
       return callback();
     } catch (error) {
-      console.log(error, "error");
+      toast.error(error?.response?.data?.message,{position: "top-center"})
       dispatch(setFailDeveloperData());
     }
   };
 }
 
-export function getLastTimeLog() {
+export function getLastTimeLog(paylaod) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
       let result = await clientInstance.get(`developer/get-last-time-log`);
       dispatch(setLastTimeLog(result.data));
+      // return callback();
     } catch (error) {
       console.log(error, "error");
       dispatch(setFailDeveloperData());

@@ -1,12 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { t } from "i18next";
 import { Col, Form, Row } from "react-bootstrap";
 import { MdPattern } from "react-icons/md";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { Controller } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { getSkillList } from "../../../redux/slices/clientDataSlice";
+import CreatableSelect from "react-select/creatable";
+import { BsCloudLightning } from "react-icons/bs";
 
-const JobPostStep2 = ({ register, errors, watch, setValue ,control}) => {
+const MAX_CHARACTER_LIMIT = 10000;
+
+const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
+  const dispatch = useDispatch();
+  const [descriptionText, setDescriptionText] = useState("");
+  const [skills, setSkills] = useState([]);
+  const { smallLoader, skillList } = useSelector((state) => state.clientData);
+  useEffect(() => {
+    dispatch(getSkillList());
+  }, [dispatch]);
+  useEffect(() => {
+    setSkills(skillListMapped);
+  }, [skillList]);
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title };
+  });
+  // const editorConfiguration = {
+  //   plugins: [WordCount],
+  //   wordCount: {
+  //     showParagraphs: false,
+  //     showWordCount: false,
+  //     showCharCount: true,
+  //     countSpacesAsChars: true,
+  //     countHTML: false,
+  //     maxWordCount: 400,
+  //     maxCharCount: 400,
+  //   },
+  //   toolbar: {
+  //     items: [
+  //       "undo",
+  //       "redo",
+  //       "|",
+  //       "heading",
+  //       "|",
+  //       "fontfamily",
+  //       "fontsize",
+  //       "fontColor",
+  //       "fontBackgroundColor",
+  //       "|",
+  //       "bold",
+  //       "italic",
+  //       "strikethrough",
+  //       "|",
+  //       "link",
+  //       "blockQuote",
+  //       "|",
+  //       "bulletedList",
+  //       "numberedList",
+  //       ,
+  //       "outdent",
+  //       "indent",
+  //     ],
+  //   },
+  // };
+
   return (
     <div>
       {" "}
@@ -17,15 +75,20 @@ const JobPostStep2 = ({ register, errors, watch, setValue ,control}) => {
               <Form.Label>Description</Form.Label>
               <div id="custom-ck">
                 <Controller
-                  name="skillDescription"
+                  name="description"
                   control={control}
-                  render={({ field }) => (
+                  rules={{
+                    required: "Description is required",
+                    // validate: (value) =>
+                    //   descriptionText?.length <= MAX_CHARACTER_LIMIT ||
+                    //   "Maximum character limit reached",
+                  }}
+                  render={({ field: { ref, ...field } }) => (
                     <CKEditor
                       {...field}
-                      name="skillDescription"
+                      innerRef={ref}
                       editor={ClassicEditor}
                       config={{
-                        // plugins: [ Paragraph, Bold, Italic, Essentials ],
                         toolbar: {
                           items: [
                             "undo",
@@ -41,8 +104,6 @@ const JobPostStep2 = ({ register, errors, watch, setValue ,control}) => {
                             "bold",
                             "italic",
                             "strikethrough",
-                            "subscript",
-                            "superscript",
                             "|",
                             "link",
                             "blockQuote",
@@ -55,59 +116,81 @@ const JobPostStep2 = ({ register, errors, watch, setValue ,control}) => {
                           ],
                         },
                       }}
-                      //   config={{
-                      //     ckfinder: {
-                      //       // Upload the images to the server using the CKFinder QuickUpload command
-                      //       // You have to change this address to your server that has the ckfinder php connector
-                      //       uploadUrl: "" //Enter your upload url
-                      //     }
-                      //   }}
-                      data={watch("skillDescription")}
+                      // config={editorConfiguration}
+                      data={watch("description")}
                       onChange={(event, editor) => {
                         const value = editor.getData();
                         //   setValue("skillDescription",value);
                         field.onChange(value);
+                        // for removing html tags and getting plain string
+                        setDescriptionText(value.replace(/(<([^>]+)>)/gi, ""));
                       }}
                     />
                   )}
                 />
-                <p className="text-end text-muted font-14 mt-1">0/10,000</p>
+                <p className="text-end text-muted font-14 mt-1">{`${descriptionText?.length}/10,000`}</p>
               </div>
+              {errors?.description && (
+                <p className="error-message ">{errors.description?.message}</p>
+              )}
             </Form.Group>
-            {errors?.skillDescription && (
-              <p className="error-message ">{errors.skillDescription?.message}</p>
-            )}
           </Col>
           <Col md="6" className="mb-4">
             <Form.Group>
               <Form.Label>Skills</Form.Label>
-              <Form.Control
+              <Controller
+                name="skills"
+                control={control}
+                rules={{ required: "Skills are required" }}
+                render={({ field }) => (
+                  <CreatableSelect
+                    {...field}
+                    isClearable
+                    isMulti
+                    options={skills}
+                    onChange={(newValue) => {
+                      field.onChange(newValue);
+                    }}
+                  />
+                )}
+              />
+              {/* <Form.Control
                 type="text"
                 className="common-field"
                 placeholder="Enter Job Name"
                 {...register("skill", {
                   required: "Skill field is required",
                 })}
-              />
+              /> */}
             </Form.Group>
-            {errors?.skill && (
-              <p className="error-message ">{errors.skill?.message}</p>
+            {errors?.skills && (
+              <p className="error-message ">{errors.skills?.message}</p>
             )}
           </Col>
           <Col md="6" className="mb-4">
             <Form.Group>
               <Form.Label>Good to have skills</Form.Label>
-              <Form.Control
-                type="text"
-                className="common-field"
-                placeholder="Enter Job Name"
-                {...register("skill", {
-                  required: "Skill field is required",
-                })}
+              <Controller
+                name="optional_skills"
+                control={control}
+                rules={{ required: "Good to have skills are required" }}
+                render={({ field }) => (
+                  <CreatableSelect
+                    {...field}
+                    isClearable
+                    isMulti
+                    options={skills}
+                    onChange={(newValue) => {
+                      field.onChange(newValue);
+                    }}
+                  />
+                )}
               />
             </Form.Group>
-            {errors?.skill && (
-              <p className="error-message ">{errors.skill?.message}</p>
+            {errors?.optional_skills && (
+              <p className="error-message ">
+                {errors.optional_skills?.message}
+              </p>
             )}
           </Col>
         </Row>
