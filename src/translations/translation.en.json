@@ -374,12 +374,12 @@
         "previous" :"Previous",
         "next":"Next",
         "jobTitleRequired":"Job title is required",
+        "checkInQuote" : "Please CheckIn to start the day",
+        "checkOut":"Checkout",
+        "checkIn" : "Checkin",
         "workplaceType" : "Workplace Type",
         "jobLocation" :"Job location",
         "jobType":"Job Type",
-        "goodToHaveSkills":"Good to have skills",
-        "checkInQuote" : "Please CheckIn to start the day",
-        "checkOut":"Checkout",
-        "checkIn" : "Checkin"
+        "goodToHaveSkills":"Good to have skills"
 }
 }

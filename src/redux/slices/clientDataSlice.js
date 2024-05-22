@@ -5,6 +5,7 @@ import { generateApiUrl } from "../../helper/utlis";
 import { setLeaveHistory } from "./developerDataSlice";
 
 const initialClientData = {
+
   jobId: null,
   screenLoader: false,
   approvedLoader: false,
@@ -22,8 +23,9 @@ const initialClientData = {
   developerDetails: {},
   timeReportingPage: {},
   faqsData: {},
+  clientLeaveHIstory:[]
 };
-
+ 
 export const clientDataSlice = createSlice({
   name: "clientData",
   initialState: initialClientData,
@@ -119,30 +121,58 @@ export const clientDataSlice = createSlice({
       state.screenLoader = false;
     },
   },
+  setFolderData: (state, action) => {
+      let comibedFile = [...action.payload.files, ...action.payload.shared_files]
+      state.folderData = comibedFile;
+      state.screenLoader = false;
+  },
+  setJobCategory: (state, action) => {
+      let newData= action.payload.map((item)=>{return { label:item.title , value:item.id}})
+      state.jobCategoryList = newData
+  },
+  setSkillList: (state, action) => {
+      state.skillList = action.payload
+  },
+  setAllJobPostedList: (state, action) => {
+      state.allJobPostedList = action.payload
+      state.screenLoader = false;
+  },
+  setJobPostedData: (state, action) => {
+      state.jobPostedData = action.payload
+      state.screenLoader = false;
+  },
+  setEarnedBackData: (state, action) => {
+      state.earnedBack = action.payload
+      state.screenLoader = false;
+  },
+  // setCurrentJobStatusChnage:(state,action)=>{
+  //     console.log(state.allJobPostedList,"llll")
+  //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
+  //    console.log(d,"ppp")
+  // }
+  setDeveloperDetails:(state,action) =>{
+      state.developerDetails = action.payload
+      state.screenLoader = false;
+  },
+  setFaqs : (state ,action) =>{
+      state.faqsData = action.payload
+      state.screenLoader = false;
+  },
+  setInvoiceList: (state,action) => {
+      state.invoiceList = action.payload;
+      state.screenLoader = false;
+  },
+  setClientLeaveHistory : (state,action) => {
+      state.clientLeaveHIstory =  action.payload
+  }
 });
 
-export const {
-  setInvoiceList,
-  setAllJobPostedList,
-  setFaqs,
-  setScreenLoader,
-  setJobId,
-  setDeveloperDetails,
-  setJobPostedData,
-  setApprovedLoader,
-  setEarnedBackData,
-  setFailClientData,
-  setAssignDeveloperList,
-  setFolderData,
-  setSmallLoader,
-  setJobCategory,
-  setSkillList,
-  setActionSuccessFully,
-  setTimeReporting,
-  setClientProfileDetails,
-} = clientDataSlice.actions;
 
 export default clientDataSlice.reducer;
+
+      
+export const { setInvoiceList,setAllJobPostedList, setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+
 
 export function developerAssignList(payload) {
   return async (dispatch) => {
@@ -217,7 +247,6 @@ export function postJob(payload, callback) {
 // ---------------------------------------------------------job post Multi step form api's---------------------------------------------------//
 
 export function timeReporting(payload, role, callback) {
-  console.log(payload, "payload");
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
@@ -242,6 +271,34 @@ export function timeReporting(payload, role, callback) {
   };
 }
 
+
+export function getClientLeaveHistory(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get('/client/leave-history')
+            if (result.status === 200) {
+                dispatch(setClientLeaveHistory(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
+export function getClientLeaveStatus(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post('/common/leave/status')
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
+        }
+    };
+}
 export function getFolderData(payload, role) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
@@ -281,8 +338,6 @@ export function clientJobPost(payload, activeStep, callback) {
   };
 }
 export function clientUpdatePost(payload, id, callback) {
-  console.log(payload, "payload");
-  console.log(id, "id");
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -336,7 +391,6 @@ export function getSkillList(payload, callback) {
 
 export function getJobCategoryList(payload, callback) {
   return async (dispatch) => {
-    // dispatch(setSmallLoader())
     try {
       let result = await clientInstance.get(`common/job-category-list`);
       if (result.status === 200) {
@@ -414,7 +468,6 @@ export function filePreassignedUrlGenerate(payload, callback) {
     try {
       let result = await clientInstance.post(`common/upload-file`, payload);
       dispatch(setActionSuccessFully());
-      // toast.success("Folder Created successfully", { position: "top-center" })
       return callback(result?.data?.data.Location);
     } catch (error) {
       const message = error.message || "Something went wrong";
@@ -547,19 +600,6 @@ export function getDeveloperDetails(id) {
     }
   };
 }
-// export function getDeleteAccount(payload) {
-//     return async (dispatch) => {
-//         dispatch(setSmallLoader())
-//         try {
-//             let result = await clientInstance.post("/common/delete-account",{...payload})
-
-//         } catch (error) {
-//             const message = error.message || "Something went wrong";
-//             toast.error( "Delete account request already exists for this user", { position: "top-center" })
-//             dispatch(setFailClientData())
-//         }
-//     }
-// }
 export function getEnableDisableAccount(payload) {
   console.log(payload, "payload");
   return async (dispatch) => {
