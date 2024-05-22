@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import clientInstance from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
+import { setLeaveHistory } from "./developerDataSlice";
 
 const initialClientData = {
   jobId: null,
@@ -690,3 +691,36 @@ export function updateDeveloperCvDetails(payload, callback) {
     }
   };
 }
+export function getClientLeaveHistory(payload, callback) {
+  return async (dispatch) => {
+      dispatch(setScreenLoader())
+      try {
+          let result = await clientInstance.get('/client/leave-history')
+          if (result.status === 200) {
+              dispatch(setLeaveHistory(result.data.data))
+          }
+      } catch (error) {
+          const message = error.message || "Something went wrong";
+          toast.error(message, { position: "top-center" })
+          dispatch(setFailClientData())
+      }
+  };
+}
+export function getClientLeaveStatus(payload, callback) {
+  return async (dispatch) => {
+      dispatch(setScreenLoader())
+      try {
+          let result = await clientInstance.post('/common/leave/status')
+          // if (result.status === 200) {
+          //     dispatch(setLeaveHistory(result.data.data))
+          // }
+      } catch (error) {
+          const message = error.message || "Something went wrong";
+          toast.error(message, { position: "top-center" })
+          dispatch(setFailClientData())
+      }
+  };
+}
+
+
+
