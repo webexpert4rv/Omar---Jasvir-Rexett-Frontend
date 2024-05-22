@@ -15,7 +15,7 @@ import moment from 'moment';
 import SingleTimeReporting from './SingleTimeReporting';
 import TimeReportRemark from './TimeReportRemark';
 import ConfirmationModal from '../../../pages/views/Modals/ConfirmationModal';
-import { timeReporting } from '../../../redux/slices/clientDataSlice';
+import { getReconciliationData, timeReporting } from '../../../redux/slices/clientDataSlice';
 import remarkIcon from '../../../assets/img/remarks-icon.svg'
 import { OverlayTrigger } from 'react-bootstrap/esm';
 
@@ -38,6 +38,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
             }
             setCurrentDetails(newData)
             setShow(true)
+          
         }
 
     };
@@ -50,15 +51,18 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
     const [remarkshow, setremarkShow] = useState(false);
     const handleremarkClose = () => setremarkShow(false);
     const handleremarkShow = (data, index) => {
-
+        console.log(data,"uuu")
         let memoDetails = data?.timeReports[index]
         let newData = {
             ...data,
-            timeReports: memoDetails
+            timeReports: memoDetails,
+            allSelectedTimeReport:data?.timeReports
 
         }
+        dispatch(getReconciliationData(data?.contractDetails?.contract_id))
         setCurrentDetails(newData)
         setremarkShow(true)
+        
     };
     const { approvedLoader, smallLoader } = useSelector(state => state.developerData)
     const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null)
@@ -149,7 +153,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
                                         <span>Timesheet</span>
                                     </th>
                                     <th className="time-table-head">
-                                        <span>Remarks</span>
+                                        <span>Reconciliation</span>
                                     </th>
                                     {selectedPeriod == "weekly" ? <th className="time-table-head">
                                         <span>Submit</span>

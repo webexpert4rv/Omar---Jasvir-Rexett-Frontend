@@ -242,7 +242,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                         <option value="yearly">{t("yearly")}</option>
                                     </Form.Select>
                                 </div>
-                                {role === "developer" ? (
+                                {/* {role === "developer" ? (
                                     <Button
                                         variant="transparent"
                                         onClick={() => handleShowModal("Edit")}
@@ -261,7 +261,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                     {role === "client"
                                         ? `${t("editTimeReport")}`
                                         : `${t("addBulkTime")}`}
-                                </Button>
+                                </Button> */}
                             </div>
                         </div>
                     </div>

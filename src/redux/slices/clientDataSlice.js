@@ -23,7 +23,8 @@ const initialClientData = {
   developerDetails: {},
   timeReportingPage: {},
   faqsData: {},
-  clientLeaveHIstory:[]
+  clientLeaveHIstory:[],
+  reconciliationsData:[]
 };
  
 export const clientDataSlice = createSlice({
@@ -164,14 +165,18 @@ export const clientDataSlice = createSlice({
   },
   setClientLeaveHistory : (state,action) => {
       state.clientLeaveHIstory =  action.payload
-  }
+  },
+  setReconciliationsData : (state,action) => {
+    console.log(action.payload,"pay")
+    state.reconciliationsData =  action.payload
+}
 });
 
 
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,  setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList, setReconciliationsData, setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -733,6 +738,41 @@ export function updateDeveloperCvDetails(payload, callback) {
 }
 
 
+export function approveTimeReportReconciliation(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("client/approve-time-report-reconciliation", {
+        ...payload,
+      });
+
+      dispatch(setActionSuccessFully());
+      toast.success("New Developer is Added", { position: "top-center" });
+      return callback();
+    } catch (error) {
+      const message = error.message;
+      toast.error(error.response.data.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+
+export function getReconciliationData(payload) {
+  return async (dispatch) => {
+    // dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`client/time-report-reconciliations/${payload}`);
+      console.log(result,"rop")
+
+      dispatch(setReconciliationsData(result.data.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
 
 
 
