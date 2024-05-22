@@ -232,7 +232,7 @@ const JobPostStepContainer = () => {
       };
       if (id) {
         clientUpdatePost(data, id, (res) => {
-          setJobId(res?.job?.id);
+          // setJobId(res?.job?.id);
           navigate("/job-posted");
         });
       } else {

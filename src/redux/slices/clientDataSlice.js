@@ -171,7 +171,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList, setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList,  setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -731,36 +731,8 @@ export function updateDeveloperCvDetails(payload, callback) {
     }
   };
 }
-export function getClientLeaveHistory(payload, callback) {
-  return async (dispatch) => {
-      dispatch(setScreenLoader())
-      try {
-          let result = await clientInstance.get('/client/leave-history')
-          if (result.status === 200) {
-              dispatch(setLeaveHistory(result.data.data))
-          }
-      } catch (error) {
-          const message = error.message || "Something went wrong";
-          toast.error(message, { position: "top-center" })
-          dispatch(setFailClientData())
-      }
-  };
-}
-export function getClientLeaveStatus(payload, callback) {
-  return async (dispatch) => {
-      dispatch(setScreenLoader())
-      try {
-          let result = await clientInstance.post('/common/leave/status')
-          // if (result.status === 200) {
-          //     dispatch(setLeaveHistory(result.data.data))
-          // }
-      } catch (error) {
-          const message = error.message || "Something went wrong";
-          toast.error(message, { position: "top-center" })
-          dispatch(setFailClientData())
-      }
-  };
-}
+
+
 
 
 
