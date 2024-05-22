@@ -4,7 +4,7 @@ import clientInstance from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
 
 const initialClientData = {
-  jobId: null,
+    jobId: null,
     screenLoader: false,
     approvedLoader: false,
     smallLoader: false,
@@ -161,7 +161,7 @@ export const clientDataSlice = createSlice({
       state.invoiceList = action.payload;
       state.screenLoader = false;
   },
-  setLeaveHistory : (state,action) => {
+  setClientLeaveHistory : (state,action) => {
       state.clientLeaveHIstory =  action.payload
   }
 });
@@ -170,10 +170,9 @@ export const clientDataSlice = createSlice({
 
         
 
-export const { setInvoiceList,setAllJobPostedList, setFaqs ,setLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList, setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails } = clientDataSlice.actions
 
 export default clientDataSlice.reducer
-
 
 export function developerAssignList(payload) {
   return async (dispatch) => {
@@ -248,7 +247,6 @@ export function postJob(payload, callback) {
 // ---------------------------------------------------------job post Multi step form api's---------------------------------------------------//
 
 export function timeReporting(payload, role, callback) {
-  console.log(payload, "payload");
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
@@ -279,7 +277,7 @@ export function getClientLeaveHistory(payload, callback) {
         try {
             let result = await clientInstance.get('/client/leave-history')
             if (result.status === 200) {
-                dispatch(setLeaveHistory(result.data.data))
+                dispatch(setClientLeaveHistory(result.data.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -293,9 +291,6 @@ export function getClientLeaveStatus(payload, callback) {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.post('/common/leave/status')
-            // if (result.status === 200) {
-            //     dispatch(setLeaveHistory(result.data.data))
-            // }
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -303,16 +298,6 @@ export function getClientLeaveStatus(payload, callback) {
         }
     };
 }
-
-
-
-
-
-
-
-
-
-
 export function getFolderData(payload, role) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
@@ -352,8 +337,6 @@ export function clientJobPost(payload, activeStep, callback) {
   };
 }
 export function clientUpdatePost(payload, id, callback) {
-  console.log(payload, "payload");
-  console.log(id, "id");
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -407,7 +390,6 @@ export function getSkillList(payload, callback) {
 
 export function getJobCategoryList(payload, callback) {
   return async (dispatch) => {
-    // dispatch(setSmallLoader())
     try {
       let result = await clientInstance.get(`common/job-category-list`);
       if (result.status === 200) {
@@ -485,7 +467,6 @@ export function filePreassignedUrlGenerate(payload, callback) {
     try {
       let result = await clientInstance.post(`common/upload-file`, payload);
       dispatch(setActionSuccessFully());
-      // toast.success("Folder Created successfully", { position: "top-center" })
       return callback(result?.data?.data.Location);
     } catch (error) {
       const message = error.message || "Something went wrong";
@@ -618,19 +599,6 @@ export function getDeveloperDetails(id) {
     }
   };
 }
-// export function getDeleteAccount(payload) {
-//     return async (dispatch) => {
-//         dispatch(setSmallLoader())
-//         try {
-//             let result = await clientInstance.post("/common/delete-account",{...payload})
-
-//         } catch (error) {
-//             const message = error.message || "Something went wrong";
-//             toast.error( "Delete account request already exists for this user", { position: "top-center" })
-//             dispatch(setFailClientData())
-//         }
-//     }
-// }
 export function getEnableDisableAccount(payload) {
   console.log(payload, "payload");
   return async (dispatch) => {
