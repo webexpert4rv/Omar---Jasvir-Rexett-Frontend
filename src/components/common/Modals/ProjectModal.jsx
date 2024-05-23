@@ -23,7 +23,7 @@ import {
 } from "../../../redux/slices/developerDataSlice";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import moment from "moment";
-const TEAM_SIZE_OPTIONS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+const TEAM_SIZE_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
 const createOption = (label) => ({
   label,
@@ -113,7 +113,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       ]);
     }
   }, [renderModalData]);
-  
+
   useEffect(() => {
     // setSkillOptions(skillListMapped);
     let formattedData = [];
@@ -140,14 +140,13 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       return {
         ...curElem,
         tech_stacks_used: convertedTechStack,
-        project_team_size: Number (curElem?.project_team_size),
+        project_team_size: Number(curElem?.project_team_size),
       };
     });
-
     let temp = formattedProjects
       ?.map((item) => {
         if (!item.id) {
-          return { ...item ,project_team_size : Number(item.project_team_size)};
+          return { ...item, project_team_size: Number(item.project_team_size) };
         }
       })
       .filter((item) => item);
@@ -156,7 +155,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
         projects: [...temp],
         user_id: +id,
       };
-      console.log(payload,"payload")
+      console.log(payload, "payload");
       dispatch(
         addProjects(payload, () => {
           if (role == "developer") {
@@ -169,17 +168,22 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       );
     }
 
-    formattedProjects?.forEach((item,idx) => {
+    formattedProjects?.forEach((item, idx) => {
       if (item.id) {
         dispatch(
-          updateProjects(item.id,item, () => {
-            if (role == "developer") {
-              dispatch(fetchDeveloperCv());
-            } else {
-              dispatch(getDeveloperDetails(id));
-            }
-            handleClose();
-          },idx === formattedProjects.length-1)
+          updateProjects(
+            item.id,
+            item,
+            () => {
+              if (role == "developer") {
+                dispatch(fetchDeveloperCv());
+              } else {
+                dispatch(getDeveloperDetails(id));
+              }
+              handleClose();
+            },
+            idx === formattedProjects.length - 1
+          )
         );
       }
     });
@@ -188,7 +192,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
   const handleAppend = async () => {
     const index = watch("projects").findIndex(
       (curElem) =>
-        curElem.project_description === "" || 
+        curElem.project_description === "" ||
         curElem.project_title === "" ||
         curElem.tech_stacks_used === "" ||
         curElem.role_in_project === "" ||
@@ -259,9 +263,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
       <Modal.Body>
         <div>
-          <h3 className="popup-heading">
-            {t("projects")} 
-          </h3>
+          <h3 className="popup-heading">{t("projects")}</h3>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {fields.map((field, index) => (
               <Fragment key={field.id}>
@@ -297,7 +299,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                       required: t("project_description_required_msg"),
                     })}
                   />
-                  {errors?.projects?.[index]?.project_description && (  
+                  {errors?.projects?.[index]?.project_description && (
                     <p className="error-message">
                       {errors.projects[index].project_description.message}
                     </p>
@@ -358,24 +360,23 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
                         required: t("project_role_required_msg"),
                       })}
                     ></Form.Control>
-                    <p className="error-message">
-                      {errors?.projects?.[index]?.role_in_project && (
-                        <p className="error-message">
-                          {errors.projects[index]?.role_in_project.message}
-                        </p>
-                      )}
-                    </p>
+
+                    {errors?.projects?.[index]?.role_in_project && (
+                      <p className="error-message">
+                        {errors.projects[index]?.role_in_project.message}
+                      </p>
+                    )}
                   </Form.Group>
 
                   <Form.Group className="mb-4">
                     <Form.Label>{t("projectTeamSize")}</Form.Label>
                     <Form.Select
                       {...register(`projects.${index}.project_team_size`, {
-                        required: t("project_team_size_required_msg")
+                        required: t("project_team_size_required_msg"),
                       })}
                       className="filter-select width-full shadow-none "
                     >
-                      <option disabled selected>
+                      <option value="" disabled selected>
                         {t("projectTeamSize")}
                       </option>
                       {TEAM_SIZE_OPTIONS.map((val, idx) => (

@@ -5,7 +5,6 @@ import { FaRegClock } from "react-icons/fa6";
 import moment from 'moment';
 const MemoWithTimeReport = ({item}) => {
     let {end_time,start_time,memo,report_date}=item
-    console.log(item,"op")
   return (
     <div className='weekly-detail mb-3 p-3'>
         <div className='client-info mb-3 gap-5'>
