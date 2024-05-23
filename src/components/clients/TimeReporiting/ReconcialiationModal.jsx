@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import userImage from "../../../assets/img/user-img.jpg";
 import { FiCalendar } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa6";
@@ -11,30 +11,57 @@ import { approveTimeReportReconciliation } from "../../../redux/slices/clientDat
 
 const approveRemark = <Tooltip id="tooltip">Approve</Tooltip>;
 const rejectRemark = <Tooltip id="tooltip">Reject</Tooltip>;
-const ReconciliationModal = ({ item, role,contract_id }) => {
+const ReconciliationModal = ({ item, role,index }) => {
   const dispatch =useDispatch()
   const [editDetails, setEditDetails] = useState({
     editItem: null,
     isEdit: false,
   });
-  let { end_time, start_time, memo, report_date } = item;
-  const handleEdit = () => {
+  const [reconciliationData,setReconcilitationData]=useState([])
+  let { end_time, start_time, memo, report_date,id,contract_id } = item;
+  console.log(item,"item")
+  const handleEdit = (editData) => {
+    console.log(editData,"editData")
     setEditDetails({
       editItem: null,
       isEdit: !editDetails?.isEdit,
     });
   };
+  useEffect(()=>{
+    setReconcilitationData([{
+      ...item,
+      id:index
+  
+    }])
+  },[])
   const approvedReject=(currentStatus)=>{
    let data= {
       "contract_id": contract_id,
-      "report_date": report_date,
-      "reconciliation_id": 0,
-      "is_approved": true
+      "report_date": "2024-05-22",
+      "reconciliation_id": id,
+      "is_approved": currentStatus
     }
     dispatch(approveTimeReportReconciliation(data))
-
-
   }
+
+const handleChange = (e, inx) => {
+  console.log(inx,"inx")
+  const { name, value } = e.target;
+  let duplicateItem = [...reconciliationData];
+  let ind = duplicateItem.findIndex((item) => item.id === inx);
+  console.log(ind,"in")
+  if (ind > -1) {
+    duplicateItem[ind] = {
+      ...duplicateItem[ind],
+      [name]: value
+    };
+  } else {
+    setReconcilitationData([...reconciliationData,duplicateItem]);
+  }
+
+ 
+};
+  console.log(reconciliationData,"reconciliationData")
   console.log(role, "rollll");
   return (
     <div className="weekly-detail mb-3 p-3">
@@ -49,7 +76,7 @@ const ReconciliationModal = ({ item, role,contract_id }) => {
             </div>
             <div className="editSec">
               {role !== "client" ? (
-                <span onClick={handleEdit}>
+                <span onClick={()=>handleEdit(item)}>
                   <TiEdit />
                 </span>
               ) : (
@@ -62,7 +89,7 @@ const ReconciliationModal = ({ item, role,contract_id }) => {
                 <Button
                   variant="transparent"
                   className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
-                  onClick={()=>approvedReject()}
+                  onClick={()=>approvedReject(true)}
                 >
                   <IoCheckmark />
                 </Button>
@@ -71,7 +98,7 @@ const ReconciliationModal = ({ item, role,contract_id }) => {
                 <Button
                   variant="transparent"
                   className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
-                  onClick={()=>approvedReject()}
+                  onClick={()=>approvedReject(false)}
                 >
                   <IoCloseOutline />
                 </Button>
@@ -103,7 +130,7 @@ const ReconciliationModal = ({ item, role,contract_id }) => {
               <FaRegClock />
 
               {editDetails?.isEdit ? (
-                <input type="time" value={start_time} />
+                <input type="time" value={reconciliationData[index]?.start_time} name="start_time"  onChange={(e)=>handleChange(e,index)}/>
               ) : start_time ? (
                 moment(start_time, "HH:mm:ss").format("h:mm:ss A")
               ) : (
@@ -115,7 +142,7 @@ const ReconciliationModal = ({ item, role,contract_id }) => {
               <FaRegClock />
 
               {editDetails?.isEdit ? (
-                <input type="time" value={end_time} />
+                <input type="time" value={reconciliationData[index]?.end_time} name="end_time"  onChange={(e)=>handleChange(e,index)}/>
               ) : end_time ? (
                 moment(end_time, "HH:mm:ss").format("h:mm:ss A")
               ) : (
@@ -128,7 +155,7 @@ const ReconciliationModal = ({ item, role,contract_id }) => {
       <div className="client-info">
         <h4 className="sidebar-heading">Memo</h4>
         {editDetails?.isEdit ? (
-          <input type="text" value={memo} />
+          <input type="text" value={reconciliationData[index]?.memo} name="memo" onChange={(e)=>handleChange(e,index)} />
         ) : (
           <p className="client-name-heading">
             {memo ? memo : "Memo not Found"}

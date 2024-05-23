@@ -59,7 +59,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role,page }) => {
             allSelectedTimeReport:data?.timeReports
 
         }
-        dispatch(getReconciliationData(data?.contractDetails?.contract_id))
+        if(role=="client"){
+            dispatch(getReconciliationData(data?.contractDetails?.contract_id))
+
+        }
         setCurrentDetails(newData)
         setremarkShow(true)
         

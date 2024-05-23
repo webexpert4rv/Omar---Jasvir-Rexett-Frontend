@@ -681,3 +681,17 @@ export function getLastTimeLog(paylaod) {
     }
   };
 }
+
+export function postReconciliationData(paylaod) {
+  return async (dispatch) => {
+    // dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`/common/add-time-report-reconciliation`,{});
+      dispatch(setLastTimeLog(result.data));
+      // return callback();
+    } catch (error) {
+      console.log(error, "error");
+      dispatch(setFailDeveloperData());
+    }
+  };
+}

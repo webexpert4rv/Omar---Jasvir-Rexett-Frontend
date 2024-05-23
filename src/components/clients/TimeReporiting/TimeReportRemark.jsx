@@ -45,8 +45,20 @@ const TimeReportRemark = ({
 console.log(reconciliationsData,"reconciliationsData")
 
   useEffect(() => {
-    setUpdateWeeklyData(allSelectedTimeReport);
-  }, []);
+    if(role=="client"){
+      setUpdateWeeklyData(reconciliationsData);
+
+    }else{
+      setUpdateWeeklyData(allSelectedTimeReport);
+    }
+  }, [reconciliationsData]);
+
+  console.log(updateWeeklyData,"updateWeeklyData")
+
+  const handleReconciliationSend=()=>{
+
+    dispatch(handleReconciliationSend())
+  }
 
   return (
     <Offcanvas
@@ -72,20 +84,20 @@ console.log(reconciliationsData,"reconciliationsData")
           {updateWeeklyData?.map((item, index) => {
             return (
               <>
-                <ReconciliationModal item={item} role={role} contract_id={contract_id}/>
+                <ReconciliationModal item={item} role={role} contract_id={contract_id} index={index}/>
               </>
             );
           })}
         </div>
-        <RexettButton
+       {role!=="client" && <RexettButton
                 type="submit"
                 text="Submit"
                 className="main-btn font-14 mt-2 py-2 px-3"
                 variant="transparent"
-                // onClick={handleRemarkSend}
+                onClick={handleReconciliationSend}
                 // disabled={smallLoader}
                 // isLoading={smallLoader}
-              />
+              />}
       </Offcanvas.Body>
     </Offcanvas>
   );
