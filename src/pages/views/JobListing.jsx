@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, Tooltip, OverlayTrigger, Tabs, Tab } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Row,
+  Tooltip,
+  OverlayTrigger,
+  Tabs,
+  Tab,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -38,7 +46,6 @@ const JobListing = () => {
     return skillsArray;
   };
   const viewtooltip = <Tooltip id="tooltip">{t("viewJob")}</Tooltip>;
-
 
   const currentStatusCssClass = (status) => {
     switch (status) {
@@ -80,24 +87,38 @@ const JobListing = () => {
                               {/* <h4 className="job-category">{item.client.name}</h4> */}
                               <div className="profile-req">
                                 <p className="grid-text">
-                                  {item?.experience?.split("_").join(" ")} of exp
+                                  {item?.experience?.split("_").join(" ")} of
+                                  exp
                                 </p>
-                                <p className="grid-text">{item?.contract_type}</p>
+                                <p className="grid-text">
+                                  {item?.contract_type}
+                                </p>
                                 <p className="grid-text">{item.job_type}</p>
                               </div>
-                              <p className="job-description">{item?.description}</p>
+                              <p
+                                className="job-description"
+                                dangerouslySetInnerHTML={{
+                                  __html: item?.description,
+                                }}
+                              ></p>
                               <Row>
                                 <Col md="12">
                                   <div className="info-grid">
-                                    <h4 className="grid-heading">{t("skillsRequired")}</h4>
+                                    <h4 className="grid-heading">
+                                      {t("skillsRequired")}
+                                    </h4>
                                     <ul className="need-skill-list ">
-                                      {convertToArray(item.skills)?.map((item) => {
-                                        return (
-                                          <>
-                                            <li>{item}</li>
-                                          </>
-                                        );
-                                      })}
+                                      {item?.skills?.length > 0
+                                        ? convertToArray(item.skills)?.map(
+                                            (item) => {
+                                              return (
+                                                <>
+                                                  <li>{item}</li>
+                                                </>
+                                              );
+                                            }
+                                          )
+                                        : "Not Mentioned"}
                                     </ul>
                                   </div>
                                 </Col>
@@ -142,7 +163,8 @@ const JobListing = () => {
               {allJobPostedList?.totalCount > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <p className="showing-result">
-                    {t("showing")} {allJobPostedList?.data?.length} {t("results")}
+                    {t("showing")} {allJobPostedList?.data?.length}{" "}
+                    {t("results")}
                   </p>
                   <RexettPagination
                     number={allJobPostedList?.totalPages}
@@ -167,24 +189,36 @@ const JobListing = () => {
                               {/* <h4 className="job-category">{item.client.name}</h4> */}
                               <div className="profile-req">
                                 <p className="grid-text">
-                                  {item?.experience?.split("_").join(" ")} of exp
+                                  {item?.experience?.split("_").join(" ")} of
+                                  exp
                                 </p>
-                                <p className="grid-text">{item?.contract_type}</p>
+                                <p className="grid-text">
+                                  {item?.contract_type}
+                                </p>
                                 <p className="grid-text">{item.job_type}</p>
                               </div>
-                              <p className="job-description">{item?.description}</p>
+                              <p
+                                className="job-description"
+                                dangerouslySetInnerHTML={{
+                                  __html: item?.description,
+                                }}
+                              ></p>
                               <Row>
                                 <Col md="12">
                                   <div className="info-grid">
-                                    <h4 className="grid-heading">{t("skillsRequired")}</h4>
+                                    <h4 className="grid-heading">
+                                      {t("skillsRequired")}
+                                    </h4>
                                     <ul className="need-skill-list ">
-                                      {convertToArray(item.skills)?.map((item) => {
-                                        return (
-                                          <>
-                                            <li>{item}</li>
-                                          </>
-                                        );
-                                      })}
+                                      {convertToArray(item.skills)?.map(
+                                        (item) => {
+                                          return (
+                                            <>
+                                              <li>{item}</li>
+                                            </>
+                                          );
+                                        }
+                                      )}
                                     </ul>
                                   </div>
                                 </Col>
@@ -229,7 +263,8 @@ const JobListing = () => {
               {allJobPostedList?.totalCount > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <p className="showing-result">
-                    {t("showing")} {allJobPostedList?.data?.length} {t("results")}
+                    {t("showing")} {allJobPostedList?.data?.length}{" "}
+                    {t("results")}
                   </p>
                   <RexettPagination
                     number={allJobPostedList?.totalPages}
@@ -254,24 +289,36 @@ const JobListing = () => {
                               {/* <h4 className="job-category">{item.client.name}</h4> */}
                               <div className="profile-req">
                                 <p className="grid-text">
-                                  {item?.experience?.split("_").join(" ")} of exp
+                                  {item?.experience?.split("_").join(" ")} of
+                                  exp
                                 </p>
-                                <p className="grid-text">{item?.contract_type}</p>
+                                <p className="grid-text">
+                                  {item?.contract_type}
+                                </p>
                                 <p className="grid-text">{item.job_type}</p>
                               </div>
-                              <p className="job-description">{item?.description}</p>
+                              <p
+                                className="job-description"
+                                dangerouslySetInnerHTML={{
+                                  __html: item?.description,
+                                }}
+                              ></p>
                               <Row>
                                 <Col md="12">
                                   <div className="info-grid">
-                                    <h4 className="grid-heading">{t("skillsRequired")}</h4>
+                                    <h4 className="grid-heading">
+                                      {t("skillsRequired")}
+                                    </h4>
                                     <ul className="need-skill-list ">
-                                      {convertToArray(item.skills)?.map((item) => {
-                                        return (
-                                          <>
-                                            <li>{item}</li>
-                                          </>
-                                        );
-                                      })}
+                                      {convertToArray(item.skills)?.map(
+                                        (item) => {
+                                          return (
+                                            <>
+                                              <li>{item}</li>
+                                            </>
+                                          );
+                                        }
+                                      )}
                                     </ul>
                                   </div>
                                 </Col>
@@ -316,7 +363,8 @@ const JobListing = () => {
               {allJobPostedList?.totalCount > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <p className="showing-result">
-                    {t("showing")} {allJobPostedList?.data?.length} {t("results")}
+                    {t("showing")} {allJobPostedList?.data?.length}{" "}
+                    {t("results")}
                   </p>
                   <RexettPagination
                     number={allJobPostedList?.totalPages}

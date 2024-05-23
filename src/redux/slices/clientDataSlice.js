@@ -187,13 +187,15 @@ export function getClientProfile(payload, callback) {
   };
 }
 // ---------------------------------------------------------Job post Multi step form api's---------------------------------------------------//
-export function postJob(payload, callback) {
+export function getJobPostData(id, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.post("client/post-job", payload);
-      toast.success("Job successfully Posted", { position: "top-center" });
-      return callback();
+      let result = await clientInstance.get(`client/get-job-detail/${id}`);
+      // toast.success("Job successfully Posted", { position: "top-center" })
+      dispatch(setJobPostedData(result.data?.job));
+      dispatch(setActionSuccessFully());
+      return callback(result.data?.job);
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -278,12 +280,23 @@ export function getFolderData(payload, role) {
 }
 
 export function clientJobPost(payload, activeStep, callback) {
+  const activeStepKey = ["", "step1", "step2", "step3"];
+
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setScreenLoader());
     try {
       let result = await clientInstance.post(`client/post-job`, { ...payload });
-      dispatch(setJobId(result?.data?.job?.id));
+      if (result?.data?.[activeStepKey[activeStep]]?.id) {
+        localStorage.setItem(
+          "jobId",
+          result?.data?.[activeStepKey[activeStep]]?.id
+        );
+      }
+      // dispatch(setJobId(result?.data?.job?.id));
       if (activeStep === 3) {
+        localStorage.removeItem("jobId");
+        localStorage.removeItem("activeStep");
+
         toast.success("Job successfully Posted", { position: "top-center" });
       }
       dispatch(setActionSuccessFully());
@@ -295,14 +308,32 @@ export function clientJobPost(payload, activeStep, callback) {
     }
   };
 }
-export function clientUpdatePost(payload, id, callback) {
+export function clientUpdatePost(
+  payload,
+  isEdit = false,
+  activeStep,
+  id,
+  callback
+) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setScreenLoader());
     try {
       let result = await clientInstance.put(`client/update-job/${id}`, {
         ...payload,
       });
       // toast.success("Job successfully Updated", { position: "top-center" });
+      if (activeStep === 3) {
+        localStorage.removeItem("jobId");
+        localStorage.removeItem("activeStep");
+
+        if (isEdit) {
+          toast.success("Job Updated successfully ", { position: "top-center" });
+
+        } else {
+          toast.success("Job Posted successfully ", { position: "top-center" });
+        }
+
+      }
       dispatch(setActionSuccessFully());
       return callback();
     } catch (error) {
@@ -330,14 +361,17 @@ export function singleJobPostData(payload, callback) {
   };
 }
 
-export function getSkillList(payload, callback) {
+export function getSkillList(callback) {
   return async (dispatch) => {
-    // dispatch(setSmallLoader())
+    // dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`common/skill-list`);
       if (result.status === 200) {
         dispatch(setSkillList(result.data.data));
         // dispatch(setFolderData(result.data.data.files))
+        if (callback) {
+          return callback(result?.data?.data);
+        }
       }
     } catch (error) {
       const message = error.message || "Something went wrong";

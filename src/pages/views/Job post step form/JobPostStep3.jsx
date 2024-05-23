@@ -145,7 +145,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                   <Form.Check
                     type="checkbox"
                     {...register(`screening_questions.${idx}.must_have`, {
-                      required: t("required_message"),
+                      // required: t("required_message"),
                     })}
                     className="font-14 job-post-checkbox"
                     id="must2"
