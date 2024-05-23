@@ -40,12 +40,13 @@ const JobPostStepContainer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { skillList, jobId } = useSelector((state) => state.clientData);
-  const skillListMapped = skillList.map((item) => {
-    return { value: item.id, label: item.title };
-  });
-  const [skillCate, setSkillsCate] = useState(skillListMapped);
-
+  const [isEdit, setIsEdit] = useState(false);
+  const [jobID, setJobID] = useState(null);
+  // const { skillList } = useSelector((state) => state.clientData);
+  // const skillListMapped = skillList.map((item) => {
+  //   return { value: item.id, label: item.title };
+  // });
+  const [skillCate, setSkillsCate] = useState([]);
   const [activeStep, setActiveStep] = useState(1);
   const ACTIVE_STEP_API_KEYS = ["", "step1", "step2", "step3"];
   const { jobPostedData, screenLoader } = useSelector(
@@ -86,19 +87,6 @@ const JobPostStepContainer = () => {
 
   useEffect(() => {
     localStorage.setItem("activeStep", activeStep);
-    // let tempSkills = [];
-    // if (activeStep === 2) {
-    //   dispatch(
-    //     getSkillList((sklls) => {
-    //       const skillListMapped = sklls.map((item) => {
-    //         return { value: item.id, label: item.title };
-    //       });
-    //       tempSkills = skillListMapped;
-    //       // setSkillsCate(tempSkills);
-    //       console.log(tempSkills, "tempSkills inside iiii");
-    //     })
-    //   );
-    // }
     let jobId = localStorage.getItem("jobId");
     if (jobId) {
       setJobID(Number(jobId));
@@ -148,7 +136,8 @@ const JobPostStepContainer = () => {
                       );
                     }
                   }
-                } else {
+                } 
+                else {
                   setValue(
                     key,
                     jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
@@ -266,29 +255,29 @@ const JobPostStepContainer = () => {
     //   const formattedSkills = arrayOfSkills.toString();
     //   data["skills"] = formattedSkills;
 
-      // converting option_skills fields array of objects into string
-      const optionSkills = data["optional_skills"];
-      const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
-      const formattedOptionSkills = arrayOfOptionSkills.toString();
-      data["optional_skills"] = formattedOptionSkills;
-      console.log(data, "data");
-      data = {
-        ...data,
-        step: 1,
-      };
-      if (id) {
-        clientUpdatePost(data, id, (res) => {
-          // setJobId(res?.job?.id);
-          navigate("/job-posted");
-        });
-      } else {
-        dispatch(
-          postJob(data, () => {
-            navigate("/job-posted");
-          })
-        );
-      }
-    }
+    //   // converting option_skills fields array of objects into string
+    //   const optionSkills = data["optional_skills"];
+    //   const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
+    //   const formattedOptionSkills = arrayOfOptionSkills.toString();
+    //   data["optional_skills"] = formattedOptionSkills;
+    //   console.log(data, "data");
+    //   data = {
+    //     ...data,
+    //     step: 1,
+    //   };
+    //   if (id) {
+    //     clientUpdatePost(data, id, (res) => {
+    //       setJobId(res?.job?.id);
+    //       navigate("/job-posted");
+    //     });
+    //   } else {
+    //     dispatch(
+    //       postJob(data, () => {
+    //         navigate("/job-posted");
+    //       })
+    //     );
+    //   }
+    // }
     // reset();
   };
 
