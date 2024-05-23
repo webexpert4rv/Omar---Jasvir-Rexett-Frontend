@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
-const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type}) => {
+const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type,startDate,endDate}) => {
     const callBackBtn=(e)=>{
         let data={
             status: type
