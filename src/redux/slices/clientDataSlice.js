@@ -164,7 +164,6 @@ export function updateClientProfile(payload, callback) {
       }
     } catch (error) {
       const message = error.response.data.message || "Something went wrong";
-      console.log(error, "err");
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -247,15 +246,19 @@ export function getClientLeaveHistory(payload, callback) {
         }
     };
 }
-export function getClientLeaveStatus(payload, callback) {
-  console.log(payload,"payload")
+export function getClientLeaveStatus(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.post('/common/leave/status',payload)
+            if(payload.rejection_reason=== null){
+            toast.success("Leave Approved",{position : "top-center" })
+            }else{
+              toast.success("Leave Rejected",{position : "top-center" })
+            }
         } catch (error) {
-            const message = error.message || "Something went wrong";
-            // toast.error(message, { position: "top-center" })
+            const message = error.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };
@@ -694,7 +697,6 @@ export function getAddNewDeveloper(payload, callback) {
       toast.success("New Developer is Added", { position: "top-center" });
       return callback();
     } catch (error) {
-      const message = error.message;
       toast.error(error.response.data.message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -737,7 +739,6 @@ export function approveTimeReportReconciliation(payload, callback) {
       toast.success("New Developer is Added", { position: "top-center" });
       return callback();
     } catch (error) {
-      const message = error.message;
       toast.error(error.response.data.message, { position: "top-center" });
       dispatch(setFailClientData());
     }
