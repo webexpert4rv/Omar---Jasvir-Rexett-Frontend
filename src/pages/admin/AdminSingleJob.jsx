@@ -101,7 +101,11 @@ const AdminSingleJob = () => {
                                 </div>
                             </div>
                             {/* <h4 className="single-job-category">{t("websiteDesign")}</h4> */}
-                            <p className="single-job-description">{singleJobDescription?.description}</p>
+                            <p className="single-job-description" 
+                             dangerouslySetInnerHTML={{
+                                __html: singleJobDescription?.description,
+                              }}
+                            ></p>
                         </div>
                         <div className="single-job-card">
                             <Row>

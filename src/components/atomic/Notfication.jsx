@@ -28,14 +28,16 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null)
   }, [newJobPost]);
 
+  console.log(notificationList,"notificationList")
+
   useEffect(() => {
     if (newJobPost !== null) {
-      let mergeRow = [newJobPost, ...notificationList["unreadNotifications"]];
+      let mergeRow = [newJobPost, ...notificationList["unreadNotifications"]?.notifications];
       setNotificationData([...nottificationData, ...mergeRow]);
     } else if (nottificationData?.length > 0) {
       setNotificationData(nottificationData);
     } else {
-      setNotificationData(notificationList["unreadNotifications"]);
+      setNotificationData(notificationList["unreadNotifications"]?.notifications);
     }
   }, [notificationList, newJobPost]);
 
