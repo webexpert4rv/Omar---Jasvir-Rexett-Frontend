@@ -10,14 +10,15 @@ import {
   applyLeave,
   getAllContracts,
   getLeaveHistory,
+  getCancelLeave,
+  getUpdateLeave,
 } from "../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import RexettButton from "../../components/atomic/RexettButton";
 import { generateLeave } from "../../components/clients/TimeReporiting/constant";
 import { LEAVE_TYPE } from "../../components/clients/TimeReporiting/constant";
-
-
+import RejectModal from "../views/Modals/EndJob";
 
 const LeavePlan = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -25,27 +26,76 @@ const LeavePlan = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const { leaveHistory, allContracts } = useSelector(
+  const { leaveDetails, allContracts } = useSelector(
     (state) => state.developerData
   );
-  const { handleSubmit, register, watch } = useForm({});
+
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    formState: { errors },
+  } = useForm({});
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [currentTab, setCurrentTab] = useState("first");
+  const [isEdit, setIsEdit] = useState({
+    status: false,
+    leaveId: "",
+  });
   const today = new Date();
-  const start_date = moment(selectionRange.startDate).format("MM-DD-YYYY");
-  const end_date = moment(selectionRange.endDate).format("MM-DD-YYYY");
+  const start_date = moment(selectionRange?.startDate).format("MM-DD-YYYY");
+  const end_date = moment(selectionRange?.endDate).format("MM-DD-YYYY");
   const user_id = localStorage.getItem("userId");
 
   useEffect(() => {
-    dispatch(getLeaveHistory(user_id));
-    dispatch(getAllContracts());
-  }, []);
+    let data;
+    if (currentTab === "first") {
+      data = {
+        approval_status: "Under Approval",
+      };
+    }
 
-  const handleSelect = (ranges) => {
+    dispatch(getLeaveHistory(user_id, data));
+    dispatch(getAllContracts());
+  }, [currentTab]);
+
+  const handleSelect = (selectedTab) => {
+    setCurrentTab(selectedTab);
+  };
+  const handleRange = (ranges) => {
+    console.log(ranges,"ranges")
     setSelectionRange(ranges.selection);
   };
 
-  const onSubmit = (values) => {
+  const handleEditLeave = (id) => {
+    const selectedLeave = leaveDetails.find((item) => item.id == id);
+    console.log(selectedLeave,"selectedleave")
+    if (selectedLeave) {
+      setSelectionRange({
+        startDate: new Date(selectedLeave.start_date),
+        endDate: new Date(selectedLeave.end_date),
+        key: "selection",
+      });
+    
+    setIsEdit({ status: true, leaveId: id });
+    setValue("client_name", selectedLeave?.contract_id);
+    setValue("leave_type", selectedLeave?.type);
+    setValue("reason", selectedLeave?.reason_for_leave);
+    }
+  };
+  const handleCancelLeave = async (id) => {
+    let data = {
+      withdrawal_reason: "reason",
+    };
+    dispatch(getCancelLeave(id, data));
+    let payload = {
+      approval_status: "Under Approval",
+    };
+    await dispatch(getLeaveHistory(user_id, payload));
+  };
+
+  const onSubmit = async (values) => {
     let data = {
       contract_id: +values.client_name,
       start_date: start_date,
@@ -55,12 +105,24 @@ const LeavePlan = () => {
       type: values.leave_type,
       reason_for_leave: values.reason,
     };
-    dispatch(applyLeave(data));
+    if (isEdit) {
+      dispatch(getUpdateLeave(isEdit?.leaveId, data));
+    } else {
+      dispatch(applyLeave(data));
+    }
+    let payload = {
+      approval_status: "Under Approval",
+    };
+    await dispatch(getLeaveHistory(user_id, payload));
   };
 
   return (
     <>
-      <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+      <Tab.Container
+        id="left-tabs-example"
+        defaultActiveKey="first"
+        onSelect={handleSelect}
+      >
         <Nav variant="pills" className="mb-4 application-pills">
           <Nav.Item className="application-item">
             <Nav.Link className="application-link" eventKey="first">
@@ -77,68 +139,45 @@ const LeavePlan = () => {
           <Tab.Pane eventKey="first">
             <div className="card-box mb-4">
               <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
-              <p className="text-muted font-14 mb-0">No Leave Applied</p>
+              {/* <p className="text-muted font-14 mb-0">No Leave Applied</p> */}
               <Row>
-                <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
-                  <div className="leave-wrapper-box">
-                    <div>
-                      <h4 className="project-heading">Figma to UI</h4>
-                      <h4 className="leave-type-heading">Full Day Leave</h4>
+                {leaveDetails?.map((field, idx) => (
+                  <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
+                    <div className="leave-wrapper-box">
                       <div>
-                        <p className="leave-date">17-05-2024 to 30-05-2024</p>
+                        <h4 className="project-heading">{}</h4>
+                        <h4 className="leave-type-heading">
+                          {generateLeave(field?.type)}
+                        </h4>
+                        <div>
+                          <p className="leave-date">
+                            {" "}
+                            {moment(field?.start_date).format(
+                              "MM-DD-YYYY"
+                            )} to {moment(field?.end_date).format("MM-DD-YYYY")}
+                          </p>
+                        </div>
+                        <p className="status-finished mb-0">
+                          {field?.approval_status}
+                        </p>
                       </div>
-                      <p className="status-finished mb-0">Approved</p>
-                    </div>
-                    <div className="d-flex gap-3">
-                      <Button className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none">
-                        <IoClose />
-                      </Button>
-                      <Button className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none">
-                        <MdModeEditOutline />
-                      </Button>
-                    </div>
-                  </div>
-                </Col>
-                <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
-                  <div className="leave-wrapper-box">
-                    <div>
-                      <h4 className="project-heading">Figma to UI</h4>
-                      <h4 className="leave-type-heading">Half Day Leave</h4>
-                      <div>
-                        <p className="leave-date">31-05-2024</p>
+                      <div className="d-flex gap-3">
+                        <Button
+                          className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
+                          onClick={() => handleCancelLeave(field?.id)}
+                        >
+                          <IoClose />
+                        </Button>
+                        <Button
+                          className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
+                          onClick={() => handleEditLeave(field?.id)}
+                        >
+                          <MdModeEditOutline />
+                        </Button>
                       </div>
-                      <p className="status-progress mb-0">Under Approval</p>
                     </div>
-                    <div className="d-flex gap-3">
-                      <Button className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none">
-                        <IoClose />
-                      </Button>
-                      <Button className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none">
-                        <MdModeEditOutline />
-                      </Button>
-                    </div>
-                  </div>
-                </Col>
-                <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
-                  <div className="leave-wrapper-box">
-                    <div>
-                      <h4 className="project-heading">Figma to UI</h4>
-                      <h4 className="leave-type-heading">Half Day Leave</h4>
-                      <div>
-                        <p className="leave-date">31-05-2024</p>
-                      </div>
-                      <p className="status-rejected mb-0">Not Approved</p>
-                    </div>
-                    <div className="d-flex gap-3">
-                      <Button className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none">
-                        <IoClose />
-                      </Button>
-                      <Button className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none">
-                        <MdModeEditOutline />
-                      </Button>
-                    </div>
-                  </div>
-                </Col>
+                  </Col>
+                ))}
               </Row>
             </div>
             <Row className="gx-4">
@@ -146,7 +185,7 @@ const LeavePlan = () => {
                 <div className="leave-calendar h-100">
                   <DateRangePicker
                     ranges={[selectionRange]}
-                    onChange={handleSelect}
+                    onChange={handleRange}
                     minDate={today}
                   />
                 </div>
@@ -155,7 +194,7 @@ const LeavePlan = () => {
                 <div className="plan-leave-wrapper">
                   <h3 className="section-head border-0 mb-3">Apply Leave</h3>
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                    {/* <div className="mb-4">
+                    <div className="mb-4">
                       <Form.Label className="mb-2 font-14">
                         Select Client
                       </Form.Label>
@@ -178,7 +217,7 @@ const LeavePlan = () => {
                           </Form.Select>
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                     <div className="mb-4">
                       <Form.Label className="mb-2 font-14">
                         Leave Type
@@ -244,7 +283,7 @@ const LeavePlan = () => {
                   <th className="time-table-head text-start">Leave Status</th>
                 </thead>
                 <tbody>
-                  {leaveHistory.map((item, idx) => (
+                  {leaveDetails?.map((item, idx) => (
                     <>
                       <tr>
                         <td className="time-table-data text-start">
