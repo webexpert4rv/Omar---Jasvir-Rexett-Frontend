@@ -11,7 +11,7 @@ import { approveTimeReportReconciliation } from "../../../redux/slices/clientDat
 
 const approveRemark = <Tooltip id="tooltip">Approve</Tooltip>;
 const rejectRemark = <Tooltip id="tooltip">Reject</Tooltip>;
-const ReconciliationModal = ({ item, role,index }) => {
+const ReconciliationModal = ({ item, role,index , handleChangeUpdateWeeklyData }) => {
   const dispatch =useDispatch()
   const [editDetails, setEditDetails] = useState({
     editItem: null,
@@ -19,9 +19,7 @@ const ReconciliationModal = ({ item, role,index }) => {
   });
   const [reconciliationData,setReconcilitationData]=useState([])
   let { end_time, start_time, memo, report_date,id,contract_id } = item;
-  console.log(item,"item")
   const handleEdit = (editData) => {
-    console.log(editData,"editData")
     setEditDetails({
       editItem: null,
       isEdit: !editDetails?.isEdit,
@@ -31,10 +29,10 @@ const ReconciliationModal = ({ item, role,index }) => {
     setReconcilitationData([{
       ...item,
       id:index
-  
     }])
   },[])
-  const approvedReject=(currentStatus)=>{
+
+  const approvedReject=(currentStatus) => { 
    let data= {
       "contract_id": contract_id,
       "report_date": "2024-05-22",
@@ -43,26 +41,23 @@ const ReconciliationModal = ({ item, role,index }) => {
     }
     dispatch(approveTimeReportReconciliation(data))
   }
-
 const handleChange = (e, inx) => {
-  console.log(inx,"inx")
+
   const { name, value } = e.target;
-  let duplicateItem = [...reconciliationData];
-  let ind = duplicateItem.findIndex((item) => item.id === inx);
-  console.log(ind,"in")
-  if (ind > -1) {
-    duplicateItem[ind] = {
-      ...duplicateItem[ind],
-      [name]: value
+  let duplicateItem = [...reconciliationData];  
+  // duplicateItem[inx][name] = value;
+  // setReconcilitationData(duplicateItem);
+  // let ind = duplicateItem.findIndex((item,idx) => idx === inx);
+  if (inx > -1) {
+    duplicateItem[0] = {
+      ...duplicateItem[inx],
+      [name]: value,  
+      // id:inx
     };
-  } else {
+  } else {  
     setReconcilitationData([...reconciliationData,duplicateItem]);
   }
-
- 
 };
-  console.log(reconciliationData,"reconciliationData")
-  console.log(role, "rollll");
   return (
     <div className="weekly-detail mb-3 p-3">
       <div className="client-info mb-3 gap-5">
@@ -130,7 +125,10 @@ const handleChange = (e, inx) => {
               <FaRegClock />
 
               {editDetails?.isEdit ? (
-                <input type="time" value={reconciliationData[index]?.start_time} name="start_time"  onChange={(e)=>handleChange(e,index)}/>
+                <>
+                <input type="time" value={item?.start_time} name="start_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
+                
+                </>
               ) : start_time ? (
                 moment(start_time, "HH:mm:ss").format("h:mm:ss A")
               ) : (
@@ -142,7 +140,7 @@ const handleChange = (e, inx) => {
               <FaRegClock />
 
               {editDetails?.isEdit ? (
-                <input type="time" value={reconciliationData[index]?.end_time} name="end_time"  onChange={(e)=>handleChange(e,index)}/>
+                <input type="time" value={item?.end_time} name="end_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
               ) : end_time ? (
                 moment(end_time, "HH:mm:ss").format("h:mm:ss A")
               ) : (
@@ -155,7 +153,7 @@ const handleChange = (e, inx) => {
       <div className="client-info">
         <h4 className="sidebar-heading">Memo</h4>
         {editDetails?.isEdit ? (
-          <input type="text" value={reconciliationData[index]?.memo} name="memo" onChange={(e)=>handleChange(e,index)} />
+          <input type="text" value={item?.memo} name="memo" onChange={(e)=>handleChangeUpdateWeeklyData(e,index)} />
         ) : (
           <p className="client-name-heading">
             {memo ? memo : "Memo not Found"}

@@ -57,7 +57,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               </Form.Label>
               <Form.Control
                 type="text"
-                className="common-field font-14"
+                className="common-field font-14 p-2"
                 placeholder="Enter Job Name"
                 {...register("title", {
                   required: "Job title is required",
@@ -72,11 +72,11 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               <p className="common-field font-14 d-flex align-items-center gap-2">
                 <img src={companyLogo} className="company-imgbx" />
                 <Form.Control
-                  type="text"
+                  type = "text"
                   {...register("company_name", {
                     required: "Company name is required",
                   })}
-                  className="common-field font-14"
+                  className="common-field font-14 p-2"
                   placeholder="Enter company name"
                 />
               </p>
@@ -87,7 +87,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
             <Form.Group className="mb-3">
               <Form.Label>{t("workplaceType")}</Form.Label>
               <Form.Select
-                className="common-field font-14"
+                className="common-field font-14 p-2"
                 {...register("job_type", {
                   required: "Workplace type is required",
                 })}
@@ -145,21 +145,20 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
 
               <Controller
                 name="job_location"
-                className="common-field font-14"
+                className="common-field font-14 p-2"
                 control={control}
                 render={({ field }) => (
                   <Autocomplete
                     {...field}
                     apiKey={"AIzaSyDgBFSJ1vRaU0QwJ206OSQiJFrD4aAzkXo"}
                     debounce={1000}
-                    className="common-field font-14 w-100"
+                    className="common-field font-14 w-100 p-2"
                     autocompletionRequest={
                       {
                         // componentRestrictions: { country: ["us"] }, // Uncomment to restrict to specific country
                       }
                     }
                     onPlaceSelected={(place) => {
-                      console.log(place, "this is place");
                       field.onChange(place?.formatted_address);
                     }}
                     onChange={(event) => {
@@ -188,7 +187,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                 {...register("contract_type", {
                   required: "Job type is required",
                 })}
-                className="common-field font-14"
+                className="common-field font-14 p-2"
               >
                 <option value="" disabled selected >
                   Please select job type
