@@ -19,7 +19,7 @@ const initialDeveloperData = {
   shareDocument: [],
   approvedLoader: false,
   lastTimeLog:{},
-  leaveHistory:[]
+  leaveDetails:[]
 };
 
 export const developerDataSlice = createSlice({
@@ -96,7 +96,10 @@ export const developerDataSlice = createSlice({
       state.lastTimeLog=action.payload
     }, 
     setLeaveHistory: (state,action) =>{
-      state.leaveHistory = action.payload
+      state.leaveDetails = action.payload
+  },
+    setUpdateLeave:(state,action)=>{
+      state.updateLeave = action.payload
   }
 },
 });
@@ -118,7 +121,8 @@ export const {
   setSuccessProfileData,
   setDeveloperDashboard,
   setLastTimeLog,
-  setLeaveHistory
+  setLeaveHistory,
+  setUpdateLeave
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -240,7 +244,7 @@ export function applyLeave(payload) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post("/developer/apply-for-leave", {...payload,});
-      if (result.status === 200) {
+      if (result.status === 201) {
         toast.success("Leave Applied", { position: "top-center" });
         dispatch(setSuccessActionData());
       }
@@ -252,15 +256,43 @@ export function applyLeave(payload) {
   };
 }
 
-export function getLeaveHistory(id) {
+export function getLeaveHistory(id , payload ) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.get(`/common/get-leave-history/${id}`);
-      console.log(result.data.data, "result==")
+      let result = await clientInstance.get(generateApiUrl(payload,`common/get-leave-history/${id}`));
       if (result.status === 200) {
         dispatch(setLeaveHistory(result?.data?.data))
       }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      dispatch(setLeaveHistory([]))
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function getUpdateLeave(id , payload ) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.put(`/developer/update-leave-request/${id}`,{...payload});
+      if (result.status === 200) {
+        dispatch(setUpdateLeave(result?.data?.data))
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+
+export function getCancelLeave(id , payload ) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.put(`/developer/withdraw-leave-request/${id}`,{...payload});
     } catch (error) {
       const message = error.message || "Something went wrong";
       dispatch(setFailDeveloperData());

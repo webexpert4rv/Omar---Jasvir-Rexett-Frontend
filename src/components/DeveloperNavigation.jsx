@@ -41,7 +41,6 @@ const DeveloperNavigation = ({ onClick }) => {
         const seconds = hours * 3600;
         return  seconds
     }
-    console.log(lastTimeLog,"lastTimeLog")
 
     useEffect(()=>{
        if(Object.keys(lastTimeLog).length>0){
