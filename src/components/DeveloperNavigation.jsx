@@ -41,9 +41,10 @@ const DeveloperNavigation = ({ onClick }) => {
         const seconds = hours * 3600;
         return  seconds
     }
+    console.log(lastTimeLog,"lastTimeLog")
 
     useEffect(()=>{
-       if(lastTimeLog){
+       if(Object.keys(lastTimeLog).length>0){
         setChecked(lastTimeLog?.data?.type=="break" || lastTimeLog?.data?.type=="check-out" ?false:true)
         setTotalSeconds(convertHourToSecond(lastTimeLog?.data?.hours_worked_till_time))
        }
