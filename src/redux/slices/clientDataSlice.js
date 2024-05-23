@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import clientInstance from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
-import { setLeaveHistory } from "./developerDataSlice";
 
 const initialClientData = {
 
@@ -23,160 +22,114 @@ const initialClientData = {
   developerDetails: {},
   timeReportingPage: {},
   faqsData: {},
-  clientLeaveHIstory:[],
-  reconciliationsData:[]
+  clientLeaveHistory:[],
+  reconciliationsData:[],
 };
  
 export const clientDataSlice = createSlice({
-  name: "clientData",
+  name: 'clientData',
   initialState: initialClientData,
   reducers: {
-    setScreenLoader: (state, action) => {
-      state.screenLoader = true;
-    },
-    setJobId: (state, action) => {
-      state.jobId = action.payload;
-    },
-    setSmallLoader: (state, action) => {
-      state.smallLoader = true;
-    },
-    setApprovedLoader: (state, action) => {
-      state.approvedLoader = true;
-    },
 
-    setAssignDeveloperList: (state, action) => {
-      state.assignedDeveloperList = action.payload;
-      state.screenLoader = false;
-    },
+      setScreenLoader: (state, action) => {
+          state.screenLoader = true;
+      },
+      setSmallLoader: (state, action) => {
+          state.smallLoader = true;
+      },
+      setApprovedLoader: (state, action) => {
+          state.approvedLoader = true;
+      },
 
-    setFailClientData: (state, action) => {
-      state.smallLoader = false;
-      state.approvedLoader = false;
-      state.screenLoader = false;
-    },
+      setAssignDeveloperList: (state, action) => {
+          state.assignedDeveloperList = action.payload
+          state.screenLoader = false;
+      },
 
-    setActionSuccessFully: (state, action) => {
-      state.smallLoader = false;
-      state.approvedLoader = false;
-    },
+      setFailClientData: (state, action) => {
+          state.smallLoader = false;
+          state.approvedLoader = false;
+          state.screenLoader = false;
+      },
 
-    setClientProfileDetails: (state, action) => {
-      state.clientProfileDetails = action.payload;
-      state.screenLoader = false;
-    },
+      setActionSuccessFully: (state, action) => {
+          state.smallLoader = false;
+          state.approvedLoader = false;
+      },
 
-    setTimeReporting: (state, action) => {
-      let data = {
-        totalPages: action.payload.totalPages,
-        totalRecords: action.payload.totalRecords,
-      };
-      state.timeReportingPage = data;
-      state.timeReportingData = action.payload.data;
-      state.smallLoader = false;
-      state.screenLoader = false;
-    },
-    setFolderData: (state, action) => {
-      let comibedFile = [
-        ...action.payload.files,
-        ...action.payload.shared_files,
-      ];
-      state.folderData = comibedFile;
-      state.screenLoader = false;
-    },
-    setJobCategory: (state, action) => {
-      let newData = action.payload.map((item) => {
-        return { label: item.title, value: item.id };
-      });
-      state.jobCategoryList = newData;
-    },
-    setSkillList: (state, action) => {
-      state.skillList = action.payload;
-    },
-    setAllJobPostedList: (state, action) => {
-      state.allJobPostedList = action.payload;
-      state.screenLoader = false;
-    },
-    setJobPostedData: (state, action) => {
-      state.jobPostedData = action.payload;
-      state.screenLoader = false;
-    },
-    setEarnedBackData: (state, action) => {
-      state.earnedBack = action.payload;
-      state.screenLoader = false;
-    },
-    // setCurrentJobStatusChnage:(state,action)=>{
-    //     console.log(state.allJobPostedList,"llll")
-    //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
-    //    console.log(d,"ppp")
-    // }
-    setDeveloperDetails: (state, action) => {
-      state.developerDetails = action.payload;
-      state.screenLoader = false;
-    },
-    setFaqs: (state, action) => {
-      state.faqsData = action.payload;
-      state.screenLoader = false;
-    },
-    setInvoiceList: (state, action) => {
-      state.invoiceList = action.payload;
-      state.screenLoader = false;
-    },
-  },
-  setFolderData: (state, action) => {
-      let comibedFile = [...action.payload.files, ...action.payload.shared_files]
-      state.folderData = comibedFile;
-      state.screenLoader = false;
-  },
-  setJobCategory: (state, action) => {
-      let newData= action.payload.map((item)=>{return { label:item.title , value:item.id}})
-      state.jobCategoryList = newData
-  },
-  setSkillList: (state, action) => {
-      state.skillList = action.payload
-  },
-  setAllJobPostedList: (state, action) => {
-      state.allJobPostedList = action.payload
-      state.screenLoader = false;
-  },
-  setJobPostedData: (state, action) => {
-      state.jobPostedData = action.payload
-      state.screenLoader = false;
-  },
-  setEarnedBackData: (state, action) => {
-      state.earnedBack = action.payload
-      state.screenLoader = false;
-  },
-  // setCurrentJobStatusChnage:(state,action)=>{
-  //     console.log(state.allJobPostedList,"llll")
-  //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
-  //    console.log(d,"ppp")
-  // }
-  setDeveloperDetails:(state,action) =>{
-      state.developerDetails = action.payload
-      state.screenLoader = false;
-  },
-  setFaqs : (state ,action) =>{
-      state.faqsData = action.payload
-      state.screenLoader = false;
-  },
-  setInvoiceList: (state,action) => {
-      state.invoiceList = action.payload;
-      state.screenLoader = false;
-  },
-  setClientLeaveHistory : (state,action) => {
-      state.clientLeaveHIstory =  action.payload
-  },
-  setReconciliationsData : (state,action) => {
-    console.log(action.payload,"pay")
-    state.reconciliationsData =  action.payload
-}
-});
+      setClientProfileDetails: (state, action) => {
+          state.clientProfileDetails = action.payload;
+          state.screenLoader = false;
+      },
+
+      setTimeReporting: (state, action) => {
+          let data={
+              totalPages:action.payload.totalPages,
+              totalRecords:action.payload.totalRecords
+          }
+          state.timeReportingPage=data
+          state.timeReportingData = action.payload.data
+          state.smallLoader = false;
+          state.screenLoader = false;
+
+
+      },
+      setFolderData: (state, action) => {
+          let comibedFile = [...action.payload.files, ...action.payload.shared_files]
+          state.folderData = comibedFile;
+          state.screenLoader = false;
+      },
+      setJobCategory: (state, action) => {
+          let newData= action.payload.map((item)=>{return { label:item.title , value:item.id}})
+          state.jobCategoryList = newData
+      },
+      setSkillList: (state, action) => {
+          state.skillList = action.payload
+      },
+      setAllJobPostedList: (state, action) => {
+          state.allJobPostedList = action.payload
+          state.screenLoader = false;
+      },
+      setJobPostedData: (state, action) => {
+          state.jobPostedData = action.payload
+          state.screenLoader = false;
+      },
+      setEarnedBackData: (state, action) => {
+          state.earnedBack = action.payload
+          state.screenLoader = false;
+      },
+      // setCurrentJobStatusChnage:(state,action)=>{
+      //     console.log(state.allJobPostedList,"llll")
+      //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
+      //    console.log(d,"ppp")
+      // }
+      setDeveloperDetails:(state,action) =>{
+          state.developerDetails = action.payload
+          state.screenLoader = false;
+      },
+      setFaqs : (state ,action) =>{
+          state.faqsData = action.payload
+      },
+      setInvoiceList: (state,action) => {
+          state.invoiceList = action.payload;
+          state.screenLoader = false;
+      },
+      setLeaveClientHistory : (state,action) => {
+        state.clientLeaveHistory =  action.payload
+      },
+      setReconciliationsData:(state,action)=>{
+        console.log(action.payload,"ppppp")
+         state.reconciliationsData=action.payload
+      }
+
+  }
+})
 
 
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList, setReconciliationsData, setFaqs ,setClientLeaveHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -281,25 +234,26 @@ export function getClientLeaveHistory(payload, callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get('/client/leave-history')
-            if (result.status === 200) {
-                dispatch(setClientLeaveHistory(result.data.data))
-            }
+            let result = await clientInstance.get(generateApiUrl(payload,'client/leave-history'))
+              dispatch(setLeaveClientHistory(result.data.data))
+               
         } catch (error) {
-            const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
-            dispatch(setFailClientData())
+          console.log(error,"error")
+            // const message = error.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
+            // dispatch(setFailClientData())
         }
     };
 }
 export function getClientLeaveStatus(payload, callback) {
+  console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.post('/common/leave/status')
+            let result = await clientInstance.post('/common/leave/status',payload)
         } catch (error) {
             const message = error.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };
@@ -328,7 +282,6 @@ export function clientJobPost(payload, activeStep, callback) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`client/post-job`, { ...payload });
-      console.log(result,"result")
       dispatch(setJobId(result?.data?.job?.id));
       if (activeStep === 3) {
         toast.success("Job successfully Posted", { position: "top-center" });

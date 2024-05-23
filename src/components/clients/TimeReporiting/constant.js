@@ -108,4 +108,31 @@ export const tabText= [
   }
 
 ]
-
+export const generateLeave = (item) => {
+  switch (item) {
+    case "full-day":
+    return "Full Day"
+      case "half-day":
+      return "Half Day"
+      case "short-day" :
+      return " Short Day"
+    }
+};
+export const LEAVE_TYPE = [
+  {
+    key: "Full Day",
+    value: "full-day",
+  },
+  {
+    key: "Half-Day ",
+    value: "half-day",
+  },
+  {
+    key: "Short Leave",
+    value: "short-leave",
+  },
+  // {
+  //   key: "Casual Leave",
+  //   value: "casual-leave",
+  // },
+];

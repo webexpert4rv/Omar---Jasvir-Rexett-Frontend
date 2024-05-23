@@ -1,33 +1,30 @@
 import moment from "moment";
 import React from "react";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, OverlayTrigger } from "react-bootstrap";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import associateLogo from "../../../assets/img/aviox-logo.png";
 import ToolTip from "../Tooltip/ToolTip";
+import { generateLeave } from "../../clients/TimeReporiting/constant";
+import NoDataFound from "../../atomic/NoDataFound";
 
 function HeaderTable({ tableData, currentTab, handleApproveReject }) {
-  const approveLeave = <Tooltip id="tooltip">Approve</Tooltip>;
-  const rejectLeave = <Tooltip id="tooltip">Reject</Tooltip>;
-  const companyname = (
-    <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
-  );  
+ console.log(tableData,"tabledaya")
   return (
     <div>
-      <table className="table time-table table-bordered table-ui-custom">
+    { tableData?.length>0 ?  <table className="table time-table table-bordered table-ui-custom">
         <tbody>
           {tableData?.map((item, index) => (
             <tr>
               <td className="time-table-data text-start">
                 <div className="d-flex align-items-center gap-2 white-nowrap">
                   <div className="user-imgbx application-imgbx mx-0 mb-0">
-                    {/* <img src={userImage} className="user-img" /> */}
                   </div>
                   {item?.contract?.developer?.name}
                 </div>
               </td>
               <td className="time-table-data text-start">
                 <h4 className="leave-type-heading mb-0 white-nowrap">
-                  {item?.type}
+                  {generateLeave(item?.type)}
                 </h4>
               </td>
               <td className="time-table-data text-start">
@@ -43,13 +40,13 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                 AI Bot Project
               </td>
               <td className="time-table-data text-start">
-                {/* <OverlayTrigger placement="bottom" overlay={companyname}> */}
+                <ToolTip text="Aviox Technologies Pvt Ltd">
                   <div className="text-start">
                     <div className="user-imgbx d-inline-block associated-logo application-imgbx mx-0 mb-0">
                       <img src={associateLogo} className="user-img" />
                     </div>
                   </div>
-                {/* </OverlayTrigger> */}
+                </ToolTip>
               </td>
               <td className="time-table-data text-start">
                 {currentTab === "third" ? (
@@ -58,31 +55,33 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                   </span>
                 ) : (
                   <div className="d-flex justify-content-start gap-2">
-                    <OverlayTrigger placement="bottom" overlay={approveLeave}>
+                    <ToolTip text="Approve">
                       <Button
                         variant="transparent"
                         className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
-                        onClick={() => handleApproveReject("approve")}
+                        onClick={() => handleApproveReject(item?.id,"Approved")}
                       >
                         <IoCheckmark />
                       </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger placement="bottom" overlay={rejectLeave}>
+                    </ToolTip>
+                    <ToolTip text="Reject">
                       <Button
                         variant="transparent"
                         className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
-                        onClick={() => handleApproveReject("reject")}
+                        onClick={() => handleApproveReject(item?.id,"Rejected")}
                       >
                         <IoCloseOutline />
                       </Button>
-                    </OverlayTrigger>
+                    </ToolTip>
                   </div>
                 )}
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> : <td colSpan={8}>
+                  <NoDataFound />
+                </td>}
     </div>
   );
 }

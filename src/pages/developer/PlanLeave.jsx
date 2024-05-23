@@ -14,8 +14,11 @@ import {
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import RexettButton from "../../components/atomic/RexettButton";
+import { generateLeave } from "../../components/clients/TimeReporiting/constant";
+import { LEAVE_TYPE } from "../../components/clients/TimeReporiting/constant";
 
-const LEAVE_TYPE = ["full-day", "half-day ", "short-leave"];
+
+
 const LeavePlan = () => {
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
@@ -53,17 +56,6 @@ const LeavePlan = () => {
       reason_for_leave: values.reason,
     };
     dispatch(applyLeave(data));
-  };
-
-  const generateLeave = (item) => {
-    switch (item) {
-      case "full-day":
-      return "Full Day"
-        case "half-day":
-        return "Half Day"
-        case "short-day" :
-        return " Short Day"
-      }
   };
 
   return (
@@ -163,7 +155,7 @@ const LeavePlan = () => {
                 <div className="plan-leave-wrapper">
                   <h3 className="section-head border-0 mb-3">Apply Leave</h3>
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                       <Form.Label className="mb-2 font-14">
                         Select Client
                       </Form.Label>
@@ -186,7 +178,7 @@ const LeavePlan = () => {
                           </Form.Select>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="mb-4">
                       <Form.Label className="mb-2 font-14">
                         Leave Type
@@ -201,10 +193,10 @@ const LeavePlan = () => {
                           >
                             <option value="" selected>
                               Select leave type
-                            </option> 
+                            </option>
                             {LEAVE_TYPE.map((item, idx) => (
-                              <option key={idx} value={item}>
-                                {item}
+                              <option key={idx} value={item?.value}>
+                                {item?.key}
                               </option>
                             ))}
                           </Form.Select>
@@ -279,7 +271,7 @@ const LeavePlan = () => {
                             {/* <div className="user-imgbx application-imgbx mx-0 mb-0">
                                 <img src={companyLogo} className="user-img" />
                               </div> */}
-                            {item?.contract.client?.name}
+                            {item?.contract?.client?.name}
                           </div>
                         </td>
                         <td className="time-table-data text-start">

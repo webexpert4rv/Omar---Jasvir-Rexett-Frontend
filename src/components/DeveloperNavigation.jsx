@@ -25,6 +25,9 @@ const DeveloperNavigation = ({ onClick }) => {
     const [checked, setChecked] = useState(false)
     const [totalSeconds, setTotalSeconds] = useState(0);
     const {lastTimeLog}=useSelector(state=>state.developerData)
+    const [fridayMarquee , setFridayMarquee] = useState(false)
+    
+
 
     useEffect(()=>{
         dispatch(getLastTimeLog())
@@ -83,7 +86,8 @@ const DeveloperNavigation = ({ onClick }) => {
         <>
             <div className="rotate-text">
                 {/* <marquee>Please CheckIn to start the day. Before start your day, please submit yesterday report</marquee> */}
-                <marquee>Please CheckIn to start the day.</marquee>
+             {  fridayMarquee ?<marquee>Please submit your worksheet before end of week.</marquee> : <marquee>Please CheckIn to start the day.</marquee>}
+
             </div>
             <header className="mb-4">
                 <div className="d-flex align-items-center justify-content-between gap-3">
