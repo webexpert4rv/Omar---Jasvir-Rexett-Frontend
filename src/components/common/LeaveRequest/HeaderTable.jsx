@@ -29,7 +29,7 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
               </td>
               <td className="time-table-data text-start">
                 <p className="leave-date white-nowrap">
-                  {moment(item?.start_date).format("MM-DD-YYYY")} to{" "}
+                  {moment(item?.start_date).format("MM-DD-YYYY")} to
                   {moment(item.end_date).format("MM-DD-YYYY")}
                 </p>
               </td>

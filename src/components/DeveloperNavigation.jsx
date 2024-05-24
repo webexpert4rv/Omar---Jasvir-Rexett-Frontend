@@ -9,6 +9,7 @@ import Timer from "./atomic/Timer";
 import { useDispatch, useSelector } from "react-redux";
 import { addLogTime, getLastTimeLog } from "../redux/slices/developerDataSlice";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 const str = String(localStorage.getItem("userName"));
 const developerName = str.replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
@@ -28,8 +29,10 @@ const DeveloperNavigation = ({ onClick }) => {
     const [fridayMarquee , setFridayMarquee] = useState(false)
     
 
-
     useEffect(()=>{
+        const dt = moment(new Date(), "YYYY-MM-DD HH:mm:ss").format('dddd')
+        setFridayMarquee(dt)
+        console.log(dt,"dt")
         dispatch(getLastTimeLog())
         
     },[])
@@ -38,7 +41,6 @@ const DeveloperNavigation = ({ onClick }) => {
         const seconds = hours * 3600;
         return  seconds
     }
-    console.log(lastTimeLog,"lastTimeLog")
 
     useEffect(()=>{
        if(Object.keys(lastTimeLog).length>0){
@@ -87,7 +89,7 @@ const DeveloperNavigation = ({ onClick }) => {
         <>
             <div className="rotate-text">
                 {/* <marquee>Please CheckIn to start the day. Before start your day, please submit yesterday report</marquee> */}
-             {  fridayMarquee ?<marquee>Please submit your worksheet before end of week.</marquee> : <marquee>Please CheckIn to start the day.</marquee>}
+             {  fridayMarquee === "Friday" ?<marquee>Please submit your TimeSheet before end of week.</marquee> : <marquee>Please CheckIn to start the day.</marquee>}
 
             </div>
             <header className="mb-4">

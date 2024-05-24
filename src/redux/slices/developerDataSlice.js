@@ -18,8 +18,9 @@ const initialDeveloperData = {
   allContracts: [],
   shareDocument: [],
   approvedLoader: false,
-  lastTimeLog:{},
-  leaveHistory:[]
+  lastTimeLog: {},
+  leaveHistory: [],
+  leaveDetails:[]
 };
 
 export const developerDataSlice = createSlice({
@@ -92,11 +93,14 @@ export const developerDataSlice = createSlice({
       state.smallLoader = false;
       state.approvedLoader = false;
     },
-    setLastTimeLog:(state,action)=>{
-      state.lastTimeLog=action.payload
-    }, 
+    setLastTimeLog: (state, action) => {
+      state.lastTimeLog = action.payload;
+    },
     setLeaveHistory: (state,action) =>{
-      state.leaveHistory = action.payload
+      state.leaveDetails = action.payload
+  },
+    setUpdateLeave:(state,action)=>{
+      state.updateLeave = action.payload
   }
 },
 });
@@ -118,7 +122,8 @@ export const {
   setSuccessProfileData,
   setDeveloperDashboard,
   setLastTimeLog,
-  setLeaveHistory
+  setLeaveHistory,
+  setUpdateLeave
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -173,18 +178,18 @@ export function getDeveloperProfileDetails(payload, callback) {
     }
   };
 }
-export function approvedClient(payload, role, callback) {
+export function approvedClient(id,payload, role, callback) {
   return async (dispatch) => {
     dispatch(setApprovedLoader());
     let result;
     try {
       if (role === "developer") {
         result = await clientInstance.put(
-          `${role}/submit-time-report/${payload}`
+          `${role}/submit-time-report/${id}`,{...payload}
         );
       } else {
         result = await clientInstance.post(
-          `${role}/approve-time-reports/${payload}`
+          `${role}/approve-time-reports/${id}`,{...payload}
         );
       }
       if (result.status === 200) {
@@ -221,7 +226,9 @@ export function updateDeveloperCvBio(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post("common/update-bio", {...payload,});
+      let result = await clientInstance.post("common/update-bio", {
+        ...payload,
+      });
       if (result.status === 200) {
         toast.success("Bio is updated", { position: "top-center" });
         dispatch(setSuccessActionData());
@@ -240,7 +247,7 @@ export function applyLeave(payload) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post("/developer/apply-for-leave", {...payload,});
-      if (result.status === 200) {
+      if (result.status === 201) {
         toast.success("Leave Applied", { position: "top-center" });
         dispatch(setSuccessActionData());
       }
@@ -252,14 +259,29 @@ export function applyLeave(payload) {
   };
 }
 
-export function getLeaveHistory(id) {
+export function getLeaveHistory(id , payload ) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.get(`/common/get-leave-history/${id}`);
-      console.log(result.data.data, "result==")
+      let result = await clientInstance.get(generateApiUrl(payload,`common/get-leave-history/${id}`));
       if (result.status === 200) {
-        dispatch(setLeaveHistory(result?.data?.data))
+        dispatch(setLeaveHistory(result?.data?.data));
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      dispatch(setLeaveHistory([]))
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function getUpdateLeave(id , payload ) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.put(`/developer/update-leave-request/${id}`,{...payload});
+      if (result.status === 200) {
+        dispatch(setUpdateLeave(result?.data?.data))
       }
     } catch (error) {
       const message = error.message || "Something went wrong";
@@ -267,11 +289,26 @@ export function getLeaveHistory(id) {
     }
   };
 }
-export function updateDeveloperCvExperience(payload,callback) {
+
+
+export function getCancelLeave(id , payload ) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`common/update-experiences`, {...payload} );
+      let result = await clientInstance.put(`/developer/withdraw-leave-request/${id}`,{...payload});
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+export function updateDeveloperCvExperience(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`common/update-experiences`, {
+        ...payload,
+      });
       if (result.status === 200) {
         toast.success("Experience is Updated", { position: "top-center" });
         dispatch(setSuccessActionData());
@@ -304,7 +341,7 @@ export function addDeveloperCvExperience(payload, callback) {
   };
 }
 
-export function deleteExperience(id,devId, callback) {
+export function deleteExperience(id, devId, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -363,7 +400,7 @@ export function addDeveloperCvEducation(payload, callback) {
   };
 }
 
-export function updateDeveloperCvEducation(payload,callback) {
+export function updateDeveloperCvEducation(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -595,10 +632,9 @@ export function addProjects(paylaod, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(
-        `/common/add-developer-project`,
-        { ...paylaod }
-      );
+      let result = await clientInstance.post(`/common/add-developer-project`, {
+        ...paylaod,
+      });
       toast.success("Project is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
       return callback();
@@ -629,7 +665,7 @@ export function deleteProjects(projectId, callback) {
     }
   };
 }
-export function updateProjects(projectId, payload, callback,isLast = true) {
+export function updateProjects(projectId, payload, callback, isLast = true) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -652,17 +688,18 @@ export function updateProjects(projectId, payload, callback,isLast = true) {
   };
 }
 
-
 export function addLogTime(paylaod, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`developer/add-time-log`, {...paylaod, });
+      let result = await clientInstance.post(`developer/add-time-log`, {
+        ...paylaod,
+      });
       dispatch(setSuccessActionData());
       // toast.success(result)
       return callback();
     } catch (error) {
-      toast.error(error?.response?.data?.message,{position: "top-center"})
+      toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
   };
@@ -682,13 +719,22 @@ export function getLastTimeLog(paylaod) {
   };
 }
 
-export function postReconciliationData(paylaod) {
+export function postReconciliationData(paylaod, callback) {
   return async (dispatch) => {
-    // dispatch(setSmallLoader());
+    dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(`/common/add-time-report-reconciliation`,{});
+      let result = await clientInstance.post(
+        `/common/add-time-report-reconciliation`,
+        paylaod
+      );
       dispatch(setLastTimeLog(result.data));
-      // return callback();
+      if (result?.status == 200||201) {
+        toast.success("Reconciliation is submitted successfully", {
+          position: "top-center",
+        });
+      }
+      dispatch(setSuccessActionData());
+      return callback();
     } catch (error) {
       console.log(error, "error");
       dispatch(setFailDeveloperData());
