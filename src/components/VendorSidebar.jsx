@@ -22,7 +22,7 @@ const VendorSidebar = ({ sideBarActive }) => {
             <aside className={sideBarActive ? "sidebar active" : "sidebar"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
-                        <div className="sidebar-logo mb-3">
+                        <div className="sidebar-logo mt-3 mb-4">
                            <a href="https://www.rexett.com/">  <img src={sidebarLogo} alt="Sidebar Logo"/></a>
                         </div>
                         <NavLink to={"/vendor-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
@@ -37,7 +37,7 @@ const VendorSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/vendor-revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/vendor-upload-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("uploadInvoice")}</NavLink>
+                                <NavLink to={'/vendor-upload-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/vendor-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>

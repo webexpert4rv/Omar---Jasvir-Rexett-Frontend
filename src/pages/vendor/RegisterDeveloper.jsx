@@ -1,22 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { HiUpload } from "react-icons/hi";
-import { Button, Col, Form, InputGroup, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Form,
+  InputGroup,
+  OverlayTrigger,
+  Row,
+  Tooltip,
+} from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
-import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getAddNewDeveloper, getSkillList } from "../../redux/slices/clientDataSlice";
+import {
+  filePreassignedUrlGenerate,
+  getAddNewDeveloper,
+  getSkillList,
+} from "../../redux/slices/clientDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
-import { addDegree, getDegreeList } from "../../redux/slices/developerDataSlice";
+import {
+  addDegree,
+  getDegreeList,
+} from "../../redux/slices/developerDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
-import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 import { useNavigate } from "react-router-dom";
-import { type } from "@testing-library/user-event/dist/type";
-import { INVALID_FILE_TYPE } from "../../components/clients/TimeReporiting/constant";
 import { Controller } from "react-hook-form";
-import { min } from "moment";
-
+import { EXPERIENCE_OPTIONS } from "../../helper/utlis";
 
 const createOption = (label) => ({
   label,
@@ -27,10 +37,8 @@ const RegisterDeveloper = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
-  const [options, setOptions] = useState([]);
   const [disbaleYear, setDisbaleYear] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
-  const [skills, setSkills] = useState(null);
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const [skillCate, setSkillsCate] = useState([]);
   const { degreeList } = useSelector((state) => state.developerData);
@@ -38,15 +46,15 @@ const RegisterDeveloper = () => {
   const skillSet = skillLabels?.toString();
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState([]);
+  const [expertSkill, setExpertSkill] = useState([]);
   const [fileTypeError, setFileTypeError] = useState(false);
-  const navigate = useNavigate();
   const [socialMediaRows, setSocialMediaRows] = useState([
     {
       name: "",
       url: "",
     },
   ]);
-
+  const navigate = useNavigate();
   const {
     register,
     control,
@@ -58,17 +66,43 @@ const RegisterDeveloper = () => {
     trigger,
     setError,
     formState: { errors },
-  } = useForm();
-
+  } = useForm({
+    defaultValues: {
+      educations: [
+        {
+          university_name: "",
+          degree_id: "",
+          address: "",
+          start_year: "",
+          end_year: "",
+          currently_attending: false,
+          description: "",
+        },
+      ],
+    },
+  });
+  console.log(selectedOption, "select-----");
+  console.log(expertSkill, "experskilll");
   const { fields, append, remove, replace } = useFieldArray({
     control,
-    name: "educations",
+    // name: "educations",
     name: "experiences",
+    name: "expertise",
     name: "social_links",
+    name: "skills",
+  });
+  const {
+    fields: educationField,
+    append: appendEducationField,
+    remove: removeEducationField,
+  } = useFieldArray({
+    control,
+    name: "educations",
   });
 
   const [experienceFields, setExperienceFields] = useState([
     {
+      id: 0,
       job_title: "",
       company_name: "",
       start_date: "",
@@ -77,21 +111,49 @@ const RegisterDeveloper = () => {
       description: "",
     },
   ]);
+  const [expertiseFields, setExpertiseFields] = useState([
+    { id: 0, skill: "", experience: "" },
+  ]);
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title };
+  });
 
   useEffect(() => {
     dispatch(getDegreeList());
   }, []);
 
-
   useEffect(() => {
     dispatch(getSkillList());
   }, [dispatch]);
+
   useEffect(() => {
-    setSkillsCate(skillListMapped)
+    setSkillsCate(skillListMapped);
   }, [skillList]);
 
+  const handleAppend = () => {
+    const expertise = watch("expertise");
+    let index = expertise?.findIndex(
+      (item) => item.skill == undefined || item.experience == ""
+    );
+    if (index == -1) {
+      setExpertiseFields([
+        ...expertiseFields,
+        { id: expertiseFields?.id + 1, skill: "", experience: "" },
+      ]);
+    }
+  };
 
-  console.log(skillCate, "skillCate")
+  const handleDelete = (id, index) => {
+    const expertise = watch("expertise");
+    expertise.splice(index, 1);
+    let expertiseFieldsCopy = [...expertiseFields];
+    expertiseFieldsCopy.splice(index, 1);
+    // const updatedExpertFields = expertiseFieldsCopy.filter(
+    //   (field) => field.id !== id
+    // );
+    setExpertiseFields(expertiseFieldsCopy);
+  };
+
   function generateYears() {
     const currentYear = new Date().getFullYear();
     const years = [];
@@ -102,65 +164,71 @@ const RegisterDeveloper = () => {
   }
 
   const yearsArray = generateYears();
-
-  const onSubmit = (data, index) => {
-    let convertArr = selectedOption.map((item) => item.label);
-    let formData = {
-      ...data,
-      skills: convertArr.toString(),
-    };
-
+  const onSubmit = (data) => {
     let fileData = new FormData();
     fileData.append("file", file);
+    let formattedExpertise = [];
+    formattedExpertise = data?.expertise?.map((val) => {
+      return { skill: val?.skill?.label, experience: val?.experience };
+    });
+    let formattedSkills = [];
+    let convertString = selectedOption?.map((item) => item.label);
+    formattedSkills = convertString.map((item) => {
+      return { skill: item, experience: null };
+    });
 
-    dispatch(
-      filePreassignedUrlGenerate(fileData, (url) => {
-        let data = {
-          ...formData,
-          profile_picture: url,
-        };
-        dispatch(
-          getAddNewDeveloper(data, () => {
-            navigate("/vendor-dashboard");
-          })
-        );
-      })
-    );
-  };
-
-  const skillListMapped = skillList.map((item) => {
-    return { value: item.id, label: item.title };
-  });
-
-  const handleExperience = () => {
-
-  }
-
-  const handleAppend = async () => {
-    // Trigger validation for all fields
-    const isValid = await trigger();
-    // Check if all fields are valid
-    if (isValid) {
-      append({
-        skills: "",
-        experience: ""
-      });
+    const EducationFieldCpy = [...data.educations];
+    let formattedEducationField = [];
+    formattedEducationField = EducationFieldCpy.map((curElem) => {
+      return { ...curElem, degree_id: curElem.degree_id.value };
+    });
+    let formData = {
+      ...data,
+      skills: formattedSkills,
+      expertise: formattedExpertise,
+      // profile_picture: url,
+      educations: formattedEducationField,
+    };
+    if (data) {
+      console.log(data, "formData");
+      dispatch(
+        filePreassignedUrlGenerate(fileData, (url) => {
+          let formData = {
+            ...data,
+            skills: formattedSkills,
+            expertise: formattedExpertise,
+            profile_picture: url,
+            educations: formattedEducationField
+          };
+          dispatch(
+            getAddNewDeveloper(formData, () => {
+              navigate("/vendor-dashboard");
+            })
+          );
+        })
+      );
     }
   };
-  const addtooltip = (
-    <Tooltip id="tooltip">
-      {t("addRow")}
-    </Tooltip>
-  );
+
+  const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
 
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
-    // to check if any of the field inside experiences array is empty
     const index = experiences?.findIndex(
-      ({ job_title, company_name, description, start_date, end_date }) =>
-        !company_name || !job_title || !description || !start_date || !end_date
+      ({
+        job_title,
+        company_name,
+        description,
+        start_date,
+        end_date,
+        is_still_working,
+      }) =>
+        !company_name ||
+        !job_title ||
+        !description ||
+        !start_date ||
+        (!is_still_working && !end_date)
     );
-    // if index is greater than -1 means there is field inside element that is empty
     if (index === -1) {
       const newExperienceField = {
         id: experienceFields.length + 1,
@@ -174,11 +242,14 @@ const RegisterDeveloper = () => {
       setExperienceFields([...experienceFields, newExperienceField]);
     }
   };
-  const handleDeleteFieldExp = (id) => {
-    const updatedExperienceFields = experienceFields.filter(
-      (field) => field.id !== id
-    );
-    setExperienceFields(updatedExperienceFields);
+  const handleDeleteFieldExp = (index, id) => {
+    const experiencesCopy = watch("experiences"); // Copy the experiences array
+    const expCop = [...experienceFields]; // Copy the experienceFields array
+    experiencesCopy.splice(index, 1);
+    const updatedExpertFields = expCop.filter((field) => field.id !== parseInt(id));
+
+    // Set the state with the updated arrays
+    setExperienceFields([...updatedExpertFields]);
   };
   const [educationFields, setEducationFields] = useState([
     {
@@ -215,14 +286,31 @@ const RegisterDeveloper = () => {
         end_year: "",
         currently_attending: false,
       };
-      setEducationFields([...educationFields, newEducationField]);
+      // setEducationFields([...educationFields, newEducationField]);
+      appendEducationField({
+        // id: educationFields.length + 1,
+        university_name: "",
+        degree_id: "",
+        address: "",
+        start_year: "",
+        end_year: "",
+        currently_attending: false,
+      });
+      setEducationFields([...watch("educations"), newEducationField]);
     }
   };
-  const handleDeleteField = (id) => {
-    const updatedEducationFields = educationFields.filter(
-      (field) => field.id !== id
-    );
-    setEducationFields(updatedEducationFields);
+  const handleDeleteField = (index, id) => {
+    const educations = watch("educations");
+    educations.splice(index, 1);
+    console.log(educationFields, "educationfield");
+
+    // const educationFieldsCpy=[...educationFields];
+    const temp = [...educationFields];
+    temp.splice(index, 1);
+    // const updatedEducationFields = educationFields.filter(
+    //   (field) => field.id !== id
+    // );
+    setEducationFields(temp);
   };
 
   const handleAddMoreSocial = () => {
@@ -286,20 +374,26 @@ const RegisterDeveloper = () => {
     }
   };
 
-  const onChangeSelect = (val) => {
+  const onChangeSelect = (val, arg) => {
     const newOption = createOption(val);
-    setSelectedOption((prev) => [...prev, newOption]);
-    setSkillsCate((prev) => [...prev, newOption]);
-  };
-  const handleCreate = (inputValue) => {
-    const payload = {
-        title : inputValue
+    if (arg == "skills") {
+      setSelectedOption((prev) => [...prev, newOption]);
+      setSkillsCate((prev) => [...prev, newOption]);
+    } else {
+      setExpertSkill((prev) => [...prev, newOption]);
     }
-    dispatch(addDegree(payload, () => {
-        dispatch(getDegreeList());
-      }))
-   } 
+  };
+  const handleCreate = (inputValue, index) => {
+    const payload = {
+      title: inputValue,
+    };
 
+    dispatch(
+      addDegree(payload, () => {
+        dispatch(getDegreeList());
+      })
+    );
+  };
   return (
     <>
       <section className="register-developer card-box">
@@ -424,25 +518,6 @@ const RegisterDeveloper = () => {
                   </Form.Group>
                 </Col>
 
-                {/* <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("address")} 
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="address_2"
-                      {...register("address", {
-                        required: {
-                          value: false,
-                          message: false,
-                        },
-                      })}
-                    />
-                    <p className="error-message">{errors.address?.message} </p>
-                  </Form.Group>
-                </Col> */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -562,6 +637,59 @@ const RegisterDeveloper = () => {
                     </p>
                   </Form.Group>
                 </Col>
+                <Col md="6" className="mb-4">
+                  <Form.Group>
+                    <Form.Label>{t("experienceRequired")}*</Form.Label>
+                    <Form.Select
+                      className="common-field"
+                      {...register("total_experience", {
+                        required: {
+                          value: true,
+                          message: "Experienced is required",
+                        },
+                      })}
+                    >
+                      <option disabled selected value="">
+                        {t("select")} {t("experienceRequired")}
+                      </option>
+                      <option value="Less_than_one">
+                        {t("lessThan1Year")}
+                      </option>
+                      <option value="1 year">1 {t("year")}</option>
+                      <option value="2 years">2 {t("year")}</option>
+                      <option value="3 years">3 {t("year")}</option>
+                      <option value="4 years">4 {t("year")}</option>
+                      <option value="5 years">5 {t("year")}</option>
+                      <option value="6+ years ">6 +{t("year")}</option>
+                    </Form.Select>
+                  </Form.Group>
+                  <p className="error-message">{errors.experience?.message}</p>
+                </Col>
+                {/* <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="common-label">
+                      {t("experience")} *
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className="common-field"
+                      name="experience"
+                      {...register("professional_title", {
+                        required: {
+                          value: true,
+                          message: t("experienceValidation"),
+                        },
+                        // pattern: {
+                        //     value: /^[A-Za-z\s]+$/,
+                        //     message: "Country should not contain numbers or special character",
+                        // }
+                      })}
+                    />
+                    <p className="error-message">
+                      {errors.professional_title?.message}{" "}
+                    </p>
+                  </Form.Group>
+                </Col> */}
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -580,22 +708,6 @@ const RegisterDeveloper = () => {
                       })}
                       className="d-none"
                     />
-                    {/* <Controller
-                      name="profile_picture"
-                      control={control}
-                      rules={{ required: t("profilePictureValidation") }}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="file"
-                          className="d-none"
-                          onChange={(e) => {
-                            field.onChange(e);
-                            handleFileChange(e);
-                          }}
-                        />
-                      )}
-                    /> */}
 
                     <Form.Label
                       htmlFor="developer-image"
@@ -615,11 +727,6 @@ const RegisterDeveloper = () => {
                       </p>
                     )
                   )}
-                  {/* {errors?.profile_picture && (
-                    <p className="error-message">
-                      {errors?.profile_picture?.message}
-                    </p>
-                  )} */}
                   {selectedImage && (
                     <div>
                       <img
@@ -657,6 +764,7 @@ const RegisterDeveloper = () => {
                         </Form.Label>
                         <Form.Control
                           type="text"
+                          className="common-field"
                           {...register(`experiences[${index}].company_name`, {
                             required: {
                               value: true,
@@ -669,9 +777,9 @@ const RegisterDeveloper = () => {
                             {errors.experiences[index].company_name.message}
                           </p>
                         )}
-
                       </Form.Group>
                     </Col>
+
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label className="common-label">
@@ -679,7 +787,7 @@ const RegisterDeveloper = () => {
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          className="cv-field"
+                          className="common-field"
                           name="job_title"
                           placeholder={t("enterJobPosition")}
                           {...register(`experiences[${index}].job_title`, {
@@ -701,6 +809,7 @@ const RegisterDeveloper = () => {
                         <Form.Control
                           type="text"
                           as="textarea"
+                          className="common-field"
                           rows={3}
                           // placeholder="Enter Job Description"
                           {...register(`experiences[${index}].description`, {
@@ -719,6 +828,7 @@ const RegisterDeveloper = () => {
                         <Form.Label>{t("startDate")} *</Form.Label>
                         <Form.Control
                           type="date"
+                          className="common-field"
                           placeholder={t("enterStartDate")}
                           max={new Date().toISOString().split("T")[0]}
                           {...register(`experiences[${index}].start_date`, {
@@ -748,7 +858,7 @@ const RegisterDeveloper = () => {
                         <Form.Label>{t("endDate")} *</Form.Label>
                         <Form.Control
                           type="date"
-                          className="cv-field"
+                          className="common-field"
                           placeholder={t("enterEndDate")}
                           max={new Date().toISOString().split("T")[0]}
                           {...register(`experiences[${index}].end_date`, {
@@ -770,6 +880,8 @@ const RegisterDeveloper = () => {
                       <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                         <Form.Check
                           type="checkbox"
+                          className="job-post-checkbox"
+                          id="exp_current"
                           {...register(
                             `experiences[${index}].is_still_working`,
                             {
@@ -780,16 +892,16 @@ const RegisterDeveloper = () => {
                             handleCurrentlyWorkingChange(e, index)
                           }
                         />
-                        <Form.Label className="mb-0">
+                        <Form.Label className="mb-0" htmlFor="exp_current">
                           {t("currentlyWorking")}
                         </Form.Label>
                       </Form.Group>
                     </Col>
-                    {index !== 0 && (
+                    {experienceFields?.length > 1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
-                          variant="danger"
-                          onClick={() => handleDeleteFieldExp(id)}
+                          className="arrow-btn danger-arrow"
+                          onClick={() => handleDeleteFieldExp(index, id)}
                         >
                           <FaTrash />
                         </Button>
@@ -799,88 +911,133 @@ const RegisterDeveloper = () => {
                 )
               )}
               <div className="text-end my-3">
-                <Button
-                  className="main-btn py-2 px-3"
-                  onClick={handleAddMoreExp}
-                >
-                  +
-                </Button>
+                <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                  <Button
+                    className="arrow-btn primary-arrow ms-auto"
+                    onClick={handleAddMoreExp}
+                  >
+                    +
+                  </Button>
+                </OverlayTrigger>
               </div>
             </div>
-            {/* <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
+            <h3 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterExpertise")}
-            </h2>
-            <Row>
-              <Col md="12">
-                <Form.Group className="mb-4">
-                  <Form.Label className="common-label">{t("Enter Skills")}</Form.Label>
-                  <CreatableSelect
-                    isMulti
-                    isClearable
-                    name={selectedOption}
-                    onChange={(newValue) => {
-                      setSelectedOption(newValue);
-                    }}
-                    onCreateOption={onChangeSelect}
-                    options={skillCate}
-                    value={selectedOption}
-                  />
-                </Form.Group>
-              </Col>
-            </Row> */}
-            {/* <div className="flex-none">
-              <Form.Label className="common-label">{t("experience")}</Form.Label>
-              <Form.Select className="filter-select shadow-none" onChange={(e) => handleExperience(e)}>
-                <option value="" > {t("selectExperience")} </option>
-                <option value="1 years" onClick={(e) => e.stopPropagation()}>1 {t("years")}</option>
-                <option value="2 years" onClick={(e) => e.stopPropagation()}>2 {t("years")}</option>
-                <option value="3 years" onClick={(e) => e.stopPropagation()}>3 {t("years")}</option>
-                <option value="5 years" onClick={(e) => e.stopPropagation()}>5 {t("years")}</option>
-                <option value="above 5" onClick={(e) => e.stopPropagation()}>above 5  {t("years")}</option>
-              </Form.Select>
-            </div>
+            </h3>
+            {expertiseFields.map((field, index) => {
+              return (
+                <Fragment key={field?.id}>
+                  <div>
+                    <Row className="mb-3">
+                      <Col md={6}>
+                        <Form.Group>
+                          <Form.Label className="common-label">
+                            {t("enterSkill")}
+                          </Form.Label>
+                          <CreatableSelect
+                            className="common-field"
+                            {...register(`expertise.${index}.skill`, {
+                              required: {
+                                value: true,
+                                message: t("required_message"),
+                              },
+                            })}
+                            isClearable
+                            options={skillCate}
+                            onChange={(newValue) => {
+                              // setExpertSkill([newValue]);x
+                              setValue(`expertise.${index}.skill`, newValue);
+                              clearErrors(`expertise.${index}.skill`);
+                            }}
+                            onCreateOption={(val) => {
+                              onChangeSelect(val, "expertise");
+                            }}
+                          // value={expertSkill}
+                          // name={expertSkill}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
 
-
+                        <div className="flex-none">
+                          <Form.Label className="common-label">
+                            {t("experience")}
+                          </Form.Label>
+                          <Form.Select
+                            {...register(`expertise.${index}.experience`, {
+                              required: {
+                                value: true,
+                                message: t("required_message"),
+                              },
+                            })}
+                            className="common-field shadow-none"
+                          >
+                            <option value=""> {t("selectExperience")} </option>
+                            {EXPERIENCE_OPTIONS.map(({ label, value }, index) => (
+                              <option value={value} key={index}>
+                                {label} {t("years")}
+                              </option>
+                            ))}
+                          </Form.Select>
+                          {errors?.skills?.[index]?.experience && (
+                            <p className="error-message">
+                              {errors?.skills[index]?.experience?.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                    </Row>
+                    {errors?.skills?.[index]?.skill && (
+                      <p className="error-message">
+                        {errors?.skills[index]?.skill?.message}
+                      </p>
+                    )}
+                  </div>
+                  {expertiseFields?.length > 1 && (
+                    <Col md="12" className="d-flex justify-content-end">
+                      <Button
+                        className="arrow-btn danger-arrow ms-auto"
+                        onClick={() => handleDelete(field?.id, index)}
+                      >
+                        <FaTrash />
+                      </Button>
+                    </Col>
+                  )}
+                </Fragment>
+              );
+            })}
             <div className="text-end mb-3">
               <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                <Button className="main-btn py-2 px-3" onClick={handleAppend}>
+                <Button className="arrow-btn primary-arrow ms-auto" onClick={handleAppend}>
                   +
                 </Button>
               </OverlayTrigger>
-            </div> */}
-            {/* <div className="text-center">
-              <RexettButton
-                type="submit"
-                text="Submit"
-                className="main-btn px-4 font-14 fw-semibold"
-                variant="transparent"
-                disabled={smallLoader}
-                isLoading={smallLoader}
-              />
-            </div> */}
+            </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterEducationDetails")}
             </h2>
             <div className="inner-form mb-3">
-              {educationFields.map(
+              {educationField.map(
                 (
-                  {
-                    id,
-                    university_name,
-                    degree_id,
-                    address,
-                    start_year,
-                    end_year,
-                    currently_attending,
-                  },
+                  item,
+                  // {
+                  //   id,
+                  //   university_name,
+                  //   degree_id,
+                  //   address,
+                  //   start_year,
+                  //   end_year,
+                  //   currently_attending,
+                  // },
                   index
                 ) => (
-                  <Row>
+                  <Row key={item.id}>
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>{t("universityName")} *</Form.Label>
                         <Form.Control
                           type="text"
+                          className="common-field shadow-none"
                           {...register(`educations[${index}].university_name`, {
                             required: {
                               value: true,
@@ -910,26 +1067,78 @@ const RegisterDeveloper = () => {
                             (option) => option.value === degree_id
                           )}
                         /> */}
-                        <CreatableSelect
-                          isClearable
-                          onChange={(val) =>
-                            setValue(
-                              `educations[${index}].degree_id`,
-                              val ? val.value : ""
-                            )
-                          }
-                          defaultValue={degreeList.find(
-                            (option) => option.value === degree_id
+                        {/* <Controller
+                          name={`educations.${index}.degree_id`}
+                          control={control}
+                          rules={{required:{
+                            value:true,
+                            message:t("required_message")
+                          }}}
+                          render={({ field }) => (
+                            <CreatableSelect
+                              {...field}
+                              value={watch(`educations?.${index}.degree_id`)}
+                              isClearable
+                              onChange={(val) => {
+                                setValue(`educations.${index}.degree_id`, val);
+                              }}
+                              // defaultValue={degreeList.find(
+                              //   (option) => option.value === watch(`educations.${index}.degree_id`)
+                              // )}
+                              onCreateOption={handleCreate}
+                              options={degreeList}
+                            />
                           )}
+                        /> */}
+                        <CreatableSelect
+                          className="common-field"
+                          {...register(`educations.${index}.degree_id`, {
+                            required: {
+                              value: true,
+                              message: t("degree_name_required_msg"),
+                            },
+                          })}
+                          // value={watch(`educations.${index}.degree_id`)}
+                          isClearable
+                          onChange={(val) => {
+                            setValue(`educations.${index}.degree_id`, val);
+                          }}
+                          // value={degreeList.find((curElem)=>curElem.label === item.label)}
                           onCreateOption={handleCreate}
                           options={degreeList}
                         />
+                        {errors?.educations?.[index]?.degree_id && (
+                          <p className="error-message">
+                            {errors.educations[index].degree_id.message}
+                          </p>
+                        )}
+                        {/* <CreatableSelect
+                            {...register(`expertise.${index}.skill`, {
+                              required: {
+                                value: true,
+                                message: t("required_message"),
+                              },
+                            })}
+                            isClearable
+                            options={skillCate}
+                            onChange={(newValue) => {
+                              // setExpertSkill([newValue]);x
+                              setValue(`expertise.${index}.skill`, newValue);
+                              clearErrors(`expertise.${index}.skill`);
+                            }}
+                            onCreateOption={(val) => {
+                              onChangeSelect(val, "expertise");
+                            }}
+                            // value={expertSkill}
+                            // name={expertSkill}
+                          /> */}
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>{t("address")} *</Form.Label>
                         <Form.Control
+                          className="common-field"
                           type="text"
                           {...register(`educations[${index}].address`, {
                             required: {
@@ -949,6 +1158,7 @@ const RegisterDeveloper = () => {
                       <Form.Group>
                         <Form.Label>{t("startYear")} *</Form.Label>
                         <Form.Select
+                          className="common-field"
                           {...register(`educations.${index}.start_year`, {
                             required: t("startYearValidation"),
                             validate: {
@@ -987,6 +1197,7 @@ const RegisterDeveloper = () => {
                       <Form.Group className="mb-3">
                         <Form.Label>{t("endYear")} *</Form.Label>
                         <Form.Select
+                          className="common-field"
                           {...register(`educations.${index}.end_year`, {
                             required: {
                               value: disbaleYear[index] ? false : true,
@@ -1017,7 +1228,8 @@ const RegisterDeveloper = () => {
                     <Form.Group className="mb-4 d-flex gap-2 align-items-center">
                       <Form.Check
                         type="checkbox"
-                        className="cv-field"
+                        className="job-post-checkbox"
+                        id="edu-checkbox"
                         {...register(
                           `educations[${index}].currently_attending`,
                           {
@@ -1028,15 +1240,18 @@ const RegisterDeveloper = () => {
                           handleCurrentlyAttendingChange(e, index)
                         }
                       />
-                      <Form.Label className="mb-0">
+                      <Form.Label className="mb-0" htmlFor="edu-checkbox">
                         {t("currentlyAttending")}
                       </Form.Label>
                     </Form.Group>
-                    {index !== 0 && (
+                    {watch("educations")?.length > 1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
-                          variant="danger"
-                          onClick={() => handleDeleteField(id)}
+                          className="arrow-btn danger-arrow"
+                          // onClick={() => handleDeleteField(index,id)}
+                          onClick={() => {
+                            removeEducationField(index);
+                          }}
                         >
                           <FaTrash />
                         </Button>
@@ -1046,9 +1261,14 @@ const RegisterDeveloper = () => {
                 )
               )}
               <div className="text-end my-3">
-                <Button className="main-btn py-2 px-3" onClick={handleAddMore}>
-                  +
-                </Button>
+                <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                  <Button
+                    className="arrow-btn primary-arrow ms-auto"
+                    onClick={handleAddMore}
+                  >
+                    +
+                  </Button>
+                </OverlayTrigger>
               </div>
             </div>
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
@@ -1079,20 +1299,21 @@ const RegisterDeveloper = () => {
             <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
               {t("enterSkills")}
             </h2>
-            <div className="inner-form mb-3">
+            <div className="experience-container">
               <Row>
                 <Col md="12">
                   <Form.Group className="mb-4">
-                    {/* <Form.Label>Skills</Form.Label> */}
-
                     <CreatableSelect
+                      className="common-field"
                       isMulti
                       isClearable
                       name={selectedOption}
                       onChange={(newValue) => {
                         setSelectedOption(newValue);
                       }}
-                      onCreateOption={onChangeSelect}
+                      onCreateOption={(val) => {
+                        onChangeSelect(val, "skills");
+                      }}
                       options={skillCate}
                       value={selectedOption}
                     />
@@ -1124,7 +1345,7 @@ const RegisterDeveloper = () => {
                         </InputGroup.Text>
                         <Form.Control
                           type="text"
-                          className="cv-field"
+                          className="common-field"
                           placeholder={t("enterUrl")}
                           {...register(`social_links[${index}].url`, {
                             required: {
@@ -1145,12 +1366,14 @@ const RegisterDeveloper = () => {
                 </div>
               ))}
               <div className="text-end mb-3">
-                <Button
-                  className="main-btn py-2 px-3"
-                  onClick={handleAddMoreSocial}
-                >
-                  +
-                </Button>
+                <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                  <Button
+                    className="arrow-btn primary-arrow ms-auto"
+                    onClick={handleAddMoreSocial}
+                  >
+                    +
+                  </Button>
+                </OverlayTrigger>
               </div>
             </div>
             <div className="text-center">

@@ -12,7 +12,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { current } from "@reduxjs/toolkit";
 import { timeReporting } from "../../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
-const AddTimingModal = ({ show, handleClose, role }) => {
+const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
   const dispatch = useDispatch();
   // const [selectDay, setDaySelection] = useState(null);
   const [disabledWorkDay, setDisabledWorkDay] = useState([]);
@@ -20,6 +20,7 @@ const AddTimingModal = ({ show, handleClose, role }) => {
   const [open, setOpen] = useState(false);
   const [timeReportingData, setTimeReportingData] = useState([]);
   const [details, setDetails] = useState(false)
+  const [count,setCount]=useState(0)
   const { t } = useTranslation()
   const {
     register,
@@ -34,9 +35,10 @@ const AddTimingModal = ({ show, handleClose, role }) => {
     control,
     name: "addTime",
   });
-  const { allContracts, addTimeReports, smallLoader } = useSelector(
+  const { allContracts, addTimeReports, btnLoader } = useSelector(
     (state) => state.developerData
   );
+
 
   useEffect(() => {
     dispatch(getAllContracts());
@@ -71,14 +73,16 @@ const AddTimingModal = ({ show, handleClose, role }) => {
     if (addTimeReports.length > 0) {
       setTimeReportingData(addTimeReports);
     } else {
-      getCurrentWeekDates();
+      if(currentAction=="AddTime"){
+        getCurrentWeekDates();
+
+      }
     }
   }, [addTimeReports]);
 
-  useEffect((formattedDate) => {
+  useEffect(() => {
     if (timeReportingData?.length > 0) {
       timeReportingData?.forEach((item) => {
-        // const currrentDate = selectedFilter?.length > 0 ? item?.report_date :formattedDate ;
         append({
           report_date: item?.report_date,
           is_off_day: true,
@@ -112,7 +116,6 @@ const AddTimingModal = ({ show, handleClose, role }) => {
     let payloadData = {
       contract_id: +selectedFilter?.contract_id,
       reports: values?.addTime,
-
     };
     if (selectedFilter?.contract_id) {
       dispatch(
@@ -145,8 +148,8 @@ const AddTimingModal = ({ show, handleClose, role }) => {
     setSelectedFilter({})
     setTimeReportingData([])
     setAddTimeReports([])
-    getCurrentWeekDates();
     handleClose()
+    setCount(prev=>prev+1)
   }
   return (
     <Modal
@@ -163,22 +166,11 @@ const AddTimingModal = ({ show, handleClose, role }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <h3 className="popup-heading">{t("addTime")}</h3>
+        <h3 className="popup-heading">{ currentAction=="AddTime"  ?  t("addTime") :"Edit Time"}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="experience-container">
-            <div className="mb-3">
-              {!open ? <div className="text-end">
-                <Button
-                  variant="transparent"
-                  className="main-btn px-3"
-                  onClick={() => setOpen(!open)}
-                  aria-controls="example-collapse-text"
-                  aria-expanded={open}
-                >
-                  {t("updatePreviousTime")} ?
-                </Button>
-              </div> : ""}
-              <Collapse in={open}>
+           {currentAction!=="AddTime"? <div className="mb-3">
+              <Collapse in={true}>
                 <div className="mt-2">
                   <Row>
                     <Col md={4} className="mb-0">
@@ -237,7 +229,7 @@ const AddTimingModal = ({ show, handleClose, role }) => {
                       <div>
                         <Form.Select
                           className="shadow-none common-field"
-                          onChange={(e) => handleChange(e, "week")}
+                          onChange={(e) => handleChange(e, "week_number")}
                         >
                           <option disabled selected>
                             {t("selectWeek")}
@@ -249,14 +241,14 @@ const AddTimingModal = ({ show, handleClose, role }) => {
                         </Form.Select>
 
                       </div>
-                      {!selectedFilter?.week?.length > 0 && details ? (
+                      {!selectedFilter?.week_number?.length > 0 && details ? (
                         <p style={{ color: 'red' }}>{t("selectAWeek")}</p>
                       ) : ""}
                     </Col>
                   </Row>
                 </div>
               </Collapse>
-            </div>
+            </div>:""}
             <Row>
               <Col md={12} className="border-bottom mb-2 pb-4">
                 <Form.Group>
@@ -281,24 +273,23 @@ const AddTimingModal = ({ show, handleClose, role }) => {
                 {!selectedFilter?.contract_id?.length > 0 && details ? (
                   <p style={{ color: 'red' }}>{t("enterClientName")}</p>
                 ) : ""}
-                {open ? (
-                  <div className="text-center mt-2">
+                 
+                  {currentAction=="Edit" &&<div className="text-center mt-2">
                     <RexettButton
                       type="submit"
                       text="Get Previous Time Report"
                       className="main-btn px-4"
                       variant="transparent"
                       onClick={handlePrevTimeReporting}
-                      isLoading={smallLoader}
+                      isLoading={btnLoader}
                     />
 
-                  </div>
-                ) : (
-                  ""
-                )}
+                  </div>}
+                
+                
               </Col>
             </Row>
-            {!open ? fields?.map((item, index) => {
+            {(!open && currentAction!=="Edit") || addTimeReports?.length>0 ? fields?.map((item, index) => {
               return (
                 <>
                   <div className="time-row">
@@ -413,12 +404,13 @@ const AddTimingModal = ({ show, handleClose, role }) => {
             }) :
               ""}
             <div className="text-center">
-              {!open ? <RexettButton
+              {addTimeReports?.length>0  || (timeReportingData.length>0 &&  currentAction!=="Edit")  ? <RexettButton
                 type="submit"
                 text="Submit"
                 className="main-btn py-2 px-4 font-14 fw-semibold"
                 variant="transparent"
-                isLoading={smallLoader}
+                disabled={btnLoader}
+                isLoading={btnLoader}
               /> : ""}
             </div>
           </div>

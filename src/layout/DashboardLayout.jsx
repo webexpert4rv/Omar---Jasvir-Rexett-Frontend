@@ -10,6 +10,8 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { main } from '@popperjs/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRevenue } from '../redux/slices/vendorDataSlice';
+import { IoMdCall } from "react-icons/io";
+import { useTranslation } from 'react-i18next';
 const growthData = {
     labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct'],
     datasets: [
@@ -62,6 +64,7 @@ const DashboardLayout = ({ children }) => {
     const [yearOptionsValue, setYearOptionsValue] = useState([]);
     const thisYear = new Date().getFullYear();
     const dispatch = useDispatch()
+    const { t } = useTranslation()
 
 
     const handleSidebar = () => {
@@ -119,15 +122,18 @@ const DashboardLayout = ({ children }) => {
         <>
             <div className="dashboard-layout">
                 <Sidebar sideBarActive={mainSidebar} closemainSidebar={handleMainSidebar} />
+                <div className=''></div>
                 <main className={sidebarwrapper ? 'main-wrapper client-wrapper' : 'main-wrapper client-wrapper '}>
                     <Navigation sidebaractive={sidebarwrapper} handlemainSidebar={handleMainSidebar} handleSidebar={handleSidebar} />
                     {token && role == "client" ? children : <Navigate to="/" />}
-
+                    {/* <Link to={'/contact-support'} className='contact-support'>
+                        {t("feedback")}
+                    </Link> */}
                     {!sidebarwrapper ? <div className={sidebarwrapper ? 'right-sidebar' : 'right-sidebar hide'}>
                         <div className='text-end d-lg-none mb-4'>
                             {/* <Button variant="transparent" className='main-btn outline-main-btn px-3' onClick={handleSidebar}>&times;</Button> */}
                         </div>
-                        <h3 className='right-sidebar-heading mb-3'>Growth per month</h3>
+                        <h3 className='right-sidebar-heading mb-3'>{t("growthPerMonth")}</h3>
                         <div className="card-box">
                             <Row>
                                 <Col md={30}>
@@ -139,7 +145,7 @@ const DashboardLayout = ({ children }) => {
 
                             </Row>
                         </div>
-                        <h3 className='right-sidebar-heading mt-4 mb-3'>Earned Back</h3>
+                        <h3 className='right-sidebar-heading mt-4 mb-3'>{t("earnedBack")}</h3>
                         <div className='earned-chart'>
                             <Doughnut data={earnedback} options={options} />
                         </div>

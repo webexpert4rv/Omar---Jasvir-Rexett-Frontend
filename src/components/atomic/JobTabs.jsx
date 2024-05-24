@@ -2,11 +2,12 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
-import amazonImg from "../../assets/img/amazon.png";
 import NoDataFound from "./NoDataFound";
 import ScreenLoader from "./ScreenLoader";
+import { useTranslation } from "react-i18next";
 
 const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
+  const { t } = useTranslation() 
   const getCategory = (cat) => {
     let data = jobCategoryList.find((item) => item.id == cat);
     return data?.title;
@@ -16,17 +17,18 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
     const skillsArray = arr?.split(",");
     return skillsArray;
   };
+
+
   const currentStatusCssClass = (status) => {
-    console.log(status,"st")
     switch (status) {
       case "ended":
-        return "endcontract";
+        return "status-rejected";
       case "Initiated":
-        return "inprogress";
+        return "status-progress";
       case "completed":
-        return "completed";
+        return "status-finished";
       case "published":
-        return "completed";
+        return "status-finished";
       case "Unpublished":
           return "unpublished";
       default:
@@ -52,12 +54,16 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       <p className="grid-text">{item?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                       <p className="grid-text">{item?.job_type}</p>
                     </div>
-                    <p className="job-description">{item?.description}</p>
+                    <p className="job-description" 
+                     dangerouslySetInnerHTML={{
+                      __html: item?.description,
+                    }}
+                    ></p>
                     <Row>
                       <Col md="12">
                         <div className="info-grid">
-                          <h4 className="grid-heading">Skills Req.</h4> 
-                          {item?.skills.length>0?<ul className="need-skill-list">
+                          <h4 className="grid-heading">{t("skillsRequired")}</h4> 
+                          {item?.skills?.length>0?<ul className="need-skill-list">
                             {convertToArray(item?.skills)?.map((item) => {
                               return (
                                 <>
@@ -74,7 +80,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                 <div className="status-wrapper">
                   <div>
                     <p
-                      className={`status-text ${currentStatusCssClass(
+                      className={`${currentStatusCssClass(
                         item?.status
                       )}`}
                     >
@@ -82,12 +88,12 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                     </p>
                   </div>
                   <p className="font-15">
-                    Posted Date:<strong>{item.created_at.slice(0, 10)}</strong>
+                    Posted Date: <strong>{item.created_at.slice(0, 10)}</strong>
                   </p>
 
                   <Link
                     to={`/admin-single-job/${item?.id}`}
-                    className="px-3 mb-2 main-btn text-decoration-none"
+                    className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                   >
                     <FaEye />
                   </Link>

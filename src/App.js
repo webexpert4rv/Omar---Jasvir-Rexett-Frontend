@@ -2,8 +2,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
-import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import { Suspense, lazy } from "react"; 
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import 'react-calendar/dist/Calendar.css'; 
+import { ArcElement, Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement } from 'chart.js';
+import { Fragment, Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
 import Login from './pages/Authentication/Login';
@@ -48,7 +51,7 @@ import VendorDashboardLayout from './layout/VendorDashboardLayout';
 import VendorDashboard from './pages/vendor/Dashboard';
 import VendorDocuments from './pages/vendor/VendorDocuments';
 import VendorRevenue from './pages/vendor/VendorRevenue';
-import VendorUploadInvoice from './pages/vendor/UploadInvoice';
+import VendorInvoice from './pages/vendor/VendorInvoice';
 import VendorTimeReporting from './pages/vendor/TimeReporting';
 import EditVendorProfile from './pages/vendor/EditProfile';
 import AllDeveloperList from './pages/vendor/ListAllDeveloper';
@@ -69,12 +72,25 @@ import AdminSingleDeveloper from './pages/admin/AdminSingleDeveloper';
 import VendorSingleDeveloper from './pages/vendor/VendorSingleDeveloper';
 import Otp from './pages/Authentication/Otp';
 import Faq from './pages/views/Faq';
-
+import TimeReportingDetail from './pages/admin/SingleTimeReporting';
+import DeveloperUpdatedCV from './pages/developer/DeveloperUpdatedCV';
+import ProfileUpdationRequest from './pages/admin/ProfileUpdationRequest';
+import ContactSupport from './pages/views/ContactSupport';
+import DeveloperInvoice from './pages/developer/DeveloperInvoice';
+import Members from './pages/admin/Members';
+import LeavePlan from './pages/developer/PlanLeave';
+import ScreenLoader from './components/atomic/ScreenLoader';
+import JobPostStepContainer from './pages/views/Job post step form/JobPostStepContainer';
+import LeaveRequest from './pages/views/LeaveRequests';
+import PublicHoliday from './pages/views/PublicHolidays';
+import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
 Chart.register(BarElement);
+Chart.register(PointElement);
+Chart.register(LineElement);
 function App() {
   return (
     <>
@@ -105,41 +121,51 @@ function App() {
           <Route path="/time-reporting" exact element={<DashboardLayout><TimeReporting /></DashboardLayout>} />
           <Route path="/earned-back" exact element={<DashboardLayout><EarnedBack /></DashboardLayout>} />
           <Route path="/invoice" exact element={<DashboardLayout><Invoice /></DashboardLayout>} />
+          <Route path="/contact-support" exact element={<DashboardLayout><ContactSupport /></DashboardLayout>} />
+          <Route path="/public-holiday" exact element={<DashboardLayout><PublicHoliday /></DashboardLayout>} />
           <Route path="/admin-dashboard" exact element={<AdminDashboardLayout><AdminDashboard /></AdminDashboardLayout>} />
           <Route path="/developer-list" exact element={<AdminDashboardLayout><DeveloperList /></AdminDashboardLayout>} />
-          <Route path="/list-clients" exact element={<AdminDashboardLayout><ListClient /></AdminDashboardLayout>} />
+          {/* <Route path="/list-clients" exact element={<AdminDashboardLayout><ListClient /></AdminDashboardLayout>} /> */}
           <Route path="/edit-admin-profile" exact element={<AdminDashboardLayout><EditAdminProfile /></AdminDashboardLayout>} />
           <Route path="/admin-documents" exact element={<AdminDashboardLayout><AdminDocuments /></AdminDashboardLayout>} />
           <Route path="/admin-time-reporting" exact element={<AdminDashboardLayout><AdminTimeReporting /></AdminDashboardLayout>} />
           <Route path="/revenue" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
           <Route path="/account-deletion-request" exact element={<AdminDashboardLayout><AccountDeletionRequest/></AdminDashboardLayout>} />
           <Route path="/admin-invoice" exact element={<AdminDashboardLayout><AdminInvoice /></AdminDashboardLayout>} />
+          <Route path="/profile-updation-request" exact element={<DeveloperDashboardLayout><ProfileUpdationRequest /></DeveloperDashboardLayout>} />
           <Route path="/developer-dashboard" exact element={<DeveloperDashboardLayout><DeveloperDashboard /></DeveloperDashboardLayout>} />
           <Route path="/edit-developer-profile" exact element={<DeveloperDashboardLayout><EditDeveloperProfile /></DeveloperDashboardLayout>} />
           <Route path="/developer-documents" exact element={<DeveloperDashboardLayout><DeveloperDocuments /></DeveloperDashboardLayout>} />
           <Route path="/developer-time-reporting" exact element={<DeveloperDashboardLayout><DeveloperTimeReporting /></DeveloperDashboardLayout>} />
+          <Route path="/developer-updated-cv" exact element={<DeveloperDashboardLayout><DeveloperUpdatedCV /></DeveloperDashboardLayout>} />
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
-          <Route path="/job-post" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
+          <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
+          <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
+          <Route path="/developer-public-holiday" exact element={<DeveloperDashboardLayout><DeveloperPublicHoliday /></DeveloperDashboardLayout>} />
+          <Route path="/job-post" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
-          <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPost /></DashboardLayout>} />
+          <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
           <Route path="/single-job/:id" exact element={<DashboardLayout><SingleJob /></DashboardLayout>} />
           <Route path="/notification-client" exact element={<DashboardLayout><NotificationClient /></DashboardLayout>} />
           <Route path="/single-developer" exact element={<DashboardLayout><SingleDeveloper/></DashboardLayout>} />
+          <Route path="/leave-request" exact element={<DashboardLayout><LeaveRequest/></DashboardLayout>} />
           <Route path="/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
           <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
+          <Route path="/time-reporting-detail" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
+          <Route path="/members" exact element={<AdminDashboardLayout><Members /></AdminDashboardLayout>} />
           <Route path="/vendor-single-developer/:id" exact element={<VendorDashboardLayout><VendorSingleDeveloper /></VendorDashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
           <Route path="/admin-single-job/:id" exact element={<AdminDashboardLayout><AdminSingleJob /></AdminDashboardLayout>} />
           <Route path="/notification-admin" exact element={<AdminDashboardLayout><NotificationAdmin /></AdminDashboardLayout>} />
-          <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} />
+          {/* <Route path="/engagements" exact element={<AdminDashboardLayout><Engagements /></AdminDashboardLayout>} /> */}
           <Route path="/applications" exact element={<AdminDashboardLayout><Applications /></AdminDashboardLayout>} />
           <Route path="/admin-single-client/:id" exact element={<AdminDashboardLayout><SingleClient /></AdminDashboardLayout>} />
           <Route path="/vendor-dashboard" exact element={<VendorDashboardLayout><VendorDashboard /></VendorDashboardLayout>} />
           <Route path="/vendor-login" exact element={<VendorPublicLayout><VendorLogin /></VendorPublicLayout>} />
           <Route path="/vendor-documents" exact element={<VendorDashboardLayout><VendorDocuments /></VendorDashboardLayout>} />
           <Route path="/vendor-revenue" exact element={<VendorDashboardLayout><VendorRevenue /></VendorDashboardLayout>} />
-          <Route path="/vendor-upload-invoice" exact element={<VendorDashboardLayout><VendorUploadInvoice /></VendorDashboardLayout>} />
+          <Route path="/vendor-upload-invoice" exact element={<VendorDashboardLayout><VendorInvoice /></VendorDashboardLayout>} />
           <Route path="/vendor-time-reporting" exact element={<VendorDashboardLayout><VendorTimeReporting /></VendorDashboardLayout>} />
           <Route path="/edit-vendor-profile" exact element={<VendorDashboardLayout><EditVendorProfile /></VendorDashboardLayout>} />
           <Route path="/list-all-developers" exact element={<VendorDashboardLayout><AllDeveloperList /></VendorDashboardLayout>} />
@@ -152,6 +178,40 @@ function App() {
           <Route path='/developer-faq' exact element={<DeveloperDashboardLayout><Faq /></DeveloperDashboardLayout>}></Route>
         </Routes>
       </Router>
+
+      {/* <Suspense fallback={<ScreenLoader />}>
+        <Routes>
+          {route.map((item, index) =>
+            item.private ? (
+              <Fragment key={index}>
+                {item.isClient ? (
+                  <Route key={index} element={<DashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isDeveloper ? (
+                  <Route key={index} element={<DeveloperDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isVendor ? (
+                  <Route key={index} element={<VendorDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : item.isAdmin ? (
+                  <Route key={index} element={<AdminDashboardLayout />}>
+                    <Route path={item.path} element={item.element} />
+                  </Route>
+                ) : (
+                 ""
+                )}
+              </Fragment>
+            ) : item.public && (
+              <Route key={index} element={<PublicLayout />}>
+                <Route path={item.path} element={item.element} />
+              </Route>
+            ) 
+          )}
+        </Routes>
+      </Suspense> */}
      
       {/* <Suspense fallback={<Loader />}>
         <Router>

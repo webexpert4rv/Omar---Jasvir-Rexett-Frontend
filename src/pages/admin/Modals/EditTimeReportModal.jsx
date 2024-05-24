@@ -3,12 +3,14 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { adminTimeReporting, editTimeReporting } from "../../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
     const [devloperState,setDeveloperState]=useState([])
     const {smallLoader}=useSelector(state=>state.adminData)
     const dispatch =useDispatch()
     const [time,setTime]=useState(null)
     const [hours,setHours]=useState(null)
+    const { t } = useTranslation()
 
     const handleClient=(e)=>{
      let copyList=[...adminTimeReportingList]
@@ -64,10 +66,10 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <h3 className="popup-heading">End Time Report</h3>
+                <h3 className="popup-heading">{t("endTimeReport")}</h3>
                 <Form>
-                    <Row>
-                        <Col md="12">
+                    <Row>   
+                        {/* <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Select className="common-field" onChange={handleClient}>
                                     <option selected disabled>Select Client</option>
@@ -80,11 +82,11 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                                      }
                                 </Form.Select>
                             </Form.Group>
-                        </Col>
+                        </Col> */}
                         <Col md="12">
                             <Form.Group className="mb-4">
                                 <Form.Select className="common-field" onChange={handleDeveloper}>
-                                    <option selected disabled>Select Client</option>
+                                    <option selected disabled>Select Developer</option>
                                      {
                                        devloperState?.map((item)=>{
                                         return( <>
@@ -97,7 +99,57 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                         </Col>
                         <Col md="12">
                             <Form.Group className="mb-4">
+                                <Form.Select className="common-field" onChange={handleDeveloper}>
+                                    <option selected disabled>Select Client</option>
+                                    <option>Amazon</option>
+                                    <option>Google</option>
+                                    <option>Volvo</option>
+                                    <option>BMW</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col md="6">
+                            <Form.Group className="mb-4">
+                                <Form.Select className="common-field" onChange={handleDeveloper}>
+                                    <option selected disabled>Select Month</option>
+                                    <option>January</option>
+                                    <option>Feburary</option>
+                                    <option>March</option>
+                                    <option>April</option>
+                                    <option>May</option>
+                                    <option>June</option>
+                                    <option>July</option>
+                                    <option>August</option>
+                                    <option>September</option>
+                                    <option>October</option>
+                                    <option>November</option>
+                                    <option>December</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col md="6">
+                            <Form.Group className="mb-4">
+                                <Form.Select className="common-field" onChange={handleDeveloper}>
+                                    <option selected disabled>Select Year</option>
+                                    <option>2024</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
+                                    <option>2021</option>
+                                    <option>2020</option>
+                                    <option>2019</option>
+                                    <option>2018</option>
+                                    <option>2017</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col md="12">
+                            <Form.Group className="mb-4">
                                 <Form.Control type="text" className="common-field" placeholder="Enter Total Hours" value={time?.time} name="name" onChange={handleChange} />
+                            </Form.Group>
+                        </Col>
+                        <Col md="12">
+                            <Form.Group className="mb-4">
+                                <Form.Control type="text" as="textarea" className="common-field" placeholder="Enter reason for edit time sheet" />
                             </Form.Group>
                         </Col>
                     </Row>

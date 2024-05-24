@@ -8,7 +8,9 @@ import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getClientList } from "../../redux/slices/vendorDataSlice";
 import { useTranslation } from "react-i18next";
+import { IoSearch } from "react-icons/io5";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import { useNavigate } from "react-router-dom";
 
 
 const AdminTimeReporting = () => {
@@ -19,20 +21,21 @@ const AdminTimeReporting = () => {
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
     const { t } = useTranslation()
+    const navigate=useNavigate()
 
 
-    useEffect(() => {
-        let newContacts = [...adminTimeReportingList]
-        let d = newContacts.map((item, index) => {
-            return {
-                ...item,
-                newData: item.contracts[index] ? item.contracts[index] : item.contracts[0]
-            };
-        });
+    // useEffect(() => {
+    //     let newContacts = [...adminTimeReportingList]
+    //     let d = newContacts.map((item, index) => {
+    //         return {
+    //             ...item,
+    //             newData: item.contracts[index] ? item.contracts[index] : item.contracts[0]
+    //         };
+    //     });
 
-        setDeveloperData(d)
+    //     setDeveloperData(d)
 
-    }, [adminTimeReportingList])
+    // }, [adminTimeReportingList])
 
 
     console.log(adminClientList, "adminClientList")
@@ -78,6 +81,10 @@ const AdminTimeReporting = () => {
     const handleClientClick = (e) => {
         dispatch(adminTimeReporting(e))
     }
+    
+    const redirectToTimeReporting=()=>{
+        navigate("/time-reporting-detail")
+    }
     return (
         <>
             <section>
@@ -85,7 +92,7 @@ const AdminTimeReporting = () => {
                     <Form>
                         <div className="d-md-flex gap-3 justify-content-between align-items-end">
                             <div className="mb-md-0 mb-3">
-                                <div>
+                                {/* <div>
                                     <Form.Select className="filter-select shadow-none" onClick={(e) => handleClientClick(e.target.value)}>
                                         <option value="" selected disabled>{t("selectClients")}</option>
                                         {
@@ -96,11 +103,21 @@ const AdminTimeReporting = () => {
                                             })
                                         }
                                     </Form.Select>
-                                </div>
+                                </div> */}
                             </div>
-                            <div>
+                            <div className="d-flex align-items-center gap-3">
+                                <Form.Control
+                                    type="text"
+                                    className="common-field font-14 shadow-none"
+                                    placeholder="Enter Keyword..."
+                                />
+                                <Button variant="transparent" className="main-btn px-3 search-btn">
+                                    <IoSearch />
+                                </Button>
+                            </div>
+                            {/* <div>
                                 <Button className="main-btn px-5" onClick={handleShowEditTimeModal}>{t("editTimeReport")}</Button>
-                            </div>
+                            </div> */}
                         </div>
                     </Form>
                 </div>
@@ -112,22 +129,16 @@ const AdminTimeReporting = () => {
                                     {t("clientName")}
                                 </th>
                                 <th className="time-table-head">
-                                    {t("noOfDevelopersHired")}
+                                    Total Hired Developers
                                 </th>
                                 <th className="time-table-head">
-                                    {t("nameOfDevelopers")}
+                                    Total Projects
                                 </th>
                                 <th className="time-table-head">
-                                    {t("totalHours")}
+                                    Total Vendor's Dev
                                 </th>
                                 <th className="time-table-head">
-                                    {t("location")}
-                                </th>
-                                <th className="time-table-head">
-                                    {t("redeem")}
-                                </th>
-                                <th className="time-table-head">
-                                    {t("invoice")}
+                                    Total Individual Dev
                                 </th>
                                 <th className="time-table-head">
                                     {t("contract")}
@@ -139,28 +150,12 @@ const AdminTimeReporting = () => {
                                         developerData?.map((item, index) => {
                                             return (
                                                 <>
-                                                    <tr>
+                                                    <tr className="row-hover" onClick={redirectToTimeReporting}>
                                                         <td className="time-table-data">{item?.client_details?.name}</td>
                                                         <td className="time-table-data">{item?.contracts?.length}</td>
-                                                        <td className="time-table-data">
-                                                            <Form.Select className="status-select shadow-none" onChange={(e) => handleDeveloper(e, index)}>
-                                                                {
-                                                                    contractName(item?.contracts)?.map((el, inx) => {
-                                                                        return (
-                                                                            <>
-                                                                                <option value={inx}>{el?.dev}</option>
-                                                                            </>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </Form.Select>
-                                                        </td>
-                                                        <td className="time-table-data">{item?.newData?.time_report?.totalDuration}hr</td>
-                                                        <td className="time-table-data">{item?.newData?.contractDetails?.job_type}</td>
-                                                        <td className="time-table-data">N/A</td>
-                                                        <td className="time-table-data">
-                                                            <label className="upload-invoice-label" onClick={() => handleShowUploadInvoice(item?.newData?.contractDetails?.id)}>Upload Invoice <HiUpload /></label>
-                                                        </td>
+                                                        <td className="time-table-data">5</td>
+                                                        <td className="time-table-data">4</td>
+                                                        <td className="time-table-data">3</td>
                                                         <td className="time-table-data">{item?.newData?.contractDetails?.employment_type}</td>
                                                     </tr>
                                                 </>
@@ -170,6 +165,10 @@ const AdminTimeReporting = () => {
                                 </>}
                             </tbody>
                         </table>
+                    </div>
+                    <div className="helper-text-section">
+                        <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
+                        <p>Admin can effortlessly review daily time sheets and promptly raise invoices for clients. Click on any client's name in the table above to delve deeper into their project and time reporting details. Gain insights and manage project progress with precision. Also you can raise invoice for clients and track the invoices for Devs , Vendors and Clients.</p>
                     </div>
                 </div>
             </section>

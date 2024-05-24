@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 
-const AboutCV = ({ show, handleClose, data, id, role }) => {
+const AboutCV = ({ show, handleClose, data, id, role,isEdited }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { smallLoader } = useSelector((state) => state.developerData);
@@ -35,7 +35,7 @@ const AboutCV = ({ show, handleClose, data, id, role }) => {
         user_id: id,
       };
       dispatch(
-        updateDeveloperCvBio(data, () => {
+        updateDeveloperCvBio(data,role, () => {
           dispatch(fetchDeveloperCv());
           handleClose();
         })
@@ -46,7 +46,7 @@ const AboutCV = ({ show, handleClose, data, id, role }) => {
         user_id: id,
       };
       dispatch(
-        updateDeveloperCvBio(data, () => {
+        updateDeveloperCvBio(data,role, () => {
           dispatch(getDeveloperDetails(id));
           handleClose();
         })

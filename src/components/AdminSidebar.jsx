@@ -13,6 +13,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { FaListUl } from "react-icons/fa6";
 import { PiUsersFourFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
+import { BsToggles } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 
 const AdminSidebar = ({ sideBarActive }) => {
@@ -31,14 +32,14 @@ const AdminSidebar = ({ sideBarActive }) => {
                         </div>
                         <NavLink to={"/admin-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
-                            <li className="sidebar-item">
-                                <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> {t("listOfClients")}</NavLink>
-                            </li>
+                            {/* <li className="sidebar-item"> */}
+                                {/* <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> {t("listOfClients")}</NavLink> */}
+                            {/* </li> */}
                             <li className="sidebar-item">
                                 <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">{t("applications")} </span></NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={"/engagements"} className="side-link" activeClassName="active"><PiUsersFourFill /> {t("engagements")}</NavLink>
+                                <NavLink to={"/members"} className="side-link" activeClassName="active"><PiUsersFourFill /> {t("members")}</NavLink>
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/admin-job-listing'} className="side-link" activeClassName="active"><FaListUl /> {t("jobListing")}</NavLink>
@@ -53,10 +54,10 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/admin-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
+                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill />Invoice</NavLink>
                             </li>
                             {/* <li className="sidebar-item">
-                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><FaFileInvoice /> {t("accountDeletionRequest")}</NavLink>
+                                <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><BsToggles /> {t("accountDeletionRequest")}</NavLink>
                             </li> */}
                         </ul>
                     </div>

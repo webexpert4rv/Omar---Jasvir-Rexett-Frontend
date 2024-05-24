@@ -116,7 +116,7 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
             state.singleClient = action.payload
         },
-        setAccountDeletion:(state, action) =>{
+        setAccountEnableDisable:(state, action) =>{
             state.screenLoader = false;
             state.accountDeletionList = action.payload
         },
@@ -129,7 +129,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setSuggestedDeveloper,setAccountDeletion ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -336,6 +336,24 @@ export function allApplicationsList(payload) {
     };
 }
 
+export function allMemberList(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(generateApiUrl(payload, `admin/members`))
+            if (result.status === 200) {
+                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
+                dispatch(setSuccessApplicationList(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
 export function adminEngagementList(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
@@ -425,7 +443,7 @@ export function getNotification(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`common/notifications`)
+            let result = await clientInstance.get(generateApiUrl(payload, `common/notifications`))
             if (result.status === 200) {
                 dispatch(setNotificationList(result.data))
             }
@@ -460,13 +478,13 @@ export function markAsRead(payload, callback) {
         }
     };
 }
-export function getAccountDeletion() {
+export function getAccountEnableDisable() {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get("admin/delete-account-requests")
+            let result = await clientInstance.get("admin/users-list?page=1")
             if (result.status === 200) {
-              dispatch(setAccountDeletion(result.data))
+              dispatch(setAccountEnableDisable(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -475,13 +493,97 @@ export function getAccountDeletion() {
         }
     };
 }
-export function getDeletionByAdmin(role , id) {
+export function getAccountDisableEnable(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`/admin/delete-user/${role}/${id}`)
+            let result = await clientInstance.post(`/common/enable-disable-user`,{...payload})
         } catch (error) {
             console.log(error,"errrrr")
+        }
+    };
+}
+
+export function createFaq(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post("admin/create-faqs",{...payload})
+            if (result.status === 200) {
+                toast.success("Question has been added")
+                dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function deleteFaq(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.delete(`admin/delete-faq/${payload}`)
+            if (result.status === 200) {
+                toast.success("Question has been deleted", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function sendRemarkOnTimeReport(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post(`common/add-time-report-remark`,{...payload})
+                toast.success("Remark has been added", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function approvedEditAction(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.put(`/admin/approve-all-changes/${payload}`)
+            if (result.status === 200) {
+                toast.success("Edit Request has been approved", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function rejectEditAction(payload) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.delete(`/admin/reject-all-changes/${payload}`)
+            if (result.status === 200) {
+                toast.success("Edit Request has been approved", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
         }
     };
 }

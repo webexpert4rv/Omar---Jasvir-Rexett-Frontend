@@ -11,16 +11,7 @@ import { useTranslation } from "react-i18next";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 
-const options = [
-  { value: "HTML", label: "HTML" },
-  { value: "CSS", label: "CSS" },
-  { value: "JavaScript", label: "JavaScript" },
-  { value: "jQuery", label: "jQuery" },
-  { value: "ReactJS", label: "ReactJS" },
-  { value: "VueJS", label: "VueJS" },
-  { value: "AngularJS", label: "AngularJS" },
-  { value: "Bootstrap", label: "Bootstrap" },
-];
+
 
 const createOption = (label) => ({
     label,
@@ -28,55 +19,52 @@ const createOption = (label) => ({
   });
 
 const SkillsModal = ({ show, handleClose, data, id, role }) => {
+  const { skillList } = useSelector((state) => state.clientData);
   const [selectedOption, setSelectedOption] = useState([]);
   const { smallLoader } = useSelector((state) => state.developerData);
-  const [skillCate, setSkillsCate] = useState(options)
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title };
+  });
+  const [skillCate, setSkillsCate] = useState(skillListMapped)
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  console.log(data,"data,,,,")
+
   useEffect(() => {
     if (data) {
-      const array = data
-        .split(",")
-        .map((tech) => ({ label: tech.trim(), value: tech.trim() }));
+      const array = data?.map((tech) => ({ label: tech.skill, value: tech.skill,id:tech.id }));
       setSelectedOption(array);
     }
   }, [data]);
-
+console.log(selectedOption,"selectedOption")
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let convertString = selectedOption.map((item) => item.label);
-    if (role === "developer") {
+    let formattedSkills = [];
+    // let convertString = selectedOption.map((item) => item.label);
+     formattedSkills = selectedOption.map((item)=>{
+      return { skill : item.label, experience :""}
+    })
+  
       let data = {
-        skills: convertString.toString(),
+        skills: formattedSkills,
         user_id: +id,
       };
       dispatch(
-        updateDeveloperSkills(data, () => {
-          dispatch(fetchDeveloperCv());
+        updateDeveloperSkills(data, role,() => {
+          if (role === "developer") {
+            dispatch(fetchDeveloperCv());
+          }else{
+            dispatch(getDeveloperDetails(id));
+          }
           handleClose();
         })
       );
-    } else {
-      let data = {
-        skills: convertString.toString(),
-        user_id: +id,
-      };
-      dispatch(
-        updateDeveloperSkills(data, () => {
-          dispatch(getDeveloperDetails(id));
-          handleClose();
-        })
-      );
-    }
   };
 
-  const filteredOptions = options.filter(
-    (option) =>
-      !selectedOption.find((selected) => selected.value === option.value)
-  );
+
 
   const onChangeSelect = (val) => {
     setTimeout(() => {

@@ -100,38 +100,64 @@ const AdminSingleJob = () => {
                                     {/* <Button variant="transparent" onClick={handleShowEndJobModal} className="px-5 closed-job-btn">End Job</Button> */}
                                 </div>
                             </div>
-                            <h4 className="single-job-category">Website Design</h4>
-                            <p className="single-job-description">{singleJobDescription?.description}</p>
+                            {/* <h4 className="single-job-category">{t("websiteDesign")}</h4> */}
+                            <p className="single-job-description" 
+                             dangerouslySetInnerHTML={{
+                                __html: singleJobDescription?.description,
+                              }}
+                            ></p>
                         </div>
                         <div className="single-job-card">
                             <Row>
                                 <Col md="4">
-                                    <h3 className="req-heading">Experience Requirements</h3>
+                                    <h3 className="req-heading">{t("clientName")}</h3>
+                                    <p className="req-text">{singleJobDescription?.client?.name}</p>
+                                </Col>
+                                <Col md="4">
+                                    <h3 className="req-heading">{t("experienceRequirements")}</h3>
                                     <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ")}</p>
                                 </Col>
                                 <Col md="4">
-                                    <h3 className="req-heading">Contract</h3>
+                                    <h3 className="req-heading">{t("contract")}</h3>
                                     <p className="req-text">{singleJobDescription?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                                 </Col>
                                 <Col md="4">
-                                    <h3 className="req-heading">Location</h3>
+                                    <h3 className="req-heading mt-4">{t("location")}</h3>
                                     <p className="req-text">{singleJobDescription?.job_type}</p>
                                 </Col>
                             </Row>
                         </div>
                         <div className="single-job-card">
-                            <h3 className="req-heading">Skills</h3>
-                           {singleJobDescription?.skills?.length>0? <ul className="skills-listing mb-0">
-                                {
-                                    convertToArray(singleJobDescription?.skills)?.map((item, index) => {
-                                        return (
-                                            <>
-                                                <li key={index}>{item}</li>
-                                            </>
-                                        )
-                                    })
-                                }
-                            </ul>:"Not Mentioned"}
+                            <Row>
+                                <Col>
+                                <h3 className="req-heading">{t("skillsRequired")}</h3>
+                                {singleJobDescription?.skills?.length > 0 ? <ul className="skills-listing mb-0">
+                                    {
+                                        convertToArray(singleJobDescription?.skills)?.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <li key={index}>{item}</li>
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </ul> : "Not Mentioned"}
+                                </Col>
+                                <Col>
+                                <h3 className="req-heading">{t("optionalSkills")}</h3>
+                                {singleJobDescription?.optional_skills?.length > 0 ? <ul className="skills-listing mb-0">
+                                    {
+                                        convertToArray(singleJobDescription?.optional_skills)?.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <li key={index}>{item}</li>
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </ul> : "Not Mentioned"}
+                                </Col>
+                            </Row>
                         </div>
                     </section>
                 </Tab>
@@ -139,7 +165,7 @@ const AdminSingleJob = () => {
                     <div className="text-center mb-3">
                         {/* <h3 className="px-5">Suggest the Developers</h3> */}
                     </div>
-                    <JobCard type="Suggested"  data={suggestedDeveloper } setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                    <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                 </Tab>
                 <Tab eventKey="shortlisted" title="Shortlisted">
                     <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
@@ -152,7 +178,7 @@ const AdminSingleJob = () => {
                 </Tab>
             </Tabs>
             {/* <EndJobModal show={showEndJobModal} handleClose={handleCloseEndJobModal} /> */}
-            <ConfirmationModal text={(suggestedData?.status) ? t("suggestDeveloper"):t("removeDeveloperFromSuggestion")}   show={showEndJobModal} handleClose={handleCloseEndJobModal}  onClick={handleJobStatusAction} smallLoader={smallLoader} />
+            <ConfirmationModal text={(suggestedData?.status) ? t("suggestDeveloper") : t("removeDeveloperFromSuggestion")} show={showEndJobModal} handleClose={handleCloseEndJobModal} onClick={handleJobStatusAction} smallLoader={smallLoader} />
         </>
     )
 }

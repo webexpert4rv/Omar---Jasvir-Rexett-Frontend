@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.5d7ec589.css",
-    "main.js": "/static/js/main.a93af629.js",
-    "static/js/952.d84abe18.chunk.js": "/static/js/952.d84abe18.chunk.js",
-    "static/js/856.0a56a8cf.chunk.js": "/static/js/856.0a56a8cf.chunk.js",
-    "static/js/592.e5fa4e23.chunk.js": "/static/js/592.e5fa4e23.chunk.js",
+    "main.css": "/static/css/main.583b6eb1.css",
+    "main.js": "/static/js/main.537b0a8d.js",
+    "static/js/213.6670df3f.chunk.js": "/static/js/213.6670df3f.chunk.js",
+    "static/js/455.818a5fe3.chunk.js": "/static/js/455.818a5fe3.chunk.js",
+    "static/js/453.e4e5a4da.chunk.js": "/static/js/453.e4e5a4da.chunk.js",
     "static/media/cv-template1.png": "/static/media/cv-template1.8cbc4c9ca4211b3538e2.png",
     "static/media/user-img.jpg": "/static/media/user-img.6d9d5d57229426f80642.jpg",
     "static/media/login-img-new.png": "/static/media/login-img-new.5df94ca2df1b2fb96041.png",
@@ -13,19 +13,30 @@
     "static/media/warning-icon.gif": "/static/media/warning-icon.0644361391cc2004555a.gif",
     "static/media/amazon.png": "/static/media/amazon.1b5b780a2155c1ab6c26.png",
     "static/media/facebook.png": "/static/media/facebook.790642551cd99bb66a7e.png",
+    "static/media/aviox-logo.png": "/static/media/aviox-logo.d19acd3fd65472d3f13c.png",
+    "static/media/timesheet_notapproved.png": "/static/media/timesheet_notapproved.b4f89fe36e6e059dd0d1.png",
+    "static/media/timesheet_approved.png": "/static/media/timesheet_approved.e6d34219d395e2824e67.png",
+    "static/media/invoice_unpaid.png": "/static/media/invoice_unpaid.1cabd205dcd2533a8cef.png",
+    "static/media/invoice_paid.png": "/static/media/invoice_paid.929c3691172c93710fb9.png",
+    "static/media/invoice-icon.svg": "/static/media/invoice-icon.236d508af4a12952acedf5c758867975.svg",
+    "static/media/timesheet-icon.svg": "/static/media/timesheet-icon.0ef4066a0e3593ca1a8b94c9fe193245.svg",
+    "static/media/break-time-icon.svg": "/static/media/break-time-icon.499e79637e56fbf2340838a2b7cda7d2.svg",
+    "static/media/remarks-icon.svg": "/static/media/remarks-icon.e8394e1d1b0ac59ef737ba64dad11d00.svg",
+    "static/media/logout-line-icon-green.svg": "/static/media/logout-line-icon-green.af0e79cd82da5499a685afd1dba81b57.svg",
+    "static/media/logout-line-icon.svg": "/static/media/logout-line-icon.00314bda4459e43cd2932491e5853b97.svg",
     "static/media/english.svg": "/static/media/english.fd46970f89e3fbca473f.svg",
     "index.html": "/index.html",
     "static/media/check-icon.svg": "/static/media/check-icon.d0a46326fe667f0c0e1a.svg",
     "static/media/down-icon.svg": "/static/media/down-icon.0fbf4154669ccc4068fd.svg",
     "static/media/swedish.svg": "/static/media/swedish.cf4da293b8b5618da624.svg",
-    "main.a3ac509a.css.map": "/static/css/main.a3ac509a.css.map",
-    "main.a77c1740.js.map": "/static/js/main.a77c1740.js.map",
-    "952.d84abe18.chunk.js.map": "/static/js/952.d84abe18.chunk.js.map",
-    "856.0a56a8cf.chunk.js.map": "/static/js/856.0a56a8cf.chunk.js.map",
-    "592.e5fa4e23.chunk.js.map": "/static/js/592.e5fa4e23.chunk.js.map"
+    "main.583b6eb1.css.map": "/static/css/main.583b6eb1.css.map",
+    "main.537b0a8d.js.map": "/static/js/main.537b0a8d.js.map",
+    "213.6670df3f.chunk.js.map": "/static/js/213.6670df3f.chunk.js.map",
+    "455.818a5fe3.chunk.js.map": "/static/js/455.818a5fe3.chunk.js.map",
+    "453.e4e5a4da.chunk.js.map": "/static/js/453.e4e5a4da.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a3ac509a.css",
-    "static/js/main.a77c1740.js"
+    "static/css/main.583b6eb1.css",
+    "static/js/main.537b0a8d.js"
   ]
 }

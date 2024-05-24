@@ -38,6 +38,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
       } 
 
       const handleDeveloperCard=(e,id)=>{
+        console.log("kk")
                if(role=="client"){
                 navigate(`/client-single-developer/${id}`)
                }
@@ -55,7 +56,8 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                         return (
                             <>
                                 <div className={item?.recommed ? "developer-card recomed-dev p-0" : "developer-card p-0"}>
-                                    <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div>
+                                    {/* <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div> */}
+                                    <div className="tag-developer">{type && type === "Suggested" ? "Suggest" : type }</div>
                                     <div className='overflow-hidden inner-dev-card'>
                                         <div className="user-imgbx"  onClick={(e)=>handleDeveloperCard(e,item?.developer?.id)} >
                                             <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg } alt='developer'  className="user-img" />

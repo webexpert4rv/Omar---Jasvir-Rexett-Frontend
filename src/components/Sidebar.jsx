@@ -14,6 +14,8 @@ import { IoBriefcase } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { GiPalmTree } from "react-icons/gi";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 
 const Sidebar = ({sideBarActive , closemainSidebar}) => {
     const logout=()=>{
@@ -46,9 +48,15 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                             <li className="sidebar-item">
                                 <NavLink to={'/time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/leave-request'} className="side-link" activeClassName="active"><GiPalmTree /> Leave Requests</NavLink>
+                            </li>
                             {/* <li className="sidebar-item">
                                 <NavLink to={'/job-post'} className="side-link" activeClassName="active"><IoBriefcase /> Job Post</NavLink>
                             </li> */}
+                            <li className="sidebar-item">
+                                <NavLink to={'/public-holiday'} className="side-link" activeClassName="active"><GiPalmTree />Public Holiday</NavLink>
+                            </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/job-posted'} className="side-link" activeClassName="active"><FaListUl /> {t("jobs")}</NavLink>
                             </li>
@@ -63,6 +71,9 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                     <div className="w-100 px-3 mt-xxl-3">
                         <div>
                             <NavLink onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</NavLink>
+                        </div>
+                        <div>
+                            <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" className="bottom-link" activeClassName="active"><TfiHeadphoneAlt /> Contact Support</NavLink>
                         </div>
                         <div>
                             <NavLink to={"/faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>

@@ -43,15 +43,8 @@ const ListClient = () => {
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <div>
-                <h2 className="section-head mb-4">{t("overview")}</h2>
+                {/* <h2 className="section-head mb-4">{t("overview")}</h2>
                 <div className="overview-card-wrapper mb-5">
-                    {/* <div className="overview-card">
-                    <div>
-                        <h4 className="overview-card-subhead">Fund</h4>
-                        <h3 className="overview-card-heading mb-0">Spent</h3>
-                    </div>
-                    <span className="over-icon"><IoTrendingUpSharp /></span>
-                </div> */}
                     <div className="overview-card">
                         <div>
                             <h4 className="overview-card-subhead">{t("income")}</h4>
@@ -59,10 +52,10 @@ const ListClient = () => {
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>
-                </div>
+                </div> */}
                 <Tab.Container className="w-100" defaultActiveKey="list-view">
                     <div className="d-flex justify-content-between mb-3 pb-2 border-bottom-grey">
-                        <h2 className="section-head-sub mb-0">{t("listOfClients")}</h2>
+                        <h2 className="section-head border-0 mb-0 pb-0">{t("listOfClients")}</h2>
                         {/* <h2 className="section-head-sub mb-0">List of clients who hire developers from Rexett</h2> */}
                         <Nav variant="pills" className="document-view-pill">
                             <Nav.Item className="document-view-item">
@@ -79,7 +72,10 @@ const ListClient = () => {
                                 <table className="table developer-table">
                                     <thead>
                                         <tr>
-                                            <th><span>{t("ClientName")}</span></th>
+                                          <th><span>{t("client/comapanyname")}</span></th>
+                                          <th><span>Company/Individual</span></th>
+                                            <th><span>Phone Number</span></th>
+                                            <th><span>Address</span></th>
                                             <th><span>{t("email")}</span></th>
                                         </tr>
                                     </thead>
@@ -90,9 +86,20 @@ const ListClient = () => {
                                                     <tr  onClick={() => handleClientRowClick(val?.id)}>
                                                         <td>
                                                             <span className="d-flex align-items-center gap-3">
-                                                                <img src={val.profile_picture ? val.profile_picture : userImg} />
-                                                                <h3 className="user-name color-121212 mb-0">{val?.name}</h3>
+                                                                <img src={val.profile_picture ? val.profile_picture : val?.client_type=="company"?val?.company_logo :userImg} />
+                                                                <h3 className="user-name color-121212 mb-0">{val?.client_type=="company"? val?.company_name: val?.name }</h3>
                                                             </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="associate-text">
+                                                                <span className="associate">{val?.client_type}</span>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="font-14 phoneNumber-text">+1234567890</span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="font-14 address-text">{val?.client_type=="company"? val?.company_address:"-"}</span>
                                                         </td>
                                                         <td>
                                                             <span>

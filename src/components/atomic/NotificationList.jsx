@@ -7,10 +7,11 @@ import ScreenLoader from "./ScreenLoader";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import NoDataFound from "../atomic/NoDataFound"
 import { useTranslation } from "react-i18next";
+import { timeReporting } from "../../redux/slices/clientDataSlice";
+import RexettPagination from "./RexettPagination";
 
 const NotificationList = ({ job, doc }) => {
-  console.log(job , "job")
-  console.log(doc,"doc")
+  const [page, setPage] = useState(1);
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currenTab, setCurrentTabs] = useState('allNotifications')
@@ -22,18 +23,32 @@ const NotificationList = ({ job, doc }) => {
     setNotificationData(notificationList[currenTab])
   }, [notificationList, currenTab])
 
+  useEffect(() => {
+    let data={
+      page:page
+    }
+    
+    dispatch(getNotification(data));
+  }, [page]);
+
   const handleNotification = (notificationId, id, data) => {
     dispatch(markAsRead(notificationId, () => {
-      dispatch(getNotification())
+      let data={
+        page:page
+      }
+      dispatch(getNotification(data));
     }))
     if (data == "Documents") {
-      navigate(`/${doc}`)
+      navigate(`/${doc}`);
     } else if (data == "Jobs") {
-      navigate(`/${job}/${id}`)
+      navigate(`/${job}/${id}`);
+    } else if (data == "Time_reports") {
+      navigate(`/${timeReporting}`);
+    } else if (data == "Users") {
+      navigate(`/admin-single-developer/${id}`);
     }
-  }
+  };
 
-  console.log(nottificationData , "nottificationData")
   const handleSelect = (key) => {
     setNotificationData(notificationList[key])
   }
@@ -45,6 +60,8 @@ const NotificationList = ({ job, doc }) => {
       return true
     }
   }
+
+  console.log(nottificationData,"nottificationData")
 
   // const markAllAsRead = () => {
   //   dispatch(markAsRead(undefined, () => {
@@ -66,14 +83,14 @@ const NotificationList = ({ job, doc }) => {
         <Tabs
           defaultActiveKey="allNotifications"
           id="justify-tab-example"
-          className="mb-3 notification-tabs"
+          className="mb-3 notification-tabs notify-tabs"
           justify
           onSelect={handleSelect}
         >
           <Tab eventKey="allNotifications" title="All">
             <div className="notification-main pt-4 d-block">
               <div className="notification-list">
-                {nottificationData?.length > 0 ? nottificationData?.map((item) => {
+                {nottificationData?.notifications?.length > 0 ? nottificationData?.notifications.map((item) => {
                   return (
                     <>
                       <div className="notification-wrapper" onClick={() => handleNotification(item?.id, item?.reference_id, item?.reference_model)}>
@@ -107,7 +124,7 @@ const NotificationList = ({ job, doc }) => {
           <Tab eventKey="readNotifications" title="Read">
             <div className="notification-main pt-4 d-block">
               <div className="notification-list">
-                {nottificationData?.map((item) => {
+                {nottificationData?.notifications?.map((item) => {
                   return (
                     <>
                       <div className="notification-wrapper" onClick={() => handleNotification(item?.id, item?.reference_id, item?.reference_model)}>
@@ -141,7 +158,7 @@ const NotificationList = ({ job, doc }) => {
           <Tab eventKey="unreadNotifications" title="New">
             <div className="notification-main pt-4 d-block">
               <div className="notification-list">
-                {nottificationData?.map((item) => {
+                {nottificationData?.notifications?.map((item) => {
                   return (
                     <>
                       <div className="notification-wrapper" onClick={() => handleNotification(item?.id, item?.reference_id, item?.reference_model)}>
@@ -173,6 +190,20 @@ const NotificationList = ({ job, doc }) => {
             </div>
           </Tab>
         </Tabs>
+        {nottificationData?.pagination?.totalCount > 5 ? (
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                  <p className="showing-result">
+                    {t("showing")} {nottificationData?.pagination?.length} {t("results")}
+                  </p>
+                  <RexettPagination
+                    number={nottificationData?.pagination?.totalPages}
+                    setPage={setPage}
+                    page={page}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
       </section>}
     </>
   );

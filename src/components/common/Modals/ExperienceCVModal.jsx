@@ -40,7 +40,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
           start_date: item.start_date?.slice(0, 10),
           end_date: item.end_date?.slice(0, 10),
           is_still_working: item.is_still_working,
-          newId: item.id
+          experience_id: item.id
 
         });
         setDisabledEndDates(prevState => [...prevState, item.is_still_working]);
@@ -66,49 +66,23 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
 
   const onSubmit = (value) => {
     let { test } = value
-    let addExp = test?.map((item) => {
-      if (!item.newId) {
-        return { ...item}
-      }
-    }).filter((item) => item)
-    let data ={
-
+    let data={
+      developer_id:id,
+      experiences:test
     }
-    if (addExp.length > 0) {
-      let data={
-        experiences:addExp,
-        user_id:+id
-    }
-      dispatch(addDeveloperCvExperience(data, () => {
-        if(role=="developer"){
+    dispatch(updateDeveloperCvExperience(data,role,()=>{
+      if(role=="developer"){
         dispatch(fetchDeveloperCv())
-        }else{
-          dispatch(getDeveloperDetails(id))
-        }
-        handleClose()
-      }))
-    }
-
-    test?.forEach((item) => {
-      if (item.newId) {
-        
-        dispatch(updateDeveloperCvExperience(item, item.newId, () => {
-          if(role=="developer"){
-            dispatch(fetchDeveloperCv())
-          }else{
-            dispatch(getDeveloperDetails(id))
-          }
-          handleClose()
-        }))
+      }else{
+        dispatch(getDeveloperDetails(id))
       }
-    })
-
+      handleClose()
+    }))
+  
   };
 
   const handleAppend = async () => {
-    // Trigger validation for all fields
     const isValid = await trigger();
-    // Check if all fields are valid
     if (isValid) {
       append({
         company_name: "",
@@ -121,11 +95,17 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
     }
   };
 
-  const deleteDeveloperExperience = (id, index) => {
+  const deleteDeveloperExperience = ( itemId,index) => {
     remove(index)
-    if (id) {
-      dispatch(deleteExperience(id, () => {
-        dispatch(fetchDeveloperCv())
+    if (itemId) {
+      dispatch(deleteExperience(itemId,id, () => {
+          if (role == "developer") {
+              dispatch(fetchDeveloperCv())
+          } else {
+              dispatch(getDeveloperDetails(id))
+          }
+          // handleClose()
+
       }))
     }
   }
@@ -140,7 +120,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
     </Tooltip>
   );
 
-
+console.log(fields,"firldssssss")
   return (
     <Modal
       show={show}
@@ -275,7 +255,8 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
                     {index !== 0 && (
                       <div>
                         <OverlayTrigger placement="bottom" overlay={deletetooltip}>
-                          <Button variant="danger" className="font-14" onClick={() => deleteDeveloperExperience(item.newId, index)}><FaTrashAlt /></Button>
+                          <Button variant="danger" className="font-14" onClick={() => deleteDeveloperExperience(item.experience_id , index)
+                          }><FaTrashAlt /></Button>
                         </OverlayTrigger>
                       </div>
                     )}
