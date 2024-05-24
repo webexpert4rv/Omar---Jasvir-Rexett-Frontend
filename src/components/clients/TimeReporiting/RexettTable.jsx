@@ -128,7 +128,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
         return "Submit & Approve";
       }
     } else {
-      return "Submit";
+      if (isApproved) {
+        return "Approved";
+      } else {
+        return "Submit";
+      }
     }
   };
   const shouldDisable = (isApproved) => {
@@ -139,22 +143,24 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
         return false;
       }
     } else if (role == "developer") {
-      if (isTodayMonthEnd()) {
-        return false;
-      } else {
+      if(isApproved){
         return true;
       }
+      else{
+        return false
+      }
+
     }
   };
-  const isTodayMonthEnd = () => {
-    const today = new Date();
-    const lastDayOfMonth = new Date(
-      today.getFullYear(),
-      today.getMonth() + 1,
-      0
-    ); // The 0th day of the next month is the last day of the current month
-    return today.getDate() === lastDayOfMonth.getDate();
-  };
+  // const isTodayMonthEnd = () => {
+  //   const today = new Date();
+  //   const lastDayOfMonth = new Date(
+  //     today.getFullYear(),
+  //     today.getMonth() + 1,
+  //     0
+  //   ); // The 0th day of the next month is the last day of the current month
+  //   return today.getDate() === lastDayOfMonth.getDate();
+  // };
   return (
     <>
       <div className={`weekly-report-table ${selectedPeriod}`}>
@@ -260,7 +266,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                               reprt?.end_time,
                                               "HH:mm"
                                             ).format("h:mm A")} `
-                                          :(reprt?.is_holiday)  ? "Holiday" : (reprt?.is_off_day) && "Off day"}
+                                          : reprt?.is_holiday
+                                          ? "Holiday"
+                                          : reprt?.is_off_day && "Off day"}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">
@@ -455,7 +463,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
           text={
             isAnyReportEmpty
               ? `Are you sure to Approve this time sheet ? It looks like you haven't written your work status for all the days of the week.`
-              : "Are you sure to Approve this time sheet?"
+              : "Are you sure you want to Approve this time sheet?"
           }
           show={approvedConfirmation?.isApproved}
           startDate={approvedConfirmation?.startDate}
