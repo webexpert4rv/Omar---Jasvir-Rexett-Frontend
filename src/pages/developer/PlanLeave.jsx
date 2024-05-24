@@ -19,6 +19,8 @@ import RexettButton from "../../components/atomic/RexettButton";
 import { generateLeave } from "../../components/clients/TimeReporiting/constant";
 import { LEAVE_TYPE } from "../../components/clients/TimeReporiting/constant";
 import RejectModal from "../views/Modals/EndJob";
+import ToolTip from "../../components/common/Tooltip/ToolTip";
+import NoDataFound from "../../components/atomic/NoDataFound";
 
 const LeavePlan = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -30,10 +32,12 @@ const LeavePlan = () => {
     (state) => state.developerData
   );
 
+  console.log(leaveDetails,"leaveDetails")
   const {
     handleSubmit,
     register,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({});
   const dispatch = useDispatch();
@@ -64,13 +68,11 @@ const LeavePlan = () => {
     setCurrentTab(selectedTab);
   };
   const handleRange = (ranges) => {
-    console.log(ranges,"ranges")
     setSelectionRange(ranges.selection);
   };
 
   const handleEditLeave = (id) => {
-    const selectedLeave = leaveDetails.find((item) => item.id == id);
-    console.log(selectedLeave,"selectedleave")
+    const selectedLeave = leaveDetails.find((item) => item.id == id)
     if (selectedLeave) {
       setSelectionRange({
         startDate: new Date(selectedLeave.start_date),
@@ -88,11 +90,11 @@ const LeavePlan = () => {
     let data = {
       withdrawal_reason: "reason",
     };
-    dispatch(getCancelLeave(id, data));
+    await dispatch(getCancelLeave(id, data));
     let payload = {
       approval_status: "Under Approval",
     };
-    await dispatch(getLeaveHistory(user_id, payload));
+     dispatch(getLeaveHistory(user_id, payload));
   };
 
   const onSubmit = async (values) => {
@@ -105,15 +107,17 @@ const LeavePlan = () => {
       type: values.leave_type,
       reason_for_leave: values.reason,
     };
-    if (isEdit) {
-      dispatch(getUpdateLeave(isEdit?.leaveId, data));
+    if (isEdit?.status === true) {
+      await dispatch(getUpdateLeave(isEdit?.leaveId, data));
     } else {
-      dispatch(applyLeave(data));
+      await dispatch(applyLeave(data));
     }
     let payload = {
       approval_status: "Under Approval",
     };
-    await dispatch(getLeaveHistory(user_id, payload));
+     dispatch(getLeaveHistory(user_id, payload));
+     setIsEdit({ status: false, leaveId: "" });
+     reset()
   };
 
   return (
@@ -141,7 +145,7 @@ const LeavePlan = () => {
               <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
               {/* <p className="text-muted font-14 mb-0">No Leave Applied</p> */}
               <Row>
-                {leaveDetails?.map((field, idx) => (
+               {leaveDetails .length> 0 ?  leaveDetails?.map((field, idx) => (
                   <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
                     <div className="leave-wrapper-box">
                       <div>
@@ -162,22 +166,27 @@ const LeavePlan = () => {
                         </p>
                       </div>
                       <div className="d-flex gap-3">
+                        <ToolTip text="Cancel Leave">
                         <Button
                           className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                           onClick={() => handleCancelLeave(field?.id)}
                         >
                           <IoClose />
                         </Button>
+                        </ToolTip>
+                        <ToolTip text="Edit Leave">
                         <Button
                           className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
                           onClick={() => handleEditLeave(field?.id)}
                         >
                           <MdModeEditOutline />
                         </Button>
+                        </ToolTip>
                       </div>
                     </div>
                   </Col>
-                ))}
+                )): 
+                <NoDataFound />}
               </Row>
             </div>
             <Row className="gx-4">

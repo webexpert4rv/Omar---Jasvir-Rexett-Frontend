@@ -28,19 +28,21 @@ const LeaveRequest = () => {
   const handleClose = () => {
     setShowRejectModal(!showRejectModal);
   };
-  const handleClick = (e,reason) => {
-    console.log(reason,"reason")
+  const handleClick = async(e,reason) => {
     let payload = {
       leaveId: leaveId,
-      approval_status: null,
+      approval_status: "Not Approved",
       rejection_reason: reason,
     };
-    console.log(payload,"payload")
-    dispatch(getClientLeaveStatus(payload));
+    await dispatch(getClientLeaveStatus(payload));
+    let data = {
+      approval_status: "Under Approval",
+    }
+    dispatch(getClientLeaveHistory(data));
     setShowRejectModal(!showRejectModal);
   };
 
-  const handleApproveReject = (id,status) => {
+  const handleApproveReject = async(id,status) => {
     setLeaveId(id)
     if (status === "Approved") {
       let payload = {
@@ -48,7 +50,11 @@ const LeaveRequest = () => {
         approval_status: status,
         rejection_reason: null,
       };
-      dispatch(getClientLeaveStatus(payload));
+      await dispatch(getClientLeaveStatus(payload));
+    let data = {
+        approval_status: "Under Approval",
+      }
+      dispatch(getClientLeaveHistory(data));
     } else {
       setShowRejectModal(true);
     }
@@ -70,7 +76,7 @@ const LeaveRequest = () => {
       }
     }else{
         data = {
-        approval_status: "withdrawn ",
+        approval_status: "Withdrawn",
         
       }
     }
@@ -78,10 +84,10 @@ const LeaveRequest = () => {
   }, [currentTab]);
 
   const tableHeader = () => {
-    if (currentTab === "third") {
-      HEADER[HEADER.length - 1] = "Leave Status";
-    } else {
+    if (currentTab === "first") {
       HEADER[HEADER.length - 1] = "Action";
+    } else {
+      HEADER[HEADER.length - 1] = "Leave Status";
     }
     return HEADER;
   };

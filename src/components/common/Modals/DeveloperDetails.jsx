@@ -52,7 +52,7 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
                 "user_id" : +id
             };
             console.log(data,"data")
-            dispatch(updateDeveloperCvDetails(data, () => {
+            dispatch(updateDeveloperCvDetails(data,role, () => {
                 if(role=="developer"){
                     dispatch(fetchDeveloperCv())
                 }else{

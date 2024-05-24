@@ -110,8 +110,19 @@ export const tabText= [
     key:"fourth",
     value:"Cancelled Leaves"
   }
-
 ]
+
+
+export const planLeaveTabs= [
+  {
+    key:"first",
+    value:"Apply Leave"
+  },
+  { 
+    key:"second",
+    value: "Leaves History"
+   },
+  ]
 export const generateLeave = (item) => {
   switch (item) {
     case "full-day":

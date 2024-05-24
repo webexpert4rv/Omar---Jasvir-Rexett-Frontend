@@ -110,7 +110,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
             educations:educations
           }
 
-            dispatch(updateDeveloperCvEducation(data,()=>{
+            dispatch(updateDeveloperCvEducation(data,role,()=>{
                 if (role == "developer") {
                     dispatch(fetchDeveloperCv())
                 } else {
