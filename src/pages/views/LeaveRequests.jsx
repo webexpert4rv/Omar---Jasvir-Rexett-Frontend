@@ -64,10 +64,15 @@ const LeaveRequest = () => {
       data = {
         approval_status: "Not Approved",
       };
-    } else {
+    } else if(currentTab ==="third"){
       data = {
         approval_status: "Approved",
-      };
+      }
+    }else{
+        data = {
+        approval_status: "withdrawn ",
+        
+      }
     }
     dispatch(getClientLeaveHistory(data));
   }, [currentTab]);

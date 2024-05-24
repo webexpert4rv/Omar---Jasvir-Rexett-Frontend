@@ -100,11 +100,15 @@ export const tabText= [
   },
   { 
     key:"second",
-    value: "Leave Cancel Request"
+    value: "Leaves Rejected"
    },
    {
     key:"third",
     value:"Leave History"
+  },
+  {
+    key:"fourth",
+    value:"Cancelled Leaves"
   }
 
 ]
@@ -114,8 +118,8 @@ export const generateLeave = (item) => {
     return "Full Day"
       case "half-day":
       return "Half Day"
-      case "short-day" :
-      return " Short Day"
+      case "short-leave" :
+      return " Short Leave"
     }
 };
 export const LEAVE_TYPE = [
