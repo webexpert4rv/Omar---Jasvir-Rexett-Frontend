@@ -73,7 +73,7 @@ const TimeReportRemark = ({
       dispatch( 
         postReconciliationData(modifiedPayload, () => {
           handleremarkClose();
-          // dispatch(timeReporting( role));
+          dispatch(timeReporting({filter:"weekly"},role));
         })
       );
     } else {
@@ -108,7 +108,7 @@ const TimeReportRemark = ({
             </p>
           </div>
 
-          {updateWeeklyData?.map((item, index) => {
+          {updateWeeklyData?.map((item, index) => { 
             return (
               <>
                 <ReconciliationModal
