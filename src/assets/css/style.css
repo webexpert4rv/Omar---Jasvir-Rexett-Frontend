@@ -758,10 +758,14 @@ ul {
 
 .common-field {
     border: none;
-    /* padding: 12px 14px; */
+    padding: 12px 14px;
     border-radius: 10px;
     background-color: #f5f5f5;
     transition: .4s ease;
+}
+
+select.common-field {
+    padding-right: 34px;
 }
 
 .common-field:focus {
@@ -3680,8 +3684,8 @@ input[type="radio"]:checked {
     display: inline-block;
     font-weight: 400;
 }
-.remarks-text:disabled
-{
+
+.remarks-text:disabled {
     filter: grayscale(1);
     opacity: .5;
     pointer-events: none;
@@ -4357,12 +4361,12 @@ input[type="radio"]:checked {
     width: 70px;
 }
 
-.leave-calendar
-{
+.leave-calendar {
     padding: 10px;
     background-color: #fff;
     border-radius: 12px;
 }
+
 .leave-calendar .rdrDay {
     height: 50px;
     line-height: 50px;
@@ -4407,7 +4411,8 @@ input[type="radio"]:checked {
 .leave-calendar .rdrDayToday .rdrStartEdge {
     color: #037563 !important;
 }
-.leave-calendar .rdrMonthAndYearPickers select{
+
+.leave-calendar .rdrMonthAndYearPickers select {
     font-size: 16px;
 }
 
@@ -4417,12 +4422,12 @@ input[type="radio"]:checked {
     background-color: #fff;
     border-radius: 12px;
 }
-.leave_type_radio
-{
+
+.leave_type_radio {
     display: none;
 }
-.leave_label
-{
+
+.leave_label {
     display: inline-block;
     padding: 10px 19px;
     border-radius: 8px;
@@ -4435,14 +4440,14 @@ input[type="radio"]:checked {
     transition: .3s ease;
     cursor: pointer;
 }
-.leave_type_radio:checked + .leave_label
-{
+
+.leave_type_radio:checked+.leave_label {
     background-color: #037563;
     border: 1px solid #037563;
     color: #fff;
 }
-.leave-wrapper-box
-{
+
+.leave-wrapper-box {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -4451,19 +4456,19 @@ input[type="radio"]:checked {
     border: 1px solid #f4f4f5;
     gap: 20px;
 }
-.leave-wrapper-box .project-heading
-{
+
+.leave-wrapper-box .project-heading {
     font-size: 18px;
     margin-bottom: 5px;
 }
-.leave-type-heading
-{
+
+.leave-type-heading {
     font-size: 16px;
     font-weight: 600;
     color: #037563;
 }
-.leave-date
-{
+
+.leave-date {
     font-size: 12px;
     display: inline-block;
     color: #121212;
@@ -4472,101 +4477,100 @@ input[type="radio"]:checked {
     border-radius: 10px;
     margin-bottom: 5px;
 }
-.reason-data
-{
+
+.reason-data {
     max-width: 300px;
 }
-.job-post-container
-{
+
+.job-post-container {
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
-#custom-ck .ck-editor
-{
+
+#custom-ck .ck-editor {
     background: #f5f5f5;
     padding: 12px 17px;
     border-radius: 10px;
 }
-#custom-ck .ck-toolbar_grouping
-{
+
+#custom-ck .ck-toolbar_grouping {
     border: none;
     padding: 5px;
     border-radius: 10px;
 }
-#custom-ck .ck-editor__editable
-{
+
+#custom-ck .ck-editor__editable {
     background: transparent;
     border: none;
     margin-top: 10px;
     height: 330px;
     max-height: 330px;
 }
-#custom-ck .ck-editor__editable.ck-focused
-{
+
+#custom-ck .ck-editor__editable.ck-focused {
     box-shadow: none;
 }
-#custom-ck .ck-sticky-panel__content
-{
+
+#custom-ck .ck-sticky-panel__content {
     border: none;
 }
-.screening-wrapper
-{
+
+.screening-wrapper {
     border: 1px solid #e1e1e1;
     border-radius: 7px;
 }
-.screening-wrapper h3
-{
+
+.screening-wrapper h3 {
     font-size: 16px;
 }
-.screen-wrapper-heading
-{
+
+.screen-wrapper-heading {
     padding: 10px 14px;
     background-color: #f3f7fd;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
 }
-.screening-grid
-{
+
+.screening-grid {
     padding: 10px 14px;
 }
-.rounded-full
-{
+
+.rounded-full {
     border-radius: 30px !important;
 }
-.common-field .company-imgbx
-{
+
+.common-field .company-imgbx {
     width: 35px;
     height: 35px;
     object-fit: cover;
     border-radius: 50%;
 }
 
-.job-post-checkbox
-{
+.job-post-checkbox {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-.job-post-checkbox input
-{
+
+.job-post-checkbox input {
     width: 20px;
     height: 20px;
     box-shadow: none !important;
     cursor: pointer;
     margin-top: 0px;
 }
-.job-post-checkbox input:checked
-{
+
+.job-post-checkbox input:checked {
     background-color: #037563;
 }
-.job-post-checkbox label
-{
+
+.job-post-checkbox label {
     margin: 0;
     cursor: pointer;
 }
-.file_shown
-{
+
+.file_shown {
     width: 140px;
     height: 140px;
     padding: 10px;
@@ -4574,14 +4578,14 @@ input[type="radio"]:checked {
     border-radius: 10px;
     position: relative;
 }
-.file_shown img
-{
+
+.file_shown img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.file_shown .camera-btn
-{
+
+.file_shown .camera-btn {
     position: absolute;
     bottom: -10px;
     right: -10px;
@@ -4597,29 +4601,199 @@ input[type="radio"]:checked {
     align-items: center;
     cursor: pointer;
 }
-.common-field .css-13cymwt-control
-{
+
+.common-field .css-13cymwt-control {
     background: transparent;
     border: none;
     min-height: 1px;
 }
-.common-field .css-1xc3v61-indicatorContainer
-{
+
+.common-field .css-1xc3v61-indicatorContainer {
     margin: 0;
     padding: 0;
 }
-.common-field .css-1fdsijx-ValueContainer
-{
+
+.common-field .css-1fdsijx-ValueContainer {
     padding: 0px;
 }
-.common-field .css-qbdosj-Input
-{
+
+.common-field .css-qbdosj-Input {
     margin: 0;
     padding: 0;
 }
-.common-field .t3ipsp-control
-{
+
+.common-field .t3ipsp-control {
     min-height: 1px;
+}
+
+.calendar-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.calendar-container .react-calendar {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 20px;
+}
+
+.calendar-container .react-calendar .react-calendar__tile {
+    margin-bottom: 13px;
+    padding: 10px 6.6667px;
+}
+
+.calendar-container .react-calendar .react-calendar__tile.react-calendar__tile--active,
+.calendar-container .react-calendar .react-calendar__tile.react-calendar__tile--now {
+    background-color: transparent;
+    color: #000;
+}
+
+.calendar-container .react-calendar .react-calendar__tile:hover {
+    background-color: transparent;
+}
+
+.calendar-container .react-calendar .react-calendar__tile abbr {
+    margin-left: auto;
+    margin-right: auto;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s ease;
+    border-radius: 50%;
+}
+
+.calendar-container .react-calendar .react-calendar__tile:hover abbr {
+    background-color: #f2f2f2;
+}
+
+.calendar-container .react-calendar .react-calendar__tile.react-calendar__tile--now abbr {
+    background-color: #0375631c;
+    color: #037563;
+}
+
+.calendar-container .react-calendar .react-calendar__tile.react-calendar__tile--active abbr {
+    background-color: #037563;
+    color: #fff;
+}
+
+.calendar-container .react-calendar__navigation {
+    padding: 6px;
+    background: #037563;
+    border-radius: 10px;
+    height: auto;
+}
+
+.calendar-container .react-calendar__navigation .react-calendar__navigation__prev-button,
+.calendar-container .react-calendar__navigation .react-calendar__navigation__next-button {
+    width: 30px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff3b;
+    color: #fff;
+    border-radius: 9px;
+    font-size: 24px;
+    transition: .3s ease;
+}
+
+.calendar-container .react-calendar__navigation .react-calendar__navigation__prev-button:hover,
+.calendar-container .react-calendar__navigation .react-calendar__navigation__next-button:hover {
+    background: #fff !important;
+    color: #037563;
+}
+
+.calendar-container .react-calendar__navigation .react-calendar__navigation__label {
+    color: #fff;
+}
+
+.calendar-container .react-calendar__navigation .react-calendar__navigation__label:hover {
+    background: transparent !important;
+}
+
+.calendar-container .react-calendar__navigation .react-calendar__navigation__prev2-button,
+.calendar-container .react-calendar__navigation .react-calendar__navigation__next2-button {
+    display: none;
+}
+
+.calendar-container .holiday-listing {
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    border-radius: 20px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.holiday-listing h3 {
+    font-size: 20px;
+}
+
+.event-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 10px;
+    background-color: #037563;
+}
+
+.eventdate-text {
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+    color: #f1f1f1;
+    border: 1px solid #ebebebb8;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.eventdate-text .year-text {
+    font-size: 16px;
+}
+
+.event-wrapper .event-info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.event-name {
+    color: #fff;
+    font-size: 15px;
+}
+
+.event-container .event-wrapper:nth-child(even) {
+    background-color: #00917a;
+}
+
+.event-container {
+    max-height: 507px;
+    overflow: auto;
+}
+
+.dot {
+    height: 5px;
+    width: 5px;
+    background-color: #037563;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.react-calendar__tile {
+    position: relative !important;
+}
+.calendar-container .react-calendar__navigation button:disabled
+{
+    background-color: transparent !important;
+}
+.calendar-container .react-calendar__tile.react-calendar__year-view__months__month abbr
+{
+    min-width: 40px;
+    width: auto;
+    border-radius: 50px;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
