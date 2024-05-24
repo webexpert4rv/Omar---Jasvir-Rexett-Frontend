@@ -77,7 +77,7 @@ const ReconciliationModal = ({
             </div>
             <div className="editSec">
               {role !== "client" ? (
-                <span onClick={() => handleEdit(item)}>
+                <span className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none" onClick={()=>handleEdit(item)}>
                   <TiEdit />
                 </span>
               ) : (
@@ -131,12 +131,8 @@ const ReconciliationModal = ({
 
               {editDetails?.isEdit ? (
                 <>
-                  <input
-                    type="time"
-                    value={item?.start_time}
-                    name="start_time"
-                    onChange={(e) => handleChangeUpdateWeeklyData(e, index)}
-                  />
+                <input type="time" className="common-field form-control" value={item?.start_time} name="start_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
+                
                 </>
               ) : start_time ? (
                 moment(start_time, "HH:mm:ss").format("h:mm:ss A")
@@ -149,12 +145,7 @@ const ReconciliationModal = ({
               <FaRegClock />
 
               {editDetails?.isEdit ? (
-                <input
-                  type="time"
-                  value={item?.end_time}
-                  name="end_time"
-                  onChange={(e) => handleChangeUpdateWeeklyData(e, index)}
-                />
+                <input type="time" className="common-field form-control" value={item?.end_time} name="end_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
               ) : end_time ? (
                 moment(end_time, "HH:mm:ss").format("h:mm:ss A")
               ) : (
@@ -167,12 +158,7 @@ const ReconciliationModal = ({
       <div className="client-info">
         <h4 className="sidebar-heading">Memo</h4>
         {editDetails?.isEdit ? (
-          <input
-            type="text"
-            value={item?.memo}
-            name="memo"
-            onChange={(e) => handleChangeUpdateWeeklyData(e, index)}
-          />
+          <input type="text" className="common-field form-control" value={item?.memo} name="memo" onChange={(e)=>handleChangeUpdateWeeklyData(e,index)} />
         ) : (
           <p className="client-name-heading">
             {memo ? memo : "Memo not Found"}
