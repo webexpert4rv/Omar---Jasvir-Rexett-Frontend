@@ -220,14 +220,17 @@ export function getDeveloperDashboard(payload, callback) {
   };
 }
 
-export function updateDeveloperCvBio(payload, callback) {
-  console.log(payload, "payload");
+export function updateDeveloperCvBio(payload,role, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post("common/update-bio", {...payload,});
       if (result.status === 200) {
-        toast.success("Bio is updated", { position: "top-center" });
+        if(role==="developer"){
+        toast.success("Please wait for changes approval by admin", { position: "top-center" });
+        }else{
+          toast.success("Bio is Updated", { position: "top-center" });
+        }
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -278,6 +281,7 @@ export function getUpdateLeave(id , payload ) {
     try {
       let result = await clientInstance.put(`/developer/update-leave-request/${id}`,{...payload});
       if (result.status === 200) {
+        toast.success("Leave Updated", { position: "top-center" });
         dispatch(setUpdateLeave(result?.data?.data))
       }
     } catch (error) {
@@ -299,13 +303,17 @@ export function getCancelLeave(id , payload ) {
     }
   };
 }
-export function updateDeveloperCvExperience(payload,callback) {
+export function updateDeveloperCvExperience(payload,role,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/update-experiences`, {...payload} );
       if (result.status === 200) {
-        toast.success("Experience is Updated", { position: "top-center" });
+        if(role==="developer"){
+        toast.success("Please wait for changes approval by admin", { position: "top-center" });
+        }else{
+          toast.success("Experience is Updated", { position: "top-center" });
+        }
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -395,7 +403,7 @@ export function addDeveloperCvEducation(payload, callback) {
   };
 }
 
-export function updateDeveloperCvEducation(payload,callback) {
+export function updateDeveloperCvEducation(payload,role,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -403,7 +411,11 @@ export function updateDeveloperCvEducation(payload,callback) {
         ...payload,
       });
       if (result.status === 200) {
-        toast.success("Education is Updated", { position: "top-center" });
+        if(role==="developer"){
+        toast.success("Please wait for changes approval by admin", { position: "top-center" });
+        }else{
+          toast.success("Education is Updated", { position: "top-center" });
+        }
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -450,7 +462,7 @@ export function deleteEducationCv(id, payload, callback) {
   };
 }
 
-export function updateDeveloperSkills(payload, callback, method = "post") {
+export function updateDeveloperSkills(payload,role, callback, method = "post") {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -466,9 +478,13 @@ export function updateDeveloperSkills(payload, callback, method = "post") {
         ...payload,
       });
       if (result.status === 200) {
-        toast.success("Skills updated successfully", {
+        if (role==="developer"){
+        toast.success("Please wait for changes approval by admin", {
           position: "top-center",
         });
+      }else{
+        toast.success("Skills are Updated", { position: "top-center" });
+      }
         dispatch(setSuccessActionData());
         return callback();
       }
@@ -661,7 +677,7 @@ export function deleteProjects(projectId, callback) {
     }
   };
 }
-export function updateProjects(projectId, payload, callback,isLast = true) {
+export function updateProjects(projectId, payload, role,callback,isLast = true) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -670,7 +686,11 @@ export function updateProjects(projectId, payload, callback,isLast = true) {
         payload
       );
       if (isLast) {
-        toast.success("Project is updated", { position: "top-center" });
+        if(role==="developer"){
+        toast.success("Please wait for changes approval by admin", { position: "top-center" });
+      }
+    }else{
+        toast.success("Projects are Updated", { position: "top-center" });
       }
       dispatch(setSuccessActionData());
       return callback();

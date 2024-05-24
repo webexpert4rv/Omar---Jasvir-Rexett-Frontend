@@ -28,7 +28,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null)
   }, [newJobPost]);
 
-  console.log(notificationList,"notificationList")
 
   useEffect(() => {
     if (newJobPost !== null) {

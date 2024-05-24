@@ -174,6 +174,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
           updateProjects(
             item.id,
             item,
+            role,
             () => {
               if (role == "developer") {
                 dispatch(fetchDeveloperCv());

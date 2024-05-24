@@ -8,7 +8,6 @@ import { generateLeave } from "../../clients/TimeReporiting/constant";
 import NoDataFound from "../../atomic/NoDataFound";
 
 function HeaderTable({ tableData, currentTab, handleApproveReject }) {
- console.log(tableData,"tabledaya")
   return (
     <div>
     { tableData?.length>0 ?  <table className="table time-table table-bordered table-ui-custom">
@@ -49,7 +48,7 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                 </ToolTip>
               </td>
               <td className="time-table-data text-start">
-                {currentTab === "third" ? (
+                {currentTab !== "first" ? (
                   <span className="status-finished">
                     {item?.approval_status}
                   </span>

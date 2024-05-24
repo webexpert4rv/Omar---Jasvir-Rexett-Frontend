@@ -703,8 +703,7 @@ export function getAddNewDeveloper(payload, callback) {
   };
 }
 
-export function updateDeveloperCvDetails(payload, callback) {
-  console.log(payload, "payload");
+export function updateDeveloperCvDetails(payload, role ,callback ) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -712,9 +711,13 @@ export function updateDeveloperCvDetails(payload, callback) {
         ...payload,
       });
       if (result.status === 200) {
-        toast.success("Media is updated successfully", {
+        if(role==="developer"){
+        toast.success("Please wait for changes approval by admin", {
           position: "top-center",
         });
+      }else{
+        toast.success("Profile is Updated", { position: "top-center" });
+      }
         dispatch(setActionSuccessFully());
         return callback();
       }

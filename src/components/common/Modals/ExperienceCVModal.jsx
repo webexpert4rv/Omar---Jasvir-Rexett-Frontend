@@ -70,7 +70,7 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
       developer_id:id,
       experiences:test
     }
-    dispatch(updateDeveloperCvExperience(data,()=>{
+    dispatch(updateDeveloperCvExperience(data,role,()=>{
       if(role=="developer"){
         dispatch(fetchDeveloperCv())
       }else{

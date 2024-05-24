@@ -53,7 +53,7 @@ console.log(selectedOption,"selectedOption")
         user_id: +id,
       };
       dispatch(
-        updateDeveloperSkills(data, () => {
+        updateDeveloperSkills(data, role,() => {
           if (role === "developer") {
             dispatch(fetchDeveloperCv());
           }else{
