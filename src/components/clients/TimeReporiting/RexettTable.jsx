@@ -56,7 +56,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
       setIsAnyReportEmpty(true);
     }
   };
-  const viewremark = <Tooltip id="tooltip">View Remarks</Tooltip>;
+  const viewremark = <Tooltip id="tooltip">View Reconciliation</Tooltip>;
 
   const [remarkshow, setremarkShow] = useState(false);
   const handleremarkClose = () => setremarkShow(false);
@@ -345,15 +345,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                               className="remarks-text position-relative white-nowrap removeBtnStyles"
                             >
                               {item?.contractDetails?.remarks?.length > 0 ? (
-                                <OverlayTrigger
-                                  placement="bottom"
-                                  overlay={viewremark}
-                                >
                                   <img
                                     src={remarkIcon}
                                     className="remark-icon"
                                   />
-                                </OverlayTrigger>
                               ) : (
                                 <OverlayTrigger
                                   placement="bottom"
@@ -392,6 +387,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                     : false
                                 }
                               />
+                              <span className="status-finished">Approved</span>
                             </td>
                           ) : (
                             ""

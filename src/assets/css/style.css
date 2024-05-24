@@ -3680,6 +3680,12 @@ input[type="radio"]:checked {
     display: inline-block;
     font-weight: 400;
 }
+.remarks-text:disabled
+{
+    filter: grayscale(1);
+    opacity: .5;
+    pointer-events: none;
+}
 
 .timing-text {
     font-size: 13px;
@@ -4493,7 +4499,8 @@ input[type="radio"]:checked {
     background: transparent;
     border: none;
     margin-top: 10px;
-    min-height: 370px;
+    height: 330px;
+    max-height: 330px;
 }
 #custom-ck .ck-editor__editable.ck-focused
 {

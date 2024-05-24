@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css'; 
-import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
+import { ArcElement, Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement } from 'chart.js';
 import { Fragment, Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
@@ -86,6 +86,8 @@ Chart.register(ArcElement);
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
 Chart.register(BarElement);
+Chart.register(PointElement);
+Chart.register(LineElement);
 function App() {
   return (
     <>
