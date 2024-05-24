@@ -15,6 +15,7 @@ import {
   adminApproveReject,
   allApplicationsList,
   allMemberList,
+  getAccountDisableEnable,
 } from "../../redux/slices/adminDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
@@ -26,6 +27,7 @@ import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
+import ConfirmationModal from "../views/Modals/ConfirmationModal";
 const COLUMNS = {
   vendors: [
     { header: "clientName", key: "name" },
@@ -66,6 +68,12 @@ const Members = () => {
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
+  const [details, setDetails] = useState({
+    role: "",
+    id: ""
+})
+const [showModal, setShowModal] = useState(false)
+
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
@@ -145,6 +153,37 @@ const Members = () => {
 
     setTimerValue(timer);
   };
+
+  const deleteApplication = (
+    <Tooltip id="tooltip">
+        Disabled Accounts
+    </Tooltip>
+);
+
+const handleToggle = (e,item) => {
+  e.stopPropagation()
+  setShowModal(!showModal)
+  setDetails(prevDetails => ({
+      ...prevDetails,
+      active: !showModal,
+      id: item?.id
+  }));
+
+}
+
+const handleClose = () => {
+  setShowModal(!showModal)
+}
+
+const handleDeleteAction = (e) => {
+  e.preventDefault()
+ let data= {
+      "user_id": details?.id,
+      "status": details?.active
+    }
+
+  dispatch(getAccountDisableEnable(data))
+}
 
   return (
     <>
@@ -233,6 +272,7 @@ const Members = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
+                      <th>Disabled/Enabled</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -279,6 +319,14 @@ const Members = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
+                                <td>
+                                <OverlayTrigger placement="bottom" overlay={deleteApplication}>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input class="form-check-input toggle-switch-custom" type="checkbox" role="switch" onClick={(e)=>handleToggle(e,item)}  />
+                                                        </div>
+                                                    </OverlayTrigger>
+                                </td>
+                               
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -445,7 +493,10 @@ const Members = () => {
                       <th>
                         {t("engagements")} {t("last")}
                       </th>
-                      <th>{t("status")}</th>
+                      <th>
+                        {t("status")}
+                      </th>
+                      <th>Enable/Disable</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -495,6 +546,13 @@ const Members = () => {
                                 <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
                                 <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
+                                <td>
+                                                    <OverlayTrigger placement="bottom" overlay={deleteApplication}>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input class="form-check-input toggle-switch-custom" type="checkbox" role="switch" onClick={(e)=>handleToggle(e,item)} checked />
+                                                        </div>
+                                                    </OverlayTrigger>
+                                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -655,6 +713,7 @@ const Members = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
+                      <th>Enable/Disable</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -712,6 +771,13 @@ const Members = () => {
                                     {item?.approval_status}
                                   </span>
                                 </td>
+                                <td>
+                                                    <OverlayTrigger placement="bottom" overlay={deleteApplication}>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input class="form-check-input toggle-switch-custom" type="checkbox" role="switch" onClick={(e)=>handleToggle(e,item)} checked />
+                                                        </div>
+                                                    </OverlayTrigger>
+                                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -831,6 +897,7 @@ const Members = () => {
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
+        <ConfirmationModal show={showModal} handleClose={handleClose} onClick={handleDeleteAction} header={"Delete Developer"} text={"Are you sure ,you want to disable this account?"} />
       </div>
     </>
   );

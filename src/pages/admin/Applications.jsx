@@ -25,6 +25,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
 import CommonApplicationTable from "../../components/common/Admin Application/CommonApplicationTable";
+import { HiDownload } from "react-icons/hi";
 const COLUMNS = {
   vendors: [
     { header: "clientName", key: "name" },
@@ -782,6 +783,7 @@ const Applications = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("action")}</th>
+                      <th>Resume</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -878,7 +880,19 @@ const Applications = () => {
                                       }
                                     />
                                   </div>
+                               
+                                  
                                 </td>
+                                <td> <RexettButton
+                                      icon={
+                                        selectedRejectedBtn === index ? (
+                                          approvedLoader
+                                        ) : (
+                                          <HiDownload />
+                                        )
+                                      }
+                                      className="arrow-btn primary-arrow"
+                                    /></td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
