@@ -13,7 +13,6 @@ import { FiCalendar } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa6";
 import moment from "moment";
 import SingleTimeReporting from "./SingleTimeReporting";
-import TimeReportRemark from "./TimeReportRemark";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import {
   getReconciliationData,
@@ -21,11 +20,13 @@ import {
 } from "../../../redux/slices/clientDataSlice";
 import remarkIcon from "../../../assets/img/remarks-icon.svg";
 import { OverlayTrigger } from "react-bootstrap/esm";
+import TimeReportRemark from "./TimeReportRemark";
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   const [show, setShow] = useState(false);
   const [contractId, setContractID] = useState(null);
   const [isAnyReportEmpty, setIsAnyReportEmpty] = useState(false);
+  const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const [approvedConfirmation, setApprovedConfirmation] = useState({
     isApproved: false,
     approvedId: null,
@@ -77,7 +78,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   const { approvedLoader, smallLoader } = useSelector(
     (state) => state.developerData
   );
-  const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const dispatch = useDispatch();
   const submitApproved = (id, index, startDate, endDate) => {
     setApprovedConfirmation({
@@ -143,13 +143,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
         return false;
       }
     } else if (role == "developer") {
-      if(isApproved){
+      if (isApproved) {
         return true;
+      } else {
+        return false;
       }
-      else{
-        return false
-      }
-
     }
   };
   // const isTodayMonthEnd = () => {
@@ -279,7 +277,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                   </td>
                                 </>
                               );
-                            } else if (reprt.week) {
+                            } else if (reprt?.week) {
                               return (
                                 <>
                                   <td
@@ -345,10 +343,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                               className="remarks-text position-relative white-nowrap removeBtnStyles"
                             >
                               {item?.contractDetails?.remarks?.length > 0 ? (
-                                  <img
-                                    src={remarkIcon}
-                                    className="remark-icon"
-                                  />
+                                <img src={remarkIcon} className="remark-icon" />
                               ) : (
                                 <OverlayTrigger
                                   placement="bottom"
@@ -366,28 +361,33 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
 
                           {selectedPeriod == "weekly" ? (
                             <td className="time-table-data">
-                              <RexettButton
-                                type="submit"
-                                text={currentTextData(role, item?.isApproved)}
-                                className="outline-main-btn white-nowrap px-2 font-13"
-                                variant="transparent"
-                                disabled={shouldDisable(item?.isApproved)}
-                                onClick={() => {
-                                  isAnyTimeReportingEmpty(item?.timeReports);
-                                  submitApproved(
-                                    item?.contractDetails?.contract_id,
-                                    index,
-                                    item?.startDate,
-                                    item?.endDate
-                                  );
-                                }}
-                                isLoading={
-                                  selectedApprovedBtn === index
-                                    ? approvedLoader
-                                    : false
-                                }
-                              />
-                              <span className="status-finished">Approved</span>
+                              {item?.isApproved ? (
+                                <span className="status-finished">
+                                  Approved
+                                </span>
+                              ) : (
+                                <RexettButton
+                                  type="submit"
+                                  text={currentTextData(role, item?.isApproved)}
+                                  className={`outline-main-btn white-nowrap px-2 font-13`}
+                                  variant="transparent"
+                                  disabled={shouldDisable(item?.isApproved)}
+                                  onClick={() => {
+                                    isAnyTimeReportingEmpty(item?.timeReports);
+                                    submitApproved(
+                                      item?.contractDetails?.contract_id,
+                                      index,
+                                      item?.startDate,
+                                      item?.endDate
+                                    );
+                                  }}
+                                  isLoading={
+                                    selectedApprovedBtn === index
+                                      ? approvedLoader
+                                      : false
+                                  }
+                                />
+                              )}
                             </td>
                           ) : (
                             ""
