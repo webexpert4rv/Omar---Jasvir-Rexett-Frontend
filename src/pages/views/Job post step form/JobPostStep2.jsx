@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { t } from "i18next";
 import { Col, Form, Row } from "react-bootstrap";
 import { MdPattern } from "react-icons/md";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSkillList } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 import { BsCloudLightning } from "react-icons/bs";
+import { Editor } from "@tinymce/tinymce-react";
 
 const MAX_CHARACTER_LIMIT = 10000;
 
@@ -16,6 +17,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   const dispatch = useDispatch();
   const [descriptionText, setDescriptionText] = useState("");
   const [skills, setSkills] = useState([]);
+  const [text, setText] = useState("");
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
   useEffect(() => {
     dispatch(getSkillList());
@@ -26,45 +28,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });
-  // const editorConfiguration = {
-  //   plugins: [WordCount],
-  //   wordCount: {
-  //     showParagraphs: false,
-  //     showWordCount: false,
-  //     showCharCount: true,
-  //     countSpacesAsChars: true,
-  //     countHTML: false,
-  //     maxWordCount: 400,
-  //     maxCharCount: 400,
-  //   },
-  //   toolbar: {
-  //     items: [
-  //       "undo",
-  //       "redo",
-  //       "|",
-  //       "heading",
-  //       "|",
-  //       "fontfamily",
-  //       "fontsize",
-  //       "fontColor",
-  //       "fontBackgroundColor",
-  //       "|",
-  //       "bold",
-  //       "italic",
-  //       "strikethrough",
-  //       "|",
-  //       "link",
-  //       "blockQuote",
-  //       "|",
-  //       "bulletedList",
-  //       "numberedList",
-  //       ,
-  //       "outdent",
-  //       "indent",
-  //     ],
-  //   },
-  // };
-
+  const editorRef = useRef(null);
   return (
     <div>
       {" "}
@@ -74,61 +38,52 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
             <Form.Group>
               <Form.Label>Description</Form.Label>
               <div id="custom-ck">
-                <Controller
-                  name="description"
-                  control={control}
-                  rules={{
-                    required: "Description is required",
-                    // validate: (value) =>
-                    //   descriptionText?.length <= MAX_CHARACTER_LIMIT ||
-                    //   "Maximum character limit reached",
+                <Editor
+                  {...register("description", {
+                    required : "Description is required",
+                  },
+                )}
+                  apiKey="nvg2dnotqh9tmlf2j3hvf7w101gjpz2l5jobxsa9avkvr5pa"
+                  value={watch("description")}
+                  onEditorChange={(content, editor) => {
+                    setValue("description",content)
+                    setText(editor.getContent({ format: "text" }));
                   }}
-                  render={({ field: { ref, ...field } }) => (
-                    <CKEditor
-                      {...field}
-                      innerRef={ref}
-                      editor={ClassicEditor}
-                      config={{
-                        toolbar: {
-                          items: [
-                            "undo",
-                            "redo",
-                            "|",
-                            "heading",
-                            "|",
-                            "fontfamily",
-                            "fontsize",
-                            "fontColor",
-                            "fontBackgroundColor",
-                            "|",
-                            "bold",
-                            "italic",
-                            "strikethrough",
-                            "|",
-                            "link",
-                            "blockQuote",
-                            "|",
-                            "bulletedList",
-                            "numberedList",
-                            ,
-                            "outdent",
-                            "indent",
-                          ],
-                        },
-                      }}
-                      // config={editorConfiguration}
-                      data={watch("description")}
-                      onChange={(event, editor) => {
-                        const value = editor.getData();
-                        //   setValue("skillDescription",value);
-                        field.onChange(value);
-                        // for removing html tags and getting plain string
-                        setDescriptionText(value.replace(/(<([^>]+)>)/gi, ""));
-                      }}
-                    />
-                  )}
+                  //initialValue={content}
+                  //outputFormat="text"
+                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  onBlur={(e, editor) => {
+                    // Set the field value on blur to prevent clearing
+                    const element = editor.getElement();
+                    setValue("description", editor.getContent());
+                  }}
+                  // onLoadContent={}
+                  // initialValue="<p>This is the initial content of the editor.</p>"
+                  init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                      "mentions advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code fullscreen",
+                      "insertdatetime media paste code help wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | formatselect | " +
+                      "bold italic backcolor | alignleft aligncenter " +
+                      "alignright alignjustify | bullist numlist outdent indent | " +
+                      "removeformat | emoticons| help",
+                    content_style:
+                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    emoticons_append: {
+                      custom_mind_explode: {
+                        keywords: ["brain", "mind", "explode", "blown"],
+                        char: "🤯",
+                      },
+                    },
+                  }}
                 />
-                <p className="text-end text-muted font-14 mt-1">{`${descriptionText?.length}/10,000`}</p>
+
+                <p className="text-end text-muted font-14 mt-1">{`${text?.length}/10,000`}</p>
               </div>
               {errors?.description && (
                 <p className="error-message ">{errors.description?.message}</p>
