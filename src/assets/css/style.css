@@ -3680,6 +3680,12 @@ input[type="radio"]:checked {
     display: inline-block;
     font-weight: 400;
 }
+.remarks-text:disabled
+{
+    filter: grayscale(1);
+    opacity: .5;
+    pointer-events: none;
+}
 
 .timing-text {
     font-size: 13px;

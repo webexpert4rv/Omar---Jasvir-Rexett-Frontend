@@ -99,7 +99,7 @@ const TimeReportRemark = ({
       <Offcanvas.Body>
         <div className="detail-view weekly-view">
           <div className="client-info mb-3">
-            {role !== "developer" ? "Developer Name" : "Client Name"}
+            <p>{role !== "developer" ? "Developer Name" : "Client Name"}</p>
             <p className="client-name-heading">
               <img src={user_details?.profile_picture} />
               {user_details?.name}
