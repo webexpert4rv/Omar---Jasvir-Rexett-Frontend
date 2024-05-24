@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../atomic/RexettButton";
 import ReconciliationModal from "./ReconcialiationModal";
 import { postReconciliationData } from "../../../redux/slices/developerDataSlice";
+import { timeReporting } from "../../../redux/slices/clientDataSlice";
 const TimeReportRemark = ({
   remarkshow,
   handleremarkClose,
@@ -69,9 +70,10 @@ const TimeReportRemark = ({
     // removing isEdited key that was added manually
     let modifiedPayload = payload.map(({ isEdited, ...rest }) => {return {...rest,contract_id:Number(contractId)}});
     if (modifiedPayload?.length) {
-      dispatch(
+      dispatch( 
         postReconciliationData(modifiedPayload, () => {
           handleremarkClose();
+          // dispatch(timeReporting( role));
         })
       );
     } else {

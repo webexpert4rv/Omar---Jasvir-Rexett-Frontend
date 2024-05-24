@@ -224,9 +224,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                     className="developer-img"
                                     alt=""
                                   />
-                                  <span className="number-count overlay">
+                                  {/* <span className="number-count overlay">
                                     1
-                                  </span>
+                                  </span> */}
                                 </div>{" "}
                                 {item?.contractDetails?.user_details?.name}
                               </div>
@@ -260,7 +260,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                               reprt?.end_time,
                                               "HH:mm"
                                             ).format("h:mm A")} `
-                                          : "Holiday"}
+                                          :(reprt?.is_holiday)  ? "Holiday" : (reprt?.is_off_day) && "Off day"}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">
@@ -325,7 +325,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                                     </td> */}
                           <td className="time-table-data">
                             <span className="status-progress white-nowrap">
-                              Under Review
+                              {item?.isApproved ? "Reviewed" : "Under Review"}
                             </span>
                           </td>
                           <td className="time-table-data">
@@ -357,7 +357,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                   />
                                 </OverlayTrigger>
                               )}{" "}
-                              <span className="number-count overlay">1</span>
+                              {/* <span className="number-count overlay">1</span> */}
                             </button>
                           </td>
 
