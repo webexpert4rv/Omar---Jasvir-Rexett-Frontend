@@ -3,8 +3,9 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/style.css'
 import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css'; 
-import { ArcElement, Chart, CategoryScale, LinearScale, BarElement } from 'chart.js';
+import 'react-date-range/dist/theme/default.css';
+import 'react-calendar/dist/Calendar.css'; 
+import { ArcElement, Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement } from 'chart.js';
 import { Fragment, Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
@@ -81,11 +82,15 @@ import LeavePlan from './pages/developer/PlanLeave';
 import ScreenLoader from './components/atomic/ScreenLoader';
 import JobPostStepContainer from './pages/views/Job post step form/JobPostStepContainer';
 import LeaveRequest from './pages/views/LeaveRequests';
+import PublicHoliday from './pages/views/PublicHolidays';
+import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
 
 Chart.register(ArcElement);
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
 Chart.register(BarElement);
+Chart.register(PointElement);
+Chart.register(LineElement);
 function App() {
   return (
     <>
@@ -117,6 +122,7 @@ function App() {
           <Route path="/earned-back" exact element={<DashboardLayout><EarnedBack /></DashboardLayout>} />
           <Route path="/invoice" exact element={<DashboardLayout><Invoice /></DashboardLayout>} />
           <Route path="/contact-support" exact element={<DashboardLayout><ContactSupport /></DashboardLayout>} />
+          <Route path="/public-holiday" exact element={<DashboardLayout><PublicHoliday /></DashboardLayout>} />
           <Route path="/admin-dashboard" exact element={<AdminDashboardLayout><AdminDashboard /></AdminDashboardLayout>} />
           <Route path="/developer-list" exact element={<AdminDashboardLayout><DeveloperList /></AdminDashboardLayout>} />
           {/* <Route path="/list-clients" exact element={<AdminDashboardLayout><ListClient /></AdminDashboardLayout>} /> */}
@@ -136,6 +142,7 @@ function App() {
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
           <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
+          <Route path="/developer-public-holiday" exact element={<DeveloperDashboardLayout><DeveloperPublicHoliday /></DeveloperDashboardLayout>} />
           <Route path="/job-post" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />
           <Route path="/job-edit-post/:id" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />

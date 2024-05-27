@@ -15,6 +15,7 @@ import {
   adminApproveReject,
   allApplicationsList,
   allMemberList,
+  getAccountDisableEnable,
 } from "../../redux/slices/adminDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
@@ -26,30 +27,16 @@ import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
-const COLUMNS = {
-  vendors: [
-    { header: "clientName", key: "name" },
-    { header: "emailAddress", key: "email" },
-    { header: "phoneNumber", key: "phone_number" },
-    { header: "typeOfCompany", key: "company", subKey: "type_of_company" },
-    { header: "engagements", key: "company", subKey: "total_employees" },
-    { header: "engagementsLast", key: "company", subkey: "website" },
-    { header: "availablity", key: "company", subkey: "yearly_revenue" },
-    { header: "status", key: "", type: "status" },
-  ],
-  developers: [
-    { header: "developerName", key: "name", type: "image" },
-    { header: "emailAddress", key: "email" },
-    { header: "phoneNumber", key: "phone_number" },
-    { header: "status", key: "approval_status", type: "status" },
-  ],
-  clients: [
-    { header: "individual/comapanyname", key: "name", type: "image" },
-    { header: "emailAddress", key: "email" },
-    { header: "phoneNumber", key: "phone_number" },
-    { header: "status", key: "approval_status", type: "status" },
-  ],
-};
+import ConfirmationModal from "../views/Modals/ConfirmationModal";
+
+let STATUS = [{
+  name:"Approved",
+  key:"approved"
+},{
+name:"Rejected",
+key:"rejected"
+
+}];
 
 const Members = () => {
   const dispatch = useDispatch();
@@ -62,10 +49,15 @@ const Members = () => {
   const [arrowactive, setArrowActive] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
-  const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
-  const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
+  const [currentStatus,setCurrentStatus]=useState("approved")
+
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
+  const [details, setDetails] = useState({
+    role: "",
+    id: "",
+  });
+  const [showModal, setShowModal] = useState(false);
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
@@ -80,12 +72,22 @@ const Members = () => {
   }, [page]);
 
   useEffect(() => {
-    setApplication(allApplications[currentTab]);
+    if (allApplications[currentTab]?.length > 0) {
+      let copied = [...allApplications[currentTab]];
+      let filterStatus = copied.filter(
+        (item) => item.approval_status == currentStatus
+      );
+      setApplication(filterStatus);
+    }
   }, [allApplications]);
 
   const handleSelect = (key) => {
     setCurrentTab(key);
-    setApplication(allApplications[key]);
+    let copied = [...allApplications[key]];
+    let filterStatus = copied.filter(
+      (item) => item.approval_status == currentStatus
+    );
+    setApplication(filterStatus);
     setArrowActive(null);
     setExpandedRow(null);
   };
@@ -95,31 +97,7 @@ const Members = () => {
     return skillsArray;
   };
 
-  const handleClick = async (e, clientId, status, index) => {
-    console.log(index, "index");
-    e.stopPropagation();
-    let payload = {
-      user_id: clientId,
-      status: status,
-      "active-tab": currentTab,
-    };
-
-    let data = {
-      page: page,
-      "active-tab": currentTab,
-    };
-
-    if (status === "approved") {
-      setSelectedApprovedBtn(index);
-    } else if (status === "rejected") {
-      setSelectedRejectedBtn(index);
-    }
-    await dispatch(adminApproveReject(payload));
-    setArrowActive(null);
-    setSelectedApprovedBtn(null);
-    setSelectedRejectedBtn(null);
-    dispatch(allApplicationsList(data));
-  };
+ 
   const approvedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       {t("approve")}
@@ -146,22 +124,61 @@ const Members = () => {
     setTimerValue(timer);
   };
 
+  const deleteApplication = <Tooltip id="tooltip">Disabled Accounts</Tooltip>;
+
+  const handleToggle = (e, item) => {
+    e.stopPropagation();
+    setShowModal(!showModal);
+    setDetails((prevDetails) => ({
+      ...prevDetails,
+      active: !showModal,
+      id: item?.id,
+    }));
+  };
+
+  const handleClose = () => {
+    setShowModal(!showModal);
+  };
+
+  const handleDeleteAction = (e) => {
+    e.preventDefault();
+    let data = {
+      user_id: details?.id,
+      status: details?.active,
+    };
+
+    dispatch(getAccountDisableEnable(data));
+  };
+
+  const handleStatus=(e)=>{
+  let k=e.target.value
+  console.log(k,"gg")
+  setCurrentStatus(k)
+  let copied = [...allApplications[currentTab]];
+    let filterStatus = copied.filter(
+      (item) => item.approval_status == k
+    );
+    setApplication(filterStatus);
+
+  }
+
   return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("members")}</h2>
 
         <div className="d-flex gap-3">
-          <Form.Select className="filter-select shadow-none">
-            <option value="" onClick={(e) => e.stopPropagation()}>
+          <Form.Select className="filter-select shadow-none" onChange={handleStatus}>
+            <option>
               Select Status
             </option>
-            <option value="assigned" onClick={(e) => e.stopPropagation()}>
-              Rejected
-            </option>
-            <option value="unassigned" onClick={(e) => e.stopPropagation()}>
-              Approved
-            </option>
+            {STATUS.map((item, inx) => {
+              return (
+                <>
+                  <option key={inx} value={item.key}>{item.name}</option>
+                </>
+              );
+            })}
           </Form.Select>
           <Form.Control
             type="text"
@@ -233,6 +250,7 @@ const Members = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
+                      <th>Disabled/Enabled</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -278,7 +296,32 @@ const Members = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
-                                <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
+                                <td>
+                                  <span
+                                    className={`${
+                                      item?.approval_status == "approved"
+                                        ? "status-finished text-capitalize"
+                                        : "status-rejected text-capitalize"
+                                    }`}
+                                  >
+                                    {item?.approval_status}
+                                  </span>
+                                </td>
+                                <td>
+                                  <OverlayTrigger
+                                    placement="bottom"
+                                    overlay={deleteApplication}
+                                  >
+                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                      <input
+                                        class="form-check-input toggle-switch-custom"
+                                        type="checkbox"
+                                        role="switch"
+                                        onClick={(e) => handleToggle(e, item)}
+                                      />
+                                    </div>
+                                  </OverlayTrigger>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -287,95 +330,95 @@ const Members = () => {
                                   }`}
                                 >
                                   <td colSpan="8">
-                                  <td colSpan="8">
-                                    <div>
-                                      <Row>
-                                        {item?.client_type == "company" && (
+                                    <td colSpan="8">
+                                      <div>
+                                        <Row>
+                                          {item?.client_type == "company" && (
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company Name
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company_name
+                                                    ? item?.company_name
+                                                    : "Not Mentioned"}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )}
+                                          {item?.client_type == "company" && (
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company Address
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company_address
+                                                    ? item?.company_address
+                                                    : "Not Mentioned"}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )}
+
                                           <Col md={3} className="mb-3">
                                             <div>
                                               <h3 className="application-heading">
-                                                Company Name
+                                                {t("appliedOn")}
                                               </h3>
                                               <p className="application-text">
-                                                {item?.company_name
-                                                  ? item?.company_name
-                                                  : "Not Mentioned"}
+                                                {item?.created_at?.slice(0, 10)}
                                               </p>
                                             </div>
                                           </Col>
-                                        )}
-                                        {item?.client_type == "company" && (
+
                                           <Col md={3} className="mb-3">
                                             <div>
                                               <h3 className="application-heading">
-                                                Company Address
+                                                {t("email")}
                                               </h3>
                                               <p className="application-text">
-                                                {item?.company_address
-                                                  ? item?.company_address
-                                                  : "Not Mentioned"}
+                                                {item?.email}
                                               </p>
                                             </div>
                                           </Col>
-                                        )}
+                                          {item?.client_type == "company" && (
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company Tax id
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company_tax_id}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )}
 
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("appliedOn")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.created_at?.slice(0, 10)}
-                                            </p>
-                                          </div>
-                                        </Col>
-
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("email")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.email}
-                                            </p>
-                                          </div>
-                                        </Col>
-                                        {item?.client_type == "company" && (
                                           <Col md={3} className="mb-3">
                                             <div>
                                               <h3 className="application-heading">
-                                                Company Tax id
+                                                Contact Person name
                                               </h3>
                                               <p className="application-text">
-                                                {item?.company_tax_id}
+                                                ---
                                               </p>
                                             </div>
                                           </Col>
-                                        )}
-
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              Contact Person name
-                                            </h3>
-                                            <p className="application-text">
-                                              ---
-                                            </p>
-                                          </div>
-                                        </Col>
-                                        <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              Contact Person Email
-                                            </h3>
-                                            <p className="application-text">
-                                              ---
-                                            </p>
-                                          </div>
-                                        </Col>
-                                      </Row>
-                                    </div>
-                                  </td>
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Contact Person Email
+                                              </h3>
+                                              <p className="application-text">
+                                                ---
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        </Row>
+                                      </div>
+                                    </td>
                                   </td>
                                 </tr>
                               )}
@@ -391,7 +434,7 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalClientPages > 1 ? (
+              {allApplications?.totalClientPages > 1  && application.length>5? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "clients" ? (
                     <p className="showing-result">
@@ -446,6 +489,7 @@ const Members = () => {
                         {t("engagements")} {t("last")}
                       </th>
                       <th>{t("status")}</th>
+                      <th>Enable/Disable</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -494,7 +538,33 @@ const Members = () => {
                                 <td>{item?.company?.type_of_company}</td>
                                 <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
-                                <td><span className={`${item?.approval_status == "approved" ? "status-finished text-capitalize" : "status-rejected text-capitalize" }`}>{item?.approval_status}</span></td>
+                                <td>
+                                  <span
+                                    className={`${
+                                      item?.approval_status == "approved"
+                                        ? "status-finished text-capitalize"
+                                        : "status-rejected text-capitalize"
+                                    }`}
+                                  >
+                                    {item?.approval_status}
+                                  </span>
+                                </td>
+                                <td>
+                                  <OverlayTrigger
+                                    placement="bottom"
+                                    overlay={deleteApplication}
+                                  >
+                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                      <input
+                                        class="form-check-input toggle-switch-custom"
+                                        type="checkbox"
+                                        role="switch"
+                                        onClick={(e) => handleToggle(e, item)}
+                                        checked
+                                      />
+                                    </div>
+                                  </OverlayTrigger>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -606,7 +676,7 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalVendorPages > 1 ? (
+              {allApplications?.totalClientPages > 1  && application.length>5? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "clients" ? (
                     <p className="showing-result">
@@ -629,7 +699,7 @@ const Members = () => {
                 ""
               )}
             </Tab.Pane>
-                {/* {currentTab === "developers" && (
+            {/* {currentTab === "developers" && (
               <CommonApplicationTable
                 arrowActive={arrowactive}
                 handleRowClick={handleRowClick}
@@ -655,6 +725,7 @@ const Members = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
+                      <th>Enable/Disable</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -711,6 +782,22 @@ const Members = () => {
                                   >
                                     {item?.approval_status}
                                   </span>
+                                </td>
+                                <td>
+                                  <OverlayTrigger
+                                    placement="bottom"
+                                    overlay={deleteApplication}
+                                  >
+                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                      <input
+                                        class="form-check-input toggle-switch-custom"
+                                        type="checkbox"
+                                        role="switch"
+                                        onClick={(e) => handleToggle(e, item)}
+                                        checked
+                                      />
+                                    </div>
+                                  </OverlayTrigger>
                                 </td>
                               </tr>
                               {expandedRow === index && (
@@ -809,7 +896,7 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalDeveloperPages > 1 ? (
+              {allApplications?.totalClientPages > 1  && application.length>4  ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "developers" ? (
                     <p className="showing-result">
@@ -819,11 +906,11 @@ const Members = () => {
                   ) : (
                     ""
                   )}
-                  <RexettPagination
+                 { <RexettPagination
                     number={allApplications?.totalDeveloperPages}
                     setPage={setPage}
                     page={page}
-                  />
+                  />}
                 </div>
               ) : (
                 ""
@@ -831,6 +918,13 @@ const Members = () => {
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
+        <ConfirmationModal
+          show={showModal}
+          handleClose={handleClose}
+          onClick={handleDeleteAction}
+          header={"Delete Developer"}
+          text={"Are you sure ,you want to disable this account?"}
+        />
       </div>
     </>
   );

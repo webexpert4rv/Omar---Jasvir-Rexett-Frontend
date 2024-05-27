@@ -24,18 +24,18 @@ const AdminTimeReporting = () => {
     const navigate=useNavigate()
 
 
-    useEffect(() => {
-        let newContacts = [...adminTimeReportingList]
-        let d = newContacts.map((item, index) => {
-            return {
-                ...item,
-                newData: item.contracts[index] ? item.contracts[index] : item.contracts[0]
-            };
-        });
+    // useEffect(() => {
+    //     let newContacts = [...adminTimeReportingList]
+    //     let d = newContacts.map((item, index) => {
+    //         return {
+    //             ...item,
+    //             newData: item.contracts[index] ? item.contracts[index] : item.contracts[0]
+    //         };
+    //     });
 
-        setDeveloperData(d)
+    //     setDeveloperData(d)
 
-    }, [adminTimeReportingList])
+    // }, [adminTimeReportingList])
 
 
     console.log(adminClientList, "adminClientList")

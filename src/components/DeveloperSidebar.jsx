@@ -11,6 +11,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { FaFileInvoice } from "react-icons/fa6";
 import { GiPalmTree } from "react-icons/gi";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 
 const AdminSidebar = ({ sideBarActive }) => {
     const { t } = useTranslation();
@@ -77,6 +78,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/leave-plan'} className="side-link" activeClassName="active"><GiPalmTree /> Apply Leave</NavLink>
                             </li>
                             <li className="sidebar-item">
+                                <NavLink to={'/developer-public-holiday'} className="side-link" activeClassName="active"><GiPalmTree /> Public Holiday</NavLink>
+                            </li>
+                            <li className="sidebar-item">
                                 <NavLink
                                     to={"/developer-invoice"}
                                     className="side-link"
@@ -96,6 +100,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                             >
                                 <PiSignOutBold /> {t("signOut")}
                             </Link>
+                        </div>
+                        <div>
+                            <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" className="bottom-link" activeClassName="active"><TfiHeadphoneAlt /> Contact Support</NavLink>
                         </div>
                         <div>
                             <NavLink
