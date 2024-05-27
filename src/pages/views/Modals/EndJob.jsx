@@ -5,7 +5,7 @@ import { useStateManager } from "react-select";
 const RejectModal = ({
   show,
   handleClose,
-  handleClick,
+  onClick,
   smallLoader,
   header,
   feedbacks,
@@ -57,7 +57,7 @@ const RejectModal = ({
                     end_reason: feedback,
                   };
                 }
-                handleClick(e, data);
+                onClick(e, data);
               }}
               disabled={feedback?.length === 0}
             >
