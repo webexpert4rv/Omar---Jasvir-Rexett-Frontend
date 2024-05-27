@@ -190,6 +190,7 @@ const EditDeveloperProfile = () => {
                       <Form.Control
                         type="text"
                         className="common-field"
+                        disabled
                         name="email"
                         {...register("email", {
                           required: {

@@ -60,12 +60,12 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                                     <div className="tag-developer">{type && type === "Suggested" ? "Suggest" : type }</div>
                                     <div className='overflow-hidden inner-dev-card'>
                                         <div className="user-imgbx"  onClick={(e)=>handleDeveloperCard(e,item?.developer?.id)} >
-                                            <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture :userImg } alt='developer'  className="user-img" />
+                                            <img src={item?.profile_picture ? item?.profile_picture :userImg } alt='developer'  className="user-img" />
                                         </div>
                                         <div className="text-center">
-                                            <h3 className="user-name">{item?.developer?.name}</h3>
+                                            <h3 className="user-name">{item?.name}</h3>
                                             <p className="designation-user">Software Developer</p>
-                                            <p className="email-user">{item?.developer?.email}</p>
+                                            <p className="email-user">{item?.email}</p>
                                             <ul className="social-icons">
                                                 <li>
                                                     <Link to="#"><FaGithub /></Link>
@@ -82,7 +82,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
                                                         <OverlayTrigger placement="bottom" overlay={developerCardToolTip}>
                                                  <Button variant="danger" disabled={jobStatus === "Ended" ? true : false} onClick={(e) => handleJobStatusModal(e,item?.id, type)} className="w-100 main-btn text-black border-white mt-3">{type === "Interviewing" ? <RiUserAddFill />  : type === "Shortlisted" ? <PiUserRectangleFill /> : <ImUserCheck />}</Button></OverlayTrigger> : "" }
                                                 {role !== "admin" && <OverlayTrigger placement="bottom" overlay={rejectedCardToolTip}><Button variant="danger" onClick={(e) => handleJobStatusModal(e,item?.id, "rejected")} disabled={jobStatus === "Ended" ? true : false} className="w-100"><ImUserMinus /></Button></OverlayTrigger> }
-                                                {role === "admin" &&  <OverlayTrigger placement="top" overlay={suggestedCardToolTip(item?.developer?.already_suggested)}><Button variant={item?.developer?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.developer?.id, item?.developer?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.developer?.already_suggested ? <MdOutlinePersonRemove/> : <RiUserAddFill />}</Button></OverlayTrigger> }
+                                                {role === "admin" &&  <OverlayTrigger placement="top" overlay={suggestedCardToolTip(item?.already_suggested)}><Button variant={item?.already_suggested ? "dark" : "success"} onClick={() => handleJobStatusModal(item?.id, item?.already_suggested ? 0 : 1)} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">{item?.already_suggested ? <MdOutlinePersonRemove/> : <RiUserAddFill />}</Button></OverlayTrigger> }
                                             </div>
                                         </div>
                                     </div>
