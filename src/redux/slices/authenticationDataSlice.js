@@ -156,7 +156,7 @@ export function getVerifyOtp(payload) {
 
         } catch (error) {
             console.log(error, "error")
-                toast.error(error?.response.data.message, { position: "top-center" })
+                toast.error(error?.response?.data?.message, { position: "top-center" })
                 dispatch(setFailAuthData())
         }
     }

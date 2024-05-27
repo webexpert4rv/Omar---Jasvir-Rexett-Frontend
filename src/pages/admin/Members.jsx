@@ -127,11 +127,12 @@ const Members = () => {
   const deleteApplication = <Tooltip id="tooltip">Disabled Accounts</Tooltip>;
 
   const handleToggle = (e, item) => {
+    console.log(item,"item")
     e.stopPropagation();
     setShowModal(!showModal);
     setDetails((prevDetails) => ({
       ...prevDetails,
-      active: !showModal,
+      active: "active",
       id: item?.id,
     }));
   };
@@ -146,7 +147,7 @@ const Members = () => {
       user_id: details?.id,
       status: details?.active,
     };
-
+    console.log(details,"dateails")
     dispatch(getAccountDisableEnable(data));
   };
 

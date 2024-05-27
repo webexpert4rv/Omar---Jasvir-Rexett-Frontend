@@ -15,20 +15,24 @@ import {
 import { HEADER } from "../../components/clients/TimeReporiting/constant";
 import { tabText } from "../../components/clients/TimeReporiting/constant";
 import RejectModal from "./Modals/EndJob";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 const LeaveRequest = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("first");
-  const { clientLeaveHistory } = useSelector((state) => state.clientData);
-  const [leaveId,setLeaveId] = useState()
+  const { screenLoader, smallLoader, clientLeaveHistory } = useSelector(
+    (state) => state.clientData
+  );
+  const [leaveId, setLeaveId] = useState();
   const [showRejectModal, setShowRejectModal] = useState(false);
   const handleSelect = (selectedTab) => {
+    console.log(selectedTab,"selectedtab")
     setCurrentTab(selectedTab);
   };
   const handleClose = () => {
     setShowRejectModal(!showRejectModal);
   };
-  const handleClick = async(e,reason) => {
+  const handleClick = async (e, reason) => {
     let payload = {
       leaveId: leaveId,
       approval_status: "Not Approved",
@@ -37,13 +41,13 @@ const LeaveRequest = () => {
     await dispatch(getClientLeaveStatus(payload));
     let data = {
       approval_status: "Under Approval",
-    }
+    };
     dispatch(getClientLeaveHistory(data));
     setShowRejectModal(!showRejectModal);
   };
 
-  const handleApproveReject = async(id,status) => {
-    setLeaveId(id)
+  const handleApproveReject = async (id, status) => {
+    setLeaveId(id);
     if (status === "Approved") {
       let payload = {
         leaveId: id,
@@ -51,9 +55,9 @@ const LeaveRequest = () => {
         rejection_reason: null,
       };
       await dispatch(getClientLeaveStatus(payload));
-    let data = {
+      let data = {
         approval_status: "Under Approval",
-      }
+      };
       dispatch(getClientLeaveHistory(data));
     } else {
       setShowRejectModal(true);
@@ -70,15 +74,14 @@ const LeaveRequest = () => {
       data = {
         approval_status: "Not Approved",
       };
-    } else if(currentTab ==="third"){
+    } else if (currentTab === "third") {
       data = {
         approval_status: "Approved",
-      }
-    }else{
-        data = {
+      };
+    } else {
+      data = {
         approval_status: "Withdrawn",
-        
-      }
+      };
     }
     dispatch(getClientLeaveHistory(data));
   }, [currentTab]);
@@ -94,26 +97,33 @@ const LeaveRequest = () => {
 
   return (
     <>
-      <Tabs
-        handleSelect={handleSelect}
-        tabText={tabText}
-        currentTab={currentTab}
-      />
-      <Header data={tableHeader()} />
-      <HeaderTable
-        tableData={clientLeaveHistory}
-        currentTab={currentTab}
-        handleApproveReject={handleApproveReject}
-      />
-      {showRejectModal && (
-        <RejectModal
-          show={showRejectModal}
-          handleClose={handleClose}
-          header={"Rejection Reason"}
-          feedbacks={"Reasons"}
-          submit={"Submit"}
-          handleClick={handleClick}
-        />
+      {screenLoader ? (
+        <ScreenLoader />
+      ) : (
+        <>
+          <Tabs
+            handleSelect={handleSelect}
+            tabText={tabText}
+            currentTab={currentTab}
+          />
+          <Header data={tableHeader()} />
+          <HeaderTable
+            // screenLoader={screenLoader}
+            tableData={clientLeaveHistory}
+            currentTab={currentTab}
+            handleApproveReject={handleApproveReject}
+          />
+          {showRejectModal && (
+            <RejectModal
+              show={showRejectModal}
+              handleClose={handleClose}
+              header={"Rejection Reason"}
+              feedbacks={"Reasons"}
+              submit={"Submit"}
+              handleClick={handleClick}
+            />
+          )}
+        </>
       )}
     </>
   );
