@@ -356,6 +356,14 @@
         "engagementslast":"Förlovningar sist",
         "checkInQuote": "Vänligen checka in för att starta dagen",
         "checkOut" :"Kolla upp",
-        "checkIn" : "Checka in"
+        "checkIn" : "Checka in",
+        "totalHiredDevelopers": "Totalt anställda utvecklare",
+        "totalProjects": "Totalt antal projekt",
+        "totalIndivisualDev": "Totalt antal individuella utvecklare"
+
+
+
+
+
         }
 }
