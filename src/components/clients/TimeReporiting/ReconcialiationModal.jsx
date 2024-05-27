@@ -42,7 +42,7 @@ const ReconciliationModal = ({
   const approvedReject = (currentStatus) => {
     let data = {
       contract_id: contract_id,
-      report_date: "2024-05-22",
+      report_date: report_date,
       reconciliation_id: id,
       is_approved: currentStatus,
     };
