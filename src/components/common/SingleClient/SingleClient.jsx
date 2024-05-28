@@ -30,7 +30,7 @@ const SingleClient = () => {
                                 <div className="client-infobx">
                                     <h3 className="client-name">{ singleClient?.client_type=="company"? singleClient?.company_name :singleClient?.name}</h3>
                                     <div className="d-flex gap-2">
-                                        <p className="client-email">{singleClient?.email}</p> | <p className="client-number">+1 123-456-789</p>
+                                        <p className="client-email">{singleClient?.email}</p>
                                     </div>
                                 </div>
                             </div>
@@ -40,9 +40,9 @@ const SingleClient = () => {
                                 <Col md={4}>
                                     <h4 className="additional-heading">Company/Individual</h4>
                                     <div>
-                                        <span className="associate-text">
+                                        {/* <span className="associate-text">
                                             <span className="associate">{singleClient?.client_type}</span>
-                                        </span>
+                                        </span> */}
                                     </div>
                                     <div>
                                         <p className="additional-text">{singleClient?.company_name}</p>
@@ -58,7 +58,7 @@ const SingleClient = () => {
                                 </Col> */}
                                 <Col md={4}>
                                     <h4 className="additional-heading">Address</h4>
-                                    <p className="additional-text">{singleClient?.company_name}</p>
+                                    <p className="additional-text">{singleClient?.company_address}</p>
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">Tax ID</h4>
@@ -66,24 +66,17 @@ const SingleClient = () => {
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">Assignment</h4>
-                                    <p className="additional-text">New Development, everything from the begining</p>
+                                    <p className="additional-text">{singleClient && singleClient?.jobs[0]?.title}</p>
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">Assignment last</h4>
-                                    <p className="additional-text">1 to 3 Months</p>
+                                    <p className="additional-text">{singleClient && singleClient?.jobs[0]?.project_length}</p>
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">New Team Member Start</h4>
-                                    <p className="additional-text">Within 2-3 weeks</p>
+                                    <p className="additional-text">{singleClient && singleClient?.jobs[0]?.development_should_start_in}</p>
                                 </Col>
-                                <Col md={4}>
-                                    <h4 className="additional-heading">Availability</h4>
-                                    <p className="additional-text">Part Time (20Hrs/Week)</p>
-                                </Col>
-                                <Col md={4}>
-                                    <h4 className="additional-heading">Total Job Posted</h4>
-                                    <p className="additional-text">3</p>
-                                </Col>
+                              >
                                 {/* <Col md={4}>
                                     <h4 className="additional-heading">Rexett Date Joined</h4>
                                     <p className="additional-text">03-04-2024</p>
