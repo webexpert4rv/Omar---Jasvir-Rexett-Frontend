@@ -52,6 +52,7 @@ const JobPostStepContainer = () => {
   const { jobPostedData, screenLoader } = useSelector(
     (state) => state.clientData
   );
+  console.log(jobPostedData,"jobPostedData")
   const navigate = useNavigate();
   const [smallLoader, setSmallLoader] = useState(false);
   const {
@@ -88,14 +89,22 @@ const JobPostStepContainer = () => {
   useEffect(() => {
     localStorage.setItem("activeStep", activeStep);
     let jobId = localStorage.getItem("jobId");
-    if (jobId) {
-      setJobID(Number(jobId));
-    } else {
-      if (id) {
-        setJobID(id);
-        jobId = id;
-      }
+    if(id){
+      setJobID(id);
+      jobId = id;
     }
+    else if (jobId){
+      setJobID(Number(jobId));
+
+    }
+    // if (jobId) {
+    //   setJobID(Number(jobId));
+    // } else {
+    //   if (id) {
+    //     setJobID(id);
+    //     jobId = id;
+    //   }
+    // }
 
     if (jobId) {
       dispatch(

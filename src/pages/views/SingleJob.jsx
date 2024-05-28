@@ -61,7 +61,6 @@ const SingleJob = () => {
     dispatch(getJobCategoryList());
   }, []);
 
-  console.log(jobPostedData,"jobPostedData")
 
   useEffect(() => {
     setSingleJobDescription(jobPostedData?.data);
@@ -83,12 +82,11 @@ const SingleJob = () => {
       })
     );
   };
-  const handleSelect = (key) => {
+  const handleSelect = (key) => { 
     setCurrentTab(key);
     setSelectedTabsData(jobPostedData[key]);
     if (key == "suggested") {
       setCurrnetTabsStatus("shortlisted");
-
     }
     const handleSelect = (key) => {
         setCurrentTab(key)
@@ -215,7 +213,11 @@ const SingleJob = () => {
   };
 
   const handleEdit = () => {
-    if (singleJobDescription?.status == "published") {
+    if (singleJobDescription?.status == "Unpublished") {
+      const savedStep = localStorage.getItem("activeStep");
+      if(savedStep) {
+        localStorage.setItem("activeStep",1)
+      }
       navigate(`/job-edit-post/${id}`);
     }
   };
@@ -266,9 +268,7 @@ const SingleJob = () => {
       });
     }
   };
-  console.log(singleJobDescription,"singleJobDescription")
   const currentStatusCssClass = (status) => {
-    console.log(status, "st");
     switch (status) {
       case "ended":
         return "status-rejected";
@@ -322,7 +322,7 @@ const SingleJob = () => {
                             handleJobStatusModal(
                               e,
                               singleJobDescription?.id,
-                              "ended"
+                              "ended" 
                             )
                           }
                           className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"

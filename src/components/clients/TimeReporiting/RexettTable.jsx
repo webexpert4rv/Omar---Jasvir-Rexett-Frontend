@@ -162,7 +162,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   const isTodayFriday = () => {
     const today = new Date();
     // const isFriday = today.getDay() === 5; 
-    return today.getDay() === 5
+    return today.getDay() === 2
   }
   return (
     <>
