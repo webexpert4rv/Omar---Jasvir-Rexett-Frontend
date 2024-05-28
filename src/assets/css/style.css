@@ -736,9 +736,9 @@ ul {
     padding: 5px 17px;
     color: var(--white);
     border-radius: 5px;
-    background: var(--primary-color);
+    background: #037563;
     transition: .4s ease;
-    border: 1px solid var(--primary-color);
+    border: 1px solid #037563;
 }
 
 .link-text-dark:hover {
@@ -4795,6 +4795,118 @@ input[type="radio"]:checked {
     width: auto;
     border-radius: 50px;
 }
+.activity-log-table
+{
+    max-height: 400px;
+    overflow: auto;
+}
+.activity-log-table table thead
+{
+    position: sticky;
+    top: 0;
+}
+.project-client
+{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.developer-stack
+{
+    display: flex;
+    align-items: center;
+}
+.developer-stack img
+{
+    margin-right: -6px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #fff;
+    object-fit: cover;
+}
+.developer-stack span
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: #037563;
+    color: #fff;
+    font-size: 12px;
+}
+.ongoing-project-table tbody tr
+{
+    cursor: pointer;
+}
+.ongoing-project-table tbody tr:hover
+{
+    background: var(--primary-color);
+}
+.ongoing-project-table tbody tr:hover td
+{
+    background: transparent;
+    color: #fff;
+}
+.status-card
+{
+    padding: 19px 23px;
+    border-radius: 20px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+.status-card h3
+{
+    font-size: 17px;
+    font-weight: 400;
+    margin-bottom: 18px;
+}
+.status-card .status-text-card
+{
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+}
+.status-card .status-text-card .increase-text
+{
+    font-size: 18px;
+    font-weight: 400;
+    color: #59cb73;
+}
+.status-card .status-text-card .decrease-text
+{
+    font-size: 18px;
+    font-weight: 400;
+    color: #cc0000;
+}
+.icon-status-card
+{
+    position: absolute;
+    bottom: -10px;
+    right: -5px;
+    font-size: 64px;
+    line-height: 1;
+    border-radius: 50%;
+    color: #037563;
+    opacity: .2;
+}
+.hired-dev-graph canvas
+{
+    max-height: 254px !important;
+    width: 100% !important;
+    height: auto !important;
+}
+.graph-status canvas
+{
+    width: auto !important;
+    height: 60px !important;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -5082,8 +5194,32 @@ input[type="radio"]:checked {
         font-size: 14px;
         border-radius: 11px;
     }
+    .activity-log-table
+    {
+        max-height: 350px;
+    }
+    .status-card h3
+    {
+        font-size: 12px;
+    }
+    .status-card .status-text-card
+    {
+        font-size: 24px;
+    }
+    .graph-status canvas
+    {
+        height: 40px !important;
+    }
 }
-
+@media only screen and (max-width: 1400px)
+{
+    .revenue-graph canvas
+    {
+        width: 100% !important;
+        max-height: 254px !important;
+        height: auto !important;
+    }
+}
 @media only screen and (max-width: 992px) {
     .about-info {
         border-left: none;
