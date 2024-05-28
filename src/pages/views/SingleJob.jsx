@@ -462,9 +462,9 @@ const SingleJob = () => {
           </section>
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
-          <div className="text-end">
+          {/* <div className="text-end">
             <Button className="main-btn px-4 py-2 font-14">Make Suggestion Request</Button>
-          </div>
+          </div> */}
           <JobCard
             handleJobStatusModal={handleJobStatusModal}
             type="Suggested"
