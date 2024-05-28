@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import sidebarLogo from "../assets/img/rexett-logo-white.png";
 import { Link, NavLink, useNavigate } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
@@ -12,6 +12,9 @@ import { useTranslation } from "react-i18next";
 import { FaFileInvoice } from "react-icons/fa6";
 import { GiPalmTree } from "react-icons/gi";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
+import { FaQuestion } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { Button } from "react-bootstrap";
 
 const AdminSidebar = ({ sideBarActive }) => {
     const { t } = useTranslation();
@@ -19,6 +22,10 @@ const AdminSidebar = ({ sideBarActive }) => {
         localStorage.clear();
         window.location.href = "/developer-login";
     };
+    const [floatingShow, setFloatingShow] = useState(false);
+    const handleFloating = () => {
+        setFloatingShow(!floatingShow);
+    }
     return (
         <>
             <aside className="sidebar">
@@ -101,7 +108,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <PiSignOutBold /> {t("signOut")}
                             </Link>
                         </div>
-                        <div>
+                        {/*<div>
                             <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" className="bottom-link" activeClassName="active"><TfiHeadphoneAlt /> Contact Support</NavLink>
                         </div>
                         <div>
@@ -112,10 +119,23 @@ const AdminSidebar = ({ sideBarActive }) => {
                             >
                                 <BsFillQuestionCircleFill /> {t("faq")}
                             </NavLink>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </aside>
+            <div className={ floatingShow ? "floating-area active" : "floating-area"}>
+                <Button variant="transparent" className="floating-btn" onClick={handleFloating}>
+                    { floatingShow ? <FaTimes /> : <FaQuestion />}
+                </Button>
+                <div className="floating-options">
+                    <div className="mb-3">
+                        <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" activeClassName="active" className="text-decoration-none"><span className="icon-float"><TfiHeadphoneAlt /></span> <span className="float-text">Contact Support</span></NavLink>
+                    </div>
+                    <div>
+                        <NavLink to={"/developer-faq"} activeClassName="active" className="text-decoration-none"><span className="icon-float"><BsFillQuestionCircleFill /></span> <span className="float-text">{t("faq")}</span></NavLink>
+                    </div>
+                </div>
+            </div>
         </>
     );
 };
