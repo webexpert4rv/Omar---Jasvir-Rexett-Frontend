@@ -38,6 +38,7 @@ const AdminJobListing = () => {
         dispatch(adminJobListing(filter))
     }
 
+    console.log(jobListing,"jobListing")
     return (
         <>
 

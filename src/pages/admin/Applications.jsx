@@ -435,17 +435,17 @@ const Applications = () => {
                                           </Col>
                                         )}
 
-                                        <Col md={3} className="mb-3">
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
-                                              Contact Person name
+                                              Client Type
                                             </h3>
                                             <p className="application-text">
                                               ---
                                             </p>
                                           </div>
-                                        </Col>
-                                        <Col md={3}>
+                                        </Col> */}
+                                        {/* <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
                                               Contact Person Email
@@ -454,7 +454,7 @@ const Applications = () => {
                                               ---
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
                                       </Row>
                                     </div>
                                   </td>

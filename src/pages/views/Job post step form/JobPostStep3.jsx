@@ -131,7 +131,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                       required: t("required_message"),
                     })}
                     className="common-field font-14"
-                    placeholder="Enter Anwser"
+                    placeholder="Enter Answer"
                   />
                 </Form.Group>
                 {errors?.screening_questions?.[idx].ideal_answer && (
