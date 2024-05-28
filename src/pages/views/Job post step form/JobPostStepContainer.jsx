@@ -287,10 +287,10 @@ const JobPostStepContainer = () => {
         <ScreenLoader />
       ) : (
         <>
-          <div className="stepLabels">
-            <h5>{STEP_LABELS[activeStep]}</h5>
-          </div>
           <div className="job-post-container card-box">
+            <div className="stepLabels mb-4">
+              <h5>{STEP_LABELS[activeStep]}</h5>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               {getActiveStepComponent()}
               <div className="d-flex align-items-center gap-3 justify-content-center">
