@@ -374,6 +374,25 @@ const RegisterDeveloper = () => {
     }
   };
 
+
+  const handleUploadCv=(event)=>{
+    console.log(event,"event")
+    const allowedTypes = ["application/pdf"];
+    const file = event.target.files[0];
+    if (file && allowedTypes.includes(file.type)) {
+      setFileTypeError(false);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setFile(file);
+    } else {
+      setFileTypeError(true);
+      setSelectedImage(null);
+    }
+
+  }
   const onChangeSelect = (val, arg) => {
     const newOption = createOption(val);
     if (arg == "skills") {
@@ -736,6 +755,49 @@ const RegisterDeveloper = () => {
                       />
                     </div>
                   )}
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="common-label">
+                      {t("uploadCV")}*
+                    </Form.Label>
+                    <Form.Control
+                      type="file"
+                      id="upload_cv"
+                      name="upload_cv"
+                      {...register("upload_cv", {
+                        onChange: (e) => handleUploadCv(e),
+                        required: {
+                          value: true,
+                          message: t("profilePictureValidation"),
+                        },
+                      })}
+                      className="d-none"
+                    />
+
+                    <Form.Label
+                      htmlFor="upload_cv"
+                      className="upload-image-label d-block"
+                    >
+                      <HiUpload />
+                      {t("upload_cv")}
+                    </Form.Label>
+                  </Form.Group>
+                  {fileTypeError && <p style={{ color: 'red' }}>Please upload a valid PDF file.</p>}
+
+
+
+
+                  {/* {fileTypeError ? (
+                    <p className="error-message">{t("invalid_file_type")}</p>
+                  ) : (
+                    errors?.upload_cv && (
+                      <p className="error-message">
+                        {" "}
+                        {errors?.upload_cv?.message}
+                      </p>
+                    )
+                  )} */}
                 </Col>
               </Row>
             </div>
