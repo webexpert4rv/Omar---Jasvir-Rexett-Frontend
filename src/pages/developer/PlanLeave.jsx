@@ -29,11 +29,11 @@ const LeavePlan = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const {screenLoader , leaveDetails, allContracts } = useSelector(
+  const { screenLoader, leaveDetails, allContracts } = useSelector(
     (state) => state.developerData
   );
 
-  console.log(leaveDetails,"leaveDetails")
+  console.log(leaveDetails, "leaveDetails");
   const {
     handleSubmit,
     register,
@@ -73,18 +73,18 @@ const LeavePlan = () => {
   };
 
   const handleEditLeave = (id) => {
-    const selectedLeave = leaveDetails.find((item) => item.id == id)
+    const selectedLeave = leaveDetails.find((item) => item.id == id);
     if (selectedLeave) {
       setSelectionRange({
         startDate: new Date(selectedLeave.start_date),
         endDate: new Date(selectedLeave.end_date),
         key: "selection",
       });
-    
-    setIsEdit({ status: true, leaveId: id });
-    setValue("client_name", selectedLeave?.contract_id);
-    setValue("leave_type", selectedLeave?.type);
-    setValue("reason", selectedLeave?.reason_for_leave);
+
+      setIsEdit({ status: true, leaveId: id });
+      setValue("client_name", selectedLeave?.contract_id);
+      setValue("leave_type", selectedLeave?.type);
+      setValue("reason", selectedLeave?.reason_for_leave);
     }
   };
   const handleCancelLeave = async (id) => {
@@ -95,7 +95,7 @@ const LeavePlan = () => {
     let payload = {
       approval_status: "Under Approval",
     };
-     dispatch(getLeaveHistory(user_id, payload));
+    dispatch(getLeaveHistory(user_id, payload));
   };
 
   const onSubmit = async (values) => {
@@ -116,229 +116,237 @@ const LeavePlan = () => {
     let payload = {
       approval_status: "Under Approval",
     };
-     dispatch(getLeaveHistory(user_id, payload));
-     setIsEdit({ status: false, leaveId: "" });
-     reset()
+    dispatch(getLeaveHistory(user_id, payload));
+    setIsEdit({ status: false, leaveId: "" });
+    reset();
   };
 
   return (
     <>
-        {screenLoader? <ScreenLoader/> :
-      <Tab.Container
-        id="left-tabs-example"
-        defaultActiveKey="first"
-        onSelect={handleSelect}
-      >
-        <Nav variant="pills" className="mb-4 application-pills">
-          <Nav.Item className="application-item">
-            <Nav.Link className="application-link" eventKey="first">
-              Apply Leave
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="application-item">
-            <Nav.Link className="application-link" eventKey="second">
-              Leave History
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-    
-        <Tab.Content>
-          <Tab.Pane eventKey="first">
-            <div className="card-box mb-4">
-              <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
-              {/* <p className="text-muted font-14 mb-0">No Leave Applied</p> */}
-              <Row>
-               {leaveDetails .length> 0 ?  leaveDetails?.map((field, idx) => (
-                  <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
-                    <div className="leave-wrapper-box">
-                      <div>
-                        <h4 className="project-heading">{}</h4>
-                        <h4 className="leave-type-heading">
-                          {generateLeave(field?.type)}
-                        </h4>
-                        <div>
-                          <p className="leave-date">
-                            {" "}
-                            {moment(field?.start_date).format(
-                              "MM-DD-YYYY"
-                            )} to {moment(field?.end_date).format("MM-DD-YYYY")}
-                          </p>
+      {screenLoader ? (
+        <ScreenLoader />
+      ) : (
+        <Tab.Container
+          id="left-tabs-example"
+          defaultActiveKey="first"
+          onSelect={handleSelect}
+        >
+          <Nav variant="pills" className="mb-4 application-pills">
+            <Nav.Item className="application-item">
+              <Nav.Link className="application-link" eventKey="first">
+                Apply Leave
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item className="application-item">
+              <Nav.Link className="application-link" eventKey="second">
+                Leave History
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+
+          <Tab.Content>
+            <Tab.Pane eventKey="first">
+              <div className="card-box mb-4">
+                <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
+                {/* <p className="text-muted font-14 mb-0">No Leave Applied</p> */}
+                <Row>
+                  {leaveDetails.length > 0 ? (
+                    leaveDetails?.map((field, idx) => (
+                      <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
+                        <div className="leave-wrapper-box">
+                          <div>
+                            <h4 className="project-heading">{}</h4>
+                            <h4 className="leave-type-heading">
+                              {generateLeave(field?.type)}
+                            </h4>
+                            <div>
+                              <p className="leave-date">
+                                {" "}
+                                {moment(field?.start_date).format(
+                                  "MM-DD-YYYY"
+                                )}{" "}
+                                to{" "}
+                                {moment(field?.end_date).format("MM-DD-YYYY")}
+                              </p>
+                            </div>
+                            <p className="status-finished mb-0">
+                              {field?.approval_status}
+                            </p>
+                          </div>
+                          <div className="d-flex gap-3">
+                            <ToolTip text="Cancel Leave">
+                              <Button
+                                className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
+                                onClick={() => handleCancelLeave(field?.id)}
+                              >
+                                <IoClose />
+                              </Button>
+                            </ToolTip>
+                            <ToolTip text="Edit Leave">
+                              <Button
+                                className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
+                                onClick={() => handleEditLeave(field?.id)}
+                              >
+                                <MdModeEditOutline />
+                              </Button>
+                            </ToolTip>
+                          </div>
                         </div>
-                        <p className="status-finished mb-0">
-                          {field?.approval_status}
-                        </p>
+                      </Col>
+                    ))
+                  ) : (
+                    <NoDataFound />
+                  )}
+                </Row>
+              </div>
+              <Row className="gx-4">
+                <Col lg={7}>
+                  <div className="leave-calendar h-100">
+                    <DateRangePicker
+                      ranges={[selectionRange]}
+                      onChange={handleRange}
+                      minDate={today}
+                    />
+                  </div>
+                </Col>
+                <Col lg={5}>
+                  <div className="plan-leave-wrapper">
+                    <h3 className="section-head border-0 mb-3">Apply Leave</h3>
+                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                      <div className="mb-4">
+                        <Form.Label className="mb-2 font-14">
+                          Select Client
+                        </Form.Label>
+                        <div className="d-flex gap-3">
+                          <div>
+                            <Form.Select
+                              className="common-field font-14 mb-4"
+                              {...register("client_name", {
+                                required: t("leaveRequired"),
+                              })}
+                            >
+                              <option value="" selected>
+                                Select client
+                              </option>
+                              {allContracts.map((item, idx) => (
+                                <option key={idx} value={item.id}>
+                                  {item.client?.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </div>
+                        </div>
                       </div>
-                      <div className="d-flex gap-3">
-                        <ToolTip text="Cancel Leave">
-                        <Button
-                          className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
-                          onClick={() => handleCancelLeave(field?.id)}
-                        >
-                          <IoClose />
-                        </Button>
-                        </ToolTip>
-                        <ToolTip text="Edit Leave">
-                        <Button
-                          className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
-                          onClick={() => handleEditLeave(field?.id)}
-                        >
-                          <MdModeEditOutline />
-                        </Button>
-                        </ToolTip>
+                      <div className="mb-4">
+                        <Form.Label className="mb-2 font-14">
+                          Leave Type
+                        </Form.Label>
+                        <div className="d-flex gap-3">
+                          <div>
+                            <Form.Select
+                              className="common-field  font-10 mb-4"
+                              {...register("leave_type", {
+                                required: t("leaveRequired"),
+                              })}
+                            >
+                              <option value="" selected>
+                                Select leave type
+                              </option>
+                              {LEAVE_TYPE.map((item, idx) => (
+                                <option key={idx} value={item?.value}>
+                                  {item?.key}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </Col>
-                )): 
-                <NoDataFound />}
+                      <div className="mb-4">
+                        <Form.Label className="mb-2 font-14">Reason</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows="3"
+                          className="common-field font-14"
+                          placeholder="Enter Reason"
+                          {...register("reason", {
+                            required: {
+                              value: true,
+                              message: `${t("reasonRequired")}`,
+                            },
+                          })}
+                        />
+                      </div>
+                      <div className="text-center">
+                        <RexettButton
+                          type="submit"
+                          text={t("Submit")}
+                          className="main-btn font-14 px-4 py-2"
+                          variant="transparent"
+                          // isLoading={smallLoader}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </Col>
               </Row>
-            </div>
-            <Row className="gx-4">
-              <Col lg={7}>
-                <div className="leave-calendar h-100">
-                  <DateRangePicker
-                    ranges={[selectionRange]}
-                    onChange={handleRange}
-                    minDate={today}
-                  />
-                </div>
-              </Col>
-              <Col lg={5}>
-                <div className="plan-leave-wrapper">
-                  <h3 className="section-head border-0 mb-3">Apply Leave</h3>
-                  <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                    <div className="mb-4">
-                      <Form.Label className="mb-2 font-14">
-                        Select Client
-                      </Form.Label>
-                      <div className="d-flex gap-3">
-                        <div>
-                          <Form.Select
-                            className="common-field font-14 mb-4"
-                            {...register("client_name", {
-                              required: t("leaveRequired"),
-                            })}
-                          >
-                            <option value="" selected>
-                              Select client
-                            </option>
-                            {allContracts.map((item, idx) => (
-                              <option key={idx} value={item.id}>
-                                {item.client?.name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <Form.Label className="mb-2 font-14">
-                        Leave Type
-                      </Form.Label>
-                      <div className="d-flex gap-3">
-                        <div>
-                          <Form.Select
-                            className="common-field  font-10 mb-4"
-                            {...register("leave_type", {
-                              required: t("leaveRequired"),
-                            })}
-                          >
-                            <option value="" selected>
-                              Select leave type
-                            </option>
-                            {LEAVE_TYPE.map((item, idx) => (
-                              <option key={idx} value={item?.value}>
-                                {item?.key}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <Form.Label className="mb-2 font-14">Reason</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows="3"
-                        className="common-field font-14"
-                        placeholder="Enter Reason"
-                        {...register("reason", {
-                          required: {
-                            value: true,
-                            message: `${t("reasonRequired")}`,
-                          },
-                        })}
-                      />
-                    </div>
-                    <div className="text-center">
-                      <RexettButton
-                        type="submit"
-                        text={t("Submit")}
-                        className="main-btn font-14 px-4 py-2"
-                        variant="transparent"
-                        // isLoading={smallLoader}
-                      />
-                    </div>
-                  </form>
-                </div>
-              </Col>
-            </Row>
-          </Tab.Pane>
-          <Tab.Pane eventKey="second">
-            <div className="table-responsive">
-              <table className="table time-table table-bordered table-ui-custom">
-                <thead>
-                  <th className="time-table-head text-start">Leave Type</th>
-                  <th className="time-table-head text-start">Leave Date</th>
-                  <th className="time-table-head text-start">Reason</th>
-                  <th className="time-table-head text-start">Project</th>
-                  <th className="time-table-head text-start">Client Name</th>
-                  <th className="time-table-head text-start">Leave Status</th>
-                </thead>
-                <tbody>
-                  {leaveDetails?.map((item, idx) => (
-                    <>
-                      <tr>
-                        <td className="time-table-data text-start">
-                          <h4 className="leave-type-heading mb-0 white-nowrap">
-                            {generateLeave(item?.type)}
-                          </h4>
-                        </td>
-                        <td className="time-table-data text-start">
-                          <p className="leave-date white-nowrap">
-                            {moment(item.start_date).format("MM-DD-YYYY")} to{" "}
-                            {moment(item.end_date).format("MM-DD-YYYY")}
-                          </p>
-                        </td>
-                        <td className="time-table-data text-start reason-data">
-                          <p className="font-14 mb-0">
-                            {item.reason_for_leave}
-                          </p>
-                        </td>
-                        <td className="time-table-data text-start white-nowrap">
-                          AI Bot Project
-                        </td>
-                        <td className="time-table-data text-start">
-                          <div className="d-flex align-items-center gap-2">
-                            {/* <div className="user-imgbx application-imgbx mx-0 mb-0">
+            </Tab.Pane>
+            <Tab.Pane eventKey="second">
+              <div className="table-responsive">
+                <table className="table time-table table-bordered table-ui-custom">
+                  <thead>
+                    <th className="time-table-head text-start">Leave Type</th>
+                    <th className="time-table-head text-start">Leave Date</th>
+                    <th className="time-table-head text-start">Reason</th>
+                    <th className="time-table-head text-start">Project</th>
+                    <th className="time-table-head text-start">Client Name</th>
+                    <th className="time-table-head text-start">Leave Status</th>
+                  </thead>
+                  <tbody>
+                    {leaveDetails?.map((item, idx) => (
+                      <>
+                        <tr>
+                          <td className="time-table-data text-start">
+                            <h4 className="leave-type-heading mb-0 white-nowrap">
+                              {generateLeave(item?.type)}
+                            </h4>
+                          </td>
+                          <td className="time-table-data text-start">
+                            <p className="leave-date white-nowrap">
+                              {moment(item.start_date).format("MM-DD-YYYY")} to{" "}
+                              {moment(item.end_date).format("MM-DD-YYYY")}
+                            </p>
+                          </td>
+                          <td className="time-table-data text-start reason-data">
+                            <p className="font-14 mb-0">
+                              {item.reason_for_leave}
+                            </p>
+                          </td>
+                          <td className="time-table-data text-start white-nowrap">
+                            AI Bot Project
+                          </td>
+                          <td className="time-table-data text-start">
+                            <div className="d-flex align-items-center gap-2">
+                              {/* <div className="user-imgbx application-imgbx mx-0 mb-0">
                                 <img src={companyLogo} className="user-img" />
                               </div> */}
-                            {item?.contract?.client?.name}
-                          </div>
-                        </td>
-                        <td className="time-table-data text-start">
-                          <span className="status-progress">
-                            {item.approval_status}
-                          </span>
-                        </td>
-                      </tr>
-                    </>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Tab.Pane>
-        </Tab.Content>
-      </Tab.Container>}
+                              {item?.contract?.client?.name}
+                            </div>
+                          </td>
+                          <td className="time-table-data text-start">
+                            <span className="status-progress">
+                              {item.approval_status}
+                            </span>
+                          </td>
+                        </tr>
+                      </>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Tab.Pane>
+          </Tab.Content>
+        </Tab.Container>
+      )}
       <div className="helper-text-section">
         <h3>Guiding You Through: Helpful Text to Apply Leaves</h3>
         <ol className="ps-3 mb-0">
