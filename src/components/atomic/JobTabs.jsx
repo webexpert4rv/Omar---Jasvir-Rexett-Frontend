@@ -50,7 +50,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       {getCategory(item.category)}
                     </h4>
                     <div className="profile-req">
-                      <p className="grid-text">{item?.experience?.split("_").join(" ")}</p>
+                      {/* <p className="grid-text">{item?.experience?.split("_").join(" ") || "Not-mentioned"}</p> */}
                       <p className="grid-text">{item?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                       <p className="grid-text">{item?.job_type}</p>
                     </div>

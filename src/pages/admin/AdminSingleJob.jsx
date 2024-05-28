@@ -115,7 +115,7 @@ const AdminSingleJob = () => {
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("experienceRequirements")}</h3>
-                                    <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ")}</p>
+                                    <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ") || "Not-mentioned"}</p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("contract")}</h3>
