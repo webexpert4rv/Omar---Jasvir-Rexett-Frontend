@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import {getCurrentRole, getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
 const commanInstance = axios.create({
-  baseURL: process.env.FRONTEND_URL,
+  baseURL: process.env.REACT_APP_BASE_URL,
 });
 
 // Request Interceptor
