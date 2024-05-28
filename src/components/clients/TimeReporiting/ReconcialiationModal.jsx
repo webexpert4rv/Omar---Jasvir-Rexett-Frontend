@@ -84,7 +84,7 @@ const ReconciliationModal = ({
                 ""
               )}
               <div className="d-flex gap-2">
-                {role == "client" ?  (
+                {role == "client" ? (
                   <>
                     <OverlayTrigger placement="bottom" overlay={approveRemark}>
                       <Button
@@ -135,7 +135,7 @@ const ReconciliationModal = ({
                 
                 </>
               ) : start_time ? (
-                moment(start_time, "HH:mm:ss").format("h:mm:ss A")
+                moment(start_time, "HH:mm:ss").format("h:mm A")
               ) : (
                 "00:00"
               )}
@@ -147,7 +147,7 @@ const ReconciliationModal = ({
               {editDetails?.isEdit ? (
                 <input type="time" className="common-field form-control" value={item?.end_time} name="end_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
               ) : end_time ? (
-                moment(end_time, "HH:mm:ss").format("h:mm:ss A")
+                moment(end_time, "HH:mm:ss").format("h:mm A")
               ) : (
                 "00:00"
               )}
