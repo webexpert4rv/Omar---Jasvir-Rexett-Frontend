@@ -418,9 +418,11 @@ const RegisterDeveloper = () => {
       <section className="register-developer card-box">
         <div className="">
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterPersonalDetails")}
-            </h2>
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">
+                {t("enterPersonalDetails")}
+              </h2>
+            </div>
             <div className="inner-form mb-3">
               <Row>
                 <Col md={6}>
@@ -656,7 +658,7 @@ const RegisterDeveloper = () => {
                     </p>
                   </Form.Group>
                 </Col>
-                <Col md="6" className="mb-4">
+                <Col md="6">
                   <Form.Group>
                     <Form.Label>{t("experienceRequired")}*</Form.Label>
                     <Form.Select
@@ -801,9 +803,11 @@ const RegisterDeveloper = () => {
                 </Col>
               </Row>
             </div>
-            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterExperience")}
-            </h2>
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">
+                {t("enterExperience")}
+              </h2>
+            </div>
             <div className="inner-form mb-3">
               {experienceFields.map(
                 (
@@ -983,9 +987,11 @@ const RegisterDeveloper = () => {
                 </OverlayTrigger>
               </div>
             </div>
-            <h3 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterExpertise")}
-            </h3>
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">
+                {t("enterExpertise")}
+              </h2>
+            </div>
             {expertiseFields.map((field, index) => {
               return (
                 <Fragment key={field?.id}>
@@ -1075,9 +1081,11 @@ const RegisterDeveloper = () => {
                 </Button>
               </OverlayTrigger>
             </div>
-            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterEducationDetails")}
-            </h2>
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">
+                {t("enterEducationDetails")}
+              </h2>
+            </div>
             <div className="inner-form mb-3">
               {educationField.map(
                 (
@@ -1333,9 +1341,11 @@ const RegisterDeveloper = () => {
                 </OverlayTrigger>
               </div>
             </div>
-            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterAbout")} *
-            </h2>
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">
+                {t("enterAbout")} *
+              </h2>
+            </div>
             <div className="inner-form mb-3">
               <Row>
                 <Col md="12">
@@ -1358,9 +1368,11 @@ const RegisterDeveloper = () => {
                 </Col>
               </Row>
             </div>
-            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("enterSkills")}
-            </h2>
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">
+                {t("enterSkills")}
+              </h2>
+            </div>
             <div className="experience-container">
               <Row>
                 <Col md="12">
@@ -1383,9 +1395,11 @@ const RegisterDeveloper = () => {
                 </Col>
               </Row>
             </div>
-            <h2 className="overview-card-heading border-bottom-grey pb-2 mb-3">
-              {t("addSocialLinks")}
-            </h2>
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">
+                {t("addSocialLinks")}
+              </h2>
+            </div>
             <div className="inner-form">
               {socialMediaRows.map((row, index) => (
                 <div className="experience-container">

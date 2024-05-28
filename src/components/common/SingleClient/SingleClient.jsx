@@ -76,7 +76,7 @@ const SingleClient = () => {
                                     <h4 className="additional-heading">New Team Member Start</h4>
                                     <p className="additional-text">{singleClient && singleClient?.jobs[0]?.development_should_start_in}</p>
                                 </Col>
-                              >
+                              
                                 {/* <Col md={4}>
                                     <h4 className="additional-heading">Rexett Date Joined</h4>
                                     <p className="additional-text">03-04-2024</p>
