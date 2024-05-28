@@ -21,6 +21,7 @@ import { LEAVE_TYPE } from "../../components/clients/TimeReporiting/constant";
 import RejectModal from "../views/Modals/EndJob";
 import ToolTip from "../../components/common/Tooltip/ToolTip";
 import NoDataFound from "../../components/atomic/NoDataFound";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 const LeavePlan = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -28,7 +29,7 @@ const LeavePlan = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const { leaveDetails, allContracts } = useSelector(
+  const {screenLoader , leaveDetails, allContracts } = useSelector(
     (state) => state.developerData
   );
 
@@ -122,6 +123,7 @@ const LeavePlan = () => {
 
   return (
     <>
+        {screenLoader? <ScreenLoader/> :
       <Tab.Container
         id="left-tabs-example"
         defaultActiveKey="first"
@@ -139,6 +141,7 @@ const LeavePlan = () => {
             </Nav.Link>
           </Nav.Item>
         </Nav>
+    
         <Tab.Content>
           <Tab.Pane eventKey="first">
             <div className="card-box mb-4">
@@ -335,7 +338,7 @@ const LeavePlan = () => {
             </div>
           </Tab.Pane>
         </Tab.Content>
-      </Tab.Container>
+      </Tab.Container>}
       <div className="helper-text-section">
         <h3>Guiding You Through: Helpful Text to Apply Leaves</h3>
         <ol className="ps-3 mb-0">
