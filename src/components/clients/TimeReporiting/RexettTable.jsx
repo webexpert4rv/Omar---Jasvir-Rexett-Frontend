@@ -159,6 +159,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   //   ); // The 0th day of the next month is the last day of the current month
   //   return today.getDate() === lastDayOfMonth.getDate();
   // };
+  const isTodayFriday = () => {
+    const today = new Date();
+    // const isFriday = today.getDay() === 5; 
+    return today.getDay() === 5
+  }
   return (
     <>
       <div className={`weekly-report-table ${selectedPeriod}`}>
@@ -336,7 +341,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           </td>
                           <td className="time-table-data">
                             <button
-                              disabled={item?.isApproved}
+                              disabled={item?.isApproved || !isTodayFriday()}
                               onClick={() => {
                                 handleremarkShow(item, index);
                               }}

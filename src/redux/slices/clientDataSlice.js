@@ -14,6 +14,7 @@ const initialClientData = {
   clientProfileDetails: {},
   timeReportingData: [],
   folderData: [],
+  companyDetails:{},
   jobCategoryList: [],
   skillList: [],
   allJobPostedList: {},
@@ -39,6 +40,9 @@ export const clientDataSlice = createSlice({
       },
       setApprovedLoader: (state, action) => {
           state.approvedLoader = true;
+      },
+      closeApprovedLoader : (state,action) => {
+        state.approvedLoader = false;
       },
 
       setAssignDeveloperList: (state, action) => {
@@ -119,8 +123,10 @@ export const clientDataSlice = createSlice({
         state.clientLeaveHistory =  action.payload
       },
       setReconciliationsData:(state,action)=>{
-        console.log(action.payload,"ppppp")
          state.reconciliationsData=action.payload
+      },
+      setCompanyDetails : (state,action) => {
+        state.companyDetails = action.payload
       }
 
   }
@@ -130,7 +136,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,closeApprovedLoader,setAllJobPostedList,setCompanyDetails,setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -179,6 +185,19 @@ export function getClientProfile(payload, callback) {
       if (result.status === 200) {
         dispatch(setClientProfileDetails(result.data));
       }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getCompanyDetails(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get("client/get-profile");
+        dispatch(setCompanyDetails(result.data));
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -596,14 +615,17 @@ export function getDeveloperDetails(id) {
     }
   };
 }
-export function getEnableDisableAccount(payload) {
-  console.log(payload, "payload");
+export function getEnableDisableAccount(payload,callback) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setApprovedLoader());
     try {
       let result = await clientInstance.post(`/common/enable-disable-user`, {
         ...payload,
       });
+      if(result.status === 200) {
+        dispatch(closeApprovedLoader());
+        callback();
+      }
     } catch (error) {
       console.log(error);
       // const message = error.message || "Something went wrong";

@@ -182,7 +182,7 @@ const TimeReportingDetail = () => {
                                         <Nav.Link className='weekly-tab-link d-flex align-items-center gap-2' eventKey="hired-developers">Projects <span className="number">5</span></Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item className='weekly-tab-item'>
-                                        <Nav.Link className='weekly-tab-link' eventKey="time-reporting">Time Reporting</Nav.Link>
+                                        <Nav.Link className='weekly-tab-link' eventKey="time-reporting">Time Reporting/Invoicing</Nav.Link>
                                     </Nav.Item>
                                 </Nav>
                             </div>
