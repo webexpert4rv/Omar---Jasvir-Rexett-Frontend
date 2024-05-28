@@ -78,15 +78,32 @@ const PublicHoliday = () => {
             <Col md={5}>
               <div className="holiday-listing px-0 pt-4">
                 <div className="d-flex justify-content-between align-items-center px-3 mb-3">
-                  <h3 className="mb-0">List of holidays</h3>
-                  <Form.Select className="common-field w-auto font-14 py-2">
-                    <option>This Month</option>
-                    <option>This Year</option>
-                    <option>Created</option>
-                  </Form.Select>
+                  <h3 className="mb-0">Holidays</h3>
+                  <div className="d-flex align-items-center gap-1">
+                    <Form.Select className="common-field w-auto font-14 py-2">
+                      <option>This Month</option>
+                      <option>This Year</option>
+                      <option>Created</option>
+                    </Form.Select>
+                    <Form.Select className="common-field w-auto font-14 py-2">
+                      <option>All</option>
+                      <option>January</option>
+                      <option>February</option>
+                      <option>March</option>
+                      <option>April</option>
+                      <option>May</option>
+                      <option>June</option>
+                      <option>July</option>
+                      <option>August</option>
+                      <option>September</option>
+                      <option>October</option>
+                      <option>November</option>
+                      <option>December</option>
+                    </Form.Select>
+                  </div>
                 </div>
-                {leaveList?.map((item, index) => (
-                  <div className="event-container">
+                <div className="event-container">
+                  {leaveList?.map((item, index) => (
                     <div className="event-wrapper">
                       <div className="event-info">
                         <div className="holiday-date">
@@ -120,9 +137,7 @@ const PublicHoliday = () => {
                         </Button>
                       </div>
                     </div>
-                  </div>
-                ))}
-                <div className="event-container">
+                  ))}
                   <div className="event-wrapper">
                     <div className="event-info">
                       <div className="holiday-date">
