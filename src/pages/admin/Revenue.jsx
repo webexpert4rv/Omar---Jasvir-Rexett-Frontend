@@ -13,8 +13,10 @@ import associateLogo from "../../assets/img/aviox-logo.png"
 import { IoSearch } from "react-icons/io5";
 import { HiDownload } from "react-icons/hi";
 import InvoicePaidModal from "./Modals/InvoicePaid";
-import timeSheetIcon from '../../assets/img/timesheet-icon.svg';
-import invoiceIcon from '../../assets/img/invoice-icon.svg'
+import timeSheetIcon from '../../assets/img/timesheet_approved.png';
+import invoiceIcon from '../../assets/img/invoice_paid.png'
+import timeSheetPendingIcon from '../../assets/img/timesheet_notapproved.png';
+import invoicePendingIcon from '../../assets/img/invoice_unpaid.png'
 
 const Revenue = () => {
     const minOffset = 0;
@@ -95,15 +97,6 @@ const Revenue = () => {
                         <Tab.Pane eventKey="raise-by-devs">
                             <div className="filter-section d-lg-flex align-items-center mt-3 justify-content-between mb-3">
                                 <div className="d-flex align-items-center gap-2 flex-wrap">
-                                    <div>
-                                        <Form.Select className="time-filter-select shadow-none">
-                                            <option>Select Week</option>
-                                            <option>Week 1</option>
-                                            <option>Week 2</option>
-                                            <option>Week 3</option>
-                                            <option>Week 4</option>
-                                        </Form.Select>
-                                    </div>
                                     <div>
                                         <Form.Select className="time-filter-select shadow-none">
                                             <option>Select Month</option>
@@ -197,9 +190,6 @@ const Revenue = () => {
                                             Associated with
                                         </th>
                                         <th className="time-table-head text-start">
-                                            Invoice Status
-                                        </th>
-                                        <th className="time-table-head text-start">
                                             Project Status
                                         </th>
                                         <th className="time-table-head text-start">
@@ -228,19 +218,14 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
                                             <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={timeSheetIcon} />
-                                                        </Button>
+                                                        <img src={timeSheetIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
+                                                        <img src={invoiceIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                 </div>
                                             </td>
@@ -266,19 +251,14 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                            <td className="time-table-data text-start"><span className="status-finished">Paid</span></td>
                                             <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={timeSheetIcon} />
-                                                        </Button>
+                                                        <img src={timeSheetIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
+                                                        <img src={invoiceIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                 </div>
                                             </td>
@@ -312,19 +292,14 @@ const Revenue = () => {
                                                     </div>
                                                 </OverlayTrigger>
                                             </td>
-                                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
                                             <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={timeSheetIcon} />
-                                                        </Button>
+                                                        <img src={timeSheetIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
+                                                        <img src={invoicePendingIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                 </div>
                                             </td>
@@ -350,19 +325,14 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                            <td className="time-table-data text-start"><span className="status-finished">Paid</span></td>
                                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={timeSheetIcon} />
-                                                        </Button>
+                                                        <img src={timeSheetIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
+                                                        <img src={invoicePendingIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                 </div>
                                             </td>
@@ -388,19 +358,14 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                            <td className="time-table-data text-start"><span className="status-finished">Paid</span></td>
                                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={timeSheetIcon} />
-                                                        </Button>
+                                                        <img src={timeSheetPendingIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
+                                                        <img src={invoicePendingIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                 </div>
                                             </td>
@@ -426,19 +391,14 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
                                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={timeSheetIcon} />
-                                                        </Button>
+                                                        <img src={timeSheetIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
+                                                        <img src={invoiceIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                 </div>
                                             </td>
@@ -451,15 +411,6 @@ const Revenue = () => {
                         <Tab.Pane eventKey="raise-to-clients">
                             <div className="filter-section d-lg-flex align-items-center mt-3 justify-content-between mb-3">
                                 <div className="d-flex align-items-center gap-2 flex-wrap">
-                                    <div>
-                                        <Form.Select className="time-filter-select shadow-none">
-                                            <option>Select Week</option>
-                                            <option>Week 1</option>
-                                            <option>Week 2</option>
-                                            <option>Week 3</option>
-                                            <option>Week 4</option>
-                                        </Form.Select>
-                                    </div>
                                     <div>
                                         <Form.Select className="time-filter-select shadow-none">
                                             <option>Select Month</option>
@@ -490,12 +441,12 @@ const Revenue = () => {
                                     </div>
                                     <div>
                                         <Form.Select className="time-filter-select shadow-none">
-                                            <option>Select Developer</option>
-                                            <option>Rohit Sharma</option>
-                                            <option>Rohit Sharma</option>
-                                            <option>Rohit Sharma</option>
-                                            <option>Rohit Sharma</option>
-                                            <option>Rohit Sharma</option>
+                                            <option>Select Client</option>
+                                            <option>Amazon</option>
+                                            <option>Amazon</option>
+                                            <option>Amazon</option>
+                                            <option>Amazon</option>
+                                            <option>Amazon</option>
                                         </Form.Select>
                                     </div>
                                     <div>
@@ -553,9 +504,6 @@ const Revenue = () => {
                                             Associated with
                                         </th>
                                         <th className="time-table-head text-start">
-                                            Invoice Status
-                                        </th>
-                                        <th className="time-table-head text-start">
                                             Project Status
                                         </th>
                                         <th className="time-table-head text-start">
@@ -584,14 +532,11 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
                                             <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
+                                                        <img src={invoiceIcon} className="approved_icon" />
                                                     </OverlayTrigger>
                                                 </div>
                                             </td>
@@ -617,15 +562,10 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start"><p className="associate-text font-14 mt-2 mb-2"><span className="associate mb-1 font-14">Individual</span></p></td>
-                                            <td className="time-table-data text-start"><span className="status-progress">Unpaid</span></td>
                                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
-                                                    </OverlayTrigger>
+                                                    <img src={invoicePendingIcon} className="approved_icon" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -650,22 +590,18 @@ const Revenue = () => {
                                             <td className="time-table-data text-start">140 hrs</td>
                                             <td className="time-table-data text-start">Jan 2024</td>
                                             <td className="time-table-data text-start">
-                                                <div className="d-block white-nowrap text-overflow">
-                                                    <div className="user-imgbx d-inline-block me-2 application-imgbx mx-0 mb-0">
-                                                        <img src={associateLogo} className="user-img" />
+                                                <OverlayTrigger placement="bottom" overlay={companyname}>
+                                                    <div>
+                                                        <div className="user-imgbx d-inline-block application-imgbx associated-logo mx-0 mb-0">
+                                                            <img src={associateLogo} className="user-img" />
+                                                        </div>
                                                     </div>
-                                                    Aviox Technologies Pvt Ltd.
-                                                </div>
+                                                </OverlayTrigger>
                                             </td>
-                                            <td className="time-table-data text-start"><span className="status-finished">Paid</span></td>
                                             <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
                                             <td className="time-table-data text-start">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                                        <Button className="main-btn download-btn p-0 font-14 white-nowrap">
-                                                            <img src={invoiceIcon} />
-                                                        </Button>
-                                                    </OverlayTrigger>
+                                                    <img src={invoicePendingIcon} className="approved_icon" />
                                                 </div>
                                             </td>
                                         </tr>

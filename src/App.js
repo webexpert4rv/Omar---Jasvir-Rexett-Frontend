@@ -5,7 +5,7 @@ import './assets/css/style.css'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import 'react-calendar/dist/Calendar.css'; 
-import { ArcElement, Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Fragment, Suspense, lazy } from "react"; 
 import DashboardLayout from '../src/layout/DashboardLayout';
 import AdminDashboardLayout from '../src/layout/AdminDashboardLayout';
@@ -85,12 +85,7 @@ import LeaveRequest from './pages/views/LeaveRequests';
 import PublicHoliday from './pages/views/PublicHolidays';
 import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
 
-Chart.register(ArcElement);
-Chart.register(CategoryScale);
-Chart.register(LinearScale);
-Chart.register(BarElement);
-Chart.register(PointElement);
-Chart.register(LineElement);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
   return (
     <>
