@@ -12,6 +12,7 @@ import Timer from "./Timer";
 
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch();
+  const role = localStorage.getItem("role");
   const navigate = useNavigate();
   const [nottificationData, setNotificationData] = useState([]);
   const { notificationList, screenLoader } = useSelector(
@@ -105,7 +106,11 @@ const Notification = ({ route, job, doc, timeReport }) => {
     } else if (data == "Time_reports") {
       navigate(`/${timeReport}`);
     } else if (data == "Users") {
-      navigate(`/admin-single-developer/${id}`);
+      if(role === "developer"){
+        navigate(`/developer-dashboard`);
+      }else{
+        navigate(`/admin-single-developer/${id}`);
+      }
     }
   };
 

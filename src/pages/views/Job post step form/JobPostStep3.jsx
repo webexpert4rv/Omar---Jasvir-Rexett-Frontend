@@ -27,8 +27,8 @@ const SCREENING_OPTIONS = [
   {
     label: "Work Experience", 
     title: "",                                                
-    question_type: "Job Function",
-    question: "How many years of [Job Function] experience do you currently have?",
+    question_type: "Years",
+    question: "How many years of experience do you currently have?",
   },
   {
     label: "Location",
@@ -97,7 +97,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                 <IoClose />
               </Button>
             </div>
-            <Row className="align-items-end screening-grid">
+            <Row className="align-items-end screening-grid">  
               <Col md="4" className="mb-md-0 mb-4">
                 <Form.Group>
                   {field?.question_type && (
@@ -116,7 +116,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                     </>
                   )}
                 </Form.Group>
-                {errors?.screening_questions?.[idx].title && (
+                {errors?.screening_questions?.[idx]?.title && (
                   <p className="error-message ">
                     {errors.screening_questions?.[idx].title?.message}
                   </p>
@@ -134,7 +134,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                     placeholder="Enter Answer"
                   />
                 </Form.Group>
-                {errors?.screening_questions?.[idx].ideal_answer && (
+                {errors?.screening_questions?.[idx]?.ideal_answer && (
                   <p className="error-message ">
                     {errors.screening_questions?.[idx].ideal_answer?.message}
                   </p>
@@ -154,7 +154,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                 </Form.Group>
                 {errors?.screening_questions?.[idx].must_have && (
                   <p className="error-message ">
-                    {errors.screening_questions?.[idx].must_have?.message}
+                    {errors.screening_questions?.[idx]?.must_have?.message}
                   </p>
                 )}
               </Col>

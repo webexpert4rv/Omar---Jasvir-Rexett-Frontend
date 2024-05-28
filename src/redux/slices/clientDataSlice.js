@@ -223,9 +223,9 @@ export function getJobPostData(id, callback) {
     try {
       let result = await clientInstance.get(`client/get-job-detail/${id}`);
       // toast.success("Job successfully Posted", { position: "top-center" })
-      dispatch(setJobPostedData(result.data?.job));
+      dispatch(setJobPostedData(result.data?.data));
       dispatch(setActionSuccessFully());
-      return callback(result.data?.job);
+      return callback(result.data?.data);
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -312,7 +312,6 @@ export function getAddHoliday(payload, callback) {
 }
 
 export function getApproveDisapprove(payload, id) {
-  console.log(payload,"payload")
   return async (dispatch) => {
       dispatch(setScreenLoader())
       try {
