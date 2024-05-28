@@ -425,7 +425,11 @@ ul {
     width: calc(100vw - 390px);
     align-items: center;
 }
-
+.simple-no-data .no-data-container
+{
+    min-height: 1px;
+    width: 100%;
+}
 .name_folder_text {
     -webkit-line-clamp: 2;
     display: -webkit-box;

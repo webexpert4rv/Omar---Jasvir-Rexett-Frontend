@@ -122,7 +122,7 @@ const DeveloperDashboard = () => {
                                                     )
                                                 })
 
-                                           :<td colSpan={10}> <NoDataFound/>  </td> }
+                                           :<td colSpan={10}> <div className="simple-no-data"><NoDataFound /></div>  </td> }
                                     </tbody>
                                 </table>
                             </div>
