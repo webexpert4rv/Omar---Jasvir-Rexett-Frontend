@@ -61,8 +61,10 @@ const SingleJob = () => {
     dispatch(getJobCategoryList());
   }, []);
 
+  console.log(jobPostedData,"jobPostedData")
+
   useEffect(() => {
-    setSingleJobDescription(jobPostedData?.job);
+    setSingleJobDescription(jobPostedData?.data);
   }, [jobPostedData]);
 
   const getCategory = (cat) => {
@@ -176,6 +178,7 @@ const SingleJob = () => {
       setCurrnetTabsStatus("application");
     }
   };
+  console.log(singleJobDescription,"singleJobDescription")
   const handleJobStatusAction = (e, data) => {
     e.preventDefault();
     if (data.status == "ended") {

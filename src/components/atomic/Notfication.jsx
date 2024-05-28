@@ -28,6 +28,8 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null)
   }, [newJobPost]);
 
+  console.log(notificationList,"notificationList")
+
 
   useEffect(() => {
     if (newJobPost !== null) {
@@ -127,6 +129,8 @@ const Notification = ({ route, job, doc, timeReport }) => {
     return new Date(b.created_at) - new Date(a.created_at);
   }
 
+  console.log(nottificationData,"nottificationData")
+
   return (
     <>
       <header>
@@ -158,8 +162,8 @@ const Notification = ({ route, job, doc, timeReport }) => {
               {notificationModal && (
                 <Dropdown.Menu className="notification-dropdown-menu">
                   <div className="dropdown-notify-wrapper">
-                    {nottificationData?.notifications?.length > 0 ? (
-                      [...nottificationData?.notifications]
+                    {nottificationData?.length > 0 ? (
+                      [...nottificationData]
                         ?.sort(compareDates)
                         ?.map((item) => {
                           return (

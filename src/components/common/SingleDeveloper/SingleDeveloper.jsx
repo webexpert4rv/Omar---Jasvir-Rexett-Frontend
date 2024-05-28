@@ -146,7 +146,7 @@ const SingleDeveloper = ({ data, role }) => {
                                     : "cv-template-section cv-template3 d-none"
                             }
                         >
-                            {role!=="developer" && data?.isEdit ? <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
+                            {role=="admin" && data?.isEdit ? <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
                                 <RexettButton
                                     type="submit"
                                     text={t("Approve")}
