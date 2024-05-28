@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const authInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL
+  baseURL: process.env.FRONTEND_URL
 
 });
 

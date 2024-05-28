@@ -4,7 +4,7 @@ import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utli
 
 
 const adminInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: process.env.FRONTEND_URL,
 
 });
 
