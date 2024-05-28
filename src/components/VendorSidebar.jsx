@@ -9,6 +9,7 @@ import { PiCoinsFill } from "react-icons/pi";
 import { FaFileInvoice } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { useTranslation } from "react-i18next";
 
 const VendorSidebar = ({ sideBarActive }) => {
@@ -33,9 +34,9 @@ const VendorSidebar = ({ sideBarActive }) => {
                             <li className="sidebar-item">
                                 <NavLink to={"/vendor-documents"} className="side-link" activeClassName="active"><IoDocuments /> {t("documents")}</NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/vendor-revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
-                            </li>
+                            </li> */}
                             <li className="sidebar-item">
                                 <NavLink to={'/vendor-upload-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
                             </li>
@@ -47,6 +48,9 @@ const VendorSidebar = ({ sideBarActive }) => {
                     <div className="w-100 px-3">
                         <div>
                             <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
+                        </div>
+                        <div>
+                            <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" className="bottom-link" activeClassName="active"><TfiHeadphoneAlt /> Contact Support</NavLink>
                         </div>
                         <div>
                             <NavLink to={"/vendor-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("FAQ")}</NavLink>
