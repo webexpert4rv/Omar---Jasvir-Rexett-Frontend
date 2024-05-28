@@ -12,8 +12,7 @@ const LanguageChange = () => {
     i18n.changeLanguage(lang);
     }
   },[])
-  console.log(selectedLanguage , "selectedlanguage")
-  console.log(lang,"lang")
+
 
   const handleLanguageChange = (event) => {
     const lang = event.target.value;

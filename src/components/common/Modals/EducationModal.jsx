@@ -35,14 +35,13 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
         if (data) { 
             data.forEach((item , index) => {
                 append({
-                    new_id: item.id,
                     university_name: item.university_name,
                     degree_id: item.degree_id,
                     address: item.address,
                     start_year: item.start_year,
                     end_year: item.end_year,
                     currently_attending: item.currently_attending,
-                    developerId:item?.developer_id
+                    education_id:item?.id
                 });
                 setDisbaleYear(prevState => [...prevState, item.currently_attending]);
             });
@@ -96,7 +95,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                 } else {
                     dispatch(getDeveloperDetails(devId))
                 }
-                handleClose()
+                // handleClose()
 
             }))
         }
@@ -106,17 +105,12 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
 
     const onSubmit = (value) => {
         let { educations } = value
-        let addEdu = educations?.map((item) => {
-            if (!item.new_id) {
-                return { ...item }
-            }
-        }).filter((item) => item)
-        if (addEdu.length > 0){
-            let data={
-                educations:addEdu,
-                user_id:+id
-            }
-            dispatch(addDeveloperCvEducation(data, () => {
+        let data={
+            developer_id:id,
+            educations:educations
+          }
+
+            dispatch(updateDeveloperCvEducation(data,role,()=>{
                 if (role == "developer") {
                     dispatch(fetchDeveloperCv())
                 } else {
@@ -126,20 +120,6 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
             }))
         }
 
-
-    educations?.forEach((item) => {
-        if (item.new_id) {
-            dispatch(updateDeveloperCvEducation(item, item.new_id, () => {
-                if (role == "developer") {
-                    dispatch(fetchDeveloperCv())
-                } else {
-                    dispatch(getDeveloperDetails(id))
-                }
-                handleClose()
-            }))
-        }
-    })
-}
    const handleCreate = (inputValue) => {
     const payload = {
         title : inputValue
@@ -294,7 +274,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                                         {index !== 0 && (
                                             <div>
                                                 <OverlayTrigger placement="bottom" overlay={deletetooltip}>
-                                                    <Button variant="danger" onClick={() => deleteDeveloperEducation(item.new_id,item?.developerId, index)}><FaTrashAlt /></Button>
+                                                    <Button variant="danger" onClick={() => deleteDeveloperEducation(item.new_id,item?.education_id, index)}><FaTrashAlt /></Button>
                                                 </OverlayTrigger>
                                             </div>
                                         )}

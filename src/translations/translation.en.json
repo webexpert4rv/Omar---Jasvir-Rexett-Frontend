@@ -143,7 +143,7 @@
         "adminName": "Admin Name",
         "nameOfDevelopers": "Name Of Developers",
         "noOfDevelopersHired": "No Of Developers Hired",
-        "invoice": "Invoice",
+        "pay_slip": "Pay Slip",
         "filterByMonth": "Filter By Month",
         "filterByYear": "Filter By Year",
         "selectClients": "Select Clients",
@@ -364,8 +364,22 @@
         "project_title_required_msg" :"Project title is required",
         "project_description_required_msg":"Project Description is required",
         "tech_stack_required_msg":"Tech stacks used are required",
-        "project_role_required_msg":"Role in project required",
+        "project_role_required_msg":"Role in project required", 
         "project_team_size_required_msg":"Project's team size is required",
-        "project_link_required_msg":"Project link is required"
+        "project_link_required_msg":"Project link is required",
+        "emailAddress":"Email Address",
+        "engagementslast":"Engagements Last",
+        "companyAddress" :"Company Address",
+        "companyTaxId" :"Company tax is",
+        "previous" :"Previous",
+        "next":"Next",
+        "jobTitleRequired":"Job title is required",
+        "checkInQuote" : "Please CheckIn to start the day",
+        "checkOut":"Checkout",
+        "checkIn" : "Checkin",
+        "workplaceType" : "Workplace Type",
+        "jobLocation" :"Job location",
+        "jobType":"Job Type",
+        "goodToHaveSkills":"Good to have skills"
 }
 }

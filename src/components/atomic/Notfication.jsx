@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import Timer from "./Timer";
 
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch();
@@ -27,15 +28,17 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null)
   }, [newJobPost]);
 
+  console.log(notificationList,"notificationList")
+
 
   useEffect(() => {
     if (newJobPost !== null) {
-      let mergeRow = [newJobPost, ...notificationList["unreadNotifications"]];
+      let mergeRow = [newJobPost, ...notificationList["unreadNotifications"]?.notifications];
       setNotificationData([...nottificationData, ...mergeRow]);
     } else if (nottificationData?.length > 0) {
       setNotificationData(nottificationData);
     } else {
-      setNotificationData(notificationList["unreadNotifications"]);
+      setNotificationData(notificationList["unreadNotifications"]?.notifications);
     }
   }, [notificationList, newJobPost]);
 
@@ -91,7 +94,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
     dispatch(
       markAsRead(notificationId, () => {
         dispatch(getNotification());
-        setNewJobPost(null);
+        // setNewJobPost(null);
         setNotificationData([]);
       })
     );
@@ -120,10 +123,14 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null);
     setNotificationModal(true);
   };
+  
 
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
   }
+
+  console.log(nottificationData,"nottificationData")
+
   return (
     <>
       <header>

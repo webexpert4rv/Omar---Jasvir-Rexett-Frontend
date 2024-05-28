@@ -32,9 +32,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                         </div>
                         <NavLink to={"/admin-dashboard"} className="dashboard-link" activeClassName="active"><MdSpaceDashboard/> {t("dashboard")}</NavLink>
                         <ul className="sidebar-listing py-0">
-                            <li className="sidebar-item">
-                                <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> {t("listOfClients")}</NavLink>
-                            </li>
+                            {/* <li className="sidebar-item"> */}
+                                {/* <NavLink to={"/list-clients"} className="side-link" activeClassName="active"><FaUserLarge /> {t("listOfClients")}</NavLink> */}
+                            {/* </li> */}
                             <li className="sidebar-item">
                                 <NavLink to={"/applications"} className="side-link" activeClassName="active"><RiFileCopy2Fill /> <span className="d-flex align-items-center">{t("applications")} </span></NavLink>
                             </li>
@@ -54,11 +54,11 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 <NavLink to={'/admin-time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("stats")} / Invoice</NavLink>
+                                <NavLink to={'/revenue'} className="side-link" activeClassName="active"><PiCoinsFill />Invoice</NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><BsToggles /> {t("accountDeletionRequest")}</NavLink>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                     <div className="w-100 px-3 mt-xxl-3">

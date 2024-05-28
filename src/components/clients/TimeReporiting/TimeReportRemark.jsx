@@ -1,106 +1,141 @@
-import React, { useState } from 'react'
-import { Button, Form, Offcanvas } from 'react-bootstrap'
-import userImage from "../../../assets/img/user-img.jpg"
-import { sendRemarkOnTimeReport } from '../../../redux/slices/adminDataSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import RexettButton from '../../atomic/RexettButton';
-import { timeReporting } from '../../../redux/slices/clientDataSlice';
-const TimeReportRemark = ({remarkshow,handleremarkClose,currentDetails,role,page}) => {
-    let {contractDetails:{user_details,contract_id,remarks}}=currentDetails
-    const [addRemark,setRemark]=useState(null);
-    const dispatch =useDispatch()
-    const { smallLoader } = useSelector(state => state.adminData)
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Form,
+  Offcanvas,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
+import userImage from "../../../assets/img/user-img.jpg";
+import { sendRemarkOnTimeReport } from "../../../redux/slices/adminDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import RexettButton from "../../atomic/RexettButton";
+import ReconciliationModal from "./ReconcialiationModal";
+import { postReconciliationData } from "../../../redux/slices/developerDataSlice";
+import { timeReporting } from "../../../redux/slices/clientDataSlice";
+const TimeReportRemark = ({
+  remarkshow,
+  handleremarkClose,
+  contractId,
+  currentDetails,
+  role,
+  page,
+}) => {
+  let {
+    contractDetails: { user_details, contract_id },
+    endDate,
+    startDate,
+    allSelectedTimeReport,
+    timeReports: {
+      end_time,
+      start_time,
+      memo,
+      weeklyDetails,
+      monthlyDetails,
+      report_date,
+      week,
+      month,
+    },
+    totalDuration,
+  } = currentDetails;
+  const [addRemark, setRemark] = useState(null);
+  const [reconciallationData, setReconciallationData] = useState([]);
+  const dispatch = useDispatch();
+  const [updateWeeklyData, setUpdateWeeklyData] = useState([]);
 
-    const handleRemarkChange=(e)=>{
-        setRemark(e.target.value)
-    }
+  const { smallLoader, reconciliationsData } = useSelector(
+    (state) => state.clientData
+  );
 
-    const handleRemarkSend=async(e)=>{
-        e.preventDefault()
-      let payload={
-            "contract_id": contract_id,
-            "remarks": addRemark
-          }
-         await dispatch(sendRemarkOnTimeReport(payload))
-         let filterData={
-            page:page
-         }
-         dispatch(timeReporting(filterData, role));
-         handleremarkClose()
+  useEffect(() => {
+    if (role == "client") {
+      setUpdateWeeklyData(reconciliationsData);
+    } else {
+      setUpdateWeeklyData(allSelectedTimeReport);
     }
+  }, [reconciliationsData]);
+
+  const handleReconciliationSend = () => {
+    const temp = JSON.parse(JSON.stringify(updateWeeklyData));
+    const payload = temp.filter((curElem) => curElem?.isEdited === true);
+    // const modifiedPayload = payload.map((curElem) => {
+    //   if (curElem.isEdited) {
+    //     delete curElem.isEdited;
+    //     return curElem;
+    //   } else {
+    //     return curElem;
+    //   }
+    // });
+
+    // removing isEdited key that was added manually
+    let modifiedPayload = payload.map(({ isEdited, ...rest }) => {return {...rest,contract_id:Number(contractId)}});
+    if (modifiedPayload?.length) {
+      dispatch( 
+        postReconciliationData(modifiedPayload, () => {
+          handleremarkClose();
+          dispatch(timeReporting({filter:"weekly"},role));
+        })
+      );
+    } else {
+      handleremarkClose();
+    }
+  };
+  const handleChangeUpdateWeeklyData = (e, index) => {
+    const { value, name } = e.target;
+    const temp = JSON.parse(JSON.stringify(updateWeeklyData));
+    temp[index][name] = value;
+    temp[index]["isEdited"] = true;
+    setUpdateWeeklyData(temp);
+  };
 
   return (
-    <Offcanvas className="time-detail-sidepanel" show={remarkshow} onHide={handleremarkClose} placement='end'>
-    <Offcanvas.Header closeButton>
-    <Offcanvas.Title>Remarks</Offcanvas.Title>
-    </Offcanvas.Header>
-    <Offcanvas.Body>
-        <div className='remarks-section'>
-            <div className='remark-card-wrapper'>
-                {
-                  remarks?.map((item)=>{
-                    return (
-                        <div className='remark-card'>
-                        <div className='remark-user'>
-                            <div className='d-flex justify-content-between align-items-center gap-2'>
-                                <img src={item?.user?.profile_picture} /> {item?.user?.name}
-                            </div>
-                            {/* <p>25 Apr, 11:20 AM</p> */}
-                            <p>{item.created_at?.slice(0,10)}</p>
-                            
-                        </div>
-                        <div className='remark-content'>
-                            <p>{item?.remark}</p>
-                        </div>
-                    </div>
-                    )
-                  })  
-                }
-               
-                {/* <div className='remark-card'>
-                    <div className='remark-user'>
-                        <div className='d-flex justify-content-between align-items-center gap-2'>
-                            <img src={userImage} /> Admin
-                        </div>
-                        <p>25 Apr, 11:20 AM</p>
-                    </div>
-                    <div className='remark-content'>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
-                    </div>
-                </div>
-                <div className='remark-card'>
-                    <div className='remark-user'>
-                        <div className='d-flex justify-content-between align-items-center gap-2'>
-                            <img src={userImage} /> Me (Rohit Sharma)
-                        </div>
-                        <p>25 Apr, 11:20 AM</p>
-                    </div>
-                    <div className='remark-content'>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod totam cupiditate ipsa eveniet ea magni recusandae similique rerum aspernatur facilis? Minus quo quae aliquid culpa vero incidunt blanditiis quibusdam dolorem? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae accusantium eius, dolor deserunt eum aperiam sed repudiandae possimus nisi, sunt id. Culpa voluptatum vero sint praesentium non autem veritatis doloribus.</p>
-                    </div>
-                </div> */}
-            </div>
-            <div className='remark-input-wrapper'>
-                <div>
-                    <Form.Control type='text' as="textarea" placeholder="Enter your remark"  className='common-field font-14' onChange={handleRemarkChange} />
-                    {/* <Button className='main-btn font-14 mt-2 py-2 px-3' onClick={handleRemarkSend}>Send</Button> */}
+    <Offcanvas
+      className="time-detail-sidepanel"
+      show={remarkshow}
+      onHide={handleremarkClose}
+      placement="end"
+    >
+      <Offcanvas.Header closeButton>
+        <Offcanvas.Title>Reconciliation</Offcanvas.Title>
+      </Offcanvas.Header>
+      <Offcanvas.Body>
+        <div className="detail-view weekly-view">
+          <div className="client-info mb-3">
+            <p>{role !== "developer" ? "Developer Name" : "Client Name"}</p>
+            <p className="client-name-heading">
+              <img src={user_details?.profile_picture} />
+              {user_details?.name}
+            </p>
+          </div>
 
-                    <RexettButton
-              type="submit"
-              text="Send"
-              className='main-btn font-14 mt-2 py-2 px-3'
-              variant="transparent"
-              onClick={handleRemarkSend}
-              disabled={smallLoader}
-              isLoading={smallLoader}
-            />
-
-                </div>
-            </div>
+          {updateWeeklyData?.map((item, index) => { 
+            return (
+              <>
+                <ReconciliationModal
+                  handleChangeUpdateWeeklyData={handleChangeUpdateWeeklyData}
+                  item={item}
+                  role={role}
+                  contract_id={contract_id}
+                  index={index}
+                />
+              </>
+            );
+          })}
         </div>
-    </Offcanvas.Body>
-</Offcanvas>
-  )
-}
+        {role !== "client" && (
+          <RexettButton
+            type="submit"
+            text="Submit"
+            className="main-btn font-14 mt-2 py-2 px-3"
+            variant="transparent"
+            onClick={handleReconciliationSend}
+            // disabled={smallLoader}
+            // isLoading={smallLoader}
+          />
+        )}
+      </Offcanvas.Body>
+    </Offcanvas>
+  );
+};
 
-export default TimeReportRemark
+export default TimeReportRemark;

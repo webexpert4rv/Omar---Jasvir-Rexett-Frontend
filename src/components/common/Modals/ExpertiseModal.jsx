@@ -205,11 +205,11 @@ const ExpertiseModal = ({ show, handleClose, data, id, role }) => {
       return { skill: skill.label, experience: experience };
     });
     const payload = {
-      user_id: userId,
+      user_id: id,
       skills: [...skills],
     };
     dispatch(
-      updateDeveloperSkills(payload, () => {
+      updateDeveloperSkills(payload, role ,() => {
         if (role == "developer") {
           dispatch(fetchDeveloperCv());
         } else {

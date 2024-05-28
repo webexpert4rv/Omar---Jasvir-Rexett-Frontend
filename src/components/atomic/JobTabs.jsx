@@ -54,12 +54,16 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       <p className="grid-text">{item?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                       <p className="grid-text">{item?.job_type}</p>
                     </div>
-                    <p className="job-description">{item?.description}</p>
+                    <p className="job-description" 
+                     dangerouslySetInnerHTML={{
+                      __html: item?.description,
+                    }}
+                    ></p>
                     <Row>
                       <Col md="12">
                         <div className="info-grid">
                           <h4 className="grid-heading">{t("skillsRequired")}</h4> 
-                          {item?.skills.length>0?<ul className="need-skill-list">
+                          {item?.skills?.length>0?<ul className="need-skill-list">
                             {convertToArray(item?.skills)?.map((item) => {
                               return (
                                 <>

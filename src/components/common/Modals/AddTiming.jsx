@@ -20,6 +20,7 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
   const [open, setOpen] = useState(false);
   const [timeReportingData, setTimeReportingData] = useState([]);
   const [details, setDetails] = useState(false)
+  const [count,setCount]=useState(0)
   const { t } = useTranslation()
   const {
     register,
@@ -72,7 +73,10 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
     if (addTimeReports.length > 0) {
       setTimeReportingData(addTimeReports);
     } else {
-      getCurrentWeekDates();
+      if(currentAction=="AddTime"){
+        getCurrentWeekDates();
+
+      }
     }
   }, [addTimeReports]);
 
@@ -112,7 +116,6 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
     let payloadData = {
       contract_id: +selectedFilter?.contract_id,
       reports: values?.addTime,
-
     };
     if (selectedFilter?.contract_id) {
       dispatch(
@@ -145,8 +148,8 @@ const AddTimingModal = ({ show, handleClose, role,currentAction }) => {
     setSelectedFilter({})
     setTimeReportingData([])
     setAddTimeReports([])
-    getCurrentWeekDates();
     handleClose()
+    setCount(prev=>prev+1)
   }
   return (
     <Modal

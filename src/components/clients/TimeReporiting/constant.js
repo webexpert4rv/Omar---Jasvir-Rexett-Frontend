@@ -84,3 +84,70 @@ export const TABLE_HEADER = [
 ];
 
 export const INVALID_FILE_TYPE = "invalid_file_type";
+export const HEADER = [
+  "Developer Name",
+  "Leave Type",
+  "Leave Date",
+  "Reason",
+  "Project",
+  "Associated With",
+  "Action",
+];
+export const tabText= [
+  {
+    key:"first",
+    value:"Applied Leave Request"
+  },
+  { 
+    key:"second",
+    value: "Leaves Rejected"
+   },
+   {
+    key:"third",
+    value:"Leave History"
+  },
+  {
+    key:"fourth",
+    value:"Cancelled Leaves"
+  }
+]
+
+
+export const planLeaveTabs= [
+  {
+    key:"first",
+    value:"Apply Leave"
+  },
+  { 
+    key:"second",
+    value: "Leaves History"
+   },
+  ]
+export const generateLeave = (item) => {
+  switch (item) {
+    case "full-day":
+    return "Full Day"
+      case "half-day":
+      return "Half Day"
+      case "short-leave" :
+      return " Short Leave"
+    }
+};
+export const LEAVE_TYPE = [
+  {
+    key: "Full Day",
+    value: "full-day",
+  },
+  {
+    key: "Half-Day ",
+    value: "half-day",
+  },
+  {
+    key: "Short Leave",
+    value: "short-leave",
+  },
+  // {
+  //   key: "Casual Leave",
+  //   value: "casual-leave",
+  // },
+];

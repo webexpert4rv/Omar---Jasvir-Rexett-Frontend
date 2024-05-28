@@ -35,7 +35,7 @@ const AboutCV = ({ show, handleClose, data, id, role,isEdited }) => {
         user_id: id,
       };
       dispatch(
-        updateDeveloperCvBio(data, () => {
+        updateDeveloperCvBio(data,role, () => {
           dispatch(fetchDeveloperCv());
           handleClose();
         })
@@ -46,7 +46,7 @@ const AboutCV = ({ show, handleClose, data, id, role,isEdited }) => {
         user_id: id,
       };
       dispatch(
-        updateDeveloperCvBio(data, () => {
+        updateDeveloperCvBio(data,role, () => {
           dispatch(getDeveloperDetails(id));
           handleClose();
         })
