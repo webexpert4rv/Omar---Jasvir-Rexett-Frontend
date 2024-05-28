@@ -293,7 +293,7 @@ const EditProfile = () => {
                                                             },
                                                             pattern: {
                                                                 value: /^[A-Za-z\s]+$/,
-                                                                message: "Country should not contain numbers or special character",
+                                                                message: "City should not contain numbers or special character",
                                                             }
                                                         })}
                                                     />

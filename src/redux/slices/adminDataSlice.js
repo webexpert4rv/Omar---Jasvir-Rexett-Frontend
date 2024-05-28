@@ -494,6 +494,7 @@ export function getAccountEnableDisable() {
     };
 }
 export function getAccountDisableEnable(payload) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {

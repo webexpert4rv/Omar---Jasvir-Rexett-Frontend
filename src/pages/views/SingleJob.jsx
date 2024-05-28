@@ -404,7 +404,7 @@ const SingleJob = () => {
                 <Col md="4">
                   <h3 className="req-heading">{t("experienceRequirements")}</h3>
                   <p className="req-text">
-                    {singleJobDescription?.experience?.split("_").join(" ")}
+                    {singleJobDescription?.experience?.split("_").join(" ") || "Not Mentioned"}
                   </p>
                 </Col>
                 <Col md="4">

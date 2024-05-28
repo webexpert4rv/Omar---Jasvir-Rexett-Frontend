@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Col,
@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
 import CommonApplicationTable from "../../components/common/Admin Application/CommonApplicationTable";
 import { HiDownload } from "react-icons/hi";
+import generatePDF from "react-to-pdf";
 const COLUMNS = {
   vendors: [
     { header: "clientName", key: "name" },
@@ -56,6 +57,7 @@ const COLUMNS = {
   ],
 };
 const Applications = () => {
+  const targetRef = useRef();
   const dispatch = useDispatch();
   const { allApplications, approvedLoader, screenLoader } = useSelector(
     (state) => state.adminData
@@ -75,6 +77,11 @@ const Applications = () => {
     setExpandedRow(expandedRow === index ? null : index);
     setArrowActive(index == arrowactive ? null : index);
   };
+
+  const handleDownload=(e , resume)=>{
+    e.stopPropagation()
+    generatePDF(targetRef, {filename: {resume}})
+  }
 
   useEffect(() => {
     let data = {
@@ -150,7 +157,8 @@ const Applications = () => {
     setTimerValue(timer);
   };
 
-  return (
+
+    return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("applications")}</h2>
@@ -435,17 +443,17 @@ const Applications = () => {
                                           </Col>
                                         )}
 
-                                        <Col md={3} className="mb-3">
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
-                                              Contact Person name
+                                              Client Type
                                             </h3>
                                             <p className="application-text">
                                               ---
                                             </p>
                                           </div>
-                                        </Col>
-                                        <Col md={3}>
+                                        </Col> */}
+                                        {/* <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
                                               Contact Person Email
@@ -454,7 +462,7 @@ const Applications = () => {
                                               ---
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
                                       </Row>
                                     </div>
                                   </td>
@@ -883,12 +891,16 @@ const Applications = () => {
                                
                                   
                                 </td>
-                                <td> <RexettButton
+                                <td> 
+                                  <RexettButton 
+                                 onClick={(e) => handleDownload(e , item?.developer_detail?.resume)}
                                       icon={
                                         selectedRejectedBtn === index ? (
                                           approvedLoader
                                         ) : (
+                                          <div ref={targetRef}>
                                           <HiDownload />
+                                          </div>
                                         )
                                       }
                                       className="arrow-btn primary-arrow"
