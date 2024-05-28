@@ -312,7 +312,6 @@ export function getAddHoliday(payload, callback) {
 }
 
 export function getApproveDisapprove(payload, id) {
-  console.log(payload,"payload")
   return async (dispatch) => {
       dispatch(setScreenLoader())
       try {
