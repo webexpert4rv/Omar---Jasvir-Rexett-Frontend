@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 
 const Tabs = ({ handleSelect, tabText ,currentTab }) => {
+  console.log(currentTab,"currentTab")
   return (
     <div>
      
         <Tab.Container
           id="left-tabs-example"
-          defaultActiveKey="first"
+          defaultActiveKey={currentTab ? currentTab : "first"}
           onSelect={handleSelect}
         >
            {tabText?.map((item, index) => (

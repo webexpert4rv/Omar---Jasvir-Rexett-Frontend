@@ -70,7 +70,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
             <Form.Group className="mb-3">
               <Form.Label>{t("companyName")}</Form.Label>
               <p className="common-field font-14 d-flex align-items-center gap-2">
-                <img src={companyLogo} className="company-imgbx" />
+                {/* <img src={companyLogo} className="company-imgbx" /> */}
                 <Form.Control
                   type = "text"
                   {...register("company_name", {

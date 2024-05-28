@@ -146,7 +146,7 @@ const SingleDeveloper = ({ data, role }) => {
                                     : "cv-template-section cv-template3 d-none"
                             }
                         >
-                            {role!=="developer" && data?.isEdit ? <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
+                            {role=="admin" && data?.isEdit ? <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
                                 <RexettButton
                                     type="submit"
                                     text={t("Approve")}
@@ -210,12 +210,12 @@ const SingleDeveloper = ({ data, role }) => {
                                                 </div>
                                             )}
                                         </div>
-                                        <ul className="skills-pill text-center">
+                                        <ul className={`skills-pill text-center }`}>
                                             {data?.other_skills?.map(
                                                 (item, index) => {
                                                     return (
                                                         <>
-                                                            <li key={index}>
+                                                            <li key={index} className={`${item?.is_edited && "resume-edit"}`}>
                                                                 <span>{item?.skill}</span>{" "}
                                                             </li>
                                                         </>
@@ -242,10 +242,10 @@ const SingleDeveloper = ({ data, role }) => {
                                             {data?.expertises ? (
                                                 <>
                                                     {data?.expertises?.map(
-                                                        ({ experience, skill, skill_icon }, index) => {
+                                                        ({ experience, skill, skill_icon,is_edited }, index) => {
                                                             return (
                                                                 <React.Fragment key={index}>
-                                                                    <div className="exp-wrapper expertise-card">
+                                                                    <div className={`exp-wrapper expertise-card ${is_edited && "resume-edit"} `}>
                                                                         <img src={skill_icon?.icon_url} />
                                                                         <p className="expertise-skill">{skill}</p>
                                                                         <p className="expertise-exp">
@@ -290,16 +290,17 @@ const SingleDeveloper = ({ data, role }) => {
                                                                     role_in_project,
                                                                     project_end_date,
                                                                     tech_stacks_used,
+                                                                    is_edited
                                                                 },
                                                                 index
                                                             ) => {
                                                                 return (
                                                                     <React.Fragment key={index}>
-                                                                        <div className="project-wrapper">
+                                                                        <div className={`project-wrapper  ${(is_edited) && "resume-edit"}`}>
                                                                             {/* <div className="exp-wrapper expertise-card"> */}
                                                                             {/* <p className="exp-year">{} - {} | {}</p> */}
                                                                             {/* <img src={skill_icon?.icon_url} /> */}
-                                                                            <div className="d-flex justify-content-between align-items-start mb-1">
+                                                                            <div className={`flex justify-content-between align-items-start mb-1`}>
                                                                                 <div>
                                                                                     <p className="project-title mb-0">
                                                                                         {project_title}
@@ -424,7 +425,7 @@ const SingleDeveloper = ({ data, role }) => {
                                             </div>
                                             {data?.developer_detail?.bio?.length > 300 ? (
                                                 <p
-                                                    className={`resume-text ${data?.developer_detail?.is_edited ? "active" : ""
+                                                    className={`resume-text ${data?.developer_detail?.is_edited ? "resume-edit" : ""
                                                         }  `}
                                                 >
                                                     {readmore &&
@@ -442,7 +443,8 @@ const SingleDeveloper = ({ data, role }) => {
                                                     )}
                                                 </p>
                                             ) : (
-                                                <> {data?.developer_detail?.bio}</>
+                                                < p className={`resume-text ${data?.developer_detail?.is_edited ? "resume-edit" : ""
+                                            }  `}> {data?.developer_detail?.bio}</p>
                                             )}
                                         </div>
                                     </div>
@@ -464,7 +466,7 @@ const SingleDeveloper = ({ data, role }) => {
                                         {data?.user_experience &&
                                             Object.keys(data?.user_experience).length > 0 &&
                                             Object.keys(data?.user_experience).map((key) => (
-                                                <div className={`exp-timeline ${data?.isEdited ? "resume-edit" :""} ` }>
+                                                <div className={`exp-timeline` }>
                                                     <SingleExperienceCard
                                                         companyName={key}
                                                         totalExperience={
@@ -494,10 +496,9 @@ const SingleDeveloper = ({ data, role }) => {
                                                 {data?.developer_educations?.map((item) => {
                                                     return (
                                                         <React.Fragment key={item.id}>
-                                                            <div className="exp-wrapper">
+                                                            <div className={`exp-wrapper ${item?.is_edited && "resume-edit"}`}>
                                                                 <p
-                                                                    className={`exp-year ${item?.is_edited ? "resume-edit" : ""
-                                                                        }`}
+                                                                    
                                                                 >
                                                                     {item?.start_year} -{" "}
                                                                     {item?.end_year ? item?.end_year : "Present"}{" "}
@@ -505,14 +506,12 @@ const SingleDeveloper = ({ data, role }) => {
                                                                 </p>
                                                                 <ul className="exp-role">
                                                                     <li
-                                                                        className={`resume-text ${item?.is_edited ? "resume-edit" : ""
-                                                                            }`}
+                                                                      
                                                                     >
                                                                         {item?.university_name}
                                                                     </li>
                                                                     <li
-                                                                        className={`resume-text ${item?.is_edited ? "resume-edit" : ""
-                                                                            }`}
+                                                                       
                                                                     >
                                                                         {item?.Degree?.title}
                                                                     </li>

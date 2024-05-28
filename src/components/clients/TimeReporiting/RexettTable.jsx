@@ -159,6 +159,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   //   ); // The 0th day of the next month is the last day of the current month
   //   return today.getDate() === lastDayOfMonth.getDate();
   // };
+  const isTodayFriday = () => {
+    const today = new Date();
+    // const isFriday = today.getDay() === 5; 
+    return today.getDay() === 5
+  }
   return (
     <>
       <div className={`weekly-report-table ${selectedPeriod}`}>
@@ -336,7 +341,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           </td>
                           <td className="time-table-data">
                             <button
-                              disabled={item?.isApproved}
+                              disabled={item?.isApproved || !isTodayFriday()}
                               onClick={() => {
                                 handleremarkShow(item, index);
                               }}
@@ -473,33 +478,23 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
         <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
         <ol className="ps-3 mb-0">
           <li className="mb-2">
-            <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
-            </p>
+            <p>All developers must check in before starting their workday.</p>
           </li>
           <li className="mb-2">
             <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
+              All developers must submit their time-sheets before the end of
+              Friday.
             </p>
           </li>
-          <li className="mb-0">
+          <li className="mb-2">
+            <p>Please Check out at the end of your workday.</p>
+          </li>
+          <li className="mb-2">
+            For Developers, Reconciliation get enable on every Friday.
+          </li>
+          <li className="mb-2">
             <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
+              Developers may work on weekends and reconcile their Time-sheets.
             </p>
           </li>
         </ol>

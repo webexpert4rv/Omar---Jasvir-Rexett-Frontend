@@ -14,6 +14,7 @@ const initialClientData = {
   clientProfileDetails: {},
   timeReportingData: [],
   folderData: [],
+  companyDetails:{},
   jobCategoryList: [],
   skillList: [],
   allJobPostedList: {},
@@ -24,6 +25,9 @@ const initialClientData = {
   faqsData: {},
   clientLeaveHistory:[],
   reconciliationsData:[],
+  leaveList:[],
+  addHoliday:{},
+  approveDisapprove:{}
 };
  
 export const clientDataSlice = createSlice({
@@ -39,6 +43,9 @@ export const clientDataSlice = createSlice({
       },
       setApprovedLoader: (state, action) => {
           state.approvedLoader = true;
+      },
+      closeApprovedLoader : (state,action) => {
+        state.approvedLoader = false;
       },
 
       setAssignDeveloperList: (state, action) => {
@@ -109,6 +116,7 @@ export const clientDataSlice = createSlice({
       },
       setFaqs : (state ,action) =>{
           state.faqsData = action.payload
+          state.screenLoader = false;
       },
       setInvoiceList: (state,action) => {
           state.invoiceList = action.payload;
@@ -116,11 +124,21 @@ export const clientDataSlice = createSlice({
       },
       setLeaveClientHistory : (state,action) => {
         state.clientLeaveHistory =  action.payload
+        state.screenLoader = false;
       },
       setReconciliationsData:(state,action)=>{
-        console.log(action.payload,"ppppp")
          state.reconciliationsData=action.payload
+      },
+      setLeaveList : (state,action)=>{
+        state.leaveList = action.payload
+      },
+      setAddHoliday:(state,action) => {
+        state.addHoliday = action.payload
+      },
+      setApproveDisapprove: (state,action)=>{
+        state.approveDisapprove = action.payload
       }
+
 
   }
 })
@@ -129,7 +147,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList,setLeaveList,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -178,6 +196,19 @@ export function getClientProfile(payload, callback) {
       if (result.status === 200) {
         dispatch(setClientProfileDetails(result.data));
       }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getCompanyDetails(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get("client/get-profile");
+        // dispatch(setCompanyDetails(result.data));
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -246,6 +277,55 @@ export function getClientLeaveHistory(payload, callback) {
         }
     };
 }
+
+export function getLeaveList() {
+  return async (dispatch) => {
+      dispatch(setScreenLoader())
+      try {
+          let result = await clientInstance.get('client/public-holidays')
+            dispatch(setLeaveList(result.data.data))
+             
+      } catch (error) {
+        console.log(error,"error")
+          // const message = error.message || "Something went wrong";
+          // toast.error(message, { position: "top-center" })
+          // dispatch(setFailClientData())
+      }
+  };
+}
+
+export function getAddHoliday(payload, callback) {
+  console.log(payload,"payload")
+  return async (dispatch) => {
+      dispatch(setScreenLoader())
+      try {
+          let result = await clientInstance.post('client/add-public-holiday',{...payload})
+            dispatch(setAddHoliday(result.data.data))
+             
+      } catch (error) {
+        console.log(error,"error")
+          // const message = error.message || "Something went wrong";
+          // toast.error(message, { position: "top-center" })
+          // dispatch(setFailClientData())
+      }
+  };
+}
+
+export function getApproveDisapprove(payload, id) {
+  console.log(payload,"payload")
+  return async (dispatch) => {
+      dispatch(setScreenLoader())
+      try {
+          let result = await clientInstance.post(generateApiUrl(payload ,`client/approve-or-disapprove-holiday/${id}`))
+            // dispatch(setApproveDisapprove(result.data.data))      
+      } catch (error) {
+        console.log(error,"error")
+          const message = error?.response?.data?.message || "Something went wrong";
+          toast.error(message, { position: "top-center" })
+          dispatch(setFailClientData())
+      }
+  };
+}
 export function getClientLeaveStatus(payload) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
@@ -257,7 +337,7 @@ export function getClientLeaveStatus(payload) {
               toast.success("Leave Rejected",{position : "top-center" })
             }
         } catch (error) {
-            const message = error.response.data.message || "Something went wrong";
+            const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
@@ -275,7 +355,7 @@ export function getFolderData(payload, role) {
         dispatch(setFolderData(result.data.data));
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -305,7 +385,7 @@ export function clientJobPost(payload, activeStep, callback) {
       dispatch(setActionSuccessFully());
       return callback();
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -357,7 +437,7 @@ export function singleJobPostData(payload, callback) {
       dispatch(setActionSuccessFully());
       return callback();
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -496,9 +576,7 @@ export function createNewFolderAndFile(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result;
-
-      result = await clientInstance.post(
+      let result = await clientInstance.post(
         `common/documents/create-folder-or-file`,
         { ...payload }
       );
@@ -524,7 +602,7 @@ export function renameFolderAndFile(payload, id, callback) {
       toast.success("Folder Updated successfully", { position: "top-center" });
       return callback(result?.data?.data?.parent_id);
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -542,7 +620,7 @@ export function _deleteFileAndFolder(payload, callback) {
       toast.success("File is Deleted successfully", { position: "top-center" });
       return callback();
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -561,7 +639,7 @@ export function changeJobStatus(currentTb, payload, data, callback) {
       toast.success("Job status is Updated", { position: "top-center" });
       return callback();
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -576,7 +654,7 @@ export function earnedBackOfDeveloper(paylaod) {
       dispatch(setEarnedBackData(result.data.data));
       // toast.success("Job status is Updated", { position: "top-center" })
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -589,20 +667,23 @@ export function getDeveloperDetails(id) {
       let result = await clientInstance.get(`/common/developer-details/${id}`);
       dispatch(setDeveloperDetails(result.data.data));
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
   };
 }
-export function getEnableDisableAccount(payload) {
-  console.log(payload, "payload");
+export function getEnableDisableAccount(payload,callback) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setApprovedLoader());
     try {
       let result = await clientInstance.post(`/common/enable-disable-user`, {
         ...payload,
       });
+      if(result.status === 200) {
+        // dispatch(closeApprovedLoader());
+        callback();
+      }
     } catch (error) {
       console.log(error);
       // const message = error.message || "Something went wrong";
@@ -620,7 +701,7 @@ export function getDeleteJob(payload, callback) {
       dispatch(setActionSuccessFully());
       return callback();
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error("Delete account request already exists for this user", {
         position: "top-center",
       });
@@ -638,7 +719,7 @@ export function createNewJobCategory(payload, callback) {
       });
       return callback();
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }

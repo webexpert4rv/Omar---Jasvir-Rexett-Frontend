@@ -61,8 +61,10 @@ const SingleJob = () => {
     dispatch(getJobCategoryList());
   }, []);
 
+  console.log(jobPostedData,"jobPostedData")
+
   useEffect(() => {
-    setSingleJobDescription(jobPostedData?.job);
+    setSingleJobDescription(jobPostedData?.data);
   }, [jobPostedData]);
 
   const getCategory = (cat) => {
@@ -176,6 +178,7 @@ const SingleJob = () => {
       setCurrnetTabsStatus("application");
     }
   };
+  console.log(singleJobDescription,"singleJobDescription")
   const handleJobStatusAction = (e, data) => {
     e.preventDefault();
     if (data.status == "ended") {
@@ -401,7 +404,7 @@ const SingleJob = () => {
                 <Col md="4">
                   <h3 className="req-heading">{t("experienceRequirements")}</h3>
                   <p className="req-text">
-                    {singleJobDescription?.experience?.split("_").join(" ")}
+                    {singleJobDescription?.experience?.split("_").join(" ") || "Not Mentioned"}
                   </p>
                 </Col>
                 <Col md="4">
@@ -459,9 +462,9 @@ const SingleJob = () => {
           </section>
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
-          <div className="text-end">
+          {/* <div className="text-end">
             <Button className="main-btn px-4 py-2 font-14">Make Suggestion Request</Button>
-          </div>
+          </div> */}
           <JobCard
             handleJobStatusModal={handleJobStatusModal}
             type="Suggested"

@@ -87,6 +87,7 @@ const EditAdminProfile = () => {
                                         <Form.Label className="common-label">{t("email")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
                                             name="email"
+                                            disabled
                                             {...register("email", {
                                                 required: {
                                                     value: true,

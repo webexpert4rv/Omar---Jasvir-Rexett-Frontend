@@ -17,11 +17,23 @@ const EditProfile = () => {
     const userId = localStorage.getItem("userId");
     const [showModal, setShowModal] = useState(false)
     const [status, setStatus] = useState("inactive")
+    const [logo,setLogo] = useState(null);
     const {
         register,
         setValue,
+        watch,
         handleSubmit,
         formState: { errors, isDirty, isValid, isSubmitting },
+    } = useForm({});
+    const {
+        register:registerCompanyDetails,
+        setValue:setCompanyDetails,
+        handleSubmit:handleCompanyDetailSubmit,
+        formState: { errors:companyDetailErrors},
+        watch:watchCompanyDetails,
+        setError:setCompanyDetailsError,
+        setValue:setCompanyDetailsValue,
+        clearErrors:clearCompanyDetailsErrors
     } = useForm({});
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -29,7 +41,7 @@ const EditProfile = () => {
         firstPass: false,
         secondPass: false
     })
-    const { smallLoader, clientProfileDetails, screenLoader } = useSelector(state => state.clientData)
+    const { smallLoader, clientProfileDetails, screenLoader ,approvedLoader} = useSelector(state => state.clientData)
 
     useEffect(() => {
         dispatch(getClientProfile())
@@ -42,20 +54,27 @@ const EditProfile = () => {
         setValue("address", clientProfileDetails?.data?.address)
         setValue("address_2", clientProfileDetails?.data?.address_2)
         setValue("city", clientProfileDetails?.data?.city)
-        setValue("country", clientProfileDetails?.data?.country)
+        setValue("country", clientProfileDetails?.data?.country)    
         setValue("passcode", clientProfileDetails?.data?.passcode)
-
+        if(clientProfileDetails?.company_logo) {
+            setLogo(clientProfileDetails?.company_logo);
+        }
+        const companyDetailsKeys = ["company_name","company_address","company_tax_id","company_type"]
+        companyDetailsKeys.map((key)=>{
+            if(clientProfileDetails[key]){
+                setValue(key,clientProfileDetails[key])
+            }
+        })
     }, [clientProfileDetails])
 
     const onSubmit = (values) => {
-        console.log(values?.name, "values")
         localStorage.setItem("newUserName", values?.name)
         let formData = {
             ...values,
             password: values.password ? values.password : null,
             previous_password: values.previous_password ? values.previous_password : null
         }
-        dispatch(updateClientProfile(formData))
+        dispatch(updateClientProfile(formData),()=>{dispatch(getClientProfile())})
     }
     const handleJobStatusModal = () => {
         setStatus(!status)
@@ -70,9 +89,8 @@ const EditProfile = () => {
             user_id: +userId,
             status: status
         }
-        dispatch(getEnableDisableAccount(data))
+        dispatch(getEnableDisableAccount(data,handleJobStatusModal)) 
     }
-
     const disableProfile = (
         <Tooltip id="tooltip">
             Disable your Account
@@ -91,6 +109,42 @@ const EditProfile = () => {
         }
         return true;
     };
+    const onCompanyDetailSubmit = (data) => {
+        const clientProfileDetails = watch();
+        const payload = {
+            ...data,
+            ...clientProfileDetails,
+            password: clientProfileDetails.password ? clientProfileDetails.password : null,
+            previous_password: clientProfileDetails.previous_password ? clientProfileDetails.previous_password : null,
+            company_logo:(logo) ? logo : null
+        }
+        console.log(payload,"payload");
+        dispatch(updateClientProfile(payload));
+    }
+    const handleCompanyLogo = (e) => {
+        const file = e?.target?.files?.[0];
+        const allowedTypes = [ 
+        "image/jpeg",
+        "image/png",
+        "image/jpg",
+        "image/svg",
+        ]
+        if(file){
+                if( allowedTypes.includes(file.type)){
+                  const fileUrl = URL.createObjectURL(file);
+                  setCompanyDetailsValue("company_logo",fileUrl);
+                  setLogo(fileUrl)
+                  clearCompanyDetailsErrors("company_logo");
+                } else {
+                    setCompanyDetailsError("company_logo",{
+                        type:"manual",
+                        message:"Please select a valid image file i.e (.png,.jpg,.svg or jpeg)"
+                    })
+                    setLogo(null);
+                    setCompanyDetailsValue("company_logo",null);
+                }
+            }
+    }
     return (
         <>
             <section className="card-box">
@@ -134,7 +188,7 @@ const EditProfile = () => {
                                                 </Form.Group>
                                                 <Form.Group className="mb-3">
                                                     <Form.Label className="common-label">{t("email")} *</Form.Label>
-                                                    <Form.Control type="text" className="common-field"
+                                                    <Form.Control readOnly type="text" className="common-field"
                                                         name="email"
                                                         {...register("email", {
                                                             required: {
@@ -239,7 +293,7 @@ const EditProfile = () => {
                                                             },
                                                             pattern: {
                                                                 value: /^[A-Za-z\s]+$/,
-                                                                message: "Country should not contain numbers or special character",
+                                                                message: "City should not contain numbers or special character",
                                                             }
                                                         })}
                                                     />
@@ -283,7 +337,7 @@ const EditProfile = () => {
                                                     <p className="error-message">
                                                         {errors.country?.message} </p>
                                                 </Form.Group>
-                                            </div>
+                                            </div>  
                                         </Col>
                                     </Row>
                                     <div className="text-center">
@@ -301,28 +355,31 @@ const EditProfile = () => {
                         </Tab.Pane>
                         <Tab.Pane eventKey="company_details">
                             <div>
-                                <Form>
-                                    <Row>
+                                <form onSubmit={handleCompanyDetailSubmit(onCompanyDetailSubmit)}>
+                                    <Row>   
                                         <Col md={12}>
                                             <Form.Group className="mb-4">
                                                 <Form.Label className="common-label">Company Logo</Form.Label>
-                                                <Form.Control type="file" id="company_logo_file" placeholder="Company Name" className="common-field d-none" />
+                                                <Form.Control {...registerCompanyDetails("company_logo",onchange=(e)=>{handleCompanyLogo(e)})} type="file" id="company_logo_file" placeholder="Company Name" className="common-field d-none" />
                                                 <div className="file_shown">
-                                                    <img src={companyLogo} />
+                                                    <img src={logo ? logo : companyLogo} />
                                                     <Form.Label htmlFor="company_logo_file" className="camera-btn mb-0"><IoIosCamera /></Form.Label>
                                                 </div>
+                                                {companyDetailErrors?.company_logo && <p className="error-message">{companyDetailErrors.company_logo?.message}</p>}
                                             </Form.Group>
                                         </Col>
                                         <Col md={6}>
                                             <Form.Group className="mb-3">
-                                                <Form.Label className="common-label">Company Name</Form.Label>
-                                                <Form.Control type="text" placeholder="Company Name" className="common-field" />
+                                                <Form.Label className="common-label">Company Name*</Form.Label>
+                                                <Form.Control  {...registerCompanyDetails("company_name",{required:"Company name is required"})} type="text" placeholder="Company Name" className="common-field" />
+                                                {companyDetailErrors?.company_name && <p className="error-message">{companyDetailErrors.company_name?.message}</p>}
                                             </Form.Group>
                                         </Col>
                                         <Col md={6}>
                                             <Form.Group className="mb-3">
-                                                <Form.Label className="common-label">Type of Company</Form.Label>
-                                                <Form.Select className="common-field">
+                                                <Form.Label className="common-label">Type of Company*</Form.Label>
+                                                <Form.Select  {...registerCompanyDetails("company_type",{required:"Company type is required"})} className="common-field">
+                                                    <option disabled selected value="">Please select company type</option>
                                                     <option value="sole_partnership">Sole Partnership</option>
                                                     <option value="partnership">Partnership</option>
                                                     <option value="limited_liability_company(LLC)">Limited Liability Company(LLC)</option>
@@ -332,23 +389,26 @@ const EditProfile = () => {
                                                     <option value="franchise">Franchise</option>
                                                     <option value="joint_venture">Joint Venture</option>
                                                 </Form.Select>
+                                                {companyDetailErrors?.company_type && <p className="error-message">{companyDetailErrors.company_type?.message}</p>}
+                                            </Form.Group>
+                                        </Col>
+                                        <Col md={6}>    
+                                            <Form.Group className="mb-3">
+                                                <Form.Label className="common-label">Company Address*</Form.Label>
+                                                <Form.Control  {...registerCompanyDetails("company_address",{required:"Company address is required"})} type="text" placeholder="Company Address" className="common-field" />
+                                                {companyDetailErrors?.company_address && <p className="error-message">{companyDetailErrors.company_address?.message}</p>}
+
                                             </Form.Group>
                                         </Col>
                                         <Col md={6}>
                                             <Form.Group className="mb-3">
-                                                <Form.Label className="common-label">Company Address</Form.Label>
-                                                <Form.Control type="text" placeholder="Company Address" className="common-field" />
-                                            </Form.Group>
-                                        </Col>
-                                        <Col md={6}>
-                                            <Form.Group className="mb-3">
-                                                <Form.Label className="common-label">Tax ID</Form.Label>
-                                                <Form.Control type="text" placeholder="Tax Id" className="common-field" />
+                                                <Form.Label className="common-label">Tax ID*</Form.Label>
+                                                <Form.Control  {...registerCompanyDetails("company_tax_id",{required:"Company tax id is required"})} type="text" placeholder="Tax Id" className="common-field" />
+                                                {companyDetailErrors?.company_tax_id && <p className="error-message">{companyDetailErrors.company_tax_id?.message}</p>}
                                             </Form.Group>
                                         </Col>
                                         <Col md={12}>
                                             <div className="text-center">
-
                                                 <RexettButton
                                                     type="submit"
                                                     text={t("updateProfile")}
@@ -360,13 +420,13 @@ const EditProfile = () => {
                                             </div>
                                         </Col>
                                     </Row>
-                                </Form>
+                                </form>
                             </div>
                         </Tab.Pane>
                     </Tab.Content>
                 </Tab.Container>
             </section>
-            <ConfirmationModal show={showModal} handleClose={handleJobStatusModal} onClick={handleAction} smallLoader={smallLoader} text={"Are you sure, you want to disable your account"} />
+            <ConfirmationModal show={showModal} handleClose={handleJobStatusModal} onClick={handleAction} approvedLoader={approvedLoader} text={"Are you sure, you want to disable your account"} />
             {/* <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} /> */}
         </>
     )

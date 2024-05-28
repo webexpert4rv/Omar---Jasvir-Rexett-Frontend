@@ -11,7 +11,7 @@ const SingleExperienceCard = ({
     return formattedDate;
   };
   return (
-    <>
+    <div className = {`${experienceData?.is_edited && "resume-edit"}`}>
       <h5>{companyName}</h5>
       <p>{totalExperience}</p>
       <div>
@@ -39,7 +39,7 @@ const SingleExperienceCard = ({
             )
           )}
       </div>
-    </>
+    </div>
   );
 };
 
