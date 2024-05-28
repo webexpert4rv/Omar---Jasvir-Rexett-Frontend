@@ -208,7 +208,7 @@ export function getCompanyDetails(payload, callback) {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get("client/get-profile");
-        dispatch(setCompanyDetails(result.data));
+        // dispatch(setCompanyDetails(result.data));
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -681,7 +681,7 @@ export function getEnableDisableAccount(payload,callback) {
         ...payload,
       });
       if(result.status === 200) {
-        dispatch(closeApprovedLoader());
+        // dispatch(closeApprovedLoader());
         callback();
       }
     } catch (error) {
