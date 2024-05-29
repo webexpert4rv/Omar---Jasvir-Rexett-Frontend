@@ -20,6 +20,7 @@ import {
   getAllJobPostedList,
   getDeleteJob,
   getJobCategoryList,
+  getSuggestedDeveloper,
   publishedPost,
   singleJobPostData,
 } from "../../redux/slices/clientDataSlice";
@@ -32,6 +33,7 @@ import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { FaTrashCan } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
+import RexettButton from "../../components/atomic/RexettButton";
 
 const SingleJob = () => {
   const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -46,6 +48,8 @@ const SingleJob = () => {
   const navigate = useNavigate();
   const location = useLocation();
   let id = location.pathname.split("/")[2];
+  const clientId = localStorage.getItem("userId")
+  console.log(clientId,"clientid")
   const {
     allJobPostedList,
     jobCategoryList,
@@ -104,7 +108,6 @@ const SingleJob = () => {
       }
     };
     const handleJobStatusAction = (e, data) => {
-      console.log("jkk");
       e.preventDefault();
       if (data.status == "ended") {
         dispatch(
@@ -179,7 +182,6 @@ const SingleJob = () => {
       setCurrnetTabsStatus("application");
     }
   };
-  console.log(singleJobDescription, "singleJobDescription");
   const handleJobStatusAction = (e, data) => {
     e.preventDefault();
     if (data.status == "ended") {
@@ -287,6 +289,17 @@ const SingleJob = () => {
         return;
     }
   };
+
+  const handleSuggestions=()=>{
+    let payload={
+      clientId : clientId,
+      jobId : id,
+      message : "Suggest Developer"
+    }
+    console.log(payload,"payload")
+    dispatch(getSuggestedDeveloper(payload))
+
+  }
 
   return (
     <>
@@ -411,8 +424,9 @@ const SingleJob = () => {
                 <Col md="4">
                   <h3 className="req-heading">{t("experienceRequirements")}</h3>
                   <p className="req-text">
-                    {singleJobDescription?.experience?.split("_").join(" ") ||
-                      "Not Mentioned"}
+                    {/* {singleJobDescription?.experience?.split("_").join(" ") ||
+                      "Not Mentioned"} */}
+                   {location?.state?.workExperienceyears ? `${location?.state?.workExperienceyears} years` :"Not Mentioned"}
                   </p>
                 </Col>
                 <Col md="4">
@@ -488,9 +502,13 @@ const SingleJob = () => {
           </section>
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
-          {/* <div className="text-end">
-            <Button className="main-btn px-4 py-2 font-14">Make Suggestion Request</Button>
-          </div> */}
+          <div className="text-end">
+            <RexettButton className="main-btn px-4 py-2 font-14" 
+            text = "Make Suggestion Request"
+            isLoading={smallLoader} 
+            disabled={smallLoader} 
+            onClick = {()=>handleSuggestions()}/>
+          </div>
           <JobCard
             handleJobStatusModal={handleJobStatusModal}
             type="Suggested"

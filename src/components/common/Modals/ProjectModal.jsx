@@ -157,7 +157,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
       };
       console.log(payload, "payload");
       dispatch(
-        addProjects(payload, () => {
+        addProjects(payload, role ,() => {
           if (role == "developer") {
             dispatch(fetchDeveloperCv());
           } else {
