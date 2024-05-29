@@ -10,15 +10,19 @@ import { getSkillList } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 import { BsCloudLightning } from "react-icons/bs";
 import { Editor } from "@tinymce/tinymce-react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const MAX_CHARACTER_LIMIT = 10000;
 
 const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   const dispatch = useDispatch();
+  const quillRef = useRef(null);
   const [descriptionText, setDescriptionText] = useState("");
   const [skills, setSkills] = useState([]);
   const [text, setText] = useState("");
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
+  const MAX_LENGTH = 10000;
   useEffect(() => {
     dispatch(getSkillList());
   }, [dispatch]);
@@ -28,7 +32,29 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });
-  const editorRef = useRef(null);
+  const getPlainText = (string) => {
+    if(string){
+      const plainText =  string.replace(/(<([^>]+)>)/ig, '');
+      return plainText
+    } else {
+      return "";
+    }
+  }
+  const handleChange = (html, field) => {
+    const editor = quillRef?.current?.getEditor();
+    const plainText = getPlainText(html);
+
+    if (plainText.length <= MAX_LENGTH) {
+      field.onChange(html);
+    } else {
+      // Prevent further input
+      const currentLength = editor?.getLength();
+      if (currentLength > MAX_LENGTH + 1) {
+        editor.deleteText(MAX_LENGTH, currentLength);
+      }
+    }
+  };
+
   return (
     <div>
       {" "}
@@ -38,7 +64,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
             <Form.Group>
               <Form.Label>Description</Form.Label>
               <div id="custom-ck">
-                <Editor
+                {/* <Editor
                   {...register("description", {
                     required : "Description is required",
                   },
@@ -81,9 +107,94 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                       },
                     },
                   }}
+                /> */}
+                {/* <Controller
+                  name="description"
+                  rules={{required:"Description is required"}}
+                  control={control}
+                  render={({ field: { ref, ...field }  }) => (
+                    <CKEditor
+                      {...field}
+                      type=""
+                      editor={ClassicEditor}
+                      config={{
+                        // plugins: [ Paragraph, Bold, Italic, Essentials ],
+                        toolbar: {
+                          items: [
+                            "undo",
+                            "redo",
+                            "|",
+                            "heading",
+                            "|",
+                            "fontfamily",
+                            "fontsize",
+                            "fontColor",
+                            "fontBackgroundColor",
+                            "|",
+                            "bold",
+                            "italic",
+                            "strikethrough",
+                            "subscript",
+                            "superscript",
+                            "|",
+                            "link",
+                            "blockQuote",
+                            "|",
+                            "bulletedList",
+                            "numberedList",
+                            ,
+                            "outdent",
+                            "indent",
+                          ],
+                        },
+                      }}
+                      //   config={{
+                      //     ckfinder: {
+                      //       // Upload the images to the server using the CKFinder QuickUpload command
+                      //       // You have to change this address to your server that has the ckfinder php connector
+                      //       uploadUrl: "" //Enter your upload url
+                      //     }
+                      //   }}
+                      data={watch("description")}
+                      value={watch("description")}
+                      onChange={(event, editor) => {
+                        const value = editor.getData();
+                        field.onChange(value)
+                      }}
+                    />
+                  )}
+                /> */}
+                <Controller
+                  name="description"
+                
+                  control={control}
+                  rules={{required:"Description is required"}}
+                  render={({ field }) => (
+                    <ReactQuill
+                      {...field}
+                      ref={quillRef}
+                      value={watch("description")}
+                      theme="snow"
+                      onChange={(html) => {
+                        handleChange(html,field)
+                        // field.onChange(html);
+                        // setValue("description", html);
+                      }}
+                    />
+                  )}
                 />
+                {/* <ReactQuill
+                  {...register("description", {
+                    required: "Description is required",
+                  })}
+                  value={watch("description")}
+                  theme="snow"
+                  onChange={(html) => {
+                    setValue("description", html);
+                  }}
+                /> */}
 
-                <p className="text-end text-muted font-14 mt-1">{`${text?.length}/10,000`}</p>
+                <p className="text-end text-muted font-14 mt-1">{`${getPlainText(watch("description"))?.length ?getPlainText(watch("description")).length : 0}/10,000`}</p>
               </div>
               {errors?.description && (
                 <p className="error-message ">{errors.description?.message}</p>

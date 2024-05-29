@@ -132,23 +132,30 @@ const Members = () => {
     setShowModal(!showModal);
     setDetails((prevDetails) => ({
       ...prevDetails,
-      active: "active",
+      active: item?.status=="active"?"inactive":"active",
       id: item?.id,
     }));
+
   };
 
   const handleClose = () => {
     setShowModal(!showModal);
   };
 
-  const handleDeleteAction = (e) => {
+  const handleDeleteAction = async (e) => {
     e.preventDefault();
     let data = {
       user_id: details?.id,
       status: details?.active,
     };
     console.log(details,"dateails")
-    dispatch(getAccountDisableEnable(data));
+   await dispatch(getAccountDisableEnable(data));
+   let newData = {
+    page: page,
+  };
+  dispatch(allMemberList(newData));
+  setShowModal(false);
+
   };
 
   const handleStatus=(e)=>{
@@ -318,6 +325,7 @@ const Members = () => {
                                         class="form-check-input toggle-switch-custom"
                                         type="checkbox"
                                         role="switch"
+                                        checked={item?.status=="active"}
                                         onClick={(e) => handleToggle(e, item)}
                                       />
                                     </div>
@@ -561,7 +569,7 @@ const Members = () => {
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
-                                        checked
+                                        checked={item?.status=="active"}
                                       />
                                     </div>
                                   </OverlayTrigger>
@@ -795,7 +803,7 @@ const Members = () => {
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
-                                        checked
+                                        checked={item?.status=="active"}
                                       />
                                     </div>
                                   </OverlayTrigger>
@@ -924,7 +932,9 @@ const Members = () => {
           handleClose={handleClose}
           onClick={handleDeleteAction}
           header={"Delete Developer"}
-          text={"Are you sure ,you want to disable this account?"}
+          text={`Are you sure ,you want to ${details.active=="active"?"enable":"disable"} this account?`}
+          smallLoader={screenLoader}
+          
         />
       </div>
     </>

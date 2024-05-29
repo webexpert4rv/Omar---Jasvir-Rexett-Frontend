@@ -494,11 +494,13 @@ export function getAccountEnableDisable() {
     };
 }
 export function getAccountDisableEnable(payload) {
-    console.log(payload,"payload")
+
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.post(`/common/enable-disable-user`,{...payload})
+            dispatch(setSuccessAdminData())
+            toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
         } catch (error) {
             console.log(error,"errrrr")
         }
