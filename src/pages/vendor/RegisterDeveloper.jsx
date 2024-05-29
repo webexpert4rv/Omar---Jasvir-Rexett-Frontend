@@ -36,9 +36,11 @@ const RegisterDeveloper = () => {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
+  const [CvFile, setCVFile] = useState(null);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
   const [disbaleYear, setDisbaleYear] = useState([]);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [selectedCv, setSelectedCv] = useState(null);
+  const [selectedCvErr, setSelectedCvErr] = useState(null);
   const [disabledEndDates, setDisabledEndDates] = useState([]);
   const [skillCate, setSkillsCate] = useState([]);
   const { degreeList } = useSelector((state) => state.developerData);
@@ -167,6 +169,8 @@ const RegisterDeveloper = () => {
   const onSubmit = (data) => {
     let fileData = new FormData();
     fileData.append("file", file);
+    let fileCVData = new FormData();
+    fileCVData.append("file", CvFile);
     let formattedExpertise = [];
     formattedExpertise = data?.expertise?.map((val) => {
       return { skill: val?.skill?.label, experience: val?.experience };
@@ -182,15 +186,14 @@ const RegisterDeveloper = () => {
     formattedEducationField = EducationFieldCpy.map((curElem) => {
       return { ...curElem, degree_id: curElem.degree_id.value };
     });
-    let formData = {
-      ...data,
-      skills: formattedSkills,
-      expertise: formattedExpertise,
-      // profile_picture: url,
-      educations: formattedEducationField,
-    };
+  
     if (data) {
+      let resume;
       console.log(data, "formData");
+      // dispatch(
+      //   filePreassignedUrlGenerate(fileCVData, (url) => {
+      //     resume=url
+      //   }))
       dispatch(
         filePreassignedUrlGenerate(fileData, (url) => {
           let formData = {
@@ -198,7 +201,8 @@ const RegisterDeveloper = () => {
             skills: formattedSkills,
             expertise: formattedExpertise,
             profile_picture: url,
-            educations: formattedEducationField
+            educations: formattedEducationField,
+
           };
           dispatch(
             getAddNewDeveloper(formData, () => {
@@ -376,20 +380,15 @@ const RegisterDeveloper = () => {
 
 
   const handleUploadCv=(event)=>{
-    console.log(event,"event")
     const allowedTypes = ["application/pdf"];
     const file = event.target.files[0];
     if (file && allowedTypes.includes(file.type)) {
       setFileTypeError(false);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-      setFile(file);
+      setCVFile(file);
+      setSelectedCv(file.name)
+      setSelectedCvErr(null)
     } else {
-      setFileTypeError(true);
-      setSelectedImage(null);
+      setSelectedCvErr(true)
     }
 
   }
@@ -785,21 +784,17 @@ const RegisterDeveloper = () => {
                       {t("upload_cv")}
                     </Form.Label>
                   </Form.Group>
-                  {fileTypeError && <p style={{ color: 'red' }}>Please upload a valid PDF file.</p>}
+                  {selectedCvErr && <p style={{ color: 'red' }}>Please upload a valid PDF file.</p>}
+                  {selectedCv && (
+                    <div>
+                      {selectedCv}
+                    </div>
+                  )}
 
 
 
 
-                  {/* {fileTypeError ? (
-                    <p className="error-message">{t("invalid_file_type")}</p>
-                  ) : (
-                    errors?.upload_cv && (
-                      <p className="error-message">
-                        {" "}
-                        {errors?.upload_cv?.message}
-                      </p>
-                    )
-                  )} */}
+          
                 </Col>
               </Row>
             </div>
