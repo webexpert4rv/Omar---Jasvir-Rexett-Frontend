@@ -37,7 +37,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
       const plainText =  string.replace(/(<([^>]+)>)/ig, '');
       return plainText
     } else {
-      return 0;
+      return "";
     }
   }
   const handleChange = (html, field) => {
