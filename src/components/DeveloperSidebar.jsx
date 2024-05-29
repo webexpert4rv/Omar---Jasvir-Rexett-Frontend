@@ -84,9 +84,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                             <li className="sidebar-item">
                                 <NavLink to={'/leave-plan'} className="side-link" activeClassName="active"><GiPalmTree /> Apply Leave</NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/developer-public-holiday'} className="side-link" activeClassName="active"><GiPalmTree /> Public Holiday</NavLink>
-                            </li>
+                            </li> */}
                             <li className="sidebar-item">
                                 <NavLink
                                     to={"/developer-invoice"}

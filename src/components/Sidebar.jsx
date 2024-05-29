@@ -60,9 +60,9 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                             {/* <li className="sidebar-item">
                                 <NavLink to={'/job-post'} className="side-link" activeClassName="active"><IoBriefcase /> Job Post</NavLink>
                             </li> */}
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/public-holiday'} className="side-link" activeClassName="active"><GiPalmTree />Public Holiday</NavLink>
-                            </li>
+                            </li> */}
                             <li className="sidebar-item">
                                 <NavLink to={'/job-posted'} className="side-link" activeClassName="active"><FaListUl /> {t("jobs")}</NavLink>
                             </li>
