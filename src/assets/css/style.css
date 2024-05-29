@@ -5006,6 +5006,20 @@ input[type="radio"]:checked {
 {
     animation: upShow .2s linear forwards;
 }
+.overview-card .developer-card .user-imgbx
+{
+    width: 60px;
+    height: 60px;
+}
+.overview-card .developer-card .user-name
+{
+    font-size: 16px;
+    font-weight: 600;
+}
+.overview-card .developer-card .email-user
+{
+    font-size: 14px;
+}
 @keyframes upShow
 {
     0%

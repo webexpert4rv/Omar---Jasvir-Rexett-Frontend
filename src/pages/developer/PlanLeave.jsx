@@ -6,6 +6,7 @@ import { MdModeEditOutline } from "react-icons/md";
 import companyLogo from "../../assets/img/amazon.png";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import Calendar from 'react-calendar';
 import {
   applyLeave,
   getAllContracts,
@@ -22,6 +23,8 @@ import RejectModal from "../views/Modals/EndJob";
 import ToolTip from "../../components/common/Tooltip/ToolTip";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
+import { TiEdit } from "react-icons/ti";
 
 const LeavePlan = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -121,267 +124,401 @@ const LeavePlan = () => {
     reset();
   };
 
+  const [value, onChange] = useState(new Date());
+  // Define the dates you want to mark
+  const markedDates = [
+    new Date(2024, 4, 1),
+    new Date(2024, 4, 8),
+    new Date(2024, 4, 11),
+    new Date(2024, 4, 14),
+    new Date(2024, 4, 23),
+    new Date(2024, 4, 31),
+  ];
+
+  // Function to add custom content to tile
+  const tileContent = ({ date, view }) => {
+    if (view === 'month' && markedDates.find(d => d.toDateString() === date.toDateString())) {
+      return <div className="dot"></div>;
+    }
+    return null;
+  };
+
   return (
     <>
       {screenLoader ? (
         <ScreenLoader />
       ) : (
-        <Tab.Container
-          id="left-tabs-example"
-          defaultActiveKey="first"
-          onSelect={handleSelect}
-        >
+        <Tab.Container defaultActiveKey="plan-leave">
           <Nav variant="pills" className="mb-4 application-pills">
             <Nav.Item className="application-item">
-              <Nav.Link className="application-link" eventKey="first">
-                Apply Leave
+              <Nav.Link className="application-link" eventKey="plan-leave">
+                Plan Leave
               </Nav.Link>
             </Nav.Item>
             <Nav.Item className="application-item">
-              <Nav.Link className="application-link" eventKey="second">
-                Leave History
+              <Nav.Link className="application-link" eventKey="public-holiday">
+                Public Holiday
               </Nav.Link>
             </Nav.Item>
           </Nav>
-
           <Tab.Content>
-            <Tab.Pane eventKey="first">
-              <div className="card-box mb-4">
-                <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
-                {/* <p className="text-muted font-14 mb-0">No Leave Applied</p> */}
-                <Row>
-                  {leaveDetails.length > 0 ? (
-                    leaveDetails?.map((field, idx) => (
-                      <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
-                        <div className="leave-wrapper-box">
-                          <div>
-                            <h4 className="project-heading">{}</h4>
-                            <h4 className="leave-type-heading">
-                              {generateLeave(field?.type)}
-                            </h4>
-                            <div>
-                              <p className="leave-date">
-                                {" "}
-                                {moment(field?.start_date).format(
-                                  "MM-DD-YYYY"
-                                )}{" "}
-                                to{" "}
-                                {moment(field?.end_date).format("MM-DD-YYYY")}
-                              </p>
-                            </div>
-                            <p className="status-finished mb-0">
-                              {field?.approval_status}
-                            </p>
-                          </div>
-                          <div className="d-flex gap-3">
-                            <ToolTip text="Cancel Leave">
-                              <Button
-                                className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
-                                onClick={() => handleCancelLeave(field?.id)}
-                              >
-                                <IoClose />
-                              </Button>
-                            </ToolTip>
-                            <ToolTip text="Edit Leave">
-                              <Button
-                                className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
-                                onClick={() => handleEditLeave(field?.id)}
-                              >
-                                <MdModeEditOutline />
-                              </Button>
-                            </ToolTip>
-                          </div>
+            <Tab.Pane eventKey="plan-leave">
+              <Tab.Container
+                id="left-tabs-example"
+                defaultActiveKey="first"
+                onSelect={handleSelect}
+              >
+                <Nav variant="pills" className="mb-4 application-pills">
+                  <Nav.Item className="application-item">
+                    <Nav.Link className="application-link" eventKey="first">
+                      Apply Leave
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item className="application-item">
+                    <Nav.Link className="application-link" eventKey="second">
+                      Leave History
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+
+                <Tab.Content>
+                  <Tab.Pane eventKey="first">
+                    <div className="card-box mb-4">
+                      <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
+                      {/* <p className="text-muted font-14 mb-0">No Leave Applied</p> */}
+                      <Row>
+                        {leaveDetails.length > 0 ? (
+                          leaveDetails?.map((field, idx) => (
+                            <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
+                              <div className="leave-wrapper-box">
+                                <div>
+                                  <h4 className="project-heading">{ }</h4>
+                                  <h4 className="leave-type-heading">
+                                    {generateLeave(field?.type)}
+                                  </h4>
+                                  <div>
+                                    <p className="leave-date">
+                                      {" "}
+                                      {moment(field?.start_date).format(
+                                        "MM-DD-YYYY"
+                                      )}{" "}
+                                      to{" "}
+                                      {moment(field?.end_date).format("MM-DD-YYYY")}
+                                    </p>
+                                  </div>
+                                  <p className="status-finished mb-0">
+                                    {field?.approval_status}
+                                  </p>
+                                </div>
+                                <div className="d-flex gap-3">
+                                  <ToolTip text="Cancel Leave">
+                                    <Button
+                                      className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
+                                      onClick={() => handleCancelLeave(field?.id)}
+                                    >
+                                      <IoClose />
+                                    </Button>
+                                  </ToolTip>
+                                  <ToolTip text="Edit Leave">
+                                    <Button
+                                      className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
+                                      onClick={() => handleEditLeave(field?.id)}
+                                    >
+                                      <MdModeEditOutline />
+                                    </Button>
+                                  </ToolTip>
+                                </div>
+                              </div>
+                            </Col>
+                          ))
+                        ) : (
+                          <NoDataFound />
+                        )}
+                      </Row>
+                    </div>
+                    <Row className="gx-4">
+                      <Col lg={7}>
+                        <div className="leave-calendar h-100">
+                          <DateRangePicker
+                            ranges={[selectionRange]}
+                            onChange={handleRange}
+                            minDate={today}
+                          />
                         </div>
                       </Col>
-                    ))
-                  ) : (
-                    <NoDataFound />
-                  )}
-                </Row>
-              </div>
-              <Row className="gx-4">
-                <Col lg={7}>
-                  <div className="leave-calendar h-100">
-                    <DateRangePicker
-                      ranges={[selectionRange]}
-                      onChange={handleRange}
-                      minDate={today}
-                    />
-                  </div>
-                </Col>
-                <Col lg={5}>
-                  <div className="plan-leave-wrapper">
-                    <h3 className="section-head border-0 mb-3">Apply Leave</h3>
-                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                      <div className="mb-4">
-                        <Form.Label className="mb-2 font-14">
-                          Select Client
-                        </Form.Label>
-                        <div className="d-flex gap-3">
-                          <div>
-                            <Form.Select
-                              className="common-field font-14 mb-4"
-                              {...register("client_name", {
-                                required: t("leaveRequired"),
-                              })}
-                            >
-                              <option value="" selected>
-                                Select client
-                              </option>
-                              {allContracts.map((item, idx) => (
-                                <option key={idx} value={item.id}>
-                                  {item.client?.name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mb-4">
-                        <Form.Label className="mb-2 font-14">
-                          Leave Type
-                        </Form.Label>
-                        <div className="d-flex gap-3">
-                          <div>
-                            <Form.Select
-                              className="common-field  font-10 mb-4"
-                              {...register("leave_type", {
-                                required: t("leaveRequired"),
-                              })}
-                            >
-                              <option value="" selected>
-                                Select leave type
-                              </option>
-                              {LEAVE_TYPE.map((item, idx) => (
-                                <option key={idx} value={item?.value}>
-                                  {item?.key}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mb-4">
-                        <Form.Label className="mb-2 font-14">Reason</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows="3"
-                          className="common-field font-14"
-                          placeholder="Enter Reason"
-                          {...register("reason", {
-                            required: {
-                              value: true,
-                              message: `${t("reasonRequired")}`,
-                            },
-                          })}
-                        />
-                      </div>
-                      <div className="text-center">
-                        <RexettButton
-                          type="submit"
-                          text={t("Submit")}
-                          className="main-btn font-14 px-4 py-2"
-                          variant="transparent"
-                          // isLoading={smallLoader}
-                        />
-                      </div>
-                    </form>
-                  </div>
-                </Col>
-              </Row>
-            </Tab.Pane>
-            <Tab.Pane eventKey="second">
-              <div className="table-responsive">
-                <table className="table time-table table-bordered table-ui-custom">
-                  <thead>
-                    <th className="time-table-head text-start">Leave Type</th>
-                    <th className="time-table-head text-start">Leave Date</th>
-                    <th className="time-table-head text-start">Reason</th>
-                    <th className="time-table-head text-start">Project</th>
-                    <th className="time-table-head text-start">Client Name</th>
-                    <th className="time-table-head text-start">Leave Status</th>
-                  </thead>
-                  <tbody>
-                    {leaveDetails?.map((item, idx) => (
-                      <>
-                        <tr>
-                          <td className="time-table-data text-start">
-                            <h4 className="leave-type-heading mb-0 white-nowrap">
-                              {generateLeave(item?.type)}
-                            </h4>
-                          </td>
-                          <td className="time-table-data text-start">
-                            <p className="leave-date white-nowrap">
-                              {moment(item.start_date).format("MM-DD-YYYY")} to{" "}
-                              {moment(item.end_date).format("MM-DD-YYYY")}
-                            </p>
-                          </td>
-                          <td className="time-table-data text-start reason-data">
-                            <p className="font-14 mb-0">
-                              {item.reason_for_leave}
-                            </p>
-                          </td>
-                          <td className="time-table-data text-start white-nowrap">
-                            AI Bot Project
-                          </td>
-                          <td className="time-table-data text-start">
-                            <div className="d-flex align-items-center gap-2">
-                              {/* <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                <img src={companyLogo} className="user-img" />
-                              </div> */}
-                              {item?.contract?.client?.name}
+                      <Col lg={5}>
+                        <div className="plan-leave-wrapper">
+                          <h3 className="section-head border-0 mb-3">Apply Leave</h3>
+                          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                            <div className="mb-4">
+                              <Form.Label className="mb-2 font-14">
+                                Select Client
+                              </Form.Label>
+                              <div className="d-flex gap-3">
+                                <div>
+                                  <Form.Select
+                                    className="common-field font-14 mb-4"
+                                    {...register("client_name", {
+                                      required: t("leaveRequired"),
+                                    })}
+                                  >
+                                    <option value="" selected>
+                                      Select client
+                                    </option>
+                                    {allContracts.map((item, idx) => (
+                                      <option key={idx} value={item.id}>
+                                        {item.client?.name}
+                                      </option>
+                                    ))}
+                                  </Form.Select>
+                                </div>
+                              </div>
                             </div>
-                          </td>
-                          <td className="time-table-data text-start">
-                            <span className="status-progress">
-                              {item.approval_status}
-                            </span>
-                          </td>
-                        </tr>
-                      </>
-                    ))}
-                  </tbody>
-                </table>
+                            <div className="mb-4">
+                              <Form.Label className="mb-2 font-14">
+                                Leave Type
+                              </Form.Label>
+                              <div className="d-flex gap-3">
+                                <div>
+                                  <Form.Select
+                                    className="common-field  font-10 mb-4"
+                                    {...register("leave_type", {
+                                      required: t("leaveRequired"),
+                                    })}
+                                  >
+                                    <option value="" selected>
+                                      Select leave type
+                                    </option>
+                                    {LEAVE_TYPE.map((item, idx) => (
+                                      <option key={idx} value={item?.value}>
+                                        {item?.key}
+                                      </option>
+                                    ))}
+                                  </Form.Select>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="mb-4">
+                              <Form.Label className="mb-2 font-14">Reason</Form.Label>
+                              <Form.Control
+                                as="textarea"
+                                rows="3"
+                                className="common-field font-14"
+                                placeholder="Enter Reason"
+                                {...register("reason", {
+                                  required: {
+                                    value: true,
+                                    message: `${t("reasonRequired")}`,
+                                  },
+                                })}
+                              />
+                            </div>
+                            <div className="text-center">
+                              <RexettButton
+                                type="submit"
+                                text={t("Submit")}
+                                className="main-btn font-14 px-4 py-2"
+                                variant="transparent"
+                              // isLoading={smallLoader}
+                              />
+                            </div>
+                          </form>
+                        </div>
+                      </Col>
+                    </Row>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="second">
+                    <div className="table-responsive">
+                      <table className="table time-table table-bordered table-ui-custom">
+                        <thead>
+                          <th className="time-table-head text-start">Leave Type</th>
+                          <th className="time-table-head text-start">Leave Date</th>
+                          <th className="time-table-head text-start">Reason</th>
+                          <th className="time-table-head text-start">Project</th>
+                          <th className="time-table-head text-start">Client Name</th>
+                          <th className="time-table-head text-start">Leave Status</th>
+                        </thead>
+                        <tbody>
+                          {leaveDetails?.map((item, idx) => (
+                            <>
+                              <tr>
+                                <td className="time-table-data text-start">
+                                  <h4 className="leave-type-heading mb-0 white-nowrap">
+                                    {generateLeave(item?.type)}
+                                  </h4>
+                                </td>
+                                <td className="time-table-data text-start">
+                                  <p className="leave-date white-nowrap">
+                                    {moment(item.start_date).format("MM-DD-YYYY")} to{" "}
+                                    {moment(item.end_date).format("MM-DD-YYYY")}
+                                  </p>
+                                </td>
+                                <td className="time-table-data text-start reason-data">
+                                  <p className="font-14 mb-0">
+                                    {item.reason_for_leave}
+                                  </p>
+                                </td>
+                                <td className="time-table-data text-start white-nowrap">
+                                  AI Bot Project
+                                </td>
+                                <td className="time-table-data text-start">
+                                  <div className="d-flex align-items-center gap-2">
+                                    {/* <div className="user-imgbx application-imgbx mx-0 mb-0">
+                                        <img src={companyLogo} className="user-img" />
+                                      </div> */}
+                                    {item?.contract?.client?.name}
+                                  </div>
+                                </td>
+                                <td className="time-table-data text-start">
+                                  <span className="status-progress">
+                                    {item.approval_status}
+                                  </span>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Tab.Pane>
+                </Tab.Content>
+              </Tab.Container>
+
+              <div className="helper-text-section">
+                <h3>Guiding You Through: Helpful Text to Apply Leaves</h3>
+                <ol className="ps-3 mb-0">
+                  <li className="mb-2">
+                    <p>
+                      Admin can effortlessly review daily time sheets and promptly raise
+                      invoices for clients. Click on any client's name in the table
+                      above to delve deeper into their project and time reporting
+                      details. Gain insights and manage project progress with precision.
+                      Also you can raise invoice for clients and track the invoices for
+                      Devs , Vendors and Clients.
+                    </p>
+                  </li>
+                  <li className="mb-2">
+                    <p>
+                      Admin can effortlessly review daily time sheets and promptly raise
+                      invoices for clients. Click on any client's name in the table
+                      above to delve deeper into their project and time reporting
+                      details. Gain insights and manage project progress with precision.
+                      Also you can raise invoice for clients and track the invoices for
+                      Devs , Vendors and Clients.
+                    </p>
+                  </li>
+                  <li className="mb-0">
+                    <p>
+                      Admin can effortlessly review daily time sheets and promptly raise
+                      invoices for clients. Click on any client's name in the table
+                      above to delve deeper into their project and time reporting
+                      details. Gain insights and manage project progress with precision.
+                      Also you can raise invoice for clients and track the invoices for
+                      Devs , Vendors and Clients.
+                    </p>
+                  </li>
+                </ol>
               </div>
+            </Tab.Pane>
+            <Tab.Pane eventKey="public-holiday">
+              <section className="">
+                <div className="calendar-container card-box">
+                  <Row>
+                    <Col md={7}>
+                      <Calendar onChange={onChange} value={value} tileContent={tileContent} />
+                    </Col>
+                    <Col md={5}>
+                      <div className="holiday-listing px-0 pt-4">
+                        <div className="d-flex justify-content-between align-items-center px-3 mb-3">
+                          <h3 className="mb-0">List of holidays</h3>
+                          <Form.Select className="common-field w-auto font-14 py-2">
+                            <option>This Month</option>
+                            <option>This Year</option>
+                            <option>Created</option>
+                          </Form.Select>
+                        </div>
+                        <div className="event-container">
+                          <div className="event-wrapper">
+                            <div className="event-info">
+                              <div className="holiday-date">
+                                <span className="eventdate-text">01 MAY<br /><span className="year-text">2024</span></span>
+                              </div>
+                              <div>
+                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="event-wrapper">
+                            <div className="event-info">
+                              <div className="holiday-date">
+                                <span className="eventdate-text">08 MAY<br /><span className="year-text">2024</span></span>
+                              </div>
+                              <div>
+                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="event-wrapper">
+                            <div className="event-info">
+                              <div className="holiday-date">
+                                <span className="eventdate-text">08 MAY<br /><span className="year-text">2024</span></span>
+                              </div>
+                              <div>
+                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="event-wrapper">
+                            <div className="event-info">
+                              <div className="holiday-date">
+                                <span className="eventdate-text">11 MAY<br /><span className="year-text">2024</span></span>
+                              </div>
+                              <div>
+                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="event-wrapper">
+                            <div className="event-info">
+                              <div className="holiday-date">
+                                <span className="eventdate-text">14 MAY<br /><span className="year-text">2024</span></span>
+                              </div>
+                              <div>
+                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="event-wrapper">
+                            <div className="event-info">
+                              <div className="holiday-date">
+                                <span className="eventdate-text">23 MAY<br /><span className="year-text">2024</span></span>
+                              </div>
+                              <div>
+                                <h4 className="event-name mb-0">Buddha Purnima</h4>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="event-wrapper">
+                            <div className="event-info">
+                              <div className="holiday-date">
+                                <span className="eventdate-text">31 MAY<br /><span className="year-text">2024</span></span>
+                              </div>
+                              <div className="d-flex align-items-center gap-2">
+                                <h4 className="event-name mb-0">Urgent Work</h4>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </section>
             </Tab.Pane>
           </Tab.Content>
+
         </Tab.Container>
       )}
-      <div className="helper-text-section">
-        <h3>Guiding You Through: Helpful Text to Apply Leaves</h3>
-        <ol className="ps-3 mb-0">
-          <li className="mb-2">
-            <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
-            </p>
-          </li>
-          <li className="mb-2">
-            <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
-            </p>
-          </li>
-          <li className="mb-0">
-            <p>
-              Admin can effortlessly review daily time sheets and promptly raise
-              invoices for clients. Click on any client's name in the table
-              above to delve deeper into their project and time reporting
-              details. Gain insights and manage project progress with precision.
-              Also you can raise invoice for clients and track the invoices for
-              Devs , Vendors and Clients.
-            </p>
-          </li>
-        </ol>
-      </div>
     </>
   );
 };
