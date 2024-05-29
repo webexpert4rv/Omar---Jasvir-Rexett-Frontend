@@ -166,7 +166,6 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                 /> */}
                 <Controller
                   name="description"
-                
                   control={control}
                   rules={{required:"Description is required"}}
                   render={({ field }) => (
@@ -176,23 +175,13 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                       value={watch("description")}
                       theme="snow"
                       onChange={(html) => {
-                        handleChange(html,field)
+                        handleChange(html,field);
                         // field.onChange(html);
                         // setValue("description", html);
                       }}
                     />
                   )}
                 />
-                {/* <ReactQuill
-                  {...register("description", {
-                    required: "Description is required",
-                  })}
-                  value={watch("description")}
-                  theme="snow"
-                  onChange={(html) => {
-                    setValue("description", html);
-                  }}
-                /> */}
 
                 <p className="text-end text-muted font-14 mt-1">{`${getPlainText(watch("description"))?.length ?getPlainText(watch("description")).length : 0}/10,000`}</p>
               </div>

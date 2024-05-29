@@ -52,9 +52,9 @@ const AdminJobListing = () => {
                     <Tab eventKey="all" title={t("all")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} screenLoader={screenLoader} />
                     </Tab>
-                    <Tab eventKey="need_suggest" title="Need to Suggest">
+                    {/* <Tab eventKey="need_suggest" title="Need to Suggest">
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
-                    </Tab>
+                    </Tab> */}
                     <Tab eventKey="new" title={t("newJobPosts")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
