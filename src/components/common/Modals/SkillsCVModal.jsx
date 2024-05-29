@@ -90,7 +90,7 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
             <Row>
               <Col md="12">
                 <Form.Group className="mb-4">
-                  {/* <CreatableSelect
+                  <CreatableSelect
                     isMulti
                     isClearable
                     name={selectedOption}
@@ -100,17 +100,6 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
                     onCreateOption={onChangeSelect}
                     options={skillCate}
                     value={selectedOption}
-                  /> */}
-                  <Select
-                   value={selectedOption}
-                    isMulti
-                    isClearable
-                    onChange={(newValue) => {
-                      setSelectedOption(newValue);
-                    }}
-                    options={skillCate}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
                   />
                 </Form.Group>
               </Col>
