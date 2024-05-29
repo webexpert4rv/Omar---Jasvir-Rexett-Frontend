@@ -11,42 +11,58 @@ const SCREENING_OPTIONS = [
     label: "Onsite Work",
     title: "",
     question: "Are you comfortable working in an onsite setting?",
+    // inputType: "",
+    ideal_answer:"Yes",
+    uniqueId:"1"
   },
   {
     label: "Education",
     question_type: "Degree",
     title: "",
     question: "Have you completed the following level of education: [Degree]",
+    ideal_answer:"Yes",
+    uniqueId:"2"
+
   },
   {
     label: "Language",
     title: "",
     question_type: "language",
     question: "What is your level of proficiency in [Language]?",
+    uniqueId:"3"
   },
   {
-    label: "Work Experience", 
-    title: "",                                                
-    question_type: "Years",
+    label: "Work Experience",
+    title: "",
+    question_type: "",
     question: "How many years of experience do you currently have?",
+    uniqueId:"4"
   },
   {
     label: "Location",
     title: "",
     question_type: "",
+    ideal_answer:"Yes",
     question: "Are you comfortable commuting to this job's location?",
+    uniqueId:"5"
+
   },
   {
     label: "Remote Work",
     title: "",
     question_type: "",
     question: "Are you comfortable working in a remote setting?",
+    ideal_answer:"Yes",
+    uniqueId:"6"
+
   },
   {
     label: "Expertise with Skill",
-    title: "",
+    title:"",
     question_type: "Skill",
     question: "Have many years of work experience do you have with [Skill]?",
+    uniqueId:"7"
+
   },
 ];
 
@@ -60,15 +76,16 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
     append({
       question_type: opt.question_type,
       question: opt.question,
-      title: "",
-      ideal_answer: "",
+      title: opt?.title,
+      ideal_answer: opt?.ideal_answer ? opt.ideal_answer :"",
       must_have: false,
+      alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
     });
   };
-  const isFieldAlreadyAdded = (fieldquestion_type) => {
+  const isFieldAlreadyAdded = (idx) => {
     const screeningQuestions = watch("screening_questions");
     const index = screeningQuestions?.findIndex(
-      (curElem) => curElem.question_type === fieldquestion_type
+      (curElem,index) => index === idx
     );
     if (index !== -1) {
       return true;
@@ -76,7 +93,6 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
       return false;
     }
   };
-  console.log(watch("qualification_filter_out"), "filter out value");
   return (
     <div>
       {" "}
@@ -89,6 +105,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
           <div key={field.id} className="screening-wrapper mb-4">
             <div className="d-flex justify-content-between align-items-center screen-wrapper-heading">
               <h3 className="mb-0">{field.question}</h3>
+              {field?.isRecommended && "Recommended"}
               <Button
                 variant="transparent"
                 className="border-0 p-0"
@@ -97,7 +114,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                 <IoClose />
               </Button>
             </div>
-            <Row className="align-items-end screening-grid">  
+            <Row className="align-items-end screening-grid">
               <Col md="4" className="mb-md-0 mb-4">
                 <Form.Group>
                   {field?.question_type && (
@@ -125,14 +142,53 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
               <Col md="4" className="mb-md-0 mb-4">
                 <Form.Group>
                   <Form.Label className="font-14">Ideal answer</Form.Label>
-                  <Form.Control
-                    type="text"
-                    {...register(`screening_questions.${idx}.ideal_answer`, {
-                      required: t("required_message"),
-                    })}
-                    className="common-field font-14"
-                    placeholder="Enter Answer"
-                  />
+                  {field?.ideal_answer === "Yes" ? (
+                     <Form.Control
+                     type="text"
+                     readOnly
+                     {...register(`screening_questions.${idx}.ideal_answer`, {
+                       required: t("required_message"),
+                     })}
+                     value="Yes"
+                     className="common-field font-14"
+                     placeholder="Enter Answer"
+                   />
+                  ) : field?.question_type === "language" ? (
+                    <>
+                    <Form.Select
+                      {...register(`screening_questions.${idx}.ideal_answer`, {
+                        required: t("required_message"),
+                      })}
+                    >
+                      <option selected value="conversational">
+                        Conversational
+                      </option>
+                      <option value="none">None</option>
+                      <option value="professional">Professional</option>
+                      <option value="nativeOrBilingual">
+                        Native or bilinguals
+                      </option>
+                    </Form.Select>
+                    </>
+                  ) : (
+                    <Form.Control
+                      type={(field?.question_type === "Years" || "Expertise with Skill") ? "number" :"text"}
+                      min={field?.question_type === "Years" ? 0 :null}
+                      {...register(`screening_questions.${idx}.ideal_answer`, {
+                        required: t("required_message"),
+                      })}
+                      className="common-field font-14"
+                      placeholder="Enter Answer"
+                    />
+                  )}
+                  {/* <Form.Control
+                      type="text"
+                      {...register(`screening_questions.${idx}.ideal_answer`, {
+                        required: t("required_message"),
+                      })}
+                      className="common-field font-14"
+                      placeholder="Enter Answer"
+                    /> */}
                 </Form.Group>
                 {errors?.screening_questions?.[idx]?.ideal_answer && (
                   <p className="error-message ">
@@ -152,7 +208,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                     label="Must have qualification"
                   />
                 </Form.Group>
-                {errors?.screening_questions?.[idx].must_have && (
+                {errors?.screening_questions?.[idx]?.must_have && (
                   <p className="error-message ">
                     {errors.screening_questions?.[idx]?.must_have?.message}
                   </p>
@@ -329,14 +385,14 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
               onClick={() => {
                 handleAddField(curElem);
               }}
-              disabled={isFieldAlreadyAdded(curElem?.question_type)}
+              disabled={isFieldAlreadyAdded(curElem?.title)}
               // disabled={() => {
               //   isFieldAlreadyAdded(curElem?.title);
               // }}
               variant="transparent"
               className="outline-main-btn px-4 py-2 d-inline-block me-1 mb-1 rounded-full cursor-pointer"
             >
-              {isFieldAlreadyAdded(curElem?.question_type) ? (
+              {isFieldAlreadyAdded(idx) ? (
                 <FiCheck />
               ) : (
                 <FiPlus />

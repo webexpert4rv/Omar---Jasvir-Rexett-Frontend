@@ -359,11 +359,7 @@
         "checkIn" : "Checka in",
         "totalHiredDevelopers": "Totalt anställda utvecklare",
         "totalProjects": "Totalt antal projekt",
-        "totalIndivisualDev": "Totalt antal individuella utvecklare"
-
-
-
-
-
+        "totalIndivisualDev": "Totalt antal individuella utvecklare",
+        "screeningQuestions":"Screeningsfrågor"
         }
 }

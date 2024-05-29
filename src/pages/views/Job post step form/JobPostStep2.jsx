@@ -41,14 +41,14 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
     }
   }
   const handleChange = (html, field) => {
-    const editor = quillRef.current.getEditor();
+    const editor = quillRef?.current?.getEditor();
     const plainText = getPlainText(html);
 
     if (plainText.length <= MAX_LENGTH) {
       field.onChange(html);
     } else {
       // Prevent further input
-      const currentLength = editor.getLength();
+      const currentLength = editor?.getLength();
       if (currentLength > MAX_LENGTH + 1) {
         editor.deleteText(MAX_LENGTH, currentLength);
       }
