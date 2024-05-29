@@ -274,9 +274,9 @@ export function getClientLeaveHistory(payload, callback) {
                
         } catch (error) {
           console.log(error,"error")
-            // const message = error.message || "Something went wrong";
-            // toast.error(message, { position: "top-center" })
-            // dispatch(setFailClientData())
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailClientData())
         }
     };
 }
