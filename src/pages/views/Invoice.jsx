@@ -262,16 +262,6 @@ const Invoice = () => {
               </div>
               <div>
                 <Form.Select className="time-filter-select shadow-none">
-                  <option>Select Project</option>
-                  <option>Figma to UI</option>
-                  <option>Figma to UI</option>
-                  <option>Figma to UI</option>
-                  <option>Figma to UI</option>
-                  <option>Figma to UI</option>
-                </Form.Select>
-              </div>
-              <div>
-                <Form.Select className="time-filter-select shadow-none">
                   <option>Select Developer</option>
                   <option>Rohit Sharma</option>
                 </Form.Select>

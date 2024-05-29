@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import sidebarLogo from '../assets/img/rexett-logo-white.png'
 import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
@@ -9,13 +9,21 @@ import { PiCoinsFill } from "react-icons/pi";
 import { FaFileInvoice } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { useTranslation } from "react-i18next";
+import { FaQuestion } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { Button } from "react-bootstrap";
 
 const VendorSidebar = ({ sideBarActive }) => {
     const { t } = useTranslation()
     const logout=()=>{
         localStorage.clear()
          window.location.href="/vendor-login"
+     }
+     const [floatingShow, setFloatingShow] = useState(false);
+     const handleFloating = () => {
+         setFloatingShow(!floatingShow);
      }
     return(
         <>
@@ -33,9 +41,9 @@ const VendorSidebar = ({ sideBarActive }) => {
                             <li className="sidebar-item">
                                 <NavLink to={"/vendor-documents"} className="side-link" activeClassName="active"><IoDocuments /> {t("documents")}</NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/vendor-revenue'} className="side-link" activeClassName="active"><PiCoinsFill /> {t("revenue")}</NavLink>
-                            </li>
+                            </li> */}
                             <li className="sidebar-item">
                                 <NavLink to={'/vendor-upload-invoice'} className="side-link" activeClassName="active"><FaFileInvoice /> Invoice</NavLink>
                             </li>
@@ -48,12 +56,28 @@ const VendorSidebar = ({ sideBarActive }) => {
                         <div>
                             <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
+                        {/*<div>
+                            <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" className="bottom-link" activeClassName="active"><TfiHeadphoneAlt /> Contact Support</NavLink>
+                        </div>
                         <div>
                             <NavLink to={"/vendor-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("FAQ")}</NavLink>
-                        </div>
+                        </div>*/}
                     </div>
                 </div>
             </aside>
+            <div className={ floatingShow ? "floating-area active" : "floating-area"}>
+                <Button variant="transparent" className="floating-btn" onClick={handleFloating}>
+                    { floatingShow ? <FaTimes /> : <FaQuestion />}
+                </Button>
+                <div className="floating-options">
+                    <div className="mb-3">
+                        <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" activeClassName="active" className="text-decoration-none"><span className="icon-float"><TfiHeadphoneAlt /></span> <span className="float-text">Contact Support</span></NavLink>
+                    </div>
+                    <div>
+                        <NavLink to={"/vendor-faq"} activeClassName="active" className="text-decoration-none"><span className="icon-float"><BsFillQuestionCircleFill /></span> <span className="float-text">{t("faq")}</span></NavLink>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
