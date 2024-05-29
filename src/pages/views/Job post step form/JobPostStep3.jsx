@@ -8,12 +8,10 @@ import { useTranslation } from "react-i18next";
 
 const SCREENING_OPTIONS = [
   {
-    label: "Onsite Work",
+    label: "Work Experience",
     title: "",
-    question: "Are you comfortable working in an onsite setting?",
-    // inputType: "",
-    ideal_answer:"Yes",
-    uniqueId:"1"
+    question_type: "",
+    question: "How many years of experience do you currently have?",
   },
   {
     label: "Education",
@@ -22,7 +20,6 @@ const SCREENING_OPTIONS = [
     question: "Have you completed the following level of education: [Degree]",
     ideal_answer:"Yes",
     uniqueId:"2"
-
   },
   {
     label: "Language",
@@ -31,20 +28,13 @@ const SCREENING_OPTIONS = [
     question: "What is your level of proficiency in [Language]?",
     uniqueId:"3"
   },
-  {
-    label: "Work Experience",
-    title: "",
-    question_type: "",
-    question: "How many years of experience do you currently have?",
-    uniqueId:"4"
-  },
+ 
   {
     label: "Location",
     title: "",
     question_type: "",
     ideal_answer:"Yes",
     question: "Are you comfortable commuting to this job's location?",
-    uniqueId:"5"
 
   },
   {
@@ -53,7 +43,6 @@ const SCREENING_OPTIONS = [
     question_type: "",
     question: "Are you comfortable working in a remote setting?",
     ideal_answer:"Yes",
-    uniqueId:"6"
 
   },
   {
@@ -61,8 +50,14 @@ const SCREENING_OPTIONS = [
     title:"",
     question_type: "Skill",
     question: "Have many years of work experience do you have with [Skill]?",
-    uniqueId:"7"
-
+  },
+  {
+    label: "Onsite Work",
+    title: "",
+    question: "Are you comfortable working in an onsite setting?",
+    // inputType: "",
+    ideal_answer:"Yes",
+    uniqueId:"1"
   },
 ];
 

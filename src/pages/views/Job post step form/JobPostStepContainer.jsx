@@ -42,12 +42,12 @@ export const STEP_LABELS = [
 ];
 const DEFAULT_SCREENING_DATA = [
   {
-    label: "Onsite Work",
+    label: "Work Experience",
     title: "",
-    question: "Are you comfortable working in an onsite setting?",
+    question_type: "",
+    question: "How many years of experience do you currently have?",
     isRecommended:true,
-    ideal_answer :"Yes",
-    uniqueId:"1"
+
   },
   {
     label: "Education",
@@ -56,7 +56,6 @@ const DEFAULT_SCREENING_DATA = [
     ideal_answer :"Yes",
     question: "Have you completed the following level of education: [Degree]",
     isRecommended:true,
-    uniqueId:"2"
 
   },
   {
@@ -65,7 +64,6 @@ const DEFAULT_SCREENING_DATA = [
     question_type: "language",
     question: "What is your level of proficiency in [Language]?",
     isRecommended:true,
-    uniqueId:"3"
   },
 ]
 

@@ -63,6 +63,18 @@ const JobListing = () => {
         return;
     }
   };
+  const returnExperienceFromScreeningQuestions = (screeningQuestions) => {
+    if (screeningQuestions?.length) {
+      const requiredElement = screeningQuestions?.find(
+        (curElem) =>
+          curElem?.question ==
+          "How many years of experience do you currently have?"
+      );
+      if (requiredElement) {
+        return requiredElement?.ideal_answer;
+      }
+    }
+  };
   return (
     <>
       {screenLoader ? (
@@ -86,10 +98,15 @@ const JobListing = () => {
                               <h2 className="job-title">{item.title}</h2>
                               {/* <h4 className="job-category">{item.client.name}</h4> */}
                               <div className="profile-req">
-                                {/* <p className="grid-text">
-                                  {item?.experience?.split("_").join(" ")} of
-                                  exp
-                                </p> */}
+                                <p className="grid-text">
+                                  {item?.screening_questions &&
+                                    returnExperienceFromScreeningQuestions(
+                                      item?.screening_questions
+                                    )}
+                                  {returnExperienceFromScreeningQuestions(
+                                    item?.screening_questions
+                                  ) && " years"}
+                                </p>
                                 <p className="grid-text">
                                   {item?.contract_type}
                                 </p>
@@ -145,6 +162,16 @@ const JobListing = () => {
                               >
                                 <Link
                                   to={`/single-job/${item.id}`}
+                                  state={{
+                                    workExperienceyears:
+                                      item?.screening_questions &&
+                                      returnExperienceFromScreeningQuestions(
+                                        item?.screening_questions
+                                      ) &&
+                                      returnExperienceFromScreeningQuestions(
+                                        item?.screening_questions
+                                      ),
+                                  }}
                                   className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                                 >
                                   <FaEye />

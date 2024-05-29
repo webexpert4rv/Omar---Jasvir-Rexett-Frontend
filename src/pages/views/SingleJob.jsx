@@ -104,7 +104,6 @@ const SingleJob = () => {
       }
     };
     const handleJobStatusAction = (e, data) => {
-      console.log("jkk");
       e.preventDefault();
       if (data.status == "ended") {
         dispatch(
@@ -179,7 +178,6 @@ const SingleJob = () => {
       setCurrnetTabsStatus("application");
     }
   };
-  console.log(singleJobDescription, "singleJobDescription");
   const handleJobStatusAction = (e, data) => {
     e.preventDefault();
     if (data.status == "ended") {
@@ -411,8 +409,9 @@ const SingleJob = () => {
                 <Col md="4">
                   <h3 className="req-heading">{t("experienceRequirements")}</h3>
                   <p className="req-text">
-                    {singleJobDescription?.experience?.split("_").join(" ") ||
-                      "Not Mentioned"}
+                    {/* {singleJobDescription?.experience?.split("_").join(" ") ||
+                      "Not Mentioned"} */}
+                   {location?.state?.workExperienceyears ? `${location?.state?.workExperienceyears} years` :"Not Mentioned"}
                   </p>
                 </Col>
                 <Col md="4">
