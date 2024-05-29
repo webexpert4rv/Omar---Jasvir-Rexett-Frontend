@@ -32,21 +32,21 @@ const NotificationList = ({ job, doc }) => {
   }, [page]);
 
   const handleNotification = (notificationId, id, data) => {
-    // dispatch(markAsRead(notificationId, () => {
-    //   let data={
-    //     page:page
-    //   }
-    //   dispatch(getNotification(data));
-    // }))
-    // if (data == "Documents") {
-    //   navigate(`/${doc}`);
-    // } else if (data == "Jobs") {
-    //   navigate(`/${job}/${id}`);
-    // } else if (data == "Time_reports") {
-    //   navigate(`/${timeReporting}`);
-    // } else if (data == "Users") {
-    //   navigate(`/admin-single-developer/${id}`);
-    // }
+    dispatch(markAsRead(notificationId, () => {
+      let data={
+        page:page
+      }
+      dispatch(getNotification(data));
+    }))
+    if (data == "Documents") {
+      navigate(`/${doc}`);
+    } else if (data == "Jobs") {
+      navigate(`/${job}/${id}`);
+    } else if (data == "Time_reports") {
+      navigate(`/${timeReporting}`);
+    } else if (data == "Users") {
+      navigate(`/admin-single-developer/${id}`);
+    }
   };
 
   const handleSelect = (key) => {
