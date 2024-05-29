@@ -137,6 +137,9 @@ export const clientDataSlice = createSlice({
       },
       setApproveDisapprove: (state,action)=>{
         state.approveDisapprove = action.payload
+      },
+      setSuggstedDeveloper:(state,action)=>{
+        state.smallLoader = false
       }
 
 
@@ -147,7 +150,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,setLeaveList,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList,setLeaveList,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -472,6 +475,23 @@ export function getJobCategoryList(payload, callback) {
       }
     } catch (error) {
       const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function getSuggestedDeveloper(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`client/request-developer-suggestion`,{...payload});
+      if (result.status === 200) {
+        toast.success(result?.data?.message, { position: "top-center" });
+        dispatch(setSuggstedDeveloper());
+      }
+    } catch (error) {
+      const message = error?.response?.data?.message|| "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }

@@ -20,6 +20,7 @@ import {
   getAllJobPostedList,
   getDeleteJob,
   getJobCategoryList,
+  getSuggestedDeveloper,
   publishedPost,
   singleJobPostData,
 } from "../../redux/slices/clientDataSlice";
@@ -32,6 +33,7 @@ import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { FaTrashCan } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
+import RexettButton from "../../components/atomic/RexettButton";
 
 const SingleJob = () => {
   const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -46,6 +48,8 @@ const SingleJob = () => {
   const navigate = useNavigate();
   const location = useLocation();
   let id = location.pathname.split("/")[2];
+  const clientId = localStorage.getItem("userId")
+  console.log(clientId,"clientid")
   const {
     allJobPostedList,
     jobCategoryList,
@@ -288,6 +292,17 @@ const SingleJob = () => {
     }
   };
 
+  const handleSuggestions=()=>{
+    let payload={
+      clientId : clientId,
+      jobId : id,
+      message : "Suggest Developer"
+    }
+    console.log(payload,"payload")
+    dispatch(getSuggestedDeveloper(payload))
+
+  }
+
   return (
     <>
       <Tabs
@@ -489,7 +504,11 @@ const SingleJob = () => {
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
           <div className="text-end">
-            <Button className="main-btn px-4 py-2 font-14">Make Suggestion Request</Button>
+            <RexettButton className="main-btn px-4 py-2 font-14" 
+            text = "Make Suggestion Request"
+            isLoading={smallLoader} 
+            disabled={smallLoader} 
+            onClick = {()=>handleSuggestions()}/>
           </div>
           <JobCard
             handleJobStatusModal={handleJobStatusModal}
