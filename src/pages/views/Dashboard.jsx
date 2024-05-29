@@ -45,7 +45,7 @@ const Dashboard = (cardDetails) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/client-single-developer/${id}`)
     }
-    
+
     const lineData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
@@ -166,13 +166,13 @@ const Dashboard = (cardDetails) => {
         },
     };
 
-    
+
     const CompletedProjectData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
             {
                 label: 'Monthly',
-                data: [100, 120, 300, 200, 350, 400, 300, 270, 370, 390, 350, null , null ],
+                data: [100, 120, 300, 200, 350, 400, 300, 270, 370, 390, 350, null, null],
                 borderColor: 'rgb(8, 143, 143)',
                 backgroundColor: 'rgba(8, 143, 143 , .05)',
                 fill: true,
@@ -215,8 +215,8 @@ const Dashboard = (cardDetails) => {
             },
         },
     };
-    
-    
+
+
     const dataHiredSet = [250, 210, 340, 400, 380, 420];
     const lastDataIndex = dataHiredSet.length - 1;
     const pointRadiusArray = [];
@@ -302,7 +302,7 @@ const Dashboard = (cardDetails) => {
     return (
         <>
             <h2 className="section-head">{t("overview")} </h2>
-            
+
             <p className="mb-4">{t("monitorAndManage")}</p>
             {screenLoader ? <ScreenLoader /> : <>
                 <div className="overview-card-wrapper mb-5">
@@ -311,10 +311,10 @@ const Dashboard = (cardDetails) => {
                     <OverViewCard head={t("jobPosted")} value={assignedDeveloperList?.total_jobs_posted ? assignedDeveloperList?.total_jobs_posted : "0"} />
                     <OverViewCard head={t("developerAssigned")} value={assignedDeveloperList?.total_developer_count ? assignedDeveloperList?.total_developer_count : '0'} />
                 </div>
-                
+
                 <div>
                     <Row>
-                        <Col md={6} className="mb-4">
+                        <Col xxl={6} className="mb-4">
                             <div className="mb-3">
                                 <Row>
                                     <Col md={6}>
@@ -428,21 +428,21 @@ const Dashboard = (cardDetails) => {
                         <h3 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h3>
                         <Nav variant="pills" className="document-view-pill">
                             <Nav.Item className="document-view-item">
-                            <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
+                                <Nav.Link className="document-view-link" eventKey="list-view"><FaListUl /></Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="document-view-item">
-                                 <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
+                                <Nav.Link className="document-view-link" eventKey="grid-view"><IoGrid /></Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
                     {assignedDeveloperList?.assigned_developers?.length > 0 ?
                         <Tab.Content>
-                              <Tab.Pane eventKey="list-view">
+                            <Tab.Pane eventKey="list-view">
                                 <div className="table-responsive">
                                     <table className="table developer-table">
                                         <thead>
                                             <tr>
-                                                <th><span>{t("developerName")}</span></th>    
+                                                <th><span>{t("developerName")}</span></th>
                                                 <th><span>{t("designation")}</span></th>
                                                 <th><span>{t("email")}</span></th>
                                                 {/* <th><span>Connects</span></th> */}
@@ -492,27 +492,27 @@ const Dashboard = (cardDetails) => {
 
                             </Tab.Pane>
                             <Tab.Pane eventKey="grid-view" >
-                                <div className="developers-list pt-3" >
+                                <div className="developers-list pt-3 mb-4" >
 
                                     {assignedDeveloperList?.assigned_developers?.map((item, index) => {
-                                            return (
-                                                <>
-                                                    <Cards item={item} handleCardClick={() => handleCardClick(item?.developer?.id)} />
-                                                </>
-                                            )
-                                        })
+                                        return (
+                                            <>
+                                                <Cards item={item} handleCardClick={() => handleCardClick(item?.developer?.id)} />
+                                            </>
+                                        )
+                                    })
                                     }
                                 </div>
                             </Tab.Pane>
                             <>
-                               { assignedDeveloperList?.assigned_developers?.length >5 ? <div className="text-center mt-5">
+                                {assignedDeveloperList?.assigned_developers?.length > 5 ? <div className="text-center mt-5">
                                     <Link to={"/hired-developers"} className="link-text-dark">{t("seeAll")}</Link>
                                 </div> : ""}
                             </>
                         </Tab.Content>
                         : <div><NoDataFound /></div>}
                 </Tab.Container>
-                
+
                 <div>
                     <Row>
                         <Col md={6} className="mb-4">
@@ -543,7 +543,7 @@ const Dashboard = (cardDetails) => {
                                                         AI Bot Project
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                    <span className="associate-text">
+                                                        <span className="associate-text">
                                                             <span className="associate">Individual</span>
                                                         </span>
                                                     </td>
@@ -553,12 +553,12 @@ const Dashboard = (cardDetails) => {
                                                 </tr>
                                                 <tr>
                                                     <td className="time-table-data text-start font-14 fw-normal">
-                                                        <div className="developer-wrapper">
+                                                        <div className="developer-wrapper white-nowrap">
                                                             <img src={userImg} />
                                                             Rohit Sharma
                                                         </div>
                                                     </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
+                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">
                                                         AI Bot Project
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal">

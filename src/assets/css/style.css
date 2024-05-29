@@ -4933,6 +4933,118 @@ input[type="radio"]:checked {
 {
     width: 60px;
 }
+.floating-area
+{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 99;
+}
+.floating-area:before
+{
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    background-color: rgba(255, 255, 255, .4);
+    z-index: -1;
+    transition: .3s ease;
+}
+.floating-area.active:before
+{
+    opacity: 1;
+    visibility: visible;
+}
+.floating-btn
+{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #037563;
+    border: 1px solid #037563 !important;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s ease;
+}
+.floating-btn:hover
+{
+    background-color: #fff;
+    color: #037563;
+}
+.floating-options
+{
+    position: absolute;
+    top: -100px;
+    left: -150px;
+    min-width: 300px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+}
+.floating-area.active .floating-options
+{
+    opacity: 1;
+    visibility: visible;
+}
+.floating-options a
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+}
+.floating-area.active .floating-options a
+{
+    animation: upShow .2s linear forwards;
+}
+@keyframes upShow
+{
+    0%
+    {
+        transform: translateY(20px);
+        opacity: 0;
+        visibility: hidden;
+    }
+    100%
+    {
+        transform: translateY(0px);
+        opacity: 1;
+        visibility: visible;
+    }
+}
+.floating-options a .icon-float
+{
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #037563;
+    border: 2px solid #037563;
+    border-radius: 50%;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, .1);
+    font-size: 20px;
+}
+.floating-options .float-text
+{
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #383838;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, .1);
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
