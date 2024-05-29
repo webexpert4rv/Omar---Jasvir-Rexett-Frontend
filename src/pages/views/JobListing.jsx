@@ -96,9 +96,10 @@ const JobListing = () => {
                           <div className="job-posted-list" key={item.id}>
                             <div>
                               <h2 className="job-title">{item.title}</h2>
-                              {/* <h4 className="job-category">{item.client.name}</h4> */}
                               <div className="profile-req">
-                                <p className="grid-text">
+                                <p className={ returnExperienceFromScreeningQuestions(
+                                      item?.screening_questions
+                                    ) ? `grid-text` : ""} >
                                   {item?.screening_questions &&
                                     returnExperienceFromScreeningQuestions(
                                       item?.screening_questions
