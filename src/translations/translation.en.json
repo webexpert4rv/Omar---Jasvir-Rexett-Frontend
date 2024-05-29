@@ -383,6 +383,7 @@
         "goodToHaveSkills":"Good to have skills",
         "totalHiredDevelopers":"Total Hired Developers",
         "totalProjects":"Total Projects",
-        "totalIndivisualDev":"Total Individual Dev"
+        "totalIndivisualDev":"Total Individual Dev",
+        "screeningQuestions":"Screening Questions"
 }
 }
