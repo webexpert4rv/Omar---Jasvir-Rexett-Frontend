@@ -1,4 +1,4 @@
-import React, { useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import sidebarLogo from '../assets/img/rexett-logo-white.png'
 import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
 import { MdSpaceDashboard } from "react-icons/md";
@@ -15,12 +15,20 @@ import { PiUsersFourFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
 import { BsToggles } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
+import { FaQuestion } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { Button } from "react-bootstrap";
 
 const AdminSidebar = ({ sideBarActive }) => {
     const { t } = useTranslation()
     const logout=()=>{
         localStorage.clear()
          window.location.href="/admin-login"
+     }
+     const [floatingShow, setFloatingShow] = useState(false);
+     const handleFloating = () => {
+         setFloatingShow(!floatingShow);
      }
     return(
         <>
@@ -63,14 +71,27 @@ const AdminSidebar = ({ sideBarActive }) => {
                     </div>
                     <div className="w-100 px-3 mt-xxl-3">
                         <div>
-                        <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
-                        </div>
-                        <div>
-                            <NavLink to={"/admin-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
+                            <Link onClick={logout} className="bottom-link" activeClassName="active"><PiSignOutBold /> {t("signOut")}</Link>
                         </div>
                     </div>
                 </div>
             </aside>
+            <div className={ floatingShow ? "floating-area active" : "floating-area"}>
+                <Button variant="transparent" className="floating-btn" onClick={handleFloating}>
+                    { floatingShow ? <FaTimes /> : <FaQuestion />}
+                </Button>
+                <div className="floating-options">
+                    <div className="mb-3">
+                        <NavLink to={'https://rexett-support.rvtechnologies.info'} target="blank" activeClassName="active" className="text-decoration-none"><span className="icon-float"><TfiHeadphoneAlt /></span> <span className="float-text">Contact Support</span></NavLink>
+                    </div>
+                    <div>
+                        <NavLink to={"/admin-faq"} activeClassName="active" className="text-decoration-none"><span className="icon-float"><BsFillQuestionCircleFill /></span> <span className="float-text">{t("faq")}</span></NavLink>
+                    </div>
+                    {/* <div>
+                        <NavLink to={"/admin-faq"} className="bottom-link" activeClassName="active"><BsFillQuestionCircleFill /> {t("faq")}</NavLink>
+                        </div> */}
+                </div>
+            </div>
         </>
     )
 }

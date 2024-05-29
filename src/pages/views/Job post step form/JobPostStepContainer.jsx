@@ -23,10 +23,15 @@ import { current } from "@reduxjs/toolkit";
 import ScreenLoader from "../../../components/atomic/ScreenLoader";
 
 // add this inside constant file later
-const hasNullOrUndefinedProperties = (obj) => {
-  return Object.values(obj).some( 
-    (value) => value === null || value === false
-  );
+const hasNullOrUndefinedProperties = (obj,activeStep) => {
+  if(activeStep === 3){
+     return !obj?.screening_questions?.length
+  }
+  else{
+    return Object.values(obj).some( 
+      (value) => value === null 
+    );
+  }
 };
 
 export const STEP_LABELS = [
@@ -35,6 +40,34 @@ export const STEP_LABELS = [
   "Job post step 2",
   "Job post step 3",
 ];
+const DEFAULT_SCREENING_DATA = [
+  {
+    label: "Onsite Work",
+    title: "",
+    question: "Are you comfortable working in an onsite setting?",
+    isRecommended:true,
+    ideal_answer :"Yes",
+    uniqueId:"1"
+  },
+  {
+    label: "Education",
+    question_type: "Degree",
+    title: "",
+    ideal_answer :"Yes",
+    question: "Have you completed the following level of education: [Degree]",
+    isRecommended:true,
+    uniqueId:"2"
+
+  },
+  {
+    label: "Language",
+    title: "",
+    question_type: "language",
+    question: "What is your level of proficiency in [Language]?",
+    isRecommended:true,
+    uniqueId:"3"
+  },
+]
 
 const JobPostStepContainer = () => {
   const { t } = useTranslation();
@@ -52,7 +85,6 @@ const JobPostStepContainer = () => {
   const { jobPostedData, screenLoader } = useSelector(
     (state) => state.clientData
   );
-  console.log(jobPostedData,"jobPostedData")
   const navigate = useNavigate();
   const [smallLoader, setSmallLoader] = useState(false);
   const {
@@ -115,7 +147,7 @@ const JobPostStepContainer = () => {
             Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length
           ) {
             const IsNull = hasNullOrUndefinedProperties(
-              jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]
+              jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]],activeStep
             );
             setIsEdit(!IsNull);
           }
@@ -146,6 +178,18 @@ const JobPostStepContainer = () => {
                     }
                   }
                 } 
+                else if (activeStep === 3){
+                  if(key === "screening_questions"){
+                    if(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]?.length){
+                      setValue(
+                        key,
+                        jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
+                      );
+                    } else {
+                      setValue("screening_questions",DEFAULT_SCREENING_DATA)
+                    }
+                  }
+                }
                 else {
                   setValue(
                     key,
@@ -159,6 +203,7 @@ const JobPostStepContainer = () => {
       );
     }
   }, [activeStep, dispatch, skillCate]);
+  console.log(isEdit,"isEdit")
 
   const getActiveStepComponent = () => {
     switch (activeStep) {

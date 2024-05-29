@@ -61,7 +61,6 @@ const SingleJob = () => {
     dispatch(getJobCategoryList());
   }, []);
 
-
   useEffect(() => {
     setSingleJobDescription(jobPostedData?.data);
   }, [jobPostedData]);
@@ -82,90 +81,94 @@ const SingleJob = () => {
       })
     );
   };
-  const handleSelect = (key) => { 
+  const handleSelect = (key) => {
     setCurrentTab(key);
     setSelectedTabsData(jobPostedData[key]);
     if (key == "suggested") {
       setCurrnetTabsStatus("shortlisted");
     }
     const handleSelect = (key) => {
-        setCurrentTab(key)
-        setSelectedTabsData(jobPostedData[key])
-        if (key == "suggested") {
-            setCurrnetTabsStatus("shortlisted")
-        }
-        if (key == "shortlisted") {
-            setCurrnetTabsStatus("interviewing")
-        }
-        if (key == "interviewing") {
-            setCurrnetTabsStatus("hired")
-        }
-        if (key == "application") {
-            setCurrnetTabsStatus("application")
-        }
-
-    }
+      setCurrentTab(key);
+      setSelectedTabsData(jobPostedData[key]);
+      if (key == "suggested") {
+        setCurrnetTabsStatus("shortlisted");
+      }
+      if (key == "shortlisted") {
+        setCurrnetTabsStatus("interviewing");
+      }
+      if (key == "interviewing") {
+        setCurrnetTabsStatus("hired");
+      }
+      if (key == "application") {
+        setCurrnetTabsStatus("application");
+      }
+    };
     const handleJobStatusAction = (e, data) => {
-        console.log("jkk")
-        e.preventDefault()
-        if (data.status == "ended") {
-            dispatch(publishedPost(singleJobDescription?.id, data, () => {
-                setStatusModal({})
-                dispatch(singleJobPostData(id, () => {
-
-                }))
-            }
-            ))
-        } else if (data.status == "application") {
-            dispatch(getDeleteJob(statusModal?.id, () => {
-                setStatusModal({})
-                navigate("/job-posted")
-            }))
-        } else {
-            dispatch(changeJobStatus(currentTab, statusModal?.id, data, () => {
-                dispatch(singleJobPostData(id, () => {
-                    setStatusModal({})
-                    let prevData = { ...jobPostedData }
-                    let d = prevData[currentTab]?.filter(item => item.id !== statusModal?.id)
-                    prevData[currentTab] = d
-                    setSelectedTabsData(prevData[currentTab])
-                }))
-            }))
-        }
-    }
+      console.log("jkk");
+      e.preventDefault();
+      if (data.status == "ended") {
+        dispatch(
+          publishedPost(singleJobDescription?.id, data, () => {
+            setStatusModal({});
+            dispatch(singleJobPostData(id, () => {}));
+          })
+        );
+      } else if (data.status == "application") {
+        dispatch(
+          getDeleteJob(statusModal?.id, () => {
+            setStatusModal({});
+            navigate("/job-posted");
+          })
+        );
+      } else {
+        dispatch(
+          changeJobStatus(currentTab, statusModal?.id, data, () => {
+            dispatch(
+              singleJobPostData(id, () => {
+                setStatusModal({});
+                let prevData = { ...jobPostedData };
+                let d = prevData[currentTab]?.filter(
+                  (item) => item.id !== statusModal?.id
+                );
+                prevData[currentTab] = d;
+                setSelectedTabsData(prevData[currentTab]);
+              })
+            );
+          })
+        );
+      }
+    };
 
     const handleEdit = () => {
-        if (singleJobDescription?.status == "Unpublished") {
-            navigate(`/job-edit-post/${id}`)
-        }
-    }
+      if (singleJobDescription?.status == "Unpublished") {
+        navigate(`/job-edit-post/${id}`);
+      }
+    };
 
     const handleJobStatusModal = (e, id, status) => {
-        if (e == undefined) {
-            setStatusModal({
-                [status]: !statusModal.isTrue,
-                id: id
-            })
-        } else {
-            e.stopPropagation();
+      if (e == undefined) {
+        setStatusModal({
+          [status]: !statusModal.isTrue,
+          id: id,
+        });
+      } else {
+        e.stopPropagation();
 
-            setStatusModal({
-                [status]: !statusModal.isTrue,
-                id: id
-            })
-        }
-
-    }
-
+        setStatusModal({
+          [status]: !statusModal.isTrue,
+          id: id,
+        });
+      }
+    };
 
     const handleDelete = (status, id) => {
-        if (singleJobDescription?.status == "Unpublished") {
-            setStatusModal({
-                [status]: !statusModal.isTrue,
-                id: id
-            })
-        }
-    }
+      if (singleJobDescription?.status == "Unpublished") {
+        setStatusModal({
+          [status]: !statusModal.isTrue,
+          id: id,
+        });
+      }
+    };
     if (key == "shortlisted") {
       setCurrnetTabsStatus("interviewing");
     }
@@ -176,7 +179,7 @@ const SingleJob = () => {
       setCurrnetTabsStatus("application");
     }
   };
-  console.log(singleJobDescription,"singleJobDescription")
+  console.log(singleJobDescription, "singleJobDescription");
   const handleJobStatusAction = (e, data) => {
     e.preventDefault();
     if (data.status == "ended") {
@@ -215,8 +218,8 @@ const SingleJob = () => {
   const handleEdit = () => {
     if (singleJobDescription?.status == "Unpublished") {
       const savedStep = localStorage.getItem("activeStep");
-      if(savedStep) {
-        localStorage.setItem("activeStep",1)
+      if (savedStep) {
+        localStorage.setItem("activeStep", 1);
       }
       navigate(`/job-edit-post/${id}`);
     }
@@ -322,7 +325,7 @@ const SingleJob = () => {
                             handleJobStatusModal(
                               e,
                               singleJobDescription?.id,
-                              "ended" 
+                              "ended"
                             )
                           }
                           className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
@@ -390,8 +393,12 @@ const SingleJob = () => {
                 </div>
               </div>
               <p className="req-heading mb-1 mt-3">About this job</p>
-              <p className="single-job-description mb-0" dangerouslySetInnerHTML={{__html:singleJobDescription?.description}}>
-              </p>
+              <p
+                className="single-job-description mb-0"
+                dangerouslySetInnerHTML={{
+                  __html: singleJobDescription?.description,
+                }}
+              ></p>
             </div>
             <div className="single-job-card">
               <Row>
@@ -404,7 +411,8 @@ const SingleJob = () => {
                 <Col md="4">
                   <h3 className="req-heading">{t("experienceRequirements")}</h3>
                   <p className="req-text">
-                    {singleJobDescription?.experience?.split("_").join(" ") || "Not Mentioned"}
+                    {singleJobDescription?.experience?.split("_").join(" ") ||
+                      "Not Mentioned"}
                   </p>
                 </Col>
                 <Col md="4">
@@ -459,6 +467,24 @@ const SingleJob = () => {
                 </Col>
               </Row>
             </div>
+            {/* commented for future use */}
+            {/* <div className="single-job-card">
+              <Row>
+                <Col md="4">
+                  {singleJobDescription?.screening_questions.length &&
+                    singleJobDescription?.screening_questions?.map(
+                      ({ ideal_answer, question, must_have }) => (
+                        <>
+                          <p>Question :{question}</p>
+                          {question_type && <p>{question_type}</p>}</p>
+                          <p>Ideal Answer : {ideal_answer}</p>
+                          <p>Must Have : {must_have ? "Yes" : "No"}</p>
+                        </>
+                      )
+                    )}
+                </Col>
+              </Row>
+            </div> */}
           </section>
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
