@@ -644,14 +644,19 @@ export function addDegree(paylaod, callback) {
   };
 }
 
-export function addProjects(paylaod, callback) {
+export function addProjects(paylaod,role, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`/common/add-developer-project`, {
         ...paylaod,
       });
-      toast.success("Project is Added", { position: "top-center" });
+      if(role==="developer"){
+        toast.success("Please wait for changes approval by admin", { position: "top-center" });
+      }else{
+        toast.success("Project is Added", { position: "top-center" });
+      }
+     
       dispatch(setSuccessActionData());
       return callback();
     } catch (error) {

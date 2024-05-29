@@ -79,8 +79,10 @@ const Applications = () => {
   };
 
   const handleDownload=(e , resume)=>{
+    console.log(resume,"resume")
     e.stopPropagation()
-    generatePDF(targetRef, {filename: {resume}})
+    window.open(resume, '_blank');
+   
   }
 
   useEffect(() => {
