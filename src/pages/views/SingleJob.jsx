@@ -506,8 +506,8 @@ const SingleJob = () => {
           <div className="text-end">
             <RexettButton className="main-btn px-4 py-2 font-14" 
             text = "Make Suggestion Request"
-            isLoading={smallLoader} 
-            disabled={smallLoader} 
+            isLoading={approvedLoader} 
+            disabled={approvedLoader} 
             onClick = {()=>handleSuggestions()}/>
           </div>
           <JobCard
