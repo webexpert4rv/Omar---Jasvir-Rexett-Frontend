@@ -384,41 +384,6 @@ const LeavePlan = () => {
                 </Tab.Content>
               </Tab.Container>
 
-              <div className="helper-text-section">
-                <h3>Guiding You Through: Helpful Text to Apply Leaves</h3>
-                <ol className="ps-3 mb-0">
-                  <li className="mb-2">
-                    <p>
-                      Admin can effortlessly review daily time sheets and promptly raise
-                      invoices for clients. Click on any client's name in the table
-                      above to delve deeper into their project and time reporting
-                      details. Gain insights and manage project progress with precision.
-                      Also you can raise invoice for clients and track the invoices for
-                      Devs , Vendors and Clients.
-                    </p>
-                  </li>
-                  <li className="mb-2">
-                    <p>
-                      Admin can effortlessly review daily time sheets and promptly raise
-                      invoices for clients. Click on any client's name in the table
-                      above to delve deeper into their project and time reporting
-                      details. Gain insights and manage project progress with precision.
-                      Also you can raise invoice for clients and track the invoices for
-                      Devs , Vendors and Clients.
-                    </p>
-                  </li>
-                  <li className="mb-0">
-                    <p>
-                      Admin can effortlessly review daily time sheets and promptly raise
-                      invoices for clients. Click on any client's name in the table
-                      above to delve deeper into their project and time reporting
-                      details. Gain insights and manage project progress with precision.
-                      Also you can raise invoice for clients and track the invoices for
-                      Devs , Vendors and Clients.
-                    </p>
-                  </li>
-                </ol>
-              </div>
             </Tab.Pane>
             <Tab.Pane eventKey="public-holiday">
               <section className="">
@@ -519,6 +484,30 @@ const LeavePlan = () => {
 
         </Tab.Container>
       )}
+      <div className="helper-text-section">
+        <h3>Guiding You Through: Helpful Text to Apply Leaves</h3>
+        <ol className="ps-3  mb-0">
+          <li className="mb-1">
+            <p>
+              All full-time and part-time developers are entitled to apply for
+              leave. Types of leave include sick leave, personal leave, and
+              emergency leave.
+            </p>
+          </li>
+          <li className="mb-1">
+            <p>
+              If you need to cancel your applied leave, submit a leave
+              cancellation request before the start date of the leave.
+            </p>
+          </li>
+          <li className="mb-0">
+            <p>
+              All leave requests, including approved, cancelled, and not
+              approved leaves, will be recorded and shown in your leave history.
+            </p>
+          </li>
+        </ol>
+      </div>
     </>
   );
 };
