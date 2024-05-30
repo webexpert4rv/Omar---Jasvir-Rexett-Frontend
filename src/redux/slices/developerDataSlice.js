@@ -726,6 +726,7 @@ export function addLogTime(paylaod, callback) {
     } catch (error) {
       toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailDeveloperData());
+      dispatch(setLastTimeLog(error?.response?.data?.success));
     }
   };
 }
@@ -752,7 +753,7 @@ export function postReconciliationData(paylaod, callback) {
         `/common/add-time-report-reconciliation`,
         paylaod
       );
-      dispatch(setLastTimeLog(result.data));
+      // dispatch(setLastTimeLog(result.data));
       if (result?.status == 200||201) {
         toast.success("Reconciliation is submitted successfully", {
           position: "top-center",

@@ -37,6 +37,8 @@ const DeveloperNavigation = ({ onClick }) => {
         
     },[])
 
+    console.log(lastTimeLog,"lastTimeLog")
+
     const convertHourToSecond=(hours)=>{
         const seconds = hours * 3600;
         return  seconds
@@ -46,6 +48,8 @@ const DeveloperNavigation = ({ onClick }) => {
        if(Object.keys(lastTimeLog).length>0){
         setChecked(lastTimeLog?.data?.type=="break" || lastTimeLog?.data?.type=="check-out" ?false:true)
         setTotalSeconds(convertHourToSecond(lastTimeLog?.data?.hours_worked_till_time))
+       }else{
+        setChecked(false)
        }
     },[lastTimeLog?.data?.hours_worked_till_time])
     
