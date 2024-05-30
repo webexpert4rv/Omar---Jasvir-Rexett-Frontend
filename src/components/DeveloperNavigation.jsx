@@ -36,7 +36,6 @@ const DeveloperNavigation = ({ onClick }) => {
         
     },[])
 
-    console.log(lastTimeLog,"lastTimeLog")
 
     const convertHourToSecond=(hours)=>{
         const seconds = hours * 3600;

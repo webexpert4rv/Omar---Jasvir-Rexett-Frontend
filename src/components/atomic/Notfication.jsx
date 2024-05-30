@@ -133,9 +133,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
   }
-
-  console.log(nottificationData,"nottificationData")
-
   return (
     <>
       <header>

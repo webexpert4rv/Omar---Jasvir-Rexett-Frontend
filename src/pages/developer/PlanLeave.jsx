@@ -13,6 +13,7 @@ import {
   getLeaveHistory,
   getCancelLeave,
   getUpdateLeave,
+  getHolidaysList,
 } from "../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -33,11 +34,9 @@ const LeavePlan = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const { screenLoader, leaveDetails, allContracts } = useSelector(
+  const { screenLoader, leaveDetails, allContracts ,holidayList } = useSelector(
     (state) => state.developerData
   );
-
-  console.log(leaveDetails, "leaveDetails");
   const {
     handleSubmit,
     register,
@@ -57,6 +56,10 @@ const LeavePlan = () => {
   const end_date = moment(selectionRange?.endDate).format("MM-DD-YYYY");
   const user_id = localStorage.getItem("userId");
 
+  useEffect(()=>{
+    dispatch(getHolidaysList())
+  },[])
+
   useEffect(() => {
     let data;
     if (currentTab === "first") {
@@ -64,7 +67,6 @@ const LeavePlan = () => {
         approval_status: "Under Approval",
       };
     }
-
     dispatch(getLeaveHistory(user_id, data));
     dispatch(getAllContracts());
   }, [currentTab]);
@@ -125,16 +127,14 @@ const LeavePlan = () => {
     reset();
   };
 
+  const listHolidays =(data)=>{
+  const holidays= data?.map((value)=>new Date(value?.date))
+  return holidays;
+  }
+
   const [value, onChange] = useState(new Date());
   // Define the dates you want to mark
-  const markedDates = [
-    new Date(2024, 4, 1),
-    new Date(2024, 4, 8),
-    new Date(2024, 4, 11),
-    new Date(2024, 4, 14),
-    new Date(2024, 4, 23),
-    new Date(2024, 4, 31),
-  ];
+  const markedDates = listHolidays(holidayList)
 
   // Function to add custom content to tile
   const tileContent = ({ date, view }) => {
@@ -386,7 +386,7 @@ const LeavePlan = () => {
 
             </Tab.Pane>
             <Tab.Pane eventKey="public-holiday">
-              <ListOfHolidays onChange={onChange} value={value} tileContent={tileContent}/>
+              <ListOfHolidays onChange={onChange} value={value} tileContent={tileContent} holidayList={holidayList}/>
             </Tab.Pane>
           </Tab.Content>
 

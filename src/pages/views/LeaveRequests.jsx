@@ -24,6 +24,7 @@ import {
 import { TiEdit } from "react-icons/ti";
 import Calendar from "react-calendar";
 import NewEvent from "./Modals/NewEvent";
+import ListOfHolidays from "../../components/common/LeaveRequest/ListOfHolidays";
 
 const LeaveRequest = () => {
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ const LeaveRequest = () => {
     }
   };
 
+  
   useEffect(() => {
     let data;
     if (currentTab === "first") {
@@ -104,7 +106,6 @@ const LeaveRequest = () => {
   };
 
 
-  const [value, onChange] = useState(new Date());
   const [showEvent, setShowEvent] = useState(false);
   const handleShowEvent = () => {
     setShowEvent(!showEvent);
@@ -127,25 +128,22 @@ const LeaveRequest = () => {
     dispatch(getLeaveList());
   };
 
-  const markedDates = [
-    new Date(2024, 4, 1),
-    new Date(2024, 4, 8),
-    new Date(2024, 4, 11),
-    new Date(2024, 4, 14),
-    new Date(2024, 4, 23),
-    new Date(2024, 4, 31),
-  ];
-
-  // Function to add custom content to tile
-  const tileContent = ({ date, view }) => {
-    if (
-      view === "month" &&
-      markedDates.find((d) => d.toDateString() === date.toDateString())
-    ) {
-      return <div className="dot"></div>;
+  const listHolidays =(data)=>{
+    const holidays= data?.map((value)=>new Date(value?.date))
+    return holidays;
     }
-    return null;
-  };
+  
+    const [value, onChange] = useState(new Date());
+    // Define the dates you want to mark
+    const markedDates = listHolidays(leaveList)
+  
+    // Function to add custom content to tile
+    const tileContent = ({ date, view }) => {
+      if (view === 'month' && markedDates.find(d => d.toDateString() === date.toDateString())) {
+        return <div className="dot"></div>;
+      }
+      return null;
+    };
 
   return (
         <>
@@ -190,8 +188,10 @@ const LeaveRequest = () => {
                     handleClick={handleClick}
                   />
                 )}
-              </Tab.Pane>
-              <Tab.Pane eventKey="public-holiday">
+              </Tab.Pane><Tab.Pane eventKey="public-holiday">
+              <ListOfHolidays onChange={onChange} value={value} tileContent={tileContent} holidayList={leaveList} />
+            </Tab.Pane>
+              {/* <Tab.Pane eventKey="public-holiday">
                 <section className="">
                   <div className="calendar-container card-box">
                     <div className="mb-3">
@@ -311,7 +311,7 @@ const LeaveRequest = () => {
                   </div>
                 </section>
                 <NewEvent show={showEvent} handleClose={handleCloseEvent} />
-              </Tab.Pane>
+              </Tab.Pane> */}
             </Tab.Content>
           </Tab.Container>
         </>)
