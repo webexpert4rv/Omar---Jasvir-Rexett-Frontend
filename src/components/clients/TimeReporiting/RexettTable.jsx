@@ -465,8 +465,8 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
         <ConfirmationModal
           text={
             isAnyReportEmpty
-              ? `Are you sure to Approve this time sheet ? It looks like you haven't written your work status for all the days of the week.`
-              : "Are you sure you want to Approve this time sheet?"
+              ? `Are you sure to submit this time sheet ? It looks like you haven't written your work status for all the days of the week.`
+              : "Are you sure you want to submit this time sheet?"
           }
           show={approvedConfirmation?.isApproved}
           startDate={approvedConfirmation?.startDate}

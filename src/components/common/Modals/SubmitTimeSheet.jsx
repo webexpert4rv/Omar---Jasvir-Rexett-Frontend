@@ -57,7 +57,7 @@ const SubmitTimeReport = ({
               </Col>
               <Col md={6}>
                 <h4 className="">Total Hours</h4>
-                <p>9 hrs</p>
+                <p> {totalSeconds * 3600} hrs</p>
               </Col>
               <Col md={6}>
                 <h4 className="">Start Time</h4>
