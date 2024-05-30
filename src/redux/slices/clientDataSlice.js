@@ -839,10 +839,10 @@ export function approveTimeReportReconciliation(payload, callback) {
       });
 
       dispatch(setActionSuccessFully());
-      toast.success("New Developer is Added", { position: "top-center" });
+      toast.success("Time sheet Developer is updated", { position: "top-center" });
       return callback();
     } catch (error) {
-      toast.error(error.response.data.message, { position: "top-center" });
+      toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailClientData());
     }
   };
