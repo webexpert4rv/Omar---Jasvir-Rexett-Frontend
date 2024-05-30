@@ -271,7 +271,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                             ).format("h:mm A")} `
                                           : reprt?.is_holiday
                                           ? "Holiday"
-                                          : reprt?.is_off_day && "Leave"}
+                                          : reprt?.is_off_day ? "Leave":reprt?.is_public_holiday ? reprt?.holiday_name:""}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">

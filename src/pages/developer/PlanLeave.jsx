@@ -25,6 +25,7 @@ import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import { TiEdit } from "react-icons/ti";
+import ListOfHolidays from "../../components/common/LeaveRequest/ListOfHolidays";
 
 const LeavePlan = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -185,7 +186,6 @@ const LeavePlan = () => {
                   <Tab.Pane eventKey="first">
                     <div className="card-box mb-4">
                       <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
-                      {/* <p className="text-muted font-14 mb-0">No Leave Applied</p> */}
                       <Row>
                         {leaveDetails.length > 0 ? (
                           leaveDetails?.map((field, idx) => (
@@ -232,7 +232,7 @@ const LeavePlan = () => {
                             </Col>
                           ))
                         ) : (
-                          <NoDataFound />
+                          <p className="text-muted font-14 mb-0">No Leave Applied</p>
                         )}
                       </Row>
                     </div>
@@ -386,99 +386,7 @@ const LeavePlan = () => {
 
             </Tab.Pane>
             <Tab.Pane eventKey="public-holiday">
-              <section className="">
-                <div className="calendar-container card-box">
-                  <Row>
-                    <Col md={7}>
-                      <Calendar onChange={onChange} value={value} tileContent={tileContent} />
-                    </Col>
-                    <Col md={5}>
-                      <div className="holiday-listing px-0 pt-4">
-                        <div className="d-flex justify-content-between align-items-center px-3 mb-3">
-                          <h3 className="mb-0">List of holidays</h3>
-                          <Form.Select className="common-field w-auto font-14 py-2">
-                            <option>This Month</option>
-                            <option>This Year</option>
-                            <option>Created</option>
-                          </Form.Select>
-                        </div>
-                        <div className="event-container">
-                          <div className="event-wrapper">
-                            <div className="event-info">
-                              <div className="holiday-date">
-                                <span className="eventdate-text">01 MAY<br /><span className="year-text">2024</span></span>
-                              </div>
-                              <div>
-                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="event-wrapper">
-                            <div className="event-info">
-                              <div className="holiday-date">
-                                <span className="eventdate-text">08 MAY<br /><span className="year-text">2024</span></span>
-                              </div>
-                              <div>
-                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="event-wrapper">
-                            <div className="event-info">
-                              <div className="holiday-date">
-                                <span className="eventdate-text">08 MAY<br /><span className="year-text">2024</span></span>
-                              </div>
-                              <div>
-                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="event-wrapper">
-                            <div className="event-info">
-                              <div className="holiday-date">
-                                <span className="eventdate-text">11 MAY<br /><span className="year-text">2024</span></span>
-                              </div>
-                              <div>
-                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="event-wrapper">
-                            <div className="event-info">
-                              <div className="holiday-date">
-                                <span className="eventdate-text">14 MAY<br /><span className="year-text">2024</span></span>
-                              </div>
-                              <div>
-                                <h4 className="event-name mb-0">Birthday of Rabindranath</h4>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="event-wrapper">
-                            <div className="event-info">
-                              <div className="holiday-date">
-                                <span className="eventdate-text">23 MAY<br /><span className="year-text">2024</span></span>
-                              </div>
-                              <div>
-                                <h4 className="event-name mb-0">Buddha Purnima</h4>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="event-wrapper">
-                            <div className="event-info">
-                              <div className="holiday-date">
-                                <span className="eventdate-text">31 MAY<br /><span className="year-text">2024</span></span>
-                              </div>
-                              <div className="d-flex align-items-center gap-2">
-                                <h4 className="event-name mb-0">Urgent Work</h4>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                </div>
-              </section>
+              <ListOfHolidays onChange={onChange} value={value} tileContent={tileContent}/>
             </Tab.Pane>
           </Tab.Content>
 

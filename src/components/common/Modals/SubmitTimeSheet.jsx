@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLogTime } from "../../../redux/slices/developerDataSlice";
 import { useForm } from "react-hook-form";
 const SubmitTimeReport = ({
@@ -23,6 +23,7 @@ const SubmitTimeReport = ({
     formState: { errors },
   } = useForm();
   const today = moment().format("YYYY-MM-DD");
+  const {lastTimeLog}=useSelector(state=>state.developerData)
 
   const onSubmit = (values) => {
     handleCloseTimeReport();
@@ -61,7 +62,7 @@ const SubmitTimeReport = ({
               </Col>
               <Col md={6}>
                 <h4 className="">Start Time</h4>
-                <p className="mb-0">09:00 AM</p>
+                <p className="mb-0">{lastTimeLog?.check_in_time}</p>
                 {/* <p className="mb-0">{startTime}</p> */}
               </Col>
               <Col md={6}>
