@@ -149,10 +149,6 @@ const LeaveRequest = () => {
   };
 
   return (
-    <>
-      {screenLoader ? (
-        <ScreenLoader />
-      ) : (
         <>
           <Tab.Container
             id="left-tabs-example"
@@ -319,9 +315,6 @@ const LeaveRequest = () => {
               </Tab.Pane>
             </Tab.Content>
           </Tab.Container>
-        </>
-      )}
-    </>
-  );
+        </>)
 };
 export default LeaveRequest;

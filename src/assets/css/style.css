@@ -5035,6 +5035,21 @@ input[type="radio"]:checked {
         visibility: visible;
     }
 }
+.floating-btn
+{
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+    border-radius: 50%;
+    background-color: #037563;
+    border: 1px solid #037563 !important;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s ease;
+}
+
 .floating-options a .icon-float
 {
     width: 40px;
