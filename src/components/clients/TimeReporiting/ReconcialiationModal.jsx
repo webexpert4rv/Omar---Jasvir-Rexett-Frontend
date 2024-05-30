@@ -41,7 +41,6 @@ const ReconciliationModal = ({
     ]);
   }, []);
 
-  console.log(item,"uitmm")
 
   const approvedReject = async (currentStatus) => {
     let data = {
@@ -140,7 +139,7 @@ const ReconciliationModal = ({
 
               {editDetails?.isEdit ? (
                 <>
-                <input type="time" className="common-field form-control" value={item?.start_time} name="start_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
+                <input type="time" className="common-field form-control" value={moment(item?.start_time, "HH:mm:ss").format("HH:mm")} name="start_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
                 
                 </>
               ) : start_time ? (
@@ -154,7 +153,7 @@ const ReconciliationModal = ({
               <FaRegClock />
 
               {editDetails?.isEdit ? (
-                <input type="time" className="common-field form-control" value={item?.end_time} name="end_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
+                <input type="time" className="common-field form-control" value={moment(item?.end_time, "HH:mm:ss").format("HH:mm")} name="end_time"  onChange={(e)=>handleChangeUpdateWeeklyData(e,index)}/>
               ) : end_time ? (
                 moment(end_time, "HH:mm:ss").format("h:mm A")
               ) : (

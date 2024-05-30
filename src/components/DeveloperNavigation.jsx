@@ -32,7 +32,6 @@ const DeveloperNavigation = ({ onClick }) => {
     useEffect(()=>{
         const dt = moment(new Date(), "YYYY-MM-DD HH:mm:ss").format('dddd')
         setFridayMarquee(dt)
-        console.log(dt,"dt")
         dispatch(getLastTimeLog())
         
     },[])
