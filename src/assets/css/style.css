@@ -5006,6 +5006,20 @@ input[type="radio"]:checked {
 {
     animation: upShow .2s linear forwards;
 }
+.overview-card .developer-card .user-imgbx
+{
+    width: 60px;
+    height: 60px;
+}
+.overview-card .developer-card .user-name
+{
+    font-size: 16px;
+    font-weight: 600;
+}
+.overview-card .developer-card .email-user
+{
+    font-size: 14px;
+}
 @keyframes upShow
 {
     0%
@@ -5021,6 +5035,21 @@ input[type="radio"]:checked {
         visibility: visible;
     }
 }
+.floating-btn
+{
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+    border-radius: 50%;
+    background-color: #037563;
+    border: 1px solid #037563 !important;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .3s ease;
+}
+
 .floating-options a .icon-float
 {
     width: 40px;
