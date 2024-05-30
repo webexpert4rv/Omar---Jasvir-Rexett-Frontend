@@ -36,6 +36,19 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
     }
   };
 
+  const returnExperienceFromScreeningQuestions = (screeningQuestions) => {
+    if (screeningQuestions?.length) {
+      const requiredElement = screeningQuestions?.find(
+        (curElem) =>
+          curElem?.question ==
+          "How many years of experience do you currently have?"
+      );
+      if (requiredElement) {
+        return requiredElement?.ideal_answer;
+      }
+    }
+  };
+
   return (
     <div className="job-posted-wrapper">
       {screenLoader?<ScreenLoader/>: jobListing?.length > 0 ? (
@@ -50,7 +63,17 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       {getCategory(item.category)}
                     </h4>
                     <div className="profile-req">
-                      {/* <p className="grid-text">{item?.experience?.split("_").join(" ") || "Not-mentioned"}</p> */}
+                    <p className={ returnExperienceFromScreeningQuestions(
+                                      item?.screening_questions
+                                    ) ? `grid-text` : ""} >
+                                  {item?.screening_questions &&
+                                    returnExperienceFromScreeningQuestions(
+                                      item?.screening_questions
+                                    )}
+                                  {returnExperienceFromScreeningQuestions(
+                                    item?.screening_questions
+                                  ) && " years"}
+                                </p>
                       <p className="grid-text">{item?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                       <p className="grid-text">{item?.job_type}</p>
                     </div>

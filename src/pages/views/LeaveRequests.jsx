@@ -110,7 +110,6 @@ const LeaveRequest = () => {
     setShowEvent(!showEvent);
   };
   const { leaveList } = useSelector((state) => state.clientData);
-  console.log(leaveList, "leaveList");
   const handleCloseEvent = () => {
     setShowEvent(false);
   };
