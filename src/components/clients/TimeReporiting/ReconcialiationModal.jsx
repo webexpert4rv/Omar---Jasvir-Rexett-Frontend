@@ -92,7 +92,7 @@ const ReconciliationModal = ({
                 ""
               )}
               <div className="d-flex gap-2">
-                {role == "client" ? (
+                {role == "client"  ? (
                   <>
                     <OverlayTrigger placement="bottom" overlay={approveRemark}>
                       <Button
@@ -173,9 +173,9 @@ const ReconciliationModal = ({
           </p>
         )}
         <div>
-          {item?.reconciliation_approved ? (
+          {item?.is_approved ? (
             <span className="status-finished mt-2 mx-1">Approved</span>
-          ) : (item?.reconciliation_approved === false)&&(
+          ) : (item?.is_approved === false)&&(
             <span className="status-rejected mt-2">Rejected</span>
           )}
 

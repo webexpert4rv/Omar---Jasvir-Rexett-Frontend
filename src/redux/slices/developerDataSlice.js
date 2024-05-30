@@ -726,7 +726,7 @@ export function addLogTime(paylaod, callback) {
     } catch (error) {
       toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailDeveloperData());
-      dispatch(setLastTimeLog(error?.response?.data?.success));
+      // dispatch(setLastTimeLog(error?.response?.data?.success));
     }
   };
 }
