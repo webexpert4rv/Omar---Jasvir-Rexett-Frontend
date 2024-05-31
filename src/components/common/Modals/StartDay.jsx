@@ -8,20 +8,19 @@ import exitIcon from '../../../assets/img/logout-line-icon.svg'
 import exitIconGreen from '../../../assets/img/logout-line-icon-green.svg'
 import SubmitTimeReport from "./SubmitTimeSheet";
 import moment from "moment";
+import { getLastTimeLog } from "../../../redux/slices/developerDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 const StartDayModal = ({ type , show, handleClose, checked, totalSeconds,setChecked }) => {
-    console.log(type,"type")
-    const { t } = useTranslation();
+  
     const [showTimeReport, setShowTimeReport] = useState(false);
     const [endTime,setEndTime] = useState(null);
-    const [startTime,setStartTime] = useState(null);
+    const dispatch =useDispatch()
     const handleTimeReport = () => {     
         setShowTimeReport(true);
         const now = moment();
         const endTime = now.format('h:mm a');
         setEndTime(endTime);    
-        // const startTime = endTime.subtract(totalSeconds, 'seconds');
-        // setStartTime(startTime);
-        // setChecked(false)
+        dispatch(getLastTimeLog())
        
     }
     const handleCloseTimeReport = () => {

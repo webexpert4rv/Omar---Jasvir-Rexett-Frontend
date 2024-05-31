@@ -64,7 +64,7 @@ export function loginUser(payload, callback) {
                             localStorage.setItem("userName",result?.data?.data?.name)
 
 
-                            window.location.href = "/dashboard"
+                            window.location.href = "dashboard"
                         }
 
                         if (result.data.data.role === "developer") {

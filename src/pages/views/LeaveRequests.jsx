@@ -110,7 +110,6 @@ const LeaveRequest = () => {
     setShowEvent(!showEvent);
   };
   const { leaveList } = useSelector((state) => state.clientData);
-  console.log(leaveList, "leaveList");
   const handleCloseEvent = () => {
     setShowEvent(false);
   };
@@ -149,10 +148,6 @@ const LeaveRequest = () => {
   };
 
   return (
-    <>
-      {screenLoader ? (
-        <ScreenLoader />
-      ) : (
         <>
           <Tab.Container
             id="left-tabs-example"
@@ -319,9 +314,6 @@ const LeaveRequest = () => {
               </Tab.Pane>
             </Tab.Content>
           </Tab.Container>
-        </>
-      )}
-    </>
-  );
+        </>)
 };
 export default LeaveRequest;

@@ -697,10 +697,10 @@ export function updateProjects(projectId, payload, role,callback,isLast = true) 
       if (isLast) {
         if(role==="developer"){
         toast.success("Please wait for changes approval by admin", { position: "top-center" });
-      }
-    }else{
+      }else{
         toast.success("Projects are Updated", { position: "top-center" });
       }
+    }
       dispatch(setSuccessActionData());
       return callback();
     } catch (error) {
@@ -721,11 +721,12 @@ export function addLogTime(paylaod, callback) {
         ...paylaod,
       });
       dispatch(setSuccessActionData());
-      // toast.success(result)
+      dispatch(setLastTimeLog(result.data));
       return callback();
     } catch (error) {
       toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailDeveloperData());
+      // dispatch(setLastTimeLog(error?.response?.data?.success));
     }
   };
 }
