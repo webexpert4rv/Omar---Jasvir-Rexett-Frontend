@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm } from "react-hook-form";
 import { getAddHoliday, getLeaveList } from "../../../redux/slices/clientDataSlice";
-import { use } from "i18next";
-import { useDispatch } from "react-redux";
-const NewEvent = ({ show, handleClose }) => {
+import { useDispatch, useSelector } from "react-redux";
+const NewEvent = ({ show, handleClose ,status}) => {
     const dispatch = useDispatch()
+    const { leaveList } = useSelector((state) => state.clientData);
     const {
         register,
         setValue,
@@ -14,15 +14,24 @@ const NewEvent = ({ show, handleClose }) => {
         reset,
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
+
+   useEffect(()=>{
+    const selectedHoliday = leaveList?.find((value)=>value.id===status?.id)
+        if(status?.status==="edit"){
+        setValue("name",selectedHoliday?.name)
+        setValue("country",selectedHoliday?.country)
+        setValue("description",selectedHoliday?.description)
+        setValue("date",selectedHoliday?.date)
+        }
+    },[status,leaveList])
+
     const onSubmit = async (values) => {
-        console.log(values, "values")
         const payload = {
             country: values?.country,
             name: values?.name,
             description: values?.description,
             date: values?.date
         }
-        console.log(payload, "payload")
         await dispatch(getAddHoliday(payload))
         dispatch(getLeaveList())
         handleClose()
