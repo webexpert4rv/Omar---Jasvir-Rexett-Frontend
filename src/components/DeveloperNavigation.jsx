@@ -26,6 +26,7 @@ const DeveloperNavigation = ({ onClick }) => {
     const [checked, setChecked] = useState(false)
     const [totalSeconds, setTotalSeconds] = useState(0);
     const {lastTimeLog}=useSelector(state=>state.developerData)
+    const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
     const [fridayMarquee , setFridayMarquee] = useState(false)
     
 
@@ -51,25 +52,34 @@ const DeveloperNavigation = ({ onClick }) => {
     },[lastTimeLog?.data?.hours_worked_till_time])
     
 
-    const handleCloseStartDay = (text,currStatus) => {
+    const handleCloseStartDay = (text, currStatus) => {
         setIsColorfulChecked(false);
-        if (text === "yes") {
-            if(lastTimeLog?.data?.type === "check-out")
-                {
-                   toast.error("You have already checked out. You cannot check in again ")
-                }
-                else{
-                    setChecked(!checked)
-                    let data={
-                          "type": lastTimeLog?.data?.hours_worked_till_time==null ? "check-in": currStatus=="check-in" ? "resumed":currStatus,
-                        "timer_seconds_till_time": totalSeconds==0?null:totalSeconds,
-                        "memo": null
-                      }
-                    dispatch(addLogTime(data))
-
-                }
+        if (text !== "yes") {
+            return;
         }
+    
+        if (assignedDeveloperList.length === 0) {
+            toast.error("You don't have any active project and are not associated with any client");
+            return;
+        }
+    
+        if (lastTimeLog?.data?.type === "check-out") {
+            toast.error("You have already checked out. You cannot check in again");
+            return;
+        }
+    
+        setChecked(!checked);
+    
+        const isCheckIn = lastTimeLog?.data?.hours_worked_till_time == null;
+        const data = {
+            type: isCheckIn ? "check-in" : currStatus === "check-in" ? "resumed" : currStatus,
+            timer_seconds_till_time: totalSeconds === 0 ? null : totalSeconds,
+            memo: null,
+        };
+    
+        dispatch(addLogTime(data));
     };
+    
 
     const handleCheckout = (values) => {
     }

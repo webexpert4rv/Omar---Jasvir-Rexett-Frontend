@@ -430,6 +430,7 @@ export function clientUpdatePost(
 }
 
 export function singleJobPostData(payload, callback) {
+  console.log(payload,"pp")
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {

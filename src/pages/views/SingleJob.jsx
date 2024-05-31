@@ -47,7 +47,7 @@ const SingleJob = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  let id = location.pathname.split("/")[2];
+  let id = location.pathname.split("/")[3];
   const clientId = localStorage.getItem("userId")
   console.log(clientId,"clientid")
   const {
@@ -120,7 +120,7 @@ const SingleJob = () => {
         dispatch(
           getDeleteJob(statusModal?.id, () => {
             setStatusModal({});
-            navigate("/job-posted");
+            navigate("/client/job-posted");
           })
         );
       } else {
@@ -195,7 +195,7 @@ const SingleJob = () => {
       dispatch(
         getDeleteJob(statusModal?.id, () => {
           setStatusModal({});
-          navigate("/job-posted");
+          navigate("/client/job-posted");
         })
       );
     } else {
