@@ -341,7 +341,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           </td>
                           <td className="time-table-data">
                             <button
-                              // disabled={item?.isApproved || !isTodayFriday()}
+                              disabled={item?.isApproved || !isTodayFriday()}
                               onClick={() => {
                                 handleremarkShow(item, index);
                               }}

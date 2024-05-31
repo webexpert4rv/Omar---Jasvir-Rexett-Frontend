@@ -25,7 +25,24 @@ const SubmitTimeReport = ({
   const today = moment().format("YYYY-MM-DD");
   const {lastTimeLog}=useSelector(state=>state.developerData)
 
+  const calculateTotalHours = () => {
+    const now = moment();
+    const startTime = moment(lastTimeLog?.check_in_time, 'hh:mm A');
+    
+    // Ensure that startTime is valid
+    if (!startTime.isValid()) {
+      return 'Invalid start time';
+    }
+  
+    const duration = moment.duration(now.diff(startTime));
+    const hours = duration.asHours();
+    
+    return hours.toFixed(2);
+  };
+ 
+
   const onSubmit = (values) => {
+    
     handleCloseTimeReport();
     handleClose();
     setChecked(false);
@@ -58,11 +75,11 @@ const SubmitTimeReport = ({
               </Col>
               <Col md={6}>
                 <h4 className="">Total Hours</h4>
-                <p> {totalSeconds * 3600} hrs</p>
+                <p> {calculateTotalHours()} hrs</p>
               </Col>
               <Col md={6}>
                 <h4 className="">Start Time</h4>
-                <p className="mb-0">{lastTimeLog?.check_in_time}</p>
+                <p className="mb-0">{moment(lastTimeLog?.check_in_time, "HH:mm:ss").format("HH:mm")} {lastTimeLog?.check_in_time?.split(" ")[1]}</p>
                 {/* <p className="mb-0">{startTime}</p> */}
               </Col>
               <Col md={6}>

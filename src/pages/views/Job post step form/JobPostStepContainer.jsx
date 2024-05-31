@@ -281,7 +281,7 @@ const JobPostStepContainer = () => {
     if (activeStep < 3) {
       setActiveStep((prev) => prev + 1);
     } else {
-      navigate("/job-posted");
+      navigate("/client/job-posted");
     }
 
     // if (jobId) {

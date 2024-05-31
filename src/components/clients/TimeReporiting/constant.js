@@ -89,7 +89,6 @@ export const HEADER = [
   "Leave Type",
   "Leave Date",
   "Reason",
-  "Project",
   "Associated With",
   "Action",
 ];
