@@ -139,7 +139,7 @@ const EditTimeReport = ({ show, handleClose,adminTimeReportingList }) => {
                                     <option>2019</option>
                                     <option>2018</option>
                                     <option>2017</option>
-                                </Form.Select>
+                                    </Form.Select>
                             </Form.Group>
                         </Col>
                         <Col md="12">

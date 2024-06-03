@@ -84,6 +84,8 @@ import JobPostStepContainer from './pages/views/Job post step form/JobPostStepCo
 import LeaveRequest from './pages/views/LeaveRequests';
 import PublicHoliday from './pages/views/PublicHolidays';
 import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
+import TakeQuiz from './pages/developer/TakeQuiz';
+import SkillTest from './pages/developer/SkillTest';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
@@ -137,6 +139,8 @@ function App() {
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
           <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
+          <Route path="/take-quiz" exact element={<DeveloperDashboardLayout><TakeQuiz /></DeveloperDashboardLayout>} />
+          <Route path="/skill-test" exact element={<DeveloperDashboardLayout><SkillTest /></DeveloperDashboardLayout>} />
           <Route path="/developer-public-holiday" exact element={<DeveloperDashboardLayout><DeveloperPublicHoliday /></DeveloperDashboardLayout>} />
           <Route path="/job-post" exact element={<DashboardLayout><JobPostStepContainer /></DashboardLayout>} />
           <Route path="/job-posted" exact element={<DashboardLayout><JobListing /></DashboardLayout>} />

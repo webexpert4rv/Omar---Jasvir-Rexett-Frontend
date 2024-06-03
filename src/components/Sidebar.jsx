@@ -55,7 +55,7 @@ const Sidebar = ({sideBarActive , closemainSidebar}) => {
                                 <NavLink to={'/time-reporting'} className="side-link" activeClassName="active"><BsClockFill /> {t("timeReporting")}</NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/leave-request'} className="side-link" activeClassName="active"><GiPalmTree /> Leave Requests</NavLink>
+                                <NavLink to={'/leave-request'} className="side-link" activeClassName="active"><GiPalmTree /> Leave Requests / Holidays</NavLink>
                             </li>
                             {/* <li className="sidebar-item">
                                 <NavLink to={'/job-post'} className="side-link" activeClassName="active"><IoBriefcase /> Job Post</NavLink>
