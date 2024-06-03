@@ -10,6 +10,7 @@ import Tabs from "../../components/common/LeaveRequest/Tabs";
 import HeaderTable from "../../components/common/LeaveRequest/HeaderTable";
 import { Row, Col, Button, Form, Tab, Nav } from "react-bootstrap";
 import {
+  clientDeleteHoliday,
   getClientLeaveHistory,
   getClientLeaveStatus,
 } from "../../redux/slices/clientDataSlice";
@@ -25,15 +26,17 @@ import { TiEdit } from "react-icons/ti";
 import Calendar from "react-calendar";
 import NewEvent from "./Modals/NewEvent";
 import ListOfHolidays from "../../components/common/LeaveRequest/ListOfHolidays";
+import ToolTip from "../../components/common/Tooltip/ToolTip";
+import moment from "moment";
 
 const LeaveRequest = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("first");
   const { leaveList } = useSelector((state) => state.clientData);
-  const[status,setStatus] = useState({
-    id:"",
-    status:""
-  })
+  const [status, setStatus] = useState({
+    id: "",
+    status: "",
+  });
   const { screenLoader, smallLoader, clientLeaveHistory } = useSelector(
     (state) => state.clientData
   );
@@ -112,10 +115,10 @@ const LeaveRequest = () => {
   const [showEvent, setShowEvent] = useState(false);
   const handleShowEvent = (id, status) => {
     setShowEvent(!showEvent);
-    setStatus({
-      id:id,
-      status:status,
-    })
+      setStatus({
+        id: id,
+        status: status,
+      });
   };
   const handleCloseEvent = () => {
     setShowEvent(false);
@@ -132,11 +135,15 @@ const LeaveRequest = () => {
     dispatch(getLeaveList());
   };
 
+  const handleDelete = async (id) => {
+    await dispatch(clientDeleteHoliday(id));
+    dispatch(getLeaveList());
+  };
+
   const listHolidays = (data) => {
     const holidays = data?.map((value) => new Date(value?.date));
     return holidays;
   };
-
 
   const [value, onChange] = useState(new Date());
   // Define the dates you want to mark
@@ -144,11 +151,15 @@ const LeaveRequest = () => {
 
   // Function to add custom content to tile
   const tileContent = ({ date, view }) => {
+    const holidayForDate = leaveList.find((holiday) => {
+      return new Date(holiday.date).toDateString() === date.toDateString();
+    });
+
     if (
       view === "month" &&
       markedDates.find((d) => d.toDateString() === date.toDateString())
     ) {
-      return <div className="dot"></div>;
+      return <ToolTip text={holidayForDate?.name}><div className="dot"></div></ToolTip>;
     }
     return null;
   };
@@ -181,7 +192,7 @@ const LeaveRequest = () => {
             />
             <Header data={tableHeader()} />
             <HeaderTable
-              // screenLoader={screenLoader}
+              smallLoader={smallLoader}
               tableData={clientLeaveHistory}
               currentTab={currentTab}
               handleApproveReject={handleApproveReject}
@@ -204,9 +215,15 @@ const LeaveRequest = () => {
               tileContent={tileContent}
               holidayList={leaveList}
               handleShowEvent={handleShowEvent}
+              handleDelete={handleDelete}
+              handleAproveDisapprove={handleAproveDisapprove}
             />
           </Tab.Pane>
-          <NewEvent show={showEvent} handleClose={handleCloseEvent} status={status} />
+          <NewEvent
+            show={showEvent}
+            handleClose={handleCloseEvent}
+            status={status}
+          />
         </Tab.Content>
       </Tab.Container>
     </>

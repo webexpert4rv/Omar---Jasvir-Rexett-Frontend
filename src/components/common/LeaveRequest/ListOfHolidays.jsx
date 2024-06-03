@@ -5,7 +5,8 @@ import Calendar from "react-calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { FILTER_NAME, MONTH_NAME } from "../../clients/TimeReporiting/constant";
 import { TiEdit } from "react-icons/ti";
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
+import ToolTip from "../Tooltip/ToolTip";
 
 const ListOfHolidays = ({
   onChange,
@@ -13,6 +14,8 @@ const ListOfHolidays = ({
   tileContent,
   holidayList,
   handleShowEvent,
+  handleDelete,
+  handleAproveDisapprove,
 }) => {
   let role = localStorage.getItem("role");
   const [holidayPeriod, setHolidayPeriod] = useState();
@@ -119,34 +122,74 @@ const ListOfHolidays = ({
                               </span>
                             </span>
                           </div>
-                          {item?.added_by === "client" && role === "client" ? (
-                            <>
-                              <div className="d-flex align-items-center gap-2">
-                                <h4 className="event-name mb-0">
-                                  {item?.name}
-                                </h4>
-                                <span className="associate-text">
-                                  <span className="associate">Created</span>
-                                </span>
-                              </div>
-                              <div className="d-flex gap-2">
-                                <Button
-                                  variant="transparent"
-                                  className="px-3 arrow-btn info-arrow font-16 text-decoration-none"
-                                  onClick={() =>
-                                    handleShowEvent(item?.id, "edit")
-                                  }
-                                >
-                                  <TiEdit />
-                                </Button>
-                                <Button
-                                  variant="transparent"
-                                  className="px-3 arrow-btn danger-arrow font-16 text-decoration-none"
-                                >
-                                  <IoCloseOutline />
-                                </Button>
-                              </div>
-                            </>
+                          {role === "client" ? (
+                            item?.added_by === "client" ? (
+                              <>
+                                <div className="d-flex align-items-center gap-2">
+                                  <h4 className="event-name mb-0">
+                                    {item?.name}
+                                  </h4>
+                                  <span className="associate-text">
+                                    <span className="associate">Created</span>
+                                  </span>
+                                </div>
+                                <div className="d-flex gap-2">
+                                  <Button
+                                    variant="transparent"
+                                    className="px-3 arrow-btn info-arrow font-16 text-decoration-none"
+                                    onClick={() =>
+                                      handleShowEvent(item?.id, "edit")
+                                    }
+                                  >
+                                    <TiEdit />
+                                  </Button>
+                                  <Button
+                                    variant="transparent"
+                                    className="px-3 arrow-btn danger-arrow font-16 text-decoration-none"
+                                    onClick={() => handleDelete(item?.id)}
+                                  >
+                                    <IoCloseOutline />
+                                  </Button>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                {" "}
+                                <div>
+                                  <div>
+                                    <h4 className="event-name mb-0">
+                                      {item?.name}
+                                    </h4>
+                                  </div>
+                                  <div className="d-flex gap-2">
+                                    <Button
+                                      variant="transparent"
+                                      className="px-3 arrow-btn primary-arrow font-16 text-decoration-none"
+                                      onClick={(e) =>
+                                        handleAproveDisapprove(
+                                          item?.id,
+                                          "approve"
+                                        )
+                                      }
+                                    >
+                                      <IoCheckmark />
+                                    </Button>
+                                    <Button
+                                      variant="transparent"
+                                      className="px-3 arrow-btn danger-arrow font-16 text-decoration-none"
+                                      onClick={(e) =>
+                                        handleAproveDisapprove(
+                                          item?.id,
+                                          "disapprove"
+                                        )
+                                      }
+                                    >
+                                      <IoCloseOutline />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </>
+                            )
                           ) : (
                             <div>
                               <h4 className="event-name mb-0">{item?.name}</h4>

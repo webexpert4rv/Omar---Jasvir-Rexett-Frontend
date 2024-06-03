@@ -34,7 +34,7 @@ const LeavePlan = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const { screenLoader, leaveDetails, allContracts, holidayList } = useSelector(
+  const { screenLoader, leaveDetails, allContracts, holidayList ,smallLoader } = useSelector(
     (state) => state.developerData
   );
 
@@ -139,11 +139,12 @@ const LeavePlan = () => {
 
   // Function to add custom content to tile
   const tileContent = ({ date, view }) => {
+    console.log(date,"date")
     if (
       view === "month" &&
       markedDates.find((d) => d.toDateString() === date.toDateString())
     ) {
-      return <div className="dot"></div>;
+      return <div className="dot"></div> ;
     }
     return null;
   };
@@ -335,7 +336,7 @@ const LeavePlan = () => {
                                 text={t("Submit")}
                                 className="main-btn font-14 px-4 py-2"
                                 variant="transparent"
-                                // isLoading={smallLoader}
+                                isLoading={smallLoader}
                               />
                             </div>
                           </form>
