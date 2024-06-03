@@ -89,7 +89,6 @@ export const HEADER = [
   "Leave Type",
   "Leave Date",
   "Reason",
-  "Project",
   "Associated With",
   "Action",
 ];
@@ -151,3 +150,23 @@ export const LEAVE_TYPE = [
   //   value: "casual-leave",
   // },
 ];
+export const MONTH_NAME = [
+   "All",
+   "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+]
+export const FILTER_NAME = [
+  "Created",
+  "This Year",
+  "This Month",
+]

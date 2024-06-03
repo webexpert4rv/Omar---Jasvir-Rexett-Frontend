@@ -134,6 +134,7 @@ export const clientDataSlice = createSlice({
       },
       setAddHoliday:(state,action) => {
         state.addHoliday = action.payload
+        state.smallLoader= false
       },
       setApproveDisapprove: (state,action)=>{
         state.approveDisapprove = action.payload
@@ -298,9 +299,8 @@ export function getLeaveList() {
 }
 
 export function getAddHoliday(payload, callback) {
-  console.log(payload,"payload")
   return async (dispatch) => {
-      dispatch(setScreenLoader())
+      dispatch(setSmallLoader())
       try {
           let result = await clientInstance.post('client/add-public-holiday',{...payload})
             dispatch(setAddHoliday(result.data.data))
@@ -430,6 +430,7 @@ export function clientUpdatePost(
 }
 
 export function singleJobPostData(payload, callback) {
+  console.log(payload,"pp")
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -867,6 +868,35 @@ export function getReconciliationData(payload) {
       dispatch(setFailClientData());
     }
   };
+}
+export function updateClientHoliday(payload , id){
+  return async(dispatch) =>{
+    dispatch(setSmallLoader())
+    try{
+      let result =await clientInstance.put(`/client/update-public-holiday/${id}`,{...payload})
+      toast.success("Holiday is updated", { position: "top-center" });
+      dispatch(setActionSuccessFully());
+    }catch(error){
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  }
+
+}
+export function clientDeleteHoliday(id){
+  return async(dispatch) =>{
+    try{
+      let result =await clientInstance.delete(`/client/delete-public-holiday/${id}`)
+      console.log(result,"result")
+      toast.success("Holiday is Deleted", { position: "top-center" });
+    }catch(error){
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  }
+
 }
 
 

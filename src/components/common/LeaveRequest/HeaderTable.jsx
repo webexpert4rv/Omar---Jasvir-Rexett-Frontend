@@ -47,9 +47,9 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                 <td className="time-table-data text-start reason-data">
                   <p className="font-14 mb-0">{item?.reason_for_leave}</p>
                 </td>
-                <td className="time-table-data text-start white-nowrap">
+                {/* <td className="time-table-data text-start white-nowrap">
                   AI Bot Project
-                </td>
+                </td> */}
                 <td className="time-table-data text-start">
                   <ToolTip text="Aviox Technologies Pvt Ltd">
                     <div className="text-start">

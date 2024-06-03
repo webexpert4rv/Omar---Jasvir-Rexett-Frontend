@@ -271,7 +271,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                             ).format("h:mm A")} `
                                           : reprt?.is_holiday
                                           ? "Holiday"
-                                          : reprt?.is_off_day && "Leave"}
+                                          : reprt?.is_off_day ? "Leave":reprt?.is_public_holiday ? reprt?.holiday_name:""}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">
@@ -341,7 +341,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           </td>
                           <td className="time-table-data">
                             <button
-                              // disabled={item?.isApproved || !isTodayFriday()}
+                              disabled={item?.isApproved || !isTodayFriday()}
                               onClick={() => {
                                 handleremarkShow(item, index);
                               }}

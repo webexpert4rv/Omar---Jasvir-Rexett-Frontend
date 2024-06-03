@@ -9,6 +9,7 @@ import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Timer from "./Timer";
+import notificationSound from "../../assets/Audio/notificationSound.mp3";
 
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch();
@@ -26,20 +27,26 @@ const Notification = ({ route, job, doc, timeReport }) => {
 
   useEffect(() => {
     dispatch(getNotification());
-    setNewJobPost(null)
+    setNewJobPost(null);
   }, [newJobPost]);
-
-  console.log(notificationList,"notificationList")
-
 
   useEffect(() => {
     if (newJobPost !== null) {
-      let mergeRow = [newJobPost, ...notificationList["unreadNotifications"]?.notifications];
+      let mergeRow = [
+        newJobPost,
+        ...notificationList["unreadNotifications"]?.notifications,
+      ];
       setNotificationData([...nottificationData, ...mergeRow]);
     } else if (nottificationData?.length > 0) {
+      const audio = new Audio(notificationSound);
+      audio.play().catch((err) => {
+        console.log("audio play failed");
+      });
       setNotificationData(nottificationData);
     } else {
-      setNotificationData(notificationList["unreadNotifications"]?.notifications);
+      setNotificationData(
+        notificationList["unreadNotifications"]?.notifications
+      );
     }
   }, [notificationList, newJobPost]);
 
@@ -106,9 +113,9 @@ const Notification = ({ route, job, doc, timeReport }) => {
     } else if (data == "Time_reports") {
       navigate(`/${timeReport}`);
     } else if (data == "Users") {
-      if(role === "developer"){
+      if (role === "developer") {
         navigate(`/developer-dashboard`);
-      }else{
+      } else {
         navigate(`/admin-single-developer/${id}`);
       }
     }
@@ -128,14 +135,10 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null);
     setNotificationModal(true);
   };
-  
 
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
   }
-
-  console.log(nottificationData,"nottificationData")
-
   return (
     <>
       <header>
@@ -204,15 +207,13 @@ const Notification = ({ route, job, doc, timeReport }) => {
                       </Dropdown.Item>
                     )}
                   </div>
-                    <Dropdown.Item
-                      onClick={redirectToallScreen}
-                      className="see-all-notify mt-4"
-                    >
-                      {" "}
-
-
-                  {t("seeAll")}
-                    </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={redirectToallScreen}
+                    className="see-all-notify mt-4"
+                  >
+                    {" "}
+                    {t("seeAll")}
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               )}
             </Dropdown>

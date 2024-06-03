@@ -208,36 +208,8 @@ const Applications = () => {
             </Nav.Item>
           </Nav>
           <Tab.Content>
-            {/* {currentTab === "clients" && (
-              <CommonApplicationTable
-                arrowActive={arrowactive}
-                handleRowClick={handleRowClick}
-                application={application}
-                approvedLoader={approvedLoader}
-                expandedRow={expandedRow}
-                selectedApprovedBtn={selectedApprovedBtn}
-                selectedRejectedBtn={selectedRejectedBtn}
-                screenLoader={screenLoader}
-                handleClick={handleClick}
-                currentTab={currentTab}
-                columns={COLUMNS[currentTab]}
-              />
-            )} */}
-              {/* {currentTab === "vendors" && (
-              <CommonApplicationTable
-                arrowActive={arrowactive}
-                handleRowClick={handleRowClick}
-                application={application}
-                approvedLoader={approvedLoader}
-                expandedRow={expandedRow}
-                selectedApprovedBtn={selectedApprovedBtn}
-                selectedRejectedBtn={selectedRejectedBtn}
-                screenLoader={screenLoader}
-                handleClick={handleClick}
-                currentTab={currentTab}
-                columns={COLUMNS[currentTab]}
-              />
-            )} */}
+
+             
             <Tab.Pane eventKey="clients" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
