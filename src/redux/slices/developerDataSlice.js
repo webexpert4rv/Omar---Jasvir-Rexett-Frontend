@@ -20,7 +20,8 @@ const initialDeveloperData = {
   approvedLoader: false,
   lastTimeLog: {},
   leaveHistory: [],
-  leaveDetails:[]
+  leaveDetails:[],
+  holidayList:[]
 };
 
 export const developerDataSlice = createSlice({
@@ -101,6 +102,9 @@ export const developerDataSlice = createSlice({
   },
     setUpdateLeave:(state,action)=>{
       state.updateLeave = action.payload
+  },
+  setHolidayList:(state,action)=>{
+    state.holidayList = action.payload
   }
 },
 });
@@ -116,6 +120,7 @@ export const {
   setSuccessActionData,
   setBtnLoader,
   setDegreeList,
+  setHolidayList,
   setFailDeveloperData,
   setSuccessDeveloperData,
   setActionSuccessFully,
@@ -764,6 +769,16 @@ export function postReconciliationData(paylaod, callback) {
     } catch (error) {
       console.log(error, "error");
       dispatch(setFailDeveloperData());
+    }
+  };
+}
+export function getHolidaysList() {
+  return async (dispatch) => {
+    try {
+      let result = await clientInstance.get(`/developer/get-holidays`);
+      dispatch(setHolidayList(result.data.data))
+    } catch (error) {
+      console.log(error, "error");
     }
   };
 }

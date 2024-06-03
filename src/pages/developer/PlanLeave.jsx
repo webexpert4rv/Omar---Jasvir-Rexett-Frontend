@@ -6,13 +6,14 @@ import { MdModeEditOutline } from "react-icons/md";
 import companyLogo from "../../assets/img/amazon.png";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import Calendar from 'react-calendar';
+import Calendar from "react-calendar";
 import {
   applyLeave,
   getAllContracts,
   getLeaveHistory,
   getCancelLeave,
   getUpdateLeave,
+  getHolidaysList,
 } from "../../redux/slices/developerDataSlice";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -33,11 +34,10 @@ const LeavePlan = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const { screenLoader, leaveDetails, allContracts } = useSelector(
+  const { screenLoader, leaveDetails, allContracts, holidayList } = useSelector(
     (state) => state.developerData
   );
 
-  console.log(leaveDetails, "leaveDetails");
   const {
     handleSubmit,
     register,
@@ -58,13 +58,16 @@ const LeavePlan = () => {
   const user_id = localStorage.getItem("userId");
 
   useEffect(() => {
+    dispatch(getHolidaysList());
+  }, []);
+
+  useEffect(() => {
     let data;
     if (currentTab === "first") {
       data = {
         approval_status: "Under Approval",
       };
     }
-
     dispatch(getLeaveHistory(user_id, data));
     dispatch(getAllContracts());
   }, [currentTab]);
@@ -125,20 +128,21 @@ const LeavePlan = () => {
     reset();
   };
 
+  const listHolidays = (data) => {
+    const holidays = data?.map((value) => new Date(value?.date));
+    return holidays;
+  };
+
   const [value, onChange] = useState(new Date());
   // Define the dates you want to mark
-  const markedDates = [
-    new Date(2024, 4, 1),
-    new Date(2024, 4, 8),
-    new Date(2024, 4, 11),
-    new Date(2024, 4, 14),
-    new Date(2024, 4, 23),
-    new Date(2024, 4, 31),
-  ];
+  const markedDates = listHolidays(holidayList);
 
   // Function to add custom content to tile
   const tileContent = ({ date, view }) => {
-    if (view === 'month' && markedDates.find(d => d.toDateString() === date.toDateString())) {
+    if (
+      view === "month" &&
+      markedDates.find((d) => d.toDateString() === date.toDateString())
+    ) {
       return <div className="dot"></div>;
     }
     return null;
@@ -185,14 +189,16 @@ const LeavePlan = () => {
                 <Tab.Content>
                   <Tab.Pane eventKey="first">
                     <div className="card-box mb-4">
-                      <h3 className="section-head border-0 mb-2">Applied Leaves</h3>
+                      <h3 className="section-head border-0 mb-2">
+                        Applied Leaves
+                      </h3>
                       <Row>
                         {leaveDetails.length > 0 ? (
                           leaveDetails?.map((field, idx) => (
                             <Col xxl={3} xl={6} className="mb-xxl-0 mb-3">
                               <div className="leave-wrapper-box">
                                 <div>
-                                  <h4 className="project-heading">{ }</h4>
+                                  <h4 className="project-heading">{}</h4>
                                   <h4 className="leave-type-heading">
                                     {generateLeave(field?.type)}
                                   </h4>
@@ -203,7 +209,9 @@ const LeavePlan = () => {
                                         "MM-DD-YYYY"
                                       )}{" "}
                                       to{" "}
-                                      {moment(field?.end_date).format("MM-DD-YYYY")}
+                                      {moment(field?.end_date).format(
+                                        "MM-DD-YYYY"
+                                      )}
                                     </p>
                                   </div>
                                   <p className="status-finished mb-0">
@@ -214,7 +222,9 @@ const LeavePlan = () => {
                                   <ToolTip text="Cancel Leave">
                                     <Button
                                       className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
-                                      onClick={() => handleCancelLeave(field?.id)}
+                                      onClick={() =>
+                                        handleCancelLeave(field?.id)
+                                      }
                                     >
                                       <IoClose />
                                     </Button>
@@ -232,7 +242,9 @@ const LeavePlan = () => {
                             </Col>
                           ))
                         ) : (
-                          <p className="text-muted font-14 mb-0">No Leave Applied</p>
+                          <p className="text-muted font-14 mb-0">
+                            No Leave Applied
+                          </p>
                         )}
                       </Row>
                     </div>
@@ -248,7 +260,9 @@ const LeavePlan = () => {
                       </Col>
                       <Col lg={5}>
                         <div className="plan-leave-wrapper">
-                          <h3 className="section-head border-0 mb-3">Apply Leave</h3>
+                          <h3 className="section-head border-0 mb-3">
+                            Apply Leave
+                          </h3>
                           <form onSubmit={handleSubmit(onSubmit)} noValidate>
                             <div className="mb-4">
                               <Form.Label className="mb-2 font-14">
@@ -299,7 +313,9 @@ const LeavePlan = () => {
                               </div>
                             </div>
                             <div className="mb-4">
-                              <Form.Label className="mb-2 font-14">Reason</Form.Label>
+                              <Form.Label className="mb-2 font-14">
+                                Reason
+                              </Form.Label>
                               <Form.Control
                                 as="textarea"
                                 rows="3"
@@ -319,7 +335,7 @@ const LeavePlan = () => {
                                 text={t("Submit")}
                                 className="main-btn font-14 px-4 py-2"
                                 variant="transparent"
-                              // isLoading={smallLoader}
+                                // isLoading={smallLoader}
                               />
                             </div>
                           </form>
@@ -331,12 +347,22 @@ const LeavePlan = () => {
                     <div className="table-responsive">
                       <table className="table time-table table-bordered table-ui-custom">
                         <thead>
-                          <th className="time-table-head text-start">Leave Type</th>
-                          <th className="time-table-head text-start">Leave Date</th>
+                          <th className="time-table-head text-start">
+                            Leave Type
+                          </th>
+                          <th className="time-table-head text-start">
+                            Leave Date
+                          </th>
                           <th className="time-table-head text-start">Reason</th>
-                          <th className="time-table-head text-start">Project</th>
-                          <th className="time-table-head text-start">Client Name</th>
-                          <th className="time-table-head text-start">Leave Status</th>
+                          <th className="time-table-head text-start">
+                            Project
+                          </th>
+                          <th className="time-table-head text-start">
+                            Client Name
+                          </th>
+                          <th className="time-table-head text-start">
+                            Leave Status
+                          </th>
                         </thead>
                         <tbody>
                           {leaveDetails?.map((item, idx) => (
@@ -349,7 +375,10 @@ const LeavePlan = () => {
                                 </td>
                                 <td className="time-table-data text-start">
                                   <p className="leave-date white-nowrap">
-                                    {moment(item.start_date).format("MM-DD-YYYY")} to{" "}
+                                    {moment(item.start_date).format(
+                                      "MM-DD-YYYY"
+                                    )}{" "}
+                                    to{" "}
                                     {moment(item.end_date).format("MM-DD-YYYY")}
                                   </p>
                                 </td>
@@ -383,13 +412,16 @@ const LeavePlan = () => {
                   </Tab.Pane>
                 </Tab.Content>
               </Tab.Container>
-
             </Tab.Pane>
             <Tab.Pane eventKey="public-holiday">
-              <ListOfHolidays onChange={onChange} value={value} tileContent={tileContent}/>
+              <ListOfHolidays
+                onChange={onChange}
+                value={value}
+                tileContent={tileContent}
+                holidayList={holidayList}
+              />
             </Tab.Pane>
           </Tab.Content>
-
         </Tab.Container>
       )}
       <div className="helper-text-section">
