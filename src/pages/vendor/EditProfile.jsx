@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button, Nav, Tab, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Row, Col, Form, Button, Tabs, Tab, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
 import RexettButton from "../../components/atomic/RexettButton";
@@ -13,8 +13,6 @@ import { useTranslation } from "react-i18next";
 import { getDeleteAccount } from "../../redux/slices/clientDataSlice";
 import { FaTrashCan } from "react-icons/fa6";
 import EndJobModal from "./../views/Modals/EndJob";
-import companyLogo from '../../assets/img/aviox-logo.png'
-import { IoIosCamera } from "react-icons/io";
 
 
 const EditVendorProfile = () => {
@@ -181,840 +179,809 @@ const EditVendorProfile = () => {
         <>
           <section className="card-box">
             <Form onSubmit={handleSubmit(onSubmit)} noValidate>
-              <Tab.Container id="left-tabs-example" defaultActiveKey="personal_details">
-                <Nav variant="pills" className="mb-4 application-pills">
-                  <Nav.Item className="application-item">
-                    <Nav.Link className="application-link" eventKey="personal_details">Personal Details</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item className="application-item">
-                    <Nav.Link className="application-link" eventKey="company_details">Company Details</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item className="application-item">
-                    <Nav.Link className="application-link" eventKey="proprietor_details">Proprietor Details</Nav.Link>
-                  </Nav.Item>
-                </Nav>
-                <Tab.Content>
-                  <Tab.Pane eventKey="personal_details">
-                    <div>
-                      <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
-                        <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
-                        {/* <OverlayTrigger placement="bottom" overlay={deleteprofile}>
-                        <Button onClick={() => handleJobStatusModal(vendorProfile?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
-                      </OverlayTrigger> */}
-                      </div>
-                      <Row className="mb-4">
-                        <Col md="6">
-                          <div className="inner-form">
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("vendorName")} *
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="vendor_name"
-                                placeholder={t("enterVendorName")}
-                                {...register(`vendor_name`, {
-                                  required: t("nameValidation"),
-                                })}
-                              />
-                              {errors?.vendor_name && (
-                                <p className="error-message">
-                                  {errors.vendor_name.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("email")} *
-                              </Form.Label>
-                              <div>
-                                <Form.Control
-                                  type="text"
-                                  className="common-field"
-                                  name="email"
-                                  placeholder={t("enterEmail")}
-                                  {...register(`email`, {
-                                    required: t("emailValidation"),
-                                  })}
-                                />
-                                {errors?.email && (
-                                  <p className="error-message">
-                                    {errors.email.message}
-                                  </p>
-                                )}
-                              </div>
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("previousPassword")}
-                              </Form.Label>
-                              <div className="position-relative">
-                                <Form.Control
-                                  type={password.firstPass ? "text" : "password"}
-                                  className="common-field"
-                                  name="password"
-                                  placeholder={t("enterPassword")}
-                                  {...register("previous_password", {
-                                    validate: validatePassword
-                                  })}
-                                />
-                                <p className="error-message">
-                                  {errors.previous_password?.message} </p>
-                                <span
-                                  className="eye-btn"
-                                  onClick={() =>
-                                    setPassword({
-                                      ...password,
-                                      firstPass: !password.firstPass,
-                                    })
-                                  }
-                                >
-                                  <FaEye />
-                                </span>
-                              </div>
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("newPassword")}
-                              </Form.Label>
-                              <div className="position-relative">
-                                <Form.Control
-                                  type={password.secondPass ? "text" : "password"}
-                                  className="common-field"
-                                  name="new_password"
-                                  placeholder={t("enterNewPassword")}
-                                // {...register(`new_password`, {
-                                //   required: t("newPasswordValidation"),
-                                // })}
-                                />
-                                <span
-                                  className="eye-btn"
-                                  onClick={() =>
-                                    setPassword({
-                                      ...password,
-                                      secondPass: !password.secondPass,
-                                    })
-                                  }
-                                >
-                                  <FaEye />
-                                </span>
-                              </div>
-                              {/* {errors?.new_password && (
-                                <p className="error-message">
-                                  {errors.new_password.message}
-                                </p>
-                              )} */}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("phoneNumber")} *
-                              </Form.Label>
-                              <Form.Control
-                                type="number"
-                                className="common-field"
-                                name="phone_number"
-                                placeholder={t("enterPhoneNumber")}
-                                {...register(`phone_number`, {
-                                  required: t("phoneNumberValidation"),
-                                })}
-                              />
-                              {errors?.phone_number && (
-                                <p className="error-message">
-                                  {errors.phone_number.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                          </div>
-                        </Col>
-                        <Col md="6">
-                          <div>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("address")} *
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="address"
-                                placeholder={t("enterAddress")}
-                                {...register(`address`, {
-                                  required: t("addressValidation"),
-                                })}
-                              />
-                              {errors?.address && (
-                                <p className="error-message">
-                                  {errors.address.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">{t("city")} *</Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="city"
-                                placeholder={t("enterCity")}
-                                {...register(`city`, {
-                                  required: t("cityValidation"),
-                                })}
-                              />
-                              {errors?.city && (
-                                <p className="error-message">
-                                  {errors.city.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("postCode")} *
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="passcode"
-                                placeholder={t("enterPostCode")}
-                                {...register(`passcode`, {
-                                  required: t("postCodeValidation"),
-                                })}
-                              />
-                              {errors?.passcode && (
-                                <p className="error-message">
-                                  {errors.passcode.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("country")} *
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="country"
-                                placeholder={t("enterCountryName")}
-                                {...register(`country`, {
-                                  required: t("countryValidation"),
-                                })}
-                              />
-                              {errors?.country && (
-                                <p className="error-message">
-                                  {errors.country.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                          </div>
-                        </Col>
-                      </Row>
+              <div>
+                <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
+                  <h2 className="section-head-sub mb-0 border-0">{t("updateYourProfile")}</h2>
+                  {/* <OverlayTrigger placement="bottom" overlay={deleteprofile}>
+                    <Button onClick={() => handleJobStatusModal(vendorProfile?.data?.id)} className="delete-btn"><FaTrashCan /></Button>
+                  </OverlayTrigger> */}
+                </div>
+                <Row className="mb-4">
+                  <Col md="6">
+                    <div className="inner-form">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("vendorName")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="vendor_name"
+                          placeholder={t("enterVendorName")}
+                          {...register(`vendor_name`, {
+                            required: t("nameValidation"),
+                          })}
+                        />
+                        {errors?.vendor_name && (
+                          <p className="error-message">
+                            {errors.vendor_name.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("email")} *
+                        </Form.Label>
+                        <div>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="email"
+                            placeholder={t("enterEmail")}
+                            {...register(`email`, {
+                              required: t("emailValidation"),
+                            })}
+                          />
+                          {errors?.email && (
+                            <p className="error-message">
+                              {errors.email.message}
+                            </p>
+                          )}
+                        </div>
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("previousPassword")}
+                        </Form.Label>
+                        <div className="position-relative">
+                          <Form.Control
+                            type={password.firstPass ? "text" : "password"}
+                            className="cv-field"
+                            name="password"
+                            placeholder={t("enterPassword")}
+                            {...register("previous_password", {
+                              validate: validatePassword
+                            })}
+                          />
+                          <p className="error-message">
+                            {errors.previous_password?.message} </p>
+                          <span
+                            className="eye-btn"
+                            onClick={() =>
+                              setPassword({
+                                ...password,
+                                firstPass: !password.firstPass,
+                              })
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                        </div>
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("newPassword")}
+                        </Form.Label>
+                        <div className="position-relative">
+                          <Form.Control
+                            type={password.secondPass ? "text" : "password"}
+                            className="cv-field"
+                            name="new_password"
+                            placeholder={t("enterNewPassword")}
+                          // {...register(`new_password`, {
+                          //   required: t("newPasswordValidation"),
+                          // })}
+                          />
+                          <span
+                            className="eye-btn"
+                            onClick={() =>
+                              setPassword({
+                                ...password,
+                                secondPass: !password.secondPass,
+                              })
+                            }
+                          >
+                            <FaEye />
+                          </span>
+                        </div>
+                        {/* {errors?.new_password && (
+                            <p className="error-message">
+                              {errors.new_password.message}
+                            </p>
+                          )} */}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("phoneNumber")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          className="cv-field"
+                          name="phone_number"
+                          placeholder={t("enterPhoneNumber")}
+                          {...register(`phone_number`, {
+                            required: t("phoneNumberValidation"),
+                          })}
+                        />
+                        {errors?.phone_number && (
+                          <p className="error-message">
+                            {errors.phone_number.message}
+                          </p>
+                        )}
+                      </Form.Group>
                     </div>
-                  </Tab.Pane>
-                  <Tab.Pane eventKey="company_details">
+                  </Col>
+                  <Col md="6">
                     <div>
-                      <h2 className="section-head mb-4">{t("updateCompanyProfile")}</h2>
-
-                      <Row className="mb-4">
-                        <Col md={12}>
-                          <Form.Group className="mb-4">
-                            <Form.Label className="common-label">Company Logo</Form.Label>
-                            <Form.Control type="file" id="company_logo_file" placeholder="Company Name" className="common-field d-none" />
-                            <div className="file_shown">
-                              <img src={companyLogo} />
-                              <Form.Label htmlFor="company_logo_file" className="camera-btn mb-0"><IoIosCamera /></Form.Label>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col md="6">
-                          <div className="inner-form">
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("companyName")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="company_name"
-                                placeholder={t("enterCompanyName")}
-                                {...register(`company_name`, {
-                                  required: t("compnyNameValidation"),
-                                })}
-                              />
-                              {errors?.company_name && (
-                                <p className="error-message">
-                                  {errors.company_name.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("typeOfCompany")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="type_of_company"
-                                placeholder={t("enterCompanyType")}
-                                {...register(`type_of_company`, {
-                                  required: t("compnyTypeValidation"),
-                                })}
-                              />
-                              {errors?.type_of_company && (
-                                <p className="error-message">
-                                  {errors.type_of_company.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("email")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="company_email"
-                                placeholder={t("enterEmail")}
-                                {...register(`company_email`, {
-                                  required: t("emailValidation"),
-                                })}
-                              />
-                              {errors?.company_email && (
-                                <p className="error-message">
-                                  {errors.company_email.message}
-                                </p>
-                              )}
-                            </Form.Group>
-
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("address")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="company_address"
-                                placeholder={t("enterAddress")}
-                                {...register(`company_address`, {
-                                  required: t("addressValidation"),
-                                })}
-                              />
-                              {errors?.company_address && (
-                                <p className="error-message">
-                                  {errors.company_address.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("phoneNumber")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="number"
-                                className="common-field"
-                                name="company_phone_number"
-                                placeholder={t("enterPhoneNumber")}
-                                {...register(`company_phone_number`, {
-                                  required: "Phone number is required",
-                                })}
-                              />
-                              {errors?.company_phone_number && (
-                                <p className="error-message">
-                                  {errors.company_phone_number.message}
-                                </p>
-                              )}
-                            </Form.Group>
-
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("establishmentYear")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="establishment_year"
-                                placeholder={t("establishmentYear")}
-                                {...register(`establishment_year`, {
-                                  required: t("establishmentValidation"),
-                                })}
-                              />
-                              {errors?.establishment_year && (
-                                <p className="error-message">
-                                  {errors.establishment_year.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("typeOfEstablishment")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="type_of_establishment"
-                                placeholder={t("enterTypeOfEstablishment")}
-                                {...register(`type_of_establishment`, {
-                                  required: t("typeOfEstablishmentValidation"),
-                                })}
-                              />
-                              {errors?.type_of_establishment && (
-                                <p className="error-message">
-                                  {errors.type_of_establishment.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("website")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="website"
-                                placeholder={t("enterWebsite")}
-                                {...register(`website`, {
-                                  required: t("websiteValidation"),
-                                })}
-                              />
-                              {errors?.website && (
-                                <p className="error-message">
-                                  {errors.website.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("GSTNumber")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="gst_number"
-                                placeholder={t("enterGSTNumber")}
-                                {...register(`gst_number`, {
-                                  required: t("gstValidation"),
-                                })}
-                              />
-                              {errors?.gst_number && (
-                                <p className="error-message">
-                                  {errors.gst_number.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                          </div>
-                          <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("successStory")}
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              className="common-field"
-                              name="success_story"
-                              placeholder={t("enterSuccessStory")}
-                              {...register(`success_story`, {
-                                required: false,
-                              })}
-                            />
-                            {errors?.success_story && (
-                              <p className="error-message">
-                                {errors.success_story.message}
-                              </p>
-                            )}
-                          </Form.Group>
-                          <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("yearlyRevenue")}
-                            </Form.Label>
-                            <Form.Control
-                              type="number"
-                              className="common-field"
-                              name="yearly_revenue"
-                              placeholder={t("enterYearlyRevenue")}
-                              {...register(`yearly_revenue`, {
-                                required: false,
-                              })}
-                            />
-                            {errors?.yearly_revenue && (
-                              <p className="error-message">
-                                {errors.yearly_revenue.message}
-                              </p>
-                            )}
-                          </Form.Group>
-                        </Col>
-                        <Col md="6">
-
-                          <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("totalEmployees")}*
-                            </Form.Label>
-                            <Form.Control
-                              type="number"
-                              className="common-field"
-                              name="total_employees"
-                              placeholder={t("totalEmployees")}
-                              {...register(`total_employees`, {
-                                required: t("totalEmployeesValidation"),
-                              })}
-                            />
-                            {errors?.total_employees && (
-                              <p className="error-message">
-                                {errors.total_employees.message}
-                              </p>
-                            )}
-                          </Form.Group>
-                          <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("totalITRecruiter")}
-                            </Form.Label>
-                            <Form.Control
-                              type="number"
-                              className="common-field"
-                              name="total_it_recruiter"
-                              placeholder={t("enterTotalITRecruiter")}
-                              {...register(`total_it_recruiter`, {
-                                required: false,
-                              })}
-                            />
-                            {errors?.total_it_recruiter && (
-                              <p className="error-message">
-                                {errors.total_it_recruiter.message}
-                              </p>
-                            )}
-                          </Form.Group>
-                          <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("serviceOffering")}
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              className="common-field"
-                              name="service_offering"
-                              placeholder={t("enterServiceOffering")}
-                              {...register(`service_offering`, {
-                                required: false,
-                              })}
-                            />
-                            {errors?.service_offering && (
-                              <p className="error-message">
-                                {errors.service_offering.message}
-                              </p>
-                            )}
-                          </Form.Group>
-                          <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("specialization")}
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              className="common-field"
-                              name="specialization"
-                              placeholder={t("enterSpecialization")}
-                              {...register(`specialization`, {
-                                required: false,
-                              })}
-                            />
-                            {errors?.specialization && (
-                              <p className="error-message">
-                                {errors.specialization.message}
-                              </p>
-                            )}
-                          </Form.Group>
-                          <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("closeContract")}
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              className="common-field"
-                              name="turn_around_time_to_close_contract_position"
-                              placeholder={t("enterCloseContract")}
-                              {...register(`turn_around_time_to_close_contract_position`, {
-                                required: false,
-                              })}
-                            />
-                            {errors?.turn_around_time_to_close_contract_position && (
-                              <p className="error-message">
-                                {errors.turn_around_time_to_close_contract_position.message}
-                              </p>
-                            )}
-                          </Form.Group> <Form.Group className="mb-3">
-                            <Form.Label className="common-label">
-                              {t("closePermanent")}
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              className="common-field"
-                              name="turn_around_time_to_close_permanent_position"
-                              placeholder={t("enterClosePermanent")}
-                              {...register(`turn_around_time_to_close_permanent_position`, {
-                                required: false,
-                              })}
-                            />
-                            {errors?.turn_around_time_to_close_permanent_position && (
-                              <p className="error-message">
-                                {errors.turn_around_time_to_close_permanent_position.message}
-                              </p>
-                            )}
-                          </Form.Group>
-
-                          <div>
-
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">{t("city")}*</Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="company_city"
-                                placeholder={t("enterCity")}
-                                {...register(`company_city`, {
-                                  required: t("cityValidation"),
-                                })}
-                              />
-                              {errors?.company_city && (
-                                <p className="error-message">
-                                  {errors.company_city.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("state")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="state"
-                                placeholder={t("enterState")}
-                                {...register(`state`, {
-                                  required: {
-                                    value: true,
-                                    message: t("stateValidation"),
-                                  },
-                                  pattern: {
-                                    value: /^[A-Za-z\s]+$/,
-                                    message: "State should not contain numbers ",
-                                  }
-                                })}
-                              />
-                              {errors?.state && (
-                                <p className="error-message">
-                                  {errors.state.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("postCode")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="post_code"
-                                placeholder={t("enterPostCode")}
-                                {...register(`post_code`, {
-                                  required: t("postCodeValidation"),
-                                })}
-                              />
-                              {errors?.post_code && (
-                                <p className="error-message">
-                                  {errors.post_code.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("country")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="company_country"
-                                placeholder={t("enterCountry")}
-                                {...register(`company_country`, {
-                                  required: {
-                                    value: true,
-                                    message: t("countryValidation"),
-                                  },
-                                  pattern: {
-                                    value: /^[A-Za-z\s]+$/,
-                                    message: "Country should not contain numbers or special character",
-                                  }
-                                })}
-                              />
-                              {errors?.company_country && (
-                                <p className="error-message">
-                                  {errors.company_country.message}
-                                </p>
-                              )}
-                            </Form.Group>
-
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("countryCode")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="country_code"
-                                placeholder={t("enterCountryCode")}
-                                {...register(`country_code`, {
-                                  required: {
-                                    value: true,
-                                    message: t("countryCodeValidation"),
-                                  },
-                                  pattern: {
-                                    value: /^(\+?\d{1,3}|\d{1,5})$/,
-                                    message: "Country should not be greater than 5 digits ",
-                                  }
-                                })}
-                              />
-                              {errors?.country_code && (
-                                <p className="error-message">
-                                  {errors.country_code.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                          </div>
-                        </Col>
-                        <Col md="6">
-
-                        </Col>
-                      </Row>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("address")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="address"
+                          placeholder={t("enterAddress")}
+                          {...register(`address`, {
+                            required: t("addressValidation"),
+                          })}
+                        />
+                        {errors?.address && (
+                          <p className="error-message">
+                            {errors.address.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">{t("city")} *</Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="city"
+                          placeholder={t("enterCity")}
+                          {...register(`city`, {
+                            required: t("cityValidation"),
+                          })}
+                        />
+                        {errors?.city && (
+                          <p className="error-message">
+                            {errors.city.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("postCode")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="passcode"
+                          placeholder={t("enterPostCode")}
+                          {...register(`passcode`, {
+                            required: t("postCodeValidation"),
+                          })}
+                        />
+                        {errors?.passcode && (
+                          <p className="error-message">
+                            {errors.passcode.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("country")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="country"
+                          placeholder={t("enterCountryName")}
+                          {...register(`country`, {
+                            required: t("countryValidation"),
+                          })}
+                        />
+                        {errors?.country && (
+                          <p className="error-message">
+                            {errors.country.message}
+                          </p>
+                        )}
+                      </Form.Group>
                     </div>
-                  </Tab.Pane>
-                  <Tab.Pane eventKey="proprietor_details">
+                  </Col>
+                </Row>
+              </div>
+              <div>
+                <h2 className="section-head mb-4">{t("updateCompanyProfile")}</h2>
+
+                <Row className="mb-4">
+                  <Col md="6">
+                    <div className="inner-form">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("companyName")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="company_name"
+                          placeholder={t("enterCompanyName")}
+                          {...register(`company_name`, {
+                            required: t("compnyNameValidation"),
+                          })}
+                        />
+                        {errors?.company_name && (
+                          <p className="error-message">
+                            {errors.company_name.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("typeOfCompany")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="type_of_company"
+                          placeholder={t("enterCompanyType")}
+                          {...register(`type_of_company`, {
+                            required: t("compnyTypeValidation"),
+                          })}
+                        />
+                        {errors?.type_of_company && (
+                          <p className="error-message">
+                            {errors.type_of_company.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("email")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="company_email"
+                          placeholder={t("enterEmail")}
+                          {...register(`company_email`, {
+                            required: t("emailValidation"),
+                          })}
+                        />
+                        {errors?.company_email && (
+                          <p className="error-message">
+                            {errors.company_email.message}
+                          </p>
+                        )}
+                      </Form.Group>
+
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("address")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="company_address"
+                          placeholder={t("enterAddress")}
+                          {...register(`company_address`, {
+                            required: t("addressValidation"),
+                          })}
+                        />
+                        {errors?.company_address && (
+                          <p className="error-message">
+                            {errors.company_address.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("phoneNumber")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          className="cv-field"
+                          name="company_phone_number"
+                          placeholder={t("enterPhoneNumber")}
+                          {...register(`company_phone_number`, {
+                            required: "Phone number is required",
+                          })}
+                        />
+                        {errors?.company_phone_number && (
+                          <p className="error-message">
+                            {errors.company_phone_number.message}
+                          </p>
+                        )}
+                      </Form.Group>
+
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("establishmentYear")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="establishment_year"
+                          placeholder={t("establishmentYear")}
+                          {...register(`establishment_year`, {
+                            required: t("establishmentValidation"),
+                          })}
+                        />
+                        {errors?.establishment_year && (
+                          <p className="error-message">
+                            {errors.establishment_year.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("typeOfEstablishment")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="type_of_establishment"
+                          placeholder={t("enterTypeOfEstablishment")}
+                          {...register(`type_of_establishment`, {
+                            required: t("typeOfEstablishmentValidation"),
+                          })}
+                        />
+                        {errors?.type_of_establishment && (
+                          <p className="error-message">
+                            {errors.type_of_establishment.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("website")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="website"
+                          placeholder={t("enterWebsite")}
+                          {...register(`website`, {
+                            required: t("websiteValidation"),
+                          })}
+                        />
+                        {errors?.website && (
+                          <p className="error-message">
+                            {errors.website.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("GSTNumber")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="gst_number"
+                          placeholder={t("enterGSTNumber")}
+                          {...register(`gst_number`, {
+                            required: t("gstValidation"),
+                          })}
+                        />
+                        {errors?.gst_number && (
+                          <p className="error-message">
+                            {errors.gst_number.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </div>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("successStory")}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="cv-field"
+                        name="success_story"
+                        placeholder={t("enterSuccessStory")}
+                        {...register(`success_story`, {
+                          required: false,
+                        })}
+                      />
+                      {errors?.success_story && (
+                        <p className="error-message">
+                          {errors.success_story.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("yearlyRevenue")}
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        className="cv-field"
+                        name="yearly_revenue"
+                        placeholder={t("enterYearlyRevenue")}
+                        {...register(`yearly_revenue`, {
+                          required: false,
+                        })}
+                      />
+                      {errors?.yearly_revenue && (
+                        <p className="error-message">
+                          {errors.yearly_revenue.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  <Col md="6">
+
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("totalEmployees")}*
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        className="cv-field"
+                        name="total_employees"
+                        placeholder={t("totalEmployees")}
+                        {...register(`total_employees`, {
+                          required: t("totalEmployeesValidation"),
+                        })}
+                      />
+                      {errors?.total_employees && (
+                        <p className="error-message">
+                          {errors.total_employees.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("totalITRecruiter")}
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        className="cv-field"
+                        name="total_it_recruiter"
+                        placeholder={t("enterTotalITRecruiter")}
+                        {...register(`total_it_recruiter`, {
+                          required: false,
+                        })}
+                      />
+                      {errors?.total_it_recruiter && (
+                        <p className="error-message">
+                          {errors.total_it_recruiter.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("serviceOffering")}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="cv-field"
+                        name="service_offering"
+                        placeholder={t("enterServiceOffering")}
+                        {...register(`service_offering`, {
+                          required: false,
+                        })}
+                      />
+                      {errors?.service_offering && (
+                        <p className="error-message">
+                          {errors.service_offering.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("specialization")}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="cv-field"
+                        name="specialization"
+                        placeholder={t("enterSpecialization")}
+                        {...register(`specialization`, {
+                          required: false,
+                        })}
+                      />
+                      {errors?.specialization && (
+                        <p className="error-message">
+                          {errors.specialization.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("closeContract")}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="cv-field"
+                        name="turn_around_time_to_close_contract_position"
+                        placeholder={t("enterCloseContract")}
+                        {...register(`turn_around_time_to_close_contract_position`, {
+                          required: false,
+                        })}
+                      />
+                      {errors?.turn_around_time_to_close_contract_position && (
+                        <p className="error-message">
+                          {errors.turn_around_time_to_close_contract_position.message}
+                        </p>
+                      )}
+                    </Form.Group> <Form.Group className="mb-3">
+                      <Form.Label className="common-label">
+                        {t("closePermanent")}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="cv-field"
+                        name="turn_around_time_to_close_permanent_position"
+                        placeholder={t("enterClosePermanent")}
+                        {...register(`turn_around_time_to_close_permanent_position`, {
+                          required: false,
+                        })}
+                      />
+                      {errors?.turn_around_time_to_close_permanent_position && (
+                        <p className="error-message">
+                          {errors.turn_around_time_to_close_permanent_position.message}
+                        </p>
+                      )}
+                    </Form.Group>
+
                     <div>
-                      <h2 className="section-head mb-4">
-                        {t("updateYourProprietorProfile")}
-                      </h2>
-                      <Row className="mb-4">
-                        <Col md="6">
-                          <div className="inner-form">
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("proprietorName")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="proprietor_name"
-                                placeholder={t("enterProprietorName")}
-                                {...register(`proprietor_name`, {
-                                  required: t("nameValidation"),
-                                })}
-                              />
-                              {errors?.proprietor_name && (
-                                <p className="error-message">
-                                  {errors.proprietor_name.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("proprietor")} {t("email")}*
-                              </Form.Label>
-                              <div>
-                                <Form.Control
-                                  type="text"
-                                  className="common-field"
-                                  name="proprietor_email"
-                                  placeholder={t("enterProprietorEmail")}
-                                  {...register(`proprietor_email`, {
-                                    required: t("emailValidation"),
-                                  })}
-                                />
-                                {errors?.proprietor_email && (
-                                  <p className="error-message">
-                                    {errors.proprietor_email.message}
-                                  </p>
-                                )}
-                              </div>
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("phoneNumber")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="number"
-                                className="common-field"
-                                name="proprietor_contact_number"
-                                placeholder={t("enterProprietorContactNumber")}
-                                {...register(`proprietor_contact_number`, {
-                                  required: t("contactNumberValidation"),
-                                })}
-                              />
-                              {errors?.proprietor_contact_number && (
-                                <p className="error-message">
-                                  {errors.proprietor_contact_number.message}
-                                </p>
-                              )}
-                            </Form.Group>
 
-                          </div>
-                        </Col>
-                        <Col md="6">
-                          <div className="inner-form">
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("contactPersonName")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="proprietor_contact_person_name"
-                                placeholder={t("enterContactPersonName")}
-                                {...register(`proprietor_contact_person_name`, {
-                                  required: t("contactNameValidation"),
-                                })}
-                              />
-                              {errors?.proprietor_contact_person_name && (
-                                <p className="error-message">
-                                  {errors.proprietor_contact_person_name.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("contactPhoneNumber")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="proprietor_contact_person_phone_number"
-                                placeholder={t("enterContactPersonNumber")}
-                                {...register(`proprietor_contact_person_phone_number`, {
-                                  required: t("contactNameValidation"),
-                                })}
-                              />
-                              {errors?.proprietor_contact_person_phone_number && (
-                                <p className="error-message">
-                                  {errors.proprietor_contact_person_phone_number.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="common-label">
-                                {t("contactPersonEmail")}*
-                              </Form.Label>
-                              <Form.Control
-                                type="text"
-                                className="common-field"
-                                name="proprietor_contact_person_email"
-                                placeholder={t("enterContactPersonEmail")}
-                                {...register(`proprietor_contact_person_email`, {
-                                  required: t("contactEmailValidation"),
-                                })}
-                              />
-                              {errors?.proprietor_contact_person_email && (
-                                <p className="error-message">
-                                  {errors.proprietor_contact_person_email.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                          </div>
-                        </Col>
-                      </Row>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">{t("city")}*</Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="company_city"
+                          placeholder={t("enterCity")}
+                          {...register(`company_city`, {
+                            required: t("cityValidation"),
+                          })}
+                        />
+                        {errors?.company_city && (
+                          <p className="error-message">
+                            {errors.company_city.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("state")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="state"
+                          placeholder={t("enterState")}
+                          {...register(`state`, {
+                            required: {
+                              value: true,
+                              message: t("stateValidation"),
+                            },
+                            pattern: {
+                              value: /^[A-Za-z\s]+$/,
+                              message: "State should not contain numbers ",
+                            }
+                          })}
+                        />
+                        {errors?.state && (
+                          <p className="error-message">
+                            {errors.state.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("postCode")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="post_code"
+                          placeholder={t("enterPostCode")}
+                          {...register(`post_code`, {
+                            required: t("postCodeValidation"),
+                          })}
+                        />
+                        {errors?.post_code && (
+                          <p className="error-message">
+                            {errors.post_code.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("country")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="company_country"
+                          placeholder={t("enterCountry")}
+                          {...register(`company_country`, {
+                            required: {
+                              value: true,
+                              message: t("countryValidation"),
+                            },
+                            pattern: {
+                              value: /^[A-Za-z\s]+$/,
+                              message: "Country should not contain numbers or special character",
+                            }
+                          })}
+                        />
+                        {errors?.company_country && (
+                          <p className="error-message">
+                            {errors.company_country.message}
+                          </p>
+                        )}
+                      </Form.Group>
+
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("countryCode")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="country_code"
+                          placeholder={t("enterCountryCode")}
+                          {...register(`country_code`, {
+                            required: {
+                              value: true,
+                              message: t("countryCodeValidation"),
+                            },
+                            pattern: {
+                              value: /^(\+?\d{1,3}|\d{1,5})$/,
+                              message: "Country should not be greater than 5 digits ",
+                            }
+                          })}
+                        />
+                        {errors?.country_code && (
+                          <p className="error-message">
+                            {errors.country_code.message}
+                          </p>
+                        )}
+                      </Form.Group>
                     </div>
-                  </Tab.Pane>
-                </Tab.Content>
-              </Tab.Container>
+                  </Col>
+                  <Col md="6">
+
+                  </Col>
+                </Row>
+              </div>
+              <div>
+                <h2 className="section-head mb-4">
+                  {t("updateYourProprietorProfile")}
+                </h2>
+                <Row className="mb-4">
+                  <Col md="6">
+                    <div className="inner-form">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("proprietorName")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="proprietor_name"
+                          placeholder={t("enterProprietorName")}
+                          {...register(`proprietor_name`, {
+                            required: t("nameValidation"),
+                          })}
+                        />
+                        {errors?.proprietor_name && (
+                          <p className="error-message">
+                            {errors.proprietor_name.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("proprietor")} {t("email")}*
+                        </Form.Label>
+                        <div>
+                          <Form.Control
+                            type="text"
+                            className="cv-field"
+                            name="proprietor_email"
+                            placeholder={t("enterProprietorEmail")}
+                            {...register(`proprietor_email`, {
+                              required: t("emailValidation"),
+                            })}
+                          />
+                          {errors?.proprietor_email && (
+                            <p className="error-message">
+                              {errors.proprietor_email.message}
+                            </p>
+                          )}
+                        </div>
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("phoneNumber")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          className="cv-field"
+                          name="proprietor_contact_number"
+                          placeholder={t("enterProprietorContactNumber")}
+                          {...register(`proprietor_contact_number`, {
+                            required: t("contactNumberValidation"),
+                          })}
+                        />
+                        {errors?.proprietor_contact_number && (
+                          <p className="error-message">
+                            {errors.proprietor_contact_number.message}
+                          </p>
+                        )}
+                      </Form.Group>
+
+                    </div>
+                  </Col>
+                  <Col md="6">
+                    <div className="inner-form">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("contactPersonName")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="proprietor_contact_person_name"
+                          placeholder={t("enterContactPersonName")}
+                          {...register(`proprietor_contact_person_name`, {
+                            required: t("contactNameValidation"),
+                          })}
+                        />
+                        {errors?.proprietor_contact_person_name && (
+                          <p className="error-message">
+                            {errors.proprietor_contact_person_name.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("contactPhoneNumber")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="proprietor_contact_person_phone_number"
+                          placeholder={t("enterContactPersonNumber")}
+                          {...register(`proprietor_contact_person_phone_number`, {
+                            required: t("contactNameValidation"),
+                          })}
+                        />
+                        {errors?.proprietor_contact_person_phone_number && (
+                          <p className="error-message">
+                            {errors.proprietor_contact_person_phone_number.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("contactPersonEmail")}*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="cv-field"
+                          name="proprietor_contact_person_email"
+                          placeholder={t("enterContactPersonEmail")}
+                          {...register(`proprietor_contact_person_email`, {
+                            required: t("contactEmailValidation"),
+                          })}
+                        />
+                        {errors?.proprietor_contact_person_email && (
+                          <p className="error-message">
+                            {errors.proprietor_contact_person_email.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
               <div className="text-center">
                 <RexettButton
                   type="submit"

@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { timeReporting } from "../../redux/slices/clientDataSlice";
 import RexettPagination from "./RexettPagination";
 
+
 const NotificationList = ({ job, doc }) => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate()
