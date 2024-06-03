@@ -58,7 +58,6 @@ export const developerDataSlice = createSlice({
 
     setSuccessActionData: (state, action) => {
       state.smallLoader = false;
-      state.btnLoader = false;
     },
     setDeveloperTimeReports: (state, action) => {
       state.smallLoader = false;
@@ -102,6 +101,7 @@ export const developerDataSlice = createSlice({
   },
     setUpdateLeave:(state,action)=>{
       state.updateLeave = action.payload
+      state.smallLoader = false
   },
   setHolidayList:(state,action)=>{
     state.holidayList = action.payload
@@ -257,10 +257,10 @@ export function applyLeave(payload) {
       let result = await clientInstance.post("/developer/apply-for-leave", {...payload,});
       if (result.status === 201) {
         toast.success("Leave Applied", { position: "top-center" });
-        dispatch(setSuccessActionData());
+        dispatch(setActionSuccessFully());
       }
     } catch (error) {
-      const message = error.response.data.message || "Something went wrong";
+      const message = error.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
@@ -269,7 +269,6 @@ export function applyLeave(payload) {
 
 export function getLeaveHistory(id , payload ) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
     try {
       let result = await clientInstance.get(generateApiUrl(payload,`common/get-leave-history/${id}`));
       if (result.status === 200) {
@@ -614,18 +613,15 @@ export function getDocumentShare() {
   };
 }
 
-export function shareBelongisFile(paylaod) {
+export function shareBelongisFile(payload) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`common/share-file`, {
-        ...paylaod,
-      });
+      let result = await clientInstance.post(`common/share-file`, {...payload});
       toast.success(result?.data?.message, { position: "top-center" });
       dispatch(setSuccessActionData());
     } catch (error) {
-      console.log(error.response.data.message, "error.response.data.message");
-      const message = error.response.data.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
@@ -633,17 +629,14 @@ export function shareBelongisFile(paylaod) {
 }
 
 // add degree
-export function addDegree(paylaod, callback) {
+export function addDegree(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`common/add-degree`, {
-        ...paylaod,
-      });
+      let result = await clientInstance.post(`common/add-degree`, {...payload});
       dispatch(setSuccessActionData());
       return callback();
     } catch (error) {
-      console.log(error, "error");
       dispatch(setFailDeveloperData());
     }
   };
@@ -665,8 +658,7 @@ export function addProjects(paylaod,role, callback) {
       dispatch(setSuccessActionData());
       return callback();
     } catch (error) {
-      console.log(error.response.data.message, "error.response.data.message");
-      const message = error.response.data.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
@@ -684,8 +676,7 @@ export function deleteProjects(projectId, callback) {
       dispatch(setSuccessActionData());
       return callback();
     } catch (error) {
-      console.log(error.response.data.message, "error.response.data.message");
-      const message = error.response.data.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
@@ -709,8 +700,7 @@ export function updateProjects(projectId, payload, role,callback,isLast = true) 
       dispatch(setSuccessActionData());
       return callback();
     } catch (error) {
-      console.log(error.response.data.message, "error.response.data.message");
-      const message = error.response.data.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
       return;
