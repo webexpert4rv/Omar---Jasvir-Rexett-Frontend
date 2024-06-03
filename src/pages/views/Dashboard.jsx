@@ -46,76 +46,7 @@ const Dashboard = (cardDetails) => {
         navigate(`/client-single-developer/${id}`)
     }
 
-    const lineData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        datasets: [
-            {
-                label: 'This Year',
-                data: [5000, 20000, 15000, 22000, 18000, 25000, 20000, 10000, 15000, 20000, 25000, 22000],
-                borderColor: 'rgb(8, 143, 143)',
-                backgroundColor: 'rgba(8, 143, 143 , .05)',
-                fill: true,
-                tension: 0.4, // Add tension for smooth curves
-            },
-            {
-                label: 'Last Year',
-                data: [7000, 12000, 17000, 14000, 19000, 24000, 18000, 14000, 19000, 12000, 18000, 14000],
-                borderColor: '#c00',
-                backgroundColor: 'rgba(255, 0, 0, 0)',
-                fill: true,
-                tension: 0.4, // Add tension for smooth curves
-                borderDash: [5, 5], // Make the line dashed
-            },
-        ],
-    };
-    const lineOptions = {
-        responsive: true,
-        scales: {
-            x: {
-                grid: {
-                    display: false, // Remove vertical grid lines
-                },
-            },
-            y: {
-                grid: {
-                    display: true,
-                },
-                ticks: {
-                    display: true, // Show y-axis labels
-                },
-            },
-        },
-        plugins: {
-            legend: {
-                position: 'top', // Keep the legend labels
-                labels: {
-                    padding: 20, // Add padding to the legend labels
-                    align: 'center',
-                },
-            },
-            tooltip: {
-                enabled: true, // Enable tooltips
-                callbacks: {
-                    label: function (context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        if (context.parsed.y !== null) {
-                            label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
-                        }
-                        return label;
-                    },
-                },
-            },
-        },
-        elements: {
-            point: {
-                radius: 2, // Hide points on the line
-                hoverRadius: 5, // Hide points on hover
-            },
-        },
-    };
+   
 
     const TotalProjectData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -469,19 +400,6 @@ const Dashboard = (cardDetails) => {
                                                                     <p className="designation-user color-121212 mb-0">{item?.developer?.email}</p>
                                                                 </span>
                                                             </td>
-                                                            {/* <td>
-                                                                <ul className="social-icons mb-0 justify-content-start d-none">
-                                                                    <li>
-                                                                        <Link to={item?.developer?.developer_detail?.github_url}><FaGithub /></Link>
-                                                                    </li>
-                                                                    <li>
-                                                                        <Link to={item?.developer?.developer_detail?.linkedin_url}><FaLinkedin /></Link>
-                                                                    </li>
-                                                                    <li>
-                                                                        <Link to={item?.developer?.email}><MdEmail /></Link>
-                                                                    </li>
-                                                                </ul>
-                                                            </td> */}
                                                         </tr>
                                                     </>
                                                 )
@@ -510,7 +428,7 @@ const Dashboard = (cardDetails) => {
                                 </div> : ""}
                             </>
                         </Tab.Content>
-                        : <div><NoDataFound /></div>}
+                        : <div className="simple-no-data"><NoDataFound /></div>}
                 </Tab.Container>
 
                 <div>

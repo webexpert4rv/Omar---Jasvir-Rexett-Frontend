@@ -271,7 +271,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                             ).format("h:mm A")} `
                                           : reprt?.is_holiday
                                           ? "Holiday"
-                                          : reprt?.is_off_day && "Leave"}
+                                          : reprt?.is_off_day ? "Leave":reprt?.is_public_holiday ? reprt?.holiday_name:""}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">
@@ -456,15 +456,17 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
             currentDetails={currentDetails}
             page={page}
             role={role}
+            selectedPeriod={selectedPeriod}
           />
+
         ) : (
           ""
         )}
         <ConfirmationModal
           text={
             isAnyReportEmpty
-              ? `Are you sure to Approve this time sheet ? It looks like you haven't written your work status for all the days of the week.`
-              : "Are you sure you want to Approve this time sheet?"
+              ? `Are you sure to submit this time sheet ? It looks like you haven't written your work status for all the days of the week.`
+              : "Are you sure you want to submit this time sheet?"
           }
           show={approvedConfirmation?.isApproved}
           startDate={approvedConfirmation?.startDate}

@@ -19,6 +19,7 @@ const TimeReportRemark = ({
   contractId,
   currentDetails,
   role,
+  selectedPeriod,
   page,
 }) => {
   let {
@@ -117,6 +118,8 @@ const TimeReportRemark = ({
                   role={role}
                   contract_id={contract_id}
                   index={index}
+                  selectedPeriod={selectedPeriod}
+                  page={page}
                 />
               </>
             );
@@ -129,8 +132,8 @@ const TimeReportRemark = ({
             className="main-btn font-14 mt-2 py-2 px-3"
             variant="transparent"
             onClick={handleReconciliationSend}
-            // disabled={smallLoader}
-            // isLoading={smallLoader}
+            disabled={smallLoader}
+            isLoading={smallLoader}
           />
         )}
       </Offcanvas.Body>

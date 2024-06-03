@@ -115,40 +115,7 @@ const HiredDevelopers = () => {
                                   </p>
                                 </span>
                               </td>
-                              {/* <td>
-                                <ul className="social-icons mb-0 justify-content-start d-none">
-                                  <li>
-                                    <Link
-                                      to={
-                                        item?.developer?.developer_detail
-                                          ?.github_url
-                                      }
-                                    >
-                                      <FaGithub />
-                                    </Link>
-                                  </li>
-                                  <li>
-                                    <Link
-                                      to={
-                                        item?.developer?.developer_detail
-                                          ?.github_url
-                                      }
-                                    >
-                                      <FaLinkedin />
-                                    </Link>
-                                  </li>
-                                  <li>
-                                    <Link
-                                      to={
-                                        item?.developer?.developer_detail
-                                          ?.github_url
-                                      }
-                                    >
-                                      <MdEmail />
-                                    </Link>
-                                  </li>
-                                </ul>
-                              </td> */}
+                      
                             </tr>
                           </>
                         );

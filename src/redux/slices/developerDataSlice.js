@@ -20,7 +20,8 @@ const initialDeveloperData = {
   approvedLoader: false,
   lastTimeLog: {},
   leaveHistory: [],
-  leaveDetails:[]
+  leaveDetails:[],
+  holidayList:[]
 };
 
 export const developerDataSlice = createSlice({
@@ -101,6 +102,9 @@ export const developerDataSlice = createSlice({
   },
     setUpdateLeave:(state,action)=>{
       state.updateLeave = action.payload
+  },
+  setHolidayList:(state,action)=>{
+    state.holidayList = action.payload
   }
 },
 });
@@ -116,6 +120,7 @@ export const {
   setSuccessActionData,
   setBtnLoader,
   setDegreeList,
+  setHolidayList,
   setFailDeveloperData,
   setSuccessDeveloperData,
   setActionSuccessFully,
@@ -697,10 +702,10 @@ export function updateProjects(projectId, payload, role,callback,isLast = true) 
       if (isLast) {
         if(role==="developer"){
         toast.success("Please wait for changes approval by admin", { position: "top-center" });
-      }
-    }else{
+      }else{
         toast.success("Projects are Updated", { position: "top-center" });
       }
+    }
       dispatch(setSuccessActionData());
       return callback();
     } catch (error) {
@@ -721,11 +726,12 @@ export function addLogTime(paylaod, callback) {
         ...paylaod,
       });
       dispatch(setSuccessActionData());
-      // toast.success(result)
+      dispatch(setLastTimeLog(result.data));
       return callback();
     } catch (error) {
       toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailDeveloperData());
+      // dispatch(setLastTimeLog(error?.response?.data?.success));
     }
   };
 }
@@ -746,13 +752,13 @@ export function getLastTimeLog(paylaod) {
 
 export function postReconciliationData(paylaod, callback) {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(
         `/common/add-time-report-reconciliation`,
         paylaod
       );
-      dispatch(setLastTimeLog(result.data));
+      // dispatch(setLastTimeLog(result.data));
       if (result?.status == 200||201) {
         toast.success("Reconciliation is submitted successfully", {
           position: "top-center",
@@ -763,6 +769,16 @@ export function postReconciliationData(paylaod, callback) {
     } catch (error) {
       console.log(error, "error");
       dispatch(setFailDeveloperData());
+    }
+  };
+}
+export function getHolidaysList() {
+  return async (dispatch) => {
+    try {
+      let result = await clientInstance.get(`/developer/get-holidays`);
+      dispatch(setHolidayList(result.data.data))
+    } catch (error) {
+      console.log(error, "error");
     }
   };
 }

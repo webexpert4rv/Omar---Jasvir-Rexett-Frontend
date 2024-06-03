@@ -48,6 +48,7 @@ const JobListing = () => {
   const viewtooltip = <Tooltip id="tooltip">{t("viewJob")}</Tooltip>;
 
   const currentStatusCssClass = (status) => {
+    console.log(status,"sttt")
     switch (status) {
       case "ended":
         return "status-rejected";
@@ -57,7 +58,7 @@ const JobListing = () => {
         return "status-finished";
       case "published":
         return "status-finished";
-      case "Unpublished":
+      case "unpublished":
         return "status-rejected";
       default:
         return;
@@ -162,7 +163,7 @@ const JobListing = () => {
                                 overlay={viewtooltip}
                               >
                                 <Link
-                                  to={`/single-job/${item.id}`}
+                                  to={`/client/single-job/${item.id}`}
                                   state={{
                                     workExperienceyears:
                                       item?.screening_questions &&
@@ -272,7 +273,7 @@ const JobListing = () => {
                                 overlay={viewtooltip}
                               >
                                 <Link
-                                  to={`/single-job/${item.id}`}
+                                  to={`/client/single-job/${item.id}`}
                                   className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                                 >
                                   <FaEye />
@@ -372,7 +373,7 @@ const JobListing = () => {
                                 overlay={viewtooltip}
                               >
                                 <Link
-                                  to={`/single-job/${item.id}`}
+                                  to={`/client/single-job/${item.id}`}
                                   className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                                 >
                                   <FaEye />

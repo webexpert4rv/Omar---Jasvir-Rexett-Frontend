@@ -133,12 +133,12 @@ console.log(selectedOptional,"selectedOptional")
     };
     if (id) {
       dispatch(clientUpdatePost(data, id, () => {
-        navigate("/job-posted");
+        navigate("/client/job-posted");
       }))
     } else {
       dispatch(
         clientJobPost(data, () => {
-          navigate("/job-posted");
+          navigate("/client/job-posted");
         })
       );
     };
@@ -175,7 +175,7 @@ console.log(selectedOptional,"selectedOptional")
     <>
       <section className="job-post-section card-box">
         <h2 className="mb-4 section-head d-flex align-items-center gap-3">
-          <Link className="main-btn outline-main-btn mb-0" to="/job-posted">
+          <Link className="main-btn outline-main-btn mb-0" to="/client/job-posted">
             <IoArrowBack />
           </Link>{" "}
           {id ? "Edit Post" : "Job Post"}

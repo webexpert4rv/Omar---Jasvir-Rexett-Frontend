@@ -150,7 +150,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,setLeaveList,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList,setLeaveList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -274,8 +274,8 @@ export function getClientLeaveHistory(payload, callback) {
                
         } catch (error) {
           console.log(error,"error")
-            const message = error?.response?.data?.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response?.data?.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };
@@ -430,6 +430,7 @@ export function clientUpdatePost(
 }
 
 export function singleJobPostData(payload, callback) {
+  console.log(payload,"pp")
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -483,19 +484,21 @@ export function getJobCategoryList(payload, callback) {
 
 export function getSuggestedDeveloper(payload, callback) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setApprovedLoader())
+    if(payload){
     try {
       let result = await clientInstance.post(`client/request-developer-suggestion`,{...payload});
       if (result.status === 200) {
         toast.success(result?.data?.message, { position: "top-center" });
-        dispatch(setSuggstedDeveloper());
+        dispatch(closeApprovedLoader())
       }
     } catch (error) {
       const message = error?.response?.data?.message|| "Something went wrong";
       toast.error(message, { position: "top-center" });
-      dispatch(setFailClientData());
+      // dispatch(setFailClientData());
     }
   };
+}
 }
 
 export function getAllJobPostedList(payload, callback) {
@@ -648,6 +651,7 @@ export function _deleteFileAndFolder(payload, callback) {
 
 export function changeJobStatus(currentTb, payload, data, callback) {
   return async (dispatch) => {
+    if(data){
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.put(
@@ -663,6 +667,7 @@ export function changeJobStatus(currentTb, payload, data, callback) {
       dispatch(setFailClientData());
     }
   };
+}
 }
 
 export function earnedBackOfDeveloper(paylaod) {
@@ -839,10 +844,10 @@ export function approveTimeReportReconciliation(payload, callback) {
       });
 
       dispatch(setActionSuccessFully());
-      toast.success("New Developer is Added", { position: "top-center" });
+      toast.success("Time sheet Developer is updated", { position: "top-center" });
       return callback();
     } catch (error) {
-      toast.error(error.response.data.message, { position: "top-center" });
+      toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailClientData());
     }
   };

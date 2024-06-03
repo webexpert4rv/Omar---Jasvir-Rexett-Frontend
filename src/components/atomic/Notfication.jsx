@@ -9,6 +9,8 @@ import { getNotification, markAsRead } from "../../redux/slices/adminDataSlice";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Timer from "./Timer";
+import notificationSound from '../../assets/Audio/notificationSound.mp3';
+
 
 const Notification = ({ route, job, doc, timeReport }) => {
   const dispatch = useDispatch();
@@ -29,10 +31,12 @@ const Notification = ({ route, job, doc, timeReport }) => {
     setNewJobPost(null)
   }, [newJobPost]);
 
-  console.log(notificationList,"notificationList")
-
 
   useEffect(() => {
+    const audio = new Audio (notificationSound);
+    audio.play().catch((err)=>{ 
+      console.log("audio play failed");
+    })
     if (newJobPost !== null) {
       let mergeRow = [newJobPost, ...notificationList["unreadNotifications"]?.notifications];
       setNotificationData([...nottificationData, ...mergeRow]);
@@ -133,9 +137,6 @@ const Notification = ({ route, job, doc, timeReport }) => {
   function compareDates(a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
   }
-
-  console.log(nottificationData,"nottificationData")
-
   return (
     <>
       <header>
