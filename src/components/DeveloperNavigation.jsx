@@ -25,8 +25,7 @@ const DeveloperNavigation = ({ onClick }) => {
     const [isColorfulChecked, setIsColorfulChecked] = useState(false);
     const [checked, setChecked] = useState(false)
     const [totalSeconds, setTotalSeconds] = useState(0);
-    const {lastTimeLog}=useSelector(state=>state.developerData)
-    const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
+    const {lastTimeLog,developerDashboard}=useSelector(state=>state.developerData)
     const [fridayMarquee , setFridayMarquee] = useState(false)
     
 
@@ -58,7 +57,7 @@ const DeveloperNavigation = ({ onClick }) => {
             return;
         }
     
-        if (assignedDeveloperList.length === 0) {
+        if (developerDashboard?.clientList?.length === 0) {
             toast.error("You don't have any active project and are not associated with any client");
             return;
         }

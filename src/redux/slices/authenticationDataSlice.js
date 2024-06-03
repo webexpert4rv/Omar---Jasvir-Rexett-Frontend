@@ -40,74 +40,66 @@ export const { setScreenLoader,setLoginUserName , setOtpLoader, setFailAuthData,
 
 export default authenticationDataSlice.reducer
 
+
+const ROLES = {
+    CLIENT: 'client',
+    DEVELOPER: 'developer',
+    ADMIN: 'admin',
+    VENDOR: 'vendor'
+};
+
+const DASHBOARD_URLS = {
+    [ROLES.CLIENT]: '/client/dashboard',
+    [ROLES.DEVELOPER]: '/developer-dashboard',
+    [ROLES.ADMIN]: '/admin-dashboard',
+    [ROLES.VENDOR]: '/vendor-dashboard'
+};
+
+const storeUserData = (data) => {
+    localStorage.setItem('token', data.access_token);
+    localStorage.setItem('refreshToken', data.refresh_token);
+    localStorage.setItem('role', data.data.role);
+    localStorage.setItem('userId', data.data.id);
+    localStorage.setItem('userName', data.data.name);
+};
+
+const redirectToDashboard = (role) => {
+    const url = DASHBOARD_URLS[role];
+    if (url) {
+        window.location.href = url;
+    }
+};
+
 export function loginUser(payload, callback) {
     return async (dispatch) => {
-
-        dispatch(setScreenLoader())
+        dispatch(setScreenLoader());
         try {
-            let result = await authInstance.post('auth/login/', { ...payload })
-            if (result?.status === 200) {
+            const result = await authInstance.post('auth/login/', { ...payload });
 
-                dispatch(setSuccessAuthData())
-                toast.success(result.data.message, { position: "top-center" })
+            if (result?.status === 200) {
+                dispatch(setSuccessAuthData());
+                toast.success(result.data.message, { position: 'top-center' });
 
                 if (result.data.otp_sent) {
-
-                    return callback()
-                } else {
-                    if (result.status == 200) {
-                        if (result.data.data.role === "client") {
-                            localStorage.setItem("token", result.data.access_token);
-                            localStorage.setItem("refreshToken", result.data.refresh_token);
-                            localStorage.setItem("role", "client")
-                            localStorage.setItem("userId", result.data.data.id)
-                            localStorage.setItem("userName",result?.data?.data?.name)
-
-
-                            window.location.href = "dashboard"
-                        }
-
-                        if (result.data.data.role === "developer") {
-                            localStorage.setItem("token", result.data.access_token);
-                            localStorage.setItem("refreshToken", result.data.refresh_token);
-                            localStorage.setItem("role", "developer")
-                            localStorage.setItem("userId", result.data.data.id)
-                            localStorage.setItem("userName",result?.data?.data?.name)
-                            window.location.href = "/developer-dashboard"
-                        }
-
-                        if (result.data.data.role === "admin") {
-                            localStorage.setItem("token", result.data.access_token);
-                            localStorage.setItem("refreshToken", result.data.refresh_token);
-                            localStorage.setItem("role", "admin")
-                            localStorage.setItem("userId", result.data.data.id)
-                            localStorage.setItem("userName",result?.data?.data?.name)
-                            window.location.href = "/admin-dashboard"
-                        }
-                        if (result.data.data.role === "vendor") {
-                            localStorage.setItem("token", result.data.access_token);
-                            localStorage.setItem("refreshToken", result.data.refresh_token);
-                            localStorage.setItem("role", "vendor")
-                            localStorage.setItem("userId", result.data.data.id)
-                            localStorage.setItem("userName",result?.data?.data?.name)
-                            window.location.href = "/vendor-dashboard"
-                        }
-                    }
-
+                    return callback();
                 }
 
+                const { role } = result.data.data;
+                storeUserData(result.data);
 
+                if (role in DASHBOARD_URLS) {
+                    redirectToDashboard(role);
+                }
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message = error.message || 'Something went wrong';
             if (error?.response?.status === 401) {
-                toast.error(error.response.data.message, { position: "top-center" })
-                dispatch(setFailAuthData())
+                toast.error(error.response.data.message, { position: 'top-center' });
+                dispatch(setFailAuthData());
             } else {
-                toast.error(message, { position: "top-center" })
-                dispatch(setFailAuthData())
+                toast.error(message, { position: 'top-center' });
+                dispatch(setFailAuthData());
             }
-
         }
     };
 }
