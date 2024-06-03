@@ -32,12 +32,12 @@ const HiredDevelopers = () => {
 
   const handleCardClick = (devId) => {
     dispatch(getDeveloperDetails(devId))
-    navigate(`/client-single-developer/${devId}`)
+    navigate(`/client/client-single-developer/${devId}`)
   }
 
   const handleRowClick = (id) => {
     dispatch(getDeveloperDetails(id))
-    navigate(`/client-single-developer/${id}`)
+    navigate(`/client/client-single-developer/${id}`)
   }
 
 
