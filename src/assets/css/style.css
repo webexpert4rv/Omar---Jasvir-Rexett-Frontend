@@ -5181,6 +5181,7 @@ input[type="radio"]:checked {
     background-color: #f2f5f7;
     color: #919191;
     font-size: 14px;
+    cursor: pointer;
 }
 .skill-filters span.active
 {
@@ -5205,6 +5206,7 @@ input[type="radio"]:checked {
     height: 100%;
     border-radius: 30px;
     background-color: #037563;
+    transition: .3s ease;
 }
 .progress-quiz
 {

@@ -7,6 +7,20 @@ import { FILTER_NAME, MONTH_NAME } from "../../clients/TimeReporiting/constant";
 import { TiEdit } from "react-icons/ti";
 import { IoCloseOutline } from "react-icons/io5";
 
+const holidays = [
+  { date: '1 Jan', day: 'Monday', name: "New Year's Day", type: 'Restricted Holiday' },
+  { date: '13 Jan', day: 'Saturday', name: 'Lohri', type: 'Restricted Holiday' },
+  { date: '14 Jan', day: 'Sunday', name: 'Makar Sankranti', type: 'Restricted Holiday' },
+  { date: '15 Jan', day: 'Monday', name: 'Pongal', type: 'Restricted Holiday' },
+  { date: '17 Jan', day: 'Wednesday', name: 'Guru Govind Singh Jayanti', type: 'Restricted Holiday' },
+  { date: '26 Jan', day: 'Friday', name: 'Republic Day', type: 'Gazetted Holiday' },
+  { date: '25 Mar', day: 'Friday', name: 'Holiday', type: 'Gazetted Holiday' },
+  { date: '28 Mar', day: 'Monday', name: 'Urgent Work', type: 'Created by client' },
+  { date: '28 Jun', day: 'Monday', name: 'Urgent Work', type: 'Created by client' },
+  { date: '28 Aug', day: 'Monday', name: 'Urgent Work', type: 'Created by client' },
+  { date: '28 Sep', day: 'Monday', name: 'Urgent Work', type: 'Created by client' },
+];
+
 const ListOfHolidays = ({
   onChange,
   value,
@@ -56,9 +70,110 @@ const ListOfHolidays = ({
     setHolidayPeriod(item);
   };
 
+  const [selectedMonth, setSelectedMonth] = useState('All');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedYear, setSelectedYear] = useState('Select Year');
+
+  const handleMonthFilter = (month) => {
+    setSelectedMonth(month);
+  };
+
+  const filteredHolidays = holidays.filter(holiday => {
+    const holidayMonth = holiday.date.split(' ')[1];
+    const matchesMonth = selectedMonth === 'All' || holidayMonth === selectedMonth;
+    const matchesSearch = holiday.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesYear = selectedYear === 'Select Year' || holiday.date.endsWith(selectedYear);
+    return matchesMonth && matchesSearch && matchesYear;
+  });
+
   return (
     <section className="">
-      <div className="calendar-container card-box">
+      <div className="card-box border shadow-none">
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="skill-filters">
+            {['All', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
+              <span
+                key={month}
+                className={selectedMonth === month ? 'active' : ''}
+                onClick={() => handleMonthFilter(month)}
+              >
+                {month}
+              </span>
+            ))}
+          </div>
+
+          <Form className="d-flex gap-2">
+            <Form.Select
+              className="common-field font-14 w-auto"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+            >
+              <option>Select Year</option>
+              <option>2024</option>
+              <option>2023</option>
+              <option>2022</option>
+              <option>2021</option>
+              <option>2020</option>
+              <option>2019</option>
+            </Form.Select>
+          </Form>
+        </div>
+        <div className="table-responsive">
+          <table className="table table-ui-custom mb-0">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                {/* <th>Type</th> */}
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredHolidays.length > 0 ? (
+                filteredHolidays.map((holiday, index) => (
+                  <tr key={index}>
+                    <td className="font-14 align-middle">
+                      <strong>{holiday.date}</strong> {holiday.day}
+                    </td>
+                    <td className="font-14 align-middle">
+                      {holiday.name}
+                      {/* <span className="associate-text">
+                        <span className="associate">Created</span>
+                      </span> */}
+                    </td>
+                    {/* <td className="font-14 align-middle">
+                      {holiday.type}
+                    </td> */}
+                    <td>
+                      <div className="d-flex gap-2">
+                        <Button
+                          variant="transparent"
+                          className="px-3 arrow-btn info-arrow font-16 text-decoration-none"
+                        >
+                          <TiEdit />
+                        </Button>
+                        <Button
+                          variant="transparent"
+                          className="px-3 arrow-btn danger-arrow font-16 text-decoration-none"
+                        >
+                          <IoCloseOutline />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="font-14">
+                    <p className="text-danger mb-0">No holidays in this month</p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="calendar-container card-box d-none">
         {role === "client" ? (
           <div className="mb-3">
             <Button
