@@ -5074,6 +5074,31 @@ input[type="radio"]:checked {
     font-size: 14px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .1);
 }
+.heading-404 {
+    font-size: 70px;
+    font-weight: 900;
+    background: var(--primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.sub-heading-404{
+    font-size: 19px;
+    font-weight: 500;
+}
+.para404-page {
+    font-size: 15px;
+    font-weight: 400;
+    color: #666666;
+    line-height: 24px;
+    max-width: 360px;
+    margin: 10px auto;
+}
+.not-found {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -5377,6 +5402,7 @@ input[type="radio"]:checked {
     {
         height: 40px !important;
     }
+
 }
 @media only screen and (max-width: 1400px)
 {
