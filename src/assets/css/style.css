@@ -370,11 +370,11 @@ ul {
 
 .main-btn {
     display: inline-block;
-    padding: 4px;
+    padding: 10px;
     color: var(--white) !important;
     background-color: #037563 !important;
     border-radius: 8px;
-    font-size: 4px;
+    font-size: 16px;
     font-weight: 400;
     border: 1px solid #037563 !important;
     outline: none;
