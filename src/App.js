@@ -183,6 +183,7 @@ function App() {
           <Route path='/vendor-faq' exact element={<VendorDashboardLayout><Faq /></VendorDashboardLayout>}></Route>
           <Route path='/admin-faq' exact element={<AdminDashboardLayout><Faq /></AdminDashboardLayout>}></Route>
           <Route path='/developer-faq' exact element={<DeveloperDashboardLayout><Faq /></DeveloperDashboardLayout>}></Route>
+          <Route path = "*" element={<NotFound/>}/>
         </Routes>
       </Router>
 
