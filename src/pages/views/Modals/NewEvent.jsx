@@ -4,7 +4,7 @@ import RexettButton from "../../../components/atomic/RexettButton";
 import { useForm } from "react-hook-form";
 import {
   getAddHoliday,
-  getLeaveList,
+  getClientHolidayList,
   updateClientHoliday,
 } from "../../../redux/slices/clientDataSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,10 +40,10 @@ const NewEvent = ({ show, handleClose, status }) => {
     };
     if (status?.status == "edit") {
       await dispatch(updateClientHoliday(payload,status?.id));
-      dispatch(getLeaveList());
+      dispatch(getClientHolidayList());
     } else {
       await dispatch(getAddHoliday(payload));
-      dispatch(getLeaveList());
+      dispatch(getClientHolidayList());
     }
     handleClose();
     reset();

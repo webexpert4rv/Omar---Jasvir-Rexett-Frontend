@@ -6,12 +6,16 @@ import associateLogo from "../../../assets/img/aviox-logo.png";
 import ToolTip from "../Tooltip/ToolTip";
 import { generateLeave } from "../../clients/TimeReporiting/constant";
 import NoDataFound from "../../atomic/NoDataFound";
-import userImg from '../../../assets/img/user-img.jpg'
-import RexettSpinner from "../../atomic/RexettSpinner";
+import userImg from "../../../assets/img/user-img.jpg";
 import RexettButton from "../../atomic/RexettButton";
 
-
-function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader }) {
+function HeaderTable({
+  tableData,
+  currentTab,
+  handleApproveReject,
+  approvedLoader,
+  selectedIndex,
+}) {
   return (
     <div>
       {tableData?.length > 0 ? (
@@ -21,7 +25,7 @@ function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader })
               <tr>
                 <td className="time-table-data text-start">
                   <div className="d-flex align-items-center gap-2 white-nowrap">
-                  <div className="user-imgbx application-userbx">
+                    <div className="user-imgbx application-userbx">
                       <img
                         src={
                           item?.contract?.developer?.profile_picture
@@ -52,16 +56,16 @@ function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader })
                 {/* <td className="time-table-data text-start white-nowrap">
                   AI Bot Project
                 </td> */}
-                <td className="time-table-data text-start">
+                {/* <td className="time-table-data text-start">
                   <ToolTip text="Aviox Technologies Pvt Ltd">
                     <div className="text-start">
                       <div className="user-imgbx d-inline-block associated-logo application-imgbx mx-0 mb-0">
-                        {/* <img src={associateLogo} className="user-img" /> */}
+                        <img src={associateLogo} className="user-img" />
                         ---
                       </div>
                     </div>
                   </ToolTip>
-                </td>
+                </td> */}
                 <td className="time-table-data text-start">
                   {currentTab !== "first" ? (
                     <span className="status-finished">
@@ -73,14 +77,17 @@ function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader })
                         <RexettButton
                           variant="transparent"
                           className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
-                          icon={<IoCheckmark />}
-                          // isLoading={smallLoader}
+                          icon={
+                            selectedIndex == index ? (
+                              approvedLoader
+                            ) : (
+                              <IoCheckmark />
+                            )
+                          }
                           onClick={() =>
-                            handleApproveReject(item?.id, "Approved")
+                            handleApproveReject(item?.id, "Approved", index)
                           }
                         />
-                          {/* {isLoading ? <RexettSpinner/>:<IoCheckmark />}
-                        </Button> */}
                       </ToolTip>
                       <ToolTip text="Reject">
                         <Button

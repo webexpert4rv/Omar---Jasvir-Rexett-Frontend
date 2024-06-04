@@ -20,7 +20,7 @@ import RejectModal from "./Modals/EndJob";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import {
   getApproveDisapprove,
-  getLeaveList,
+  getClientHolidayList,
 } from "../../redux/slices/clientDataSlice";
 import { TiEdit } from "react-icons/ti";
 import Calendar from "react-calendar";
@@ -32,12 +32,13 @@ import moment from "moment";
 const LeaveRequest = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("first");
-  const { leaveList } = useSelector((state) => state.clientData);
+  const { clientHolidayList } = useSelector((state) => state.clientData);
+  const [selectedIndex ,setSelectedIndex] =  useState(null)
   const [status, setStatus] = useState({
     id: "",
     status: "",
   });
-  const { screenLoader, smallLoader, clientLeaveHistory } = useSelector(
+  const { screenLoader, approvedLoader, clientLeaveHistory } = useSelector(
     (state) => state.clientData
   );
   const [leaveId, setLeaveId] = useState();
@@ -63,7 +64,9 @@ const LeaveRequest = () => {
     setShowRejectModal(!showRejectModal);
   };
 
-  const handleApproveReject = async (id, status) => {
+  const handleApproveReject = async (id, status,index) => {
+    console.log(index)
+    setSelectedIndex(index)
     setLeaveId(id);
     if (status === "Approved") {
       let payload = {
@@ -72,7 +75,10 @@ const LeaveRequest = () => {
         rejection_reason: null,
       };
       await dispatch(getClientLeaveStatus(payload));
-      dispatch(getClientLeaveHistory());
+      let data = {
+        approval_status: "Under Approval",
+      };
+      dispatch(getClientLeaveHistory(data));
     } else {
       setShowRejectModal(true);
     }
@@ -121,20 +127,23 @@ const LeaveRequest = () => {
     setShowEvent(false);
   };
   useEffect(() => {
-    dispatch(getLeaveList());
+    dispatch(getClientHolidayList());
   }, []);
 
   const handleAproveDisapprove = async (id, status) => {
     const payload = {
       action: status,
     };
-    await dispatch(getApproveDisapprove(payload, id));
-    dispatch(getLeaveList());
+    await dispatch(getApproveDisapprove(payload, id));   
+    let data = {
+      approval_status: "Under Approval",
+    };
+    dispatch(getClientLeaveHistory(data));
   };
 
   const handleDelete = async (id) => {
     await dispatch(clientDeleteHoliday(id));
-    dispatch(getLeaveList());
+    dispatch(getClientHolidayList());
   };
 
   const listHolidays = (data) => {
@@ -144,11 +153,11 @@ const LeaveRequest = () => {
 
   const [value, onChange] = useState(new Date());
   // Define the dates you want to mark
-  const markedDates = listHolidays(leaveList);
+  const markedDates = listHolidays(clientHolidayList);
 
   // Function to add custom content to tile
   const tileContent = ({ date, view }) => {
-    const holidayForDate = leaveList.find((holiday) => {
+    const holidayForDate = clientHolidayList.find((holiday) => {
       return new Date(holiday.date).toDateString() === date.toDateString();
     });
 
@@ -189,10 +198,11 @@ const LeaveRequest = () => {
             />
             <Header data={tableHeader()} />
             <HeaderTable
-              smallLoader={smallLoader}
               tableData={clientLeaveHistory}
               currentTab={currentTab}
               handleApproveReject={handleApproveReject}
+              approvedLoader={approvedLoader}
+              selectedIndex={selectedIndex}
             />
             {showRejectModal && (
               <RejectModal
@@ -210,7 +220,7 @@ const LeaveRequest = () => {
               onChange={onChange}
               value={value}
               tileContent={tileContent}
-              holidayList={leaveList}
+              holidayList={clientHolidayList}
               handleShowEvent={handleShowEvent}
               handleDelete={handleDelete}
               handleAproveDisapprove={handleAproveDisapprove}
