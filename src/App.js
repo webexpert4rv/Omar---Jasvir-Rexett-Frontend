@@ -86,6 +86,7 @@ import PublicHoliday from './pages/views/PublicHolidays';
 import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
 import TakeQuiz from './pages/developer/TakeQuiz';
 import SkillTest from './pages/developer/SkillTest';
+import NotFound from './pages/views/NotFound';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
@@ -130,6 +131,7 @@ function App() {
           <Route path="/client/leave-request" exact element={<DashboardLayout><LeaveRequest/></DashboardLayout>} />
           <Route path="/client/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
           <Route path='/client/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
+          <Route path='/not-found' exact element={<NotFound />}></Route>
 
 
           <Route path="/admin-dashboard" exact element={<AdminDashboardLayout><AdminDashboard /></AdminDashboardLayout>} />
