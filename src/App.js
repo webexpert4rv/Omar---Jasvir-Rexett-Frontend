@@ -153,7 +153,7 @@ function App() {
                     <Route path='/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
 
           <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
-          <Route path="/time-reporting-detail" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
+          <Route path="/time-reporting-detail/:clientId" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
           <Route path="/members" exact element={<AdminDashboardLayout><Members /></AdminDashboardLayout>} />
           <Route path="/vendor-single-developer/:id" exact element={<VendorDashboardLayout><VendorSingleDeveloper /></VendorDashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
