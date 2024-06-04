@@ -7,9 +7,11 @@ import ToolTip from "../Tooltip/ToolTip";
 import { generateLeave } from "../../clients/TimeReporiting/constant";
 import NoDataFound from "../../atomic/NoDataFound";
 import userImg from '../../../assets/img/user-img.jpg'
+import RexettSpinner from "../../atomic/RexettSpinner";
+import RexettButton from "../../atomic/RexettButton";
 
 
-function HeaderTable({ tableData, currentTab, handleApproveReject }) {
+function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader }) {
   return (
     <div>
       {tableData?.length > 0 ? (
@@ -68,15 +70,17 @@ function HeaderTable({ tableData, currentTab, handleApproveReject }) {
                   ) : (
                     <div className="d-flex justify-content-start gap-2">
                       <ToolTip text="Approve">
-                        <Button
+                        <RexettButton
                           variant="transparent"
                           className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
+                          icon={<IoCheckmark />}
+                          // isLoading={smallLoader}
                           onClick={() =>
                             handleApproveReject(item?.id, "Approved")
                           }
-                        >
-                          <IoCheckmark />
-                        </Button>
+                        />
+                          {/* {isLoading ? <RexettSpinner/>:<IoCheckmark />}
+                        </Button> */}
                       </ToolTip>
                       <ToolTip text="Reject">
                         <Button

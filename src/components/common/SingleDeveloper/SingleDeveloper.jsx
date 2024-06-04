@@ -41,6 +41,7 @@ const SingleDeveloper = ({ data, role }) => {
   let { pathname } = useLocation();
   let userId = pathname.split("/")[2];
   console.log(pathname.split("/")[2], "pathj");
+  console.log(data,"data")
 
   const token = localStorage.getItem("token");
 
@@ -48,7 +49,6 @@ const SingleDeveloper = ({ data, role }) => {
     dispatch(getSkillList());
   }, []);
 
-  console.log(data?.isEdit, "data---------------");
 
   const splitSkills = (data) => {
     let skills = data?.skills?.split(",") || data?.split(",");
@@ -363,7 +363,7 @@ const SingleDeveloper = ({ data, role }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="connect-social-media px-3">
+                                   { data?.developer_detail ?<div className="connect-social-media px-3">
                                         <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
                                             <h3 className="subheading-resume text-center mb-0">
                                                 {t("connectWithMe")}
@@ -404,7 +404,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                 )}
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div>:""}
                                 </Col>
                                 <Col lg={6} className="px-0 h-100">
                                     <div className="about-info px-4">
