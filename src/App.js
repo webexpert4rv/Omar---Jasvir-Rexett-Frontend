@@ -84,6 +84,9 @@ import JobPostStepContainer from './pages/views/Job post step form/JobPostStepCo
 import LeaveRequest from './pages/views/LeaveRequests';
 import PublicHoliday from './pages/views/PublicHolidays';
 import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
+import TakeQuiz from './pages/developer/TakeQuiz';
+import SkillTest from './pages/developer/SkillTest';
+import NotFound from './pages/views/NotFound';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
@@ -128,6 +131,7 @@ function App() {
           <Route path="/client/leave-request" exact element={<DashboardLayout><LeaveRequest/></DashboardLayout>} />
           <Route path="/client/client-single-developer/:id" exact element={<DashboardLayout><ClientSingleDeveloper /></DashboardLayout>} />
           <Route path='/client/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
+          <Route path='/not-found' exact element={<NotFound />}></Route>
 
 
           <Route path="/admin-dashboard" exact element={<AdminDashboardLayout><AdminDashboard /></AdminDashboardLayout>} />
@@ -149,11 +153,13 @@ function App() {
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
           <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
           <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
+          <Route path="/take-quiz" exact element={<DeveloperDashboardLayout><TakeQuiz /></DeveloperDashboardLayout>} />
+          <Route path="/skill-test" exact element={<DeveloperDashboardLayout><SkillTest /></DeveloperDashboardLayout>} />
           <Route path="/developer-public-holiday" exact element={<DeveloperDashboardLayout><DeveloperPublicHoliday /></DeveloperDashboardLayout>} />
                     <Route path='/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
 
           <Route path="/admin-single-developer/:id" exact element={<AdminDashboardLayout><AdminSingleDeveloper /></AdminDashboardLayout>} />
-          <Route path="/time-reporting-detail" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
+          <Route path="/time-reporting-detail/:clientId" exact element={<AdminDashboardLayout><TimeReportingDetail /></AdminDashboardLayout>} />
           <Route path="/members" exact element={<AdminDashboardLayout><Members /></AdminDashboardLayout>} />
           <Route path="/vendor-single-developer/:id" exact element={<VendorDashboardLayout><VendorSingleDeveloper /></VendorDashboardLayout>} />
           <Route path="/admin-job-listing" exact element={<AdminDashboardLayout><AdminJobListing /></AdminDashboardLayout>} />
@@ -177,6 +183,7 @@ function App() {
           <Route path='/vendor-faq' exact element={<VendorDashboardLayout><Faq /></VendorDashboardLayout>}></Route>
           <Route path='/admin-faq' exact element={<AdminDashboardLayout><Faq /></AdminDashboardLayout>}></Route>
           <Route path='/developer-faq' exact element={<DeveloperDashboardLayout><Faq /></DeveloperDashboardLayout>}></Route>
+          <Route path = "*" element={<NotFound/>}/>
         </Routes>
       </Router>
 

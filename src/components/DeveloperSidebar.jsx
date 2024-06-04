@@ -15,6 +15,7 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { FaQuestion } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import { Button } from "react-bootstrap";
+import { MdQuiz } from "react-icons/md";
 
 const AdminSidebar = ({ sideBarActive }) => {
     const { t } = useTranslation();
@@ -55,6 +56,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 </NavLink>
                             </li>
                             <li className="sidebar-item">
+                                <NavLink to={'/skill-test'} className="side-link" activeClassName="active"><MdQuiz /> Take Skill Test</NavLink>
+                            </li>
+                            <li className="sidebar-item">
                                 <NavLink
                                     to={"/edit-developer-profile"}
                                     className="side-link"
@@ -82,7 +86,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                                 </NavLink>
                             </li>
                             <li className="sidebar-item">
-                                <NavLink to={'/leave-plan'} className="side-link" activeClassName="active"><GiPalmTree /> Apply Leave</NavLink>
+                                <NavLink to={'/leave-plan'} className="side-link" activeClassName="active"><GiPalmTree /> Apply Leave/Holiday</NavLink>
                             </li>
                             {/* <li className="sidebar-item">
                                 <NavLink to={'/developer-public-holiday'} className="side-link" activeClassName="active"><GiPalmTree /> Public Holiday</NavLink>

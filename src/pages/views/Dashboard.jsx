@@ -43,7 +43,7 @@ const Dashboard = (cardDetails) => {
 
     const handleRowClick = (id) => {
         dispatch(getDeveloperDetails(id))
-        navigate(`/client-single-developer/${id}`)
+        navigate(`client/client-single-developer/${id}`)
     }
 
    

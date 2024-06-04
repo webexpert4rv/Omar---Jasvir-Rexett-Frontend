@@ -22,7 +22,8 @@ const initialAdminData = {
     singleJobPagination: {},
     singleClient: {},
     accountDeletionList:{},
-    adminClientList : []
+    adminClientList : [],
+    timeReportDetails : {}
 }
 
 export const adminDataSlice = createSlice({
@@ -123,13 +124,17 @@ export const adminDataSlice = createSlice({
         setAdminClientList:(state ,action) =>{
             state.screenLoader = false;
             state.adminClientList = action.payload
+        },
+        setTimeReportDetails : (state,action) => {
+            state.screenLoader = false;
+            state.timeReportDetails = action.payload
         }
 
 
     }
 })
 
-export const { setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails, setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -572,6 +577,23 @@ export function approvedEditAction(payload) {
             dispatch(setFailAdminData())
         }
     };
+}
+
+export function getTimeReportsDetails  (clientId,query){
+    return async(dispatch) => {
+        dispatch(setScreenLoader());
+        try{
+            let result = await clientInstance.get(`/admin/clients/${clientId}?${query}`)
+            if(result.status === 200){
+                dispatch(setTimeReportDetails(result?.data?.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+
+    }
 }
 
 export function rejectEditAction(payload) {
