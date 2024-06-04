@@ -207,9 +207,7 @@ const Applications = () => {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-          <Tab.Content>
-
-             
+          <Tab.Content> 
             <Tab.Pane eventKey="clients" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">

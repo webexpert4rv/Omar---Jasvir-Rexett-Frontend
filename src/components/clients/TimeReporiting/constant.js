@@ -89,7 +89,6 @@ export const HEADER = [
   "Leave Type",
   "Leave Date",
   "Reason",
-  "Associated With",
   "Action",
 ];
 export const tabText= [
@@ -151,22 +150,13 @@ export const LEAVE_TYPE = [
   // },
 ];
 export const MONTH_NAME = [
-   "All",
-   "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  'All', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ]
-export const FILTER_NAME = [
-  "Created",
-  "This Year",
-  "This Month",
+export const SELECT_YEAR = [
+ "2024",
+ "2025",
+ "2026",
+ "2027",
+ "2028",
+ "2029"
 ]

@@ -25,7 +25,7 @@ const initialClientData = {
   faqsData: {},
   clientLeaveHistory:[],
   reconciliationsData:[],
-  leaveList:[],
+  clientHolidayList:[],
   addHoliday:{},
   approveDisapprove:{}
 };
@@ -129,8 +129,8 @@ export const clientDataSlice = createSlice({
       setReconciliationsData:(state,action)=>{
          state.reconciliationsData=action.payload
       },
-      setLeaveList : (state,action)=>{
-        state.leaveList = action.payload
+      setClientHolidayList : (state,action)=>{
+        state.clientHolidayList = action.payload
       },
       setAddHoliday:(state,action) => {
         state.addHoliday = action.payload
@@ -151,7 +151,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,setLeaveList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -282,12 +282,12 @@ export function getClientLeaveHistory(payload, callback) {
     };
 }
 
-export function getLeaveList() {
+export function getClientHolidayList() {
   return async (dispatch) => {
       dispatch(setScreenLoader())
       try {
           let result = await clientInstance.get('client/public-holidays')
-            dispatch(setLeaveList(result.data.data))
+            dispatch(setClientHolidayList(result.data.data))
              
       } catch (error) {
         console.log(error,"error")
@@ -316,10 +316,11 @@ export function getAddHoliday(payload, callback) {
 
 export function getApproveDisapprove(payload, id) {
   return async (dispatch) => {
-      dispatch(setSmallLoader())
+      dispatch(setApprovedLoader())
       try {
           let result = await clientInstance.post(generateApiUrl(payload ,`client/approve-or-disapprove-holiday/${id}`))
-            // dispatch(setApproveDisapprove(result.data.data))      
+            // dispatch(setApproveDisapprove(result.data.data))     
+            dispatch(closeApprovedLoader());
       } catch (error) {
         console.log(error,"error")
           const message = error?.response?.data?.message || "Something went wrong";

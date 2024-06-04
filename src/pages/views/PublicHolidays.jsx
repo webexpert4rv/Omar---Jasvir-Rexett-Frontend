@@ -7,7 +7,7 @@ import NewEvent from "./Modals/NewEvent";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getApproveDisapprove,
-  getLeaveList,
+  getClientHolidayList,
 } from "../../redux/slices/clientDataSlice";
 
 const PublicHoliday = () => {

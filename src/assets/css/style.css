@@ -370,11 +370,11 @@ ul {
 
 .main-btn {
     display: inline-block;
-    padding: 10px;
+    padding: 4px;
     color: var(--white) !important;
     background-color: #037563 !important;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 4px;
     font-weight: 400;
     border: 1px solid #037563 !important;
     outline: none;
@@ -5169,6 +5169,7 @@ input[type="radio"]:checked {
 .skill-filters
 {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
     margin: 15px 0 15px;
@@ -5180,7 +5181,7 @@ input[type="radio"]:checked {
     border-radius: 40px;
     background-color: #f2f5f7;
     color: #919191;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
 }
 .skill-filters span.active
