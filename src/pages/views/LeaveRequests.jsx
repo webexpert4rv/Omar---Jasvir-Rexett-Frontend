@@ -72,10 +72,7 @@ const LeaveRequest = () => {
         rejection_reason: null,
       };
       await dispatch(getClientLeaveStatus(payload));
-      let data = {
-        approval_status: "Under Approval",
-      };
-      dispatch(getClientLeaveHistory(data));
+      dispatch(getClientLeaveHistory());
     } else {
       setShowRejectModal(true);
     }

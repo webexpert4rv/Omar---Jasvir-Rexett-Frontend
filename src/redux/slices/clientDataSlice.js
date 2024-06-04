@@ -330,7 +330,7 @@ export function getApproveDisapprove(payload, id) {
 }
 export function getClientLeaveStatus(payload) {
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.post('/common/leave/status',payload)
             if(payload.rejection_reason=== null){
@@ -338,6 +338,8 @@ export function getClientLeaveStatus(payload) {
             }else{
               toast.success("Leave Rejected",{position : "top-center" })
             }
+            dispatch(setActionSuccessFully());
+
         } catch (error) {
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
