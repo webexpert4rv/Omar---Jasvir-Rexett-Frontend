@@ -11,7 +11,8 @@ import RexettSpinner from "../../atomic/RexettSpinner";
 import RexettButton from "../../atomic/RexettButton";
 
 
-function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader }) {
+function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader,selectedIndex }) {
+  
   return (
     <div>
       {tableData?.length > 0 ? (
@@ -73,14 +74,11 @@ function HeaderTable({ tableData, currentTab, handleApproveReject,smallLoader })
                         <RexettButton
                           variant="transparent"
                           className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
-                          icon={<IoCheckmark />}
-                          // isLoading={smallLoader}
+                          icon={selectedIndex===index ? smallLoader : <IoCheckmark />}
                           onClick={() =>
-                            handleApproveReject(item?.id, "Approved")
+                            handleApproveReject(item?.id, "Approved" ,index)
                           }
                         />
-                          {/* {isLoading ? <RexettSpinner/>:<IoCheckmark />}
-                        </Button> */}
                       </ToolTip>
                       <ToolTip text="Reject">
                         <Button

@@ -316,7 +316,7 @@ export function getAddHoliday(payload, callback) {
 
 export function getApproveDisapprove(payload, id) {
   return async (dispatch) => {
-      dispatch(setScreenLoader())
+      dispatch(setSmallLoader())
       try {
           let result = await clientInstance.post(generateApiUrl(payload ,`client/approve-or-disapprove-holiday/${id}`))
             // dispatch(setApproveDisapprove(result.data.data))      

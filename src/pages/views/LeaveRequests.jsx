@@ -33,6 +33,7 @@ const LeaveRequest = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("first");
   const { leaveList } = useSelector((state) => state.clientData);
+  const [selectedIndex ,setSelectedIndex] =  useState(null)
   const [status, setStatus] = useState({
     id: "",
     status: "",
@@ -63,7 +64,8 @@ const LeaveRequest = () => {
     setShowRejectModal(!showRejectModal);
   };
 
-  const handleApproveReject = async (id, status) => {
+  const handleApproveReject = async (id, status,index) => {
+    setSelectedIndex(index)
     setLeaveId(id);
     if (status === "Approved") {
       let payload = {
@@ -189,10 +191,11 @@ const LeaveRequest = () => {
             />
             <Header data={tableHeader()} />
             <HeaderTable
-              smallLoader={smallLoader}
               tableData={clientLeaveHistory}
               currentTab={currentTab}
               handleApproveReject={handleApproveReject}
+              smallLoader={smallLoader}
+              selectedIndex={selectedIndex}
             />
             {showRejectModal && (
               <RejectModal
