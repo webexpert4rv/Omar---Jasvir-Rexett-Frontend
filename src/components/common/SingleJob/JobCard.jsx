@@ -39,7 +39,7 @@ const JobCard = ({ handleJobStatusModal, type, data, jobStatus, role, setPage, p
 
       const handleDeveloperCard=(e,id)=>{
                if(role=="client"){
-                navigate(`/client-single-developer/${id}`)
+                navigate(`client/client-single-developer/${id}`)
                }
                else if(role === "admin")
                {
