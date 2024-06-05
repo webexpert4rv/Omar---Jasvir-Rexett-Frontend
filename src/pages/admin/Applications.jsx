@@ -553,7 +553,7 @@ const Applications = () => {
                                         src={
                                           item?.profile_picture
                                             ? item?.profile_picture
-                                            : userImg
+                                            : "/demo-user.png"
                                         }
                                         className="user-img"
                                       />
@@ -861,7 +861,7 @@ const Applications = () => {
                                         src={
                                           item?.profile_picture
                                             ? item?.profile_picture
-                                            : userImg
+                                            : "/demo-user.png"
                                         }
                                         className="user-img"
                                       />

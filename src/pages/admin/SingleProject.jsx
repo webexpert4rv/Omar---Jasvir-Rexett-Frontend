@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { Button, Collapse, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Button,
+  Collapse,
+  OverlayTrigger,
+  Tab,
+  Tooltip,
+} from "react-bootstrap";
 import { FaLinkedinIn } from "react-icons/fa6";
 import userImage from "../../assets/img/user-img.jpg";
 import associateLogo from "../../assets/img/aviox-logo.png";
 import DeveloperCard from "./DeveloperCard";
 
-const SingleProject = ({projectName ,developerData}) => {
+const SingleProject = ({ projectName, developerData }) => {
   const [open, setOpen] = useState(false);
   const companyname = (
     <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
@@ -14,20 +20,20 @@ const SingleProject = ({projectName ,developerData}) => {
 
   return (
     <>
-    <div className="mb-4">
-      <div
-        className="heading-box mb-3 d-flex justify-content-between align-items-center cursor-pointer"
-        onClick={() => setOpen(!open)}
-      >
-        <h3 className="mb-0">{projectName}</h3>
-        <Button className="main-btn white-btn font-14 p-0">
-          See All Developers <span className="number-count-light">7</span>
-        </Button>
-      </div>
-      <Collapse in={open}>
-        <div className="developers-list" id="figma-to-ui-projects">
-          <DeveloperCard data = {developerData} />
-          {/* <div className="developer-card">
+        <div className="mb-4">
+          <div
+            className="heading-box mb-3 d-flex justify-content-between align-items-center cursor-pointer"
+            onClick={() => setOpen(!open)}
+          >
+            <h3 className="mb-0">{projectName}</h3>
+            <Button className="main-btn white-btn font-14 p-0">
+              See All Developers <span className="number-count-light">7</span>
+            </Button>
+          </div>
+          <Collapse in={open}>
+            <div className="developers-list" id="figma-to-ui-projects">
+              <DeveloperCard data={developerData} />
+              {/* <div className="developer-card">
             <div className="user-imgbx">
               <img src={userImage} className="user-img" />
             </div>
@@ -53,11 +59,11 @@ const SingleProject = ({projectName ,developerData}) => {
               </ul>
             </div>
           </div> */}
+            </div>
+          </Collapse>
         </div>
-      </Collapse>
-    </div>
 
-    {/* <div className="mb-4">
+      {/* <div className="mb-4">
       <div
         className="heading-box mb-3 d-flex justify-content-between align-items-center cursor-pointer"
         onClick={() => setOpen(!open)}

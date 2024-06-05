@@ -53,7 +53,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                 <div className="client-info p-0 bg-transparent">
                   <h3 className="font-15 fw-bold mb-2">Client Name</h3>
                   <p className="client-name-heading mb-0">
-                    <img src={clientDetails?.profile_picture ? clientDetails?.profile_picture :userImage} />{clientDetails?.name}
+                    <img src={clientDetails?.profile_picture ? clientDetails?.profile_picture :"/demo-user.png"} />{clientDetails?.name}
                   </p>
                 </div>
               </Col>
@@ -159,7 +159,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                 <div className="developers-list" id="figma-to-ui-projects">
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -179,7 +179,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -199,7 +199,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -228,7 +228,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -248,7 +248,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -277,7 +277,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -297,7 +297,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -342,7 +342,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                 <div className="developers-list">
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -362,7 +362,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -382,7 +382,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -411,7 +411,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -431,7 +431,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -460,7 +460,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -480,7 +480,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                   </div>
                   <div className="developer-card">
                     <div className="user-imgbx">
-                      <img src={userImage} className="user-img" />
+                      <img src={"/demo-user.png"} className="user-img" />
                     </div>
                     <div className="text-center">
                       <h3 className="user-name">Sandeep</h3>
@@ -661,7 +661,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2 white-nowrap">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -731,7 +731,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start white-nowrap">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -801,7 +801,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -871,7 +871,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -941,7 +941,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -1019,7 +1019,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -1207,7 +1207,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -1243,7 +1243,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>
@@ -1282,7 +1282,7 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
                             <td className="time-table-data text-start">
                               <div className="d-flex align-items-center gap-2">
                                 <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                  <img src={userImage} className="user-img" />
+                                  <img src={"/demo-user.png"} className="user-img" />
                                 </div>
                                 Rohit Sharma
                               </div>

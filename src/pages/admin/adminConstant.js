@@ -53,6 +53,11 @@ export const ACTIVE_TABS = {
     projects:"projects",
     timeReportingOrInvoicing:"time-reporting"
 }
+
+export const ACTIVE_TABS_2 = {
+  raisedByDevAndVendor:"raise-by-devs",
+  raisedToClients:"raise-to-clients"
+}
 export const  getCurrentMonthYear = () => {
     const date = new Date();
     const options = { month: 'long', year: 'numeric' };

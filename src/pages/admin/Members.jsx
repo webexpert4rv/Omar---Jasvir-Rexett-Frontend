@@ -115,6 +115,9 @@ const Members = () => {
       {t("reject")}
     </Tooltip>
   );
+  const redirectClient = (id) => {
+    navigate(`/admin-single-client/${id}`)
+  }
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -292,12 +295,12 @@ const Members = () => {
                                     >
                                       <RxChevronRight />
                                     </span>{" "}
-                                    <div className="user-imgbx application-userbx" >
+                                    <div className="user-imgbx application-userbx" onClick={()=>redirectClient(item?.id)}>
                                       <img
                                         src={
                                           item?.profile_picture
                                             ? item?.profile_picture
-                                            : userImg
+                                            : "/demo-user.png"
                                         }
                                         className="user-img"
                                       />
@@ -537,7 +540,7 @@ const Members = () => {
                                         src={
                                           item?.profile_picture
                                             ? item?.profile_picture
-                                            : userImg
+                                            : "/demo-user.png"
                                         }
                                         className="user-img"
                                       />
@@ -779,7 +782,7 @@ const Members = () => {
                                         src={
                                           item?.profile_picture
                                             ? item?.profile_picture
-                                            : userImg
+                                            : "/demo-user.png"
                                         }
                                         className="user-img"
                                       />

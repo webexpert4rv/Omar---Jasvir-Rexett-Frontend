@@ -5,18 +5,17 @@ import userImage from "../../assets/img/user-img.jpg";
 import associateLogo from "../../assets/img/aviox-logo.png";
 import { FaRegEye } from "react-icons/fa6";
 const RaisedToClientTable = ({ columns, data ,isRaisedByDevAndVendor = false }) => {
-  console.log(columns, "columns");
-  console.log(data, "data");
   const companyname = (
     <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
   );
-  const downloadinvoice = <Tooltip id="tooltip">Download Invoice</Tooltip>;
+  const downloadinvoice = <Tooltip id="tooltip"> Download Invoice</Tooltip>;
   const handleDownload = (e, resume) => {
     e.stopPropagation();
     window.open(resume, "_blank");
   };
   const getDataForVendor = () => {
     const arr = data?.map((curElem,idx)=>curElem.contracts[0])
+    return arr;
   }
   const viewtimesheet = <Tooltip id="tooltip">View Timesheet</Tooltip>;
   const dataToMap = (isRaisedByDevAndVendor) ? (getDataForVendor()) : data?.[0]?.contracts
@@ -43,7 +42,7 @@ const RaisedToClientTable = ({ columns, data ,isRaisedByDevAndVendor = false }) 
                       <div className="d-flex align-items-center gap-2">
                         <div className="user-imgbx application-imgbx mx-0 mb-0">
                           <img
-                            src={curData[subkey] ? curData[subkey] : userImage}
+                            src={curData[subkey] ? curData[subkey] : "/demo-user.png"}
                             className="user-img"
                           />
                         </div>
