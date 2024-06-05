@@ -61,12 +61,19 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
 
   const [remarkshow, setremarkShow] = useState(false);
   const handleremarkClose = () => setremarkShow(false);
+
+  function filterReportDataByDate(reportData) {
+    const today = new Date().toISOString().split('T')[0];
+    return reportData.filter(entry => entry.report_date <= today);
+}
+
   const handleremarkShow = (data, index) => {
+
     let memoDetails = data?.timeReports[index];
     let newData = {
       ...data,
       timeReports: memoDetails,
-      allSelectedTimeReport: data?.timeReports,
+      allSelectedTimeReport: filterReportDataByDate(data?.timeReports),
     };
     if (role == "client") {
       dispatch(getReconciliationData(data?.contractDetails?.contract_id));
@@ -203,7 +210,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                 <th className="time-table-head">
                   <span>Reconciliation</span>
                 </th>
-                {selectedPeriod == "weekly" ? (
+                {selectedPeriod == "weekly" && role!=="developer" ? (
                   <th className="time-table-head">
                     <span>Submit</span>
                   </th>
@@ -341,7 +348,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           </td>
                           <td className="time-table-data">
                             <button
-                              disabled={item?.isApproved || !isTodayFriday()}
+                              // disabled={item?.isApproved || !isTodayFriday()}
                               onClick={() => {
                                 handleremarkShow(item, index);
                               }}
@@ -364,7 +371,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                             </button>
                           </td>
 
-                          {selectedPeriod == "weekly" ? (
+                          {selectedPeriod == "weekly" && role!=="developer" ? (
                             <td className="time-table-data">
                               {item?.isApproved ? (
                                 <span className="status-finished">
