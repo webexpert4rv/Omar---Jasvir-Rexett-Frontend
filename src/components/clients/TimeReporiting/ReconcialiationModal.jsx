@@ -7,7 +7,7 @@ import { TiEdit } from "react-icons/ti";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { approveTimeReportReconciliation, timeReporting } from "../../../redux/slices/clientDataSlice";
+import { approveTimeReportReconciliation, rejectTimeReportReconciliation, timeReporting } from "../../../redux/slices/clientDataSlice";
 
 const approveRemark = <Tooltip id="tooltip">Approve</Tooltip>;
 const rejectRemark = <Tooltip id="tooltip">Reject</Tooltip>;
@@ -47,9 +47,10 @@ const ReconciliationModal = ({
       contract_id: contract_id,
       report_date: report_date,
       reconciliation_id: id,
+      client_remark:null,
       is_approved: currentStatus,
     };
-    await dispatch(approveTimeReportReconciliation(data));
+    await dispatch(currentStatus?approveTimeReportReconciliation(data):rejectTimeReportReconciliation(data));
     let filterData={
       page:page,
       selectedPeriod:selectedPeriod

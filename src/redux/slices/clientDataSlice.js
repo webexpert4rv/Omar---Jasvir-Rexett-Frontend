@@ -856,6 +856,24 @@ export function approveTimeReportReconciliation(payload, callback) {
   };
 }
 
+export function rejectTimeReportReconciliation(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("client/reject-time-report-reconciliation", {
+        ...payload,
+      });
+
+      dispatch(setActionSuccessFully());
+      toast.success("Time sheet Developer is Rejected", { position: "top-center" });
+      return callback();
+    } catch (error) {
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
 
 export function getReconciliationData(payload) {
   return async (dispatch) => {
