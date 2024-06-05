@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { generateApiUrl } from '../../helper/utlis';
 import clientInstance from '../../services/client.instance';
+import { setSmallLoader } from './vendorDataSlice';
 
 const initialAdminData = {
     screenLoader: false,
@@ -68,8 +69,8 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
         },
         setSingleJobListing: (state, action) => {
-            state.smallLoader = false;
             state.singleJobListing = action.payload
+            state.screenLoader = false
         },
 
         setFailAdminData: (state, action) => {
@@ -97,6 +98,7 @@ export const adminDataSlice = createSlice({
             let recomnd = action.payload?.recommended_developers?.map((item) => { return { ...item, recommed: true } })
             let data = [...recomnd, ...action.payload?.other_developers]
             state.suggestedDeveloper = data
+            state.screenLoader = false
         },
 
         setAdminDashboard: (state, action) => {
@@ -267,7 +269,6 @@ export function getSingleClient(id) {
 
 export function adminJobListing(payload, callback) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload, `admin/job-list`))
@@ -285,11 +286,10 @@ export function adminJobListing(payload, callback) {
 
 export function adminSingleJob(payload, callback) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`admin/job-detail/${payload}`)
             if (result.status === 200) {
-                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSingleJobListing(result.data))
             }
         } catch (error) {
@@ -395,6 +395,7 @@ export function adminApproveReject(payload) {
 
 export function getDeveloperSuggestList(payload, page) {
     return async (dispatch) => {
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`admin/developers-to-suggest/${payload}?page=${page}`)
             if (result.status === 200) {

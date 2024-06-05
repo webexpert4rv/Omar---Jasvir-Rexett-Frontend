@@ -56,6 +56,8 @@ const TimeReportRemark = ({
     }
   }, [reconciliationsData]);
 
+  console.log(allSelectedTimeReport,"allSelectedTimeReport")
+
   const handleReconciliationSend = () => {
     const temp = JSON.parse(JSON.stringify(updateWeeklyData));
     const payload = temp.filter((curElem) => curElem?.isEdited === true);
@@ -88,6 +90,8 @@ const TimeReportRemark = ({
     temp[index]["isEdited"] = true;
     setUpdateWeeklyData(temp);
   };
+
+  console.log(user_details,"user")
 
   return (
     <Offcanvas

@@ -445,7 +445,7 @@ const Dashboard = (cardDetails) => {
                                                 <tr>
                                                     <th className="white-nowrap">Developer Name</th>
                                                     <th className="white-nowrap">Project</th>
-                                                    <th className="white-nowrap">Associated with</th>
+                                                    {/* <th className="white-nowrap">Associated with</th> */}
                                                     <th className="white-nowrap">Status</th>
                                                 </tr>
                                             </thead>
@@ -460,11 +460,11 @@ const Dashboard = (cardDetails) => {
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         AI Bot Project
                                                     </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
+                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
                                                         <span className="associate-text">
                                                             <span className="associate">Individual</span>
                                                         </span>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <img src={invoiceUnpaid} className="invoice-img-wrapper" />
                                                     </td>
@@ -479,11 +479,11 @@ const Dashboard = (cardDetails) => {
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
                                                         AI Bot Project
                                                     </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
+                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
                                                         <span className="associate-text">
                                                             <span className="associate">Individual</span>
                                                         </span>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <img src={invoiceUnpaid} className="invoice-img-wrapper" />
                                                     </td>
@@ -498,11 +498,11 @@ const Dashboard = (cardDetails) => {
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         AI Bot Project
                                                     </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
+                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
                                                         <OverlayTrigger placement="bottom" overlay={companytext}>
                                                             <img src={companyLogo} className="company-logo-wrapper" />
                                                         </OverlayTrigger>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <img src={invoicePaid} className="invoice-img-wrapper" />
                                                     </td>
@@ -517,11 +517,11 @@ const Dashboard = (cardDetails) => {
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         AI Bot Project
                                                     </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
+                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
                                                         <OverlayTrigger placement="bottom" overlay={companytext}>
                                                             <img src={companyLogo} className="company-logo-wrapper" />
                                                         </OverlayTrigger>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <img src={invoicePaid} className="invoice-img-wrapper" />
                                                     </td>
@@ -536,11 +536,11 @@ const Dashboard = (cardDetails) => {
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         AI Bot Project
                                                     </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
+                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
                                                         <OverlayTrigger placement="bottom" overlay={companytext}>
                                                             <img src={companyLogo} className="company-logo-wrapper" />
                                                         </OverlayTrigger>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <img src={invoicePaid} className="invoice-img-wrapper" />
                                                     </td>
@@ -555,11 +555,11 @@ const Dashboard = (cardDetails) => {
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         AI Bot Project
                                                     </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
+                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
                                                         <OverlayTrigger placement="bottom" overlay={companytext}>
                                                             <img src={companyLogo} className="company-logo-wrapper" />
                                                         </OverlayTrigger>
-                                                    </td>
+                                                    </td> */}
                                                     <td className="time-table-data text-start font-14 fw-normal">
                                                         <img src={invoicePaid} className="invoice-img-wrapper" />
                                                     </td>
