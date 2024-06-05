@@ -14,7 +14,7 @@ const AdminSingleJob = () => {
     const dispatch = useDispatch()
     let id = pathname.split("/")[2]
     const [showEndJobModal, setShowEndJobModal] = useState(false);
-    const { singleJobListing, suggestedDeveloper, singleJobPagination, smallLoader } = useSelector(state => state.adminData)
+    const { singleJobListing, suggestedDeveloper, singleJobPagination, smallLoader} = useSelector(state => state.adminData)
     const [singleJobDescription, setSingleJobDescription] = useState({})
     const [selectedTabsData, setSelectedTabsData] = useState([]);
     const [suggestedData, setSuggestedData] = useState(null)
@@ -51,7 +51,6 @@ const AdminSingleJob = () => {
     }
     const handleJobStatusAction = async (e) => {
         e.preventDefault()
-
         let data = {
             "job_id": id,
             "developer_id": suggestedData?.developer_id,
@@ -62,7 +61,6 @@ const AdminSingleJob = () => {
         dispatch(getDeveloperSuggestList(id, page))
     }
     const currentStatusCssClass = (status) => {
-        console.log(status, "st")
         switch (status) {
             case "ended":
                 return "endcontract";

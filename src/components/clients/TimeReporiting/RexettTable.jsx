@@ -21,6 +21,8 @@ import {
 import remarkIcon from "../../../assets/img/remarks-icon.svg";
 import { OverlayTrigger } from "react-bootstrap/esm";
 import TimeReportRemark from "./TimeReportRemark";
+import Guidelines from "../../common/Guidelines/Guidelines";
+import { TIME_REPORTING } from "./constant";
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   const [show, setShow] = useState(false);
@@ -483,7 +485,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
           smallLoader={approvedLoader}
         />
       </div>
-      <div className="helper-text-section">
+      {/* <div className="helper-text-section">
         <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
         <ol className="ps-3 mb-0">
           <li className="mb-2">
@@ -507,7 +509,8 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
             </p>
           </li>
         </ol>
-      </div>
+      </div> */}
+      <Guidelines heading={"Guiding You Through: Helpful Text to Navigate Time Reporting"} guideLines={TIME_REPORTING}/>
     </>
   );
 };

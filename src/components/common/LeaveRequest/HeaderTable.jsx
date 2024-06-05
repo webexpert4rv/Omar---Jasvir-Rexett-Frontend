@@ -8,6 +8,7 @@ import { generateLeave } from "../../clients/TimeReporiting/constant";
 import NoDataFound from "../../atomic/NoDataFound";
 import userImg from "../../../assets/img/user-img.jpg";
 import RexettButton from "../../atomic/RexettButton";
+import RexettSpinner from "../../atomic/RexettSpinner";
 
 function HeaderTable({
   tableData,
@@ -79,7 +80,7 @@ function HeaderTable({
                           className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                           icon={
                             selectedIndex == index ? (
-                              approvedLoader
+                              <RexettSpinner/>
                             ) : (
                               <IoCheckmark />
                             )

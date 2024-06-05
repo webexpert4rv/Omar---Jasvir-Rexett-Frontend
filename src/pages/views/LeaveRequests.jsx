@@ -38,7 +38,7 @@ const LeaveRequest = () => {
     id: "",
     status: "",
   });
-  const { screenLoader, approvedLoader, clientLeaveHistory } = useSelector(
+  const { screenLoader, approvedLoader,smallLoader, clientLeaveHistory } = useSelector(
     (state) => state.clientData
   );
   const [leaveId, setLeaveId] = useState();
@@ -212,6 +212,8 @@ const LeaveRequest = () => {
                 feedbacks={"Reasons"}
                 submit={"Submit"}
                 handleClick={handleClick}
+                smallLoader={  smallLoader}
+
               />
             )}
           </Tab.Pane>

@@ -84,7 +84,7 @@ const ListOfHolidays = ({holidayList,handleShowEvent,handleDelete,handleAproveDi
                 <th>Date</th>
                 <th>Name</th>
                 {/* <th>Type</th> */}
-                <th>Action</th>
+               { role ==="client" ?<th>Action</th>:""}
               </tr>
             </thead>
             <tbody>
@@ -96,9 +96,9 @@ const ListOfHolidays = ({holidayList,handleShowEvent,handleDelete,handleAproveDi
                     </td>
                     <td className="font-14 align-middle">
                       {holiday?.name}
-                      <span className="associate-text">
+                    {role==="client" ? <span className="associate-text">
                         <span className="associate">Created</span>
-                      </span>
+                      </span>:""}
                     </td>
                     {/* <td className="font-14 align-middle">
                       {holiday.type}
@@ -167,7 +167,7 @@ const ListOfHolidays = ({holidayList,handleShowEvent,handleDelete,handleAproveDi
                         )
                       ) : (
                         <div>
-                          <h4 className="event-name mb-0">{holiday?.name}</h4>
+                          {/* <h4 className="event-name mb-0">{holiday?.name}</h4> */}
                         </div>
                       )}
                     </td>
