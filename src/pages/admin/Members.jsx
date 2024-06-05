@@ -29,14 +29,16 @@ import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
 
-let STATUS = [{
-  name:"Approved",
-  key:"approved"
-},{
-name:"Rejected",
-key:"rejected"
-
-}];
+let STATUS = [
+  {
+    name: "Approved",
+    key: "approved",
+  },
+  {
+    name: "Rejected",
+    key: "rejected",
+  },
+];
 
 const Members = () => {
   const dispatch = useDispatch();
@@ -49,7 +51,7 @@ const Members = () => {
   const [arrowactive, setArrowActive] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
-  const [currentStatus,setCurrentStatus]=useState("approved")
+  const [currentStatus, setCurrentStatus] = useState("approved");
 
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
@@ -96,8 +98,11 @@ const Members = () => {
     const skillsArray = arr?.split(",");
     return skillsArray;
   };
+  const returnSkills = (sklls) => {
+    const skillsArray = sklls.map(({ skill, ...rest }) => skill);
+    return skillsArray;
+  };
 
- 
   const approvedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       {t("approve")}
@@ -127,15 +132,14 @@ const Members = () => {
   const deleteApplication = <Tooltip id="tooltip">Disabled Accounts</Tooltip>;
 
   const handleToggle = (e, item) => {
-    console.log(item,"item")
+    console.log(item, "item");
     e.stopPropagation();
     setShowModal(!showModal);
     setDetails((prevDetails) => ({
       ...prevDetails,
-      active: item?.status=="active"?"inactive":"active",
+      active: item?.status == "active" ? "inactive" : "active",
       id: item?.id,
     }));
-
   };
 
   const handleClose = () => {
@@ -148,42 +152,41 @@ const Members = () => {
       user_id: details?.id,
       status: details?.active,
     };
-    console.log(details,"dateails")
-   await dispatch(getAccountDisableEnable(data));
-   let newData = {
-    page: page,
+    console.log(details, "dateails");
+    await dispatch(getAccountDisableEnable(data));
+    let newData = {
+      page: page,
+    };
+    dispatch(allMemberList(newData));
+    setShowModal(false);
   };
-  dispatch(allMemberList(newData));
-  setShowModal(false);
 
-  };
-
-  const handleStatus=(e)=>{
-  let k=e.target.value
-  console.log(k,"gg")
-  setCurrentStatus(k)
-  let copied = [...allApplications[currentTab]];
-    let filterStatus = copied.filter(
-      (item) => item.approval_status == k
-    );
+  const handleStatus = (e) => {
+    let k = e.target.value;
+    console.log(k, "gg");
+    setCurrentStatus(k);
+    let copied = [...allApplications[currentTab]];
+    let filterStatus = copied.filter((item) => item.approval_status == k);
     setApplication(filterStatus);
-
-  }
-
+  };
+console.log(application,"applications")
   return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("members")}</h2>
 
         <div className="d-flex gap-3">
-          <Form.Select className="filter-select shadow-none" onChange={handleStatus}>
-            <option>
-              Select Status
-            </option>
+          <Form.Select
+            className="filter-select shadow-none"
+            onChange={handleStatus}
+          >
+            <option>Select Status</option>
             {STATUS.map((item, inx) => {
               return (
                 <>
-                  <option key={inx} value={item.key}>{item.name}</option>
+                  <option key={inx} value={item.key}>
+                    {item.name}
+                  </option>
                 </>
               );
             })}
@@ -325,7 +328,7 @@ const Members = () => {
                                         class="form-check-input toggle-switch-custom"
                                         type="checkbox"
                                         role="switch"
-                                        checked={item?.status=="active"}
+                                        checked={item?.status == "active"}
                                         onClick={(e) => handleToggle(e, item)}
                                       />
                                     </div>
@@ -349,27 +352,26 @@ const Members = () => {
                                                   Company Name
                                                 </h3>
                                                 <p className="application-text">
-                                                  {item?.company_name
-                                                    ? item?.company_name
-                                                    : "Not Mentioned"}
+                                                  {item?.company_name}
                                                 </p>
                                               </div>
                                             </Col>
                                           )}
-                                          {item?.client_type == "company" && (
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Company Address
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company_address
-                                                    ? item?.company_address
-                                                    : "Not Mentioned"}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          )}
+                                          {item?.client_type == "company" &&
+                                            (item?.company_address ? (
+                                              <Col md={3} className="mb-3">
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Company Address
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {item?.company_address}
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            ) : (
+                                              ""
+                                            ))}
 
                                           <Col md={3} className="mb-3">
                                             <div>
@@ -406,24 +408,24 @@ const Members = () => {
                                           )}
 
                                           <Col md={3} className="mb-3">
-                                            <div>
+                                            {/* <div>
                                               <h3 className="application-heading">
                                                 Contact Person name
                                               </h3>
                                               <p className="application-text">
                                                 ---
                                               </p>
-                                            </div>
+                                            </div> */}
                                           </Col>
                                           <Col md={3}>
-                                            <div>
+                                            {/* <div>
                                               <h3 className="application-heading">
                                                 Contact Person Email
                                               </h3>
                                               <p className="application-text">
                                                 ---
                                               </p>
-                                            </div>
+                                            </div> */}
                                           </Col>
                                         </Row>
                                       </div>
@@ -443,7 +445,8 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalClientPages > 1  && application.length>5? (
+              {allApplications?.totalClientPages > 1 &&
+              application.length > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "clients" ? (
                     <p className="showing-result">
@@ -569,7 +572,7 @@ const Members = () => {
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
-                                        checked={item?.status=="active"}
+                                        checked={item?.status == "active"}
                                       />
                                     </div>
                                   </OverlayTrigger>
@@ -604,30 +607,34 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("totalEmployees")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.company?.total_employees
-                                                ? item?.company?.total_employees
-                                                : " ----"}
-                                            </p>
-                                          </div>
-                                        </Col>
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("location")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.company?.location
-                                                ? item?.company?.location
-                                                : "----"}
-                                            </p>
-                                          </div>
-                                        </Col>
+                                        {
+                                          item?.company?.total_employees>0 && (
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("totalEmployees")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company?.total_employees}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )
+                                        }
+                                        {
+                                          item?.company?.location && (
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  {t("location")}
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company?.location}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )
+                                        }
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -685,7 +692,8 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalClientPages > 1  && application.length>5? (
+              {allApplications?.totalClientPages > 1 &&
+              application.length > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "clients" ? (
                     <p className="showing-result">
@@ -803,7 +811,7 @@ const Members = () => {
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
-                                        checked={item?.status=="active"}
+                                        checked={item?.status == "active"}
                                       />
                                     </div>
                                   </OverlayTrigger>
@@ -818,66 +826,68 @@ const Members = () => {
                                   <td colSpan="8">
                                     <div>
                                       <Row>
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("developerName")}
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.name
-                                                ? item?.name
-                                                : "Not Mentioned"}
-                                            </p>
-                                          </div>
-                                        </Col>
-                                        <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              Address
-                                            </h3>
-                                            <p className="application-text">
-                                              Not Mentioned
-                                            </p>
-                                          </div>
-                                        </Col>
-
-                                        <Col md={3} className="mb-3">
-                                          <div>
-                                            <h3 className="application-heading">
-                                              {t("skillsetNeeded")}
-                                            </h3>
-                                            <ul className="need-skill-list">
-                                              {item?.developer_skills?.skills
-                                                ? convertToArray(
-                                                    item?.developer_skills
-                                                      ?.skills
-                                                  )?.map((item, index) => {
-                                                    return (
-                                                      <>
-                                                        <li key={index}>
-                                                          {item}
-                                                        </li>
-                                                      </>
-                                                    );
-                                                  })
-                                                : "Not Mentioned"}
-                                            </ul>
-                                          </div>
-                                        </Col>
-                                        <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              Designation
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.developer_detail
-                                                ?.professional_title
-                                                ? item?.developer_detail
+                                        {item?.name && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("developerName")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.name}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.address && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Address
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.address}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.other_skills?.length > 0 && (
+                                          <Col md={3} className="mb-3 ">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("skillsetNeeded")}
+                                              </h3>
+                                              <ul className="need-skill-list  mb-0">
+                                                {returnSkills(
+                                                  item?.other_skills
+                                                )?.map((item, index) => {
+                                                  return (
+                                                    <>
+                                                      <li key={index}>
+                                                        {item}
+                                                      </li>
+                                                    </>
+                                                  );
+                                                })}
+                                              </ul>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.developer_detail
+                                          ?.professional_title && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Designation
+                                              </h3>
+                                              <p className="application-text">
+                                                {
+                                                  item?.developer_detail
                                                     ?.professional_title
-                                                : "Not mentioned"}
-                                            </p>
-                                          </div>
-                                        </Col>
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -905,7 +915,8 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalClientPages > 1  && application.length>4  ? (
+              {allApplications?.totalClientPages > 1 &&
+              application.length > 4 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "developers" ? (
                     <p className="showing-result">
@@ -915,11 +926,13 @@ const Members = () => {
                   ) : (
                     ""
                   )}
-                 { <RexettPagination
-                    number={allApplications?.totalDeveloperPages}
-                    setPage={setPage}
-                    page={page}
-                  />}
+                  {
+                    <RexettPagination
+                      number={allApplications?.totalDeveloperPages}
+                      setPage={setPage}
+                      page={page}
+                    />
+                  }
                 </div>
               ) : (
                 ""
@@ -932,9 +945,10 @@ const Members = () => {
           handleClose={handleClose}
           onClick={handleDeleteAction}
           header={"Delete Developer"}
-          text={`Are you sure ,you want to ${details.active=="active"?"enable":"disable"} this account?`}
+          text={`Are you sure ,you want to ${
+            details.active == "active" ? "enable" : "disable"
+          } this account?`}
           smallLoader={screenLoader}
-          
         />
       </div>
     </>
