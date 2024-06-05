@@ -91,6 +91,10 @@ const DeveloperNavigation = ({ onClick }) => {
     };
 
     const handleColorfulChange = (e) => {
+        if (lastTimeLog?.data?.type === "check-out") {
+            toast.error("You have already checked out. You cannot check in again");
+            return;
+        }
         setIsColorfulChecked(true);
     };
 
