@@ -84,7 +84,7 @@ const ReconciliationModal = ({
               </p>
             </div>
             <div className="editSec">
-              {role !== "client" ? (
+              {role !== "client" && item?.reconciliation_approved!==true ? (
                 <span className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none" onClick={()=>handleEdit(item)}>
                   <TiEdit />
                 </span>
