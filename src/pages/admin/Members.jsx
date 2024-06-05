@@ -28,6 +28,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import { useNavigate } from "react-router-dom";
 
 let STATUS = [
   {
@@ -98,6 +99,7 @@ const Members = () => {
     const skillsArray = arr?.split(",");
     return skillsArray;
   };
+  const navigate = useNavigate();
   const returnSkills = (sklls) => {
     const skillsArray = sklls.map(({ skill, ...rest }) => skill);
     return skillsArray;
@@ -169,8 +171,10 @@ const Members = () => {
     let filterStatus = copied.filter((item) => item.approval_status == k);
     setApplication(filterStatus);
   };
-console.log(application,"applications")
-  return (
+  const handleRedirect = (id) => {
+    navigate(`/admin-single-developer/${id}`)
+  }
+    return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("members")}</h2>
@@ -288,7 +292,7 @@ console.log(application,"applications")
                                     >
                                       <RxChevronRight />
                                     </span>{" "}
-                                    <div className="user-imgbx application-userbx">
+                                    <div className="user-imgbx application-userbx" >
                                       <img
                                         src={
                                           item?.profile_picture
@@ -407,26 +411,26 @@ console.log(application,"applications")
                                             </Col>
                                           )}
 
-                                          <Col md={3} className="mb-3">
-                                            {/* <div>
+                                          {/* <Col md={3} className="mb-3">
+                                            <div>
                                               <h3 className="application-heading">
                                                 Contact Person name
                                               </h3>
                                               <p className="application-text">
                                                 ---
                                               </p>
-                                            </div> */}
-                                          </Col>
-                                          <Col md={3}>
-                                            {/* <div>
+                                            </div>
+                                          </Col> */}
+                                          {/* <Col md={3}>
+                                            <div>
                                               <h3 className="application-heading">
                                                 Contact Person Email
                                               </h3>
                                               <p className="application-text">
                                                 ---
                                               </p>
-                                            </div> */}
-                                          </Col>
+                                            </div>
+                                          </Col> */}
                                         </Row>
                                       </div>
                                     </td>
@@ -770,7 +774,7 @@ console.log(application,"applications")
                                     >
                                       <RxChevronRight />
                                     </span>{" "}
-                                    <div className="user-imgbx application-userbx">
+                                    <div className="user-imgbx application-userbx"  onClick={()=>{handleRedirect(item?.id)}}>
                                       <img
                                         src={
                                           item?.profile_picture

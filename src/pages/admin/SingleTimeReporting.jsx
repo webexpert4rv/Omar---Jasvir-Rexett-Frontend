@@ -1732,6 +1732,7 @@ const TimeReportingDetail = () => {
                           timeReportDetails?.invoices_time_reporting
                             ?.raised_by_dev_vendor
                         }
+                        isRaisedByDevAndVendor = {true}
                       /> */}
                       <div className="table-responsive">
                         <table className="table time-table table-bordered table-ui-custom">
@@ -2289,13 +2290,13 @@ const TimeReportingDetail = () => {
                           </Button>
                         </div>
                       </div>
-                      <RaisedToClientTable
+                      {/* <RaisedToClientTable
                         columns={RAISED_TO_CLIENT_COLUMNS}
                         data={
                           timeReportDetails?.invoices_time_reporting
                             ?.raised_to_client
                         }
-                      />
+                      /> */}
                       <div className="table-responsive">
                         <table className="table time-table table-bordered table-ui-custom">
                           <thead>

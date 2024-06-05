@@ -4,7 +4,7 @@ import { HiDownload } from "react-icons/hi";
 import userImage from "../../assets/img/user-img.jpg";
 import associateLogo from "../../assets/img/aviox-logo.png";
 import { FaRegEye } from "react-icons/fa6";
-const RaisedToClientTable = ({ columns, data }) => {
+const RaisedToClientTable = ({ columns, data ,isRaisedByDevAndVendor = false }) => {
   console.log(columns, "columns");
   console.log(data, "data");
   const companyname = (
@@ -15,7 +15,11 @@ const RaisedToClientTable = ({ columns, data }) => {
     e.stopPropagation();
     window.open(resume, "_blank");
   };
+  const getDataForVendor = () => {
+    const arr = data?.map((curElem,idx)=>curElem.contracts[0])
+  }
   const viewtimesheet = <Tooltip id="tooltip">View Timesheet</Tooltip>;
+  const dataToMap = (isRaisedByDevAndVendor) ? (getDataForVendor()) : data?.[0]?.contracts
 
   const handleRaiseInvoice = () => {};
 
@@ -30,7 +34,7 @@ const RaisedToClientTable = ({ columns, data }) => {
           ))}
         </thead>
         <tbody>
-          {data?.[0]?.contracts?.map((curData, rowIdx) => (
+          {dataToMap?.map((curData, rowIdx) => (
             <tr key={rowIdx}>
               {columns.map(({ key, subkey, isStatus }) => (
                 <>

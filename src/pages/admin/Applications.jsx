@@ -29,6 +29,7 @@ import { HiDownload } from "react-icons/hi";
 import generatePDF from "react-to-pdf";
 import moment from "moment";
 import { FiExternalLink } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 const COLUMNS = {
   vendors: [
     { header: "clientName", key: "name" },
@@ -60,6 +61,7 @@ const COLUMNS = {
 const Applications = () => {
   const targetRef = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { allApplications, approvedLoader, screenLoader } = useSelector(
     (state) => state.adminData
   );
