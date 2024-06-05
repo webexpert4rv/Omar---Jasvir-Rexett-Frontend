@@ -345,7 +345,6 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                  <td colSpan="8">
                                     <td colSpan="8">
                                       <div>
                                         <Row>
@@ -434,7 +433,6 @@ const Members = () => {
                                         </Row>
                                       </div>
                                     </td>
-                                  </td>
                                 </tr>
                               )}
                             </React.Fragment>
