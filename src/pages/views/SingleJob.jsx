@@ -34,6 +34,7 @@ import { useTranslation } from "react-i18next";
 import { FaTrashCan } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
 import RexettButton from "../../components/atomic/RexettButton";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 const SingleJob = () => {
   const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -56,6 +57,7 @@ const SingleJob = () => {
     jobPostedData,
     approvedLoader,
     smallLoader,
+    screenLoader
   } = useSelector((state) => state.clientData);
   const { t } = useTranslation();
   useEffect(() => {
@@ -310,7 +312,7 @@ const SingleJob = () => {
         onSelect={handleSelect}
       >
         <Tab eventKey="application" title={t("jobDetails")}>
-          <section className="single-job-section">
+         {screenLoader? <ScreenLoader/> : <section className="single-job-section">
             <div className="single-job-card job-information-wrapper">
               <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
                 <div className="d-flex align-items-center gap-3">
@@ -499,7 +501,7 @@ const SingleJob = () => {
                 </Col>
               </Row>
             </div> */}
-          </section>
+          </section>}
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
           <div className="text-end">

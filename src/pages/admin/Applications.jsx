@@ -336,7 +336,7 @@ const Applications = () => {
                                     <div className="d-flex gap-3">
                                       <div>
                                         <a
-                                          // href={project_link}
+                                          href="https://www.rexett.com/client-registration"
                                           className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
                                         >
                                           Complete Your Profile <FiExternalLink/>
@@ -635,7 +635,7 @@ const Applications = () => {
                                     <div className="d-flex gap-3">
                                       <div>
                                         <a
-                                          // href={project_link}
+                                          href="https://www.rexett.com/vender-registration"
                                           className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
                                         >
                                           Complete Your Profile <FiExternalLink size={30}/>
@@ -939,7 +939,7 @@ const Applications = () => {
                                     <div className="d-flex gap-3">
                                       <div>
                                         <a
-                                          // href={project_link}
+                                          href="https://www.rexett.com/developer-registration"
                                           className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
                                         >
                                           Complete Your Profile <FiExternalLink />

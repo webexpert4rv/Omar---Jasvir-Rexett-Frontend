@@ -62,6 +62,7 @@ export const clientDataSlice = createSlice({
       setActionSuccessFully: (state, action) => {
           state.smallLoader = false;
           state.approvedLoader = false;
+          state.screenLoader=false
       },
 
       setClientProfileDetails: (state, action) => {
@@ -435,7 +436,7 @@ export function clientUpdatePost(
 export function singleJobPostData(payload, callback) {
   console.log(payload,"pp")
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`client/job-detail/${payload}`);
       // toast.success("Job successfully Posted", { position: "top-center" })

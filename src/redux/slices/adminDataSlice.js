@@ -70,7 +70,7 @@ export const adminDataSlice = createSlice({
         },
         setSingleJobListing: (state, action) => {
             state.singleJobListing = action.payload
-            // state.screenLoader = false
+            state.screenLoader = false
         },
 
         setFailAdminData: (state, action) => {
