@@ -23,29 +23,12 @@ import InvoicePaidModal from "./Modals/InvoicePaid";
 import { FaRegEye } from "react-icons/fa";
 import { ACTIVE_TABS, getCurrentMonthYear } from "./adminConstant";
 
-const ClientDetailSection = ({clientDetails, setActiveTab}) => {  
-  const [openSecond, setOpenSecond] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [showInvoicePaidModal, setShowInvoicePaidModal] = useState(false);
+const ClientDetailSection = ({clientDetails, setActiveTab,totalProjects,activeTab}) => {  
   const [remarkshow, setremarkShow] = useState(false);
-  const handleremarkShow = () => setremarkShow(true);
-
-  const handleInvoicePaid = () => {
-    setShowInvoicePaidModal(true);
-  };
-  const handleCloseInvoicePaid = () => {
-    setShowInvoicePaidModal(false);
-  };
-  const companyname = (
-    <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
-  );
-  const viewtimesheet = <Tooltip id="tooltip">View Timesheet</Tooltip>;
-  const downloadinvoice = <Tooltip id="tooltip">Download Invoice</Tooltip>;
-
 
   return (
     <div className="detail-view">
-      <Tab.Container id="left-tabs-example" defaultActiveKey="projects">
+      <Tab.Container id="left-tabs-example" >
         <div className="card-box mb-4 p-3">
           <div className="detail-view">
             <Row className="flex-wrap gy-3">
@@ -125,21 +108,21 @@ const ClientDetailSection = ({clientDetails, setActiveTab}) => {
             </Row>
           </div>
           <div className="d-flex justify-content-center mt-4">
-            <Nav variant="pills" className="weekly-tabs mb-0">
-              <Nav.Item className="weekly-tab-item" onClick={()=>{setActiveTab(ACTIVE_TABS.projects)}}>
-                <Nav.Link
-                  className="weekly-tab-link d-flex align-items-center gap-2"
+            <div variant="pills d-flex" className="weekly-tabs mb-0">
+              <div className="weekly-tab-item pointer" onClick={()=>{setActiveTab(ACTIVE_TABS.projects)}}>
+                <div
+                  className={`weekly-tab-link d-flex align-items-center gap-2 ${(activeTab ===ACTIVE_TABS.projects) && "active"}`}
                   eventKey="projects"
                 >
-                  Projects <span className="number">5</span>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item className="weekly-tab-item" onClick={()=>{setActiveTab(ACTIVE_TABS.timeReportingOrInvoicing)}}>
-                <Nav.Link className="weekly-tab-link" eventKey="time-reporting">
+                  Projects <span className="number">{totalProjects}</span>
+                </div>
+              </div>
+              <div className="weekly-tab-item pointer" onClick={()=>{setActiveTab(ACTIVE_TABS.timeReportingOrInvoicing)}}>
+                <div className={`weekly-tab-link  ${(activeTab ===ACTIVE_TABS.timeReportingOrInvoicing) && "active"}`} eventKey="time-reporting">
                   Time Reporting/Invoicing
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         {/* <Tab.Content>

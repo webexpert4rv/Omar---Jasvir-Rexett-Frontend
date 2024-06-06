@@ -20,6 +20,7 @@ const SingleProject = ({ projectName, developerData }) => {
 
   return (
     <>
+    {/* <Tab.Pane eventKey="projects"> */}
         <div className="mb-4">
           <div
             className="heading-box mb-3 d-flex justify-content-between align-items-center cursor-pointer"
@@ -27,7 +28,8 @@ const SingleProject = ({ projectName, developerData }) => {
           >
             <h3 className="mb-0">{projectName}</h3>
             <Button className="main-btn white-btn font-14 p-0">
-              See All Developers <span className="number-count-light">7</span>
+              See  Developer 
+              {/* <span className="number-count-light">7</span> */}
             </Button>
           </div>
           <Collapse in={open}>
@@ -62,6 +64,8 @@ const SingleProject = ({ projectName, developerData }) => {
             </div>
           </Collapse>
         </div>
+
+    {/* </Tab.Pane> */}
 
       {/* <div className="mb-4">
       <div

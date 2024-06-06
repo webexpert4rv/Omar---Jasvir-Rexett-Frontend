@@ -1,10 +1,39 @@
-import React from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { HiDownload } from "react-icons/hi";
 import userImage from "../../assets/img/user-img.jpg";
 import associateLogo from "../../assets/img/aviox-logo.png";
 import { FaRegEye } from "react-icons/fa6";
-const RaisedToClientTable = ({ columns, data ,isRaisedByDevAndVendor = false }) => {
+import { FaEyeSlash } from "react-icons/fa";
+import NoDataFound from "../../components/atomic/NoDataFound";
+import { useDispatch, useSelector } from "react-redux";
+import { timeReporting } from "../../redux/slices/clientDataSlice";
+import { weeklyTimeReports } from "../../components/clients/TimeReporiting/constant";
+import moment from "moment";
+import { useTranslation } from "react-i18next";
+import RexettPagination from "../../components/atomic/RexettPagination";
+
+const RaisedToClientTable = ({
+  columns,
+  totalPages,
+  data,
+  page,
+  setPage,
+  isRaisedByDevAndVendor = false
+}) => {
+  const { t } = useTranslation();
+  const { timeReportingData, smallLoader, timeReportingPage } = useSelector(
+    (state) => state.clientData
+  );
+  const { timeReportDetails, screenLoader } = useSelector(
+    (state) => state.adminData
+  );
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [iconActive, setIconActive] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // dispatch(timeReporting({}, "client"));
+  }, []);
   const companyname = (
     <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
   );
@@ -14,153 +43,345 @@ const RaisedToClientTable = ({ columns, data ,isRaisedByDevAndVendor = false }) 
     window.open(resume, "_blank");
   };
   const getDataForVendor = () => {
-    const arr = data?.map((curElem,idx)=>curElem.contracts[0])
+    const arr = data?.map((curElem, idx) => curElem.contracts[0]);
     return arr;
-  }
+  };
   const viewtimesheet = <Tooltip id="tooltip">View Timesheet</Tooltip>;
-  const dataToMap = (isRaisedByDevAndVendor) ? (getDataForVendor()) : data?.[0]?.contracts
+  const dataToMap = isRaisedByDevAndVendor
+    ? getDataForVendor()
+    : data?.[0]?.contracts;
 
   const handleRaiseInvoice = () => {};
-
+  const handleViewTimesheet = (id, idx) => {
+    const timesheet = timeReportingData?.find(
+      (curElem) => curElem?.contractDetails?.client_id === id
+    );
+    setExpandedRow(
+      expandedRow?.index === idx
+        ? null
+        : { index: idx, item: timesheet ? timesheet : null }
+    );
+    setIconActive(idx == iconActive ? null : idx);
+  };
   return (
-    <div className="table-responsive">
-      <table className="table time-table table-bordered table-ui-custom">
-        <thead>
-          {columns.map(({ label }, idx) => (
-            <th key={idx} className="time-table-head text-start text-uppercase">
-              {label}
-            </th>
-          ))}
-        </thead>
-        <tbody>
-          {dataToMap?.map((curData, rowIdx) => (
-            <tr key={rowIdx}>
-              {columns.map(({ key, subkey, isStatus }) => (
-                <>
-                  {subkey ? (
-                    <td className="time-table-data text-start">
-                      <div className="d-flex align-items-center gap-2">
-                        <div className="user-imgbx application-imgbx mx-0 mb-0">
-                          <img
-                            src={curData[subkey] ? curData[subkey] : "/demo-user.png"}
-                            className="user-img"
-                          />
-                        </div>
-                        {curData?.[key]}
-                      </div>
-                    </td>
-                  ) : key === "associated_with" ? (
-                    <td className="time-table-data">
-                      <p className="associate-text font-14 mt-2 mb-2">
-                        <span className="associate mb-1 font-14">
-                          {curData?.[key]}
-                        </span>
-                      </p>
-                    </td>
-                  ) : key === "invoice_status" ? (
-                    <td className="time-table-data text-start">
-                      {
-                        <span
-                          className={`white-nowrap ${
-                            curData?.[key]
-                              ? "status-finished"
-                              : "status-progress"
-                          }`}
-                        >
-                          {curData?.[key] ? "Paid" : "Unpaid"}
-                        </span>
-                      }
-                    </td>
-                  ) : key === "invoice" ? (
-                    <td>
-                      {curData?.invoice ? (
-                        // true or may be paid
-                        curData?.invoice_status === true ? (
-                          <OverlayTrigger
-                            placement="bottom"
-                            overlay={downloadinvoice}
-                          >
-                            <Button
-                              variant="transparent"
-                              className="arrow-btn primary-arrow"
-                              onClick={handleDownload}
-                            >
-                              <HiDownload />
-                            </Button>
-                          </OverlayTrigger>
+    <>
+      <div className="table-responsive">
+        <table className="table time-table table-bordered table-ui-custom">
+          {}
+          <thead>
+            {columns.map(({ label }, idx) => (
+              <th
+                key={idx}
+                className="time-table-head text-start text-uppercase"
+              >
+                {label}
+              </th>
+            ))}
+          </thead>
+          <tbody>
+            {dataToMap?.length > 0 ? (
+              dataToMap?.map((curData, rowIdx) => (
+                <Fragment key={rowIdx}>
+                  <tr>
+                    {columns.map(({ key, subkey, isStatus }) => (
+                      <>
+                        {subkey ? (
+                          <td className="time-table-data text-start">
+                            <div className="d-flex align-items-center gap-2">
+                              <div className="user-imgbx application-imgbx mx-0 mb-0">
+                                <img
+                                  src={
+                                    curData[subkey]
+                                      ? curData[subkey]
+                                      : "/demo-user.png"
+                                  }
+                                  className="user-img"
+                                />
+                              </div>
+                              {curData?.[key]}
+                            </div>
+                          </td>
+                        ) : key === "associated_with" ? (
+                          <td className="time-table-data">
+                            <p className="associate-text font-14 mt-2 mb-2">
+                              <span className="associate mb-1 font-14">
+                                {curData?.[key]}
+                              </span>
+                            </p>
+                          </td>
+                        ) : key === "invoice_status" ? (
+                          <td className="time-table-data text-start">
+                            {
+                              <span
+                                className={`white-nowrap ${
+                                  curData?.[key]
+                                    ? "status-finished"
+                                    : "status-progress"
+                                }`}
+                              >
+                                {curData?.[key] ? "Paid" : "Unpaid"}
+                              </span>
+                            }
+                          </td>
+                        ) : key === "invoice" ? (
+                          <td>
+                            {curData?.invoice ? (
+                              // true or may be paid
+                              curData?.invoice_status === true ? (
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  overlay={downloadinvoice}
+                                >
+                                  <Button
+                                    variant="transparent"
+                                    className="arrow-btn primary-arrow"
+                                    onClick={handleDownload}
+                                  >
+                                    <HiDownload />
+                                  </Button>
+                                </OverlayTrigger>
+                              ) : (
+                                curData?.invoice_status === false && (
+                                  <Button
+                                    disabled
+                                    className="main-btn px-3 py-1 font-14"
+                                  >
+                                    Invoice Raised
+                                  </Button>
+                                )
+                              )
+                            ) : (
+                              <Button
+                                className="main-btn px-3 py-1 font-14"
+                                onClick={() => {
+                                  handleRaiseInvoice();
+                                }}
+                              >
+                                Raise Invoice
+                              </Button>
+                            )}
+                          </td>
+                        ) : key === "timesheet_status" ? (
+                          <td>
+                            <div className="d-flex gap-2 align-items-center justify-content-between">
+                              <span
+                                className={`white-nowrap ${
+                                  curData?.[key]
+                                    ? "status-finished"
+                                    : "status-progress"
+                                } `}
+                              >
+                                {curData?.[key] ? "Approved" : "Under Review"}
+                              </span>
+                              <OverlayTrigger
+                                placement="bottom"
+                                overlay={viewtimesheet}
+                              >
+                                <Button
+                                  onClick={() => {
+                                    handleViewTimesheet(curData?.id, rowIdx);
+                                  }}
+                                  variant="transparent"
+                                  className="main-btn view-time-btn"
+                                >
+                                  {iconActive === rowIdx ? (
+                                    <FaEyeSlash />
+                                  ) : (
+                                    <FaRegEye />
+                                  )}
+                                </Button>
+                              </OverlayTrigger>
+                            </div>
+                          </td>
+                        ) : key === "project_status" ? (
+                          <td className="time-table-data text-start">
+                            {
+                              <span
+                                className={`white-nowrap ${
+                                  curData?.[key]
+                                    ? "status-finished"
+                                    : "status-progress"
+                                }`}
+                              >
+                                {curData?.[key] ? "Completed" : "In-progress"}
+                              </span>
+                            }
+                          </td>
                         ) : (
-                          curData?.invoice_status === false && (
-                            <Button
-                              disabled
-                              className="main-btn px-3 py-1 font-14"
-                            >
-                              Invoice Raised
-                            </Button>
-                          )
-                        )
-                      ) : (
-                        <Button
-                          className="main-btn px-3 py-1 font-14"
-                          onClick={() => {
-                            handleRaiseInvoice();
-                          }}
-                        >
-                          Raise Invoice
-                        </Button>
-                      )}
-                    </td>
-                  ) : key === "timesheet_status" ? (
-                    <td>
-                      <div className="d-flex gap-2 align-items-center justify-content-between">
-                        <span className={`white-nowrap ${curData?.[key] ? "status-finished" :"status-progress"} `}>
-                          {curData?.[key] ? "Approved" : "Under Review"}
-                        </span>
-                        <OverlayTrigger
-                          placement="bottom"
-                          overlay={viewtimesheet}
-                        >
-                          <Button
-                            variant="transparent"
-                            className="main-btn view-time-btn"
-                          >
-                            <FaRegEye />
-                          </Button>
-                        </OverlayTrigger>
-                      </div>
-                    </td>
-                  ) : key === "project_status" ? (
-                    <td className="time-table-data text-start">
-                      {
-                        <span
-                          className={`white-nowrap ${
-                            curData?.[key]
-                              ? "status-finished"
-                              : "status-progress"
-                          }`}
-                        >
-                          {curData?.[key] ? "Completed" : "In-progress"}
-                        </span>
-                      }
-                    </td>
-                  ) : (
-                    <td className="time-table-data text-start">
-                      {curData?.[key]}
-                      {key === "total_hours" && " hrs"}
-                    </td>
+                          <td className="time-table-data text-start">
+                            {curData?.[key]}
+                            {key === "total_hours" && " hrs"}
+                          </td>
+                        )}
+                      </>
+                      // (key === "") && (
+                      //   <td className="time-table-data">
+                      //   <p className="associate-text font-14 mt-2 mb-2">
+                      //     <span className="associate mb-1 font-14">{curData?.[key]}</span>
+                      //   </p>
+                      // </td>
+                      // )
+                    ))}
+                  </tr>
+                  {expandedRow?.index === rowIdx && (
+                    <table className="table time-table table-bordered table-ui-custom">
+                      <thead>
+                        {weeklyTimeReports(timeReportingData[0], "weekly")
+                          .length > 0 &&
+                          weeklyTimeReports(
+                            timeReportingData[0],
+                            "weekly"
+                          )?.map((item, index) => {
+                            return (
+                              <>
+                                <th className="time-table-head">
+                                  <span>{item} </span>
+                                </th>
+                              </>
+                            );
+                          })}
+                        {/* <th className="time-table-head">
+                        <span>Total Hours</span>
+                      </th> */}
+                      </thead>
+                      <tr
+                        className={`collapsible-row ${
+                          expandedRow?.index === rowIdx ? "open" : ""
+                        }`}
+                      >
+                        {expandedRow?.item &&
+                        Object.keys(expandedRow?.item)?.length > 0 ? (
+                          <>
+                            <td>
+                              <div className="d-flex align-items-center gap-2">
+                                <div className="d-flex gap-2 align-items-center white-nowrap">
+                                  <div className="position-relative">
+                                    <img
+                                      src={
+                                        expandedRow?.contractDetails
+                                          ?.user_details?.profile_picture
+                                          ? expandedRow?.contractDetails
+                                              ?.user_details?.profile_picture
+                                          : "/demo-user.png"
+                                      }
+                                      className="developer-img"
+                                      alt=""
+                                    />
+                                    {/* <span className="number-count overlay">
+                                    1
+                                  </span> */}
+                                  </div>{" "}
+                                  {
+                                    expandedRow?.item?.contractDetails
+                                      ?.user_details?.name
+                                  }
+                                </div>
+                              </div>
+                            </td>
+                            {expandedRow?.item?.timeReports.map(
+                              (reprt, inx) => {
+                                if (reprt.report_date) {
+                                  return (
+                                    <>
+                                      <td
+                                        className={`time-table-data white-nowrap ${
+                                          reprt.is_off_day
+                                            ? "offday-data"
+                                            : "workday-data"
+                                        }`}
+                                      >
+                                        <div>
+                                          <span
+                                            className={`${
+                                              reprt.is_off_day
+                                                ? ""
+                                                : "timing-text d-inline-block"
+                                            }`}
+                                          >
+                                            {reprt.start_time && reprt?.end_time
+                                              ? `${moment(
+                                                  reprt?.start_time,
+                                                  "HH:mm"
+                                                ).format("h:mm A")} - ${moment(
+                                                  reprt?.end_time,
+                                                  "HH:mm"
+                                                ).format("h:mm A")} `
+                                              : reprt?.is_holiday
+                                              ? "Holiday"
+                                              : reprt?.is_off_day
+                                              ? "Leave"
+                                              : reprt?.is_public_holiday
+                                              ? reprt?.holiday_name
+                                              : ""}
+                                          </span>
+                                          {reprt?.memo && (
+                                            <p className="memo-text">
+                                              {reprt?.memo ? reprt?.memo : ""}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </td>
+                                    </>
+                                  );
+                                } else if (reprt?.week) {
+                                  return (
+                                    <>
+                                      <td
+                                        className={`time-table-data white-nowrap ${
+                                          reprt.is_off_week
+                                            ? "offday-data"
+                                            : "workday-data"
+                                        }`}
+                                      >
+                                        <div>
+                                          {reprt?.duration
+                                            ? `${reprt?.duration.toFixed(
+                                                "2"
+                                              )} hr`
+                                            : "Holiday"}
+                                        </div>
+                                      </td>
+                                      {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
+                                    </>
+                                  );
+                                } else {
+                                  return (
+                                    <>
+                                      <td
+                                        className={`time-table-data white-nowrap ${
+                                          reprt.is_off_month
+                                            ? "offday-data"
+                                            : "workday-data"
+                                        }`}
+                                      >
+                                        <div>
+                                          {reprt?.duration
+                                            ? `${reprt?.duration.toFixed(
+                                                "2"
+                                              )} hr`
+                                            : "Holiday"}
+                                        </div>
+                                      </td>
+                                      {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
+                                    </>
+                                  );
+                                }
+                              }
+                            )}
+                          </>
+                        ) : (
+                          "No timesheet found"
+                        )}
+                      </tr>
+                    </table>
                   )}
-                </>
-                // (key === "") && (
-                //   <td className="time-table-data">
-                //   <p className="associate-text font-14 mt-2 mb-2">
-                //     <span className="associate mb-1 font-14">{curData?.[key]}</span>
-                //   </p>
-                // </td>
-                // )
-              ))}
-            </tr>
-          ))}
+                </Fragment>
+              ))
+            ) : (
+              <NoDataFound />
+            )}
 
-          {/* <tr>
+            {/* <tr>
             <td className="time-table-data text-start">Figma to UI</td>
             <td className="time-table-data text-start">
               <div className="d-flex align-items-center gap-2">
@@ -212,7 +433,7 @@ const RaisedToClientTable = ({ columns, data ,isRaisedByDevAndVendor = false }) 
             </td>
             <td className="time-table-data text-start">
               <OverlayTrigger placement="bottom" overlay={downloadinvoice}>
-                <Button
+                <Button 
                   variant="transparent"
                   className="arrow-btn primary-arrow"
                 >
@@ -221,9 +442,24 @@ const RaisedToClientTable = ({ columns, data ,isRaisedByDevAndVendor = false }) 
               </OverlayTrigger>
             </td>
           </tr> */}
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
+      {totalPages > 1 ? (
+        <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
+          <p className="showing-result">
+            {/* {t("showing")} {timeReportDetails?.length} {t("results")} */}
+          </p>
+          <RexettPagination
+            number={totalPages}
+            setPage={setPage}
+            page={page}
+          />
+        </div>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 
