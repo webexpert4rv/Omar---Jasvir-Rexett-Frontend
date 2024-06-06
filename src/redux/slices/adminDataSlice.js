@@ -454,7 +454,7 @@ export function getNotification(payload) {
                 dispatch(setNotificationList(result.data))
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message =  error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
