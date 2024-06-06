@@ -170,17 +170,18 @@ const Applications = () => {
     setTimerValue(timer);
   };
 
+  console.log(process.env,"ppp")
+
   const redirectToWebsiteForm = (currentUser, id) => {
     const encrypted = encrypt(id);
     const baseUrls = {
-      developer: "https://www.rexett.com/developer-registration",
-      vendor: "https://www.rexett.com/vender-registration",
-      client: "https://www.rexett.com/client-registration",
+      developer: process.env.REACT_APP_DEVELOPER,
+      vendor: process.env.REACT_APP_VENDOR,
+      client: process.env.REACT_APP_CLIENT,
     };
   
     const url = baseUrls[currentUser];
     if (url) {
-
       window.open(`${url}?user_id=${encrypted}`, "_blank");
     } else {
       console.error("Invalid user type");
