@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { addLogTime } from "../../../redux/slices/developerDataSlice";
 import { useForm } from "react-hook-form";
+import RexettButton from "../../atomic/RexettButton";
+import { timeReporting } from "../../../redux/slices/clientDataSlice";
 const SubmitTimeReport = ({
   endTime,
   show,
@@ -23,7 +25,7 @@ const SubmitTimeReport = ({
     formState: { errors },
   } = useForm();
   const today = moment().format("YYYY-MM-DD");
-  const {lastTimeLog}=useSelector(state=>state.developerData)
+  const {lastTimeLog,smallLoader}=useSelector(state=>state.developerData)
 
   const calculateTotalHours = () => {
     const now = moment();
@@ -41,18 +43,23 @@ const SubmitTimeReport = ({
   };
  
 
-  const onSubmit = (values) => {
-    
-    handleCloseTimeReport();
-    handleClose();
-    setChecked(false);
+  const onSubmit = async (values) => {
     let payload={
             "type": "check-out",
             "timer_seconds_till_time": totalSeconds,
             "memo": values?.memo
           }
 
-      dispatch(addLogTime(payload))
+    await  dispatch(addLogTime(payload))
+        
+    handleCloseTimeReport();
+    handleClose();
+    setChecked(false);
+    let filterData = {
+      filter: "weekly"
+  }
+    dispatch(timeReporting(filterData,"developer"))
+
   };
   return (
     <Modal
@@ -102,13 +109,16 @@ const SubmitTimeReport = ({
             <p className="error-message">{errors.memo?.message}</p>
           )}
           <div className="text-center">
-            <Button
-              variant="transparent"
-              type="onSubmit"
+            <RexettButton
+              type="submit"
+              text={t("submit")}
               className="main-btn px-4 font-14 fw-semibold"
-            >
-              Submit
-            </Button>
+              variant="transparent"
+              disabled={smallLoader}
+              isLoading={smallLoader}
+            />
+
+
           </div>
         </Form>
       </Modal.Body>

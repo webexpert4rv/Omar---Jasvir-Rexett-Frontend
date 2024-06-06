@@ -30,6 +30,13 @@ import generatePDF from "react-to-pdf";
 import moment from "moment";
 import { FiExternalLink } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js";
+
+const SECRET_KEY = "abcfuipqw222";
+
+export const encrypt = (text) => {
+  return CryptoJS.AES.encrypt(text, SECRET_KEY).toString();
+};
 const COLUMNS = {
   vendors: [
     { header: "clientName", key: "name" },
@@ -110,7 +117,6 @@ const Applications = () => {
   };
 
   const handleClick = async (e, clientId, status, index) => {
-    console.log(index, "index");
     e.stopPropagation();
     let payload = {
       user_id: clientId,
@@ -161,6 +167,22 @@ const Applications = () => {
     }, 500);
 
     setTimerValue(timer);
+  };
+
+  const redirectToWebsiteForm = (currentUser, id) => {
+    const encrypted = encrypt(id);
+    const baseUrls = {
+      developer: process.env.REACT_APP_DEVELOPER,
+      vendor: process.env.REACT_APP_VENDOR,
+      client: process.env.REACT_APP_CLIENT,
+    };
+
+    const url = baseUrls[currentUser];
+    if (url) {
+      window.open(`${url}?user_id=${encrypted}`, "_blank");
+    } else {
+      console.error("Invalid user type");
+    }
   };
 
   return (
@@ -273,7 +295,7 @@ const Applications = () => {
                                 <td>{item?.phone_number}</td>
 
                                 <td>
-                                {item?.is_profile_completed ? (
+                                  {item?.is_profile_completed ? (
                                     <div className="d-flex gap-3">
                                       <RexettButton
                                         icon={
@@ -334,13 +356,18 @@ const Applications = () => {
                                     </div>
                                   ) : (
                                     <div className="d-flex gap-3">
-                                      <div>
-                                        <a
-                                          // href={project_link}
-                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
-                                        >
-                                          Complete Your Profile <FiExternalLink/>
-                                        </a>
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "client",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
                                       </div>{" "}
                                     </div>
                                   )}
@@ -396,6 +423,28 @@ const Applications = () => {
                                             )}
                                           </Col>
                                         )}
+
+<Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("city")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.city}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("country")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.country}
+                                            </p>
+                                          </div>
+                                        </Col>
 
                                         <Col md={3} className="mb-3">
                                           <div>
@@ -515,11 +564,11 @@ const Applications = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("typeOfCompany")}</th>
-                      <th>{t("engagements")}</th>
+                      {/* <th>{t("engagements")}</th>
                       <th>
                         {t("engagements")} {t("last")}
                       </th>
-                      <th>{t("availability")}</th>
+                      <th>{t("availability")}</th> */}
                       <th>{t("action")}</th>
                       <th>{t("status")}</th>
                     </tr>
@@ -568,9 +617,9 @@ const Applications = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td>{item?.company?.type_of_company}</td>
-                                <td>{item?.company?.total_employees}</td>
+                                {/* <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
-                                <td>{item?.company?.yearly_revenue}</td>
+                                <td>{item?.company?.yearly_revenue}</td> */}
                                 <td>
                                   {item?.is_profile_completed ? (
                                     <div className="d-flex gap-3">
@@ -633,13 +682,18 @@ const Applications = () => {
                                     </div>
                                   ) : (
                                     <div className="d-flex gap-3">
-                                      <div>
-                                        <a
-                                          // href={project_link}
-                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
-                                        >
-                                          Complete Your Profile <FiExternalLink size={30}/>
-                                        </a>
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "vendor",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
                                       </div>{" "}
                                     </div>
                                   )}
@@ -711,6 +765,30 @@ const Applications = () => {
                                             </div>
                                           </Col>
                                         )}
+                                        {item?.address && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("address")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.address}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.state && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("state")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.state}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -728,6 +806,148 @@ const Applications = () => {
                                             </h3>
                                             <p className="application-text">
                                               {item?.company?.type_of_company}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Type of establishment
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.type_of_establishment
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Website
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.website}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Service offering
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.service_offering}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              company Email
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.email}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              company Yearly revenue
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.yearly_revenue}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              company GST number
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.gst_number}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Turn around time to close contract
+                                              position
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.trun_around_time_to_close_contract_position
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Turn around time to close
+                                              permanent position
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.trun_around_time_to_close_permanent_position
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor contact number
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.proprietor_contact_number
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor contact person email
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.proprietor_contact_person_email
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor contact person name
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.proprietor_contact_person_name
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor email
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.proprietor_email}
                                             </p>
                                           </div>
                                         </Col>
@@ -801,21 +1021,6 @@ const Applications = () => {
                 ""
               )}
             </Tab.Pane>
-            {/* {currentTab === "developers" && (
-              <CommonApplicationTable
-                arrowActive={arrowactive}
-                handleRowClick={handleRowClick}
-                application={application}
-                approvedLoader={approvedLoader}
-                expandedRow={expandedRow}
-                selectedApprovedBtn={selectedApprovedBtn}
-                selectedRejectedBtn={selectedRejectedBtn}
-                screenLoader={screenLoader}
-                handleClick={handleClick}
-                currentTab={currentTab}
-                columns={COLUMNS[currentTab]}
-              />
-            )} */}
             <Tab.Pane eventKey="developers" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -876,7 +1081,7 @@ const Applications = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td>
-                                {item?.is_profile_completed ? (
+                                  {item?.is_profile_completed ? (
                                     <div className="d-flex gap-3">
                                       <RexettButton
                                         icon={
@@ -937,13 +1142,18 @@ const Applications = () => {
                                     </div>
                                   ) : (
                                     <div className="d-flex gap-3">
-                                      <div>
-                                        <a
-                                          // href={project_link}
-                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
-                                        >
-                                          Complete Your Profile <FiExternalLink />
-                                        </a>
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "developer",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
                                       </div>{" "}
                                     </div>
                                   )}
@@ -1033,6 +1243,30 @@ const Applications = () => {
                                             </div>
                                           </Col>
                                         )}
+                                        {item?.state && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("state")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.state}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.city && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("city")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.city}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -1055,6 +1289,94 @@ const Applications = () => {
                                           </Col>
                                         )}
 
+                                        {item?.work_preference && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Work Preference
+                                              </h3>
+                                              <p>{item?.work_preference}</p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.ready_to_relocate && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Ready to relocate
+                                              </h3>
+                                              <p>{item?.ready_to_relocate}</p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.time_zone && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Time Zone
+                                              </h3>
+                                              <p>{item?.time_zone}</p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.developer_language && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Language
+                                              </h3>
+                                              <p>
+                                                {
+                                                  item?.developer_language
+                                                    ?.language
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.developer_detail?.github_url && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Github Url
+                                              </h3>
+                                              <p>
+                                                {
+                                                  item?.developer_detail
+                                                    ?.github_url
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.other_skills?.length > 0 && (
+                                          <Col md={3} className="mb-3 ">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Skills
+                                              </h3>
+                                              <ul className="need-skill-list  mb-0">
+                                                {item?.other_skills?.map(
+                                                  (item, index) => {
+                                                    return (
+                                                      <>
+                                                        <li key={index}>
+                                                          {item?.skill}
+                                                        </li>
+                                                      </>
+                                                    );
+                                                  }
+                                                )}
+                                              </ul>
+                                            </div>
+                                          </Col>
+                                        )}
+
                                         {item?.developer_detail
                                           ?.professional_title && (
                                           <Col md={3}>
@@ -1066,6 +1388,23 @@ const Applications = () => {
                                                 {
                                                   item?.developer_detail
                                                     ?.professional_title
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.developer_detail
+                                          ?.how_did_you_hear_about_rexett && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                How Did you hear about rexett?
+                                              </h3>
+                                              <p className="application-text">
+                                                {
+                                                  item?.developer_detail
+                                                    ?.how_did_you_hear_about_rexett
                                                 }
                                               </p>
                                             </div>

@@ -21,6 +21,8 @@ import {
 import remarkIcon from "../../../assets/img/remarks-icon.svg";
 import { OverlayTrigger } from "react-bootstrap/esm";
 import TimeReportRemark from "./TimeReportRemark";
+import Guidelines from "../../common/Guidelines/Guidelines";
+import { TIME_REPORTING } from "./constant";
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   const [show, setShow] = useState(false);
@@ -64,7 +66,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
 
   function filterReportDataByDate(reportData) {
     const today = new Date().toISOString().split('T')[0];
-    return reportData.filter(entry => entry.report_date <= today);
+    return reportData.filter(entry => 
+        entry.report_date <= today && 
+        (!entry.is_off_day || entry.is_holiday)
+    );
 }
 
   const handleremarkShow = (data, index) => {
@@ -204,9 +209,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                 {/* <th className="time-table-head">
                                         <span>Project</span>
                                     </th> */}
-                <th className="time-table-head">
+                { role=="developer" &&<th className="time-table-head">
                   <span>Timesheet</span>
-                </th>
+                </th>}
                 <th className="time-table-head">
                   <span>Reconciliation</span>
                 </th>
@@ -341,11 +346,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           {/* <td className="time-table-data">
                                                         <span className={item?.is_complete ? "status-progress white-nowrap" : "status-finished white-nowrap"}>{item?.is_complete ? "Progress" : "Finished"}</span>
                                                     </td> */}
-                          <td className="time-table-data">
+                          {role=="developer" &&<td className="time-table-data">
                             <span className="status-progress white-nowrap">
                               {item?.isApproved ? "Reviewed" : "Under Review"}
                             </span>
-                          </td>
+                          </td>}
                           <td className="time-table-data">
                             <button
                               // disabled={item?.isApproved || !isTodayFriday()}
@@ -483,7 +488,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
           smallLoader={approvedLoader}
         />
       </div>
-      <div className="helper-text-section">
+      {/* <div className="helper-text-section">
         <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
         <ol className="ps-3 mb-0">
           <li className="mb-2">
@@ -507,7 +512,8 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
             </p>
           </li>
         </ol>
-      </div>
+      </div> */}
+      <Guidelines heading={"Guiding You Through: Helpful Text to Navigate Time Reporting"} guideLines={TIME_REPORTING}/>
     </>
   );
 };

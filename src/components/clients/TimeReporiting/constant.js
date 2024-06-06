@@ -160,3 +160,47 @@ export const SELECT_YEAR = [
  "2028",
  "2029"
 ]
+export const HOLIDAY_GUIDE_LINES =[
+  " All full-time and part-time developers are entitled to apply for leave. Types of leave include sick leave, personal leave, and emergency leave",
+  "If you need to cancel your applied leave, submit a leave cancellation request before the start date of the leave.",
+  "All leave requests, including approved, cancelled, and not approved leaves, will be recorded and shown in your leave history.",
+ 
+]
+export const TIME_REPORTING = [
+  "All developers must check in before starting their workday.",
+  " All developers must submit their time-sheets before the end of Friday.",
+  "Please Check out at the end of your workday.",
+  "For Developers, Reconciliation get enable on every Friday.",
+  "Developers may work on weekends and reconcile their Time-sheets.",
+  "The timesheet for all developers will be submitted automatically every Friday at 12:00 AM."
+]
+
+export  const monthOptions = [
+  { label: "January", value: 1 },
+  { label: "Feburary", value: 2 },
+  { label: "March", value: 3 },
+  { label: "April", value: 4 },
+  { label: "May", value: 5 },
+  { label: "June", value: 6 },
+  { label: "July", value: 7 },
+  { label: "August", value: 8 },
+  { label: "September", value: 9 },
+  { label: "October", value: 10 },
+  { label: "November", value: 11 },
+  { label: "December", value: 12 },
+];
+export const weekOptions = [
+  { label: "Week 1", value: 1 },
+  { label: "Week 2", value: 2 },
+  { label: "Week 3", value: 3 },
+  { label: "Week 4", value: 4 },
+];
+export const yearOption = [
+  "2023",
+  "2022",
+  "2021",
+  "2020",
+  "2019",
+  "2018",
+  "2017"
+]

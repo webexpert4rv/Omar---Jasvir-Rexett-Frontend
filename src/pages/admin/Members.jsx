@@ -348,7 +348,6 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                  <td colSpan="8">
                                     <td colSpan="8">
                                       <div>
                                         <Row>
@@ -437,7 +436,6 @@ const Members = () => {
                                         </Row>
                                       </div>
                                     </td>
-                                  </td>
                                 </tr>
                               )}
                             </React.Fragment>
@@ -477,21 +475,6 @@ const Members = () => {
               )}
             </Tab.Pane>
 
-            {/* {currentTab === "vendors" && (
-              <CommonApplicationTable
-                arrowActive={arrowactive}
-                handleRowClick={handleRowClick}
-                application={application}
-                approvedLoader={approvedLoader}
-                expandedRow={expandedRow}
-                selectedApprovedBtn={selectedApprovedBtn}
-                selectedRejectedBtn={selectedRejectedBtn}
-                screenLoader={screenLoader}
-                handleClick={handleClick}
-                currentTab={currentTab}
-                columns={COLUMNS[currentTab]}
-              />
-            )} */}
             <Tab.Pane eventKey="vendors" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -723,21 +706,6 @@ const Members = () => {
                 ""
               )}
             </Tab.Pane>
-            {/* {currentTab === "developers" && (
-              <CommonApplicationTable
-                arrowActive={arrowactive}
-                handleRowClick={handleRowClick}
-                application={application}
-                approvedLoader={approvedLoader}
-                expandedRow={expandedRow}
-                selectedApprovedBtn={selectedApprovedBtn}
-                selectedRejectedBtn={selectedRejectedBtn}
-                screenLoader={screenLoader}
-                handleClick={handleClick}
-                currentTab={currentTab}
-                columns={COLUMNS[currentTab]}
-              />
-            )} */}
             <Tab.Pane eventKey="developers" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -861,7 +829,7 @@ const Members = () => {
                                           <Col md={3} className="mb-3 ">
                                             <div>
                                               <h3 className="application-heading">
-                                                {t("skillsetNeeded")}
+                                               Skills
                                               </h3>
                                               <ul className="need-skill-list  mb-0">
                                                 {returnSkills(

@@ -18,7 +18,7 @@ import {
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import RexettButton from "../../components/atomic/RexettButton";
-import { generateLeave } from "../../components/clients/TimeReporiting/constant";
+import { HOLIDAY_GUIDE_LINES, generateLeave } from "../../components/clients/TimeReporiting/constant";
 import { LEAVE_TYPE } from "../../components/clients/TimeReporiting/constant";
 import RejectModal from "../views/Modals/EndJob";
 import ToolTip from "../../components/common/Tooltip/ToolTip";
@@ -27,6 +27,8 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import { TiEdit } from "react-icons/ti";
 import ListOfHolidays from "../../components/common/LeaveRequest/ListOfHolidays";
+import ApplyLeaveSection from "./ApplyLeaveSection";
+import Guidelines from "../../components/common/Guidelines/Guidelines";
 
 const LeavePlan = () => {
   const [selectionRange, setSelectionRange] = useState({
@@ -139,7 +141,6 @@ const LeavePlan = () => {
 
   // Function to add custom content to tile
   const tileContent = ({ date, view }) => {
-    console.log(date,"date")
     if (
       view === "month" &&
       markedDates.find((d) => d.toDateString() === date.toDateString())
@@ -249,100 +250,7 @@ const LeavePlan = () => {
                         )}
                       </Row>
                     </div>
-                    <Row className="gx-4">
-                      <Col lg={7}>
-                        <div className="leave-calendar h-100">
-                          <DateRangePicker
-                            ranges={[selectionRange]}
-                            onChange={handleRange}
-                            minDate={today}
-                          />
-                        </div>
-                      </Col>
-                      <Col lg={5}>
-                        <div className="plan-leave-wrapper">
-                          <h3 className="section-head border-0 mb-3">
-                            Apply Leave
-                          </h3>
-                          <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                            <div className="mb-4">
-                              <Form.Label className="mb-2 font-14">
-                                Select Client
-                              </Form.Label>
-                              <div className="d-flex gap-3">
-                                <div>
-                                  <Form.Select
-                                    className="common-field font-14 mb-4"
-                                    {...register("client_name", {
-                                      required: t("leaveRequired"),
-                                    })}
-                                  >
-                                    <option value="" selected>
-                                      Select client
-                                    </option>
-                                    {allContracts.map((item, idx) => (
-                                      <option key={idx} value={item.id}>
-                                        {item.client?.name}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="mb-4">
-                              <Form.Label className="mb-2 font-14">
-                                Leave Type
-                              </Form.Label>
-                              <div className="d-flex gap-3">
-                                <div>
-                                  <Form.Select
-                                    className="common-field  font-10 mb-4"
-                                    {...register("leave_type", {
-                                      required: t("leaveRequired"),
-                                    })}
-                                  >
-                                    <option value="" selected>
-                                      Select leave type
-                                    </option>
-                                    {LEAVE_TYPE.map((item, idx) => (
-                                      <option key={idx} value={item?.value}>
-                                        {item?.key}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="mb-4">
-                              <Form.Label className="mb-2 font-14">
-                                Reason
-                              </Form.Label>
-                              <Form.Control
-                                as="textarea"
-                                rows="3"
-                                className="common-field font-14"
-                                placeholder="Enter Reason"
-                                {...register("reason", {
-                                  required: {
-                                    value: true,
-                                    message: `${t("reasonRequired")}`,
-                                  },
-                                })}
-                              />
-                            </div>
-                            <div className="text-center">
-                              <RexettButton
-                                type="submit"
-                                text={t("Submit")}
-                                className="main-btn font-14 px-4 py-2"
-                                variant="transparent"
-                                isLoading={smallLoader}
-                              />
-                            </div>
-                          </form>
-                        </div>
-                      </Col>
-                    </Row>
+                      <ApplyLeaveSection allContracts={allContracts} handleRange={handleRange} selectionRange ={selectionRange} handleSubmit={handleSubmit} onSubmit={onSubmit} smallLoader = {smallLoader}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
                     <div className="table-responsive">
@@ -425,30 +333,7 @@ const LeavePlan = () => {
           </Tab.Content>
         </Tab.Container>
       )}
-      <div className="helper-text-section">
-        <h3>Guiding You Through: Helpful Text to Apply Leaves</h3>
-        <ol className="ps-3  mb-0">
-          <li className="mb-1">
-            <p>
-              All full-time and part-time developers are entitled to apply for
-              leave. Types of leave include sick leave, personal leave, and
-              emergency leave.
-            </p>
-          </li>
-          <li className="mb-1">
-            <p>
-              If you need to cancel your applied leave, submit a leave
-              cancellation request before the start date of the leave.
-            </p>
-          </li>
-          <li className="mb-0">
-            <p>
-              All leave requests, including approved, cancelled, and not
-              approved leaves, will be recorded and shown in your leave history.
-            </p>
-          </li>
-        </ol>
-      </div>
+      <Guidelines heading={"Guiding You Through: Helpful Text to Apply Leaves"} guideLines={HOLIDAY_GUIDE_LINES}/>
     </>
   );
 };

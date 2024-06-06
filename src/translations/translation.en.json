@@ -385,6 +385,9 @@
         "totalProjects":"Total Projects",
         "totalIndivisualDev":"Total Individual Dev",
         "screeningQuestions":"Screening Questions",
-        "leaveRequests" : "Leave Requests"
+        "leaveRequests" : "Leave Requests",
+        "clientNameRequired":"clientNameRequired",
+        "leaveTypeRequired":"Leave Type Required",
+        "reasonRequired" : "Reason Required"
 }
 }

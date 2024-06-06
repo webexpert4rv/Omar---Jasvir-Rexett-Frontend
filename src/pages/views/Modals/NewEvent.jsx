@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 const NewEvent = ({ show, handleClose, status }) => {
   const dispatch = useDispatch();
-  const { leaveList ,smallLoader ,btnLoader } = useSelector((state) => state.clientData);
+  const { smallLoader ,btnLoader ,clientHolidayList } = useSelector((state) => state.clientData);
   const {
     register,
     setValue,
@@ -21,7 +21,9 @@ const NewEvent = ({ show, handleClose, status }) => {
 
   useEffect(() => {
     if (status?.status =='edit') {
-      const selectedHoliday = leaveList?.find((value) => value.id === status?.id);
+      const selectedHoliday = clientHolidayList?.find((value) => value.id == status?.id);
+      console.log(selectedHoliday,"selectedHoliday")
+      console.log(status,"status")
       setValue("name", selectedHoliday?.name);
       setValue("country", selectedHoliday?.country);
       setValue("description", selectedHoliday?.description);
@@ -29,7 +31,7 @@ const NewEvent = ({ show, handleClose, status }) => {
     }else{
       reset()
     }
-  }, [status, leaveList]);
+  }, [status, clientHolidayList]);
 
   const onSubmit = async (values) => {
     const payload = {
@@ -139,6 +141,7 @@ const NewEvent = ({ show, handleClose, status }) => {
                     type="submit"
                     text="Submit"
                     isLoading={smallLoader}
+                    disabled={smallLoader}
                     className="main-btn px-4 me-2 font-14 fw-semibold"
                     variant="transparent"
                   />

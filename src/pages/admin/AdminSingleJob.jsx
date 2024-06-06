@@ -6,6 +6,7 @@ import { adminSingleJob, getDeveloperSuggestList, suggestDeveloper } from "../..
 import JobCard from "../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
 import { useTranslation } from "react-i18next";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 const AdminSingleJob = () => {
     const { t } = useTranslation();
@@ -14,7 +15,7 @@ const AdminSingleJob = () => {
     const dispatch = useDispatch()
     let id = pathname.split("/")[2]
     const [showEndJobModal, setShowEndJobModal] = useState(false);
-    const { singleJobListing, suggestedDeveloper, singleJobPagination, smallLoader } = useSelector(state => state.adminData)
+    const { singleJobListing, suggestedDeveloper, screenLoader, smallLoader} = useSelector(state => state.adminData)
     const [singleJobDescription, setSingleJobDescription] = useState({})
     const [selectedTabsData, setSelectedTabsData] = useState([]);
     const [suggestedData, setSuggestedData] = useState(null)
@@ -51,7 +52,6 @@ const AdminSingleJob = () => {
     }
     const handleJobStatusAction = async (e) => {
         e.preventDefault()
-
         let data = {
             "job_id": id,
             "developer_id": suggestedData?.developer_id,
@@ -62,7 +62,6 @@ const AdminSingleJob = () => {
         dispatch(getDeveloperSuggestList(id, page))
     }
     const currentStatusCssClass = (status) => {
-        console.log(status, "st")
         switch (status) {
             case "ended":
                 return "endcontract";
@@ -72,12 +71,26 @@ const AdminSingleJob = () => {
                 return "completed";
             case "published":
                 return "completed";
+            case "unpublished":
             case "Unpublished":
                 return "unpublished";
             default:
                 return;
         }
     };
+
+    const returnExperienceFromScreeningQuestions = (screeningQuestions) => {
+        if (screeningQuestions?.length) {
+          const requiredElement = screeningQuestions?.find(
+            (curElem) =>
+              curElem?.question ==
+              "How many years of experience do you currently have?"
+          );
+          if (requiredElement) {
+            return requiredElement?.ideal_answer;
+          }
+        }
+      };
 
     return (
         <>
@@ -88,7 +101,7 @@ const AdminSingleJob = () => {
                 onSelect={handleSelect}
             >
                 <Tab eventKey="job-details" title="Job Details">
-                    <section className="single-job-section">
+                 { screenLoader?<ScreenLoader/> :  <section className="single-job-section">
                         <div className="single-job-card job-information-wrapper">
                             {/* <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2> */}
                             <div className="d-flex justify-content-between align-items-center flex-md-row flex-column-reverse">
@@ -112,10 +125,22 @@ const AdminSingleJob = () => {
                                 <Col md="4">
                                     <h3 className="req-heading">{t("clientName")}</h3>
                                     <p className="req-text">{singleJobDescription?.client?.name}</p>
+
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("experienceRequirements")}</h3>
-                                    <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ") || "Not-mentioned"}</p>
+                                    {/* <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ") || "Not-mentioned"}</p> */}
+                                    <p className={ returnExperienceFromScreeningQuestions(
+                                      singleJobDescription?.screening_questions
+                                    ) ? `req-text` : ""} >
+                                  {singleJobDescription?.screening_questions &&
+                                    returnExperienceFromScreeningQuestions(
+                                      singleJobDescription?.screening_questions
+                                    )}
+                                  {returnExperienceFromScreeningQuestions(
+                                    singleJobDescription?.screening_questions
+                                  ) && " years"}
+                                </p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("contract")}</h3>
@@ -159,7 +184,7 @@ const AdminSingleJob = () => {
                                 </Col>
                             </Row>
                         </div>
-                    </section>
+                    </section>}
                 </Tab>
                 <Tab eventKey="suggested" title="Suggestions">
                     <div className="text-center mb-3">

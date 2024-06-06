@@ -361,6 +361,9 @@
         "totalProjects": "Totalt antal projekt",
         "totalIndivisualDev": "Totalt antal individuella utvecklare",
         "screeningQuestions":"Screeningsfrågor",
-        "Leave Requests":"Lämna förfrågningar"
+        "leaveRequests":"Lämna förfrågningar",
+        "clientNameRequired":"Klientnamn krävs",
+        "leaveTypeRequired":"Lämna typ krävs",
+        "reasonRequired" : "Anledning krävs"
         }
 }
