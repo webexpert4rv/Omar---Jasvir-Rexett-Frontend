@@ -66,7 +66,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
 
   function filterReportDataByDate(reportData) {
     const today = new Date().toISOString().split('T')[0];
-    return reportData.filter(entry => entry.report_date <= today);
+    return reportData.filter(entry => 
+        entry.report_date <= today && 
+        (!entry.is_off_day || entry.is_holiday)
+    );
 }
 
   const handleremarkShow = (data, index) => {
@@ -206,9 +209,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                 {/* <th className="time-table-head">
                                         <span>Project</span>
                                     </th> */}
-                <th className="time-table-head">
+                { role=="developer" &&<th className="time-table-head">
                   <span>Timesheet</span>
-                </th>
+                </th>}
                 <th className="time-table-head">
                   <span>Reconciliation</span>
                 </th>
@@ -343,11 +346,11 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                           {/* <td className="time-table-data">
                                                         <span className={item?.is_complete ? "status-progress white-nowrap" : "status-finished white-nowrap"}>{item?.is_complete ? "Progress" : "Finished"}</span>
                                                     </td> */}
-                          <td className="time-table-data">
+                          {role=="developer" &&<td className="time-table-data">
                             <span className="status-progress white-nowrap">
                               {item?.isApproved ? "Reviewed" : "Under Review"}
                             </span>
-                          </td>
+                          </td>}
                           <td className="time-table-data">
                             <button
                               // disabled={item?.isApproved || !isTodayFriday()}
