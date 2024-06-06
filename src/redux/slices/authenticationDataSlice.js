@@ -116,7 +116,7 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("role", "client")
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem("userName",result?.data?.data?.name)
-                    window.location.href = "/dashboard"
+                    window.location.href = "/client/dashboard"
                 }
 
                 if (result.data.data.role === "developer") {
