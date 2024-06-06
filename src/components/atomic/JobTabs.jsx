@@ -20,6 +20,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
 
 
   const currentStatusCssClass = (status) => {
+    console.log(status,"status")
     switch (status) {
       case "ended":
         return "status-rejected";
@@ -29,10 +30,23 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
         return "status-finished";
       case "published":
         return "status-finished";
-      case "Unpublished":
-          return "unpublished";
+      case "unpublished":
+          return "status-unpublished";
       default:
         return;
+    }
+  };
+
+  const returnExperienceFromScreeningQuestions = (screeningQuestions) => {
+    if (screeningQuestions?.length) {
+      const requiredElement = screeningQuestions?.find(
+        (curElem) =>
+          curElem?.question ==
+          "How many years of experience do you currently have?"
+      );
+      if (requiredElement) {
+        return requiredElement?.ideal_answer;
+      }
     }
   };
 
@@ -50,7 +64,17 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                       {getCategory(item.category)}
                     </h4>
                     <div className="profile-req">
-                      {/* <p className="grid-text">{item?.experience?.split("_").join(" ") || "Not-mentioned"}</p> */}
+                    <p className={ returnExperienceFromScreeningQuestions(
+                                      item?.screening_questions
+                                    ) ? `grid-text` : ""} >
+                                  {item?.screening_questions &&
+                                    returnExperienceFromScreeningQuestions(
+                                      item?.screening_questions
+                                    )}
+                                  {returnExperienceFromScreeningQuestions(
+                                    item?.screening_questions
+                                  ) && " years"}
+                                </p>
                       <p className="grid-text">{item?.contract_type?.split("-").join(" ").replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase())}</p>
                       <p className="grid-text">{item?.job_type}</p>
                     </div>

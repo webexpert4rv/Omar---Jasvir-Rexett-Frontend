@@ -34,6 +34,7 @@ import { useTranslation } from "react-i18next";
 import { FaTrashCan } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
 import RexettButton from "../../components/atomic/RexettButton";
+import ScreenLoader from "../../components/atomic/ScreenLoader";
 
 const SingleJob = () => {
   const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -47,7 +48,7 @@ const SingleJob = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  let id = location.pathname.split("/")[2];
+  let id = location.pathname.split("/")[3];
   const clientId = localStorage.getItem("userId")
   console.log(clientId,"clientid")
   const {
@@ -56,6 +57,7 @@ const SingleJob = () => {
     jobPostedData,
     approvedLoader,
     smallLoader,
+    screenLoader
   } = useSelector((state) => state.clientData);
   const { t } = useTranslation();
   useEffect(() => {
@@ -120,7 +122,7 @@ const SingleJob = () => {
         dispatch(
           getDeleteJob(statusModal?.id, () => {
             setStatusModal({});
-            navigate("/job-posted");
+            navigate("/client/job-posted");
           })
         );
       } else {
@@ -195,7 +197,7 @@ const SingleJob = () => {
       dispatch(
         getDeleteJob(statusModal?.id, () => {
           setStatusModal({});
-          navigate("/job-posted");
+          navigate("/client/job-posted");
         })
       );
     } else {
@@ -310,7 +312,7 @@ const SingleJob = () => {
         onSelect={handleSelect}
       >
         <Tab eventKey="application" title={t("jobDetails")}>
-          <section className="single-job-section">
+         {screenLoader? <ScreenLoader/> : <section className="single-job-section">
             <div className="single-job-card job-information-wrapper">
               <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
                 <div className="d-flex align-items-center gap-3">
@@ -499,7 +501,7 @@ const SingleJob = () => {
                 </Col>
               </Row>
             </div> */}
-          </section>
+          </section>}
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
           <div className="text-end">

@@ -25,7 +25,7 @@ const initialClientData = {
   faqsData: {},
   clientLeaveHistory:[],
   reconciliationsData:[],
-  leaveList:[],
+  clientHolidayList:[],
   addHoliday:{},
   approveDisapprove:{}
 };
@@ -62,6 +62,7 @@ export const clientDataSlice = createSlice({
       setActionSuccessFully: (state, action) => {
           state.smallLoader = false;
           state.approvedLoader = false;
+          state.screenLoader=false
       },
 
       setClientProfileDetails: (state, action) => {
@@ -129,11 +130,12 @@ export const clientDataSlice = createSlice({
       setReconciliationsData:(state,action)=>{
          state.reconciliationsData=action.payload
       },
-      setLeaveList : (state,action)=>{
-        state.leaveList = action.payload
+      setClientHolidayList : (state,action)=>{
+        state.clientHolidayList = action.payload
       },
       setAddHoliday:(state,action) => {
         state.addHoliday = action.payload
+        state.smallLoader= false
       },
       setApproveDisapprove: (state,action)=>{
         state.approveDisapprove = action.payload
@@ -150,7 +152,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,setLeaveList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const { setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -281,12 +283,12 @@ export function getClientLeaveHistory(payload, callback) {
     };
 }
 
-export function getLeaveList() {
+export function getClientHolidayList() {
   return async (dispatch) => {
       dispatch(setScreenLoader())
       try {
           let result = await clientInstance.get('client/public-holidays')
-            dispatch(setLeaveList(result.data.data))
+            dispatch(setClientHolidayList(result.data.data))
              
       } catch (error) {
         console.log(error,"error")
@@ -298,9 +300,8 @@ export function getLeaveList() {
 }
 
 export function getAddHoliday(payload, callback) {
-  console.log(payload,"payload")
   return async (dispatch) => {
-      dispatch(setScreenLoader())
+      dispatch(setSmallLoader())
       try {
           let result = await clientInstance.post('client/add-public-holiday',{...payload})
             dispatch(setAddHoliday(result.data.data))
@@ -316,10 +317,11 @@ export function getAddHoliday(payload, callback) {
 
 export function getApproveDisapprove(payload, id) {
   return async (dispatch) => {
-      dispatch(setScreenLoader())
+      dispatch(setApprovedLoader())
       try {
           let result = await clientInstance.post(generateApiUrl(payload ,`client/approve-or-disapprove-holiday/${id}`))
-            // dispatch(setApproveDisapprove(result.data.data))      
+            // dispatch(setApproveDisapprove(result.data.data))     
+            dispatch(closeApprovedLoader());
       } catch (error) {
         console.log(error,"error")
           const message = error?.response?.data?.message || "Something went wrong";
@@ -330,7 +332,7 @@ export function getApproveDisapprove(payload, id) {
 }
 export function getClientLeaveStatus(payload) {
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.post('/common/leave/status',payload)
             if(payload.rejection_reason=== null){
@@ -338,6 +340,8 @@ export function getClientLeaveStatus(payload) {
             }else{
               toast.success("Leave Rejected",{position : "top-center" })
             }
+            dispatch(setActionSuccessFully());
+
         } catch (error) {
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -430,8 +434,9 @@ export function clientUpdatePost(
 }
 
 export function singleJobPostData(payload, callback) {
+  console.log(payload,"pp")
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`client/job-detail/${payload}`);
       // toast.success("Job successfully Posted", { position: "top-center" })
@@ -852,6 +857,24 @@ export function approveTimeReportReconciliation(payload, callback) {
   };
 }
 
+export function rejectTimeReportReconciliation(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("client/reject-time-report-reconciliation", {
+        ...payload,
+      });
+
+      dispatch(setActionSuccessFully());
+      toast.success("Time sheet Developer is Rejected", { position: "top-center" });
+      return callback();
+    } catch (error) {
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
 
 export function getReconciliationData(payload) {
   return async (dispatch) => {
@@ -867,6 +890,35 @@ export function getReconciliationData(payload) {
       dispatch(setFailClientData());
     }
   };
+}
+export function updateClientHoliday(payload , id){
+  return async(dispatch) =>{
+    dispatch(setSmallLoader())
+    try{
+      let result =await clientInstance.put(`/client/update-public-holiday/${id}`,{...payload})
+      toast.success("Holiday is updated", { position: "top-center" });
+      dispatch(setActionSuccessFully());
+    }catch(error){
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  }
+
+}
+export function clientDeleteHoliday(id){
+  return async(dispatch) =>{
+    try{
+      let result =await clientInstance.delete(`/client/delete-public-holiday/${id}`)
+      console.log(result,"result")
+      toast.success("Holiday is Deleted", { position: "top-center" });
+    }catch(error){
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  }
+
 }
 
 

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { generateApiUrl } from '../../helper/utlis';
 import clientInstance from '../../services/client.instance';
+import { setSmallLoader } from './vendorDataSlice';
 
 const initialAdminData = {
     screenLoader: false,
@@ -22,7 +23,8 @@ const initialAdminData = {
     singleJobPagination: {},
     singleClient: {},
     accountDeletionList:{},
-    adminClientList : []
+    adminClientList : [],
+    timeReportDetails : {}
 }
 
 export const adminDataSlice = createSlice({
@@ -67,8 +69,8 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
         },
         setSingleJobListing: (state, action) => {
-            state.smallLoader = false;
             state.singleJobListing = action.payload
+            state.screenLoader = false
         },
 
         setFailAdminData: (state, action) => {
@@ -96,6 +98,7 @@ export const adminDataSlice = createSlice({
             let recomnd = action.payload?.recommended_developers?.map((item) => { return { ...item, recommed: true } })
             let data = [...recomnd, ...action.payload?.other_developers]
             state.suggestedDeveloper = data
+            state.screenLoader = false
         },
 
         setAdminDashboard: (state, action) => {
@@ -123,13 +126,17 @@ export const adminDataSlice = createSlice({
         setAdminClientList:(state ,action) =>{
             state.screenLoader = false;
             state.adminClientList = action.payload
+        },
+        setTimeReportDetails : (state,action) => {
+            state.screenLoader = false;
+            state.timeReportDetails = action.payload
         }
 
 
     }
 })
 
-export const { setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails, setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -262,7 +269,6 @@ export function getSingleClient(id) {
 
 export function adminJobListing(payload, callback) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
         dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(generateApiUrl(payload, `admin/job-list`))
@@ -280,11 +286,10 @@ export function adminJobListing(payload, callback) {
 
 export function adminSingleJob(payload, callback) {
     return async (dispatch) => {
-        dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`admin/job-detail/${payload}`)
             if (result.status === 200) {
-                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSingleJobListing(result.data))
             }
         } catch (error) {
@@ -390,6 +395,7 @@ export function adminApproveReject(payload) {
 
 export function getDeveloperSuggestList(payload, page) {
     return async (dispatch) => {
+        dispatch(setScreenLoader())
         try {
             let result = await clientInstance.get(`admin/developers-to-suggest/${payload}?page=${page}`)
             if (result.status === 200) {
@@ -448,7 +454,7 @@ export function getNotification(payload) {
                 dispatch(setNotificationList(result.data))
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message =  error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
@@ -572,6 +578,23 @@ export function approvedEditAction(payload) {
             dispatch(setFailAdminData())
         }
     };
+}
+
+export function getTimeReportsDetails  (clientId,query){
+    return async(dispatch) => {
+        dispatch(setScreenLoader());
+        try{
+            let result = await clientInstance.get(`/admin/clients/${clientId}?${query}`)
+            if(result.status === 200){
+                dispatch(setTimeReportDetails(result?.data?.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+
+    }
 }
 
 export function rejectEditAction(payload) {

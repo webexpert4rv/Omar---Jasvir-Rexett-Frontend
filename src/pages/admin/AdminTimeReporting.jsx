@@ -80,8 +80,8 @@ const AdminTimeReporting = () => {
         dispatch(adminTimeReporting(e))
     }
     
-    const redirectToTimeReporting = () => {
-        navigate("/time-reporting-detail")
+    const redirectToTimeReporting = (clientId) => {
+        navigate(`/time-reporting-detail/${clientId}`)
     }
     return (
         <>
@@ -146,10 +146,10 @@ const AdminTimeReporting = () => {
                             <tbody>
                                 {screenLoader ? <ScreenLoader /> : <>
                                     {adminTimeReportingList?.length > 0 ?
-                                        adminTimeReportingList?.map(({client_name,total_hired_developers,total_individual_dev,total_projects,total_vendors_dev,contracts}, index) => {
+                                        adminTimeReportingList?.map(({client_name,client_id,total_hired_developers,total_individual_dev,total_projects,total_vendors_dev,contracts}, index) => {
                                             return (
                                                 <Fragment key={index}>
-                                                    <tr key={index} className="row-hover" onClick={redirectToTimeReporting}>
+                                                    <tr key={index} className="row-hover" onClick={()=>{redirectToTimeReporting(client_id)}}>
                                                         <td className="time-table-data">{client_name}</td>
                                                         <td className="time-table-data">{total_hired_developers}</td>
                                                         <td className="time-table-data">{total_projects}</td>

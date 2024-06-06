@@ -11,7 +11,7 @@ const ClientSingleDeveloper = () => {
 
 
     const location = useLocation();
-    let devId = location.pathname.split("/")[2]
+    let devId = location.pathname.split("/")[3]
 
     useEffect(()=>{
         dispatch(getDeveloperDetails(devId))

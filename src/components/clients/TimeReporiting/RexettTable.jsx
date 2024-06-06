@@ -21,6 +21,8 @@ import {
 import remarkIcon from "../../../assets/img/remarks-icon.svg";
 import { OverlayTrigger } from "react-bootstrap/esm";
 import TimeReportRemark from "./TimeReportRemark";
+import Guidelines from "../../common/Guidelines/Guidelines";
+import { TIME_REPORTING } from "./constant";
 
 const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
   const [show, setShow] = useState(false);
@@ -61,12 +63,19 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
 
   const [remarkshow, setremarkShow] = useState(false);
   const handleremarkClose = () => setremarkShow(false);
+
+  function filterReportDataByDate(reportData) {
+    const today = new Date().toISOString().split('T')[0];
+    return reportData.filter(entry => entry.report_date <= today);
+}
+
   const handleremarkShow = (data, index) => {
+
     let memoDetails = data?.timeReports[index];
     let newData = {
       ...data,
       timeReports: memoDetails,
-      allSelectedTimeReport: data?.timeReports,
+      allSelectedTimeReport: filterReportDataByDate(data?.timeReports),
     };
     if (role == "client") {
       dispatch(getReconciliationData(data?.contractDetails?.contract_id));
@@ -203,7 +212,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                 <th className="time-table-head">
                   <span>Reconciliation</span>
                 </th>
-                {selectedPeriod == "weekly" ? (
+                {selectedPeriod == "weekly" && role!=="developer" ? (
                   <th className="time-table-head">
                     <span>Submit</span>
                   </th>
@@ -271,7 +280,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                             ).format("h:mm A")} `
                                           : reprt?.is_holiday
                                           ? "Holiday"
-                                          : reprt?.is_off_day && "Leave"}
+                                          : reprt?.is_off_day ? "Leave":reprt?.is_public_holiday ? reprt?.holiday_name:""}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">
@@ -364,7 +373,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                             </button>
                           </td>
 
-                          {selectedPeriod == "weekly" ? (
+                          {selectedPeriod == "weekly" && role!=="developer" ? (
                             <td className="time-table-data">
                               {item?.isApproved ? (
                                 <span className="status-finished">
@@ -476,7 +485,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
           smallLoader={approvedLoader}
         />
       </div>
-      <div className="helper-text-section">
+      {/* <div className="helper-text-section">
         <h3>Guiding You Through: Helpful Text to Navigate Time Reporting</h3>
         <ol className="ps-3 mb-0">
           <li className="mb-2">
@@ -500,7 +509,8 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
             </p>
           </li>
         </ol>
-      </div>
+      </div> */}
+      <Guidelines heading={"Guiding You Through: Helpful Text to Navigate Time Reporting"} guideLines={TIME_REPORTING}/>
     </>
   );
 };

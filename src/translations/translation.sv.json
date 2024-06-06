@@ -360,6 +360,10 @@
         "totalHiredDevelopers": "Totalt anställda utvecklare",
         "totalProjects": "Totalt antal projekt",
         "totalIndivisualDev": "Totalt antal individuella utvecklare",
-        "screeningQuestions":"Screeningsfrågor"
+        "screeningQuestions":"Screeningsfrågor",
+        "leaveRequests":"Lämna förfrågningar",
+        "clientNameRequired":"Klientnamn krävs",
+        "leaveTypeRequired":"Lämna typ krävs",
+        "reasonRequired" : "Anledning krävs"
         }
 }

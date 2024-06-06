@@ -7,7 +7,7 @@ import { TiEdit } from "react-icons/ti";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { approveTimeReportReconciliation, timeReporting } from "../../../redux/slices/clientDataSlice";
+import { approveTimeReportReconciliation, rejectTimeReportReconciliation, timeReporting } from "../../../redux/slices/clientDataSlice";
 
 const approveRemark = <Tooltip id="tooltip">Approve</Tooltip>;
 const rejectRemark = <Tooltip id="tooltip">Reject</Tooltip>;
@@ -47,9 +47,10 @@ const ReconciliationModal = ({
       contract_id: contract_id,
       report_date: report_date,
       reconciliation_id: id,
+      client_remark:null,
       is_approved: currentStatus,
     };
-    await dispatch(approveTimeReportReconciliation(data));
+    await dispatch(currentStatus?approveTimeReportReconciliation(data):rejectTimeReportReconciliation(data));
     let filterData={
       page:page,
       selectedPeriod:selectedPeriod
@@ -84,7 +85,7 @@ const ReconciliationModal = ({
               </p>
             </div>
             <div className="editSec">
-              {role !== "client" ? (
+              {role !== "client" && item?.reconciliation_approved!==true ? (
                 <span className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none" onClick={()=>handleEdit(item)}>
                   <TiEdit />
                 </span>
@@ -92,7 +93,7 @@ const ReconciliationModal = ({
                 ""
               )}
               <div className="d-flex gap-2">
-                {role == "client"  ? (
+                {role == "client" && item?.is_approved==null  ? (
                   <>
                     <OverlayTrigger placement="bottom" overlay={approveRemark}>
                       <Button
@@ -173,9 +174,9 @@ const ReconciliationModal = ({
           </p>
         )}
         <div>
-          {item?.is_approved ? (
+          {item?.is_approved || item?.reconciliation_approved ? (
             <span className="status-finished mt-2 mx-1">Approved</span>
-          ) : (item?.is_approved === false)&&(
+          ) : (item?.is_approved === false || item?.reconciliation_approved==false )&&(
             <span className="status-rejected mt-2">Rejected</span>
           )}
 

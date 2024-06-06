@@ -384,6 +384,10 @@
         "totalHiredDevelopers":"Total Hired Developers",
         "totalProjects":"Total Projects",
         "totalIndivisualDev":"Total Individual Dev",
-        "screeningQuestions":"Screening Questions"
+        "screeningQuestions":"Screening Questions",
+        "leaveRequests" : "Leave Requests",
+        "clientNameRequired":"clientNameRequired",
+        "leaveTypeRequired":"Leave Type Required",
+        "reasonRequired" : "Reason Required"
 }
 }
