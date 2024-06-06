@@ -55,9 +55,9 @@ const AdminSidebar = ({ sideBarActive }) => {
                                     <FaUserLarge /> {t("cv")}
                                 </NavLink>
                             </li>
-                            <li className="sidebar-item">
+                            {/* <li className="sidebar-item">
                                 <NavLink to={'/skill-test'} className="side-link" activeClassName="active"><MdQuiz /> Take Skill Test</NavLink>
-                            </li>
+                            </li> */}
                             <li className="sidebar-item">
                                 <NavLink
                                     to={"/edit-developer-profile"}
