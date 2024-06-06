@@ -28,17 +28,25 @@ import CommonApplicationTable from "../../components/common/Admin Application/Co
 import { HiDownload } from "react-icons/hi";
 import generatePDF from "react-to-pdf";
 import moment from "moment";
+import { FiExternalLink } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js";
+
+const SECRET_KEY = "abcfuipqw222";
+
+export const encrypt = (text) => {
+  return CryptoJS.AES.encrypt(text, SECRET_KEY).toString();
+};
 const COLUMNS = {
   vendors: [
     { header: "clientName", key: "name" },
     { header: "emailAddress", key: "email" },
     { header: "phoneNumber", key: "phone_number" },
-    { header: "typeOfCompany", key: "company",subKey:"type_of_company" },
-    { header: "engagements", key: "company",subKey:"total_employees"},
-    { header: "engagementsLast", key: "company",subkey:"website" },
-    { header: "availablity", key: "company",subkey:"yearly_revenue" },
-    { header: "action",type:"action" },
-
+    { header: "typeOfCompany", key: "company", subKey: "type_of_company" },
+    { header: "engagements", key: "company", subKey: "total_employees" },
+    { header: "engagementsLast", key: "company", subkey: "website" },
+    { header: "availablity", key: "company", subkey: "yearly_revenue" },
+    { header: "action", type: "action" },
   ],
   developers: [
     { header: "developerName", key: "name", type: "image" },
@@ -60,6 +68,7 @@ const COLUMNS = {
 const Applications = () => {
   const targetRef = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { allApplications, approvedLoader, screenLoader } = useSelector(
     (state) => state.adminData
   );
@@ -79,11 +88,10 @@ const Applications = () => {
     setArrowActive(index == arrowactive ? null : index);
   };
 
-  const handleDownload=(e , resume)=>{
-    e.stopPropagation()
-    window.open(resume, '_blank');
-   
-  }
+  const handleDownload = (e, resume) => {
+    e.stopPropagation();
+    window.open(resume, "_blank");
+  };
 
   useEffect(() => {
     let data = {
@@ -133,21 +141,19 @@ const Applications = () => {
     setSelectedRejectedBtn(null);
     dispatch(allApplicationsList(data));
   };
-  const approvedTooltip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      {t("approve")}
-    </Tooltip>
+  // const approvedTooltip = () => (
+  //   <Tooltip id="button-tooltip" >
+  //     {t("approve")}
+  //   </Tooltip>
+  // );
+  const approvedTooltip = <Tooltip id="tooltip">{t("approve")}</Tooltip>;
+
+  const rejectedTooltip = () => (
+    <Tooltip id="button-tooltip">{t("reject")}</Tooltip>
   );
-  const rejectedTooltip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      {t("reject")}
-    </Tooltip>
+  const resumeTooltip = () => (
+    <Tooltip id="button-tooltip">Download Resume</Tooltip>
   );
-  const resumeNotAddedToolTip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Resume not added
-    </Tooltip>
-  )
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -164,8 +170,24 @@ const Applications = () => {
     setTimerValue(timer);
   };
 
+  const redirectToWebsiteForm = (currentUser, id) => {
+    const encrypted = encrypt(id);
+    const baseUrls = {
+      developer: "https://www.rexett.com/developer-registration",
+      vendor: "https://www.rexett.com/vender-registration",
+      client: "https://www.rexett.com/client-registration",
+    };
+  
+    const url = baseUrls[currentUser];
+    if (url) {
 
-    return (
+      window.open(`${url}?user_id=${encrypted}`, "_blank");
+    } else {
+      console.error("Invalid user type");
+    }
+  }
+
+  return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("applications")}</h2>
@@ -213,7 +235,7 @@ const Applications = () => {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-          <Tab.Content> 
+          <Tab.Content>
             <Tab.Pane eventKey="clients" className="py-4">
               <div className="table-responsive">
                 <table className="table w-100 engagement-table table-ui-custom">
@@ -275,12 +297,8 @@ const Applications = () => {
                                 <td>{item?.phone_number}</td>
 
                                 <td>
-                                  <div className="d-flex gap-3">
-                                    <OverlayTrigger
-                                      placement="top"
-                                      delay={{ show: 250, hide: 400 }}
-                                      overlay={approvedTooltip}
-                                    >
+                                  {item?.is_profile_completed ? (
+                                    <div className="d-flex gap-3">
                                       <RexettButton
                                         icon={
                                           selectedApprovedBtn === index ? (
@@ -289,9 +307,12 @@ const Applications = () => {
                                             <IoCheckmark />
                                           )
                                         }
-                                        disabled={!item?.is_profile_completed}
-                                        className={`arrow-btn primary-arrow ${!item?.is_profile_completed && "not-allowed"}`}
+                                        className={`arrow-btn primary-arrow ${
+                                          !item?.is_profile_completed &&
+                                          "not-allowed"
+                                        }`}
                                         variant="transparent"
+                                        // disabled={!item?.is_profile_completed}
                                         onClick={(e) =>
                                           handleClick(
                                             e,
@@ -306,12 +327,6 @@ const Applications = () => {
                                             : false
                                         }
                                       />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger
-                                      placement="top"
-                                      delay={{ show: 250, hide: 400 }}
-                                      overlay={rejectedTooltip}
-                                    >
                                       <RexettButton
                                         icon={
                                           selectedRejectedBtn === index ? (
@@ -320,8 +335,12 @@ const Applications = () => {
                                             <IoCloseOutline />
                                           )
                                         }
-                                        className={`arrow-btn danger-arrow ${!item?.is_profile_completed && "not-allowed"}`}
-                                        variant="transparent"
+                                        // disabled={!item?.is_profile_completed}
+                                        className={`arrow-btn danger-arrow ${
+                                          !item?.is_profile_completed &&
+                                          "not-allowed"
+                                        }`}
+                                        variant={"transparent"}
                                         onClick={(e) =>
                                           handleClick(
                                             e,
@@ -330,17 +349,44 @@ const Applications = () => {
                                             index
                                           )
                                         }
-                                        disabled={!item?.is_profile_completed}
                                         isLoading={
                                           selectedRejectedBtn === index
                                             ? approvedLoader
                                             : false
                                         }
                                       />
-                                    </OverlayTrigger>
-                                  </div>
+                                    </div>
+                                  ) : (
+                                    <div className="d-flex gap-3">
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "client",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
+                                      </div>{" "}
+                                    </div>
+                                  )}
                                 </td>
-                                <td>{item?.is_profile_completed  ? "Completed" :"Incomplete"}</td>
+                                <td>
+                                  <span
+                                    className={`white-nowrap ${
+                                      item?.is_profile_completed
+                                        ? "status-finished"
+                                        : "status-progress"
+                                    }`}
+                                  >
+                                    {item?.is_profile_completed
+                                      ? "Completed"
+                                      : "Incomplete"}
+                                  </span>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -353,32 +399,30 @@ const Applications = () => {
                                       <Row>
                                         {item?.client_type == "company" && (
                                           <Col md={3} className="mb-3">
-                                            {
-                                              item?.company_name && 
-                                                <div>
-                                                  <h3 className="application-heading">
-                                                    Company Name
-                                                  </h3>
-                                                  <p className="application-text">
-                                                    {item?.company_name}
-                                                  </p>
-                                                </div>
-                                            }
+                                            {item?.company_name && (
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company Name
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company_name}
+                                                </p>
+                                              </div>
+                                            )}
                                           </Col>
                                         )}
                                         {item?.client_type == "company" && (
                                           <Col md={3} className="mb-3">
-                                            {
-                                              item?.company_address && 
-                                                <div>
-                                                  <h3 className="application-heading">
-                                                    Company Address
-                                                  </h3>
-                                                  <p className="application-text">
-                                                    {item.company_address}
-                                                  </p>
-                                                </div>
-                                            }
+                                            {item?.company_address && (
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company Address
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item.company_address}
+                                                </p>
+                                              </div>
+                                            )}
                                           </Col>
                                         )}
 
@@ -416,17 +460,16 @@ const Applications = () => {
                                         </Col>
                                         {item?.client_type == "company" && (
                                           <Col md={3} className="mb-3">
-                                            {
-                                              item?.company_tax_id && 
-                                                <div>
-                                                  <h3 className="application-heading">
-                                                    Company Tax id
-                                                  </h3>
-                                                  <p className="application-text">
-                                                    {item?.company_tax_id}
-                                                  </p>
-                                                </div>
-                                            }
+                                            {item?.company_tax_id && (
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Company Tax id
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.company_tax_id}
+                                                </p>
+                                              </div>
+                                            )}
                                           </Col>
                                         )}
 
@@ -501,11 +544,11 @@ const Applications = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("typeOfCompany")}</th>
-                      <th>{t("engagements")}</th>
+                      {/* <th>{t("engagements")}</th>
                       <th>
                         {t("engagements")} {t("last")}
                       </th>
-                      <th>{t("availability")}</th>
+                      <th>{t("availability")}</th> */}
                       <th>{t("action")}</th>
                       <th>{t("status")}</th>
                     </tr>
@@ -554,65 +597,101 @@ const Applications = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td>{item?.company?.type_of_company}</td>
-                                <td>{item?.company?.total_employees}</td>
+                                {/* <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
-                                <td>{item?.company?.yearly_revenue}</td>
+                                <td>{item?.company?.yearly_revenue}</td> */}
                                 <td>
-                                  <div className="d-flex gap-3">
-                                    <RexettButton
-                                      icon={
-                                        selectedApprovedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCheckmark />
-                                        )
-                                      }
-                                      className={`arrow-btn primary-arrow ${!item?.is_profile_completed && "not-allowed"}`}
-                                      variant="transparent"
-                                      disabled={!item?.is_profile_completed}
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "approved",
-                                          index
-                                        )
-                                      }
-                                      isLoading={
-                                        selectedApprovedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                    <RexettButton
-                                      icon={
-                                        selectedRejectedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCloseOutline />
-                                        )
-                                      }
-                                      disabled={!item?.is_profile_completed}
-                                      className={`arrow-btn danger-arrow ${!item?.is_profile_completed && "not-allowed"}`}
-                                      variant={"transparent"}
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "rejected",
-                                          index
-                                        )
-                                      }
-                                      isLoading={
-                                        selectedRejectedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                  </div>
+                                  {item?.is_profile_completed ? (
+                                    <div className="d-flex gap-3">
+                                      <RexettButton
+                                        icon={
+                                          selectedApprovedBtn === index ? (
+                                            approvedLoader
+                                          ) : (
+                                            <IoCheckmark />
+                                          )
+                                        }
+                                        className={`arrow-btn primary-arrow ${
+                                          !item?.is_profile_completed &&
+                                          "not-allowed"
+                                        }`}
+                                        variant="transparent"
+                                        // disabled={!item?.is_profile_completed}
+                                        onClick={(e) =>
+                                          handleClick(
+                                            e,
+                                            item?.id,
+                                            "approved",
+                                            index
+                                          )
+                                        }
+                                        isLoading={
+                                          selectedApprovedBtn === index
+                                            ? approvedLoader
+                                            : false
+                                        }
+                                      />
+                                      <RexettButton
+                                        icon={
+                                          selectedRejectedBtn === index ? (
+                                            approvedLoader
+                                          ) : (
+                                            <IoCloseOutline />
+                                          )
+                                        }
+                                        // disabled={!item?.is_profile_completed}
+                                        className={`arrow-btn danger-arrow ${
+                                          !item?.is_profile_completed &&
+                                          "not-allowed"
+                                        }`}
+                                        variant={"transparent"}
+                                        onClick={(e) =>
+                                          handleClick(
+                                            e,
+                                            item?.id,
+                                            "rejected",
+                                            index
+                                          )
+                                        }
+                                        isLoading={
+                                          selectedRejectedBtn === index
+                                            ? approvedLoader
+                                            : false
+                                        }
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="d-flex gap-3">
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "vendor",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
+                                      </div>{" "}
+                                    </div>
+                                  )}
                                 </td>
-                                <td>{item?.is_profile_completed ? "Completed" :"Incomplete"}</td>   
-                            </tr>
+                                <td>
+                                  <span
+                                    className={`white-nowrap ${
+                                      item?.is_profile_completed
+                                        ? "status-finished"
+                                        : "status-progress"
+                                    }`}
+                                  >
+                                    {item?.is_profile_completed
+                                      ? "Completed"
+                                      : "Incomplete"}
+                                  </span>
+                                </td>{" "}
+                              </tr>
                               {expandedRow === index && (
                                 <tr
                                   className={`collapsible-row ${
@@ -642,34 +721,30 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                          {
-                                            item?.company?.total_employees && (
-                                              <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("totalEmployees")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.total_employees}
-                                                </p>
-                                              </div>
-                                        </Col>
-                                            )
-                                          }
-                                          {
-                                            item?.company?.location && (
-                                              <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("location")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.location}
-                                                </p>
-                                              </div>
-                                        </Col>
-                                            )
-                                          }
+                                        {item?.company?.total_employees && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("totalEmployees")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company?.total_employees}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.company?.location && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("location")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company?.location}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -835,75 +910,120 @@ const Applications = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td>
-                                  <div className={`d-flex gap-3`}>
-                                    <RexettButton
-                                      icon={
-                                        selectedApprovedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCheckmark />
-                                        )
-                                      }
-                                      className={`arrow-btn primary-arrow ${!item?.is_profile_completed && "not-allowed"}`}
-                                      variant="transparent"
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "approved",
-                                          index
-                                        )
-                                      }
-                                      disabled={!item?.is_profile_completed}
-                                      isLoading={
-                                        selectedApprovedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                    <RexettButton
-                                      icon={
-                                        selectedRejectedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <IoCloseOutline />
-                                        )
-                                      }
-                                      className={`arrow-btn danger-arrow ${!item?.is_profile_completed && "not-allowed"}`}
-                                      onClick={(e) =>
-                                        handleClick(
-                                          e,
-                                          item?.id,
-                                          "rejected",
-                                          index
-                                        )
-                                      }
-                                      disabled={!item?.is_profile_completed}
-                                      isLoading={
-                                        selectedRejectedBtn === index
-                                          ? approvedLoader
-                                          : false
-                                      }
-                                    />
-                                  </div>
+                                  {item?.is_profile_completed ? (
+                                    <div className="d-flex gap-3">
+                                      <RexettButton
+                                        icon={
+                                          selectedApprovedBtn === index ? (
+                                            approvedLoader
+                                          ) : (
+                                            <IoCheckmark />
+                                          )
+                                        }
+                                        className={`arrow-btn primary-arrow ${
+                                          !item?.is_profile_completed &&
+                                          "not-allowed"
+                                        }`}
+                                        variant="transparent"
+                                        // disabled={!item?.is_profile_completed}
+                                        onClick={(e) =>
+                                          handleClick(
+                                            e,
+                                            item?.id,
+                                            "approved",
+                                            index
+                                          )
+                                        }
+                                        isLoading={
+                                          selectedApprovedBtn === index
+                                            ? approvedLoader
+                                            : false
+                                        }
+                                      />
+                                      <RexettButton
+                                        icon={
+                                          selectedRejectedBtn === index ? (
+                                            approvedLoader
+                                          ) : (
+                                            <IoCloseOutline />
+                                          )
+                                        }
+                                        // disabled={!item?.is_profile_completed}
+                                        className={`arrow-btn danger-arrow ${
+                                          !item?.is_profile_completed &&
+                                          "not-allowed"
+                                        }`}
+                                        variant={"transparent"}
+                                        onClick={(e) =>
+                                          handleClick(
+                                            e,
+                                            item?.id,
+                                            "rejected",
+                                            index
+                                          )
+                                        }
+                                        isLoading={
+                                          selectedRejectedBtn === index
+                                            ? approvedLoader
+                                            : false
+                                        }
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="d-flex gap-3">
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "developer",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
+                                      </div>{" "}
+                                    </div>
+                                  )}
                                 </td>
-                                <td> 
-                                  <RexettButton 
-                                 onClick={(e) => handleDownload(e , item?.developer_detail?.resume)}
-                                 disabled={!item?.developer_detail?.resume}
-                                      icon={
-                                        selectedRejectedBtn === index ? (
-                                          approvedLoader
-                                        ) : (
-                                          <div ref={targetRef}>
+                                <td>
+                                  <RexettButton
+                                    onClick={(e) =>
+                                      handleDownload(
+                                        e,
+                                        item?.developer_detail?.resume
+                                      )
+                                    }
+                                    disabled={!item?.developer_detail?.resume}
+                                    icon={
+                                      selectedRejectedBtn === index ? (
+                                        approvedLoader
+                                      ) : (
+                                        <div ref={targetRef}>
                                           <HiDownload />
-                                          </div>
-                                        )
-                                      }
-                                      className={`arrow-btn primary-arrow ${!item?.developer_detail?.resume && "not-allowed"}`}
-                                    />
-                                    </td>
-                               <td>{item?.is_profile_completed ? "Completed" :"Incomplete"}</td>
+                                        </div>
+                                      )
+                                    }
+                                    className={`arrow-btn primary-arrow ${
+                                      !item?.developer_detail?.resume &&
+                                      "not-allowed"
+                                    }`}
+                                  />
+                                </td>
+                                <td>
+                                  <span
+                                    className={`white-nowrap ${
+                                      item?.is_profile_completed
+                                        ? "status-finished"
+                                        : "status-progress"
+                                    }`}
+                                  >
+                                    {item?.is_profile_completed
+                                      ? "Completed"
+                                      : "Incomplete"}
+                                  </span>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -914,50 +1034,44 @@ const Applications = () => {
                                   <td colSpan="8">
                                     <div>
                                       <Row>
-                                          {
-                                            item?.name && (
-                                              <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("developerName")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.name
-                                                    ? item?.name
-                                                    : "Not Mentioned"}
-                                                </p>
-                                              </div>
-                                               </Col>
-                                            )
-                                          }
-                                          {
-                                            item?.address && (
-                                              <Col md={3}>
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Address
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.address}
-                                                </p>
-                                              </div>
-                                            </Col> 
-                                            )
-                                          }
-                                          {
-                                            item?.country && (
-                                              <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("country")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.country}
-                                                </p>
-                                              </div>
-                                        </Col>
-                                            )
-                                          }
+                                        {item?.name && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("developerName")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.name
+                                                  ? item?.name
+                                                  : "Not Mentioned"}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.address && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Address
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.address}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.country && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("country")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.country}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                         <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
@@ -969,62 +1083,63 @@ const Applications = () => {
                                           </div>
                                         </Col>
 
-                                          {
-                                            item?.email && (
-                                              <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("email")}
-                                                </h3>
-                                                <p>{item?.email}</p>
-                                               </div>
-                                             </Col>
-                                            )
-                                          }
+                                        {item?.email && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("email")}
+                                              </h3>
+                                              <p>{item?.email}</p>
+                                            </div>
+                                          </Col>
+                                        )}
 
-                                          {
-                                            item?.developer_detail
-                                            ?.professional_title && 
-                                        <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              Designation
-                                            </h3>
-                                            <p className="application-text">
-                                              {item?.developer_detail
-                                                ?.professional_title}
-                                            </p>
-                                          </div>
-                                        </Col>
-                                          }
-                                          {
-                                            item?.created_at && (
-                                              <Col md={3}>
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Created At
-                                                </h3>
-                                                <p className="application-text">
-                                                  {moment(item?.created_at).format('MMMM Do YYYY')}
-                                                </p>
-                                              </div>
-                                                   </Col>
-                                            )
-                                          }
-                                          {
-                                            item?.developer_detail?.total_experience && (
-                                              <Col md={3}>
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Experience
-                                                </h3>
-                                                <p className="application-text">
-                                                 {item?.developer_detail?.total_experience}
-                                                </p>
-                                              </div>
-                                        </Col>
-                                            )
-                                          }
+                                        {item?.developer_detail
+                                          ?.professional_title && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Designation
+                                              </h3>
+                                              <p className="application-text">
+                                                {
+                                                  item?.developer_detail
+                                                    ?.professional_title
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.created_at && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Created At
+                                              </h3>
+                                              <p className="application-text">
+                                                {moment(
+                                                  item?.created_at
+                                                ).format("MMMM Do YYYY")}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.developer_detail
+                                          ?.total_experience && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Experience
+                                              </h3>
+                                              <p className="application-text">
+                                                {
+                                                  item?.developer_detail
+                                                    ?.total_experience
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                       </Row>
                                     </div>
                                   </td>

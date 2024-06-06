@@ -27,23 +27,18 @@ import TimeReportingFilterSection from "./TimeReportingFilterSection";
 import { getTimeReportsDetails } from "../../redux/slices/adminDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { ACTIVE_TABS, buildQueryFromObjects } from "./adminConstant";
+import {
+  ACTIVE_TABS,
+  RAISED_BY_DEVS_COLUMNS,
+  RAISED_TO_CLIENT_COLUMNS,
+  buildQueryFromObjects,
+} from "./adminConstant";
 import ClientDetailSection from "./ClientDetailSection";
 import DeveloperCard from "./DeveloperCard";
 import SingleProject from "./SingleProject";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import RaisedToClientTable from "./RaisedToClientTable";
 const TimeReportingDetail = () => {
-
-    // const RAISED_TO_CLIENT_COLUMNS = [
-    //     {label:"Project Name"},
-    //     {label:"Developer Name"},
-    //     {label:"Total Hours"},
-    //     {label:"Invoice Month"},
-    //     {label:"Project Name"},
-    //     {label:"Project Name"},
-    //     {label:"Project Name"},
-    // ]
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(ACTIVE_TABS.projects);
   const { timeReportDetails, screenLoader } = useSelector(
@@ -1442,7 +1437,11 @@ const TimeReportingDetail = () => {
             {activeTab === ACTIVE_TABS.projects &&
               timeReportDetails.projects?.length > 0 &&
               timeReportDetails.projects.map((curElem, idx) => (
-                <SingleProject key={idx} projectName={curElem?.job?.title} developerData={curElem?.developer} />
+                <SingleProject
+                  key={idx}
+                  projectName={curElem?.job?.title}
+                  developerData={curElem?.developer}
+                />
               ))}
             {/* <div>
             <div
@@ -1727,6 +1726,14 @@ const TimeReportingDetail = () => {
                           </Button>
                         </div>
                       </div>
+                      {/* <RaisedToClientTable
+                        columns={RAISED_BY_DEVS_COLUMNS}
+                        data={
+                          timeReportDetails?.invoices_time_reporting
+                            ?.raised_by_dev_vendor
+                        }
+                        isRaisedByDevAndVendor = {true}
+                      /> */}
                       <div className="table-responsive">
                         <table className="table time-table table-bordered table-ui-custom">
                           <thead>
@@ -2283,7 +2290,13 @@ const TimeReportingDetail = () => {
                           </Button>
                         </div>
                       </div>
-                      {/* <RaisedToClientTable columns = {}/> */}
+                      {/* <RaisedToClientTable
+                        columns={RAISED_TO_CLIENT_COLUMNS}
+                        data={
+                          timeReportDetails?.invoices_time_reporting
+                            ?.raised_to_client
+                        }
+                      /> */}
                       <div className="table-responsive">
                         <table className="table time-table table-bordered table-ui-custom">
                           <thead>

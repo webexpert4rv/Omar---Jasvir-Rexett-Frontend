@@ -58,3 +58,25 @@ export const  getCurrentMonthYear = () => {
     const options = { month: 'long', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+
+export const RAISED_TO_CLIENT_COLUMNS = [
+  {label:"Project Name", key :"project_name"},
+  {label:"Developer Name", key :"developer_name" ,subkey:"profile_image"},
+  {label:"Total Hours", key :"total_hours"},
+  {label:"Invoice Month", key :""},
+  {label:"Associated With", key :"associated_with"},
+  {label:"Invoice Status", key :"invoice_status",isStatus:true},
+  {label:"Action", key :"invoice"}, 
+]
+
+export const RAISED_BY_DEVS_COLUMNS = [
+  {label:"Developer Name", key :"developer_name" ,subkey:"profile_image"},
+  {label:"Project Name", key :"project_name"},
+  {label:"Total Hours", key :"total_hours"},
+  {label:"Invoice Month", key :""},
+  {label:"Associated With", key :"associated_with"},
+  {label:"Timesheet", key :"timesheet_status" , isStatus:true},
+  {label:"Invoice Status", key :"invoice_status", isStatus:true},
+  {label:"Project Status", key :"project_status",isStatus:true},
+  {label:"Action", key :"invoice"},
+]

@@ -62,6 +62,7 @@ export const clientDataSlice = createSlice({
       setActionSuccessFully: (state, action) => {
           state.smallLoader = false;
           state.approvedLoader = false;
+          state.screenLoader=false
       },
 
       setClientProfileDetails: (state, action) => {
@@ -435,7 +436,7 @@ export function clientUpdatePost(
 export function singleJobPostData(payload, callback) {
   console.log(payload,"pp")
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`client/job-detail/${payload}`);
       // toast.success("Job successfully Posted", { position: "top-center" })
@@ -848,6 +849,24 @@ export function approveTimeReportReconciliation(payload, callback) {
 
       dispatch(setActionSuccessFully());
       toast.success("Time sheet Developer is updated", { position: "top-center" });
+      return callback();
+    } catch (error) {
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function rejectTimeReportReconciliation(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("client/reject-time-report-reconciliation", {
+        ...payload,
+      });
+
+      dispatch(setActionSuccessFully());
+      toast.success("Time sheet Developer is Rejected", { position: "top-center" });
       return callback();
     } catch (error) {
       toast.error(error?.response?.data?.message, { position: "top-center" });

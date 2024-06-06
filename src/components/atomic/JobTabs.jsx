@@ -20,6 +20,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
 
 
   const currentStatusCssClass = (status) => {
+    console.log(status,"status")
     switch (status) {
       case "ended":
         return "status-rejected";
@@ -29,8 +30,8 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
         return "status-finished";
       case "published":
         return "status-finished";
-      case "Unpublished":
-          return "unpublished";
+      case "unpublished":
+          return "status-unpublished";
       default:
         return;
     }
