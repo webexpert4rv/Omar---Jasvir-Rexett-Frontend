@@ -889,10 +889,12 @@ export function updateClientHoliday(payload , id){
 }
 export function clientDeleteHoliday(id){
   return async(dispatch) =>{
+    dispatch(setSmallLoader())
     try{
       let result =await clientInstance.delete(`/client/delete-public-holiday/${id}`)
       console.log(result,"result")
       toast.success("Holiday is Deleted", { position: "top-center" });
+      dispatch(setActionSuccessFully())
     }catch(error){
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });

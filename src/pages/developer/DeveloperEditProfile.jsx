@@ -27,6 +27,9 @@ import EndJobModal from "./../views/Modals/EndJob";
 import { FaTrashCan } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import Autocomplete from "react-google-autocomplete";
+
+
 
 const EditDeveloperProfile = () => {
   const userId = localStorage.getItem("userId");
@@ -308,48 +311,76 @@ const EditDeveloperProfile = () => {
                         {errors.password?.message}{" "}
                       </p>
                     </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("address")}*
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        className="common-field"
-                        name="address"
-                        {...register("address", {
-                          required: {
-                            value: true,
-                            message: "Address 1 is required",
-                          },
-                        })}
-                      />
-                      <p className="error-message">
-                        {errors.address?.message}{" "}
-                      </p>
-                    </Form.Group>
-                  </div>
-                  <div>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="common-label">
-                        {t("address")} 2
-                      </Form.Label>
-                      <div className="position-relative">
-                        <Form.Control
-                          type="text"
-                          className="common-field"
-                          name="address_2"
-                          {...register("address_2", {
-                            required: {
-                              value: false,
-                              message: "Address 2 is required",
-                            },
-                          })}
-                        />
-                      </div>
-                      <p className="error-message">
-                        {errors.address_2?.message}{" "}
-                      </p>
-                    </Form.Group>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="common-label">
+                              {t("address")} *
+                            </Form.Label>
+                            <Controller
+                              name="address"
+                              rules={{
+                                required: "Address is required",
+                              }}
+                              className="common-field "
+                              control={control}
+                              render={({ field, fieldState }) => (
+                                <Autocomplete
+                                  style={{ width: "500px" }}
+                                  errors={fieldState?.errors}
+                                  className="common-field font-14 w-100 p-2"
+                                  apiKey={
+                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+                                  }
+                                  onPlaceSelected={(place) => {
+                                    console.log(place);
+                                  }}
+                                  options={{
+                                    types: ["establishment", "geocode"], 
+                                  }}
+                                />
+                              )}
+                            />
+                            {errors?.address && (
+                              <p className="error-message">
+                                {" "}
+                                {errors.address?.message}
+                              </p>
+                            )}
+                          </Form.Group>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="common-label">
+                              {t("address")} 2
+                            </Form.Label>
+                            <Controller
+                              name="address_2"
+                              className="common-field "
+                              rules={{
+                                required: "Address 2 is required",
+                              }}
+                              control={control}
+                              render={({ field, fieldState }) => (
+                                <Autocomplete
+                                  style={{ width: "500px" }}
+                                  errors={fieldState?.errors}
+                                  className="common-field font-14 w-100 p-2"
+                                  apiKey={
+                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+                                  }
+                                  onPlaceSelected={(place) => {
+                                    console.log(place);
+                                  }}
+                                  options={{
+                                    types: ["establishment", "geocode"],
+                                  }}
+                                />
+                              )}
+                            />
+                            {errors?.address_2 && (
+                              <p className="error-message">
+                                {errors.address_2?.message}
+                              </p>
+                            )}
+
+                          </Form.Group>
                   </div>
                 </Col>
                 <Col md="6">

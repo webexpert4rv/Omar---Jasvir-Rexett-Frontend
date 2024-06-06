@@ -28,6 +28,7 @@ import NewEvent from "./Modals/NewEvent";
 import ListOfHolidays from "../../components/common/LeaveRequest/ListOfHolidays";
 import ToolTip from "../../components/common/Tooltip/ToolTip";
 import moment from "moment";
+import ConfirmationModal from "./Modals/ConfirmationModal";
 
 const LeaveRequest = () => {
   const dispatch = useDispatch();
@@ -42,13 +43,22 @@ const LeaveRequest = () => {
     (state) => state.clientData
   );
   const [leaveId, setLeaveId] = useState();
+  const [ deleteShowModal,setDeleteShowModal] = useState(false)
   const [showRejectModal, setShowRejectModal] = useState(false);
+  const [deleteId , setDeleteId] = useState()
   const handleSelect = (selectedTab) => {
     setCurrentTab(selectedTab);
   };
 
+
+  console.log(deleteId,"deleteId")
+  const handleCloseDeleteModal=()=>{
+    setDeleteShowModal(false)
+  }
+
   const handleClose = () => {
-    setShowRejectModal(!showRejectModal);
+    setShowRejectModal(false);
+   
   };
   const handleClick = async (e, reason) => {
     let payload = {
@@ -65,7 +75,6 @@ const LeaveRequest = () => {
   };
 
   const handleApproveReject = async (id, status,index) => {
-    console.log(index)
     setSelectedIndex(index)
     setLeaveId(id);
     if (status === "Approved") {
@@ -141,10 +150,18 @@ const LeaveRequest = () => {
     dispatch(getClientLeaveHistory(data));
   };
 
-  const handleDelete = async (id) => {
-    await dispatch(clientDeleteHoliday(id));
-    dispatch(getClientHolidayList());
+  const handleDelete =(id) => {
+    setDeleteShowModal(!deleteShowModal)
+    setDeleteId(id)
+   
   };
+  const handleAction= async(e)=>{
+    e.preventDefault()
+    console.log(deleteId,"deleteion")
+   await  dispatch(clientDeleteHoliday(deleteId));
+    dispatch(getClientHolidayList());
+    setDeleteShowModal(false)
+  }
 
   const listHolidays = (data) => {
     const holidays = data?.map((value) => new Date(value?.date));
@@ -233,6 +250,13 @@ const LeaveRequest = () => {
             handleClose={handleCloseEvent}
             status={status}
           />
+        <ConfirmationModal
+          show={deleteShowModal}
+          handleClose={handleCloseDeleteModal}
+          handleAction={handleAction}
+          smallLoader={smallLoader}
+          text={"Are you sure, you want to delete this holiday"}
+        />
         </Tab.Content>
       </Tab.Container>
     </>

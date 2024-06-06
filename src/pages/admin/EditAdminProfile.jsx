@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { FaEye } from "react-icons/fa";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
 import { getClientProfile, updateClientProfile } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getAdminProfile, updateAdminProfile } from "../../redux/slices/adminDataSlice";
 import { useTranslation } from "react-i18next";
+import Autocomplete from "react-google-autocomplete";
+
 
 const EditAdminProfile = () => {
     const {
         register,
+        control,
         setValue,
         handleSubmit,
         formState: { errors, isDirty, isValid, isSubmitting },
@@ -151,35 +154,77 @@ const EditAdminProfile = () => {
                                 </div>
                             </Col>
                             <Col md="6">
-                                <div>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("address")} *</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="address"
-                                            {...register("address", {
-                                                required: {
-                                                    value: true,
-                                                    message: "Address 1 is required",
-                                                },
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.address?.message} </p>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="common-label">{t("address")} 2</Form.Label>
-                                        <Form.Control type="text" className="common-field"
-                                            name="address_2"
-                                            {...register("address_2", {
-                                                required: {
-                                                    value: false,
-                                                    message: "Address 2 is required",
-                                                },
-                                            })}
-                                        />
-                                        <p className="error-message">
-                                            {errors.address_2?.message} </p>
-                                    </Form.Group>
+                            <div>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="common-label">
+                              {t("address")} *
+                            </Form.Label>
+                            <Controller
+                              name="address"
+                              rules={{
+                                required: "Address is required",
+                              }}
+                              className="common-field "
+                              control={control}
+                              render={({ field, fieldState }) => (
+                                <Autocomplete
+                                  style={{ width: "500px" }}
+                                  errors={fieldState?.errors}
+                                  className="common-field font-14 w-100 p-2"
+                                  apiKey={
+                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+                                  }
+                                  onPlaceSelected={(place) => {
+                                    console.log(place);
+                                  }}
+                                  options={{
+                                    types: ["establishment", "geocode"], 
+                                  }}
+                                />
+                              )}
+                            />
+                            {errors?.address && (
+                              <p className="error-message">
+                                {" "}
+                                {errors.address?.message}
+                              </p>
+                            )}
+                          </Form.Group>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="common-label">
+                              {t("address")} 2
+                            </Form.Label>
+                            <Controller
+                              name="address_2"
+                              className="common-field "
+                              rules={{
+                                required: "Address 2 is required",
+                              }}
+                              control={control}
+                              render={({ field, fieldState }) => (
+                                <Autocomplete
+                                  style={{ width: "500px" }}
+                                  errors={fieldState?.errors}
+                                  className="common-field font-14 w-100 p-2"
+                                  apiKey={
+                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+                                  }
+                                  onPlaceSelected={(place) => {
+                                    console.log(place);
+                                  }}
+                                  options={{
+                                    types: ["establishment", "geocode"],
+                                  }}
+                                />
+                              )}
+                            />
+                            {errors?.address_2 && (
+                              <p className="error-message">
+                                {errors.address_2?.message}
+                              </p>
+                            )}
+
+                          </Form.Group>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="common-label">{t("city")} *</Form.Label>
                                         <Form.Control type="text" className="common-field"
