@@ -30,6 +30,13 @@ import generatePDF from "react-to-pdf";
 import moment from "moment";
 import { FiExternalLink } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js";
+
+const SECRET_KEY = "abcfuipqw222";
+
+export const encrypt = (text) => {
+  return CryptoJS.AES.encrypt(text, SECRET_KEY).toString();
+};
 const COLUMNS = {
   vendors: [
     { header: "clientName", key: "name" },
@@ -163,6 +170,23 @@ const Applications = () => {
     setTimerValue(timer);
   };
 
+  const redirectToWebsiteForm = (currentUser, id) => {
+    const encrypted = encrypt(id);
+    const baseUrls = {
+      developer: "https://www.rexett.com/developer-registration",
+      vendor: "https://www.rexett.com/vender-registration",
+      client: "https://www.rexett.com/client-registration",
+    };
+  
+    const url = baseUrls[currentUser];
+    if (url) {
+
+      window.open(`${url}?user_id=${encrypted}`, "_blank");
+    } else {
+      console.error("Invalid user type");
+    }
+  }
+
   return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
@@ -273,7 +297,7 @@ const Applications = () => {
                                 <td>{item?.phone_number}</td>
 
                                 <td>
-                                {item?.is_profile_completed ? (
+                                  {item?.is_profile_completed ? (
                                     <div className="d-flex gap-3">
                                       <RexettButton
                                         icon={
@@ -334,13 +358,18 @@ const Applications = () => {
                                     </div>
                                   ) : (
                                     <div className="d-flex gap-3">
-                                      <div>
-                                        <a
-                                          href="https://www.rexett.com/client-registration"
-                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
-                                        >
-                                          Complete Your Profile <FiExternalLink/>
-                                        </a>
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "client",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
                                       </div>{" "}
                                     </div>
                                   )}
@@ -515,11 +544,11 @@ const Applications = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("typeOfCompany")}</th>
-                      <th>{t("engagements")}</th>
+                      {/* <th>{t("engagements")}</th>
                       <th>
                         {t("engagements")} {t("last")}
                       </th>
-                      <th>{t("availability")}</th>
+                      <th>{t("availability")}</th> */}
                       <th>{t("action")}</th>
                       <th>{t("status")}</th>
                     </tr>
@@ -568,9 +597,9 @@ const Applications = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td>{item?.company?.type_of_company}</td>
-                                <td>{item?.company?.total_employees}</td>
+                                {/* <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
-                                <td>{item?.company?.yearly_revenue}</td>
+                                <td>{item?.company?.yearly_revenue}</td> */}
                                 <td>
                                   {item?.is_profile_completed ? (
                                     <div className="d-flex gap-3">
@@ -633,13 +662,18 @@ const Applications = () => {
                                     </div>
                                   ) : (
                                     <div className="d-flex gap-3">
-                                      <div>
-                                        <a
-                                          href="https://www.rexett.com/vender-registration"
-                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
-                                        >
-                                          Complete Your Profile <FiExternalLink size={30}/>
-                                        </a>
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "vendor",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
                                       </div>{" "}
                                     </div>
                                   )}
@@ -876,7 +910,7 @@ const Applications = () => {
                                 </td>
                                 <td>{item?.phone_number}</td>
                                 <td>
-                                {item?.is_profile_completed ? (
+                                  {item?.is_profile_completed ? (
                                     <div className="d-flex gap-3">
                                       <RexettButton
                                         icon={
@@ -937,13 +971,18 @@ const Applications = () => {
                                     </div>
                                   ) : (
                                     <div className="d-flex gap-3">
-                                      <div>
-                                        <a
-                                          href="https://www.rexett.com/developer-registration"
-                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
-                                        >
-                                          Complete Your Profile <FiExternalLink />
-                                        </a>
+                                      <div
+                                        onClick={() =>
+                                          redirectToWebsiteForm(
+                                            "developer",
+                                            item?.id
+                                          )
+                                        }
+                                      >
+                                        <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          Complete Your Profile{" "}
+                                          <FiExternalLink />
+                                        </span>
                                       </div>{" "}
                                     </div>
                                   )}
