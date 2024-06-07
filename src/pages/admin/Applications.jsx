@@ -168,6 +168,7 @@ const Applications = () => {
 
     setTimerValue(timer);
   };
+ 
 
   const redirectToWebsiteForm = (currentUser, id) => {
     const encrypted = encrypt(id);
@@ -467,6 +468,29 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
+
+                                        {item?.jobs?.length > 0 && (
+                                          <Col md={3} className="mb-3 ">
+                                            <div>
+                                              <h3 className="application-heading">
+                                               Skillset Needed
+                                              </h3>
+                                              <ul className="need-skill-list  mb-0">
+                                                {convertToArray(
+                                                  item?.jobs[0]?.skills
+                                                )?.map((item, index) => {
+                                                  return (
+                                                    <>
+                                                      <li key={index}>
+                                                        {item}
+                                                      </li>
+                                                    </>
+                                                  );
+                                                })}
+                                              </ul>
+                                            </div>
+                                          </Col>
+                                        )}
 
                                         <Col md={3} className="mb-3">
                                           <div>
