@@ -256,13 +256,15 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                           style={{ width: "500px" }}
                           // errors={fieldState?.errors}
                           className="common-field font-14 w-100 p-2"
-                          // apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
-                          apiKey={"AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"}
+                          apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                           onPlaceSelected={(place) => {
                             console.log(place);
                           }}
                           options={{
                             types: ["establishment", "geocode"], 
+                          }}
+                          onChange={(event) => {
+                            field.onChange(event.target.value);
                           }}
                         />
                       )}

@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
 import { EXPERIENCE_OPTIONS } from "../../helper/utlis";
 import Autocomplete from "react-google-autocomplete";
-
+import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../components/clients/TimeReporiting/constant";
 
 const createOption = (label) => ({
   label,
@@ -169,6 +169,7 @@ const RegisterDeveloper = () => {
 
   const yearsArray = generateYears();
   const onSubmit = (data) => {
+    console.log(data, "data---");
     let fileData = new FormData();
     fileData.append("file", file);
     let fileCVData = new FormData();
@@ -188,7 +189,7 @@ const RegisterDeveloper = () => {
     formattedEducationField = EducationFieldCpy.map((curElem) => {
       return { ...curElem, degree_id: curElem.degree_id.value };
     });
-  
+
     if (data) {
       let resume;
       console.log(data, "formData");
@@ -204,7 +205,6 @@ const RegisterDeveloper = () => {
             expertise: formattedExpertise,
             profile_picture: url,
             educations: formattedEducationField,
-
           };
           dispatch(
             getAddNewDeveloper(formData, () => {
@@ -252,7 +252,9 @@ const RegisterDeveloper = () => {
     const experiencesCopy = watch("experiences"); // Copy the experiences array
     const expCop = [...experienceFields]; // Copy the experienceFields array
     experiencesCopy.splice(index, 1);
-    const updatedExpertFields = expCop.filter((field) => field.id !== parseInt(id));
+    const updatedExpertFields = expCop.filter(
+      (field) => field.id !== parseInt(id)
+    );
 
     // Set the state with the updated arrays
     setExperienceFields([...updatedExpertFields]);
@@ -380,20 +382,18 @@ const RegisterDeveloper = () => {
     }
   };
 
-
-  const handleUploadCv=(event)=>{
+  const handleUploadCv = (event) => {
     const allowedTypes = ["application/pdf"];
     const file = event.target.files[0];
     if (file && allowedTypes.includes(file.type)) {
       setFileTypeError(false);
       setCVFile(file);
-      setSelectedCv(file.name)
-      setSelectedCvErr(null)
+      setSelectedCv(file.name);
+      setSelectedCvErr(null);
     } else {
-      setSelectedCvErr(true)
+      setSelectedCvErr(true);
     }
-
-  }
+  };
   const onChangeSelect = (val, arg) => {
     const newOption = createOption(val);
     if (arg == "skills") {
@@ -534,30 +534,37 @@ const RegisterDeveloper = () => {
                         required: t("addressValidation"),
                       })}
                     /> */}
-                      <Controller
-                              name="address"
-                              rules={{
-                                required: "Address is required",
-                              }}
-                              className="common-field "
-                              control={control}
-                              render={({ field, fieldState }) => (
-                                <Autocomplete
-                                  style={{ width: "500px" }}
-                                  errors={fieldState?.errors}
-                                  className="common-field font-14 w-100 p-2"
-                                  apiKey={
-                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
-                                  }
-                                  onPlaceSelected={(place) => {
-                                    console.log(place);
-                                  }}
-                                  options={{
-                                    types: ["establishment", "geocode"], 
-                                  }}
-                                />
-                              )}
-                            />
+                    <Controller
+                      name="address"
+                      rules={{
+                        required: "Address is required",
+                      }}
+                      className="common-field "
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <Autocomplete
+                          style={{ width: "500px" }}
+                          errors={fieldState?.errors}
+                          className="common-field font-14 w-100 p-2"
+                          apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
+                          onPlaceSelected={(place) => {
+                            console.log(place);
+                          }}
+                          options={{
+                            types: ["establishment", "geocode"],
+                          }}
+                          onChange={(event) => {
+                            field.onChange(event.target.value);
+                          }}
+                          onLoadFailed={(error) => {
+                            console.error(
+                              "Google Places Autocomplete failed to load",
+                              error
+                            );
+                          }}
+                        />
+                      )}
+                    />
                     {errors?.address && (
                       <p className="error-message">{errors.address.message} </p>
                     )}
@@ -810,24 +817,17 @@ const RegisterDeveloper = () => {
                       {t("upload_cv")}
                     </Form.Label>
                   </Form.Group>
-                  {selectedCvErr && <p style={{ color: 'red' }}>Please upload a valid PDF file.</p>}
-                  {selectedCv && (
-                    <div>
-                      {selectedCv}
-                    </div>
+                  {selectedCvErr && (
+                    <p style={{ color: "red" }}>
+                      Please upload a valid PDF file.
+                    </p>
                   )}
-
-
-
-
-          
+                  {selectedCv && <div>{selectedCv}</div>}
                 </Col>
               </Row>
             </div>
             <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">
-                {t("enterExperience")}
-              </h2>
+              <h2 className="subheading-resume mb-0">{t("enterExperience")}</h2>
             </div>
             <div className="inner-form mb-3">
               {experienceFields.map(
@@ -983,8 +983,7 @@ const RegisterDeveloper = () => {
                           {t("currentlyWorking")}
                         </Form.Label>
                       </Form.Group>
-                    </Col>
-                    {experienceFields?.length > 1 && (
+                    </Col>  {experienceFields?.length > 1 && (
                       <Col md="12" className="d-flex justify-content-end">
                         <Button
                           className="arrow-btn danger-arrow"
@@ -1008,10 +1007,249 @@ const RegisterDeveloper = () => {
                 </OverlayTrigger>
               </div>
             </div>
+
+
+
+
+
             <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">
-                {t("enterExpertise")}
-              </h2>
+              <h2 className="subheading-resume mb-0">{t("projects")}</h2>
+            </div>
+            <div className="inner-form mb-3">
+              {experienceFields.map(
+                (
+                  {
+                    id,
+                    Project_title,
+                    Project_description,
+                    Tech_stack_used,
+                    role_in_project,
+                    project_team_size,
+                    project_link,
+                    start_date,
+                    end_date
+                  },
+                  index
+                ) => (
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("Project_title")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="common-field"
+                          {...register(`experiences[${index}].company_name`, {
+                            required: {
+                              value: true,
+                              message: t("compnyNameValidation"),
+                            },
+                          })}
+                        />
+                        {errors?.experiences?.[index]?.company_name && (
+                          <p className="error-message">
+                            {errors.experiences[index].company_name.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </Col>
+
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("Project_description")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          className="common-field"
+                          name="job_title"
+                          placeholder={t("enterJobPosition")}
+                          {...register(`experiences[${index}].job_title`, {
+                            required: t("jobPositionValidation"),
+                          })}
+                        />
+                        {errors?.experiences?.[index]?.job_title && (
+                          <p className="error-message">
+                            {errors.experiences[index].job_title.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("Tech_stack_used")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          as="textarea"
+                          className="common-field"
+                          rows={3}
+                          // placeholder="Enter Job Description"
+                          {...register(`experiences[${index}].description`, {
+                            required: t("descriptionValidation"),
+                          })}
+                        />
+                        {errors?.experiences?.[index]?.description && (
+                          <p className="error-message">
+                            {errors.experiences[index].description.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("project_team_size")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          as="textarea"
+                          className="common-field"
+                          rows={3}
+                          // placeholder="Enter Job Description"
+                          {...register(`experiences[${index}].description`, {
+                            required: t("descriptionValidation"),
+                          })}
+                        />
+                        {errors?.experiences?.[index]?.description && (
+                          <p className="error-message">
+                            {errors.experiences[index].description.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </Col>
+                       <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="common-label">
+                          {t("project_team_size")} *
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          as="textarea"
+                          className="common-field"
+                          rows={3}
+                          // placeholder="Enter Job Description"
+                          {...register(`experiences[${index}].description`, {
+                            required: t("descriptionValidation"),
+                          })}
+                        />
+                        {errors?.experiences?.[index]?.description && (
+                          <p className="error-message">
+                            {errors.experiences[index].description.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col md={3}>
+                      <Form.Group className="mb-4">
+                        <Form.Label>{t("start_date")} *</Form.Label>
+                        <Form.Control
+                          type="date"
+                          className="common-field"
+                          placeholder={t("enterStartDate")}
+                          max={new Date().toISOString().split("T")[0]}
+                          {...register(`experiences[${index}].start_date`, {
+                            required: t("startDateValidation"),
+                            validate: {
+                              dateRange: (value) => {
+                                const end_date = watch(
+                                  `experiences[${index}].end_date`
+                                ); // Get the value of the end date field
+                                // if (!end_date || value <= end_date) {
+                                //     return true;
+                                // }
+                                // return "Start Date must be before End Date";
+                              },
+                            },
+                          })}
+                        />
+                        {errors?.experiences?.[index]?.start_date && (
+                          <p className="error-message">
+                            {errors.experiences[index].start_date.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col md={3}>
+                      <Form.Group className="mb-4">
+                        <Form.Label>{t("end_date")} *</Form.Label>
+                        <Form.Control
+                          type="date"
+                          className="common-field"
+                          placeholder={t("enterEndDate")}
+                          max={new Date().toISOString().split("T")[0]}
+                          {...register(`experiences[${index}].end_date`, {
+                            required: {
+                              value: disabledEndDates[index] ? false : true,
+                              message: t("endDateValidation"),
+                            },
+                          })}
+                          disabled={disabledEndDates[index]}
+                        />
+                        {errors?.experiences?.[index]?.end_date && (
+                          <p className="error-message">
+                            {errors.experiences[index].end_date.message}
+                          </p>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col md="12">
+                      <Form.Group className="mb-4 d-flex gap-2 align-items-center">
+                        <Form.Check
+                          type="checkbox"
+                          className="job-post-checkbox"
+                          id="exp_current"
+                          {...register(
+                            `experiences[${index}].is_still_working`,
+                            {
+                              required: false,
+                            }
+                          )}
+                          onChange={(e) =>
+                            handleCurrentlyWorkingChange(e, index)
+                          }
+                        />
+                        <Form.Label className="mb-0" htmlFor="exp_current">
+                          {t("currentlyWorking")}
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>  {experienceFields?.length > 1 && (
+                      <Col md="12" className="d-flex justify-content-end">
+                        <Button
+                          className="arrow-btn danger-arrow"
+                          onClick={() => handleDeleteFieldExp(index, id)}
+                        >
+                          <FaTrash />
+                        </Button>
+                      </Col>
+                    )}
+                  </Row>
+                )
+              )}
+              <div className="text-end my-3">
+                <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                  <Button
+                    className="arrow-btn primary-arrow ms-auto"
+                    onClick={handleAddMoreExp}
+                  >
+                    +
+                  </Button>
+                </OverlayTrigger>
+              </div>
+            </div>
+
+
+
+
+
+
+                   
+
+            
+            <div className="cv-header-wrapper mb-3">
+              <h2 className="subheading-resume mb-0">{t("enterExpertise")}</h2>
             </div>
             {expertiseFields.map((field, index) => {
               return (
@@ -1041,13 +1279,12 @@ const RegisterDeveloper = () => {
                             onCreateOption={(val) => {
                               onChangeSelect(val, "expertise");
                             }}
-                          // value={expertSkill}
-                          // name={expertSkill}
+                            // value={expertSkill}
+                            // name={expertSkill}
                           />
                         </Form.Group>
                       </Col>
                       <Col md={6}>
-
                         <div className="flex-none">
                           <Form.Label className="common-label">
                             {t("experience")}
@@ -1062,11 +1299,13 @@ const RegisterDeveloper = () => {
                             className="common-field shadow-none"
                           >
                             <option value=""> {t("selectExperience")} </option>
-                            {EXPERIENCE_OPTIONS.map(({ label, value }, index) => (
-                              <option value={value} key={index}>
-                                {label} {t("years")}
-                              </option>
-                            ))}
+                            {EXPERIENCE_OPTIONS.map(
+                              ({ label, value }, index) => (
+                                <option value={value} key={index}>
+                                  {label} {t("years")}
+                                </option>
+                              )
+                            )}
                           </Form.Select>
                           {errors?.skills?.[index]?.experience && (
                             <p className="error-message">
@@ -1097,7 +1336,10 @@ const RegisterDeveloper = () => {
             })}
             <div className="text-end mb-3">
               <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                <Button className="arrow-btn primary-arrow ms-auto" onClick={handleAppend}>
+                <Button
+                  className="arrow-btn primary-arrow ms-auto"
+                  onClick={handleAppend}
+                >
                   +
                 </Button>
               </OverlayTrigger>
@@ -1238,30 +1480,28 @@ const RegisterDeveloper = () => {
                             },
                           })}
                         /> */}
-                         <Controller
-                              name="address"
-                              rules={{
-                                required: "Address is required",
+                        <Controller
+                          name="address"
+                          rules={{
+                            required: "Address is required",
+                          }}
+                          className="common-field "
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <Autocomplete
+                              style={{ width: "500px" }}
+                              errors={fieldState?.errors}
+                              className="common-field font-14 w-100 p-2"
+                              apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
+                              onPlaceSelected={(place) => {
+                                console.log(place);
                               }}
-                              className="common-field "
-                              control={control}
-                              render={({ field, fieldState }) => (
-                                <Autocomplete
-                                  style={{ width: "500px" }}
-                                  errors={fieldState?.errors}
-                                  className="common-field font-14 w-100 p-2"
-                                  apiKey={
-                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
-                                  }
-                                  onPlaceSelected={(place) => {
-                                    console.log(place);
-                                  }}
-                                  options={{
-                                    types: ["establishment", "geocode"],
-                                  }}
-                                />
-                              )}
+                              options={{
+                                types: ["establishment", "geocode"],
+                              }}
                             />
+                          )}
+                        />
                         {errors?.educations?.[index]?.address && (
                           <p className="error-message">
                             {errors.educations[index].address.message}
@@ -1387,9 +1627,7 @@ const RegisterDeveloper = () => {
               </div>
             </div>
             <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">
-                {t("enterAbout")} *
-              </h2>
+              <h2 className="subheading-resume mb-0">{t("enterAbout")} *</h2>
             </div>
             <div className="inner-form mb-3">
               <Row>
@@ -1414,9 +1652,7 @@ const RegisterDeveloper = () => {
               </Row>
             </div>
             <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">
-                {t("enterSkills")}
-              </h2>
+              <h2 className="subheading-resume mb-0">{t("enterSkills")}</h2>
             </div>
             <div className="experience-container">
               <Row>
@@ -1441,9 +1677,7 @@ const RegisterDeveloper = () => {
               </Row>
             </div>
             <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">
-                {t("addSocialLinks")}
-              </h2>
+              <h2 className="subheading-resume mb-0">{t("addSocialLinks")}</h2>
             </div>
             <div className="inner-form">
               {socialMediaRows.map((row, index) => (

@@ -27,6 +27,7 @@ import ConfirmationModal from "./Modals/ConfirmationModal";
 import companyLogo from "../../assets/img/amazon.png";
 import { IoIosCamera } from "react-icons/io";
 import Autocomplete from "react-google-autocomplete";
+import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../components/clients/TimeReporiting/constant";
 
 const EditProfile = () => {
   const userId = localStorage.getItem("userId");
@@ -364,14 +365,15 @@ const EditProfile = () => {
                                   style={{ width: "500px" }}
                                   errors={fieldState?.errors}
                                   className="common-field font-14 w-100 p-2"
-                                  apiKey={
-                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
-                                  }
+                                  apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                                   onPlaceSelected={(place) => {
                                     console.log(place);
                                   }}
                                   options={{
                                     types: ["establishment", "geocode"],
+                                  }}
+                                  onChange={(event) => {
+                                    field.onChange(event.target.value);
                                   }}
                                 />
                               )}
