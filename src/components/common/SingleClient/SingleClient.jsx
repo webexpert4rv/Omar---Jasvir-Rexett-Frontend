@@ -66,15 +66,15 @@ const SingleClient = () => {
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">Assignment</h4>
-                                    <p className="additional-text">{singleClient && singleClient?.jobs[0]?.title}</p>
+                                    <p className="additional-text">{singleClient && singleClient?.jobs?.[0]?.title}</p>
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">Assignment last</h4>
-                                    <p className="additional-text">{singleClient && singleClient?.jobs[0]?.project_length}</p>
+                                    <p className="additional-text">{singleClient && singleClient?.jobs?.[0]?.project_length}</p>
                                 </Col>
                                 <Col md={4}>
                                     <h4 className="additional-heading">New Team Member Start</h4>
-                                    <p className="additional-text">{singleClient && singleClient?.jobs[0]?.development_should_start_in}</p>
+                                    <p className="additional-text">{singleClient && singleClient?.jobs?.[0]?.development_should_start_in}</p>
                                 </Col>
                               
                                 {/* <Col md={4}>

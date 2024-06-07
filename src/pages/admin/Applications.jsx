@@ -624,9 +624,9 @@ const Applications = () => {
                                     <div className="user-imgbx application-userbx">
                                       <img
                                         src={
-                                          item?.company?.logo
-                                            ? item?.company?.logo
-                                            : userImg
+                                          item?.profile_picture
+                                            ? item?.profile_picture
+                                            : "/demo-user.png"
                                         }
                                         className="user-img"
                                       />
@@ -1090,7 +1090,7 @@ const Applications = () => {
                                         src={
                                           item?.profile_picture
                                             ? item?.profile_picture
-                                            : userImg
+                                            : "/demo-user.png"
                                         }
                                         className="user-img"
                                       />

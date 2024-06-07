@@ -162,6 +162,9 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                         // componentRestrictions: { country: ["us"] }, // Uncomment to restrict to specific country
                       }
                     }
+                    options={{
+                      types: ["establishment", "geocode"], // Allows searching for places like buildings, landmarks, etc.
+                    }}
                     onPlaceSelected={(place) => {
                       field.onChange(place?.formatted_address);
                     }}

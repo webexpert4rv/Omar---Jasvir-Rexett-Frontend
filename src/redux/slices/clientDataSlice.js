@@ -239,7 +239,6 @@ export function getJobPostData(id, callback) {
   };
 }
 
-// ---------------------------------------------------------job post Multi step form api's---------------------------------------------------//
 
 export function timeReporting(payload, role, callback) {
   return async (dispatch) => {
