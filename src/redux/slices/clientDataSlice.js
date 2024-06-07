@@ -178,7 +178,7 @@ export function updateClientProfile(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post("client/update-profile/", {
+      let result = await clientInstance.put("client/update-profile/", {
         ...payload,
       });
       if (result.status === 200) {
@@ -707,10 +707,8 @@ export function getEnableDisableAccount(payload,callback) {
       let result = await clientInstance.post(`/common/enable-disable-user`, {
         ...payload,
       });
-      if(result.status === 200) {
-        // dispatch(closeApprovedLoader());
+        dispatch(closeApprovedLoader());
         callback();
-      }
     } catch (error) {
       console.log(error);
       // const message = error.message || "Something went wrong";

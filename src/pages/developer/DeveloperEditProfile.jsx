@@ -149,7 +149,7 @@ const EditDeveloperProfile = () => {
           <h2 className="section-head-sub mb-0 border-0">
             {t("updateYourProfile")}
           </h2>
-          <OverlayTrigger placement="bottom" overlay={disableProfile}>
+          {/* <OverlayTrigger placement="bottom" overlay={disableProfile}>
             <div class="form-check form-switch toggle-switch-wrapper">
               <input
                 class="form-check-input toggle-switch-custom"
@@ -159,7 +159,7 @@ const EditDeveloperProfile = () => {
                 checked
               />
             </div>
-          </OverlayTrigger>
+          </OverlayTrigger> */}
         </div>
         <div>
           {screenLoader ? (
@@ -354,7 +354,7 @@ const EditDeveloperProfile = () => {
                               name="address_2"
                               className="common-field "
                               rules={{
-                                required: "Address 2 is required",
+                                required: false,
                               }}
                               control={control}
                               render={({ field, fieldState }) => (

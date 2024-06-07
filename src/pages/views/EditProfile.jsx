@@ -18,11 +18,10 @@ import {
   updateClientProfile,
   getDeleteAccount,
   getEnableDisableAccount,
+  filePreassignedUrlGenerate,
 } from "../../redux/slices/clientDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { useTranslation } from "react-i18next";
-import { FaTrashCan } from "react-icons/fa6";
-import EndJobModal from "./Modals/EndJob";
 import ConfirmationModal from "./Modals/ConfirmationModal";
 import companyLogo from "../../assets/img/amazon.png";
 import { IoIosCamera } from "react-icons/io";
@@ -44,7 +43,6 @@ const EditProfile = () => {
   } = useForm({});
   const {
     register: registerCompanyDetails,
-    setValue: setCompanyDetails,
     handleSubmit: handleCompanyDetailSubmit,
     formState: { errors: companyDetailErrors },
     watch: watchCompanyDetails,
@@ -74,8 +72,12 @@ const EditProfile = () => {
     setValue("city", clientProfileDetails?.data?.city);
     setValue("country", clientProfileDetails?.data?.country);
     setValue("passcode", clientProfileDetails?.data?.passcode);
-    if (clientProfileDetails?.company_logo) {
-      setLogo(clientProfileDetails?.company_logo);
+    setCompanyDetailsValue("company_address", clientProfileDetails?.data?.company_address);
+    setCompanyDetailsValue("company_name", clientProfileDetails?.data?.company_name);
+    setCompanyDetailsValue("company_tax_id", clientProfileDetails?.data?.company_tax_id);
+    setCompanyDetailsValue("company_type", clientProfileDetails?.data?.company_type);
+    if (clientProfileDetails?.data?.company_logo) {
+      setLogo(clientProfileDetails?.data?.company_logo);
     }
     const companyDetailsKeys = [
       "company_name",
@@ -92,12 +94,14 @@ const EditProfile = () => {
 
   const onSubmit = (values) => {
     localStorage.setItem("newUserName", values?.name);
+    console.log(values,"values o")
     let formData = {
       ...values,
       password: values.password ? values.password : null,
       previous_password: values.previous_password
         ? values.previous_password
         : null,
+        client_type:"individual"
     };
     dispatch(updateClientProfile(formData), () => {
       dispatch(getClientProfile());
@@ -111,7 +115,8 @@ const EditProfile = () => {
     setStatus("active");
     setShowModal(true);
   };
-  const handleAction = () => {
+  const handleAction = (e) => {
+    e.preventDefault()
     let data = {
       user_id: +userId,
       status: status,
@@ -119,6 +124,7 @@ const EditProfile = () => {
     dispatch(getEnableDisableAccount(data, handleJobStatusModal));
   };
   const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
+  console.log(watchCompanyDetails("company_address"),"this is company addres")
 
   const validatePassword = (value) => {
     if (value === "") {
@@ -132,21 +138,47 @@ const EditProfile = () => {
     }
     return true;
   };
-  const onCompanyDetailSubmit = (data) => {
+  const onCompanyDetailSubmit = (values) => {
+  
+    console.log(values,"companyDetailsSubmit")
     const clientProfileDetails = watch();
     const payload = {
-      ...data,
-      ...clientProfileDetails,
+      ...values,
+      // ...clientProfileDetails,
       password: clientProfileDetails.password
         ? clientProfileDetails.password
         : null,
       previous_password: clientProfileDetails.previous_password
         ? clientProfileDetails.previous_password
         : null,
-      company_logo: logo ? logo : null,
+      client_type: "company"
     };
-    console.log(payload, "payload");
-    dispatch(updateClientProfile(payload));
+    if(values?.company_logo.name!==undefined){
+      let fileData=new FormData();
+      fileData.append("file",values?.company_logo)
+      dispatch(
+        filePreassignedUrlGenerate(fileData, (url) => {
+          let data = {
+            ...payload,
+            company_logo: url,
+            user_id: userId,
+          };
+          dispatch(updateClientProfile(data));
+        })
+      );
+    }else{
+      let data = {
+        ...payload,
+        company_logo: logo,
+        user_id: userId,
+      };
+      dispatch(updateClientProfile(data));
+    }
+
+
+
+  
+
   };
   const handleCompanyLogo = (e) => {
     const file = e?.target?.files?.[0];
@@ -154,7 +186,7 @@ const EditProfile = () => {
     if (file) {
       if (allowedTypes.includes(file.type)) {
         const fileUrl = URL.createObjectURL(file);
-        setCompanyDetailsValue("company_logo", fileUrl);
+        setCompanyDetailsValue("company_logo", file);
         setLogo(fileUrl);
         clearCompanyDetailsErrors("company_logo");
       } else {
@@ -175,7 +207,7 @@ const EditProfile = () => {
           <h2 className="section-head-sub mb-0 border-0">
             {t("updateYourProfile")}
           </h2>
-          <OverlayTrigger placement="bottom" overlay={disableProfile}>
+          {/* <OverlayTrigger placement="bottom" overlay={disableProfile}>
             <div class="form-check form-switch toggle-switch-wrapper">
               <input
                 class="form-check-input toggle-switch-custom"
@@ -185,7 +217,7 @@ const EditProfile = () => {
                 checked
               />
             </div>
-          </OverlayTrigger>
+          </OverlayTrigger> */}
         </div>
         <Tab.Container
           id="left-tabs-example"
@@ -369,7 +401,10 @@ const EditProfile = () => {
                                   }
                                   onPlaceSelected={(place) => {
                                     console.log(place);
+                                    setValue("address",place.formatted_address)
                                   }}
+                                  onChange={(e)=>{setValue("address",e.target.value)}}
+                                  value={watch("address")}
                                   options={{
                                     types: ["establishment", "geocode"],
                                   }}
@@ -390,7 +425,7 @@ const EditProfile = () => {
                               name="address_2"
                               className="common-field "
                               rules={{
-                                required: "Address 2 is required",
+                                required: false,
                               }}
                               control={control}
                               render={({ field, fieldState }) => (
@@ -403,7 +438,10 @@ const EditProfile = () => {
                                   }
                                   onPlaceSelected={(place) => {
                                     console.log(place);
+                                    setValue("address_2",place.formatted_address)
                                   }}
+                                  onChange={(e)=>{setValue("address_2",e.target.value)}}
+                                  value={watch("address_2")}
                                   options={{
                                     types: ["establishment", "geocode"], 
                                   }}
@@ -615,17 +653,21 @@ const EditProfile = () => {
                           className="common-field"
                         /> */}
                         <Controller
-                          name="address"
+                          name="company_address"
                           className="common-field "
                           control={control}
                           render={({ field }) => (
                             <Autocomplete
+                            {...field}
                               style={{ width: "500px" }}
                               className="common-field font-14 w-100 p-2"
                               apiKey={"AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"}
                               onPlaceSelected={(place) => {
                                 console.log(place);
+                                setCompanyDetailsValue("company_address",place.formatted_address)
                               }}
+                              onChange={(e)=>{setCompanyDetailsValue("company_address",e.target.value)}}
+                              value={watchCompanyDetails("company_address")}
                               options={{
                                 types: ["establishment", "geocode"],
                               }}
@@ -648,6 +690,7 @@ const EditProfile = () => {
                           {...registerCompanyDetails("company_tax_id", {
                             required: "Company tax id is required",
                           })}
+                          name="company_tax_id"
                           type="text"
                           placeholder="Tax Id"
                           className="common-field"
@@ -682,7 +725,7 @@ const EditProfile = () => {
         show={showModal}
         handleClose={handleJobStatusModal}
         onClick={handleAction}
-        approvedLoader={approvedLoader}
+        smallLoader={approvedLoader}
         text={"Are you sure, you want to disable your account"}
       />
       {/* <EndJobModal show={showModal} handleClose={handleJobStatusModal} onClick={handleJobStatusAction} smallLoader={smallLoader} header={"Delete your Account"} feedbacks= {"Reasons"} submit={"Delete"} /> */}
