@@ -24,6 +24,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 import Autocomplete from "react-google-autocomplete";
+import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../clients/TimeReporiting/constant";
 
 
 const EducationCV = ({ show, handleClose, data, id, role }) => {
@@ -216,9 +217,9 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                           val ? val.value : ""
                         )
                       }
-                      value={degreeList.find(
-                        (option) => option.value === item.degree_id
-                      )}
+                      // value={degreeList.find(
+                      //   (option) => option.value === item.degree_id
+                      // )}
                       onCreateOption={handleCreate}
                       options={degreeList}
                     />
@@ -244,15 +245,18 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                     <Controller
                       name="address"
                       className="common-field "
+                        control={control}
                       rules={{
-                        required: "Address 2 is required",
+                        required: "Address is required",
                       }}
-                      control={control}
+                    
+                      // value={item.address}
                       render={({ field, fieldState }) => (
                         <Autocomplete
                           style={{ width: "500px" }}
-                          errors={fieldState?.errors}
+                          // errors={fieldState?.errors}
                           className="common-field font-14 w-100 p-2"
+                          // apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                           apiKey={"AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"}
                           onPlaceSelected={(place) => {
                             console.log(place);
@@ -263,7 +267,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                         />
                       )}
                     />
-                    {errors &&
+                    {/* {errors &&
                       errors.educations &&
                       errors.educations[index] &&
                       errors. educations[index].address&& (
@@ -271,7 +275,7 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
                         {errors.educations[index].address?.message}
                       </p>
                         
-                      )}
+                      )} */}
                   </Form.Group>
                 </Col>
                 <Col md="6">
