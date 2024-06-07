@@ -16,6 +16,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
 
+    console.log(details,"details")
 
     console.log(currentFolderDetails , "currentFolderDetails")
    

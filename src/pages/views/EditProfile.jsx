@@ -405,7 +405,7 @@ const EditProfile = () => {
                                     console.log(place);
                                   }}
                                   options={{
-                                    types: ["establishment", "geocode"], 
+                                    types: ["establishment", "geocode"],
                                   }}
                                 />
                               )}
@@ -415,7 +415,6 @@ const EditProfile = () => {
                                 {errors.address_2?.message}
                               </p>
                             )}
-
                           </Form.Group>
                           <Form.Group className="mb-3">
                             <Form.Label className="common-label">
@@ -615,12 +614,16 @@ const EditProfile = () => {
                           className="common-field"
                         /> */}
                         <Controller
-                          name="address"
+                          name="company_address"
                           className="common-field "
                           control={control}
-                          render={({ field }) => (
+                          rules={{
+                            required: "Address is required",
+                          }}
+                          render={({ field, fieldState }) => (
                             <Autocomplete
                               style={{ width: "500px" }}
+                              errors={fieldState?.errors}
                               className="common-field font-14 w-100 p-2"
                               apiKey={"AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"}
                               onPlaceSelected={(place) => {

@@ -204,3 +204,6 @@ export const yearOption = [
   "2018",
   "2017"
 ]
+
+
+export const GOOGLE_AUTOCOMPLETE_API_KEY="AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"

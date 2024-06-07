@@ -29,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 let STATUS = [
   {
@@ -351,7 +352,7 @@ const Members = () => {
                                     <td colSpan="8">
                                       <div>
                                         <Row>
-                                          {item?.client_type == "company" && (
+                                          {/* {item?.client_type == "company" && ( */}
                                             <Col md={3} className="mb-3">
                                               <div>
                                                 <h3 className="application-heading">
@@ -362,9 +363,9 @@ const Members = () => {
                                                 </p>
                                               </div>
                                             </Col>
-                                          )}
-                                          {item?.client_type == "company" &&
-                                            (item?.company_address ? (
+                                          {/* )} */}
+                                          {/* {item?.client_type == "company" && */}
+                                            {/* (item?.company_address ? ( */}
                                               <Col md={3} className="mb-3">
                                                 <div>
                                                   <h3 className="application-heading">
@@ -375,9 +376,30 @@ const Members = () => {
                                                   </p>
                                                 </div>
                                               </Col>
-                                            ) : (
+                                            {/* ) : (
                                               ""
-                                            ))}
+                                            ))} */}
+                                              <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("city")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.city}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("country")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.country}
+                                            </p>
+                                          </div>
+                                        </Col>
 
                                           <Col md={3} className="mb-3">
                                             <div>
@@ -400,7 +422,41 @@ const Members = () => {
                                               </p>
                                             </div>
                                           </Col>
-                                          {item?.client_type == "company" && (
+
+                                          {/* {item?.jobs?.length > 0 && ( */}
+                                          <Col md={3} className="mb-3 ">
+                                            <div>
+                                              <h3 className="application-heading">
+                                               Skillset Needed
+                                              </h3>
+                                              <ul className="need-skill-list  mb-0">
+                                                {convertToArray(
+                                                  item?.jobs[0]?.skills
+                                                )?.map((item, index) => {
+                                                  return (
+                                                    <>
+                                                      <li key={index}>
+                                                        {item}
+                                                      </li>
+                                                    </>
+                                                  );
+                                                })}
+                                              </ul>
+                                            </div>
+                                          </Col>
+                                        {/* )} */}
+
+                                        {/* <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("status")}
+                                            </h3>
+                                            <p className="status-progress text-capitalize">
+                                              Under Review
+                                            </p>
+                                          </div>
+                                        </Col> */}
+                                          {/* {item?.client_type == "company" && ( */}
                                             <Col md={3} className="mb-3">
                                               <div>
                                                 <h3 className="application-heading">
@@ -411,7 +467,7 @@ const Members = () => {
                                                 </p>
                                               </div>
                                             </Col>
-                                          )}
+                                          {/* )} */}
 
                                           {/* <Col md={3} className="mb-3">
                                             <div>
@@ -574,7 +630,7 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                  <td colSpan="8">
+                                 <td colSpan="8">
                                     <div>
                                       <Row>
                                         <Col md={3} className="mb-3">
@@ -597,34 +653,54 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        {
-                                          item?.company?.total_employees>0 && (
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("totalEmployees")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.total_employees}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          )
-                                        }
-                                        {
-                                          item?.company?.location && (
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("location")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.location}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          )
-                                        }
+                                        {item?.company?.total_employees && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("totalEmployees")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company?.total_employees}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.company?.location && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("location")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company?.location}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.address && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("address")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.address}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.state && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("state")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.state}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -645,6 +721,158 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Type of establishment
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.type_of_establishment
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Website
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.website}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Service offering
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.service_offering}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              company Email
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.email}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              company Yearly revenue
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.yearly_revenue}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              company GST number
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.gst_number}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Turn around time to close contract
+                                              position
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.trun_around_time_to_close_contract_position
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Turn around time to close
+                                              permanent position
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.trun_around_time_to_close_permanent_position
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor contact number
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.proprietor_contact_number
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor contact person email
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.proprietor_contact_person_email
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor contact person name
+                                            </h3>
+                                            <p className="application-text">
+                                              {
+                                                item?.company
+                                                  ?.proprietor_contact_person_name
+                                              }
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Proprietor email
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company?.proprietor_email}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        {/* <Col md={3}>
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("status")}
+                                            </h3>
+                                            <p className="status-progress text-capitalize">
+                                              Under Review
+                                            </p>
+                                          </div>
+                                        </Col> */}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -716,7 +944,7 @@ const Members = () => {
                         {t("email")} {t("address")}
                       </th>
                       <th>{t("phoneNumber")}</th>
-                      <th>{t("status")}</th>
+                      {/* <th>{t("status")}</th> */}
                       <th>Enable/Disable</th>
                     </tr>
                   </thead>
@@ -808,7 +1036,9 @@ const Members = () => {
                                                 {t("developerName")}
                                               </h3>
                                               <p className="application-text">
-                                                {item?.name}
+                                                {item?.name
+                                                  ? item?.name
+                                                  : "Not Mentioned"}
                                               </p>
                                             </div>
                                           </Col>
@@ -825,28 +1055,152 @@ const Members = () => {
                                             </div>
                                           </Col>
                                         )}
+                                        {item?.country && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("country")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.country}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.state && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("state")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.state}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.city && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("city")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.city}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {/* <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("status")}
+                                            </h3>
+                                            <p className="status-progress text-capitalize">
+                                              Under Review
+                                            </p>
+                                          </div>
+                                        </Col> */}
+
+                                        {item?.email && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("email")}
+                                              </h3>
+                                              <p>{item?.email}</p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.work_preference && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Work Preference
+                                              </h3>
+                                              <p>{item?.work_preference}</p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.ready_to_relocate && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Ready to relocate
+                                              </h3>
+                                              <p>{item?.ready_to_relocate}</p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.time_zone && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Time Zone
+                                              </h3>
+                                              <p>{item?.time_zone}</p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.developer_language && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Language
+                                              </h3>
+                                              <p>
+                                                {
+                                                  item?.developer_language
+                                                    ?.language
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {item?.developer_detail?.github_url && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Github Url
+                                              </h3>
+                                              <p>
+                                                {
+                                                  item?.developer_detail
+                                                    ?.github_url
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+
                                         {item?.other_skills?.length > 0 && (
                                           <Col md={3} className="mb-3 ">
                                             <div>
                                               <h3 className="application-heading">
-                                               Skills
+                                                Skills
                                               </h3>
                                               <ul className="need-skill-list  mb-0">
-                                                {returnSkills(
-                                                  item?.other_skills
-                                                )?.map((item, index) => {
-                                                  return (
-                                                    <>
-                                                      <li key={index}>
-                                                        {item}
-                                                      </li>
-                                                    </>
-                                                  );
-                                                })}
+                                                {item?.other_skills?.map(
+                                                  (item, index) => {
+                                                    return (
+                                                      <>
+                                                        <li key={index}>
+                                                          {item?.skill}
+                                                        </li>
+                                                      </>
+                                                    );
+                                                  }
+                                                )}
                                               </ul>
                                             </div>
                                           </Col>
                                         )}
+
                                         {item?.developer_detail
                                           ?.professional_title && (
                                           <Col md={3}>
@@ -863,16 +1217,53 @@ const Members = () => {
                                             </div>
                                           </Col>
                                         )}
-                                        <Col md={3}>
-                                          <div>
-                                            <h3 className="application-heading">
-                                              Experience
-                                            </h3>
-                                            <p className="application-text">
-                                              2 years
-                                            </p>
-                                          </div>
-                                        </Col>
+
+                                        {item?.developer_detail
+                                          ?.how_did_you_hear_about_rexett && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                How Did you hear about rexett?
+                                              </h3>
+                                              <p className="application-text">
+                                                {
+                                                  item?.developer_detail
+                                                    ?.how_did_you_hear_about_rexett
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.created_at && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Created At
+                                              </h3>
+                                              <p className="application-text">
+                                                {moment(
+                                                  item?.created_at
+                                                ).format("MMMM Do YYYY")}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.developer_detail
+                                          ?.total_experience && (
+                                          <Col md={3}>
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Experience
+                                              </h3>
+                                              <p className="application-text">
+                                                {
+                                                  item?.developer_detail
+                                                    ?.total_experience
+                                                }
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                       </Row>
                                     </div>
                                   </td>

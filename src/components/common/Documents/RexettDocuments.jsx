@@ -67,6 +67,8 @@ const RexettDocuments = ({ currentRole }) => {
   const { t } = useTranslation();
 
   const handleShowUploadFileModal = (id, name) => {
+    console.log(id,"idddd")
+    console.log(name,"name")
     if (id) {
       setShowUploadFileModal(true);
       setEditFolderName({ id: id, name: name });
@@ -96,6 +98,7 @@ const RexettDocuments = ({ currentRole }) => {
       name: item?.s3_path,
       parent_id: item?.parent_id,
     };
+    console.log(data,"data")
     setBradCrum([...bradCrump, data]);
     setShowFolderView(true);
     let filterData = {

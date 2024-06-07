@@ -6,18 +6,23 @@ import { MONTH_NAME, SELECT_YEAR } from "../../clients/TimeReporiting/constant";
 import { TiEdit } from "react-icons/ti";
 import { IoCheckmark, IoCloseOutline } from "react-icons/io5";
 import ToolTip from "../Tooltip/ToolTip";
+import RexettButton from "../../atomic/RexettButton";
+import RexettSpinner from "../../atomic/RexettSpinner";
 
 const ListOfHolidays = ({
   holidayList,
   handleShowEvent,
   handleDelete,
   handleAproveDisapprove,
+  approvedLoader,
+  selectedIndex,
 }) => {
   const [data, setData] = useState();
   const [yearData, setYearData] = useState();
   const [selectedMonth, setSelectedMonth] = useState("All");
   const [selectedYear, setSelectedYear] = useState("2024");
   let role = localStorage.getItem("role");
+  console.log(selectedIndex,"selectedIndex")
 
   console.log(holidayList, "holidaylist");
   console.log(data, "data");
@@ -151,18 +156,20 @@ const ListOfHolidays = ({
                               <div>
                                 <div className="d-flex gap-2">
                                   <ToolTip text="Approve">
-                                    <Button
+                                    <RexettButton
                                       variant="transparent"
                                       className="px-3 arrow-btn primary-arrow font-16 text-decoration-none"
+                                      icon = {selectedIndex == index ? <RexettSpinner/> : <IoCheckmark />}
                                       onClick={() =>
                                         handleAproveDisapprove(
                                           holiday?.id,
-                                          "approve"
+                                          "approve",
+                                          index
                                         )
                                       }
                                     >
-                                      <IoCheckmark />
-                                    </Button>
+                                      
+                                    </RexettButton>
                                   </ToolTip>
                                   <ToolTip text="Disapprove">
                                     <Button
@@ -171,9 +178,10 @@ const ListOfHolidays = ({
                                       onClick={() =>
                                         handleAproveDisapprove(
                                           holiday?.id,
-                                          "disapprove"
+                                          "disapprove",
+                                          index
                                         )
-                                      }
+                                      } 
                                     >
                                       <IoCloseOutline />
                                     </Button>

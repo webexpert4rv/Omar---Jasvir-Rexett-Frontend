@@ -425,7 +425,7 @@ const Applications = () => {
                                           </Col>
                                         )}
 
-<Col md={3} className="mb-3">
+                                          <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("city")}
@@ -492,7 +492,7 @@ const Applications = () => {
                                           </Col>
                                         )}
 
-                                        <Col md={3} className="mb-3">
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("status")}
@@ -501,7 +501,7 @@ const Applications = () => {
                                               Under Review
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
                                         {item?.client_type == "company" && (
                                           <Col md={3} className="mb-3">
                                             {item?.company_tax_id && (
@@ -975,7 +975,7 @@ const Applications = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        {/* <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
                                               {t("status")}
@@ -984,7 +984,7 @@ const Applications = () => {
                                               Under Review
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -1291,7 +1291,7 @@ const Applications = () => {
                                             </div>
                                           </Col>
                                         )}
-                                        <Col md={3} className="mb-3">
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("status")}
@@ -1300,7 +1300,7 @@ const Applications = () => {
                                               Under Review
                                             </p>
                                           </div>
-                                        </Col>
+                                        </Col> */}
 
                                         {item?.email && (
                                           <Col md={3} className="mb-3">

@@ -34,31 +34,28 @@ const LeaveRequest = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("first");
   const { clientHolidayList } = useSelector((state) => state.clientData);
-  const [selectedIndex ,setSelectedIndex] =  useState(null)
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [status, setStatus] = useState({
     id: "",
     status: "",
   });
-  const { screenLoader, approvedLoader,smallLoader, clientLeaveHistory } = useSelector(
-    (state) => state.clientData
-  );
+  const { screenLoader, approvedLoader, smallLoader, clientLeaveHistory } =
+    useSelector((state) => state.clientData);
   const [leaveId, setLeaveId] = useState();
-  const [ deleteShowModal,setDeleteShowModal] = useState(false)
+  const [deleteShowModal, setDeleteShowModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
-  const [deleteId , setDeleteId] = useState()
+  const [deleteId, setDeleteId] = useState();
   const handleSelect = (selectedTab) => {
     setCurrentTab(selectedTab);
   };
 
-
-  console.log(deleteId,"deleteId")
-  const handleCloseDeleteModal=()=>{
-    setDeleteShowModal(false)
-  }
+  console.log(deleteId, "deleteId");
+  const handleCloseDeleteModal = () => {
+    setDeleteShowModal(false);
+  };
 
   const handleClose = () => {
     setShowRejectModal(false);
-   
   };
   const handleClick = async (e, reason) => {
     let payload = {
@@ -74,8 +71,8 @@ const LeaveRequest = () => {
     setShowRejectModal(!showRejectModal);
   };
 
-  const handleApproveReject = async (id, status,index) => {
-    setSelectedIndex(index)
+  const handleApproveReject = async (id, status, index) => {
+    setSelectedIndex(index);
     setLeaveId(id);
     if (status === "Approved") {
       let payload = {
@@ -127,10 +124,10 @@ const LeaveRequest = () => {
   const [showEvent, setShowEvent] = useState(false);
   const handleShowEvent = (id, status) => {
     setShowEvent(!showEvent);
-      setStatus({
-        id: id,
-        status: status,
-      });
+    setStatus({
+      id: id,
+      status: status,
+    });
   };
   const handleCloseEvent = () => {
     setShowEvent(false);
@@ -139,29 +136,29 @@ const LeaveRequest = () => {
     dispatch(getClientHolidayList());
   }, []);
 
-  const handleAproveDisapprove = async (id, status) => {
+  const handleAproveDisapprove = async (id, status, idx) => {
+    setSelectedIndex(idx);
     const payload = {
       action: status,
     };
-    await dispatch(getApproveDisapprove(payload, id));   
+    await dispatch(getApproveDisapprove(payload, id));
     let data = {
       approval_status: "Under Approval",
     };
     dispatch(getClientHolidayList(data));
   };
 
-  const handleDelete =(id) => {
-    setDeleteShowModal(!deleteShowModal)
-    setDeleteId(id)
-   
+  const handleDelete = (id) => {
+    setDeleteShowModal(!deleteShowModal);
+    setDeleteId(id);
   };
-  const handleAction= async(e)=>{
-    e.preventDefault()
-    console.log(deleteId,"deleteion")
-   await  dispatch(clientDeleteHoliday(deleteId));
+  const handleAction = async (e) => {
+    e.preventDefault();
+    console.log(deleteId, "deleteion");
+    await dispatch(clientDeleteHoliday(deleteId));
     dispatch(getClientHolidayList());
-    setDeleteShowModal(false)
-  }
+    setDeleteShowModal(false);
+  };
 
   const listHolidays = (data) => {
     const holidays = data?.map((value) => new Date(value?.date));
@@ -182,7 +179,11 @@ const LeaveRequest = () => {
       view === "month" &&
       markedDates.find((d) => d.toDateString() === date.toDateString())
     ) {
-      return <ToolTip text={holidayForDate?.name}><div className="dot"></div></ToolTip>;
+      return (
+        <ToolTip text={holidayForDate?.name}>
+          <div className="dot"></div>
+        </ToolTip>
+      );
     }
     return null;
   };
@@ -229,8 +230,7 @@ const LeaveRequest = () => {
                 feedbacks={"Reasons"}
                 submit={"Submit"}
                 handleClick={handleClick}
-                smallLoader={  smallLoader}
-
+                smallLoader={smallLoader}
               />
             )}
           </Tab.Pane>
@@ -243,6 +243,8 @@ const LeaveRequest = () => {
               handleShowEvent={handleShowEvent}
               handleDelete={handleDelete}
               handleAproveDisapprove={handleAproveDisapprove}
+              approvedLoader={approvedLoader}
+              selectedIndex={selectedIndex}
             />
           </Tab.Pane>
           <NewEvent
@@ -250,13 +252,13 @@ const LeaveRequest = () => {
             handleClose={handleCloseEvent}
             status={status}
           />
-        <ConfirmationModal
-          show={deleteShowModal}
-          handleClose={handleCloseDeleteModal}
-          handleAction={handleAction}
-          smallLoader={smallLoader}
-          text={"Are you sure, you want to delete this holiday"}
-        />
+          <ConfirmationModal
+            show={deleteShowModal}
+            handleClose={handleCloseDeleteModal}
+            onClick={handleAction}
+            smallLoader={smallLoader}
+            text={"Are you sure, you want to delete this holiday"}
+          />
         </Tab.Content>
       </Tab.Container>
     </>
