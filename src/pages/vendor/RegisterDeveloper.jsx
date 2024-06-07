@@ -27,6 +27,8 @@ import CreatableSelect from "react-select/creatable";
 import { useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
 import { EXPERIENCE_OPTIONS } from "../../helper/utlis";
+import Autocomplete from "react-google-autocomplete";
+
 
 const createOption = (label) => ({
   label,
@@ -524,14 +526,38 @@ const RegisterDeveloper = () => {
                     <Form.Label className="common-label">
                       {t("address")} *
                     </Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       className="common-field"
                       // name="address"
                       {...register("address", {
                         required: t("addressValidation"),
                       })}
-                    />
+                    /> */}
+                      <Controller
+                              name="address"
+                              rules={{
+                                required: "Address is required",
+                              }}
+                              className="common-field "
+                              control={control}
+                              render={({ field, fieldState }) => (
+                                <Autocomplete
+                                  style={{ width: "500px" }}
+                                  errors={fieldState?.errors}
+                                  className="common-field font-14 w-100 p-2"
+                                  apiKey={
+                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+                                  }
+                                  onPlaceSelected={(place) => {
+                                    console.log(place);
+                                  }}
+                                  options={{
+                                    types: ["establishment", "geocode"], 
+                                  }}
+                                />
+                              )}
+                            />
                     {errors?.address && (
                       <p className="error-message">{errors.address.message} </p>
                     )}
@@ -1202,7 +1228,7 @@ const RegisterDeveloper = () => {
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>{t("address")} *</Form.Label>
-                        <Form.Control
+                        {/* <Form.Control
                           className="common-field"
                           type="text"
                           {...register(`educations[${index}].address`, {
@@ -1211,7 +1237,31 @@ const RegisterDeveloper = () => {
                               message: t("addressValidation"),
                             },
                           })}
-                        />
+                        /> */}
+                         <Controller
+                              name="address"
+                              rules={{
+                                required: "Address is required",
+                              }}
+                              className="common-field "
+                              control={control}
+                              render={({ field, fieldState }) => (
+                                <Autocomplete
+                                  style={{ width: "500px" }}
+                                  errors={fieldState?.errors}
+                                  className="common-field font-14 w-100 p-2"
+                                  apiKey={
+                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+                                  }
+                                  onPlaceSelected={(place) => {
+                                    console.log(place);
+                                  }}
+                                  options={{
+                                    types: ["establishment", "geocode"],
+                                  }}
+                                />
+                              )}
+                            />
                         {errors?.educations?.[index]?.address && (
                           <p className="error-message">
                             {errors.educations[index].address.message}

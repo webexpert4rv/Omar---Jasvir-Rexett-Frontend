@@ -39,8 +39,8 @@ const SingleDeveloper = ({ data, role }) => {
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
   let { pathname } = useLocation();
-  let userId = pathname.split("/")[3];
-  console.log(pathname.split("/")[3], "pathj");
+  let userId = pathname.split("/")[2];
+  console.log(pathname.split("/")[2], "pathj");
   console.log(data,"data")
 
   const token = localStorage.getItem("token");
@@ -123,6 +123,7 @@ const SingleDeveloper = ({ data, role }) => {
     };
 
   const approvedEdit = async () => {
+    console.log(userId,"userid")
     await dispatch(approvedEditAction(userId));
     dispatch(getDeveloperDetails(userId));
   };

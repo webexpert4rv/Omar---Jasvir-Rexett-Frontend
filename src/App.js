@@ -154,7 +154,7 @@ function App() {
           <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
           <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
           <Route path="/take-quiz" exact element={<DeveloperDashboardLayout><TakeQuiz /></DeveloperDashboardLayout>} />
-          <Route path="/skill-test" exact element={<DeveloperDashboardLayout><SkillTest /></DeveloperDashboardLayout>} />
+          {/* <Route path="/skill-test" exact element={<DeveloperDashboardLayout><SkillTest /></DeveloperDashboardLayout>} /> */}
           <Route path="/developer-public-holiday" exact element={<DeveloperDashboardLayout><DeveloperPublicHoliday /></DeveloperDashboardLayout>} />
                     <Route path='/faq' exact element={<DashboardLayout><Faq /></DashboardLayout>}></Route>
 

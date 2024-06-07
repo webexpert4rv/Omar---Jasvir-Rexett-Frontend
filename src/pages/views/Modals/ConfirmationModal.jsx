@@ -1,10 +1,12 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
-const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type,startDate,endDate}) => {
-    const callBackBtn=(e)=>{
+import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices/clientDataSlice";
+import { useDispatch } from "react-redux";
+const ConfirmationModal = ({ text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
+    const callBackBtn=(e )=>{
         let data={
-            status: type
+            status: type,
         }
         onClick(e,data)
     }
@@ -23,7 +25,7 @@ const ConfirmationModal = ({ text,show, handleClose,onClick,smallLoader,type,sta
                         <RexettButton
                             type="submit"
                             text="Yes"
-                            onClick={callBackBtn}
+                            onClick={type ? callBackBtn : handleAction}
                             className="main-btn px-4 me-3 font-14 fw-semibold"
                             variant="transparent"
                             disabled={smallLoader}

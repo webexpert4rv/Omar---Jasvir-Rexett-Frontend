@@ -35,6 +35,20 @@ export const PROJECT_FILTER_OPTIONS = [
   { label: "Figma to Ui", value: "Figma to Ui" },
   { label: "Figma to Ui", value: "Figma to Ui" },
 ];
+export const DEVELOPER_NAME_OPTIONS = [
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+
+];
+export const INVOICE_STATUS_OPTIONS = [
+  { label: "Paid", value: "Paid" },
+  { label: "Unpaid", value: "Unpaid" },
+  { label: "Reject", value: "Reject" },
+];
+
 
 export const TIME_REPORT_DETAIL_PER_PAGE = 10;  
 
@@ -52,6 +66,11 @@ export const buildQueryFromObjects = (object) => {
 export const ACTIVE_TABS = {
     projects:"projects",
     timeReportingOrInvoicing:"time-reporting"
+}
+
+export const ACTIVE_TABS_2 = {
+  raisedByDevAndVendor:"raise-by-devs",
+  raisedToClients:"raise-to-clients"
 }
 export const  getCurrentMonthYear = () => {
     const date = new Date();
@@ -80,3 +99,4 @@ export const RAISED_BY_DEVS_COLUMNS = [
   {label:"Project Status", key :"project_status",isStatus:true},
   {label:"Action", key :"invoice"},
 ]
+export const TIME_REPORTING_DETAIL_PER_PAGE = 5

@@ -95,6 +95,15 @@ const DeveloperNavigation = ({ onClick }) => {
             toast.error("You have already checked out. You cannot check in again");
             return;
         }
+        // if (lastTimeLog?.isHoliday) {
+        //     toast.error("Today is holiday, you can not check-in");
+        //     return;
+        // }
+
+        if (lastTimeLog?.isLeave) {
+            toast.error("Today is Leave, you can not check-in");
+            return;
+        }
         setIsColorfulChecked(true);
     };
 

@@ -146,10 +146,14 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               <Controller
                 name="job_location"
                 className="common-field font-14 p-2"
+                rules={{
+                  required: "Job location is required"
+                }}
                 control={control}
-                render={({ field }) => (
+                render={({ field ,fieldState}) => (
                   <Autocomplete
                     {...field}
+                    errors ={fieldState?.errors}
                     apiKey={"AIzaSyDgBFSJ1vRaU0QwJ206OSQiJFrD4aAzkXo"}
                     debounce={1000}
                     className="common-field font-14 w-100 p-2"
@@ -158,6 +162,9 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                         // componentRestrictions: { country: ["us"] }, // Uncomment to restrict to specific country
                       }
                     }
+                    options={{
+                      types: ["establishment", "geocode"], // Allows searching for places like buildings, landmarks, etc.
+                    }}
                     onPlaceSelected={(place) => {
                       field.onChange(place?.formatted_address);
                     }}
@@ -177,6 +184,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                   />
                 )}
               />
+                {/* {errors && <div style={{ color: "red" }}>{errors.message}</div>} */}
               {errors?.job_location && (
                 <p className="error-message"> {errors.job_location?.message}</p>
               )}
