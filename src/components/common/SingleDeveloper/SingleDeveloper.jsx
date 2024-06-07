@@ -123,7 +123,6 @@ const SingleDeveloper = ({ data, role }) => {
     };
 
   const approvedEdit = async () => {
-    console.log(userId,"userid")
     await dispatch(approvedEditAction(userId));
     dispatch(getDeveloperDetails(userId));
   };
