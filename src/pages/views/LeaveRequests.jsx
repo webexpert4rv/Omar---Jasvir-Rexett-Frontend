@@ -147,7 +147,7 @@ const LeaveRequest = () => {
     let data = {
       approval_status: "Under Approval",
     };
-    dispatch(getClientLeaveHistory(data));
+    dispatch(getClientHolidayList(data));
   };
 
   const handleDelete =(id) => {
