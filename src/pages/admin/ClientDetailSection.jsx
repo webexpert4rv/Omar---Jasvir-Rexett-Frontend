@@ -23,12 +23,17 @@ import InvoicePaidModal from "./Modals/InvoicePaid";
 import { FaRegEye } from "react-icons/fa";
 import { ACTIVE_TABS, getCurrentMonthYear } from "./adminConstant";
 
-const ClientDetailSection = ({clientDetails, setActiveTab,totalProjects,activeTab}) => {  
+const ClientDetailSection = ({
+  clientDetails,
+  setActiveTab,
+  totalProjects,
+  activeTab,
+}) => {
   const [remarkshow, setremarkShow] = useState(false);
 
   return (
     <div className="detail-view">
-      <Tab.Container id="left-tabs-example" >
+      <Tab.Container id="left-tabs-example">
         <div className="card-box mb-4 p-3">
           <div className="detail-view">
             <Row className="flex-wrap gy-3">
@@ -36,7 +41,14 @@ const ClientDetailSection = ({clientDetails, setActiveTab,totalProjects,activeTa
                 <div className="client-info p-0 bg-transparent">
                   <h3 className="font-15 fw-bold mb-2">Client Name</h3>
                   <p className="client-name-heading mb-0">
-                    <img src={clientDetails?.profile_picture ? clientDetails?.profile_picture :"/demo-user.png"} />{clientDetails?.name}
+                    <img
+                      src={
+                        clientDetails?.profile_picture
+                          ? clientDetails?.profile_picture
+                          : "/demo-user.png"
+                      }
+                    />
+                    {clientDetails?.name}
                   </p>
                 </div>
               </Col>
@@ -73,21 +85,28 @@ const ClientDetailSection = ({clientDetails, setActiveTab,totalProjects,activeTa
                 <div className="client-info p-0 bg-transparent">
                   <h3 className="font-15 fw-bold mb-2">Company Name</h3>
                   <p className="client-name-heading company-name-heading d-flex gap-1 mb-0 align-items-center">
-                    <img src={clientDetails?.company_logo ? clientDetails?.company_logo :companyLogo} className="company-logo" /> {clientDetails?.company_name}
+                    <img
+                      src={
+                        clientDetails?.company_logo
+                          ? clientDetails?.company_logo
+                          : companyLogo
+                      }
+                      className="company-logo"
+                    />{" "}
+                    {clientDetails?.company_name}
                   </p>
                 </div>
               </Col>
-                {
-                    clientDetails?.company_address && 
-                    <Col md={3}>
-                    <div className="client-info p-0 bg-transparent">
+              {clientDetails?.company_address && (
+                <Col md={3}>
+                  <div className="client-info p-0 bg-transparent">
                     <h3 className="font-15 fw-bold mb-2">Company Address</h3>
                     <p className="client-name-heading d-flex gap-1 mb-0 align-items-center">
-                    {clientDetails?.company_address}
+                      {clientDetails?.company_address}
                     </p>
-                    </div>
-                     </Col>
-                }
+                  </div>
+                </Col>
+              )}
               <Col md={3}>
                 <div className="client-info p-0 bg-transparent">
                   <h3 className="font-15 fw-bold mb-2">Email address</h3>
@@ -107,18 +126,26 @@ const ClientDetailSection = ({clientDetails, setActiveTab,totalProjects,activeTa
               </Col>
             </Row>
           </div>
-          <div className="d-flex justify-content-center mt-4">
-            <div variant="pills d-flex" className="weekly-tabs mb-0">
-              <div className="weekly-tab-item pointer" onClick={()=>{setActiveTab(ACTIVE_TABS.projects)}}>
+          <div className="d-flex justify-content-center">
+            <div variant="pills" className="weekly-tabs d-flex mb-3">
+              <div className="weekly-tab-item pointer">
                 <div
-                  className={`weekly-tab-link d-flex align-items-center gap-2 ${(activeTab ===ACTIVE_TABS.projects) && "active"}`}
-                  eventKey="projects"
+                  className={`weekly-tab-link d-flex align-items-center gap-2 ${
+                    activeTab === ACTIVE_TABS.projects && "active"
+                  }`}
+                  eventKey="raise-by-devs"
+                  onClick={() => setActiveTab(ACTIVE_TABS.projects)}
                 >
                   Projects <span className="number">{totalProjects}</span>
                 </div>
               </div>
-              <div className="weekly-tab-item pointer" onClick={()=>{setActiveTab(ACTIVE_TABS.timeReportingOrInvoicing)}}>
-                <div className={`weekly-tab-link  ${(activeTab ===ACTIVE_TABS.timeReportingOrInvoicing) && "active"}`} eventKey="time-reporting">
+              <div className="weekly-tab-item pointer">
+                <div
+                  className={`weekly-tab-link ${
+                    activeTab === ACTIVE_TABS.timeReportingOrInvoicing && "active"
+                  }`}
+                  onClick={() => setActiveTab(ACTIVE_TABS.timeReportingOrInvoicing)}
+                >
                   Time Reporting/Invoicing
                 </div>
               </div>

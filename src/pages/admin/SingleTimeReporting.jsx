@@ -55,8 +55,9 @@ const TimeReportingDetail = () => {
   const [secondActiveTab, setSecondActiveTab] = useState(
     ACTIVE_TABS_2.raisedByDevAndVendor
   );
-  const { timeReportDetails, screenLoader } =
-    useSelector((state) => state.adminData);
+  const { timeReportDetails, screenLoader,timeReportingDetailTotalPage } = useSelector(
+    (state) => state.adminData
+  );
   const { clientId } = useParams();
   const [remarkshow, setremarkShow] = useState(false);
   const handleremarkClose = () => setremarkShow(false);
@@ -72,9 +73,6 @@ const TimeReportingDetail = () => {
   };
 
   useEffect(() => {
-    if (timeReportDetails?.pagination?.total_pages) {
-      setTotalPages(timeReportDetails?.pagination?.total_pages);
-    }
     const filtersQuery = buildQueryFromObjects(filters);
     // const query = `page=${page}&perPage=${TIME_REPORT_DETAIL_PER_PAGE}&${filtersQuery}`;
     const query = `${filtersQuery}&page=${page}&perPage=${TIME_REPORTING_DETAIL_PER_PAGE}`;
@@ -94,6 +92,7 @@ const TimeReportingDetail = () => {
   );
   const downloadinvoice = <Tooltip id="tooltip">Download Invoice</Tooltip>;
   const viewtimesheet = <Tooltip id="tooltip">View Timesheet</Tooltip>;
+  console.log(timeReportingDetailTotalPage,"total pages")
   return (
     <>
       {screenLoader ? (
@@ -1464,35 +1463,29 @@ const TimeReportingDetail = () => {
               <div className="card-box">
                 <div id="left-tabs-example">
                   <div className="d-flex justify-content-center">
-                    <div variant="pills" className="weekly-tabs mb-0">
-                      <div
-                        className={`weekly-tab-item pointer`}
-                        onClick={() =>
-                          setSecondActiveTab(ACTIVE_TABS_2.raisedByDevAndVendor)
-                        }
-                      >
+                    <div variant="pills" className="weekly-tabs d-flex mb-3">
+                      <div className="weekly-tab-item pointer">
                         <div
                           className={`weekly-tab-link d-flex align-items-center gap-2 ${
-                            secondActiveTab ===
-                              ACTIVE_TABS_2.raisedByDevAndVendor && "active"
+                            secondActiveTab === ACTIVE_TABS_2.raisedByDevAndVendor && "active"
                           }`}
                           eventKey="raise-by-devs"
+                          onClick={() =>
+                            setSecondActiveTab(ACTIVE_TABS_2.raisedByDevAndVendor)
+                          }
                         >
                           Raise By Devs/Vendors
                         </div>
                       </div>
-                      <div
-                        className={`weekly-tab-item pointer`}
-                        onClick={() =>
-                          setSecondActiveTab(ACTIVE_TABS_2.raisedToClients)
-                        }
-                      >
+                      <div className="weekly-tab-item pointer">
                         <div
-                          className={`weekly-tab-link  ${
+                          className={`weekly-tab-link ${
                             secondActiveTab === ACTIVE_TABS_2.raisedToClients &&
                             "active"
                           }`}
-                          eventKey="raise-to-clients"
+                          onClick={() =>
+                            setSecondActiveTab(ACTIVE_TABS_2.raisedToClients)
+                          }
                         >
                           Raise To Clients
                         </div>
@@ -1596,7 +1589,7 @@ const TimeReportingDetail = () => {
                                 ?.raised_by_dev_vendor
                             }
                             isRaisedByDevAndVendor={true}
-                            totalPages={totalPages}
+                            totalPages={timeReportingDetailTotalPage}
                             page={page}
                             setPage={setPage}
                           />
@@ -1693,7 +1686,7 @@ const TimeReportingDetail = () => {
                               timeReportDetails?.invoices_time_reporting
                                 ?.raised_to_client
                             }
-                            totalPages={totalPages}
+                            totalPages={timeReportingDetailTotalPage}
                             page={page}
                             setPage={setPage}
                           />
