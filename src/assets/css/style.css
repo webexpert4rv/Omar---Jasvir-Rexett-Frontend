@@ -994,6 +994,11 @@ select.common-field {
     cursor: pointer;
 }
 
+.time-table-data.holiday-data {
+    background: #ffcb64;
+    cursor: pointer;
+}
+
 .time-table tr {
     border-color: #000;
 }
@@ -3731,6 +3736,10 @@ input[type="radio"]:checked {
     font-size: 12px;
     border-left: 2px solid #fff;
     margin: 0px auto;
+}
+.holiday-text{
+    min-width: 140px;
+    display: inline-bloc
 }
 
 .detail-view .sidebar-heading {
