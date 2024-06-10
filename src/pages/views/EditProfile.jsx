@@ -37,7 +37,9 @@ const EditProfile = () => {
     control,
     setValue,
     watch,
+    trigger,
     handleSubmit,
+    clearErrors,
 
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
@@ -49,6 +51,7 @@ const EditProfile = () => {
     setError: setCompanyDetailsError,
     setValue: setCompanyDetailsValue,
     clearErrors: clearCompanyDetailsErrors,
+    control:companyControl
   } = useForm({});
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -63,6 +66,7 @@ const EditProfile = () => {
     dispatch(getClientProfile());
   }, [dispatch]);
 
+
   useEffect(() => {
     setValue("name", clientProfileDetails?.data?.name);
     setValue("email", clientProfileDetails?.data?.email);
@@ -72,10 +76,22 @@ const EditProfile = () => {
     setValue("city", clientProfileDetails?.data?.city);
     setValue("country", clientProfileDetails?.data?.country);
     setValue("passcode", clientProfileDetails?.data?.passcode);
-    setCompanyDetailsValue("company_address", clientProfileDetails?.data?.company_address);
-    setCompanyDetailsValue("company_name", clientProfileDetails?.data?.company_name);
-    setCompanyDetailsValue("company_tax_id", clientProfileDetails?.data?.company_tax_id);
-    setCompanyDetailsValue("company_type", clientProfileDetails?.data?.company_type);
+    setCompanyDetailsValue(
+      "company_address",
+      clientProfileDetails?.data?.company_address
+    );
+    setCompanyDetailsValue(
+      "company_name",
+      clientProfileDetails?.data?.company_name
+    );
+    setCompanyDetailsValue(
+      "company_tax_id",
+      clientProfileDetails?.data?.company_tax_id
+    );
+    setCompanyDetailsValue(
+      "company_type",
+      clientProfileDetails?.data?.company_type
+    );
     if (clientProfileDetails?.data?.company_logo) {
       setLogo(clientProfileDetails?.data?.company_logo);
     }
@@ -94,14 +110,14 @@ const EditProfile = () => {
 
   const onSubmit = (values) => {
     localStorage.setItem("newUserName", values?.name);
-    console.log(values,"values o")
+    console.log(values, "values o");
     let formData = {
       ...values,
-      password: values.password ? values.password : null,
-      previous_password: values.previous_password
+      password: values?.password ? values.password : null,
+      previous_password: values?.previous_password
         ? values.previous_password
         : null,
-        client_type:"individual"
+      client_type: "individual",
     };
     dispatch(updateClientProfile(formData), () => {
       dispatch(getClientProfile());
@@ -111,12 +127,12 @@ const EditProfile = () => {
     setStatus(!status);
     setShowModal(false);
   };
-  const handleToggle = () => {
-    setStatus("active");
-    setShowModal(true);
-  };
+  // const handleToggle = () => {
+  //   setStatus("active");
+  //   setShowModal(true);
+  // };
   const handleAction = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let data = {
       user_id: +userId,
       status: status,
@@ -124,7 +140,7 @@ const EditProfile = () => {
     dispatch(getEnableDisableAccount(data, handleJobStatusModal));
   };
   const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
-  console.log(watchCompanyDetails("company_address"),"this is company addres")
+  console.log(watchCompanyDetails("company_address"), "this is company addres");
 
   const validatePassword = (value) => {
     if (value === "") {
@@ -139,8 +155,7 @@ const EditProfile = () => {
     return true;
   };
   const onCompanyDetailSubmit = (values) => {
-  
-    console.log(values,"companyDetailsSubmit")
+    console.log(values, "companyDetailsSubmit");
     const clientProfileDetails = watch();
     const payload = {
       ...values,
@@ -151,11 +166,11 @@ const EditProfile = () => {
       previous_password: clientProfileDetails.previous_password
         ? clientProfileDetails.previous_password
         : null,
-      client_type: "company"
+      client_type: "company",
     };
-    if(values?.company_logo.name!==undefined){
-      let fileData=new FormData();
-      fileData.append("file",values?.company_logo)
+    if (values?.company_logo.name !== undefined) {
+      let fileData = new FormData();
+      fileData.append("file", values?.company_logo);
       dispatch(
         filePreassignedUrlGenerate(fileData, (url) => {
           let data = {
@@ -166,7 +181,7 @@ const EditProfile = () => {
           dispatch(updateClientProfile(data));
         })
       );
-    }else{
+    } else {
       let data = {
         ...payload,
         company_logo: logo,
@@ -174,11 +189,6 @@ const EditProfile = () => {
       };
       dispatch(updateClientProfile(data));
     }
-
-
-
-  
-
   };
   const handleCompanyLogo = (e) => {
     const file = e?.target?.files?.[0];
@@ -200,6 +210,14 @@ const EditProfile = () => {
       }
     }
   };
+  const beforeSubmit = (e) => {
+    e.preventDefault();
+    clearCompanyDetailsErrors("company_address");
+    clearErrors("company_address")
+    handleSubmit(onSubmit)();
+  }
+  console.log(watch("address"),"adress value");
+  console.log(errors,"address errors")
   return (
     <>
       <section className="card-box">
@@ -244,7 +262,7 @@ const EditProfile = () => {
                 {screenLoader ? (
                   <ScreenLoader />
                 ) : (
-                  <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                  <form  noValidate>
                     <Row className="mb-4">
                       <Col md="6">
                         <div className="inner-form">
@@ -393,6 +411,7 @@ const EditProfile = () => {
                               control={control}
                               render={({ field, fieldState }) => (
                                 <Autocomplete
+                                {...field}
                                   style={{ width: "500px" }}
                                   errors={fieldState?.errors}
                                   className="common-field font-14 w-100 p-2"
@@ -400,10 +419,15 @@ const EditProfile = () => {
                                     "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
                                   }
                                   onPlaceSelected={(place) => {
-                                    console.log(place);
-                                    setValue("address",place.formatted_address)
+                                    setValue(
+                                      "address",
+                                      place.formatted_address
+                                    );
+                                    clearErrors("address")
                                   }}
-                                  onChange={(e)=>{setValue("address",e.target.value)}}
+                                  onChange={(e) => {
+                                    setValue("address", e.target.value);
+                                  }}
                                   value={watch("address")}
                                   options={{
                                     types: ["establishment", "geocode"],
@@ -437,10 +461,14 @@ const EditProfile = () => {
                                     "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
                                   }
                                   onPlaceSelected={(place) => {
-                                    console.log(place);
-                                    setValue("address_2",place.formatted_address)
+                                    setValue(
+                                      "address_2",
+                                      place.formatted_address
+                                    );
                                   }}
-                                  onChange={(e)=>{setValue("address_2",e.target.value)}}
+                                  onChange={(e) => {
+                                    setValue("address_2", e.target.value);
+                                  }}
                                   value={watch("address_2")}
                                   options={{
                                     types: ["establishment", "geocode"],
@@ -531,7 +559,8 @@ const EditProfile = () => {
                     </Row>
                     <div className="text-center">
                       <RexettButton
-                        type="submit"
+                        type="button"
+                        onClick={beforeSubmit}
                         text={t("updateProfile")}
                         className="main-btn px-5"
                         variant="transparent"
@@ -654,22 +683,26 @@ const EditProfile = () => {
                         <Controller
                           name="company_address"
                           className="common-field "
-                          control={control}
+                          control={companyControl}
                           rules={{
                             required: "Address is required",
                           }}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <Autocomplete
                             {...field}
                               style={{ width: "500px" }}
-                              errors={fieldState?.errors}
                               className="common-field font-14 w-100 p-2"
                               apiKey={"AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"}
                               onPlaceSelected={(place) => {
-                                console.log(place);
-                                setCompanyDetailsValue("company_address",place.formatted_address)
+                                setCompanyDetailsValue("company_address",place.formatted_address);
+                                clearCompanyDetailsErrors("company_address")
+                                
                               }}
-                              onChange={(e)=>{setCompanyDetailsValue("company_address",e.target.value)}}
+                              onChange={(e)=>{
+                                setCompanyDetailsValue("company_address",e.target.value);
+                                clearCompanyDetailsErrors("company_address")
+
+                              }}
                               value={watchCompanyDetails("company_address")}
                               options={{
                                 types: ["establishment", "geocode"],
@@ -677,6 +710,33 @@ const EditProfile = () => {
                             />
                           )}
                         />
+                        {/* <Autocomplete
+                          {...registerCompanyDetails(
+                            "company_address",
+                            { required: "Company address is required" },
+                            (onchange = (e) => {
+                              setCompanyDetailsValue(
+                                "company_address",
+                                e.target.value
+                              );
+                            })
+                          )}
+                          style={{ width: "500px" }}
+                          className="common-field font-14 w-100 p-2"
+                          apiKey={"AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"}
+                          onPlaceSelected={(place) => {
+                            console.log(place);
+                            setCompanyDetailsValue(
+                              "company_address",
+                              place.formatted_address
+                            );
+                          }}
+                          // onChange={(e)=>{setCompanyDetailsValue("company_address",e.target.value)}}
+                          value={watchCompanyDetails("company_address")}
+                          options={{
+                            types: ["establishment", "geocode"],
+                          }}
+                        /> */}
                         {companyDetailErrors?.company_address && (
                           <p className="error-message">
                             {companyDetailErrors.company_address?.message}

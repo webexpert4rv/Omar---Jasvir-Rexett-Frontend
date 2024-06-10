@@ -159,7 +159,7 @@ const EditDeveloperProfile = () => {
                 checked
               />
             </div>
-          </OverlayTrigger> */}
+          </OverlayTrigger> */}x
         </div>
         <div>
           {screenLoader ? (

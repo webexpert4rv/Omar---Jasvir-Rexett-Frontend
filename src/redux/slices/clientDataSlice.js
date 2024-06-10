@@ -767,13 +767,14 @@ export function getInvoice(payload) {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(
-        generateApiUrl(payload, `client/invoices`)
+        generateApiUrl(payload, `client/client-invoices`)
       );
       if (result.status === 200) {
         dispatch(setInvoiceList(result.data));
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
+      dispatch(setFailClientData());
       toast.error(message, { position: "top-center" });
     }
   };

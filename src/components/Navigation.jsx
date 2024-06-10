@@ -13,17 +13,27 @@ const clientName = localStorage.getItem("userName")
 const Navigation = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isSingleJob = pathname.split("/")[2] === "single-job";
+  const isSingleJob = pathname.split("/")[2];
+
+  const routePath = (isSingleJob) => {
+    const data = {
+      "single-job": "/client/job-posted",
+      "client-single-developer": "/client/dashboard"
+    };
+  
+    return data[isSingleJob] || false;
+  };
 
   const backBtn = () => {
-    navigate("/client/job-posted");
+   let routeName= routePath(isSingleJob)
+    navigate(routeName);
   };
 
   return (
     <header className="mb-4 zIndex3">
       <div className="d-flex align-items-center justify-content-between gap-3">
         <div>
-          {isSingleJob && (
+          {routePath(isSingleJob) && (
             <Button onClick={backBtn} className="outline-main-btn px-3 py-2 font-14">
               <GoArrowLeft /> Back
             </Button>
