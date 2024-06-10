@@ -24,7 +24,10 @@ const initialAdminData = {
     singleClient: {},
     accountDeletionList:{},
     adminClientList : [],
-    timeReportDetails : {}
+    timeReportDetails : {},
+    invoiceDetails:{},
+    invoiceTotalPage : null,
+    timeReportingDetailTotalPage:null
 }
 
 export const adminDataSlice = createSlice({
@@ -123,20 +126,24 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
             state.accountDeletionList = action.payload
         },
-        setAdminClientList:(state ,action) =>{
+        setAdminClientList:(state ,action) => {
             state.screenLoader = false;
             state.adminClientList = action.payload
         },
         setTimeReportDetails : (state,action) => {
             state.screenLoader = false;
             state.timeReportDetails = action.payload
+            state.timeReportingDetailTotalPage = action?.payload?.pagination?.total_pages
+        },
+        setInvoiceDetails :(state,action) => {
+         state.screenLoader = false;
+         state.invoiceDetails = action.payload
+         state.invoiceTotalPage = action?.payload?.pagination?.total_pages
         }
-
-
     }
 })
 
-export const { setTimeReportDetails, setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -588,6 +595,23 @@ export function getTimeReportsDetails  (clientId,query){
             let result = await clientInstance.get(`/admin/clients/${clientId}?${query}`)
             if(result.status === 200){
                 dispatch(setTimeReportDetails(result?.data?.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+
+    }
+}
+
+export function getInvoiceDetails (query) {
+    return async(dispatch) => {
+        dispatch(setScreenLoader());
+        try{
+            let result = await clientInstance.get(`/admin/invoices/?${query}`)
+            if(result.status === 200){
+                dispatch(setInvoiceDetails(result?.data?.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

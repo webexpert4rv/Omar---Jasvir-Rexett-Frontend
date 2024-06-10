@@ -99,4 +99,38 @@ export const RAISED_BY_DEVS_COLUMNS = [
   {label:"Project Status", key :"project_status",isStatus:true},
   {label:"Action", key :"invoice"},
 ]
-export const TIME_REPORTING_DETAIL_PER_PAGE = 5
+
+export const RAISED_BY_DEV_INVOICE_COLUMNS = [
+  {label:"Developer Name", key:"developerName",subKey:"developerProfile"},
+  {label:"Project", key:"projectName"},
+  {label:"Client Name", key:"clientName"},
+  {label:"Total Hours", key:"totalHours"},
+  {label:"Invoice Month", key:"invoiceMonth"},
+  {label:"Associated With", key:"associatedWith"},
+  {label:"Project Status", key:"projectStatus"},
+  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl",isAction:true},
+]
+
+export const RAISED_BY_CLIENT_INVOICE_COLUMNS = [
+  {label:"Client Name", key:"clientName"},
+  {label:"Project", key:"projectName"},
+  {label:"Developer Name", key:"developerName",subKey:"developerProfile"},
+  {label:"Total Hours", key:"totalHours"},
+  {label:"Invoice Month", key:"invoiceMonth"},
+  {label:"Associated With", key:"associatedWith"},
+  {label:"Project Status", key:"projectStatus"},
+  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl",isAction:true ,timeSheetStatusKey:"timeSheetStatus",timeSheetUrlkey:"timeSheetUrl"},
+]
+export const TIME_REPORTING_DETAIL_PER_PAGE = 5;
+export const INVOICE_TABS = {
+  raisedByDev:"devVendor",
+  raisedToClients:"client"
+}
+export const INVOICE_PER_PAGE = 5;
+export const CLIENT_NAME_OPTIONS = [
+  {label:"Client 1",value:"client1"},
+  {label:"Client 2",value:"client2"},
+  {label:"Client 3",value:"client3"},
+  {label:"Client 4",value:"client4"},
+  {label:"Client 5",value:"client5"}
+]

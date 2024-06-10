@@ -5322,6 +5322,18 @@ input[type="radio"]:checked {
     justify-content: center;
     align-items: center;
 }
+.weekly-tab-link
+{
+    background: 0 0;
+    border: 0;
+    display: block;
+    padding: 10px 10px;
+    text-decoration: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+    color: #037563;
+    font-size: 14px;
+    border-radius: 6px;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;

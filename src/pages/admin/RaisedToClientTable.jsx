@@ -46,6 +46,7 @@ const RaisedToClientTable = ({
     const arr = data?.map((curElem, idx) => curElem.contracts[0]);
     return arr;
   };
+  console.log(totalPages,"totalpages");
   const viewtimesheet = <Tooltip id="tooltip">View Timesheet</Tooltip>;
   const dataToMap = isRaisedByDevAndVendor
     ? getDataForVendor()
@@ -185,9 +186,9 @@ const RaisedToClientTable = ({
                                   className="main-btn view-time-btn"
                                 >
                                   {iconActive === rowIdx ? (
-                                    <FaEyeSlash />
+                                    <FaEyeSlash/>
                                   ) : (
-                                    <FaRegEye />
+                                    <FaRegEye/>
                                   )}
                                 </Button>
                               </OverlayTrigger>

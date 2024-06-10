@@ -140,7 +140,7 @@ function App() {
           <Route path="/edit-admin-profile" exact element={<AdminDashboardLayout><EditAdminProfile /></AdminDashboardLayout>} />
           <Route path="/admin-documents" exact element={<AdminDashboardLayout><AdminDocuments /></AdminDashboardLayout>} />
           <Route path="/admin-time-reporting" exact element={<AdminDashboardLayout><AdminTimeReporting /></AdminDashboardLayout>} />
-          <Route path="/revenue" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
+          <Route path="/invoice" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
           <Route path="/account-deletion-request" exact element={<AdminDashboardLayout><AccountDeletionRequest/></AdminDashboardLayout>} />
           <Route path="/admin-invoice" exact element={<AdminDashboardLayout><AdminInvoice /></AdminDashboardLayout>} />
           <Route path="/profile-updation-request" exact element={<DeveloperDashboardLayout><ProfileUpdationRequest /></DeveloperDashboardLayout>} />

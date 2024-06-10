@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { IoSearch } from "react-icons/io5";
 import {
+  CLIENT_NAME_OPTIONS,
   DEVELOPER_NAME_OPTIONS,
   INVOICE_STATUS_OPTIONS,
   MONTH_FILTER_OPTIONS,
@@ -15,8 +16,9 @@ const TimeReportingFilterSection = ({
   filters,
   setFilters,
   isHeaderFilter = false,
+  isInvoiceClientFilter = false,
 }) => {
-  const { register, handleSubmit, watch ,setValue} = useForm();
+  const { register, handleSubmit, watch, setValue } = useForm();
   const {
     register: registerSearch,
     handleSubmit: handleSearchSubmit,
@@ -24,8 +26,8 @@ const TimeReportingFilterSection = ({
   } = useForm();
 
   useEffect(() => {
-    for (let key in filters){
-      setValue(key,filters[key]);
+    for (let key in filters) {
+      setValue(key, filters[key]);
     }
   }, []);
 
@@ -43,8 +45,8 @@ const TimeReportingFilterSection = ({
   return (
     <div className="s">
       <div className="filter-section d-lg-flex align-items-center mb-4 justify-content-between">
-        <div className="d-flex align-items-center gap-2 mb-lg-0 mb-3 flex-wrap">
-          <Form onSubmit={handleSubmit(onSubmitFilters)}>
+        <Form onSubmit={handleSubmit(onSubmitFilters)}>
+          <div className="d-flex align-items-center gap-2 mb-lg-0 mb-3 flex-wrap">
             <div>
               {/* <Form.Select className="time-filter-select shadow-none">
             <option disabled selected>
@@ -81,7 +83,7 @@ const TimeReportingFilterSection = ({
                 ))}
               </Form.Select>
             </div>
-            {!isHeaderFilter && (
+            {(!isHeaderFilter || !isInvoiceClientFilter) && (
               <div>
                 <Form.Select
                   {...register("developerName")}
@@ -91,6 +93,21 @@ const TimeReportingFilterSection = ({
                     Select Developer
                   </option>
                   {DEVELOPER_NAME_OPTIONS?.map(({ label, value }) => (
+                    <option value={value}>{label}</option>
+                  ))}
+                </Form.Select>
+              </div>
+            )}
+            {isInvoiceClientFilter && (
+              <div>
+                <Form.Select
+                  {...register("clientName")}
+                  className="time-filter-select shadow-none"
+                >
+                  <option disabled selected value="">
+                    Select Client
+                  </option>
+                  {CLIENT_NAME_OPTIONS?.map(({ label, value }) => (
                     <option value={value}>{label}</option>
                   ))}
                 </Form.Select>
@@ -134,12 +151,12 @@ const TimeReportingFilterSection = ({
                 Filter
               </Button>
             </div>
-          </Form>
-        </div>
+          </div>
+        </Form>
 
         {/* search filter */}
-        <div className="d-flex align-items-center gap-3">
-          <Form onSubmit={handleSearchSubmit(onSubmitFilters)}>
+        <Form onSubmit={handleSearchSubmit(onSubmitFilters)}>
+          <div className="d-flex align-items-center gap-3">
             <Form.Control
               {...registerSearch("developerName")}
               type="text"
@@ -154,8 +171,8 @@ const TimeReportingFilterSection = ({
             >
               <IoSearch />
             </Button>
-          </Form>
-        </div>
+          </div>
+        </Form>
       </div>
     </div>
   );
