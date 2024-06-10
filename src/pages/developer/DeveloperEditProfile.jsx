@@ -28,6 +28,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
 import Autocomplete from "react-google-autocomplete";
+import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../components/clients/TimeReporiting/constant";
 
 
 
@@ -327,14 +328,15 @@ const EditDeveloperProfile = () => {
                                   style={{ width: "500px" }}
                                   errors={fieldState?.errors}
                                   className="common-field font-14 w-100 p-2"
-                                  apiKey={
-                                    "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
-                                  }
+                                  apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                                   onPlaceSelected={(place) => {
                                     console.log(place);
                                   }}
                                   options={{
                                     types: ["establishment", "geocode"], 
+                                  }}
+                                  onChange={(event) => {
+                                    field.onChange(event.target.value);
                                   }}
                                 />
                               )}

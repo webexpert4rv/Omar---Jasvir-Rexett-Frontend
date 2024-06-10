@@ -116,7 +116,8 @@ const LeavePlan = () => {
       end_time: null,
       type: values.leave_type,
       reason_for_leave: values.reason,
-    };
+  }
+
     if (isEdit?.status === true) {
       await dispatch(getUpdateLeave(isEdit?.leaveId, data));
     } else {
@@ -127,7 +128,8 @@ const LeavePlan = () => {
     };
     dispatch(getLeaveHistory(user_id, payload));
     setIsEdit({ status: false, leaveId: "" });
-    reset();
+    reset()
+
   };
 
   const listHolidays = (data) => {
@@ -250,7 +252,7 @@ const LeavePlan = () => {
                         )}
                       </Row>
                     </div>
-                      <ApplyLeaveSection allContracts={allContracts} handleRange={handleRange} selectionRange ={selectionRange} handleSubmit={handleSubmit} onSubmit={onSubmit} smallLoader = {smallLoader}/>
+                      <ApplyLeaveSection allContracts={allContracts} handleRange={handleRange} selectionRange ={selectionRange} handleSubmit = {handleSubmit} onSubmit={onSubmit} smallLoader = {smallLoader}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
                     <div className="table-responsive">

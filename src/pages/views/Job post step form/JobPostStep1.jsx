@@ -6,6 +6,7 @@ import { BsQuestionCircleFill } from "react-icons/bs";
 import companyLogo from "../../../assets/img/aviox-logo.png";
 import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
+import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../../components/clients/TimeReporiting/constant";
 
 
 const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
@@ -154,7 +155,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                   <Autocomplete
                     {...field}
                     errors ={fieldState?.errors}
-                    apiKey={"AIzaSyDgBFSJ1vRaU0QwJ206OSQiJFrD4aAzkXo"}
+                    apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                     debounce={1000}
                     className="common-field font-14 w-100 p-2"
                     autocompletionRequest={
