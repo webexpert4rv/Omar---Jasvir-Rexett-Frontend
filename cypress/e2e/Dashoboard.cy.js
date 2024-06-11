@@ -17,7 +17,7 @@ describe('Other Test File', () => {
     // Ensure the Overview section is visible after login
     cy.get('h2.section-head', { timeout: 10000 }).should('be.visible').and('contain', 'Overview')
 
-    cy.visit('http://localhost:3000/client/hired-developers')
+    // cy.visit('http://localhost:3000/client/hired-developers')
 
 
    

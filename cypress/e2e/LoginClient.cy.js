@@ -50,65 +50,6 @@
 
 
 
-
-
-
-
-  
-
-// // Define a flag to track if the login was successful
-// let loginSuccess = false;
-
-// describe('Login Page', () => {
-//   beforeEach(() => {
-//     // Load the login page before each test
-//     cy.visit('http://localhost:3000/')
-//   })
-
-//   it('should navigate to the dashboard after successful login', () => {
-//     // Ensure email and password fields are visible
-//     cy.get("input[name='email']").should('be.visible')
-//     cy.get('input[name="password"]').should('be.visible')
-
-//     // Enter valid login credentials
-//     cy.get("input[name='email']").type("damini@avioxtechnologies.com")
-//     cy.get('input[name="password"]').type("Damini@1234")
-//     cy.get('button[type="submit"]').should('be.visible').click()
-
-//     // Verify redirection to the dashboard after successful login
-//     cy.url().should('eq', 'http://localhost:3000/client/dashboard').then(() => {
-//       // Update login success flag
-//       loginSuccess = true;
-//     })
-
-//     // Ensure the Overview section is visible after login
-//     cy.get('h2.section-head', { timeout: 10000 }).should('be.visible').and('contain', 'Overview')
-//   })
-
-//   it('should display an error message with invalid credentials', function() {
-//     // Skip this test if the previous login was unsuccessful
-//     if (!loginSuccess) {
-//       this.skip();
-//     }
-
-//     // Ensure email and password fields are visible
-//     cy.get("input[name='email']").should('be.visible')
-//     cy.get('input[name="password"]').should('be.visible')
-
-//     // Enter invalid login credentials
-//     cy.get("input[name='email']").type("invalid@domain.com")
-//     cy.get('input[name="password"]').type("InvalidPassword")
-//     cy.get('button[type="submit"]').should('be.visible').click()
-
-//     // Verify error message is displayed for invalid credentials
-//     cy.get('.error-message')
-//   })
-// })
-
-
-
-
-
 // Define a common function for login
 const login = (email, password) => {
   // Ensure email and password fields are visible and enter login credentials
