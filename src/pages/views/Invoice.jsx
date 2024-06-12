@@ -11,13 +11,23 @@ import SingleInvoiceRow from "../../components/common/Single Invoice/SingleInvoi
 import RexettPagination from "../../components/atomic/RexettPagination";
 import RexettInvoiceFilter from "../../components/common/Invoice filter/RexettInvoiceFilter";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
-import timeSheetIcon from '../../assets/img/timesheet_approved.png';
-import associateLogo from "../../assets/img/aviox-logo.png"
-import invoiceIcon from '../../assets/img/invoice_paid.png'
-import timeSheetNotApproved from '../../assets/img/timesheet_notapproved.png';
-import invoiceUnpaid from '../../assets/img/invoice_unpaid.png'
+import timeSheetIcon from "../../assets/img/timesheet_approved.png";
+import associateLogo from "../../assets/img/aviox-logo.png";
+import invoiceIcon from "../../assets/img/invoice_paid.png";
+import timeSheetNotApproved from "../../assets/img/timesheet_notapproved.png";
+import invoiceUnpaid from "../../assets/img/invoice_unpaid.png";
 import { IoSearch } from "react-icons/io5";
-import userImage from "../../assets/img/user-img.jpg"
+import userImage from "../../assets/img/user-img.jpg";
+import {
+  DEVELOPER_NAME_OPTIONS,
+  INVOICE_OPTIONS,
+  MONTH_FILTER_OPTIONS,
+  PROJECT_FILTER_OPTIONS,
+  YEAR_FILTER_OPTIONS,
+  buildQueryFromObjects,
+} from "../admin/adminConstant";
+import CommonFilterSection from "../../components/atomic/CommonFilterSection";
+import TableComponentOne from "../../components/atomic/TableComponentOne";
 const INVOICE_HEADER_DATA = [
   "developerName",
   "date",
@@ -25,55 +35,79 @@ const INVOICE_HEADER_DATA = [
   "status",
   "action",
 ];
+// add these inside constant file
+const CLIENT_INVOICE_PER_PAGE = 5;
+const CLIENT_INVOICE_FILTER_FIELDS = {
+  selectFilters : [
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    },
+  ],
+  searchFilter:{key:"developerName",placeholder:"Enter developer name"}
+}
+
+export const DEVELOPER_INVOICE_COLUMNS = [
+  {
+    label: "Developer Name",
+    key: "developer",
+    subkey: "name",
+    profilePictureKey: "profile_picture",
+  },
+  { label: "Project", key: "project", subkey: "title" },
+  {
+    label: "Total hours",
+    key: "project",
+    subkey: "total_hours",
+    isHours: true,
+  },
+  { label: "Invoice month", key: "invoiceMonth"},
+  { label: "Project status", key: "project", subkey: "status", isStatus: true },
+  {
+    label: "Action",
+    key: "status",
+    isAction: true,
+    timesheetStatusKey: "", 
+    timeSheetUrlKey: "",
+    invoiceStatusKey:"invoiceStatus",
+    invoiceUrlKey:"invoiceUrl"
+  },
+];
 const Invoice = () => {
   const dispatch = useDispatch();
-  const { invoiceList, screenLoader } = useSelector(
+  const { t } = useTranslation();
+
+  const { invoiceList, screenLoader, totalInvoicePages } = useSelector(
     (state) => state.clientData
   );
   const [page, setPage] = useState(1);
-  const [selectedFilters, setSelectedFilters] = useState({
+  const [filters, setFilters] = useState({
     developerName: "",
     year: "",
     month: "",
-    status: "",
+    invoiceStatus: "",
   });
-  const [showFolderView, setShowFolderView] = useState(false);
 
   useEffect(() => {
-    let data = {
-      page: page,
-      ...selectedFilters,
-    };
-    dispatch(getInvoice(data));
-  }, [page, selectedFilters]);
+    const filterQuery = buildQueryFromObjects(filters);
+    const query = `${filterQuery}&page=${page}&perPage=${CLIENT_INVOICE_PER_PAGE}`;
+    handleGetInvoice(query);
+  }, [page, filters]);
 
-  const { t } = useTranslation();
-
-  const handleDownload = (url) => {
-    const newTab = window.open(url, '_blank');
-    if (newTab) {
-      newTab.focus();
-    } else {
-      // If the popup blocker prevents opening the new tab
-      alert('Please allow pop-ups for this site to download the file in a new tab.');
-    }
+  const handleGetInvoice = (query) => {
+    dispatch(getInvoice(query));
   };
-  const downloadinvoice = (
-    <Tooltip id="tooltip">
-      Download Invoice
-    </Tooltip>
-  );
-  const downloadtimesheet = (
-    <Tooltip id="tooltip">
-      Download Timesheet
-    </Tooltip>
-  );
-  const companyname = (
-
-    <Tooltip id="tooltip">
-      Aviox Technologies Pvt Ltd
-    </Tooltip>
-  );
 
   return (
     <>
@@ -81,89 +115,29 @@ const Invoice = () => {
         <ScreenLoader />
       ) : (
         <>
-          <div className="filter-section d-lg-flex align-items-center mt-3 justify-content-between mb-3">
-            <div className="d-flex align-items-center gap-2 flex-wrap">
-              <div>
-                <Form.Select className="time-filter-select shadow-none">
-                  <option>Select Month</option>
-                  <option>January</option>
-                  <option>Feburary</option>
-                  <option>March</option>
-                  <option>April</option>
-                  <option>May</option>
-                  <option>June</option>
-                  <option>July</option>
-                  <option>August</option>
-                  <option>September</option>
-                  <option>October</option>
-                  <option>November</option>
-                  <option>December</option>
-                </Form.Select>
-              </div>
-              <div>
-                <Form.Select className="time-filter-select shadow-none">
-                  <option>Select Year</option>
-                  <option>2024</option>
-                  <option>2023</option>
-                  <option>2022</option>
-                  <option>2021</option>
-                  <option>2020</option>
-                  <option>2019</option>
-                </Form.Select>
-              </div>
-              <div>
-                <Form.Select className="time-filter-select shadow-none">
-                  <option>Select Developer</option>
-                  <option>Rohit Sharma</option>
-                </Form.Select>
-              </div>
-              <div>
-                <Form.Select className="time-filter-select shadow-none">
-                  <option>Invoice Status</option>
-                  <option>Paid</option>
-                  <option>Unpaid</option>
-                  <option>Cancelled</option>
-                </Form.Select>
-              </div>
-              <div>
-                <Button className="main-btn py-1_5 px-4" variant="transparent">Filter</Button>
-              </div>
-            </div>
-            <div className="d-flex align-items-center gap-3">
-              <Form.Control
-                type="text"
-                className="common-field font-14 shadow-none"
-                placeholder="Enter Keyword..."
-              />
-              <Button variant="transparent" className="main-btn px-3 search-btn">
-                <IoSearch />
-              </Button>
-            </div>
-          </div>
-          <div className="table-responsive">
+          <CommonFilterSection
+            filters={filters}
+            setFilters={setFilters}
+            filterFields={CLIENT_INVOICE_FILTER_FIELDS}
+            // isSearchFilterRequired={false}
+          />
+          <TableComponentOne
+            data={invoiceList}
+            totalPages={totalInvoicePages}
+            columns={DEVELOPER_INVOICE_COLUMNS}
+            setPage={setPage}
+            page={page}
+          />
+          {/* <div className="table-responsive">
             <table className="table time-table table-bordered table-ui-custom">
               <thead>
-                <th className="time-table-head text-start">
-                  Developer Name
-                </th>
-                <th className="time-table-head text-start">
-                  Associated With
-                </th>
-                <th className="time-table-head text-start">
-                  Project
-                </th>
-                <th className="time-table-head text-start">
-                  Total Hours
-                </th>
-                <th className="time-table-head text-start">
-                  Invoice Month
-                </th>
-                <th className="time-table-head text-start">
-                  Project Status
-                </th>
-                <th className="time-table-head text-start">
-                  Action
-                </th>
+                <th className="time-table-head text-start">Developer Name</th>
+                <th className="time-table-head text-start">Associated With</th>
+                <th className="time-table-head text-start">Project</th>
+                <th className="time-table-head text-start">Total Hours</th>
+                <th className="time-table-head text-start">Invoice Month</th>
+                <th className="time-table-head text-start">Project Status</th>
+                <th className="time-table-head text-start">Action</th>
               </thead>
               <tbody>
                 <tr>
@@ -183,13 +157,21 @@ const Invoice = () => {
                   <td className="time-table-data text-start">AI Bot Project</td>
                   <td className="time-table-data text-start">140 hrs</td>
                   <td className="time-table-data text-start">Jan 2024</td>
-                  <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
+                  <td className="time-table-data text-start">
+                    <span className="status-progress">Progress</span>
+                  </td>
                   <td className="time-table-data text-start">
                     <div className="d-flex align-items-center gap-2">
-                      <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
+                      <OverlayTrigger
+                        placeholder="bottom"
+                        overlay={downloadtimesheet}
+                      >
                         <img src={timeSheetIcon} className="approved_icon" />
                       </OverlayTrigger>
-                      <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
+                      <OverlayTrigger
+                        placeholder="bottom"
+                        overlay={downloadinvoice}
+                      >
                         <img src={invoiceIcon} className="approved_icon" />
                       </OverlayTrigger>
                     </div>
@@ -216,18 +198,22 @@ const Invoice = () => {
                   <td className="time-table-data text-start">Figma to UI</td>
                   <td className="time-table-data text-start">140 hrs</td>
                   <td className="time-table-data text-start">Jan 2024</td>
-                  <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
+                  <td className="time-table-data text-start">
+                    <span className="status-progress">Progress</span>
+                  </td>
                   <td className="time-table-data text-start">
                     <div className="d-flex align-items-center gap-2">
-                      <img src={timeSheetNotApproved} className="approved_icon" />
+                      <img
+                        src={timeSheetNotApproved}
+                        className="approved_icon"
+                      />
                       <img src={invoiceUnpaid} className="approved_icon" />
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
-
-          </div>
+          </div> */}
         </>
       )}
     </>

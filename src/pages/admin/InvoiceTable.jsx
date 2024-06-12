@@ -10,15 +10,17 @@ const InvoiceTable = ({ data, columns, isRaisedByDev = false }) => {
   const downloadinvoice = <Tooltip id="tooltip">Download Invoice</Tooltip>;
 
   const handleDownload = (fileUrl) => {
-    const newTab = window.open(fileUrl, "_blank");
-    if (newTab) {
-      newTab.focus();
-    } else {
-      // If the popup blocker prevents opening the new tab
-      alert(
-        "Please allow pop-ups for this site to download the file in a new tab."
-      );
-    }
+     if (fileUrl) {
+       const newTab = window.open(fileUrl, "_blank");
+       if (newTab) {
+         newTab.focus();
+       } else {
+         // If the popup blocker prevents opening the new tab
+         alert(
+           "Please allow pop-ups for this site to download the file in a new tab."
+         );
+       }
+     }
   };
   return (
     <>

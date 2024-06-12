@@ -1,3 +1,5 @@
+import { Placeholder } from "react-bootstrap";
+
 export const WEEK_FILTER_OPTIONS = [
   { label: "Week 1", value: "Week 1" },
   { label: "Week 2", value: "Week 2" },
@@ -49,6 +51,12 @@ export const INVOICE_STATUS_OPTIONS = [
   { label: "Reject", value: "Reject" },
 ];
 
+// for developer invoice
+export const INVOICE_OPTIONS = [
+  { label: "Paid", value: "paid" },
+  { label: "Rejected", value: "rejected" },
+  { label: "Pending", value: "pending" },
+];
 
 export const TIME_REPORT_DETAIL_PER_PAGE = 10;  
 
@@ -82,9 +90,9 @@ export const RAISED_TO_CLIENT_COLUMNS = [
   {label:"Project Name", key :"project_name"},
   {label:"Developer Name", key :"developer_name" ,subkey:"profile_image"},
   {label:"Total Hours", key :"total_hours"},
-  {label:"Invoice Month", key :""},
+  {label:"Invoice Month", key :"invoiceMonth"},
   {label:"Associated With", key :"associated_with"},
-  {label:"Invoice Status", key :"invoice_status",isStatus:true},
+  {label:"Invoice Status", key :"invoiceStatus",isStatus:true},
   {label:"Action", key :"invoice"}, 
 ]
 
@@ -92,10 +100,10 @@ export const RAISED_BY_DEVS_COLUMNS = [
   {label:"Developer Name", key :"developer_name" ,subkey:"profile_image"},
   {label:"Project Name", key :"project_name"},
   {label:"Total Hours", key :"total_hours"},
-  {label:"Invoice Month", key :""},
+  {label:"Invoice Month", key :"invoiceMonth"},
   {label:"Associated With", key :"associated_with"},
   {label:"Timesheet", key :"timesheet_status" , isStatus:true},
-  {label:"Invoice Status", key :"invoice_status", isStatus:true},
+  {label:"Invoice Status", key :"invoiceStatus", isStatus:true},
   {label:"Project Status", key :"project_status",isStatus:true},
   {label:"Action", key :"invoice"},
 ]
@@ -108,7 +116,7 @@ export const RAISED_BY_DEV_INVOICE_COLUMNS = [
   {label:"Invoice Month", key:"invoiceMonth"},
   {label:"Associated With", key:"associatedWith"},
   {label:"Project Status", key:"projectStatus"},
-  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl",isAction:true},
+  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl", isAction:true},
 ]
 
 export const RAISED_BY_CLIENT_INVOICE_COLUMNS = [
@@ -119,7 +127,7 @@ export const RAISED_BY_CLIENT_INVOICE_COLUMNS = [
   {label:"Invoice Month", key:"invoiceMonth"},
   {label:"Associated With", key:"associatedWith"},
   {label:"Project Status", key:"projectStatus"},
-  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl",isAction:true ,timeSheetStatusKey:"timeSheetStatus",timeSheetUrlkey:"timeSheetUrl"},
+  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl", isAction:true ,timeSheetStatusKey:"timeSheetStatus",timeSheetUrlkey:"timeSheetUrl"},
 ]
 export const TIME_REPORTING_DETAIL_PER_PAGE = 5;
 export const INVOICE_TABS = {
@@ -134,3 +142,82 @@ export const CLIENT_NAME_OPTIONS = [
   {label:"Client 4",value:"client4"},
   {label:"Client 5",value:"client5"}
 ]
+
+export const FILTER_1_FILTER_FIELDS = {
+  selectFilters:[
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Project",
+      key: "projectName",
+      options: PROJECT_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    }
+  ],
+  searchFilter:{key:"developerName",placeholder:"Enter developer name"}
+}
+
+export const FILTER_2_FILTER_FIELDS = {
+  selectFilters:[
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Project",
+      key: "projectName",
+      options: PROJECT_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    }
+  ],
+  searchFilter:{key:"clientName",placeholder:"Enter client name"}
+}
+
+export const TIME_REPORTING_FILTER_FIELDS = {
+  selectFilters:[
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Project",
+      key: "projectName",
+      options: PROJECT_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    }
+  ],
+  searchFilter:{key:"developerName", placeholder:"Enter developer name"}
+
+}

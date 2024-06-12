@@ -11,6 +11,7 @@ const initialClientData = {
   smallLoader: false,
   assignedDeveloperList: [],
   invoiceList: [],
+  totalInvoicePages:null,
   clientProfileDetails: {},
   timeReportingData: [],
   folderData: [],
@@ -120,8 +121,9 @@ export const clientDataSlice = createSlice({
           state.screenLoader = false;
       },
       setInvoiceList: (state,action) => {
-          state.invoiceList = action.payload;
+          state.invoiceList = action.payload.data;
           state.screenLoader = false;
+          state.totalInvoicePages = action.payload.pagination.totalPages
       },
       setLeaveClientHistory : (state,action) => {
         state.clientLeaveHistory =  action.payload
@@ -763,13 +765,11 @@ export function createNewJobCategory(payload, callback) {
 //     }
 // }
 
-export function getInvoice(payload) {
+export function getInvoice(query) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(
-        generateApiUrl(payload, `client/client-invoices`)
-      );
+      let result = await clientInstance.get(`client/client-invoices?${query}`);
       if (result.status === 200) {
         dispatch(setInvoiceList(result.data));
       }

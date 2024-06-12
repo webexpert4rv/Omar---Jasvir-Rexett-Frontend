@@ -26,6 +26,7 @@ const initialAdminData = {
     adminClientList : [],
     timeReportDetails : {},
     invoiceDetails:{},
+    developerTimeReport:[],
     invoiceTotalPage : null,
     timeReportingDetailTotalPage:null
 }
@@ -139,11 +140,15 @@ export const adminDataSlice = createSlice({
          state.screenLoader = false;
          state.invoiceDetails = action.payload
          state.invoiceTotalPage = action?.payload?.pagination?.total_pages
+        },
+        setDeveloperTimeReport:(state,action) => {
+         state.smallLoader = false;
+         state.developerTimeReport = action.payload;
         }
     }
 })
 
-export const { setTimeReportDetails,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -167,6 +172,22 @@ export function adminListClients(page, payload) {
                 dispatch(setFailAdminData())
             }
 
+        }
+    };
+}
+export function getDeveloperTimeReport(developerId,callback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.get(`/common/developer-time-reports?developerId=${developerId}`)
+            if (result.status === 200) {
+                dispatch(setDeveloperTimeReport(result.data?.data[0]))
+                callback(result.data?.data[0])
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
         }
     };
 }
@@ -634,6 +655,23 @@ export function rejectEditAction(payload) {
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+export function addToFeature(query,callback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {   
+            let result = await clientInstance.post(`admin/set-featured-and-trusted/${query}`)
+            if (result.status === 200) {
+                toast.success("Profile is Updated Successfully", { position: "top-center" })
+                dispatch(setSuccessAdminData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            callback()
             dispatch(setFailAdminData())
         }
     };

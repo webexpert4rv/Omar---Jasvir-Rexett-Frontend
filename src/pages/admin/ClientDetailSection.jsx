@@ -28,6 +28,7 @@ const ClientDetailSection = ({
   setActiveTab,
   totalProjects,
   activeTab,
+  activeProjects
 }) => {
   const [remarkshow, setremarkShow] = useState(false);
 
@@ -77,7 +78,7 @@ const ClientDetailSection = ({
                 <div className="client-info p-0 bg-transparent">
                   <h3 className="font-15 fw-bold mb-2">Active Projects</h3>
                   <p className="client-name-heading d-flex gap-1 mb-0 align-items-center">
-                    5
+                    {activeProjects}
                   </p>
                 </div>
               </Col>
