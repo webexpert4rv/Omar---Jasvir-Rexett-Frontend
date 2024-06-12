@@ -50,8 +50,8 @@ const ROLES = {
 
 const DASHBOARD_URLS = {
     [ROLES.CLIENT]: '/client/dashboard',
-    [ROLES.DEVELOPER]: '/developer-dashboard',
-    [ROLES.ADMIN]: '/admin-dashboard',
+    [ROLES.DEVELOPER]: '/developer/developer-dashboard',
+    [ROLES.ADMIN]: '/admin/admin-dashboard',
     [ROLES.VENDOR]: '/vendor-dashboard'
 };
 

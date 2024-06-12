@@ -10,7 +10,7 @@ const initialDeveloperData = {
   screenLoader: false,
   smallLoader: false,
   developerCvData: {},
-  developerProfileData: {},
+  userProfileDetails: {},
   developerDashboard: {},
   degreeList: [],
   developerTimeReports: [],
@@ -52,7 +52,7 @@ export const developerDataSlice = createSlice({
       state.btnLoader = false;
     },
     setSuccessProfileData: (state, action) => {
-      state.developerProfileData = action.payload;
+      state.userProfileDetails = action.payload;
       state.screenLoader = false;
     },
 
@@ -168,11 +168,27 @@ export function updateDeveloperProfile(payload, callback) {
   };
 }
 
-export function getDeveloperProfileDetails(payload, callback) {
+// export function getDeveloperProfileDetails(payload, callback) {
+//   return async (dispatch) => {
+//     dispatch(setScreenLoader());
+//     try {
+//       let result = await clientInstance.get("developer/get-profile");
+//       if (result.status === 200) {
+//         dispatch(setSuccessProfileData(result.data));
+//       }
+//     } catch (error) {
+//       const message = error.message || "Something went wrong";
+//       toast.error(message, { position: "top-center" });
+//       dispatch(setFailDeveloperData());
+//     }
+//   };
+// }
+
+export function getProfileDetails(payload, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get("developer/get-profile");
+      let result = await clientInstance.get(payload);
       if (result.status === 200) {
         dispatch(setSuccessProfileData(result.data));
       }
@@ -183,6 +199,7 @@ export function getDeveloperProfileDetails(payload, callback) {
     }
   };
 }
+
 export function approvedClient(id,payload, role, callback) {
   return async (dispatch) => {
     dispatch(setApprovedLoader());

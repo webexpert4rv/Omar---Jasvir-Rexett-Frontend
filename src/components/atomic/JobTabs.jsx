@@ -116,7 +116,7 @@ const   JobTabs = ({ jobListing, jobCategoryList,screenLoader }) => {
                   </p>
 
                   <Link
-                    to={`/admin-single-job/${item?.id}`}
+                    to={`/admin/admin-single-job/${item?.id}`}
                     className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                   >
                     <FaEye />
