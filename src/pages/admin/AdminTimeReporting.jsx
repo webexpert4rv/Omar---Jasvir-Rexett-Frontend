@@ -81,7 +81,7 @@ const AdminTimeReporting = () => {
     }
     
     const redirectToTimeReporting = (clientId) => {
-        navigate(`/time-reporting-detail/${clientId}`)
+        navigate(`/admin-time-reporting-detail/${clientId}`)
     }
     return (
         <>

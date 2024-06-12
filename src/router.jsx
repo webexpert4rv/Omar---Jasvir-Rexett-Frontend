@@ -417,7 +417,8 @@ export const route = [
   },
   {
     path: "/admin/admin-invoice",
-    element: <AdminInvoice />,
+    // element: <AdminInvoice />,
+    element:<Revenue/>,
     isAdmin: true,
     private: true,
   },
@@ -428,7 +429,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin-time-reporting-detail",
+    path: "/admin-time-reporting-detail/:clientId",
     element: <TimeReportingDetail />,
     isAdmin: true,
     private: true,
