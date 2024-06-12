@@ -162,19 +162,19 @@ const RolesPermission = () => {
                                         <span className="partial-approved">
                                             <FiCheck />
                                         </span>
-                                        Partial approved
+                                        Partial Permission
                                     </div>
                                     <div className="font-14">
                                         <span className="full-approved">
                                             <FiCheck />
                                         </span>
-                                        Fully approved
+                                        Full Permission
                                     </div>
                                     <div className="font-14">
                                         <span className="not-approved">
                                             <IoCloseOutline />
                                         </span>
-                                        Not approved
+                                        No Permission
                                     </div>
                                 </div>
                                 <div className="d-flex gap-3">
@@ -462,7 +462,7 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" checked />
