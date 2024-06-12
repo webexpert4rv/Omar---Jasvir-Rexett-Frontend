@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -20,12 +20,26 @@ import devImg3 from '../../assets/img/laura.jpg';
 import clientImg from '../../assets/img/amazon.png';
 import { Line } from 'react-chartjs-2';
 import userImg from '../../assets/img/user-img.jpg'
+import Tour from "reactour";
 
 const DeveloperDashboard = () => {
     const { developerDashboard, screenLoader } = useSelector(state => state.developerData)
     const dispatch = useDispatch()
+    const [isTourOpen, setIsTourOpen] = useState(false);
 
     const { t } = useTranslation()
+
+    const steps = [
+        {
+          selector: '.section-head',
+          content: 'This is the first step!',
+        },
+        {
+          selector: '.table-responsive',
+          content: 'This is the second step!',
+        },
+        // Add more steps as needed
+      ];
 
     useEffect(() => {
         dispatch(getDeveloperDashboard())
@@ -223,6 +237,7 @@ const DeveloperDashboard = () => {
                             <div className="developer-card shadow-none p-0 d-flex align-items-center gap-2">
                                 <div className="user-imgbx mb-0">
                                     <img src={developerDashboard?.developerDetails?.profile_picture ? developerDashboard?.developerDetails?.profile_picture : img} alt="developer" className="user-img" />
+                                    <button onClick={() => setIsTourOpen(true)}>Start Tour</button>
                                 </div>
                                 <div className="text-start">
                                     <h3 className="user-name">{developerDashboard?.developerDetails?.name ? developerDashboard?.developerDetails?.name : "Dev"}</h3>
@@ -247,6 +262,11 @@ const DeveloperDashboard = () => {
                         <div>
                             <h4 className="overview-card-subhead">{t("totalHours")}</h4>
                             <h3 className="overview-card-heading mb-0">{developerDashboard?.thisMonthHours ? (developerDashboard?.thisMonthHours).toFixed(2) : '0'} hrs</h3>
+                            <Tour
+        steps={steps}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+      />
                         </div>
                         <span className="over-icon"><IoTrendingUpSharp /></span>
                     </div>

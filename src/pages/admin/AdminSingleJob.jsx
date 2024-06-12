@@ -13,7 +13,7 @@ const AdminSingleJob = () => {
     const navigate = useNavigate();
     const { pathname } = useLocation()
     const dispatch = useDispatch()
-    let id = pathname.split("/")[2]
+    let id = pathname.split("/")[3]
     const [showEndJobModal, setShowEndJobModal] = useState(false);
     const { singleJobListing, suggestedDeveloper, screenLoader, smallLoader} = useSelector(state => state.adminData)
     const [singleJobDescription, setSingleJobDescription] = useState({})

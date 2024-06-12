@@ -260,8 +260,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                   <td
                                     onClick={() => handleShow(item, inx, reprt)}
                                     className={`time-table-data white-nowrap ${
-                                      reprt.is_off_day
-                                        ? "offday-data"
+                                      reprt?.is_public_holiday
+                                        ?  "holiday-data" :
+                                        reprt.is_off_day ?
+                                        "offday-data"
                                         : "workday-data"
                                     }`}
                                   >
@@ -283,7 +285,7 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                             ).format("h:mm A")} `
                                           : reprt?.is_holiday
                                           ? "Holiday"
-                                          : reprt?.is_off_day ? "Leave":reprt?.is_public_holiday ? reprt?.holiday_name:""}
+                                          :  reprt?.is_public_holiday ? reprt?.holiday_name:reprt?.is_off_day ? "Leave" :""}
                                       </span>
                                       {reprt?.memo && (
                                         <p className="memo-text">

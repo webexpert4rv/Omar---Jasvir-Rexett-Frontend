@@ -37,11 +37,12 @@ const Notification = ({ route, job, doc, timeReport }) => {
         ...notificationList["unreadNotifications"]?.notifications,
       ];
       setNotificationData([...nottificationData, ...mergeRow]);
-    } else if (nottificationData?.length > 0) {
       const audio = new Audio(notificationSound);
       audio.play().catch((err) => {
         console.log("audio play failed");
       });
+    } else if (nottificationData?.length > 0) {
+    
       setNotificationData(nottificationData);
     } else {
       setNotificationData(
@@ -114,7 +115,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
       navigate(`/${timeReport}`);
     } else if (data == "Users") {
       if (role === "developer") {
-        navigate(`/developer-dashboard`);
+        navigate(`developer/dashboard`);
       } else {
         navigate(`/admin-single-developer/${id}`);
       }

@@ -12,6 +12,8 @@ import { weeklyTimeReports } from "../../components/clients/TimeReporiting/const
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import RexettPagination from "../../components/atomic/RexettPagination";
+import { getDeveloperTimeReport } from "../../redux/slices/adminDataSlice";
+import RexettSpinner from "../../components/atomic/RexettSpinner";
 
 const RaisedToClientTable = ({
   columns,
@@ -19,20 +21,17 @@ const RaisedToClientTable = ({
   data,
   page,
   setPage,
-  isRaisedByDevAndVendor = false
+  isRaisedByDevAndVendor = false,
 }) => {
   const { t } = useTranslation();
-  const { timeReportingData, smallLoader, timeReportingPage } = useSelector(
-    (state) => state.clientData
-  );
-  const { timeReportDetails, screenLoader } = useSelector(
+  const { timeReportDetails, developerTimeReport, smallLoader } = useSelector(
     (state) => state.adminData
   );
   const [expandedRow, setExpandedRow] = useState(null);
   const [iconActive, setIconActive] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
-    // dispatch(timeReporting({}, "client"));
+    // dispatch(timeReporting({}, "developer"));
   }, []);
   const companyname = (
     <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
@@ -47,27 +46,28 @@ const RaisedToClientTable = ({
     return arr;
   };
   const viewtimesheet = <Tooltip id="tooltip">View Timesheet</Tooltip>;
-  const dataToMap = isRaisedByDevAndVendor
-    ? getDataForVendor()
-    : data?.[0]?.contracts;
+  const closetimesheet = <Tooltip id="tooltip">Close Timesheet</Tooltip>;
+
+  const dataToMap = data[0]?.invoices;
 
   const handleRaiseInvoice = () => {};
   const handleViewTimesheet = (id, idx) => {
-    const timesheet = timeReportingData?.find(
-      (curElem) => curElem?.contractDetails?.client_id === id
+    dispatch(
+      getDeveloperTimeReport(id, (timesheet) => {
+        setExpandedRow(
+          expandedRow?.index === idx
+            ? null
+            : { index: idx, item: timesheet ? timesheet : null }
+        );
+        setIconActive(idx == iconActive ? null : idx);
+      })
     );
-    setExpandedRow(
-      expandedRow?.index === idx
-        ? null
-        : { index: idx, item: timesheet ? timesheet : null }
-    );
-    setIconActive(idx == iconActive ? null : idx);
   };
+
   return (
     <>
       <div className="table-responsive">
         <table className="table time-table table-bordered table-ui-custom">
-          {}
           <thead>
             {columns.map(({ label }, idx) => (
               <th
@@ -83,7 +83,7 @@ const RaisedToClientTable = ({
               dataToMap?.map((curData, rowIdx) => (
                 <Fragment key={rowIdx}>
                   <tr>
-                    {columns.map(({ key, subkey, isStatus }) => (
+                    {columns.map(({ key, subkey }) => (
                       <>
                         {subkey ? (
                           <td className="time-table-data text-start">
@@ -109,17 +109,17 @@ const RaisedToClientTable = ({
                               </span>
                             </p>
                           </td>
-                        ) : key === "invoice_status" ? (
+                        ) : key === "invoiceStatus" ? (
                           <td className="time-table-data text-start">
                             {
                               <span
                                 className={`white-nowrap ${
-                                  curData?.[key]
-                                    ? "status-finished"
-                                    : "status-progress"
+                                  curData?.[key] === "pending"
+                                    ? "status-progress"
+                                    : "status-finished"
                                 }`}
                               >
-                                {curData?.[key] ? "Paid" : "Unpaid"}
+                                {curData?.[key]}
                               </span>
                             }
                           </td>
@@ -175,11 +175,14 @@ const RaisedToClientTable = ({
                               </span>
                               <OverlayTrigger
                                 placement="bottom"
-                                overlay={viewtimesheet}
+                                overlay={(iconActive === rowIdx) ? closetimesheet :viewtimesheet}
                               >
                                 <Button
                                   onClick={() => {
-                                    handleViewTimesheet(curData?.id, rowIdx);
+                                    handleViewTimesheet(
+                                      curData?.developer_id,
+                                      rowIdx
+                                    );
                                   }}
                                   variant="transparent"
                                   className="main-btn view-time-btn"
@@ -223,157 +226,144 @@ const RaisedToClientTable = ({
                       // )
                     ))}
                   </tr>
-                  {expandedRow?.index === rowIdx && (
-                    <table className="table time-table table-bordered table-ui-custom">
-                      <thead>
-                        {weeklyTimeReports(timeReportingData[0], "weekly")
-                          .length > 0 &&
-                          weeklyTimeReports(
-                            timeReportingData[0],
-                            "weekly"
-                          )?.map((item, index) => {
-                            return (
-                              <>
-                                <th className="time-table-head">
-                                  <span>{item} </span>
-                                </th>
-                              </>
-                            );
-                          })}
-                        {/* <th className="time-table-head">
-                        <span>Total Hours</span>
-                      </th> */}
-                      </thead>
-                      <tr
-                        className={`collapsible-row ${
-                          expandedRow?.index === rowIdx ? "open" : ""
-                        }`}
-                      >
-                        {expandedRow?.item &&
-                        Object.keys(expandedRow?.item)?.length > 0 ? (
-                          <>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="d-flex gap-2 align-items-center white-nowrap">
-                                  <div className="position-relative">
-                                    <img
-                                      src={
-                                        expandedRow?.contractDetails
-                                          ?.user_details?.profile_picture
-                                          ? expandedRow?.contractDetails
-                                              ?.user_details?.profile_picture
-                                          : "/demo-user.png"
-                                      }
-                                      className="developer-img"
-                                      alt=""
-                                    />
-                                    {/* <span className="number-count overlay">
-                                    1
-                                  </span> */}
-                                  </div>{" "}
-                                  {
-                                    expandedRow?.item?.contractDetails
-                                      ?.user_details?.name
-                                  }
-                                </div>
-                              </div>
-                            </td>
-                            {expandedRow?.item?.timeReports.map(
-                              (reprt, inx) => {
-                                if (reprt.report_date) {
-                                  return (
-                                    <>
-                                      <td
-                                        className={`time-table-data white-nowrap ${
-                                          reprt.is_off_day
-                                            ? "offday-data"
-                                            : "workday-data"
-                                        }`}
-                                      >
-                                        <div>
-                                          <span
-                                            className={`${
-                                              reprt.is_off_day
-                                                ? ""
-                                                : "timing-text d-inline-block"
-                                            }`}
-                                          >
-                                            {reprt.start_time && reprt?.end_time
-                                              ? `${moment(
-                                                  reprt?.start_time,
-                                                  "HH:mm"
-                                                ).format("h:mm A")} - ${moment(
-                                                  reprt?.end_time,
-                                                  "HH:mm"
-                                                ).format("h:mm A")} `
-                                              : reprt?.is_holiday
-                                              ? "Holiday"
-                                              : reprt?.is_off_day
-                                              ? "Leave"
-                                              : reprt?.is_public_holiday
-                                              ? reprt?.holiday_name
-                                              : ""}
-                                          </span>
-                                          {reprt?.memo && (
-                                            <p className="memo-text">
-                                              {reprt?.memo ? reprt?.memo : ""}
-                                            </p>
-                                          )}
-                                        </div>
-                                      </td>
-                                    </>
-                                  );
-                                } else if (reprt?.week) {
-                                  return (
-                                    <>
-                                      <td
-                                        className={`time-table-data white-nowrap ${
-                                          reprt.is_off_week
-                                            ? "offday-data"
-                                            : "workday-data"
-                                        }`}
-                                      >
-                                        <div>
-                                          {reprt?.duration
-                                            ? `${reprt?.duration.toFixed(
-                                                "2"
-                                              )} hr`
-                                            : "Holiday"}
-                                        </div>
-                                      </td>
-                                      {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
-                                    </>
-                                  );
-                                } else {
-                                  return (
-                                    <>
-                                      <td
-                                        className={`time-table-data white-nowrap ${
-                                          reprt.is_off_month
-                                            ? "offday-data"
-                                            : "workday-data"
-                                        }`}
-                                      >
-                                        <div>
-                                          {reprt?.duration
-                                            ? `${reprt?.duration.toFixed(
-                                                "2"
-                                              )} hr`
-                                            : "Holiday"}
-                                        </div>
-                                      </td>
-                                      {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
-                                    </>
-                                  );
-                                }
+                  {smallLoader ? (
+                    <RexettSpinner />
+                  ) : (
+                    // <h5>Developer timesheet</h5>
+                    expandedRow?.index === rowIdx && (
+                      <table className="table time-table table-bordered table-ui-custom">
+                        <thead>
+                          {weeklyTimeReports(expandedRow?.item, "weekly")
+                            .length > 0 &&
+                            weeklyTimeReports(expandedRow?.item, "weekly")?.map(
+                              (item, index) => {
+                                return (
+                                  <>
+                                    <th className="time-table-head">
+                                      <span>{item} </span>
+                                    </th>
+                                  </>
+                                );
                               }
                             )}
-                          </>
-                        ) : (
-                          "No timesheet found"
-                        )}
-                      </tr>
-                    </table>
+                          <th className="time-table-head">
+                            <span>Total Hours</span>
+                          </th>
+                        </thead>
+                        <tr
+                          className={`collapsible-row ${
+                            expandedRow?.index === rowIdx ? "open" : ""
+                          }`}
+                        >
+                          {expandedRow?.item &&
+                          Object.keys(expandedRow?.item)?.length > 0 ? (
+                            <>
+                              {expandedRow?.item?.timeReports?.map(
+                                (reprt, inx) => {
+                                  if (reprt.report_date) {
+                                    return (
+                                      <>
+                                        <td
+                                          className={`time-table-data white-nowrap ${
+                                            reprt.is_off_day
+                                              ? "offday-data"
+                                              : "workday-data"
+                                          }`}
+                                        >
+                                          <div>
+                                            <span
+                                              className={`${
+                                                reprt.is_off_day
+                                                  ? ""
+                                                  : "timing-text d-inline-block"
+                                              }`}
+                                            >
+                                              {reprt.start_time &&
+                                              reprt?.end_time
+                                                ? `${moment(
+                                                    reprt?.start_time,
+                                                    "HH:mm"
+                                                  ).format(
+                                                    "h:mm A"
+                                                  )} - ${moment(
+                                                    reprt?.end_time,
+                                                    "HH:mm"
+                                                  ).format("h:mm A")} `
+                                                : reprt?.is_holiday
+                                                ? "Holiday"
+                                                : reprt?.is_off_day
+                                                ? "Leave"
+                                                : reprt?.is_public_holiday
+                                                ? reprt?.holiday_name
+                                                : ""}
+                                            </span>
+                                            {reprt?.memo && (
+                                              <p className="memo-text">
+                                                {reprt?.memo ? reprt?.memo : ""}
+                                              </p>
+                                            )}
+                                          </div>
+                                        </td>
+                                      </>
+                                    );
+                                  } else if (reprt?.week) {
+                                    return (
+                                      <>
+                                        <td
+                                          className={`time-table-data white-nowrap ${
+                                            reprt.is_off_week
+                                              ? "offday-data"
+                                              : "workday-data"
+                                          }`}
+                                        >
+                                          <div>
+                                            {reprt?.duration
+                                              ? `${reprt?.duration.toFixed(
+                                                  "2"
+                                                )} hr`
+                                              : "Holiday"}
+                                          </div>
+                                        </td>
+                                        {/* <td className={`time-table-data ${reprt.is_off_month ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
+                                      </>
+                                    );
+                                  } else {
+                                    return (
+                                      <>
+                                        <td
+                                          className={`time-table-data white-nowrap ${
+                                            reprt.is_off_month
+                                              ? "offday-data"
+                                              : "workday-data"
+                                          }`}
+                                        >
+                                          <div>
+                                            {reprt?.duration
+                                              ? `${reprt?.duration.toFixed(
+                                                  "2"
+                                                )} hr`
+                                              : "Holiday"}
+                                          </div>
+                                        </td>
+                                        {/* <td className={`time-table-data ${reprt.is_off_year ? "offday-data" : "workday-data"}`} >{reprt?.duration ? reprt?.duration : "-"}</td> */}
+                                      </>
+                                    );
+                                  }
+                                }
+                              )}
+                              <td className="time-table-data">
+                                {expandedRow?.item?.totalDuration > 0
+                                  ? expandedRow?.item?.totalDuration.toFixed("2")
+                                  : expandedRow?.item?.totalDuration}
+                                hr
+                              </td>
+                            </>
+                          ) : (
+                            "No timesheet found"
+                          )}
+                        </tr>
+                      </table>
+                    )
                   )}
                 </Fragment>
               ))
@@ -450,11 +440,7 @@ const RaisedToClientTable = ({
           <p className="showing-result">
             {/* {t("showing")} {timeReportDetails?.length} {t("results")} */}
           </p>
-          <RexettPagination
-            number={totalPages}
-            setPage={setPage}
-            page={page}
-          />
+          <RexettPagination number={totalPages} setPage={setPage} page={page} />
         </div>
       ) : (
         ""
