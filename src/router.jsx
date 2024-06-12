@@ -5,6 +5,8 @@ import "./assets/css/style.css";
 import { lazy } from "react";
 import JobPostStepContainer from "./pages/views/Job post step form/JobPostStepContainer";
 import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
+import Customization from "./pages/admin/Customization";
+import RolesPermission from "./pages/admin/RolesPermissions";
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -106,6 +108,7 @@ const DeveloperLogin =lazy(() => import("./pages/Authentication/DeveloperLogin")
 const ClientLogin =lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin =lazy(() => import("./pages/Authentication/VendorLogin"));
 const Otp =lazy(() => import("./pages/Authentication/Otp"));
+
 
 export const route = [
 
@@ -505,6 +508,18 @@ export const route = [
   {
     path: "/admin-faq",
     element: <Faq />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/customization",
+    element: <Customization/>,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/roles-permissions",
+    element: <RolesPermission/>,
     isAdmin: true,
     private: true,
   },

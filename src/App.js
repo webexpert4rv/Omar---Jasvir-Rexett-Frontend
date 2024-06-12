@@ -17,6 +17,7 @@ import PublicLayout from './layout/PublicLayout';
 import NotFound from './pages/views/NotFound';
 
 
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
   return (

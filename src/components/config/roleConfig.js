@@ -33,6 +33,9 @@ const roleConfig = {
     privateRoute:"/developer/dashboard",
     publicRoute:'/developer-login'
   },
+  otp:{
+    privateRoute:"/otp",
+  }
 };
 
 export default roleConfig;

@@ -1,5 +1,5 @@
 
-import { MdSpaceDashboard } from "react-icons/md";
+import { MdDesignServices, MdSpaceDashboard } from "react-icons/md";
 import { FaListUl, FaUserLarge } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
@@ -8,7 +8,7 @@ import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { FaFileInvoice } from "react-icons/fa6";
 import { GiPalmTree } from "react-icons/gi";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
-import { PiCoinsFill, PiUsersFourFill } from "react-icons/pi";
+import { PiCoinsFill, PiUsersFourFill, PiUsersThreeFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
 
 
@@ -60,6 +60,8 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images" },
     { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting" },
     { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice" },
+    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Roles & Permissions" },
+    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration" },
   ]
 
  export const VENDOR_SIDE_BAR_ITEMS=[

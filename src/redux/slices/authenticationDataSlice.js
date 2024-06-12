@@ -123,7 +123,7 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("role", "client")
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem("userName",result?.data?.data?.name)
-                    window.location.href = "/client/dashboard"
+                    window.location.href = '/client/dashboard'
                 }
 
                 if (result.data.data.role === "developer") {
@@ -132,7 +132,7 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("role", "developer")
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem("userName",result?.data?.data?.name)
-                    window.location.href = "/developer-dashboard"
+                    window.location.href = '/developer/dashboard'
                 }
 
                 if (result.data.data.role === "admin") {
@@ -141,7 +141,7 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("role", "admin")
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem("userName",result?.data?.data?.name)
-                    window.location.href = "/admin-dashboard"
+                    window.location.href = "/admin/admin-dashboard"
                 }
                 if (result.data.data.role === "vendor") {
                     localStorage.setItem("token", result.data.access_token);
