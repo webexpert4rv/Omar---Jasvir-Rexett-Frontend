@@ -151,7 +151,7 @@ function App() {
           <Route path="/developer-updated-cv" exact element={<DeveloperDashboardLayout><DeveloperUpdatedCV /></DeveloperDashboardLayout>} />
           <Route path="/developer-cv" exact element={<DeveloperDashboardLayout><DeveloperCV /></DeveloperDashboardLayout>} />
           <Route path="/notification-developer" exact element={<DeveloperDashboardLayout><NotificationDeveloper /></DeveloperDashboardLayout>} />
-          <Route path="/developer-invoice" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
+          <Route path="/developer-pay-slip" exact element={<DeveloperDashboardLayout><DeveloperInvoice /></DeveloperDashboardLayout>} />
           <Route path="/leave-plan" exact element={<DeveloperDashboardLayout><LeavePlan /></DeveloperDashboardLayout>} />
           <Route path="/take-quiz" exact element={<DeveloperDashboardLayout><TakeQuiz /></DeveloperDashboardLayout>} />
           {/* <Route path="/skill-test" exact element={<DeveloperDashboardLayout><SkillTest /></DeveloperDashboardLayout>} /> */}

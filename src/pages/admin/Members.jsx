@@ -12,10 +12,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import CommonApplicationTable from "../../components/common/Admin Application/CommonApplicationTable";
 import {
+  addToFeature,
   adminApproveReject,
   allApplicationsList,
   allMemberList,
   getAccountDisableEnable,
+  setBtnLoader,
 } from "../../redux/slices/adminDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
@@ -43,7 +45,7 @@ let STATUS = [
 
 const Members = () => {
   const dispatch = useDispatch();
-  const { allApplications, approvedLoader, screenLoader } = useSelector(
+  const { allApplications, approvedLoader, screenLoader, smallLoader } = useSelector(
     (state) => state.adminData
   );
   const [search, setSearch] = useState("");
@@ -53,6 +55,11 @@ const Members = () => {
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
   const [currentStatus, setCurrentStatus] = useState("approved");
+  const [showFeatureModal, setShowFeatureModal] = useState(false);
+  const [featureModalDetails, setFeaturedModalDetails] = useState({
+    userId: null,
+    isFeaturedMember: false,
+  });
 
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
@@ -61,6 +68,14 @@ const Members = () => {
     id: "",
   });
   const [showModal, setShowModal] = useState(false);
+  const handleFeature = (e,userId) => {
+     e.stopPropagation();
+    setShowFeatureModal(!showFeatureModal);
+    setFeaturedModalDetails({
+      userId: userId,
+      isFeaturedMember: !featureModalDetails?.isFeaturedMember,
+    });
+  };
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
@@ -116,8 +131,8 @@ const Members = () => {
     </Tooltip>
   );
   const redirectClient = (id) => {
-    navigate(`/admin-single-client/${id}`)
-  }
+    navigate(`/admin-single-client/${id}`);
+  };
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -135,9 +150,14 @@ const Members = () => {
   };
 
   const deleteApplication = <Tooltip id="tooltip">Disabled Accounts</Tooltip>;
+  const addToFeaturedMembers = (
+    <Tooltip id="tooltip">Add to featured members</Tooltip>
+  );
+  const removeFromFeaturedMembers = (
+    <Tooltip id="tooltip">Remove from featured members</Tooltip>
+  );
 
   const handleToggle = (e, item) => {
-    console.log(item, "item");
     e.stopPropagation();
     setShowModal(!showModal);
     setDetails((prevDetails) => ({
@@ -157,7 +177,6 @@ const Members = () => {
       user_id: details?.id,
       status: details?.active,
     };
-    console.log(details, "dateails");
     await dispatch(getAccountDisableEnable(data));
     let newData = {
       page: page,
@@ -168,16 +187,27 @@ const Members = () => {
 
   const handleStatus = (e) => {
     let k = e.target.value;
-    console.log(k, "gg");
     setCurrentStatus(k);
     let copied = [...allApplications[currentTab]];
     let filterStatus = copied.filter((item) => item.approval_status == k);
     setApplication(filterStatus);
   };
   const handleRedirect = (id) => {
-    navigate(`/admin-single-developer/${id}`)
+    navigate(`/admin-single-developer/${id}`);
+  };
+  const getFeatureText = () => {
+    if(featureModalDetails?.isFeaturedMember) {
+      return "Are you sure you want to add this developer to featured members";
+    } else {
+      return "Are you sure you want to remove this developer from featured members";
+    }
+  };
+  const handleAddToFeature = () => {
+    const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`
+    dispatch(addToFeature(query,handleCloseFeature));
   }
-    return (
+  const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal)
+  return (
     <>
       <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("members")}</h2>
@@ -295,7 +325,10 @@ const Members = () => {
                                     >
                                       <RxChevronRight />
                                     </span>{" "}
-                                    <div className="user-imgbx application-userbx" onClick={()=>redirectClient(item?.id)}>
+                                    <div
+                                      className="user-imgbx application-userbx"
+                                      onClick={() => redirectClient(item?.id)}
+                                    >
                                       <img
                                         src={
                                           item?.profile_picture
@@ -348,72 +381,72 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                    <td colSpan="8">
-                                      <div>
-                                        <Row>
-                                          {item?.client_type == "company" && (
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Company Name
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company_name}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          )}
-                                          {item?.client_type == "company" &&
-                                            (item?.company_address ? (
-                                              <Col md={3} className="mb-3">
-                                                <div>
-                                                  <h3 className="application-heading">
-                                                    Company Address
-                                                  </h3>
-                                                  <p className="application-text">
-                                                    {item?.company_address}
-                                                  </p>
-                                                </div>
-                                              </Col>
-                                            ) : (
-                                              ""
-                                            ))}
-
+                                  <td colSpan="8">
+                                    <div>
+                                      <Row>
+                                        {item?.client_type == "company" && (
                                           <Col md={3} className="mb-3">
                                             <div>
                                               <h3 className="application-heading">
-                                                {t("appliedOn")}
+                                                Company Name
                                               </h3>
                                               <p className="application-text">
-                                                {item?.created_at?.slice(0, 10)}
+                                                {item?.company_name}
                                               </p>
                                             </div>
                                           </Col>
-
-                                          <Col md={3} className="mb-3">
-                                            <div>
-                                              <h3 className="application-heading">
-                                                {t("email")}
-                                              </h3>
-                                              <p className="application-text">
-                                                {item?.email}
-                                              </p>
-                                            </div>
-                                          </Col>
-                                          {item?.client_type == "company" && (
+                                        )}
+                                        {item?.client_type == "company" &&
+                                          (item?.company_address ? (
                                             <Col md={3} className="mb-3">
                                               <div>
                                                 <h3 className="application-heading">
-                                                  Company Tax id
+                                                  Company Address
                                                 </h3>
                                                 <p className="application-text">
-                                                  {item?.company_tax_id}
+                                                  {item?.company_address}
                                                 </p>
                                               </div>
                                             </Col>
-                                          )}
+                                          ) : (
+                                            ""
+                                          ))}
 
-                                          {/* <Col md={3} className="mb-3">
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("appliedOn")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.created_at?.slice(0, 10)}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("email")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.email}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        {item?.client_type == "company" && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                Company Tax id
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company_tax_id}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+
+                                        {/* <Col md={3} className="mb-3">
                                             <div>
                                               <h3 className="application-heading">
                                                 Contact Person name
@@ -423,7 +456,7 @@ const Members = () => {
                                               </p>
                                             </div>
                                           </Col> */}
-                                          {/* <Col md={3}>
+                                        {/* <Col md={3}>
                                             <div>
                                               <h3 className="application-heading">
                                                 Contact Person Email
@@ -433,9 +466,9 @@ const Members = () => {
                                               </p>
                                             </div>
                                           </Col> */}
-                                        </Row>
-                                      </div>
-                                    </td>
+                                      </Row>
+                                    </div>
+                                  </td>
                                 </tr>
                               )}
                             </React.Fragment>
@@ -597,34 +630,30 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        {
-                                          item?.company?.total_employees>0 && (
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("totalEmployees")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.total_employees}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          )
-                                        }
-                                        {
-                                          item?.company?.location && (
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  {t("location")}
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company?.location}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          )
-                                        }
+                                        {item?.company?.total_employees > 0 && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("totalEmployees")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company?.total_employees}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
+                                        {item?.company?.location && (
+                                          <Col md={3} className="mb-3">
+                                            <div>
+                                              <h3 className="application-heading">
+                                                {t("location")}
+                                              </h3>
+                                              <p className="application-text">
+                                                {item?.company?.location}
+                                              </p>
+                                            </div>
+                                          </Col>
+                                        )}
                                         <Col md={3}>
                                           <div>
                                             <h3 className="application-heading">
@@ -718,6 +747,7 @@ const Members = () => {
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
                       <th>Enable/Disable</th>
+                      <th>Featured</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -729,6 +759,7 @@ const Members = () => {
                         application?.length > 0 ? (
                           application?.map((item, index) => (
                             <React.Fragment key={index}>
+                              {console.log(item, "this is item for featured")}
                               <tr
                                 className="application-row"
                                 onClick={() => handleRowClick(index)}
@@ -745,7 +776,12 @@ const Members = () => {
                                     >
                                       <RxChevronRight />
                                     </span>{" "}
-                                    <div className="user-imgbx application-userbx"  onClick={()=>{handleRedirect(item?.id)}}>
+                                    <div
+                                      className="user-imgbx application-userbx"
+                                      onClick={() => {
+                                        handleRedirect(item?.id);
+                                      }}
+                                    >
                                       <img
                                         src={
                                           item?.profile_picture
@@ -791,6 +827,22 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
+                                <td>
+                                  <OverlayTrigger
+                                    placement="bottom"
+                                    overlay={featureModalDetails?.isFeaturedMember ? removeFromFeaturedMembers : addToFeaturedMembers}
+                                  >
+                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                      <input
+                                        class="form-check-input toggle-switch-custom pointer"
+                                        type="checkbox"
+                                        role="switch"
+                                        checked={item?.isFeaturedMember}
+                                        onClick={(e) => handleFeature(e,item.id)}
+                                      />
+                                    </div>
+                                  </OverlayTrigger>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -829,7 +881,7 @@ const Members = () => {
                                           <Col md={3} className="mb-3 ">
                                             <div>
                                               <h3 className="application-heading">
-                                               Skills
+                                                Skills
                                               </h3>
                                               <ul className="need-skill-list  mb-0">
                                                 {returnSkills(
@@ -925,6 +977,15 @@ const Members = () => {
           } this account?`}
           smallLoader={screenLoader}
         />
+        {showFeatureModal && (
+          <ConfirmationModal
+            show={showFeatureModal}
+            handleClose={handleCloseFeature}
+            smallLoader={smallLoader}
+            text={getFeatureText()}
+            handleAction={handleAddToFeature}
+          />
+        )}
       </div>
     </>
   );

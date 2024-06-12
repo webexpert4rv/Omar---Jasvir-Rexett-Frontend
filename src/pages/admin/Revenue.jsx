@@ -25,6 +25,8 @@ import invoiceIcon from "../../assets/img/invoice_paid.png";
 import timeSheetPendingIcon from "../../assets/img/timesheet_notapproved.png";
 import invoicePendingIcon from "../../assets/img/invoice_unpaid.png";
 import {
+  FILTER_1_FILTER_FIELDS,
+  FILTER_2_FILTER_FIELDS,
   INVOICE_PER_PAGE,
   INVOICE_TABS,
   RAISED_BY_CLIENT_INVOICE_COLUMNS,
@@ -37,6 +39,7 @@ import RaisedToClientTable from "./RaisedToClientTable";
 import InvoiceTable from "./InvoiceTable";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 
 const Revenue = () => {
   const minOffset = 0;
@@ -68,7 +71,7 @@ const Revenue = () => {
   const [filters2, setFilters2] = useState({
     month: "",
     year: "",
-    developerName: "",
+    // developerName: "",
     projectName: "",
     invoiceStatus: "",
     clientName: "",
@@ -82,7 +85,6 @@ const Revenue = () => {
   const companyname = (
     <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
   );
-  console.log(invoiceDetails, "invoice details");
 
   useEffect(() => {
     const optionsValue = [];
@@ -106,15 +108,13 @@ const Revenue = () => {
       activeTab === INVOICE_TABS.raisedByDev ? filters1 : filters2;
     const page = activeTab === INVOICE_TABS.raisedByDev ? page1 : page2;
     const filtersQuery = buildQueryFromObjects(filters);
-    const query = `${filtersQuery}page=${page}&perPage=${INVOICE_PER_PAGE}&tab=${activeTab}`;
+    const query = `${filtersQuery}&page=${page}&perPage=${INVOICE_PER_PAGE}&tab=${activeTab}`;
     handleGetInvoiceDetails(query);
   }, [filters1, filters2, activeTab, page1, page2]);
 
   const handleGetInvoiceDetails = (query) => {
     dispatch(getInvoiceDetails(query));
   };
-
-  console.log(invoiceTotalPage, "invoiceTotalPage");
 
   return (
     <>
@@ -151,10 +151,11 @@ const Revenue = () => {
             <Tab.Content>
               {activeTab === INVOICE_TABS?.raisedByDev && (
                 <div eventKey="raise-by-devs">
-                  <TimeReportingFilterSection
+                  <CommonFilterSection filters={filters1} setFilters={setFilters1} filterFields={FILTER_1_FILTER_FIELDS} />
+                  {/* <TimeReportingFilterSection
                     filters={filters1}
                     setFilters={setFilters1}
-                  />
+                  /> */}
                   <InvoiceTable
                     columns={RAISED_BY_DEV_INVOICE_COLUMNS}
                     data={invoiceDetails?.invoices}
@@ -543,11 +544,12 @@ const Revenue = () => {
               )}
               {activeTab === INVOICE_TABS?.raisedToClients && (
                 <div eventKey="raise-to-clients">
-                  <TimeReportingFilterSection
+                  <CommonFilterSection filters={filters1} setFilters={setFilters1} filterFields={FILTER_2_FILTER_FIELDS} />
+                  {/* <TimeReportingFilterSection
                     filters={filters2}
                     setFilters={setFilters2}
                     isInvoiceClientFilter={true}
-                  />
+                  /> */}
                   <InvoiceTable
                     columns={RAISED_BY_CLIENT_INVOICE_COLUMNS}
                     data={invoiceDetails?.invoices}

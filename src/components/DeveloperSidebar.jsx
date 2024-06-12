@@ -93,7 +93,7 @@ const AdminSidebar = ({ sideBarActive }) => {
                             </li> */}
                             <li className="sidebar-item">
                                 <NavLink
-                                    to={"/developer-invoice"}
+                                    to={"/developer-pay-slip"}
                                     className="side-link"
                                     activeClassName="active"
                                 >
