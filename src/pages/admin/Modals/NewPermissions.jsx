@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-const RejectModal = ({ show, handleClose}) => {
+const NewPermissions = ({ show, handleClose}) => {
     return(
         <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
             <Modal.Header closeButton className="border-0 pb-3">
@@ -25,10 +25,12 @@ const RejectModal = ({ show, handleClose}) => {
                             <option value="profile_updation">Profile Updation</option>
                         </Form.Select>
                     </Form.Group>
-                    <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                    <div className="text-center">
+                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                    </div>
                 </Form>
             </Modal.Body>
         </Modal>
     )
 }
-export default RejectModal;
+export default NewPermissions;

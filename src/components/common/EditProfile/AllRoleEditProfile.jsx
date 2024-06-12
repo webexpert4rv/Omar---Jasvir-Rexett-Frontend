@@ -7,26 +7,23 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
-import { Controller, useForm } from "react-hook-form";
 import { FaEye } from "react-icons/fa";
 import { HiUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-
-import { FaTrashCan } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
-
-import Autocomplete from "react-google-autocomplete";
 import { filePreassignedUrlGenerate, getEnableDisableAccount } from "../../../redux/slices/clientDataSlice";
-import { getDeveloperProfileDetails, updateDeveloperProfile } from "../../../redux/slices/developerDataSlice";
+import {getProfileDetails, updateDeveloperProfile } from "../../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import RexettButton from "../../atomic/RexettButton";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import CommonInput from "../../atomic/CommonInput";
 import CommonAutocomplete from "../../atomic/CommonAutoComplete";
+import { getCurrentRoleEndPoint } from "./helper";
+import { useForm } from "react-hook-form";
 
 
 
-const AllRoleEditProfile = () => {
+const AllRoleEditProfile = ({role}) => {
   const userId = localStorage.getItem("userId");
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
@@ -45,7 +42,7 @@ const AllRoleEditProfile = () => {
     secondPass: false,
   });
   const [file, setFile] = useState(null);
-  const { smallLoader, developerProfileData, screenLoader } = useSelector(
+  const { smallLoader, userProfileDetails, screenLoader } = useSelector(
     (state) => state.developerData
   );
   const GOOGLE_MAP_API_KEY=process.env.REACT_APP_GOOGLE_MAP_API
@@ -54,7 +51,6 @@ const AllRoleEditProfile = () => {
     setStatus(!status);
     setShowModal(false);
   };
-  console.log(status, "status");
   const handleToggle = () => {
     setStatus("active");
     setShowModal(true);
@@ -67,21 +63,28 @@ const AllRoleEditProfile = () => {
     dispatch(getEnableDisableAccount(data));
   };
 
-  useEffect(() => {
-    dispatch(getDeveloperProfileDetails());
-  }, [dispatch]);
 
   useEffect(() => {
-    setValue("name", developerProfileData?.data?.name);
-    setValue("email", developerProfileData?.data?.email);
-    setValue("phone_number", developerProfileData?.data?.phone_number);
-    setValue("address", developerProfileData?.data?.address);
-    setValue("address_2", developerProfileData?.data?.address_2);
-    setValue("city", developerProfileData?.data?.city);
-    setValue("country", developerProfileData?.data?.country);
-    setValue("passcode", developerProfileData?.data?.passcode);
-    setValue("profile_picture", developerProfileData?.data?.profile_picture);
-  }, [developerProfileData]);
+   let subEndPoint=getCurrentRoleEndPoint(role)
+   dispatch(getProfileDetails(subEndPoint))
+    
+  }, [dispatch]);
+
+  console.log(userProfileDetails,"userProfileDetails")
+
+  useEffect(() => {
+    if(userProfileDetails?.data){
+      setValue("name", userProfileDetails?.data?.name);
+      setValue("email", userProfileDetails?.data?.email);
+      setValue("phone_number", userProfileDetails?.data?.phone_number);
+      setValue("address", userProfileDetails?.data?.address);
+      setValue("address_2", userProfileDetails?.data?.address_2);
+      setValue("city", userProfileDetails?.data?.city);
+      setValue("country", userProfileDetails?.data?.country);
+      setValue("passcode", userProfileDetails?.data?.passcode);
+    }
+ 
+  }, [userProfileDetails]);
   
   const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
 
@@ -107,8 +110,10 @@ const AllRoleEditProfile = () => {
             profile_picture: url,
             user_id: userId,
           };
-          // formData.append("file",data.s3_path);
           dispatch(updateDeveloperProfile(data));
+    // dispatch(updateAdminProfile(formData))
+    // dispatch(updateClientProfile(data));
+
         })
       );
     }
@@ -198,7 +203,10 @@ const AllRoleEditProfile = () => {
                     rules={{ required: "Address is required" }}
                     error={errors.address}
                     apiKey={GOOGLE_MAP_API_KEY}
-                    onPlaceSelected={(place) => console.log(place)}
+                    onPlaceSelected={(place) => {
+                      setValue("address",place.formatted_address)
+                    }}
+                    onChange={(e)=>{setValue("address",e.target.value)}}
                     options={{ types: ["establishment", "geocode"] }}
                   />
                   <CommonAutocomplete
@@ -208,7 +216,12 @@ const AllRoleEditProfile = () => {
                     rules={{ required: false }}
                     error={errors.address_2}
                     apiKey={GOOGLE_MAP_API_KEY}
-                    onPlaceSelected={(place) => console.log(place)}
+                    onPlaceSelected={(place) => {
+                      console.log(place);
+                      setValue("address_2",place.formatted_address)
+                    }}
+                    onChange={(e)=>{setValue("address_2",e.target.value)}}
+                    // value={watchCompanyDetails("company_address")}
                     options={{ types: ["establishment", "geocode"] }}
                   />
                 </div>
@@ -283,7 +296,7 @@ const AllRoleEditProfile = () => {
                   </Form.Label>
                   <div>
                     <img
-                      src={selectedImage ? selectedImage : developerProfileData?.data?.profile_picture}
+                      src={selectedImage ? selectedImage : userProfileDetails?.data?.profile_picture}
                       alt="Selected"
                       className="uploaded-image"
                     />

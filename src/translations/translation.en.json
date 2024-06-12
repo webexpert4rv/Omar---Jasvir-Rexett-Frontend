@@ -18,6 +18,7 @@
         "country": "Country",
         "updateProfile": "Update Profile",
         "filter": "Filter",
+        "invoice":"Invoice",
         "search": "Search",
         "selectCategory": "Select Category",
         "selectFileType": "Select File Type",

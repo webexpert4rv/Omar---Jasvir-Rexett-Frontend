@@ -10,7 +10,7 @@ const initialDeveloperData = {
   screenLoader: false,
   smallLoader: false,
   developerCvData: {},
-  developerProfileData: {},
+  userProfileDetails: {},
   developerDashboard: {},
   degreeList: [],
   developerTimeReports: [],
@@ -21,7 +21,9 @@ const initialDeveloperData = {
   lastTimeLog: {},
   leaveHistory: [],
   leaveDetails:[],
-  holidayList:[]
+  holidayList:[],
+  paySlips:{},
+  totalPaySlipPages:null
 };
 
 export const developerDataSlice = createSlice({
@@ -52,7 +54,7 @@ export const developerDataSlice = createSlice({
       state.btnLoader = false;
     },
     setSuccessProfileData: (state, action) => {
-      state.developerProfileData = action.payload;
+      state.userProfileDetails = action.payload;
       state.screenLoader = false;
     },
 
@@ -105,6 +107,12 @@ export const developerDataSlice = createSlice({
   },
   setHolidayList:(state,action)=>{
     state.holidayList = action.payload
+  },
+  setPaySlips : (state,action) => {
+    console.log(action.payload.pagination,"payload inside setter")
+    state.paySlips = action.payload.data;
+    state.screenLoader = false;
+    state.totalPaySlipPages = action?.payload?.pagination?.totalPages
   }
 },
 });
@@ -127,6 +135,7 @@ export const {
   setSuccessProfileData,
   setDeveloperDashboard,
   setLastTimeLog,
+  setPaySlips,
   setLeaveHistory,
   setUpdateLeave
 } = developerDataSlice.actions;
@@ -168,11 +177,27 @@ export function updateDeveloperProfile(payload, callback) {
   };
 }
 
-export function getDeveloperProfileDetails(payload, callback) {
+// export function getDeveloperProfileDetails(payload, callback) {
+//   return async (dispatch) => {
+//     dispatch(setScreenLoader());
+//     try {
+//       let result = await clientInstance.get("developer/get-profile");
+//       if (result.status === 200) {
+//         dispatch(setSuccessProfileData(result.data));
+//       }
+//     } catch (error) {
+//       const message = error.message || "Something went wrong";
+//       toast.error(message, { position: "top-center" });
+//       dispatch(setFailDeveloperData());
+//     }
+//   };
+// }
+
+export function getProfileDetails(payload, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get("developer/get-profile");
+      let result = await clientInstance.get(payload);
       if (result.status === 200) {
         dispatch(setSuccessProfileData(result.data));
       }
@@ -183,6 +208,7 @@ export function getDeveloperProfileDetails(payload, callback) {
     }
   };
 }
+
 export function approvedClient(id,payload, role, callback) {
   return async (dispatch) => {
     dispatch(setApprovedLoader());
@@ -771,4 +797,17 @@ export function getHolidaysList() {
       console.log(error, "error");
     }
   };
+}
+
+export function getPaySlips(query) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader())
+    try {
+      let result = await clientInstance.get(`/developer/pay-slip?${query}`);
+      dispatch(setPaySlips(result.data))
+    } catch (error) {
+      console.log(error,"error")
+    }
+  }
+
 }

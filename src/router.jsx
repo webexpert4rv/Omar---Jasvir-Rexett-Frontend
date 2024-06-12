@@ -1,14 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
-import {
-  ArcElement,
-  Chart,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  elements,
-} from "chart.js";
+
 import { lazy } from "react";
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -26,6 +19,9 @@ const NotificationDeveloper = lazy(() =>
 const DeveloperInvoice = lazy(() =>
   import("./pages/developer/DeveloperInvoice")
 );
+const DeveloperLeaveApply = lazy(() =>
+  import("./pages/developer/PlanLeave")
+);
 const Faq = lazy(() => import("./pages/views/Faq"));
 const ContactSupport = lazy(() => import("./pages/views/ContactSupport"));
 const JobPost = lazy(() => import("./pages/views/JobPost"));
@@ -37,9 +33,7 @@ const SingleJob = lazy(() => import("./pages/views/SingleJob"));
 const ClientSingleDeveloper = lazy(() =>
   import("./pages/views/ClientSingleDeveloper")
 );
-const VendorDashboardLayout = lazy(() =>
-  import("./layout/VendorDashboardLayout")
-);
+
 const VendorDocuments = lazy(() => import("./pages/vendor/VendorDocuments"));
 const VendorRevenue = lazy(() => import("./pages/vendor/VendorRevenue"));
 const VendorUploadInvoice = lazy(() => import("./pages/vendor/VendorInvoice"));
@@ -70,10 +64,7 @@ const SingleClient = lazy(() =>
   import("./components/common/SingleClient/SingleClient")
 );
 const Applications = lazy(() => import("./pages/admin/Applications"));
-const DashboardLayout = lazy(() => import("./layout/DashboardLayout"));
-const AdminDashboardLayout = lazy(() =>
-  import("./layout/AdminDashboardLayout")
-);
+
 const Login = lazy(() => import("./pages/Authentication/Login"));
 const Dashboard = lazy(() => import("./pages/views/Dashboard"));
 const HiredDevelopers = lazy(() => import("./pages/views/HiredDevelopers"));
@@ -81,6 +72,7 @@ const EditProfile = lazy(() => import("./pages/views/EditProfile"));
 const Documents = lazy(() => import("./pages/views/Documents"));
 const TimeReporting = lazy(() => import("./pages/views/TimeReporting"));
 const EarnedBack = lazy(() => import("./pages/views/EarnedBack"));
+const LeaveRequest = lazy(() => import("./pages/views/LeaveRequests"));
 const Invoice = lazy(() => import("./pages/views/Invoice"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const DeveloperList = lazy(() => import("./pages/admin/DeveloperList"));
@@ -95,9 +87,7 @@ const Revenue = lazy(() => import("./pages/admin/Revenue"));
 const DeveloperDashboard = lazy(() =>
   import("./pages/developer/DeveloperDashboard")
 );
-const DeveloperDashboardLayout = lazy(() =>
-  import("./layout/DeveloperDashboardLayout")
-);
+
 const EditDeveloperProfile = lazy(() =>
   import("./pages/developer/DeveloperEditProfile")
 );
@@ -108,111 +98,127 @@ const DeveloperTimeReporting = lazy(() =>
   import("./pages/developer/DeveloperTimeReporting")
 );
 const DeveloperCV = lazy(() => import("./pages/developer/DeveloperCV"));
-const AgencyLogin = lazy(() => import("./pages/Authentication/AdminLogin"));
-const DeveloperLogin = lazy(() =>
-  import("./pages/Authentication/DeveloperLogin")
-);
+const AdminLogin = lazy(() => import("./pages/Authentication/AdminLogin"));
+const DeveloperLogin =lazy(() => import("./pages/Authentication/DeveloperLogin"));
+const ClientLogin =lazy(() => import("./pages/Authentication/Login"));
+const VendorLogin =lazy(() => import("./pages/Authentication/VendorLogin"));
 
 export const route = [
   {
     path: "/",
-    element: <Login />,
-    private: false,
+    element: <ClientLogin />,
+    public: true,
   },
   {
-    path: "/agency-login",
-    element: <AgencyLogin />,
-    private: false,
+    path: "/admin-login",
+    element: <AdminLogin />,
+    public: true,
+  },
+  {
+    path: "/developer-login",
+    element: <DeveloperLogin />,
+    public: true,
+  },
+  {
+    path: "/vendor-login",
+    element: <VendorLogin />,
+    public: true,
   },
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
   {
-    path: "/dashboard",
+    path: "/client/dashboard",
     element: <Dashboard />,
     private: true,
     isClient: true,
   },
   {
-    path: "/hired-developers",
+    path: "/client/hired-developers",
     element: <HiredDevelopers />,
     private: true,
     isClient: true,
   },
   {
-    path: "/edit-profile",
+    path: "/client/edit-profile",
     element: <EditProfile />,
     private: true,
     isClient: true,
   },
   {
-    path: "/documents",
+    path: "/client/documents",
     element: <Documents />,
     private: true,
     isClient: true,
   },
   {
-    path: "/time-reporting",
+    path: "/client/time-reporting",
     element: <TimeReporting />,
     private: true,
     isClient: true,
   },
   {
-    path: "/earned-back",
+    path: "/client/earned-back",
     element: <EarnedBack />,
     private: true,
     isClient: true,
   },
   {
-    path: "/invoice",
+    path: "/client/invoice",
     element: <Invoice />,
     private: true,
     isClient: true,
   },
   {
-    path: "/time-reporting",
+    path: "/client/time-reporting",
     element: <TimeReporting />,
     private: true,
     isClient: true,
   },
   {
-    path: "/contact-support",
+    path: "/client/contact-support",
     element: <ContactSupport />,
     private: true,
     isClient: true,
   },
 
   {
-    path: "/faq",
+    path: "/client/faq",
     element: <Faq />,
     private: true,
     isClient: true,
   },
   {
-    path: "/job-posted",
+    path: "/client/leave-request",
+    element: <LeaveRequest/>,
+    private: true,
+    isClient: true,
+  },
+  {
+    path: "/client/job-posted",
     element: <JobListing />,
     private: true,
     isClient: true,
   },
   {
-    path: "/job-edit-post/:id",
+    path: "/client/job-edit-post/:id",
     element: <JobPost />,
     private: true,
     isClient: true,
   },
   {
-    path: "/single-job/:id",
+    path: "/client/single-job/:id",
     element: <SingleJob />,
     private: true,
     isClient: true,
   },
   {
-    path: "/notification-client",
+    path: "/client/notification-client",
     element: <NotificationClient />,
     private: true,
     isClient: true,
   },
   {
-    path: "/client-single-developer/:id",
+    path: "/client/client-single-developer/:id",
     element: <ClientSingleDeveloper />,
     private: true,
     isClient: true,
@@ -228,68 +234,57 @@ export const route = [
     private: true,
   },
   {
-    path: "/developer-dashboard",
+    path: "developer/dashboard",
     element: <DeveloperDashboard />,
     isDeveloper: true,
     private: true,
   },
   {
-    path: "/edit-developer-profile",
+    path: "developer/edit-developer-profile",
     element: <EditDeveloperProfile />,
     isDeveloper: true,
     private: true,
   },
   {
-    path: "/developer-documents",
+    path: "developer/developer-documents",
     element: <DeveloperDocuments />,
     isDeveloper: true,
     private: true,
   },
   {
-    path: "/developer-time-reporting",
+    path: "developer/developer-time-reporting",
     element: <DeveloperTimeReporting />,
     isDeveloper: true,
     private: true,
   },
   {
-    path: "/developer-updated-cv",
+    path: "developer/developer-updated-cv",
     element: <DeveloperUpdatedCV />,
     isDeveloper: true,
     private: true,
   },
   {
-    path: "/developer-cv",
+    path: "developer/developer-cv",
     element: <DeveloperCV />,
     isDeveloper: true,
     private: true,
   },
   {
-    path: "/notification-developer",
+    path: "developer/notification-developer",
     element: <NotificationDeveloper />,
     isDeveloper: true,
     private: true,
   },
   {
-    path: "/developer-invoice",
+    path: "developer/developer-invoice",
     element: <DeveloperInvoice />,
     isDeveloper: true,
     private: true,
   },
+ 
   {
-    path: "/developer-invoice",
-    element: <DeveloperInvoice />,
-    isDeveloper: true,
-    private: true,
-  },
-  {
-    path: "/developer-invoice",
-    element: <DeveloperInvoice />,
-    isDeveloper: true,
-    private: true,
-  },
-  {
-    path: "/developer-invoice",
-    element: <DeveloperInvoice />,
+    path: "developer/leave-plan",
+    element: <DeveloperLeaveApply />,
     isDeveloper: true,
     private: true,
   },
@@ -373,37 +368,37 @@ export const route = [
 
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
   {
-    path: "/admin-dashboard",
+    path: "/admin/admin-dashboard",
     element: <AdminDashboard />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/developer-list",
+    path: "/admin/developer-list",
     element: <DeveloperList />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/list-clients",
+    path: "/admin/list-clients",
     element: <AdminDashboard />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/edit-admin-profile",
+    path: "/admin/edit-admin-profile",
     element: <EditAdminProfile />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-documents",
+    path: "/admin/admin-documents",
     element: <AdminDocuments />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-time-reporting",
+    path: "/admin/admin-time-reporting",
     element: <AdminTimeReporting />,
     isAdmin: true,
     private: true,
@@ -421,7 +416,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin-invoice",
+    path: "/admin/admin-invoice",
     element: <AdminInvoice />,
     isAdmin: true,
     private: true,
@@ -433,37 +428,37 @@ export const route = [
     private: true,
   },
   {
-    path: "/time-reporting-detail",
+    path: "/admin-time-reporting-detail",
     element: <TimeReportingDetail />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/members",
+    path: "/admin/members",
     element: <Members />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-job-listing",
+    path: "/admin/admin-job-listing",
     element: <AdminJobListing />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin-single-job/:id",
+    path: "/admin/admin-single-job/:id",
     element: <AdminSingleJob />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/notification-admin",
+    path: "/admin/notification-admin",
     element: <NotificationAdmin />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/applications",
+    path: "/admin/applications",
     element: <Applications />,
     isAdmin: true,
     private: true,
@@ -475,7 +470,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin-faq",
+    path: "/admin/admin-faq",
     element: <Faq />,
     isAdmin: true,
     private: true,

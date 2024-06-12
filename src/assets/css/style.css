@@ -5764,6 +5764,33 @@ input[type="radio"]:checked {
     color: #505050;
     cursor: pointer;
 }
+.edit-role
+{
+    width: 30px;
+    height: 30px;
+    color: #037563;
+    border-radius: 50%;
+    border: 1px solid #037563;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: none;
+    padding: 0;
+}
+.role-pill
+{
+    font-size: 14px;
+    display: inline-block;
+    background: #098763;
+    padding: 4px 13px;
+    color: #fff;
+    border-radius: 30px;
+}
+.role-pill.no-role
+{
+    background-color: #fff;
+    color: #5d5d5d;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
