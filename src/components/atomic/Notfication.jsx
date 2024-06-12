@@ -115,7 +115,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
       navigate(`/${timeReport}`);
     } else if (data == "Users") {
       if (role === "developer") {
-        navigate(`/developer-dashboard`);
+        navigate(`developer/dashboard`);
       } else {
         navigate(`/admin-single-developer/${id}`);
       }

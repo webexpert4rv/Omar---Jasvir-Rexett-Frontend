@@ -3,6 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
 
 import { lazy } from "react";
+import JobPostStepContainer from "./pages/views/Job post step form/JobPostStepContainer";
+import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
+import Customization from "./pages/admin/Customization";
+import RolesPermission from "./pages/admin/RolesPermissions";
+const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
 );
@@ -102,8 +107,26 @@ const AdminLogin = lazy(() => import("./pages/Authentication/AdminLogin"));
 const DeveloperLogin =lazy(() => import("./pages/Authentication/DeveloperLogin"));
 const ClientLogin =lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin =lazy(() => import("./pages/Authentication/VendorLogin"));
+const Otp =lazy(() => import("./pages/Authentication/Otp"));
+
 
 export const route = [
+
+  {
+    path: "/client-registration",
+    element: <ClientRegisterForm />,
+    public: true,
+  },
+  {
+    path: "/developer-registration",
+    element: <DeveloperRegisterForm />,
+    public: true,
+  },
+  {
+    path: "/otp",
+    element: <Otp/>,
+    public: true,
+  },
   {
     path: "/",
     element: <ClientLogin />,
@@ -123,6 +146,13 @@ export const route = [
     path: "/vendor-login",
     element: <VendorLogin />,
     public: true,
+  },
+
+  {
+    path: "/developer-faq",
+    element: <Faq />,
+    private: true,
+    isClient: true,
   },
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
@@ -196,6 +226,12 @@ export const route = [
   {
     path: "/client/job-posted",
     element: <JobListing />,
+    private: true,
+    isClient: true,
+  },
+  {
+    path: "/client/job-post",
+    element: <JobPostStepContainer />,
     private: true,
     isClient: true,
   },
@@ -417,7 +453,8 @@ export const route = [
   },
   {
     path: "/admin/admin-invoice",
-    element: <AdminInvoice />,
+    // element: <AdminInvoice />,
+    element:<Revenue/>,
     isAdmin: true,
     private: true,
   },
@@ -428,7 +465,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin-time-reporting-detail",
+    path: "/admin-time-reporting-detail/:clientId",
     element: <TimeReportingDetail />,
     isAdmin: true,
     private: true,
@@ -470,8 +507,20 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/admin-faq",
+    path: "/admin-faq",
     element: <Faq />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/customization",
+    element: <Customization/>,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/roles-permissions",
+    element: <RolesPermission/>,
     isAdmin: true,
     private: true,
   },

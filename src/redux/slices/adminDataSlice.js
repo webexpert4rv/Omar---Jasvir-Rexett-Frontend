@@ -659,19 +659,21 @@ export function rejectEditAction(payload) {
         }
     };
 }
-export function addToFeature(query,callback) {
+export function addToFeature(query,closeModal,data,isFeatured) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {   
-            let result = await clientInstance.post(`admin/set-featured-and-trusted/${query}`)
+            let result = await clientInstance.put(`/admin/set-featured-and-trusted/${query}`)
             if (result.status === 200) {
-                toast.success("Profile is Updated Successfully", { position: "top-center" })
+                toast.success((isFeatured) ?("Added to featured members successfully"):("Removed from featured members successfully"), { position: "top-center" })
+                closeModal();
                 dispatch(setSuccessAdminData())
+                dispatch(allMemberList(data));
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
-            callback()
+            closeModal();
             dispatch(setFailAdminData())
         }
     };
