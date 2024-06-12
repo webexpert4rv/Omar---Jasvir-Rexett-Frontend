@@ -544,7 +544,7 @@ const Revenue = () => {
               )}
               {activeTab === INVOICE_TABS?.raisedToClients && (
                 <div eventKey="raise-to-clients">
-                  <CommonFilterSection filters={filters1} setFilters={setFilters1} filterFields={FILTER_2_FILTER_FIELDS} />
+                  <CommonFilterSection filters={filters1} setFilters={setFilters1} filterFields={FILTER_2_FILTER_FIELDS} /> 
                   {/* <TimeReportingFilterSection
                     filters={filters2}
                     setFilters={setFilters2}

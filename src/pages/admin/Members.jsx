@@ -32,6 +32,8 @@ import userImg from "../../assets/img/user-img.jpg";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import CommonFilterSection from "../../components/atomic/CommonFilterSection";
+import { MEMBERS_FILTER_FIELDS, buildQueryFromObjects } from "./adminConstant";
 
 let STATUS = [
   {
@@ -44,11 +46,11 @@ let STATUS = [
   },
 ];
 
+
 const Members = () => {
   const dispatch = useDispatch();
-  const { allApplications, approvedLoader, screenLoader, smallLoader } = useSelector(
-    (state) => state.adminData
-  );
+  const { allApplications, approvedLoader, screenLoader, smallLoader } =
+    useSelector((state) => state.adminData);
   const [search, setSearch] = useState("");
   const [timerValue, setTimerValue] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
@@ -61,6 +63,16 @@ const Members = () => {
     userId: null,
     isFeaturedMember: false,
   });
+  const [searchText, setSearchText] = useState("");
+  const [searchFilter, setSearchFilter] = useState("");
+  const [sortByOption, setSortByOption] = useState("");
+  const [filters, setFilters] = useState({
+    search: "",
+    order_alphabetically: "asc",
+    order_created_at:"",
+    approval_status: "",
+    created_at:"",
+  });
 
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
@@ -69,12 +81,13 @@ const Members = () => {
     id: "",
   });
   const [showModal, setShowModal] = useState(false);
-  const handleFeature = (e,userId) => {
-     e.stopPropagation();
+  const handleFeature = (e, userId) => {
+    e.stopPropagation();
+    const { checked } = e.target;
     setShowFeatureModal(!showFeatureModal);
     setFeaturedModalDetails({
       userId: userId,
-      isFeaturedMember: !featureModalDetails?.isFeaturedMember,
+      isFeaturedMember: checked,
     });
   };
 
@@ -83,12 +96,23 @@ const Members = () => {
     setArrowActive(index == arrowactive ? null : index);
   };
 
+  // useEffect(() => {
+  //   let data = {
+  //     page: page,
+  //     active_tab: currentTab,
+  //     search: searchFilter,
+  //   };
+  //   dispatch(allMemberList(data));
+  // }, [page, currentTab, search, searchFilter]);
+
   useEffect(() => {
-    let data = {
-      page: page,
-    };
-    dispatch(allMemberList(data));
-  }, [page]);
+   const queryFilters = {
+    ...filters,
+    page:page,
+    active_tab:currentTab
+   }
+    dispatch(allMemberList(queryFilters));
+},[filters,page,currentTab])
 
   useEffect(() => {
     if (allApplications[currentTab]?.length > 0) {
@@ -97,6 +121,8 @@ const Members = () => {
         (item) => item.approval_status == currentStatus
       );
       setApplication(filterStatus);
+    } else {
+      setApplication([]);
     }
   }, [allApplications]);
 
@@ -109,6 +135,8 @@ const Members = () => {
     setApplication(filterStatus);
     setArrowActive(null);
     setExpandedRow(null);
+    setPage(1);
+    setSearch("");
   };
 
   const convertToArray = (arr) => {
@@ -133,21 +161,6 @@ const Members = () => {
   );
   const redirectClient = (id) => {
     navigate(`/admin-single-client/${id}`);
-  };
-
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-    clearTimeout(timerValue);
-    const timer = setTimeout(() => {
-      let data = {
-        page: page,
-        "active-tab": currentTab,
-        search: e.target.value,
-      };
-      dispatch(allApplicationsList(data));
-    }, 500);
-
-    setTimerValue(timer);
   };
 
   const deleteApplication = <Tooltip id="tooltip">Disabled Accounts</Tooltip>;
@@ -197,22 +210,28 @@ const Members = () => {
     navigate(`/admin-single-developer/${id}`);
   };
   const getFeatureText = () => {
-    if(featureModalDetails?.isFeaturedMember) {
+    if (featureModalDetails?.isFeaturedMember) {
       return "Are you sure you want to add this developer to featured members";
     } else {
       return "Are you sure you want to remove this developer from featured members";
     }
   };
   const handleAddToFeature = () => {
-    const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`
-    dispatch(addToFeature(query,handleCloseFeature));
-  }
-  const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal)
+    let data = {
+      ...filters,
+      page: page,
+      active_tab: currentTab,
+    };
+    const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`;
+    dispatch(addToFeature(query, handleCloseFeature, data,featureModalDetails?.isFeaturedMember));
+  };
+  const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal);
+ 
   return (
     <>
-      <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
+      <CommonFilterSection filters={filters} setFilters={setFilters} filterFields={MEMBERS_FILTER_FIELDS} text={t("members")} />
+      {/* <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("members")}</h2>
-
         <div className="d-flex gap-3">
           <Form.Select
             className="filter-select shadow-none"
@@ -229,17 +248,42 @@ const Members = () => {
               );
             })}
           </Form.Select>
+          <Form.Select
+            className="filter-select shadow-none"
+            onChange={(e) => setSortByOption(e.target.value)}
+          >
+            <option selected disabled>
+              Sort By Name
+            </option>
+            <option value="ascending">Ascending</option>
+            <option value="descending">Descending</option>
+          </Form.Select>
+          <Form.Select
+            className="filter-select shadow-none"
+            onChange={(e) => setSortByOption(e.target.value)}
+          >
+            <option selected disabled>
+              Sort By Date
+            </option>
+            <option value="ascending">Ascending</option>
+            <option value="descending">Descending</option>
+          </Form.Select>
           <Form.Control
             type="text"
             className="form-field font-14 shadow-none"
             placeholder={t("enterSearchKeywords")}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearchText(e.target.value)}
+            value={searchText}
           />
-          <Button variant="transparent" className="main-btn search-btn">
+          <Button
+            onClick={() => setSearchFilter(searchText)}
+            variant="transparent"
+            className="main-btn search-btn"
+          >
             <IoSearch />
           </Button>
         </div>
-      </div>
+      </div> */}
       <div className="card-box">
         <Tab.Container
           id="left-tabs-example"
@@ -382,37 +426,37 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                    <td colSpan="8">
-                                      <div>
-                                        <Row>
-                                          {/* {item?.client_type == "company" && ( */}
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Company Name
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company_name}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          {/* )} */}
-                                          {/* {item?.client_type == "company" && */}
-                                            {/* (item?.company_address ? ( */}
-                                              <Col md={3} className="mb-3">
-                                                <div>
-                                                  <h3 className="application-heading">
-                                                    Company Address
-                                                  </h3>
-                                                  <p className="application-text">
-                                                    {item?.company_address}
-                                                  </p>
-                                                </div>
-                                              </Col>
-                                            {/* ) : (
+                                  <td colSpan="8">
+                                    <div>
+                                      <Row>
+                                        {/* {item?.client_type == "company" && ( */}
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Company Name
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company_name}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        {/* )} */}
+                                        {/* {item?.client_type == "company" && */}
+                                        {/* (item?.company_address ? ( */}
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Company Address
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company_address}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        {/* ) : (
                                               ""
                                             ))} */}
-                                              <Col md={3} className="mb-3">
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("city")}
@@ -434,49 +478,47 @@ const Members = () => {
                                           </div>
                                         </Col>
 
-                                          <Col md={3} className="mb-3">
-                                            <div>
-                                              <h3 className="application-heading">
-                                                Company Name
-                                              </h3>
-                                              <p className="application-text">
-                                                {item?.company_name}
-                                              </p>
-                                            </div>
-                                          </Col>
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Company Name
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company_name}
+                                            </p>
+                                          </div>
+                                        </Col>
 
-                                          <Col md={3} className="mb-3">
-                                            <div>
-                                              <h3 className="application-heading">
-                                                {t("email")}
-                                              </h3>
-                                              <p className="application-text">
-                                                {item?.email}
-                                              </p>
-                                            </div>
-                                          </Col>
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              {t("email")}
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.email}
+                                            </p>
+                                          </div>
+                                        </Col>
 
-                                          {/* {item?.jobs?.length > 0 && ( */}
-                                          <Col md={3} className="mb-3 ">
-                                            <div>
-                                              <h3 className="application-heading">
-                                               Skillset Needed
-                                              </h3>
-                                              <ul className="need-skill-list  mb-0">
-                                                {convertToArray(
-                                                  item?.jobs[0]?.skills
-                                                )?.map((item, index) => {
-                                                  return (
-                                                    <>
-                                                      <li key={index}>
-                                                        {item}
-                                                      </li>
-                                                    </>
-                                                  );
-                                                })}
-                                              </ul>
-                                            </div>
-                                          </Col>
+                                        {/* {item?.jobs?.length > 0 && ( */}
+                                        <Col md={3} className="mb-3 ">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Skillset Needed
+                                            </h3>
+                                            <ul className="need-skill-list  mb-0">
+                                              {convertToArray(
+                                                item?.jobs[0]?.skills
+                                              )?.map((item, index) => {
+                                                return (
+                                                  <>
+                                                    <li key={index}>{item}</li>
+                                                  </>
+                                                );
+                                              })}
+                                            </ul>
+                                          </div>
+                                        </Col>
                                         {/* )} */}
 
                                         {/* <Col md={3} className="mb-3">
@@ -489,18 +531,18 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col> */}
-                                          {/* {item?.client_type == "company" && ( */}
-                                            <Col md={3} className="mb-3">
-                                              <div>
-                                                <h3 className="application-heading">
-                                                  Company Address
-                                                </h3>
-                                                <p className="application-text">
-                                                  {item?.company_address}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          {/* )} */}
+                                        {/* {item?.client_type == "company" && ( */}
+                                        <Col md={3} className="mb-3">
+                                          <div>
+                                            <h3 className="application-heading">
+                                              Company Address
+                                            </h3>
+                                            <p className="application-text">
+                                              {item?.company_address}
+                                            </p>
+                                          </div>
+                                        </Col>
+                                        {/* )} */}
 
                                         <Col md={3} className="mb-3">
                                           <div>
@@ -574,17 +616,12 @@ const Members = () => {
                 </table>
               </div>
               {allApplications?.totalClientPages > 1 &&
-              application.length > 5 ? (
+              application.length > 0 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                  {currentTab == "clients" ? (
+                  {currentTab == "clients" && (
                     <p className="showing-result">
-                      {t("showing")} {allApplications?.clients?.length}{" "}
-                      {t("results")}
-                    </p>
-                  ) : (
-                    <p className="showing-result">
-                      {t("showing")} {allApplications?.vendors?.length}{" "}
-                      {t("results")}
+                      {/* {t("showing")} {allApplications?.clients?.length}{" "} */}
+                      {t("showing")} {application?.length} {t("results")}
                     </p>
                   )}
                   <RexettPagination
@@ -697,7 +734,7 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                 <td colSpan="8">
+                                  <td colSpan="8">
                                     <div>
                                       <Row>
                                         <Col md={3} className="mb-3">
@@ -977,18 +1014,13 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalClientPages > 1 &&
-              application.length > 5 ? (
+              {allApplications?.totalVendorPages > 1 &&
+              application.length > 0 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                  {currentTab == "clients" ? (
+                  {currentTab == "vendors" && (
                     <p className="showing-result">
-                      {t("showing")} {allApplications?.clients?.length}{" "}
-                      {t("results")}
-                    </p>
-                  ) : (
-                    <p className="showing-result">
-                      {t("showing")} {allApplications?.vendors?.length}{" "}
-                      {t("results")}
+                      {/* {t("showing")} {allApplications?.vendors?.length}{" "} */}
+                      {t("showing")} {application?.length} {t("results")}
                     </p>
                   )}
                   <RexettPagination
@@ -1011,9 +1043,9 @@ const Members = () => {
                         {t("email")} {t("address")}
                       </th>
                       <th>{t("phoneNumber")}</th>
-                      {/* <th>{t("status")}</th> */}
+                      <th>{t("status")}</th>
                       <th>Enable/Disable</th>
-                      <th>Featured</th>
+                      <th>Featured On Website</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1025,7 +1057,6 @@ const Members = () => {
                         application?.length > 0 ? (
                           application?.map((item, index) => (
                             <React.Fragment key={index}>
-                              {console.log(item, "this is item for featured")}
                               <tr
                                 className="application-row"
                                 onClick={() => handleRowClick(index)}
@@ -1096,15 +1127,21 @@ const Members = () => {
                                 <td>
                                   <OverlayTrigger
                                     placement="bottom"
-                                    overlay={featureModalDetails?.isFeaturedMember ? removeFromFeaturedMembers : addToFeaturedMembers}
+                                    overlay={
+                                      item?.featured_member
+                                        ? removeFromFeaturedMembers
+                                        : addToFeaturedMembers
+                                    }
                                   >
                                     <div class="form-check form-switch toggle-switch-wrapper">
                                       <input
                                         class="form-check-input toggle-switch-custom pointer"
                                         type="checkbox"
                                         role="switch"
-                                        checked={item?.isFeaturedMember}
-                                        onClick={(e) => handleFeature(e,item.id)}
+                                        checked={item?.featured_member}
+                                        onClick={(e) =>
+                                          handleFeature(e, item.id)
+                                        }
                                       />
                                     </div>
                                   </OverlayTrigger>
@@ -1371,16 +1408,14 @@ const Members = () => {
                   </tbody>
                 </table>
               </div>
-              {allApplications?.totalClientPages > 1 &&
-              application.length > 4 ? (
+              {allApplications?.totalDeveloperPages > 1 &&
+              application?.length > 0 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
-                  {currentTab == "developers" ? (
+                  {currentTab == "developers" && (
                     <p className="showing-result">
-                      {t("showing")} {allApplications?.developers?.length}{" "}
-                      {t("results")}
+                      {/* {t("showing")} {allApplications?.developers?.length}{" "} */}
+                      {t("showing")} {application?.length} {t("results")}
                     </p>
-                  ) : (
-                    ""
                   )}
                   {
                     <RexettPagination

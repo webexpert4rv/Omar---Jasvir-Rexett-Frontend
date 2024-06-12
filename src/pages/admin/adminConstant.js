@@ -142,6 +142,20 @@ export const CLIENT_NAME_OPTIONS = [
   {label:"Client 4",value:"client4"},
   {label:"Client 5",value:"client5"}
 ]
+const MEMBERS_STATUS_OPTIONS = [
+  {
+    label: "Approved",
+    value: "approved",
+  },
+  {
+    label: "Rejected",
+    value: "rejected",
+  }
+]
+const ORDER_OPTIONS = [
+  {label:"Ascending",value:"asc"},
+  {label:"Descending",value:"desc"}
+]
 
 export const FILTER_1_FILTER_FIELDS = {
   selectFilters:[
@@ -216,8 +230,36 @@ export const TIME_REPORTING_FILTER_FIELDS = {
       filterLabel: "Invoice Status",
       key: "invoiceStatus",
       options: INVOICE_OPTIONS,
-    }
+    },
   ],
   searchFilter:{key:"developerName", placeholder:"Enter developer name"}
 
 }
+
+export const MEMBERS_FILTER_FIELDS = {
+  selectFilters: [
+    {
+      filterLabel: "Select Status",
+      key: "approval_status",
+      options: MEMBERS_STATUS_OPTIONS,
+    },
+    {
+      filterLabel: "Sort by name",
+      key:"order_alphabetically",
+      options:ORDER_OPTIONS,
+      defaultValueRequired:true
+    },
+    {
+      filterLabel: "Select Date",
+      key:"created_at",
+      isDate:true
+    },
+    {
+      filterLabel:"Sort by  created at",
+      key:"order_created_at",
+      options:ORDER_OPTIONS
+      
+    }
+  ],
+  searchFilter: { key: "search", placeholder: "Enter search keywords" },
+};
