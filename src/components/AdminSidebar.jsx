@@ -19,6 +19,8 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { FaQuestion } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import { Button } from "react-bootstrap";
+import { MdDesignServices } from "react-icons/md";
+import { PiUsersThreeFill } from "react-icons/pi";
 
 const AdminSidebar = ({ sideBarActive }) => {
     const { t } = useTranslation()
@@ -63,6 +65,12 @@ const AdminSidebar = ({ sideBarActive }) => {
                             </li>
                             <li className="sidebar-item">
                                 <NavLink to={'/invoice'} className="side-link" activeClassName="active"><PiCoinsFill />Invoice</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/roles-permissions'} className="side-link" activeClassName="active"><PiUsersThreeFill />Roles & Permissions</NavLink>
+                            </li>
+                            <li className="sidebar-item">
+                                <NavLink to={'/customization'} className="side-link" activeClassName="active"><MdDesignServices />Configuration</NavLink>
                             </li>
                             {/* <li className="sidebar-item">
                                 <NavLink to={'/account-deletion-request'} className="side-link" activeClassName="active"><BsToggles /> {t("accountDeletionRequest")}</NavLink>

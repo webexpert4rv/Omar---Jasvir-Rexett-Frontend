@@ -87,6 +87,8 @@ import DeveloperPublicHoliday from './pages/developer/DeveloperPublicHoliday';
 import TakeQuiz from './pages/developer/TakeQuiz';
 import SkillTest from './pages/developer/SkillTest';
 import NotFound from './pages/views/NotFound';
+import Customization from './pages/admin/Customization';
+import RolesPermission from './pages/admin/RolesPermissions';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
@@ -143,6 +145,8 @@ function App() {
           <Route path="/invoice" exact element={<AdminDashboardLayout><Revenue /></AdminDashboardLayout>} />
           <Route path="/account-deletion-request" exact element={<AdminDashboardLayout><AccountDeletionRequest/></AdminDashboardLayout>} />
           <Route path="/admin-invoice" exact element={<AdminDashboardLayout><AdminInvoice /></AdminDashboardLayout>} />
+          <Route path="/customization" exact element={<AdminDashboardLayout><Customization /></AdminDashboardLayout>} />
+          <Route path="/roles-permissions" exact element={<AdminDashboardLayout><RolesPermission /></AdminDashboardLayout>} />
           <Route path="/profile-updation-request" exact element={<DeveloperDashboardLayout><ProfileUpdationRequest /></DeveloperDashboardLayout>} />
           <Route path="/developer-dashboard" exact element={<DeveloperDashboardLayout><DeveloperDashboard /></DeveloperDashboardLayout>} />
           <Route path="/edit-developer-profile" exact element={<DeveloperDashboardLayout><EditDeveloperProfile /></DeveloperDashboardLayout>} />
