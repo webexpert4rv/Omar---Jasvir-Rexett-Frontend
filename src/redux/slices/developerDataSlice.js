@@ -23,7 +23,8 @@ const initialDeveloperData = {
   leaveDetails:[],
   holidayList:[],
   paySlips:{},
-  totalPaySlipPages:null
+  totalPaySlipPages:null,
+  countries:[]
 };
 
 export const developerDataSlice = createSlice({
@@ -57,6 +58,12 @@ export const developerDataSlice = createSlice({
       state.userProfileDetails = action.payload;
       state.screenLoader = false;
     },
+    
+    setAllCountries: (state, action) => {
+      let updatedCountry=action.payload?.data.map((item)=>{ return {label:item.name,value:item?.code} })
+      state.smallLoader = false;
+      state.countries =updatedCountry;
+  },
 
     setSuccessActionData: (state, action) => {
       state.smallLoader = false;
@@ -137,7 +144,8 @@ export const {
   setLastTimeLog,
   setPaySlips,
   setLeaveHistory,
-  setUpdateLeave
+  setUpdateLeave,
+  setAllCountries
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -810,4 +818,27 @@ export function getPaySlips(query) {
     }
   }
 
+}
+
+
+export function getAllCountries() {
+  return async (dispatch) => {
+      try {
+          let result = await clientInstance.get(`web/countries`)
+          if (result.status === 200) {
+              toast.success(result?.data.message, { position: "top-center" })
+              dispatch(setAllCountries(result?.data?.data))
+          }
+      } catch (error) {
+          const message = error.message || "Something went wrong";
+          if (error?.response?.status === 404) {
+              toast.error(error?.response.data.message, { position: "top-center" })
+              dispatch(setFailDeveloperData());
+          } else {
+              toast.error(message, { position: "top-center" })
+              dispatch(setFailDeveloperData());
+          }
+
+      }
+  };
 }

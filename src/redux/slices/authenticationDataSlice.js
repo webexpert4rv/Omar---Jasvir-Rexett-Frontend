@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import authInstance from '../../services/auth.instance';
 import { toast } from 'react-toastify';
+import clientInstance from '../../services/client.instance';
 
 const initialAuthData = {
     screenLoader: false,
     smallLoader: false,
-    otpLoader:false
+    otpLoader:false,
+    countries:[]
    
 }
 
@@ -19,6 +21,11 @@ export const authenticationDataSlice = createSlice({
         },
         setOtpLoader: (state, action) => {
             state.otpLoader = true;
+        },
+
+        setAllCountries: (state, action) => {
+            state.smallLoader = false;
+            state.countries = action.payload;
         },
 
         setSuccessAuthData: (state, action) => {
@@ -36,7 +43,7 @@ export const authenticationDataSlice = createSlice({
     }
 })
 
-export const { setScreenLoader,setLoginUserName , setOtpLoader, setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
+export const { setScreenLoader,setLoginUserName , setAllCountries, setOtpLoader, setFailAuthData, setSuccessAuthData } = authenticationDataSlice.actions
 
 export default authenticationDataSlice.reducer
 
@@ -50,7 +57,7 @@ const ROLES = {
 
 const DASHBOARD_URLS = {
     [ROLES.CLIENT]: '/client/dashboard',
-    [ROLES.DEVELOPER]: '/developer/developer-dashboard',
+    [ROLES.DEVELOPER]: '/developer/dashboard',
     [ROLES.ADMIN]: '/admin/admin-dashboard',
     [ROLES.VENDOR]: '/vendor-dashboard'
 };
@@ -219,6 +226,31 @@ export function resendOtpDispatch(payload, callback) {
             if (result.status === 200) {
                 toast.success(result?.data.message, { position: "top-center" })
                 dispatch(setSuccessAuthData())
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            if (error?.response?.status === 404) {
+                toast.error(error?.response.data.message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            } else {
+                toast.error(message, { position: "top-center" })
+                dispatch(setFailAuthData())
+            }
+
+        }
+    };
+}
+
+
+export function getAllCountries() {
+    return async (dispatch) => {
+
+        dispatch(setOtpLoader())
+        try {
+            let result = await clientInstance.get(`web/countries`)
+            if (result.status === 200) {
+                toast.success(result?.data.message, { position: "top-center" })
+                dispatch(setAllCountries(result.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";

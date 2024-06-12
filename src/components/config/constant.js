@@ -21,7 +21,20 @@ export const DEVELOPER_SIDE_BAR_ITEMS = [
     { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday" },
     { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip" },
 ];
-export const OTHER_OPTIONS  = [
+export const OTHER_OPTIONS_DEVELOPER  = [
+    { to: "https://rexett-support.rvtechnologies.info", icon: <TfiHeadphoneAlt />, text: "Contact Support", external: true },
+    { to: "/developer-faq", icon: <BsFillQuestionCircleFill />, text: "faq" },
+];
+
+export const OTHER_OPTIONS_ADMIN  = [
+    { to: "https://rexett-support.rvtechnologies.info", icon: <TfiHeadphoneAlt />, text: "Contact Support", external: true },
+    { to: "/admin-faq", icon: <BsFillQuestionCircleFill />, text: "faq" },
+];
+export const OTHER_OPTIONS_CLIENT  = [
+    { to: "https://rexett-support.rvtechnologies.info", icon: <TfiHeadphoneAlt />, text: "Contact Support", external: true },
+    { to: "/faq", icon: <BsFillQuestionCircleFill />, text: "faq" },
+];
+export const OTHER_OPTIONS_VENDOR  = [
     { to: "https://rexett-support.rvtechnologies.info", icon: <TfiHeadphoneAlt />, text: "Contact Support", external: true },
     { to: "/developer-faq", icon: <BsFillQuestionCircleFill />, text: "faq" },
 ];

@@ -10,8 +10,9 @@ const PublicLayout = ({ children }) => {
 
   const basePath = pathname.split('-')[0];
   const derivedRole = basePath.split("/")[1];
-  const { privateRoute,publicRoute } = roleConfig[role || derivedRole];
+  const { privateRoute,publicRoute } = roleConfig[role || derivedRole?derivedRole:"client"];
 
+  console.log(basePath,"basePath")
   const redirectPath = role? privateRoute :publicRoute
 
   if (token) {

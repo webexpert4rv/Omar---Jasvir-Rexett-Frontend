@@ -19,7 +19,7 @@ import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { getAllCountries } from "../../../redux/slices/authenticationDataSlice";
 
-const DeveloperRegisterForm = ({ role }) => {
+const Step1 = ({ role }) => {
   const userId = localStorage.getItem("userId");
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
@@ -369,4 +369,4 @@ const DeveloperRegisterForm = ({ role }) => {
     </>
   );
 };
-export default DeveloperRegisterForm;
+export default Step1;

@@ -22,6 +22,7 @@ const PrivateLayout = ({ children }) => {
   } = roleConfig[role || derivedRole];
 
   const redirectPath = role ? privateRoute : publicRoute;
+ console.log(basePath,"basePath")
 
   if (!token || !roleConfig[role]) {
     return <Navigate to={`${redirectPath}`} />;
