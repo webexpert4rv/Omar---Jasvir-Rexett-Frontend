@@ -13,7 +13,7 @@ const AdminSingleJob = () => {
     const navigate = useNavigate();
     const { pathname } = useLocation()
     const dispatch = useDispatch()
-    let id = pathname.split("/")[2]
+    let id = pathname.split("/")[3]
     const [showEndJobModal, setShowEndJobModal] = useState(false);
     const { singleJobListing, suggestedDeveloper, screenLoader, smallLoader} = useSelector(state => state.adminData)
     const [singleJobDescription, setSingleJobDescription] = useState({})
@@ -79,6 +79,19 @@ const AdminSingleJob = () => {
         }
     };
 
+    const returnExperienceFromScreeningQuestions = (screeningQuestions) => {
+        if (screeningQuestions?.length) {
+          const requiredElement = screeningQuestions?.find(
+            (curElem) =>
+              curElem?.question ==
+              "How many years of experience do you currently have?"
+          );
+          if (requiredElement) {
+            return requiredElement?.ideal_answer;
+          }
+        }
+      };
+
     return (
         <>
             <Tabs
@@ -112,10 +125,22 @@ const AdminSingleJob = () => {
                                 <Col md="4">
                                     <h3 className="req-heading">{t("clientName")}</h3>
                                     <p className="req-text">{singleJobDescription?.client?.name}</p>
+
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("experienceRequirements")}</h3>
-                                    <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ") || "Not-mentioned"}</p>
+                                    {/* <p className="req-text">{singleJobDescription?.experience?.split("_").join(" ") || "Not-mentioned"}</p> */}
+                                    <p className={ returnExperienceFromScreeningQuestions(
+                                      singleJobDescription?.screening_questions
+                                    ) ? `req-text` : ""} >
+                                  {singleJobDescription?.screening_questions &&
+                                    returnExperienceFromScreeningQuestions(
+                                      singleJobDescription?.screening_questions
+                                    )}
+                                  {returnExperienceFromScreeningQuestions(
+                                    singleJobDescription?.screening_questions
+                                  ) && " years"}
+                                </p>
                                 </Col>
                                 <Col md="4">
                                     <h3 className="req-heading">{t("contract")}</h3>

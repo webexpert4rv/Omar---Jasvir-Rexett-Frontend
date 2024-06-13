@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
-import Sidebar from '../components/DeveloperSidebar';
-import Navigation from '../components/DeveloperNavigation';
-import { Navigate } from 'react-router-dom';
-import { getToken } from '../helper/utlis';
-const PublicLayout = ({ children }) => {
+import React from "react";
+import { getToken } from "../helper/utlis";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import roleConfig from "../components/config/roleConfig";
 
-    const token=getToken("token")
-    const role=localStorage.getItem("role")
-    return (
-        <>
-              {role!=="client"? children :<Navigate to="/dashboard"/>}
-        </>
-    );
+const PublicLayout = ({ children }) => {
+  const token = getToken("token");
+  let role = localStorage.getItem("role");
+  const { pathname } = useLocation();
+
+  if (!role) {
+    role = "client";
+  }
+
+  const basePath = pathname.split("-")[0];
+  const derivedRole = basePath.split("/")[1];
+  let currentRoute = role || derivedRole;
+  const { privateRoute, publicRoute } = roleConfig[currentRoute];
+  const redirectPath = role ? privateRoute : publicRoute;
+
+  if (token) {
+    return <Navigate to={`${redirectPath}`} />;
+  }
+
+  return <Outlet />;
 };
 
 export default PublicLayout;

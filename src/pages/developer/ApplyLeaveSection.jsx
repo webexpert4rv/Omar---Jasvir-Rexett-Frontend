@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { DateRangePicker } from "react-date-range";; // Adjust import according to your date picker library
 
 
-const ApplyLeaveSection=({ allContracts, handleRange, selectionRange, handleSubmit, onSubmit, smallLoader }) =>{
-  const { register, handleSubmit: useFormSubmit, formState: { errors } } = useForm({});
+const ApplyLeaveSection=({ allContracts, handleRange, selectionRange, onSubmit, smallLoader }) =>{
+  const { register,handleSubmit, formState: { errors } } = useForm({});
   const { t } = useTranslation();
   const [isEdit, setIsEdit] = useState({
     status: false,
@@ -30,7 +30,7 @@ const ApplyLeaveSection=({ allContracts, handleRange, selectionRange, handleSubm
       <Col lg={5}>
         <div className="plan-leave-wrapper">
           <h3 className="section-head border-0 mb-3">Apply Leave</h3>
-          <form onSubmit={useFormSubmit(onSubmit)} noValidate>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="mb-4">
               <Form.Label className="mb-2 font-14">Select Client</Form.Label>
               <Form.Select

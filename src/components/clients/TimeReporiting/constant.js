@@ -17,7 +17,8 @@ function showMonthDates() {
 var dates = showMonthDates();
 
 export function weeklyTimeReports(data, currentPeriod) {
-  if (currentPeriod === "weekly") {
+  console.log(data,"data inside weekly time reports");
+ if (currentPeriod === "weekly") {
      let start_date = new Date(data?.startDate);
      var dayIndex = start_date.getDay();
      let end_date = new Date(data?.end_date);
@@ -204,3 +205,6 @@ export const yearOption = [
   "2018",
   "2017"
 ]
+
+
+export const GOOGLE_AUTOCOMPLETE_API_KEY="AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"

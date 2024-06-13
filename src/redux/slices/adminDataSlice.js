@@ -24,7 +24,11 @@ const initialAdminData = {
     singleClient: {},
     accountDeletionList:{},
     adminClientList : [],
-    timeReportDetails : {}
+    timeReportDetails : {},
+    invoiceDetails:{},
+    developerTimeReport:[],
+    invoiceTotalPage : null,
+    timeReportingDetailTotalPage:null
 }
 
 export const adminDataSlice = createSlice({
@@ -123,20 +127,28 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
             state.accountDeletionList = action.payload
         },
-        setAdminClientList:(state ,action) =>{
+        setAdminClientList:(state ,action) => {
             state.screenLoader = false;
             state.adminClientList = action.payload
         },
         setTimeReportDetails : (state,action) => {
             state.screenLoader = false;
             state.timeReportDetails = action.payload
+            state.timeReportingDetailTotalPage = action?.payload?.pagination?.total_pages
+        },
+        setInvoiceDetails :(state,action) => {
+         state.screenLoader = false;
+         state.invoiceDetails = action.payload
+         state.invoiceTotalPage = action?.payload?.pagination?.total_pages
+        },
+        setDeveloperTimeReport:(state,action) => {
+         state.smallLoader = false;
+         state.developerTimeReport = action.payload;
         }
-
-
     }
 })
 
-export const { setTimeReportDetails, setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -160,6 +172,22 @@ export function adminListClients(page, payload) {
                 dispatch(setFailAdminData())
             }
 
+        }
+    };
+}
+export function getDeveloperTimeReport(developerId,callback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.get(`/common/developer-time-reports?developerId=${developerId}`)
+            if (result.status === 200) {
+                dispatch(setDeveloperTimeReport(result.data?.data[0]))
+                callback(result.data?.data[0])
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
         }
     };
 }
@@ -564,6 +592,7 @@ export function sendRemarkOnTimeReport(payload) {
 }
 
 export function approvedEditAction(payload) {
+    console.log(payload,"payload")
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
@@ -597,6 +626,23 @@ export function getTimeReportsDetails  (clientId,query){
     }
 }
 
+export function getInvoiceDetails (query) {
+    return async(dispatch) => {
+        dispatch(setScreenLoader());
+        try{
+            let result = await clientInstance.get(`/admin/invoices/?${query}`)
+            if(result.status === 200){
+                dispatch(setInvoiceDetails(result?.data?.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+
+    }
+}
+
 export function rejectEditAction(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
@@ -609,6 +655,25 @@ export function rejectEditAction(payload) {
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+export function addToFeature(query,closeModal,data,isFeatured) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {   
+            let result = await clientInstance.put(`/admin/set-featured-and-trusted/${query}`)
+            if (result.status === 200) {
+                toast.success((isFeatured) ?("Added to featured members successfully"):("Removed from featured members successfully"), { position: "top-center" })
+                closeModal();
+                dispatch(setSuccessAdminData())
+                dispatch(allMemberList(data));
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            closeModal();
             dispatch(setFailAdminData())
         }
     };
