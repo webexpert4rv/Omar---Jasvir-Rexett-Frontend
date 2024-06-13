@@ -58,7 +58,7 @@ console.log(screenLoader,"screenloader")
   return (
     <>
       {screenLoader ? <ScreenLoader /> : <>
-        <div className="developers-list job-card ">
+        <div className="developers-list job-card pt-0">
           {data?.length > 0 ? (
             <>
               {data?.map((item, index) => {

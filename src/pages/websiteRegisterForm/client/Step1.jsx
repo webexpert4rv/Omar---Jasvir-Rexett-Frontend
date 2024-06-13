@@ -344,7 +344,6 @@ const Step1 = ({ register, errors, control, setValue, watch }) => {
                   </div>
                 </Col>
               </Row>
-
           )}
         </div>
       </section>
