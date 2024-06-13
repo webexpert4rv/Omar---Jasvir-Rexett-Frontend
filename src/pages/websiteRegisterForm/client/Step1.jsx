@@ -19,17 +19,11 @@ import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { getAllCountries } from "../../../redux/slices/authenticationDataSlice";
 
-const Step1 = ({ role }) => {
+const Step1 = ({ register, errors, control, setValue, watch }) => {
   const userId = localStorage.getItem("userId");
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
-  const {
-    register,
-    setValue,
-    control,
-    handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitting },
-  } = useForm({});
+
   const dispatch = useDispatch();
 
   const [isPassword, setPassword] = useState({
@@ -42,7 +36,6 @@ const Step1 = ({ role }) => {
 
   const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
-  console.log(userProfileDetails, "userProfileDetails");
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -131,7 +124,6 @@ const Step1 = ({ role }) => {
           {screenLoader ? (
             <ScreenLoader />
           ) : (
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <Row className="mb-4">
                 <Col md="6">
                   <div className="inner-form">
@@ -352,27 +344,7 @@ const Step1 = ({ role }) => {
                   </div>
                 </Col>
               </Row>
-              <div className="text-center">
-              <RexettButton
-            type="Submit"
-            text={t("Back")}
-            className="main-btn px-5"
-            variant="transparent"
-            // disabled={currentStep === 0}
-            // onClick={prevStep}
-          />
-  
-          <RexettButton
-            type="Submit"
-            text={t("Continue")}
-            className="main-btn px-5"
-            variant="transparent"
-            // disabled={currentStep === children.length - 1}
-            // onClick={nextStep}
-          />
 
-              </div>
-            </form>
           )}
         </div>
       </section>

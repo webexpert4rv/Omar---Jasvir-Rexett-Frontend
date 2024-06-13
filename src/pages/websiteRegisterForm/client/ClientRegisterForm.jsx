@@ -25,30 +25,93 @@ import Step3 from "./Step3";
 
 const ClientRegisterForm = ({ role }) => {
   const { t } = useTranslation();
-  const [currentStep, setCurrentStep] = useState(0);
-  const methods = useForm();
-  
-  const { handleSubmit, trigger } = methods;
+  const {
+    register,
+    control,
+    reset,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [activeStep, setActiveStep] = useState(2);
 
-  const nextStep = () => {
-    if (currentStep < 1) {
-      setCurrentStep(currentStep + 1);
+
+  const getActiveStepComponent = () => {
+    switch (activeStep) {
+      case 1:
+        return (
+          <Step1
+            register={register}
+            errors={errors}
+            control={control}
+            watch={watch}
+            setValue={setValue}
+          />
+        );
+      case 2:
+        return (
+          <Step2
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+            control={control}
+          />
+        );
+      case 3:
+        return (
+          <Step3
+            register={register}
+            control={control}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+          />
+        );
+        default:
+          return
     }
   };
 
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-  let stepper=[ <Step1/>, <Step2 />,   <Step3/>]
-  let currentStepper=stepper[currentStep]
+  const onSubmit = (stepData) => {
+    console.log(stepData,"stepData")
+  }
+ 
   return (
     <>
-    {currentStepper}
+  <section className="card-box">
+        <div>
+          {false ? (
+            <ScreenLoader />
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            {getActiveStepComponent()}
+         
+            {activeStep !== 1 && (
+                  <RexettButton
+                    type="button"
+                    text="Back"
+                    onClick={() => {
+                      setActiveStep((prev) => prev - 1);
+                    }}
+                    className="main-btn outline-main-btn px-5"
+                    // disabled={smallLoader}
+                    // isLoading={smallLoader}
+                  />
+                )}
+                <RexettButton
+                  type="submit"
+                  text={activeStep < 3 ? "Continue" : t("submit")}
+                  className="main-btn px-5"
+              
+                  // disabled={smallLoader}
+                  // isLoading={smallLoader}
+                />
+            </form>
+          )}
+        </div>
+      </section>
     </>
   );
 };
