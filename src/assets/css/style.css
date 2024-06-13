@@ -2078,6 +2078,7 @@ select.common-field {
     border-radius: 30px;
     font-size: 14px;
     padding: 4px 17px;
+    margin-bottom: 5px;
 }
 
 .closed-job-btn {
@@ -2228,6 +2229,7 @@ select.common-field {
     min-width: 106px;
     text-align: center;
     border-bottom-left-radius: 7px;
+    display: none;
     border-bottom-right-radius: 7px;
 }
 
@@ -2245,6 +2247,7 @@ select.common-field {
     height: 10px;
     background-color: #7a7a7a;
     clip-path: polygon(6% 0%, 94% 0%, 100% 100%, 0% 100%);
+    display: none;
 }
 
 .add-new-job-btn {
@@ -5790,6 +5793,168 @@ input[type="radio"]:checked {
 {
     background-color: #fff;
     color: #5d5d5d;
+}
+.job-tab-detail .job-tabs
+{
+    border-radius: 0px 0px 10px 10px;
+    background-color: #ffff;
+    padding: 0 20px 0;
+    width: 100%;
+}
+.job-tab-detail .job-tabs li .nav-link
+{
+    font-size: 14px;
+    border-radius: 0px;
+    padding: 7px 20px 15px;
+}
+.job-tab-detail .job-tabs li .nav-link.active
+{
+    background: transparent;
+    border-bottom: 1px solid #037563;
+    color: #037563;
+}
+.single-job-card.job-information-wrapper
+{
+    border-radius: 10px 10px 0 0;
+    padding-bottom: 20px;
+    box-shadow: none;
+}
+.table-user-img
+{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    flex: none;
+    border-radius: 50%;
+}
+.interview-details
+{
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background: #f7f7f7;
+    border-radius: 20px;
+}
+.detail-name
+{
+    font-size: 14px;
+    font-weight: 400;
+    color: #505050;
+}
+.detail-info
+{
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+.interview-video
+{
+    width: 100%;
+    height: 300px;
+    border-radius: 20px;
+    object-fit: cover;
+}
+.time-interview
+{
+    white-space: nowrap;
+    font-size: 16px;
+}
+.transript-wrapper
+{
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 17px;
+    max-height: 400px;
+    overflow: auto;
+}
+.transript-wrapper > div
+{
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e1e1e1;
+}
+.transript-wrapper p
+{
+    font-size: 16px;
+}
+.section-subhead
+{
+    font-size: 20px;
+    font-weight: 600;
+}
+.preview-primary-color .preview-color-btn
+{
+    font-size: 14px;
+    background-color: #037563;
+    color: #fff;
+    border-radius: 7px;
+    padding: 7px 14px;
+    pointer-events: none;
+}
+.tabs-preview-color
+{
+    padding: 5px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    background-color: #f7f7f7;
+    border-radius: 7px;
+}
+.tabs-preview-color .preview-tab
+{
+    font-size: 14px;
+    padding: 7px 14px;
+    border-radius: 7px;
+    color: #037563;
+    background-color: transparent;
+    pointer-events: none;
+}
+.tabs-preview-color .preview-tab.active
+{
+    background-color: #037563 !important;
+    color: #fff;
+}
+.preview-sidelink
+{
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+}
+.preview-email-footer
+{
+    padding-bottom: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+    background-color: #2b303a;
+}
+.preview-email-footer p
+{
+    color: #95979c;
+    font-size: 13px;
+    text-align: center;
+}
+.social-listing
+{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.social-listing a
+{
+    font-size: 24px;
+    color: #fff;
+}
+.preview-doc iframe
+{
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+}
+.doc-heading
+{
+    font-size: 20px;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
