@@ -212,7 +212,7 @@ export const route = [
   },
 
   {
-    path: "/client/faq",
+    path: "/faq",
     element: <Faq />,
     private: true,
     isClient: true,
