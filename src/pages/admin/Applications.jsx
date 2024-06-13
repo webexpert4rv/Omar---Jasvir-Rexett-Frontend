@@ -108,9 +108,10 @@ const Applications = () => {
   useEffect(() => {
     let data = {
       page: page,
+      active_tab:currentTab
     };
     dispatch(allApplicationsList(data));
-  }, [page]);
+  }, [page,currentTab]);
 
   useEffect(() => {
     setApplication(allApplications[currentTab]);
@@ -121,6 +122,7 @@ const Applications = () => {
     setApplication(allApplications[key]);
     setArrowActive(null);
     setExpandedRow(null);
+    setPage(1);
   };
 
   const convertToArray = (arr) => {

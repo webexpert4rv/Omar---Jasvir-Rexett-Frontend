@@ -28,7 +28,12 @@ const initialClientData = {
   reconciliationsData:[],
   clientHolidayList:[],
   addHoliday:{},
-  approveDisapprove:{}
+  approveDisapprove:{},
+  timeZones:[],
+  countriesList:[],
+  statesList:[],
+  citiesList:[],
+  timeZone:{},
 };
  
 export const clientDataSlice = createSlice({
@@ -145,9 +150,21 @@ export const clientDataSlice = createSlice({
       },
       setSuggstedDeveloper:(state,action)=>{
         state.smallLoader = false
-      }
-
-
+      },
+      setTimeZones:(state,action)=>{
+       state.timeZones = action.payload;
+       state.screenLoader = false;
+      },
+      setCountriesList:(state,action)=>{
+        state.countriesList = action.payload;
+        state.screenLoader = false;
+      },
+      setStatesList: (state,action)=>{
+        state.statesList = action.payload
+      },
+      setCitiesList:(state,action)=>{
+        state.citiesList = action.payload
+      },
   }
 })
 
@@ -155,7 +172,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const {setStatesList,setCountriesList, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -920,6 +937,60 @@ export function clientDeleteHoliday(id){
     }
   }
 
+}
+
+export function getTimeZoneForCountry(countryCode) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/${countryCode}/timezones`);
+      dispatch(setTimeZones(result?.data?.data?.timezones));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getCoutriesList() {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/`);
+      dispatch(setCountriesList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getStatesList(countryCode) {
+  console.log(countryCode,"country code inside api")
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/${countryCode}/states`);
+      dispatch(setStatesList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getCitiesList(countryCode,stateName) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/${countryCode}/states/${stateName}/cities`);
+      dispatch(setCountriesList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
 }
 
 
