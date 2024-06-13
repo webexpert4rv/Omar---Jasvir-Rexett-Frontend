@@ -37,8 +37,7 @@ describe('Title and Project URL Test', () => {
 
         //Verify the create folder button
         cy.contains('Create Folder')
-
-
+        cy.contains('Upload File')
 
     })
 })
