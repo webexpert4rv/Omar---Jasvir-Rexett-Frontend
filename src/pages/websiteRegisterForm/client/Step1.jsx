@@ -353,14 +353,24 @@ const Step1 = ({ role }) => {
                 </Col>
               </Row>
               <div className="text-center">
-                <RexettButton
-                  type="submit"
-                  text={t("updateProfile")}
-                  className="main-btn px-5"
-                  variant="transparent"
-                  disabled={smallLoader}
-                  isLoading={smallLoader}
-                />
+              <RexettButton
+            type="Submit"
+            text={t("Back")}
+            className="main-btn px-5"
+            variant="transparent"
+            // disabled={currentStep === 0}
+            // onClick={prevStep}
+          />
+  
+          <RexettButton
+            type="Submit"
+            text={t("Continue")}
+            className="main-btn px-5"
+            variant="transparent"
+            // disabled={currentStep === children.length - 1}
+            // onClick={nextStep}
+          />
+
               </div>
             </form>
           )}

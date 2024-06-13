@@ -27,8 +27,56 @@ import {
 } from "../../../redux/slices/adminDataSlice";
 import SingleExperienceCard from "./SingleExperienceCard";
 import ProjectsModal from "../Modals/ProjectModal";
+import { useTourContext } from "../../../crmTour/TourContext";
+import Cookies from 'js-cookie';
+
 
 const SingleDeveloper = ({ data, role }) => {
+
+
+    const { startTour,closeTour } = useTourContext();
+
+    const startAppTour = () => {
+      const steps = [
+        {
+            selector: '#edit',
+            content: <><b>Welcome</b> <br/>  We have Prepared a short product tour to help you get started </>,
+          },
+        {
+          selector: '#edit_1',
+          content: <>Edit The Developer Details </>,
+        },
+        {
+            selector: '#edit_2',
+            content: <>You can create a new skill or add existing skills from the dropdown </>,
+          },
+          {
+            selector: '#edit_3',
+            content: <>Add and Edit the expertise according to you skills </>,
+          },
+          {
+            selector: '#edit_4',
+            content: <>Add and Edit the new project  </>,
+          },
+          {
+            selector: '#edit_5',
+            content: <>Add your Bio details at least in 300 characters </>,
+          },
+          {
+            selector: '#edit_6',
+            content: <>Add your multiple experience details </>,
+          },
+          {
+            selector: '#edit_7',
+            content: <>Add your multiple education details </>,
+          }
+        
+        // Add more steps as needed
+      ];
+      startTour(steps);
+    };
+
+
   const dispatch = useDispatch();
   const { screenLoader,  smallLoader  } = useSelector(
     (state) => state.clientData
@@ -47,6 +95,11 @@ const SingleDeveloper = ({ data, role }) => {
 
   useEffect(() => {
     dispatch(getSkillList());
+    const tourCompletedCookie = Cookies.get('CVtourCompleted');
+    // if (tourCompletedCookie === 'true') {
+        startAppTour()
+    // }
+  
   }, []);
 
 
@@ -132,6 +185,8 @@ const SingleDeveloper = ({ data, role }) => {
         dispatch(getDeveloperDetails(userId));
     };
 
+
+
     return (
         <>
             {screenLoader ? (
@@ -139,6 +194,8 @@ const SingleDeveloper = ({ data, role }) => {
             ) : (
                 <>
                     <section className="overview-cv card-box">
+                    {/* <button className="second-step" onClick={startAppTour}>Start Tour</button> */}
+                      <span id="first-step"></span>
                         <div
                             className={
                                 selectedTemplate === "cv-template1"
@@ -190,6 +247,7 @@ const SingleDeveloper = ({ data, role }) => {
                                         {role !== "client" && (
                                             <div
                                                 className="add_more_section_detail"
+                                                id="edit_1"
                                                 onClick={handleDeveloperDetails}
                                             >
                                                 <MdEditNote size={25} />
@@ -204,6 +262,7 @@ const SingleDeveloper = ({ data, role }) => {
                                             {role !== "client" && (
                                                 <div
                                                     className="add_more_section"
+                                                    id="edit_2"
                                                     onClick={handleShowSkillsModal}
                                                 >
                                                     <MdEditNote size={25} />
@@ -232,6 +291,7 @@ const SingleDeveloper = ({ data, role }) => {
                                             {role !== "client" && (
                                                 <div
                                                     className="add_more_section_education pointer"
+                                                      id="edit_3"
                                                     onClick={handleShowExpertiseModal}
                                                 >
                                                     <MdEditNote size={25} />
@@ -272,6 +332,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                     <div
                                                         className="add_more_section_education pointer"
                                                         onClick={handleProjectModal}
+                                                          id="edit_4"
                                                     >
                                                         <MdEditNote size={25} />
                                                     </div>
@@ -372,6 +433,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                 <div
                                                     className="add_more_section"
                                                     onClick={handleShowSocialMediaModal}
+                                                      
                                                 >
                                                     <MdEditNote size={25} />
                                                 </div>
@@ -418,6 +480,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                     <div
                                                         className="add_more_section"
                                                         onClick={handleShowModal}
+                                                         id="edit_5"
                                                     >
                                                         <MdEditNote size={25} />
                                                     </div>
@@ -458,6 +521,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                 <div
                                                     className="add_more_section"
                                                     onClick={handleShowExperienceModal}
+                                                     id="edit_6"
                                                 >
                                                     <MdEditNote size={25} />
                                                 </div>
@@ -488,6 +552,7 @@ const SingleDeveloper = ({ data, role }) => {
                                                         <div
                                                             className="add_more_section_education pointer"
                                                             onClick={handleShowEducationModal}
+                                                             id="edit_7"
                                                         >
                                                             <MdEditNote size={25} />
                                                         </div>

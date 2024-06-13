@@ -5,14 +5,31 @@ import { FiCheck } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 import NewPermissions from "./Modals/NewPermissions";
+import NewRoles from "./Modals/NewRoles";
+import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
+    const [newRoles, setNewRoles] = useState(false);
+    const [newUser, setNewUser] = useState(false);
     const handleNewPermission = () => {
-        setNewPermissions(newpermission);
+        setNewPermissions(true);
+    }
+    const handleNewUser = () => {
+        setNewUser(true)
+    }
+    const handleNewRoles = () => {
+        setNewRoles(true);
     }
     const handleCloseNewPermission = () => {
         setNewPermissions(false);
+    }
+    const handleCloseNewUser = () => {
+        setNewUser(false)
+    }
+
+    const handleCloseNewRoles = () => {
+        setNewRoles(false);
     }
     const action_application = (
         <Tooltip>The ability to approve or reject new applications is a critical role that ensures only suitable candidates gain access to your platform.</Tooltip>
@@ -85,7 +102,7 @@ const RolesPermission = () => {
                         <Tab.Pane eventKey="all_users" className="py-4">
                             <div>
                                 <div className="d-flex justify-content-end mb-3">
-                                    <Button variant="transparent" className="main-btn font-14">+ New User</Button>
+                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewUser}>+ New User</Button>
                                 </div>
                                 <div className="table-responsive">
                                     <table className="table table-ui-custom">
@@ -178,7 +195,7 @@ const RolesPermission = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex gap-3">
-                                    <Button variant="transparent" className="main-btn font-14">+ New Role</Button>
+                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewRoles} >+ New Role</Button>
                                     <Button variant="transparent" onClick={handleNewPermission} className="main-btn font-14">+ New Permission</Button>
                                 </div>
                             </div>
@@ -854,6 +871,8 @@ const RolesPermission = () => {
                 </Tab.Container>
             </div>
             <NewPermissions show={newpermission} handleClose={handleCloseNewPermission} />
+            <NewRoles show={newRoles} handleClose={handleCloseNewRoles}/>
+            <NewUser show={newUser} handleClose={handleCloseNewUser}/>
         </>
     )
 }
