@@ -6,6 +6,7 @@ import { BsQuestionCircleFill } from "react-icons/bs";
 import companyLogo from "../../../assets/img/aviox-logo.png";
 import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
+import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../../components/clients/TimeReporiting/constant";
 
 
 const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
@@ -146,11 +147,15 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               <Controller
                 name="job_location"
                 className="common-field font-14 p-2"
+                rules={{
+                  required: "Job location is required"
+                }}
                 control={control}
-                render={({ field }) => (
+                render={({ field ,fieldState}) => (
                   <Autocomplete
                     {...field}
-                    apiKey={"AIzaSyDgBFSJ1vRaU0QwJ206OSQiJFrD4aAzkXo"}
+                    errors ={fieldState?.errors}
+                    apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                     debounce={1000}
                     className="common-field font-14 w-100 p-2"
                     autocompletionRequest={
@@ -158,6 +163,9 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                         // componentRestrictions: { country: ["us"] }, // Uncomment to restrict to specific country
                       }
                     }
+                    options={{
+                      types: ["establishment", "geocode"], // Allows searching for places like buildings, landmarks, etc.
+                    }}
                     onPlaceSelected={(place) => {
                       field.onChange(place?.formatted_address);
                     }}
@@ -177,6 +185,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                   />
                 )}
               />
+                {/* {errors && <div style={{ color: "red" }}>{errors.message}</div>} */}
               {errors?.job_location && (
                 <p className="error-message"> {errors.job_location?.message}</p>
               )}

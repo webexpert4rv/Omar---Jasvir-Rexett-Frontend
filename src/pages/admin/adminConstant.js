@@ -1,3 +1,5 @@
+import { Placeholder } from "react-bootstrap";
+
 export const WEEK_FILTER_OPTIONS = [
   { label: "Week 1", value: "Week 1" },
   { label: "Week 2", value: "Week 2" },
@@ -35,6 +37,26 @@ export const PROJECT_FILTER_OPTIONS = [
   { label: "Figma to Ui", value: "Figma to Ui" },
   { label: "Figma to Ui", value: "Figma to Ui" },
 ];
+export const DEVELOPER_NAME_OPTIONS = [
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+  { label: "Rohit Sharma", value: "Rohit Sharma" },
+
+];
+export const INVOICE_STATUS_OPTIONS = [
+  { label: "Paid", value: "Paid" },
+  { label: "Unpaid", value: "Unpaid" },
+  { label: "Reject", value: "Reject" },
+];
+
+// for developer invoice
+export const INVOICE_OPTIONS = [
+  { label: "Paid", value: "paid" },
+  { label: "Rejected", value: "rejected" },
+  { label: "Pending", value: "pending" },
+];
 
 export const TIME_REPORT_DETAIL_PER_PAGE = 10;  
 
@@ -53,6 +75,11 @@ export const ACTIVE_TABS = {
     projects:"projects",
     timeReportingOrInvoicing:"time-reporting"
 }
+
+export const ACTIVE_TABS_2 = {
+  raisedByDevAndVendor:"raise-by-devs",
+  raisedToClients:"raise-to-clients"
+}
 export const  getCurrentMonthYear = () => {
     const date = new Date();
     const options = { month: 'long', year: 'numeric' };
@@ -63,9 +90,9 @@ export const RAISED_TO_CLIENT_COLUMNS = [
   {label:"Project Name", key :"project_name"},
   {label:"Developer Name", key :"developer_name" ,subkey:"profile_image"},
   {label:"Total Hours", key :"total_hours"},
-  {label:"Invoice Month", key :""},
+  {label:"Invoice Month", key :"invoiceMonth"},
   {label:"Associated With", key :"associated_with"},
-  {label:"Invoice Status", key :"invoice_status",isStatus:true},
+  {label:"Invoice Status", key :"invoiceStatus",isStatus:true},
   {label:"Action", key :"invoice"}, 
 ]
 
@@ -73,10 +100,166 @@ export const RAISED_BY_DEVS_COLUMNS = [
   {label:"Developer Name", key :"developer_name" ,subkey:"profile_image"},
   {label:"Project Name", key :"project_name"},
   {label:"Total Hours", key :"total_hours"},
-  {label:"Invoice Month", key :""},
+  {label:"Invoice Month", key :"invoiceMonth"},
   {label:"Associated With", key :"associated_with"},
   {label:"Timesheet", key :"timesheet_status" , isStatus:true},
-  {label:"Invoice Status", key :"invoice_status", isStatus:true},
+  {label:"Invoice Status", key :"invoiceStatus", isStatus:true},
   {label:"Project Status", key :"project_status",isStatus:true},
   {label:"Action", key :"invoice"},
 ]
+
+export const RAISED_BY_DEV_INVOICE_COLUMNS = [
+  {label:"Developer Name", key:"developerName",subKey:"developerProfile"},
+  {label:"Project", key:"projectName"},
+  {label:"Client Name", key:"clientName"},
+  {label:"Total Hours", key:"totalHours"},
+  {label:"Invoice Month", key:"invoiceMonth"},
+  {label:"Associated With", key:"associatedWith"},
+  {label:"Project Status", key:"projectStatus"},
+  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl", isAction:true},
+]
+
+export const RAISED_BY_CLIENT_INVOICE_COLUMNS = [
+  {label:"Client Name", key:"clientName"},
+  {label:"Project", key:"projectName"},
+  {label:"Developer Name", key:"developerName",subKey:"developerProfile"},
+  {label:"Total Hours", key:"totalHours"},
+  {label:"Invoice Month", key:"invoiceMonth"},
+  {label:"Associated With", key:"associatedWith"},
+  {label:"Project Status", key:"projectStatus"},
+  {label:"Action", key :"invoiceStatus",invoiceUrl:"invoiceUrl", isAction:true ,timeSheetStatusKey:"timeSheetStatus",timeSheetUrlkey:"timeSheetUrl"},
+]
+export const TIME_REPORTING_DETAIL_PER_PAGE = 5;
+export const INVOICE_TABS = {
+  raisedByDev:"devVendor",
+  raisedToClients:"client"
+}
+export const INVOICE_PER_PAGE = 5;
+export const CLIENT_NAME_OPTIONS = [
+  {label:"Client 1",value:"client1"},
+  {label:"Client 2",value:"client2"},
+  {label:"Client 3",value:"client3"},
+  {label:"Client 4",value:"client4"},
+  {label:"Client 5",value:"client5"}
+]
+const MEMBERS_STATUS_OPTIONS = [
+  {
+    label: "Approved",
+    value: "approved",
+  },
+  {
+    label: "Rejected",
+    value: "rejected",
+  }
+]
+const ORDER_OPTIONS = [
+  {label:"Ascending",value:"asc"},
+  {label:"Descending",value:"desc"}
+]
+
+export const FILTER_1_FILTER_FIELDS = {
+  selectFilters:[
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Project",
+      key: "projectName",
+      options: PROJECT_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    }
+  ],
+  searchFilter:{key:"developerName",placeholder:"Enter developer name"}
+}
+
+export const FILTER_2_FILTER_FIELDS = {
+  selectFilters:[
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Project",
+      key: "projectName",
+      options: PROJECT_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    }
+  ],
+  searchFilter:{key:"clientName",placeholder:"Enter client name"}
+}
+
+export const TIME_REPORTING_FILTER_FIELDS = {
+  selectFilters:[
+    {
+      filterLabel: "Select Month",
+      key: "month",
+      options: MONTH_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Year",
+      key: "year",
+      options: YEAR_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Select Project",
+      key: "projectName",
+      options: PROJECT_FILTER_OPTIONS,
+    },
+    {
+      filterLabel: "Invoice Status",
+      key: "invoiceStatus",
+      options: INVOICE_OPTIONS,
+    },
+  ],
+  searchFilter:{key:"developerName", placeholder:"Enter developer name"}
+
+}
+
+export const MEMBERS_FILTER_FIELDS = {
+  selectFilters: [
+    {
+      filterLabel: "Select Status",
+      key: "approval_status",
+      options: MEMBERS_STATUS_OPTIONS,
+    },
+    {
+      filterLabel: "Sort by name",
+      key:"order_alphabetically",
+      options:ORDER_OPTIONS,
+      defaultValueRequired:true
+    },
+    {
+      filterLabel: "Select Date",
+      key:"created_at",
+      isDate:true
+    },
+    {
+      filterLabel:"Sort by  created at",
+      key:"order_created_at",
+      options:ORDER_OPTIONS
+      
+    }
+  ],
+  searchFilter: { key: "search", placeholder: "Enter search keywords" },
+};

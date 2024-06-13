@@ -106,7 +106,7 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
                             {errors.name?.message}
                         </p>
                         <Form.Label className="font-14">Position</Form.Label>
-                        <Form.Control name="professional_title" className="common-field" placeholder="Enter your name"
+                        <Form.Control name="professional_title" className="common-field" placeholder="Enter your Position"
                             {...register("professional_title", {
                                 required: {
                                     value: true,

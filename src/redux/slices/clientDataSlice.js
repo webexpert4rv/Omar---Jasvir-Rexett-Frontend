@@ -11,6 +11,7 @@ const initialClientData = {
   smallLoader: false,
   assignedDeveloperList: [],
   invoiceList: [],
+  totalInvoicePages:null,
   clientProfileDetails: {},
   timeReportingData: [],
   folderData: [],
@@ -120,8 +121,9 @@ export const clientDataSlice = createSlice({
           state.screenLoader = false;
       },
       setInvoiceList: (state,action) => {
-          state.invoiceList = action.payload;
+          state.invoiceList = action.payload.data;
           state.screenLoader = false;
+          state.totalInvoicePages = action.payload.pagination.totalPages
       },
       setLeaveClientHistory : (state,action) => {
         state.clientLeaveHistory =  action.payload
@@ -132,6 +134,7 @@ export const clientDataSlice = createSlice({
       },
       setClientHolidayList : (state,action)=>{
         state.clientHolidayList = action.payload
+        state.screenLoader = false
       },
       setAddHoliday:(state,action) => {
         state.addHoliday = action.payload
@@ -178,7 +181,7 @@ export function updateClientProfile(payload, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post("client/update-profile/", {
+      let result = await clientInstance.put("client/update-profile/", {
         ...payload,
       });
       if (result.status === 200) {
@@ -239,7 +242,6 @@ export function getJobPostData(id, callback) {
   };
 }
 
-// ---------------------------------------------------------job post Multi step form api's---------------------------------------------------//
 
 export function timeReporting(payload, role, callback) {
   return async (dispatch) => {
@@ -276,8 +278,8 @@ export function getClientLeaveHistory(payload, callback) {
                
         } catch (error) {
           console.log(error,"error")
-            // const message = error?.response?.data?.message || "Something went wrong";
-            // toast.error(message, { position: "top-center" })
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };
@@ -292,9 +294,9 @@ export function getClientHolidayList() {
              
       } catch (error) {
         console.log(error,"error")
-          // const message = error.message || "Something went wrong";
-          // toast.error(message, { position: "top-center" })
-          // dispatch(setFailClientData())
+          const message = error.message || "Something went wrong";
+          toast.error(message, { position: "top-center" })
+          dispatch(setFailClientData())
       }
   };
 }
@@ -332,7 +334,7 @@ export function getApproveDisapprove(payload, id) {
 }
 export function getClientLeaveStatus(payload) {
     return async (dispatch) => {
-        dispatch(setSmallLoader())
+        dispatch(setApprovedLoader())
         try {
             let result = await clientInstance.post('/common/leave/status',payload)
             if(payload.rejection_reason=== null){
@@ -340,7 +342,7 @@ export function getClientLeaveStatus(payload) {
             }else{
               toast.success("Leave Rejected",{position : "top-center" })
             }
-            dispatch(setActionSuccessFully());
+            dispatch(closeApprovedLoader());
 
         } catch (error) {
             const message = error?.response?.data?.message || "Something went wrong";
@@ -708,10 +710,8 @@ export function getEnableDisableAccount(payload,callback) {
       let result = await clientInstance.post(`/common/enable-disable-user`, {
         ...payload,
       });
-      if(result.status === 200) {
-        // dispatch(closeApprovedLoader());
+        dispatch(closeApprovedLoader());
         callback();
-      }
     } catch (error) {
       console.log(error);
       // const message = error.message || "Something went wrong";
@@ -765,18 +765,17 @@ export function createNewJobCategory(payload, callback) {
 //     }
 // }
 
-export function getInvoice(payload) {
+export function getInvoice(query) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(
-        generateApiUrl(payload, `client/invoices`)
-      );
+      let result = await clientInstance.get(`client/client-invoices?${query}`);
       if (result.status === 200) {
         dispatch(setInvoiceList(result.data));
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
+      dispatch(setFailClientData());
       toast.error(message, { position: "top-center" });
     }
   };
@@ -908,10 +907,12 @@ export function updateClientHoliday(payload , id){
 }
 export function clientDeleteHoliday(id){
   return async(dispatch) =>{
+    dispatch(setSmallLoader())
     try{
       let result =await clientInstance.delete(`/client/delete-public-holiday/${id}`)
       console.log(result,"result")
       toast.success("Holiday is Deleted", { position: "top-center" });
+      dispatch(setActionSuccessFully())
     }catch(error){
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });

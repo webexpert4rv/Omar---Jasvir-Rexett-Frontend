@@ -23,7 +23,7 @@ import {
 } from "../../../redux/slices/developerDataSlice";
 import { getDeveloperDetails } from "../../../redux/slices/clientDataSlice";
 import moment from "moment";
-const TEAM_SIZE_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+const TEAM_SIZE_OPTIONS = [1-10 , 10-50 , 50-100 ,100-200 ];
 
 const createOption = (label) => ({
   label,
