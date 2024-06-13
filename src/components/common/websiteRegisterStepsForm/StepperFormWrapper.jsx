@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import RexettButton from "../../atomic/RexettButton";
+import { useTranslation } from "react-i18next";
+import { useForm,FormProvider } from "react-hook-form";
 
 const StepperFormWrapper = ({ children }) => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
+  const methods = useForm();
+  
+  const { handleSubmit, trigger } = methods;
 
   const nextStep = () => {
     if (currentStep < children.length - 1) {
@@ -14,18 +21,38 @@ const StepperFormWrapper = ({ children }) => {
       setCurrentStep(currentStep - 1);
     }
   };
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <div>
-        
-      <div>{children[currentStep]}</div>
+    
       <div>
-        <button onClick={prevStep} disabled={currentStep === 0}>
-          Continue
-        </button>
-        <button onClick={nextStep} disabled={currentStep === children.length - 1}>
-          Back
-        </button>
+        <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+        <div>{children[currentStep]}</div>
+        <RexettButton
+            type="Submit"
+            text={t("Back")}
+            className="main-btn px-5"
+            variant="transparent"
+            disabled={currentStep === 0}
+            onClick={prevStep}
+          />
+  
+          <RexettButton
+            type="Submit"
+            text={t("Continue")}
+            className="main-btn px-5"
+            variant="transparent"
+            disabled={currentStep === children.length - 1}
+            onClick={nextStep}
+          />
+        </form>
+        </FormProvider>
+    
+     
       </div>
     </div>
   );
