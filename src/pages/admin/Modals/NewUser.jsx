@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-const NewRoles = ({ show, handleClose}) => {
+const NewUser = ({ show, handleClose}) => {
     return(
         <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
             <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
 
             <Modal.Body>
-                <h3 className="popup-heading">New Roles</h3>
+                <h3 className="popup-heading">New User</h3>
                 <Form>
                     <Form.Group className="mb-4">
-                        <Form.Label className="font-14" >Role Name</Form.Label>
-                        <Form.Control className="common-field" placeholder="Enter role name" />
+                        <Form.Label className="font-14" >Email Address</Form.Label>
+                        <Form.Control className="common-field" placeholder="Enter email address name" />
                     </Form.Group>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                        <Button variant="transparent" className="main-btn font-14">Send Invite</Button>
                     </div>
                 </Form>
             </Modal.Body>
         </Modal>
     )
 }
-export default NewRoles;
+export default NewUser;
