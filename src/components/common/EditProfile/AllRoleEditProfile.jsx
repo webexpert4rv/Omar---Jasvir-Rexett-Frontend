@@ -36,6 +36,8 @@ import CommonReactSelect from "../../atomic/CommonReactSelect";
 const AllRoleEditProfile = ({ role }) => {
   const userId = localStorage.getItem("userId");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [twoFactorStatus, setTwoFactorStatus] = useState(false);
   const { allTimeZones, countriesList, statesList, citiesList, timeZones } =
     useSelector((state) => state.clientData);
   const { t } = useTranslation();
@@ -82,20 +84,23 @@ const AllRoleEditProfile = ({ role }) => {
     dispatch(getProfileDetails(subEndPoint));
     dispatch(getCoutriesList());
   }, [dispatch]);
-  useEffect(() => {
-    // setCountryList(countriesList);
-  }, [countriesList]);
 
   useEffect(() => {
     if (watch("country")?.value) {
       dispatch(getStatesList(watch("country")?.value));
       dispatch(getTimeZoneForCountry(watch("country")?.value));
-      if (watch("state")) {
-        dispatch(getCitiesList(watch("country")?.value, watch("state")?.label));
-      }
+      setValue("time_zone", null);
+      setValue("state",null);
+      // setValue("city",null);
     }
-  }, [watch("country"), watch("state")]);
+  }, [watch("country")]);
 
+  useEffect(() => {
+      if(watch("state")?.value) {
+        dispatch(getCitiesList(watch("country")?.value,watch("state")?.label))
+        setValue("city",null)
+      }
+  }, [watch("state")]);
 
   useEffect(() => {
     if (userProfileDetails?.data) {
@@ -107,11 +112,14 @@ const AllRoleEditProfile = ({ role }) => {
       setValue("city", userProfileDetails?.data?.city);
       setValue("country", userProfileDetails?.data?.country);
       setValue("passcode", userProfileDetails?.data?.passcode);
-      setValue("country",userProfileDetails?.data?.country);
-      setValue("city",userProfileDetails?.data?.city);
-      setValue("is_2FA_enabled",userProfileDetails?.data?.is_2FA_enabled);
-      setValue("time_zone",userProfileDetails?.data?.time_zone);
-      setValue("state",userProfileDetails?.data?.state);
+      setValue("country", userProfileDetails?.data?.country);
+      setValue("time_zone", userProfileDetails?.data?.time_zone);
+      setValue("state", userProfileDetails?.data?.state);
+      if (userProfileDetails?.data?.is_2FA_enabled) {
+        setValue("is_2FA_enabled", userProfileDetails?.data?.is_2FA_enabled);
+      } else {
+        setValue("is_2FA_enabled", false);
+      }
     }
   }, [userProfileDetails]);
 
@@ -130,11 +138,12 @@ const AllRoleEditProfile = ({ role }) => {
       let data = {
         ...values,
         user_id: userId,
-        country: values?.country?.label,
-        state: values?.state?.label,
-        time_zone: values?.time_zone?.label,
+        // country: values?.country?.label,
+        // state: values?.state?.label,
+        // time_zone: values?.time_zone?.label,
         // city :values?.city?.label
       };
+      console.log(data, "payload");
       dispatch(updateDeveloperProfile(data));
     } else {
       dispatch(
@@ -143,11 +152,12 @@ const AllRoleEditProfile = ({ role }) => {
             ...values,
             profile_picture: url,
             user_id: userId,
-            country: values?.country?.label,
-            state: values?.state?.label,
-            time_zone: values?.time_zone?.label,
+            // country: values?.country?.label,
+            // state: values?.state?.label,
+            // time_zone: values?.time_zone?.label,
             // city :values?.city?.label
           };
+          console.log(data, "payload");
           dispatch(updateDeveloperProfile(data));
           // dispatch(updateAdminProfile(formData))
           // dispatch(updateClientProfile(data));
@@ -179,8 +189,17 @@ const AllRoleEditProfile = ({ role }) => {
       reader.readAsDataURL(file);
     }
   };
-  console.log(watch("state"), "state form value");
-
+  const toggleConfirmationModal = (e) => {
+    const { checked } = e?.target;
+    setShowConfirmationModal(!showConfirmationModal);
+    setTwoFactorStatus(checked);
+  };
+  const closeConfirmationModal = () => setShowConfirmationModal(false);
+  const handleTwoFaAction = () => {
+    setValue("is_2FA_enabled", twoFactorStatus);
+    closeConfirmationModal();
+  };
+  console.log(countriesList, " country options inside main componet");
   return (
     <>
       <div>
@@ -257,7 +276,8 @@ const AllRoleEditProfile = ({ role }) => {
                     onChange={(e) => {
                       setValue("address", e.target.value);
                     }}
-                    options={{ types: ["establishment", "geocode"] }}r
+                    options={{ types: ["establishment", "geocode"] }}
+                    r
                   />
                   <CommonAutocomplete
                     label={t("address") + " 2"}
@@ -297,7 +317,7 @@ const AllRoleEditProfile = ({ role }) => {
                   <CommonReactSelect
                     name="country"
                     errors={errors}
-                    watch={watch}
+                    // watch={watch}
                     control={control}
                     required="Country is required"
                     label="Country"
@@ -343,7 +363,7 @@ const AllRoleEditProfile = ({ role }) => {
                         message: "Postcode should only contain numbers",
                       },
                     }}
-                    error={errors.passcode} 
+                    error={errors.passcode}
                   />
                   {/* <CommonInput
                     label={t("country") + "*"}
@@ -369,7 +389,7 @@ const AllRoleEditProfile = ({ role }) => {
                     onChange={(e) => handleFileChange(e)}
                     accept="image/*"
                   />
-                  
+
                   <Form.Label
                     htmlFor="developer-image"
                     className="upload-image-label d-block"
@@ -391,21 +411,29 @@ const AllRoleEditProfile = ({ role }) => {
                 </div>
               </Col>
               <Col md="6">
-              <Form.Group className="mb-3">
+                <Form.Group className="mb-3">
                   <Form.Label className="common-label">
-                    {" "}
                     Enable Two Factor Authentication
                   </Form.Label>
                   {/* <Form.Control> */}
                   <div class="form-check form-switch toggle-switch-wrapper">
-                    <input
-                      {...register("is_2FA_enabled", {
-                        required: "This Field is required",
-                      })}
-                      disabled={true}
-                      class="form-check-input toggle-switch-custom"
-                      type="checkbox"
-                      role="switch"
+                    <Controller
+                      name="is_2FA_enabled"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          onChange={(e) => {
+                            toggleConfirmationModal(e);
+                          }}
+                          checked={
+                            watch("is_2FA_enabled") === true ? true : false
+                          }
+                          class="form-check-input toggle-switch-custom"
+                          type="checkbox"
+                          role="switch"
+                        />
+                      )}
                     />
                   </div>
                   {/* </Form.Control> */}
@@ -432,6 +460,17 @@ const AllRoleEditProfile = ({ role }) => {
         smallLoader={smallLoader}
         text={"Are you sure, you want to disable your account"}
       />
+      {showConfirmationModal && (
+        <ConfirmationModal
+          show={showConfirmationModal}
+          handleClose={closeConfirmationModal}
+          handleAction={handleTwoFaAction}
+          smallLoader={smallLoader}
+          text={`Are you sure, you want to ${
+            twoFactorStatus ? "enable" : "disable"
+          } two factor authentication`}
+        />
+      )}
     </>
   );
 };

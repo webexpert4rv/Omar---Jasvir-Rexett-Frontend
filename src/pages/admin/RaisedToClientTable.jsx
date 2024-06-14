@@ -162,7 +162,7 @@ const RaisedToClientTable = ({
                                 Pay Invoice
                               </Button>
                             )} */}
-                            {curData?.invoice ? (
+                            {curData?.invoiceUrl ? (
                               curData?.invoiceStatus === "approved" ? (
                                 <OverlayTrigger
                                   placement="bottom"

@@ -11,6 +11,7 @@ const CommonReactSelect = ({ control, name, errors, options, required ,label,typ
     const formattedOptions = convertCountriesForSelect(options,type);
     setFormattedOptions(formattedOptions);
   },[options]);
+  console.log(options,"options inside common component")
 //   const convertCountries = useCallback(convertCountriesForSelect, [options])
   return (
      <Form.Group className="mb-3">
