@@ -1,7 +1,8 @@
 // Import the login function from the login.js file
 import { login } from './LoginClient.cy.js'
 
-describe('Other Test File', () => {
+
+describe('Edit Profile Test File', () => {
     beforeEach(() => {
         // Load the login page before each test
         cy.visit('http://localhost:3000/')
@@ -34,7 +35,7 @@ describe('Other Test File', () => {
 
         //Submit button to update the profile
         cy.contains('button', 'Update Profile').should('be.visible');
-        
+
         cy.contains('button','Update Profile').click()
         
     })

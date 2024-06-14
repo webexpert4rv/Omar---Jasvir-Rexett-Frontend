@@ -9,7 +9,18 @@ describe('Other Test File', () => {
 
   it('should navigate to the dashboard after successful login', () => {
     // Perform login using the imported function
-    login("damini@avioxtechnologies.com", "Damini@1234")
+    login("pankajClient@yopmail.com", "Pankaj@0987")
+
+    cy.url().should('eq','http://localhost:3000/otp')
+    const mockOtp = '8485';
+
+    // Fill the OTP fields
+    cy.get('.otpInput').each((element, index) => {
+      cy.wrap(element).type(mockOtp[index]);
+    });
+
+    cy.get('form').submit();
+
 
     // Verify redirection to the dashboard after successful login
     cy.url().should('eq', 'http://localhost:3000/client/dashboard')
@@ -50,7 +61,7 @@ describe('Other Test File', () => {
     cy.get('table thead tr th').eq(1).should('contain.text', 'Designation');
     cy.get('table thead tr th').eq(2).should('contain.text', 'Email');
 
-    
+
   })
 
 

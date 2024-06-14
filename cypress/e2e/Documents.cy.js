@@ -39,5 +39,15 @@ describe('Title and Project URL Test', () => {
         cy.contains('Create Folder')
         cy.contains('Upload File')
 
+        //Verify the nav document button
+        cy.contains('button','+').click()
+
+        //Verify job post form heading 
+        cy.contains('h5', 'Job post step 1')
+
+        //Verify inputs of job post page 
+        cy.get("input[placeholder='Enter Job Name']")
+        cy.get("input[placeholder='Enter Company Name']")
+        
     })
 })

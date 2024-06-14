@@ -1,90 +1,160 @@
 
+
+// // Define a common function for login
+// const login = (email, password) => {
+//   // Ensure email and password fields are visible and enter login credentials
+//   cy.get("input[name='email']").should('be.visible').type(email)
+//   cy.get('input[name="password"]').should('be.visible').type(password)
+//   cy.get('button[type="submit"]').should('be.visible').click()
+//   // cy.get('.form').submit()
+// }
+
+// export { login };
+
 // describe('Login Page', () => {
-//     it('should navigate to the login page and log in successfully', () => {
-//       // Visit the URL
-//       cy.visit('http://localhost:3000/')
-  
-//       // Verify the login form is present
-//       cy.get("input[name='email']").should('be.visible')
-//       cy.get('input[name="password"]').should('be.visible')
-  
-//       // Enter email and password
-//       cy.get("input[name='email']").type("damini@avioxtechnologies.com")
-//       cy.get('input[name="password"]').type("Damini@1234")
-  
-//       // Click the submit button
-//       cy.get('button[type="submit"]').should('be.visible').click()
-  
-//       // Verify that the user is redirected to the correct page after login
-//       cy.url().should('eq', 'http://localhost:3000/client/dashboard')
-
-//       cy.get('h2.section-head', { timeout: 10000 }).should('be.visible').and('contain', 'Overview') // Adjust the expected text as necessary
-//     })
-
-
-
-  
-//     it('should display an error message with invalid credentials', () => {
-//       // Visit the URL
-//       cy.visit('http://localhost:3000/')
-  
-//       // Verify the login form is present
-//       cy.get("input[name='email']").should('be.visible')
-//       cy.get('input[name="password"]').should('be.visible')
-  
-//       // Enter invalid email and password
-//       cy.get("input[name='email']").type("invalid@domain.com")
-//       cy.get('input[name="password"]').type("InvalidPassword")
-  
-//       // Click the submit button
-//       cy.get('button[type="submit"]').should('be.visible').click()
-  
-//       // Verify that an error message is displayed
-//       cy.get('.error-message')
-//     })
-    
+//   beforeEach(() => {
+//     // Load the login page before each test
+//     cy.visit('http://localhost:3000/')
 //   })
 
+//   it('should navigate to the dashboard after successful login', () => {
+//     // Perform login
+//     login("pankajClient@yopmail.com", "Pankaj@0987")
+//     // login("damini@avioxtechnologies.com", "Damini@1234")
+
+//     // cy.url().should('eq','http://localhost:3000/otp')
+//     // const mockOtp = '1234';
+
+//     // // Fill the OTP fields
+//     // cy.get('.otpInput').each((element, index) => {
+//     //   cy.wrap(element).type(mockOtp[index]);
+//     // });
+
+//     // cy.get('form').submit();
+
+//     // Verify redirection to the dashboard after successful login
+//     cy.url().should('eq', 'http://localhost:3000/client/dashboard')
+
+//     // Ensure the Overview section is visible after login
+//     cy.get('h2.section-head', { timeout: 10000 }).should('be.visible').and('contain', 'Overview')
+//   })
+
+//   it('should display an error message with invalid credentials', () => {
+//     // Perform invalid login
+//     login("invalid@domain.com", "InvalidPassword")
+
+//     // Verify error message is displayed for invalid credentials
+//     cy.get('.error-message')
+//   })
+// })
+
+
+// import 'cypress-iframe';
+
+// // Define a common function for login
+// const login = (email, password) => {
+//   cy.get("input[name='email']").should('be.visible').type(email)
+//   cy.get('input[name="password"]').should('be.visible').type(password)
+//   cy.get('button[type="submit"]').should('be.visible').click()
+// }
+
+// const yopmailTestEmail = 'pankajClient'; 
+// const baseUrl = 'http://localhost:3000'; 
+
+// describe('Login Page', () => {
+//   beforeEach(() => {
+//     // Load the login page before each test
+//     cy.visit(`${baseUrl}/`)
+//   })
+
+//   it('should navigate to the dashboard after successful login', () => {
+//     // Perform login
+//     login("pankajClient@yopmail.com", "Pankaj@0987")
+//     // login("damini@avioxtechnologies.com", "Damini@1234")
+
+
+//     cy.url().should('include', '/otp');
+
+
+  
+//   })
+
+// })
 
 
 
 
+
+
+
+
+
+
+import 'cypress-iframe';
 
 // Define a common function for login
 const login = (email, password) => {
-  // Ensure email and password fields are visible and enter login credentials
   cy.get("input[name='email']").should('be.visible').type(email)
   cy.get('input[name="password"]').should('be.visible').type(password)
   cy.get('button[type="submit"]').should('be.visible').click()
 }
 
-export { login };
+const baseUrl = 'http://localhost:3000';
 
 describe('Login Page', () => {
-  beforeEach(() => {
-    // Load the login page before each test
-    cy.visit('http://localhost:3000/')
-  })
+  // beforeEach(() => {
+  //   // Load the login page before each test
+  //   cy.visit(`${baseUrl}/`);
+  // });
 
   it('should navigate to the dashboard after successful login', () => {
+    cy.visit('http://localhost:3000')
     // Perform login
-    login("damini@avioxtechnologies.com", "Damini@1234")
+    login("Sourav@avioxtechnologies.com", "Sourabrana@3908"); 
 
-    // Verify redirection to the dashboard after successful login
-    cy.url().should('eq', 'http://localhost:3000/client/dashboard')
+    // Wait for the OTP page to load
+    cy.url().should('include', '/otp');
 
-    // Ensure the Overview section is visible after login
-    cy.get('h2.section-head', { timeout: 10000 }).should('be.visible').and('contain', 'Overview')
-  })
+    // Fetch the OTP email from Gmail
+    cy.task('fetchOtp').then((otp) => {
+      // Enter the OTP code into the input fields
+      cy.get('.otpInput').each((element, index) => {
+        cy.wrap(element).type(otp[index]);
+      });
 
-  it('should display an error message with invalid credentials', () => {
-    // Perform invalid login
-    login("invalid@domain.com", "InvalidPassword")
+      // Submit the form
+      cy.get('form').submit();
 
-    // Verify error message is displayed for invalid credentials
-    cy.get('.error-message')
-  })
-})
+      // Verify redirection to the dashboard after successful login
+      cy.url().should('eq', `${baseUrl}/client/dashboard`);
+
+      // Ensure the Overview section is visible after login
+      cy.get('h2.section-head', { timeout: 10000 }).should('be.visible').and('contain', 'Overview');
+    });
+  });
+
+
+  // it('should display an error message with invalid credentials', () => {
+  //   cy.visit('http://localhost:3000/client/dashboard')
+  // //   // Perform invalid login
+  // //   login("invalid@domain.com", "InvalidPassword");
+
+  // //   // Verify error message is displayed for invalid credentials
+  // //   cy.get('.error-message', { timeout: 10000 }).should('be.visible');
+  // });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
