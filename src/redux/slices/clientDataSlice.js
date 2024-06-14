@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import clientInstance from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
+import axios from "axios";
+import authInstance from "../../services/auth.instance";
 
 const initialClientData = {
 
@@ -34,6 +36,8 @@ const initialClientData = {
   statesList:[],
   citiesList:[],
   timeZone:{},
+  webClientData:{},
+  clientLook:{}
 };
  
 export const clientDataSlice = createSlice({
@@ -58,6 +62,16 @@ export const clientDataSlice = createSlice({
           state.assignedDeveloperList = action.payload
           state.screenLoader = false;
       },
+
+      setClientLook: (state, action) => {
+        state.clientLook = action.payload
+        state.screenLoader = false;
+    },
+
+      setWebClientData: (state, action) => {
+        state.webClientData = action.payload
+        state.screenLoader = false;
+    },
 
       setFailClientData: (state, action) => {
           state.smallLoader = false;
@@ -172,7 +186,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const {setStatesList,setCountriesList, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const {setStatesList,setCountriesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -939,6 +953,9 @@ export function clientDeleteHoliday(id){
 
 }
 
+
+// --------------------------------website API------------------------------------------
+
 export function getTimeZoneForCountry(countryCode) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
@@ -985,6 +1002,63 @@ export function getCitiesList(countryCode,stateName) {
     try {
       let result = await clientInstance.get(`web/countries/${countryCode}/states/${stateName}/cities`);
       dispatch(setCountriesList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+
+export function getWebsiteSkills(countryCode,stateName) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.get(`web/skills`);
+      dispatch(setSkillList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function getWebClientData(countryCode,stateName) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.get(`web/get-client-data?user_id=${1}`);
+      dispatch(setWebClientData(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function getWebClientLookUp() {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.get(`web/get-lookups`);
+      dispatch(setClientLook(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function applyAsClient(payload) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.post(`web/apply-as-client`,{...payload});
+      // dispatch(setClientLook(result?.data?.data));
     } catch (error) {
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });

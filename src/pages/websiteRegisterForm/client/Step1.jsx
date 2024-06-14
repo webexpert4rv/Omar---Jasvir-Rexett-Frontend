@@ -19,10 +19,11 @@ import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { getAllCountries } from "../../../redux/slices/authenticationDataSlice";
 
-const Step1 = ({ register, errors, control, setValue, watch }) => {
+const Step1 = ({ register, errors, control, setValue, watch,headingData }) => {
   const userId = localStorage.getItem("userId");
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
+
 
   const dispatch = useDispatch();
 
@@ -111,14 +112,12 @@ const Step1 = ({ register, errors, control, setValue, watch }) => {
     <>
       <section className="card-box">
         <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
-          <h2 className="section-head-sub mb-0 border-0">
-            Add your Contact Details We are a Global tech talent and solutions
-            provider. Join our platform and take advantage of the opportunity to
-            enhance your talent acquisition journey with Rexett, all while
-            enjoying significant savings of up to 72% on hiring staff. Join the
-            ranks of over 100 satisfied clients who have chosen to partner with
-            Rexett.
+          <h2>
+           {headingData.h1}
           </h2>
+          <p>
+           {headingData.para}
+          </p>
         </div>
         <div>
           {screenLoader ? (
@@ -169,7 +168,7 @@ const Step1 = ({ register, errors, control, setValue, watch }) => {
                         },
                       }}
                       error={errors.email}
-                      readOnly
+                      // readOnly
                     />
                     <CommonInput
                       label={t("Password")}

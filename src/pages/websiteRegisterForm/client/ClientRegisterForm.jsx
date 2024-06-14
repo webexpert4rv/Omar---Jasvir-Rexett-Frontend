@@ -22,6 +22,13 @@ import StepperFormWrapper from "../../../components/common/websiteRegisterStepsF
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import { getCurrentStepper } from "./constant";
+import {
+  applyAsClient,
+  getWebClientData,
+  getWebClientLookUp,
+  getWebsiteSkills,
+} from "../../../redux/slices/clientDataSlice";
 
 const ClientRegisterForm = ({ role }) => {
   const { t } = useTranslation();
@@ -34,8 +41,26 @@ const ClientRegisterForm = ({ role }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
+  const dispatch = useDispatch();
+  const { skillList, clientLook } = useSelector((state) => state.clientData);
 
+  let { data, name, inputType, headingData, label } =
+    getCurrentStepper(activeStep);
+
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title };
+  });
+
+  const labelAndValue = clientLook[name]?.map((item) => {
+    return { value: item.slug, label: item.name };
+  });
+
+  useEffect(() => {
+    dispatch(getWebsiteSkills());
+    dispatch(getWebClientData());
+    dispatch(getWebClientLookUp());
+  }, [dispatch]);
 
   const getActiveStepComponent = () => {
     switch (activeStep) {
@@ -47,9 +72,14 @@ const ClientRegisterForm = ({ role }) => {
             control={control}
             watch={watch}
             setValue={setValue}
+            headingData={headingData}
           />
         );
       case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
         return (
           <Step2
             register={register}
@@ -57,57 +87,84 @@ const ClientRegisterForm = ({ role }) => {
             watch={watch}
             setValue={setValue}
             control={control}
+            stepperData={labelAndValue}
+            name={name}
+            inputType={inputType}
+            selectOptions={skillListMapped}
+            headingData={headingData}
+            label={label}
           />
         );
-      case 3:
+      case 7:
+      case 8:
         return (
           <Step3
             register={register}
-            control={control}
             errors={errors}
+            control={control}
             watch={watch}
             setValue={setValue}
+            name={name}
+            headingData={headingData}
           />
         );
-        default:
-          return
+      default:
+        return;
     }
   };
 
   const onSubmit = (stepData) => {
-    console.log(stepData,"stepData")
-  }
- 
+    console.log(stepData,"ddd")
+
+   let data= {
+      "name": "himanshu",
+      "email": "ram@yopmail.com",
+      "phone_number": "9410514319",
+      "country_code": "45",
+      "password": "Pankaj@0987",
+      "client_type": "individual",
+      "company_logo": "",
+      "company_name": "",
+      "company_tax_id": "",
+      "company_address": "",
+      "company_type": "",
+      "time_zone": "Asia/Kabul"
+    }
+    dispatch(applyAsClient(data))
+  };
+
   return (
     <>
-  <section className="card-box">
+      <section className="card-box">
         <div>
           {false ? (
             <ScreenLoader />
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            {getActiveStepComponent()}
-         
-            {activeStep !== 1 && (
-                  <RexettButton
-                    type="button"
-                    text="Back"
-                    onClick={() => {
-                      setActiveStep((prev) => prev - 1);
-                    }}
-                    className="main-btn outline-main-btn px-5"
-                    // disabled={smallLoader}
-                    // isLoading={smallLoader}
-                  />
-                )}
+              {getActiveStepComponent()}
+
+              {activeStep !== 1 && (
                 <RexettButton
-                  type="submit"
-                  text={activeStep < 3 ? "Continue" : t("submit")}
-                  className="main-btn px-5"
-              
+                  type="button"
+                  text="Back"
+                  onClick={() => {
+                    setActiveStep((prev) => prev - 1);
+                  }}
+                  className="main-btn outline-main-btn px-5"
                   // disabled={smallLoader}
                   // isLoading={smallLoader}
                 />
+              )}
+              <RexettButton
+                type="submit"
+                text={activeStep < 3 ? "Continue" : t("submit")}
+                className="main-btn px-5"
+                // onClick={() => {
+                //   setActiveStep((prev) => prev + 1);
+                // }}
+                // disabled={smallLoader}
+                // isLoading={smallLoader}
+              />
             </form>
           )}
         </div>
