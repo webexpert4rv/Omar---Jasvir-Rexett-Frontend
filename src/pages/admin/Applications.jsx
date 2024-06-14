@@ -36,6 +36,7 @@ import { FiRotateCw } from "react-icons/fi";
 import CryptoJS from "crypto-js";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 import { APPLICANT_FILTER_FIELDS } from "./adminConstant";
+import RexettSpinner from "../../components/atomic/RexettSpinner";
 
 const SECRET_KEY = "abcfuipqw222";
 
@@ -74,9 +75,8 @@ const Applications = () => {
   const targetRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { allApplications, approvedLoader, screenLoader } = useSelector(
-    (state) => state.adminData
-  );
+  const { allApplications, approvedLoader, screenLoader, smallLoader } =
+    useSelector((state) => state.adminData);
   const [search, setSearch] = useState("");
   const [timerValue, setTimerValue] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
@@ -86,13 +86,14 @@ const Applications = () => {
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
   const [page, setPage] = useState(1);
+  const [loadingRow, setLoadingRow] = useState(null);
   const { t } = useTranslation();
   const [showScreening, setScreeningShow] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
     order_alphabetically: "asc",
     order_created_at: "",
-    approval_status: "",
+    approval_status: "",  
     created_at: "",
   });
 
@@ -129,7 +130,7 @@ const Applications = () => {
   }, [allApplications]);
 
   const handleSelect = (key) => {
-    setCurrentTab(key);
+    setCurrentTab(key); 
     setApplication(allApplications[key]);
     setArrowActive(null);
     setExpandedRow(null);
@@ -194,8 +195,13 @@ const Applications = () => {
     setTimerValue(timer);
   };
   const rescheduleText = <Tooltip>Reschedule</Tooltip>;
-
-  const redirectToWebsiteForm = (currentUser, id) => {
+  
+  const redirectToWebsiteForm = (
+    currentUser,
+    id,
+    verificationReminderCount
+  ) => {
+    setLoadingRow(id);
     const encrypted = encrypt(id);
     const baseUrls = {
       developer: process.env.REACT_APP_DEVELOPER,
@@ -204,16 +210,27 @@ const Applications = () => {
     };
 
     const url = baseUrls[currentUser];
-    // if (url) {
-    //   window.open(`${url}?user_id=${encrypted}`, "_blank");
-    // } else {
-    //   console.error("Invalid user type");
-    // }
-   let payload= {
-      "user_id": id,
-      "link": `${url}?user_id=${encrypted}`,
+    let payload = {
+      user_id: id,
+      link: `${url}?user_id=${encrypted}`,
+    };
+
+    if (verificationReminderCount < 2) {
+      const data = {
+        page:page,
+        active_tab:currentTab,
+        ...filters
+      }
+      dispatch(sendMailForCompleteProfile(payload ,data)).finally(() =>
+        setLoadingRow(null)
+      );
+    } else {
+      if (url) {
+        window.open(`${url}?user_id=${encrypted}`, "_blank");
+      } else {
+        console.error("Invalid user type");
+      }
     }
-    dispatch(sendMailForCompleteProfile(payload))
   };
 
   return (
@@ -247,7 +264,8 @@ const Applications = () => {
             />
             <Tab.Container
               id="left-tabs-example"
-              defaultActiveKey="clients"
+              // defaultActiveKey="clients"
+              activeKey={currentTab}
               onSelect={handleSelect}
             >
               <Nav variant="pills" className="application-pills">
@@ -402,17 +420,26 @@ const Applications = () => {
                                         <div className="d-flex gap-3">
                                           <div
                                             onClick={() =>
+                                              !smallLoader &&
                                               redirectToWebsiteForm(
                                                 "client",
-                                                item?.id
+                                                item?.id,
+                                                item?.verification_reminder_count
                                               )
                                             }
                                           >
                                             <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              Complete Your Profile{" "}
+                                              {smallLoader
+                                                ? item.id === loadingRow && (
+                                                    <RexettSpinner />
+                                                  )
+                                                : item?.verification_reminder_count <
+                                                  2
+                                                ? "Send Email"
+                                                : "Complete Your Profile"}{" "}
                                               <FiExternalLink />
                                             </span>
-                                          </div>{" "}
+                                          </div>
                                         </div>
                                       )}
                                     </td>
@@ -756,16 +783,20 @@ const Applications = () => {
                                           <div
                                             onClick={() =>
                                               redirectToWebsiteForm(
-                                                "vendor",
-                                                item?.id
+                                                "client",
+                                                item?.id,
+                                                item?.verification_reminder_count
                                               )
                                             }
                                           >
                                             <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              Complete Your Profile{" "}
+                                              {item?.verification_reminder_count <
+                                              2
+                                                ? "Send Email"
+                                                : "Complete Your Profile"}{" "}
                                               <FiExternalLink />
                                             </span>
-                                          </div>{" "}
+                                          </div>
                                         </div>
                                       )}
                                     </td>
@@ -1233,16 +1264,20 @@ const Applications = () => {
                                           <div
                                             onClick={() =>
                                               redirectToWebsiteForm(
-                                                "developer",
-                                                item?.id
+                                                "client",
+                                                item?.id,
+                                                item?.verification_reminder_count
                                               )
                                             }
                                           >
                                             <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              Complete Your Profile{" "}
+                                              {item?.verification_reminder_count <
+                                              2
+                                                ? "Send Email"
+                                                : "Complete Your Profile"}{" "}
                                               <FiExternalLink />
                                             </span>
-                                          </div>{" "}
+                                          </div>
                                         </div>
                                       )}
                                     </td>

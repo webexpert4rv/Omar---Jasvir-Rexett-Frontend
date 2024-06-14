@@ -1,4 +1,4 @@
-export const step1keys = ["title","job_location","company_name","job_type","contract_type"];
+export const step1keys = ["title","job_location","company_name","job_type","contract_type","job_positions"];
 export const step2keys = ["skills","description","optional_skills"];
 export const step3keys = ["screening_questions","qualification_filter_out"];
 export const getActiveStepKeys = (activeStep) => {

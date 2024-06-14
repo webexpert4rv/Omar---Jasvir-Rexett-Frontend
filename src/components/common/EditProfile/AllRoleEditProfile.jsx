@@ -90,16 +90,16 @@ const AllRoleEditProfile = ({ role }) => {
       dispatch(getStatesList(watch("country")?.value));
       dispatch(getTimeZoneForCountry(watch("country")?.value));
       setValue("time_zone", null);
-      setValue("state",null);
+      setValue("state", null);
       // setValue("city",null);
     }
   }, [watch("country")]);
 
   useEffect(() => {
-      if(watch("state")?.value) {
-        dispatch(getCitiesList(watch("country")?.value,watch("state")?.label))
-        setValue("city",null)
-      }
+    if (watch("state")?.value) {
+      dispatch(getCitiesList(watch("country")?.value, watch("state")?.label));
+      setValue("city", null);
+    }
   }, [watch("state")]);
 
   useEffect(() => {
@@ -126,7 +126,6 @@ const AllRoleEditProfile = ({ role }) => {
   const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
 
   const onSubmit = (values) => {
-    console.log(values, "values");
     let formData = new FormData();
     let fileData = new FormData();
     for (const key in values) {
@@ -143,7 +142,6 @@ const AllRoleEditProfile = ({ role }) => {
         // time_zone: values?.time_zone?.label,
         // city :values?.city?.label
       };
-      console.log(data, "payload");
       dispatch(updateDeveloperProfile(data));
     } else {
       dispatch(
@@ -157,7 +155,6 @@ const AllRoleEditProfile = ({ role }) => {
             // time_zone: values?.time_zone?.label,
             // city :values?.city?.label
           };
-          console.log(data, "payload");
           dispatch(updateDeveloperProfile(data));
           // dispatch(updateAdminProfile(formData))
           // dispatch(updateClientProfile(data));
@@ -199,7 +196,6 @@ const AllRoleEditProfile = ({ role }) => {
     setValue("is_2FA_enabled", twoFactorStatus);
     closeConfirmationModal();
   };
-  console.log(countriesList, " country options inside main componet");
   return (
     <>
       <div>
@@ -287,7 +283,6 @@ const AllRoleEditProfile = ({ role }) => {
                     error={errors.address_2}
                     apiKey={GOOGLE_MAP_API_KEY}
                     onPlaceSelected={(place) => {
-                      console.log(place);
                       setValue("address_2", place.formatted_address);
                     }}
                     onChange={(e) => {
@@ -380,16 +375,16 @@ const AllRoleEditProfile = ({ role }) => {
                     error={errors.country}
                   /> */}
 
-                  <CommonInput
+                  {/* <CommonInput
                     label={t("image") + "*"}
                     name="profile_picture"
                     type="file"
-                    control={control}
+                    control={control} 
                     rules={{ required: false }}
                     onChange={(e) => handleFileChange(e)}
                     accept="image/*"
-                  />
-
+                  /> */}
+                  <Form.Label>Image*</Form.Label>
                   <Form.Label
                     htmlFor="developer-image"
                     className="upload-image-label d-block"
@@ -397,6 +392,22 @@ const AllRoleEditProfile = ({ role }) => {
                     <HiUpload />
                     {t("uploadImage")}
                   </Form.Label>
+                  <Controller
+                    name="profile_picture"
+                    control={control}
+                    rules={{ required: false }}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        id="developer-image"
+                        className="visually-hidden common-field"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleFileChange(e)}
+
+                      />
+                    )}
+                  />
                   <div>
                     <img
                       src={

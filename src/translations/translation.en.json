@@ -19,6 +19,7 @@
         "updateProfile": "Update Profile",
         "filter": "Filter",
         "invoice":"Invoice",
+        "jobPositions":"Number of positions available for the job",
         "search": "Search",
         "selectCategory": "Select Category",
         "selectFileType": "Select File Type",
