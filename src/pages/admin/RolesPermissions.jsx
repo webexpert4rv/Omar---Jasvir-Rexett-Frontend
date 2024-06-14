@@ -210,7 +210,7 @@ const RolesPermission = () => {
                                             <th>Support Assistance</th>
                                             <th>Accountant</th>
                                             <th>HR</th>
-                                            <th>Assistance</th>
+                                            <th>Interviewer</th>
                                         </tr>
                                     </thead>
                                     <tbody>

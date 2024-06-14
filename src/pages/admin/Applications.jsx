@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   adminApproveReject,
   allApplicationsList,
+  sendMailForCompleteProfile,
 } from "../../redux/slices/adminDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
@@ -203,11 +204,16 @@ const Applications = () => {
     };
 
     const url = baseUrls[currentUser];
-    if (url) {
-      window.open(`${url}?user_id=${encrypted}`, "_blank");
-    } else {
-      console.error("Invalid user type");
+    // if (url) {
+    //   window.open(`${url}?user_id=${encrypted}`, "_blank");
+    // } else {
+    //   console.error("Invalid user type");
+    // }
+   let payload= {
+      "user_id": id,
+      "link": `${url}?user_id=${encrypted}`,
     }
+    dispatch(sendMailForCompleteProfile(payload))
   };
 
   return (

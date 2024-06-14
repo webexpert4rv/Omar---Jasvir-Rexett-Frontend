@@ -743,7 +743,7 @@ const AdminDashboard = () => {
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h2 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h2>
                     {adminDashboard?.data?.assignedDevelopers.length > 0 ? <div className="text-center mt-3">
-                        <Link to={"/developer-list"} className="link-text-dark">{t("seeAll")}</Link>
+                        <Link to={"/admin/developer-list"} className="link-text-dark">{t("seeAll")}</Link>
                     </div> : ""}
                 </div>
                 <div className="developers-list mb-4">
