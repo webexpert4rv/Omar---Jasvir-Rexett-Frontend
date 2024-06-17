@@ -46,7 +46,6 @@ let STATUS = [
   },
 ];
 
-
 const Members = () => {
   const dispatch = useDispatch();
   const { allApplications, approvedLoader, screenLoader, smallLoader } =
@@ -63,15 +62,20 @@ const Members = () => {
     userId: null,
     isFeaturedMember: false,
   });
+  const [showTrustedModal, setShowTrustedModal] = useState(false);
+  const [trustedModalDetails, setTrustedModalDetails] = useState({
+    userId: null,
+    isTrustedTech: false,
+  });
   const [searchText, setSearchText] = useState("");
   const [searchFilter, setSearchFilter] = useState("");
   const [sortByOption, setSortByOption] = useState("");
   const [filters, setFilters] = useState({
     search: "",
     order_alphabetically: "asc",
-    order_created_at:"",
+    order_created_at: "",
     approval_status: "",
-    created_at:"",
+    created_at: "",
   });
 
   const [page, setPage] = useState(1);
@@ -91,6 +95,16 @@ const Members = () => {
     });
   };
 
+  const handleIsTrustedTech = (e, userId) => {
+    e.stopPropagation();
+    const { checked } = e.target;
+    setShowTrustedModal(!showTrustedModal);
+    setTrustedModalDetails({
+      userId: userId,
+      isTrustedTech: checked,
+    });
+  };
+
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
     setArrowActive(index == arrowactive ? null : index);
@@ -106,13 +120,13 @@ const Members = () => {
   // }, [page, currentTab, search, searchFilter]);
 
   useEffect(() => {
-   const queryFilters = {
-    ...filters,
-    page:page,
-    active_tab:currentTab
-   }
+    const queryFilters = {
+      ...filters,
+      page: page,
+      active_tab: currentTab,
+    };
     dispatch(allMemberList(queryFilters));
-},[filters,page,currentTab])
+  }, [filters, page, currentTab]);
 
   useEffect(() => {
     if (allApplications[currentTab]?.length > 0) {
@@ -171,6 +185,13 @@ const Members = () => {
     <Tooltip id="tooltip">Remove from featured members</Tooltip>
   );
 
+  const addToTrustedTech = () => (
+    <Tooltip id="tooltip">Add to trusted tech expert </Tooltip>
+  );
+  const removeFromTrustedTech = () => (
+    <Tooltip id="tooltip">Remove from trusted tech expert </Tooltip>
+  );
+
   const handleToggle = (e, item) => {
     e.stopPropagation();
     setShowModal(!showModal);
@@ -209,11 +230,19 @@ const Members = () => {
   const handleRedirect = (id) => {
     navigate(`/admin-single-developer/${id}`);
   };
-  const getFeatureText = () => {
-    if (featureModalDetails?.isFeaturedMember) {
-      return "Are you sure you want to add this developer to featured members";
+  const getFeatureText = (type) => {
+    if (type === "featuredMember") {
+      if (featureModalDetails?.isFeaturedMember) {
+        return "Are you sure you want to add this developer to featured members";
+      } else {
+        return "Are you sure you want to remove this developer from featured members";
+      }
     } else {
-      return "Are you sure you want to remove this developer from featured members";
+      if (trustedModalDetails?.isTrustedTech) {
+        return "Are you sure you want to add this developer to trusted tech expert";
+      } else {
+        return "Are you sure you want to remove this developer from trusted tech expert";
+      }
     }
   };
   const handleAddToFeature = () => {
@@ -223,13 +252,49 @@ const Members = () => {
       active_tab: currentTab,
     };
     const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`;
-    dispatch(addToFeature(query, handleCloseFeature, data,featureModalDetails?.isFeaturedMember));
+    const toastMessage = featureModalDetails?.isFeaturedMember
+    ? "Developer added to featured members successfully"
+    : "Developer removed to featured members successfully";
+    dispatch(
+      addToFeature(
+        query,
+        handleCloseFeature,
+        data,
+        toastMessage
+      )
+    );
   };
+  const handleAddToTrustedTech = () => {
+    let data = {
+      ...filters,
+      page: page,
+      active_tab: currentTab,
+    };
+    const query = `${trustedModalDetails?.userId}?isTrustedTechExpert=${trustedModalDetails?.isTrustedTech}`;
+    const toastMessage = trustedModalDetails?.isTrustedTech
+      ? "Developer added to trusted tech expert successfully"
+      : "Developer removed from trusted tech expert successfully";
+    dispatch(
+      addToFeature(
+        query,
+        handleCloseTrustedModal,
+        data,
+        toastMessage
+      )
+    );
+  };
+
   const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal);
- 
+  const handleCloseTrustedModal = () => setShowTrustedModal(!showTrustedModal);
+
   return (
     <>
-      <CommonFilterSection filters={filters} setFilters={setFilters} filterFields={MEMBERS_FILTER_FIELDS} text={t("members")} />
+      <CommonFilterSection
+        filters={filters}
+        setFilters={setFilters}
+        filterFields={MEMBERS_FILTER_FIELDS}
+        text={t("members")}
+      />
       {/* <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
         <h2 className="section-head border-0 mb-0 pb-0">{t("members")}</h2>
         <div className="d-flex gap-3">
@@ -1046,6 +1111,7 @@ const Members = () => {
                       <th>{t("status")}</th>
                       <th>Enable/Disable</th>
                       <th>Featured On Website</th>
+                      <th>Trusted Tech Expert</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1141,6 +1207,28 @@ const Members = () => {
                                         checked={item?.featured_member}
                                         onClick={(e) =>
                                           handleFeature(e, item.id)
+                                        }
+                                      />
+                                    </div>
+                                  </OverlayTrigger>
+                                </td>
+                                <td>
+                                  <OverlayTrigger
+                                    placement="bottom"
+                                    overlay={
+                                      item?.trusted_tech_expert
+                                        ? removeFromTrustedTech
+                                        : addToTrustedTech
+                                    }
+                                  >
+                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                      <input
+                                        class="form-check-input toggle-switch-custom pointer"
+                                        type="checkbox"
+                                        role="switch"
+                                        checked={item?.trusted_tech_expert}
+                                        onClick={(e) =>
+                                          handleIsTrustedTech(e, item.id)
                                         }
                                       />
                                     </div>
@@ -1446,8 +1534,17 @@ const Members = () => {
             show={showFeatureModal}
             handleClose={handleCloseFeature}
             smallLoader={smallLoader}
-            text={getFeatureText()}
+            text={getFeatureText("featuredMember")}
             handleAction={handleAddToFeature}
+          />
+        )}
+        {showTrustedModal && (
+          <ConfirmationModal
+            show={showTrustedModal}
+            handleClose={handleCloseTrustedModal}
+            smallLoader={smallLoader}
+            text={getFeatureText()}
+            handleAction={handleAddToTrustedTech}
           />
         )}
       </div>

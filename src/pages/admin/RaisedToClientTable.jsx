@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { getDeveloperTimeReport } from "../../redux/slices/adminDataSlice";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
+import InvoicePaidModal from "./Modals/InvoicePaid";
 
 const RaisedToClientTable = ({
   columns,
@@ -30,6 +31,9 @@ const RaisedToClientTable = ({
   const [expandedRow, setExpandedRow] = useState(null);
   const [iconActive, setIconActive] = useState(null);
   const dispatch = useDispatch();
+  const [showInvoicePaidModal, setShowInvoicePaidModal] = useState(false);
+  const toggleInvoicePaidModal = () =>
+    setShowInvoicePaidModal(!showInvoicePaidModal);
   useEffect(() => {
     // dispatch(timeReporting({}, "developer"));
   }, []);
@@ -125,7 +129,7 @@ const RaisedToClientTable = ({
                           </td>
                         ) : key === "invoice" ? (
                           <td>
-                            {curData?.invoice ? (
+                            {/* {curData?.invoice ? (
                               // true or may be paid
                               curData?.invoice_status === true ? (
                                 <OverlayTrigger
@@ -141,23 +145,51 @@ const RaisedToClientTable = ({
                                   </Button>
                                 </OverlayTrigger>
                               ) : (
-                                curData?.invoice_status === false && (
+                                curData?.invoiceStatus === "pending" && (
                                   <Button
                                     disabled
                                     className="main-btn px-3 py-1 font-14"
                                   >
-                                    Invoice Raised
+                                    Pay Invoice
                                   </Button>
                                 )
                               )
                             ) : (
                               <Button
                                 className="main-btn px-3 py-1 font-14"
-                                onClick={() => {
-                                  handleRaiseInvoice();
-                                }}
+                                 onClick={toggleInvoicePaidModal}
                               >
-                                Raise Invoice
+                                Pay Invoice
+                              </Button>
+                            )} */}
+                            {curData?.invoiceUrl ? (
+                              curData?.invoiceStatus === "approved" ? (
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  overlay={downloadinvoice}
+                                >
+                                  <Button
+                                    variant="transparent"
+                                    className="arrow-btn primary-arrow"
+                                    onClick={handleDownload}
+                                  >
+                                    <HiDownload />
+                                  </Button>
+                                </OverlayTrigger>
+                              ) : (
+                                <Button
+                                  className="main-btn px-3 py-1 font-14"
+                                  onClick={toggleInvoicePaidModal}
+                                >
+                                  Pay Invoice
+                                </Button>
+                              )
+                            ) : (
+                              <Button
+                                className="main-btn px-3 py-1 font-14"
+                                disabled
+                              >
+                                Pay Invoice
                               </Button>
                             )}
                           </td>
@@ -175,7 +207,11 @@ const RaisedToClientTable = ({
                               </span>
                               <OverlayTrigger
                                 placement="bottom"
-                                overlay={(iconActive === rowIdx) ? closetimesheet :viewtimesheet}
+                                overlay={
+                                  iconActive === rowIdx
+                                    ? closetimesheet
+                                    : viewtimesheet
+                                }
                               >
                                 <Button
                                   onClick={() => {
@@ -353,7 +389,9 @@ const RaisedToClientTable = ({
                               )}
                               <td className="time-table-data">
                                 {expandedRow?.item?.totalDuration > 0
-                                  ? expandedRow?.item?.totalDuration.toFixed("2")
+                                  ? expandedRow?.item?.totalDuration.toFixed(
+                                      "2"
+                                    )
                                   : expandedRow?.item?.totalDuration}
                                 hr
                               </td>
@@ -444,6 +482,12 @@ const RaisedToClientTable = ({
         </div>
       ) : (
         ""
+      )}
+      {showInvoicePaidModal && (
+        <InvoicePaidModal
+          show={showInvoicePaidModal}
+          handleClose={toggleInvoicePaidModal}
+        />
       )}
     </>
   );

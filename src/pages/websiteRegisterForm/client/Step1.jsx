@@ -19,17 +19,12 @@ import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { getAllCountries } from "../../../redux/slices/authenticationDataSlice";
 
-const Step1 = ({ role }) => {
+const Step1 = ({ register, errors, control, setValue, watch,headingData }) => {
   const userId = localStorage.getItem("userId");
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
-  const {
-    register,
-    setValue,
-    control,
-    handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitting },
-  } = useForm({});
+
+
   const dispatch = useDispatch();
 
   const [isPassword, setPassword] = useState({
@@ -42,7 +37,6 @@ const Step1 = ({ role }) => {
 
   const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
-  console.log(userProfileDetails, "userProfileDetails");
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -118,20 +112,17 @@ const Step1 = ({ role }) => {
     <>
       <section className="card-box">
         <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
-          <h2 className="section-head-sub mb-0 border-0">
-            Add your Contact Details We are a Global tech talent and solutions
-            provider. Join our platform and take advantage of the opportunity to
-            enhance your talent acquisition journey with Rexett, all while
-            enjoying significant savings of up to 72% on hiring staff. Join the
-            ranks of over 100 satisfied clients who have chosen to partner with
-            Rexett.
+          <h2>
+           {headingData.h1}
           </h2>
+          <p>
+           {headingData.para}
+          </p>
         </div>
         <div>
           {screenLoader ? (
             <ScreenLoader />
           ) : (
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <Row className="mb-4">
                 <Col md="6">
                   <div className="inner-form">
@@ -177,7 +168,7 @@ const Step1 = ({ role }) => {
                         },
                       }}
                       error={errors.email}
-                      readOnly
+                      // readOnly
                     />
                     <CommonInput
                       label={t("Password")}
@@ -352,27 +343,6 @@ const Step1 = ({ role }) => {
                   </div>
                 </Col>
               </Row>
-              <div className="text-center">
-              <RexettButton
-            type="Submit"
-            text={t("Back")}
-            className="main-btn px-5"
-            variant="transparent"
-            // disabled={currentStep === 0}
-            // onClick={prevStep}
-          />
-  
-          <RexettButton
-            type="Submit"
-            text={t("Continue")}
-            className="main-btn px-5"
-            variant="transparent"
-            // disabled={currentStep === children.length - 1}
-            // onClick={nextStep}
-          />
-
-              </div>
-            </form>
           )}
         </div>
       </section>

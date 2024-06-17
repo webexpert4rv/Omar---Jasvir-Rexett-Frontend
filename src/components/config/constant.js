@@ -10,6 +10,7 @@ import { GiPalmTree } from "react-icons/gi";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { PiCoinsFill, PiUsersFourFill, PiUsersThreeFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
+import { IoIosLaptop } from "react-icons/io";
 
 
 export const DEVELOPER_SIDE_BAR_ITEMS = [
@@ -59,6 +60,7 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
     { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images" },
     { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting" },
+    // { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
     { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice" },
     { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Roles & Permissions" },
     { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration" },
