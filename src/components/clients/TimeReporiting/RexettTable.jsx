@@ -416,14 +416,12 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                     );
                   })
                 ) : (
-                  <td colSpan={17}>
-                    <NoDataFound />
-                  </td>
+                  <td colSpan={17}> <div className="simple-no-data"><NoDataFound /></div>  </td>
                 )}
               </tbody>
             </table>
           ) : (
-            <NoDataFound />
+            <td colSpan={10}> <div className="simple-no-data"><NoDataFound /></div>  </td>
           )}
         </div>
         <Offcanvas

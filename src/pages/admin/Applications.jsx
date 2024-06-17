@@ -428,17 +428,17 @@ const Applications = () => {
                                               )
                                             }
                                           >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              {smallLoader
-                                                ? item.id === loadingRow && (
-                                                    <RexettSpinner />
-                                                  )
-                                                : item?.verification_reminder_count <
-                                                  2
-                                                ? "Send Email"
-                                                : "Complete Your Profile"}{" "}
-                                              <FiExternalLink />
-                                            </span>
+                                          <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          {item.id === loadingRow
+                                            ?  smallLoader && (
+                                                <RexettSpinner />
+                                              )
+                                            : item?.verification_reminder_count <
+                                              2
+                                            ? "Send Email"
+                                            : "Complete Your Profile"}{" "}
+                                          <FiExternalLink />
+                                        </span>
                                           </div>
                                         </div>
                                       )}
@@ -782,6 +782,7 @@ const Applications = () => {
                                         <div className="d-flex gap-3">
                                           <div
                                             onClick={() =>
+                                               !smallLoader &&
                                               redirectToWebsiteForm(
                                                 "vendor",
                                                 item?.id,
@@ -789,9 +790,13 @@ const Applications = () => {
                                               )
                                             }
                                           >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              {item?.verification_reminder_count <
-                                              2
+                                         <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                              {item.id === loadingRow
+                                                ?  smallLoader && (
+                                                    <RexettSpinner />
+                                                  )
+                                                : item?.verification_reminder_count <
+                                                  2
                                                 ? "Send Email"
                                                 : "Complete Your Profile"}{" "}
                                               <FiExternalLink />
@@ -1263,6 +1268,7 @@ const Applications = () => {
                                         <div className="d-flex gap-3">
                                           <div
                                             onClick={() =>
+                                               !smallLoader &&
                                               redirectToWebsiteForm(
                                                 "developer",
                                                 item?.id,
@@ -1270,9 +1276,13 @@ const Applications = () => {
                                               )
                                             }
                                           >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              {item?.verification_reminder_count <
-                                              2
+                                           <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                              {item.id === loadingRow
+                                                ?  smallLoader && (
+                                                    <RexettSpinner />
+                                                  )
+                                                : item?.verification_reminder_count <
+                                                  2
                                                 ? "Send Email"
                                                 : "Complete Your Profile"}{" "}
                                               <FiExternalLink />

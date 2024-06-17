@@ -221,7 +221,7 @@ export function updateProfileDetails(payload, UpdateRolesEndpoint) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.put(UpdateRolesEndpoint, {
+      let result = await clientInstance.post(UpdateRolesEndpoint, {
         ...payload,
       });
       if (result.status === 200) {
