@@ -74,20 +74,9 @@
 
 
 //     cy.url().should('include', '/otp');
-
-
-  
+ 
 //   })
-
 // })
-
-
-
-
-
-
-
-
 
 
 import 'cypress-iframe';
@@ -116,11 +105,9 @@ describe('Login Page', () => {
     cy.url().should('include', '/otp');
 
     // Fetch the OTP email from Gmail
-    cy.task('fetchOtp').then((otp) => {
-      // Enter the OTP code into the input fields
-      cy.get('.otpInput').each((element, index) => {
-        cy.wrap(element).type(otp[index]);
-      });
+    cy.task('getOtp').then((otp) => {
+      cy.get('#otp-input').type(otp); 
+    
 
       // Submit the form
       cy.get('form').submit();
