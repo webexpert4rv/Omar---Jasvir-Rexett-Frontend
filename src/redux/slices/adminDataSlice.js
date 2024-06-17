@@ -679,7 +679,7 @@ export function addToFeature(query,closeModal,data,toastMessage) {
     };
 }
 
-export function sendMailForCompleteProfile(payload) {
+export function sendMailForCompleteProfile(payload,data) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
@@ -687,6 +687,7 @@ export function sendMailForCompleteProfile(payload) {
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
+                dispatch(allApplicationsList(data))
             }
         } catch (error) {
             const message = error?.response.data.message || "Something went wrong";

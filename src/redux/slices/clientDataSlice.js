@@ -1001,7 +1001,7 @@ export function getCitiesList(countryCode,stateName) {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`web/countries/${countryCode}/states/${stateName}/cities`);
-      dispatch(setCountriesList(result?.data?.data));
+      dispatch(setCitiesList(result?.data?.data));
     } catch (error) {
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });

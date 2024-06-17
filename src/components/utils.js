@@ -6,8 +6,8 @@ export const convertCountriesForSelect = (options,type) => {
             return {label:timezone , value:timezone}
         });
     } else {
-         formattedCountryOptions = options?.map(({name,code,countryCode}) => {
-            return {label:name , value:type === "country" ? code : countryCode}
+         formattedCountryOptions = options?.map(({name,code,isoCode}) => {
+            return {label:name , value:type === "country" ? code : isoCode}
         });
     }
     return formattedCountryOptions
