@@ -783,7 +783,7 @@ const Applications = () => {
                                           <div
                                             onClick={() =>
                                               redirectToWebsiteForm(
-                                                "client",
+                                                "vendor",
                                                 item?.id,
                                                 item?.verification_reminder_count
                                               )
@@ -1264,7 +1264,7 @@ const Applications = () => {
                                           <div
                                             onClick={() =>
                                               redirectToWebsiteForm(
-                                                "client",
+                                                "developer",
                                                 item?.id,
                                                 item?.verification_reminder_count
                                               )

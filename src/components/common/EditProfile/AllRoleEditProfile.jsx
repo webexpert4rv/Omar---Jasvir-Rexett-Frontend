@@ -18,20 +18,23 @@ import {
   getEnableDisableAccount,
   getStatesList,
   getTimeZoneForCountry,
+  updateClientProfile,
 } from "../../../redux/slices/clientDataSlice";
 import {
   getProfileDetails,
   updateDeveloperProfile,
+  updateProfileDetails,
 } from "../../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import RexettButton from "../../atomic/RexettButton";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import CommonInput from "../../atomic/CommonInput";
 import CommonAutocomplete from "../../atomic/CommonAutoComplete";
-import { getCurrentRoleEndPoint } from "./helper";
+import { getCurrentRoleEndPoint, updateCurrentRoleEndPoint } from "./helper";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import CommonReactSelect from "../../atomic/CommonReactSelect";
+import { updateAdminProfile } from "../../../redux/slices/adminDataSlice";
 
 const AllRoleEditProfile = ({ role }) => {
   const userId = localStorage.getItem("userId");
@@ -123,9 +126,9 @@ const AllRoleEditProfile = ({ role }) => {
     }
   }, [userProfileDetails]);
 
-  const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
 
   const onSubmit = (values) => {
+   let currentRoleUpdateProfile= updateCurrentRoleEndPoint(role)
     let formData = new FormData();
     let fileData = new FormData();
     for (const key in values) {
@@ -142,7 +145,9 @@ const AllRoleEditProfile = ({ role }) => {
         // time_zone: values?.time_zone?.label,
         // city :values?.city?.label
       };
-      dispatch(updateDeveloperProfile(data));
+      // dispatch(updateDeveloperProfile(data));
+      // dispatch(updateAdminProfile(data))
+      dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
     } else {
       dispatch(
         filePreassignedUrlGenerate(fileData, (url) => {
@@ -155,9 +160,10 @@ const AllRoleEditProfile = ({ role }) => {
             // time_zone: values?.time_zone?.label,
             // city :values?.city?.label
           };
-          dispatch(updateDeveloperProfile(data));
-          // dispatch(updateAdminProfile(formData))
+          // dispatch(updateDeveloperProfile(data));
+          // dispatch(updateAdminProfile(data))
           // dispatch(updateClientProfile(data));
+          dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
         })
       );
     }
