@@ -196,7 +196,6 @@ export function developerAssignList(payload) {
       let result = await clientInstance.get(
         `client/assigned-developers?page=${payload}`
       );
-      console.log(result.data.data, "result");
       if (result.status === 200) {
         dispatch(setAssignDeveloperList(result?.data?.data));
       }
@@ -309,8 +308,8 @@ export function getClientLeaveHistory(payload, callback) {
                
         } catch (error) {
           console.log(error,"error")
-            const message = error?.response?.data?.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response?.data?.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };

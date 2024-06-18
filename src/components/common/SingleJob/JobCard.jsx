@@ -205,7 +205,6 @@ console.log(screenLoader,"screenloader")
             </>
           ) : (
             <div>
-              {" "}
               <NoDataFound data="No developer found" />
             </div>
           )}

@@ -16,6 +16,7 @@ const ListOfHolidays = ({
   handleAproveDisapprove,
   approvedLoader,
   selectedIndex,
+  selectedRejectIndex
 }) => {
   const [data, setData] = useState();
   const [yearData, setYearData] = useState();
@@ -26,6 +27,8 @@ const ListOfHolidays = ({
 
   console.log(holidayList, "holidaylist");
   console.log(data, "data");
+  console.log(selectedIndex,"selectedindex")
+  console.log(selectedRejectIndex,"selectedRejectindex")
 
   useEffect(() => {
     const yearDetails = holidayList?.filter(
@@ -113,7 +116,7 @@ const ListOfHolidays = ({
             </thead>
             <tbody>
               {data?.length > 0 ? (
-                role === "developer" ? (
+                role === "developer"  ? (
                   FilteredDeveloperData?.map((field, idx) => (
                     <>
                       <tr key={idx}>
@@ -152,14 +155,19 @@ const ListOfHolidays = ({
                               <div>
                                 <h6>Approved</h6>
                               </div>
-                            ) : (
+                            ) : holiday?.is_approved_by_client === false  ? (
+                              <div>
+                              <h6>Disapproved</h6>
+                            </div>
+                            ) :(
                               <div>
                                 <div className="d-flex gap-2">
                                   <ToolTip text="Approve">
                                     <RexettButton
                                       variant="transparent"
                                       className="px-3 arrow-btn primary-arrow font-16 text-decoration-none"
-                                      icon = {selectedIndex == index ? <RexettSpinner/> : <IoCheckmark />}
+                                      isLoading={selectedIndex == index    ?  approvedLoader : false  }   
+                                      icon = {selectedIndex == index ? approvedLoader : <IoCheckmark />}
                                       onClick={() =>
                                         handleAproveDisapprove(
                                           holiday?.id,
@@ -172,9 +180,12 @@ const ListOfHolidays = ({
                                     </RexettButton>
                                   </ToolTip>
                                   <ToolTip text="Disapprove">
-                                    <Button
+                                    <RexettButton
                                       variant="transparent"
                                       className="px-3 arrow-btn danger-arrow font-16 text-decoration-none"
+                                     isLoading={selectedRejectIndex  == index   ?  approvedLoader : false }
+                                      // disabled={selectedRejectIndex == index  ? approvedLoader : <IoCloseOutline /> }
+                                      icon = {selectedRejectIndex == index ? approvedLoader : <IoCloseOutline />}
                                       onClick={() =>
                                         handleAproveDisapprove(
                                           holiday?.id,
@@ -183,8 +194,9 @@ const ListOfHolidays = ({
                                         )
                                       } 
                                     >
-                                      <IoCloseOutline />
-                                    </Button>
+                                      
+                                      
+                                    </RexettButton>
                                   </ToolTip>
                                 </div>
                               </div>
