@@ -5,6 +5,11 @@ import companyEmailLogoImg from '../../assets/img/rexett-logo.png';
 import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import favIconImgLogo from '../../assets/img/favicon.png'
+import { FaFacebookF } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram } from "react-icons/fa";
+import { FaLinkedinIn } from "react-icons/fa";
+import { Link } from "react-router-dom";
 const Customization = () => {
     const [selectedColorType, setSelectedColorType] = useState('gradient-sidecolor');
     const [companyLogo, setCompanyLogo] = useState(null);
@@ -183,11 +188,6 @@ const Customization = () => {
                                                         )}
                                                         <div className="skeleton-bar dark w-75"></div>
                                                     </div>
-                                                    {favIconPreviewUrl && (
-                                                        <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveFavIcon}>
-                                                            &times;
-                                                        </Button>
-                                                    )}
                                                 </div>
                                             </div>
                                             <div className="web-controls">
@@ -202,7 +202,7 @@ const Customization = () => {
                                             <h3 className="main-customization-heading mb-3">Color Scheme</h3>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Sidebar Background Color</h3>
                                             <p className="customization-text">Customizing the sidebar background color allows you to align the appearance of our platform with your brand's visual identity.</p>
@@ -263,7 +263,30 @@ const Customization = () => {
                                             )}
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <div className="preview-company-wrapper">
+                                            <div className="position-relative">
+                                                <div className="preview-sidebar">
+                                                    <div>
+                                                        {previewUrl ? (
+                                                            <img src={previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
+                                                        ) : (
+                                                            <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
+                                                        )}
+                                                    </div>
+                                                    <div className="skeleton-container mt-4">
+                                                        {[...Array(4)].map((_, index) => (
+                                                            <div key={index} className="mb-3 d-flex align-items-center gap-3">
+                                                                <div className="skeleton-circle"></div>
+                                                                <div className="skeleton-bar"></div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Sidebar Link Color</h3>
                                             <p className="customization-text">Choosing a distinctive and readable color for your sidebar links helps users easily identify and interact with menu items.</p>
@@ -275,7 +298,30 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <div className="preview-company-wrapper">
+                                            <div className="position-relative">
+                                                <div className="preview-sidebar">
+                                                    <div>
+                                                        {previewUrl ? (
+                                                            <img src={previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
+                                                        ) : (
+                                                            <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
+                                                        )}
+                                                    </div>
+                                                    <div className="skeleton-container mt-4">
+                                                        {[...Array(4)].map((_, index) => (
+                                                            <div key={index} className="mb-3 d-flex align-items-center gap-3">
+                                                                <div className="skeleton-circle"></div>
+                                                                <p className="preview-sidelink mb-0">Link {index + 1}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Primary Color</h3>
                                             <p className="customization-text">This Primary color will be used for key elements such as buttons, links, highlights and tabs ensuring a consistent and visually appealing interface.</p>
@@ -287,7 +333,19 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <div className="preview-primary-color">
+                                            <div className="mb-3">
+                                                <Button variant="transparent" className="preview-color-btn">Button</Button>
+                                            </div>
+                                            <div className="tabs-preview-color">
+                                                <Button variant="transparent" className="preview-tab active">Tab 1</Button>
+                                                <Button variant="transparent" className="preview-tab">Tab 2</Button>
+                                                <Button variant="transparent" className="preview-tab">Tab 3</Button>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Heading Color</h3>
                                             <p className="customization-text">The heading color is a crucial aspect of your site's design, as it affects the readability and visual impact of your content.</p>
@@ -299,7 +357,10 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <h2 className="preview-heading-color">Heading</h2>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Body text Color</h3>
                                             <p className="customization-text">Choose a color that provides good contrast with your background to ensure your content is easy to read and visually appealing.</p>
@@ -311,12 +372,15 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
+                                    <Col md={6} className="mb-4">
+                                        <p className="preview-text-color">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                    </Col>
                                     <Col md={12} className="mb-2">
                                         <div>
                                             <h3 className="main-customization-heading mb-3">Typography</h3>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Sidebar Font Size</h3>
                                             <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
@@ -328,7 +392,30 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <div className="preview-company-wrapper">
+                                            <div className="position-relative">
+                                                <div className="preview-sidebar">
+                                                    <div>
+                                                        {previewUrl ? (
+                                                            <img src={previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
+                                                        ) : (
+                                                            <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
+                                                        )}
+                                                    </div>
+                                                    <div className="skeleton-container mt-4">
+                                                        {[...Array(4)].map((_, index) => (
+                                                            <div key={index} className="mb-3 d-flex align-items-center gap-3">
+                                                                <div className="skeleton-circle"></div>
+                                                                <p className="preview-sidelink mb-0">Link {index + 1}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Heading Font Size</h3>
                                             <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
@@ -340,7 +427,10 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <h2 className="preview-heading-size">Heading</h2>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Body Font Size</h3>
                                             <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
@@ -352,6 +442,9 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
+                                    <Col md={6} className="mb-4">
+                                        <p className="preview-text-size">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                    </Col>
                                 </Row>
                             </div>
                         </Tab.Pane>
@@ -359,9 +452,9 @@ const Customization = () => {
                             <div>
                                 <Row>
                                     <Col md={6} className="mb-4">
-                                        <h3 className="customization-heading">Upload Company Logo</h3>
+                                        <h3 className="customization-heading">Email Template Logo</h3>
                                         <p className="customization-text">Your company logo is an essential part of your brand identity. Uploading it here will ensure it is prominently displayed across various sections of our platform, enhancing your brand's visibility and consistency</p>
-                                        <div className="mb-4 custom-wrapper">
+                                        {/* <div className="mb-4 custom-wrapper">
                                             <Form.Control
                                                 type="file"
                                                 className="upload-custom-field"
@@ -371,23 +464,23 @@ const Customization = () => {
                                             />
                                             <Form.Label htmlFor="company-email-logo" className="upload-field-label">Upload File</Form.Label>
                                             <p className="note-text">Only Accepted formats: JPEG, PNG, SVG</p>
-                                        </div>
-                                        {previewEmailUrl && (
+                                        </div> */}
+                                        {/* {previewEmailUrl && (
                                             <div className="preview-upload-imgwrapper">
                                                 <img src={previewEmailUrl} className="upload-preview-img" alt="Company Logo" />
                                                 <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveEmailImage}>
                                                     &times;
                                                 </Button>
                                             </div>
-                                        )}
+                                        )} */}
                                     </Col>
                                     <Col md={6} className="mb-4">
                                         <div className="preview-email-wrapper">
                                             <div className="position-relative">
                                                 <div className="">
                                                     <div className="text-center">
-                                                        {previewEmailUrl ? (
-                                                            <img src={previewEmailUrl} className="preview-email-logo" alt="Company Logo Preview" />
+                                                        {previewUrl ? (
+                                                            <img src={previewUrl} className="preview-email-logo" alt="Company Logo Preview" />
                                                         ) : (
                                                             <img src={companyEmailLogoImg} className="preview-email-logo" alt="Company Logo Preview" />
                                                         )}
@@ -418,6 +511,15 @@ const Customization = () => {
                                         </div>
                                     </Col>
                                     <Col md={6} className="mb-4">
+                                        <div className="preview-email-wrapper">
+                                            <div className="preview-email-footer">
+                                                <div>
+                                                    <p className="mb-0">© All right reserved to Rexett</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Social Media Links</h3>
                                             <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
@@ -439,6 +541,36 @@ const Customization = () => {
                                                         <Button className="arrow-btn danger-arrow"><IoCloseOutline /></Button>
                                                     </div>
                                                 </Form.Group>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
+                                        <div className="preview-email-wrapper">
+                                            <div className="preview-email-footer">
+                                                <div>
+                                                    <ul className="social-listing mb-0 ps-0">
+                                                        <li>
+                                                            <Link to={'#'}>
+                                                                <FaFacebookF />
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link to={'#'}>
+                                                                <FaXTwitter />
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link to={'#'}>
+                                                                <FaInstagram />
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link to={'#'}>
+                                                                <FaLinkedinIn />
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </Col>
@@ -519,6 +651,12 @@ const Customization = () => {
                                         </div>
                                     </Col>
                                     <Col md={4}>
+                                        <Form.Label className="font-14">CIN Number</Form.Label>
+                                        <div className="mb-4 custom-wrapper">
+                                            <Form.Control type="text" className="common-field" value="L01631KA2010PTC096843" readOnly />
+                                        </div>
+                                    </Col>
+                                    <Col md={4}>
                                         <Form.Label className="font-14">Tax ID</Form.Label>
                                         <div className="mb-4 custom-wrapper">
                                             <Form.Control type="text" className="common-field" value="ISF65354VSDTE" readOnly />
@@ -533,7 +671,49 @@ const Customization = () => {
                                     <Col md={4}>
                                         <Form.Label className="font-14">Company Email Address</Form.Label>
                                         <div className="mb-4 custom-wrapper">
-                                            <Form.Control type="text" className="common-field" value="contact@avioxtechnologies.com" readOnly />
+                                            <Form.Control type="email" className="common-field" value="contact@avioxtechnologies.com" readOnly />
+                                        </div>
+                                    </Col>
+                                    <Col md={4}>
+                                        <Form.Label className="font-14">Country</Form.Label>
+                                        <div className="mb-4 custom-wrapper">
+                                            <Form.Select className="common-field font-14" readOnly>
+                                                <option>Select Country</option>
+                                                <option value="india" selected>India</option>
+                                                <option value="sweden">Sweden</option>
+                                                <option value="usa">USA</option>
+                                                <option value="uk">UK</option>
+                                            </Form.Select>
+                                        </div>
+                                    </Col>
+                                    <Col md={4}>
+                                        <Form.Label className="font-14">State</Form.Label>
+                                        <div className="mb-4 custom-wrapper">
+                                            <Form.Select className="common-field font-14" readOnly>
+                                                <option>Select State</option>
+                                                <option value="punjab" selected>Punjab</option>
+                                                <option value="delhi">Delhi</option>
+                                                <option value="rajasthan">Rajasthan</option>
+                                                <option value="himachal_pardesh">Himachal Pardesh</option>
+                                            </Form.Select>
+                                        </div>
+                                    </Col>
+                                    <Col md={4}>
+                                        <Form.Label className="font-14">City</Form.Label>
+                                        <div className="mb-4 custom-wrapper">
+                                            <Form.Select className="common-field font-14" readOnly>
+                                                <option>Select City</option>
+                                                <option value="punjab" selected>Mohali</option>
+                                                <option value="delhi">Amritsar</option>
+                                                <option value="rajasthan">Jalandhar</option>
+                                                <option value="himachal_pardesh">Ludhiana</option>
+                                            </Form.Select>
+                                        </div>
+                                    </Col>
+                                    <Col md={4}>
+                                        <Form.Label className="font-14">Zipcode</Form.Label>
+                                        <div className="mb-4 custom-wrapper">
+                                            <Form.Control type="text" className="common-field" value="160078" readOnly />
                                         </div>
                                     </Col>
                                     <Col md={4}>

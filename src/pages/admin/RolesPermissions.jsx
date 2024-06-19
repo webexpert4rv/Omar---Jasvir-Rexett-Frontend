@@ -5,13 +5,31 @@ import { FiCheck } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 import NewPermissions from "./Modals/NewPermissions";
+import NewRoles from "./Modals/NewRoles";
+import NewUser from "./Modals/NewUser"
+import { MdOutlineModeEditOutline } from "react-icons/md";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
+    const [newRoles, setNewRoles] = useState(false);
+    const [newUser, setNewUser] = useState(false);
     const handleNewPermission = () => {
-        setNewPermissions(newpermission);
+        setNewPermissions(true);
+    }
+    const handleNewUser = () => {
+        setNewUser(true)
+    }
+    const handleNewRoles = () => {
+        setNewRoles(true);
     }
     const handleCloseNewPermission = () => {
         setNewPermissions(false);
+    }
+    const handleCloseNewUser = () => {
+        setNewUser(false)
+    }
+
+    const handleCloseNewRoles = () => {
+        setNewRoles(false);
     }
     const action_application = (
         <Tooltip>The ability to approve or reject new applications is a critical role that ensures only suitable candidates gain access to your platform.</Tooltip>
@@ -52,6 +70,9 @@ const RolesPermission = () => {
     const action_profile = (
         <Tooltip>Assigning this permission allows specific roles to review and approve or reject changes made by users to their profile</Tooltip>
     )
+    const disableProfile = (
+        <Tooltip>Disable Account</Tooltip>
+    )
     return (
         <>
             <div className="card-box">
@@ -61,7 +82,7 @@ const RolesPermission = () => {
                 </div>
                 <Tab.Container
                     id="left-tabs-example"
-                    defaultActiveKey="roles_permissions"
+                    defaultActiveKey="all_users"
                 >
                     <div className="d-flex justify-content-center">
                         <Nav variant="pills" className="application-pills">
@@ -79,6 +100,77 @@ const RolesPermission = () => {
                     </div>
                     <Tab.Content>
                         <Tab.Pane eventKey="all_users" className="py-4">
+                            <div>
+                                <div className="d-flex justify-content-end mb-3">
+                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewUser}>+ New User</Button>
+                                </div>
+                                <div className="table-responsive">
+                                    <table className="table table-ui-custom">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email Address</th>
+                                                <th>Role</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className="font-14 align-middle">John Smith</td>
+                                                <td className="font-14 align-middle">johnsmith@gmail.com</td>
+                                                <td className="align-middle">
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <span className="role-pill">Workspace Admin</span>
+                                                        <Button variant="transparent" className="edit-role">
+                                                            <MdOutlineModeEditOutline />
+                                                        </Button>
+                                                    </div>
+                                                </td>
+                                                <td className="align-middle">
+                                                    <OverlayTrigger
+                                                        placement="bottom"
+                                                        overlay={disableProfile}
+                                                    >
+                                                        <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom ps-0 ms-0"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                            />
+                                                        </div>
+                                                    </OverlayTrigger>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="font-14 align-middle">Steve Warner</td>
+                                                <td className="font-14 align-middle">stevewarner@gmail.com</td>
+                                                <td className="align-middle">
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <span className="role-pill no-role">No role assigned</span>
+                                                        <Button variant="transparent" className="edit-role">
+                                                            <MdOutlineModeEditOutline />
+                                                        </Button>
+                                                    </div>
+                                                </td>
+                                                <td className="align-middle">
+                                                    <OverlayTrigger
+                                                        placement="bottom"
+                                                        overlay={disableProfile}
+                                                    >
+                                                        <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom ps-0 ms-0"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                            />
+                                                        </div>
+                                                    </OverlayTrigger>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </Tab.Pane>
                         <Tab.Pane eventKey="roles_permissions" className="py-4">
                             <div className="d-md-flex gap-3 mb-3 justify-content-between">
@@ -87,23 +179,23 @@ const RolesPermission = () => {
                                         <span className="partial-approved">
                                             <FiCheck />
                                         </span>
-                                        Partial approved
+                                        Partial Permission
                                     </div>
                                     <div className="font-14">
                                         <span className="full-approved">
                                             <FiCheck />
                                         </span>
-                                        Fully approved
+                                        Full Permission
                                     </div>
                                     <div className="font-14">
                                         <span className="not-approved">
                                             <IoCloseOutline />
                                         </span>
-                                        Not approved
+                                        No Permission
                                     </div>
                                 </div>
                                 <div className="d-flex gap-3">
-                                    <Button variant="transparent" className="main-btn font-14">+ New Role</Button>
+                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewRoles} >+ New Role</Button>
                                     <Button variant="transparent" onClick={handleNewPermission} className="main-btn font-14">+ New Permission</Button>
                                 </div>
                             </div>
@@ -118,7 +210,7 @@ const RolesPermission = () => {
                                             <th>Support Assistance</th>
                                             <th>Accountant</th>
                                             <th>HR</th>
-                                            <th>Assistance</th>
+                                            <th>Interviewer</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -181,7 +273,10 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -193,10 +288,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -211,7 +303,13 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -223,13 +321,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -247,7 +339,10 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -259,10 +354,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="main-permission-data">
@@ -324,7 +416,10 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -336,10 +431,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -357,7 +449,13 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox"  />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -366,13 +464,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -387,7 +479,13 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -399,13 +497,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="main-permission-data">
@@ -464,7 +556,13 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -476,13 +574,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -500,7 +592,10 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -512,10 +607,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -530,7 +622,13 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -542,13 +640,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="main-permission-data">
@@ -610,7 +702,10 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -622,10 +717,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -640,7 +732,13 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -652,13 +750,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="sub-permission-data">
@@ -673,7 +765,13 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -685,13 +783,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                         <tr className="main-permission-data">
@@ -703,7 +795,7 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <span className="partial-approved">
+                                                <span className="full-approved">
                                                     <FiCheck />
                                                 </span>
                                             </td>
@@ -750,7 +842,13 @@ const RolesPermission = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
@@ -762,13 +860,7 @@ const RolesPermission = () => {
                                                 <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
-                                            </td>
-                                            <td className="text-center">
-                                                <Form.Check type="checkbox" className="permission-checkbox" />
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -779,6 +871,8 @@ const RolesPermission = () => {
                 </Tab.Container>
             </div>
             <NewPermissions show={newpermission} handleClose={handleCloseNewPermission} />
+            <NewRoles show={newRoles} handleClose={handleCloseNewRoles}/>
+            <NewUser show={newUser} handleClose={handleCloseNewUser}/>
         </>
     )
 }

@@ -217,6 +217,25 @@ export function getProfileDetails(payload, callback) {
   };
 }
 
+export function updateProfileDetails(payload, UpdateRolesEndpoint) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(UpdateRolesEndpoint, {
+        ...payload,
+      });
+      if (result.status === 200) {
+        dispatch(setActionSuccessFully());
+        toast.success("Profile is Updated", { position: "top-center" });
+      }
+    } catch (error) {
+      const message = error.response.data.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
 export function approvedClient(id,payload, role, callback) {
   return async (dispatch) => {
     dispatch(setApprovedLoader());
@@ -302,6 +321,7 @@ export function applyLeave(payload) {
 }
 
 export function getLeaveHistory(id , payload ) {
+  console.log(payload,"payload")
   return async (dispatch) => {
     try {
       let result = await clientInstance.get(generateApiUrl(payload,`common/get-leave-history/${id}`));

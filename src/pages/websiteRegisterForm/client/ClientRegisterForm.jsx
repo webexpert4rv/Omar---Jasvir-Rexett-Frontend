@@ -21,109 +21,154 @@ import { getAllCountries } from "../../../redux/slices/authenticationDataSlice";
 import StepperFormWrapper from "../../../components/common/websiteRegisterStepsForm/StepperFormWrapper";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
+import Step3 from "./Step3";
+import { getCurrentStepper } from "./constant";
+import {
+  applyAsClient,
+  getWebClientData,
+  getWebClientLookUp,
+  getWebsiteSkills,
+} from "../../../redux/slices/clientDataSlice";
 
 const ClientRegisterForm = ({ role }) => {
-  const userId = localStorage.getItem("userId");
-  const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
   const {
     register,
-    setValue,
     control,
+    reset,
+    watch,
+    setValue,
     handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitting },
-  } = useForm({});
+    formState: { errors },
+  } = useForm();
+  const [activeStep, setActiveStep] = useState(1);
   const dispatch = useDispatch();
+  const { skillList, clientLook } = useSelector((state) => state.clientData);
 
-  const [isPassword, setPassword] = useState({
-    firstPass: false,
-    secondPass: false,
+  let { data, name, inputType, headingData, label } =
+    getCurrentStepper(activeStep);
+
+  const skillListMapped = skillList.map((item) => {
+    return { value: item.id, label: item.title };
   });
-  const [file, setFile] = useState(null);
-  const { smallLoader, userProfileDetails, screenLoader, countries } =
-    useSelector((state) => state.developerData);
 
-  const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
-
-  console.log(userProfileDetails, "userProfileDetails");
+  const labelAndValue = clientLook[name]?.map((item) => {
+    return { value: item.slug, label: item.name };
+  });
 
   useEffect(() => {
-    dispatch(getAllCountries());
-  }, []);
+    dispatch(getWebsiteSkills());
+    dispatch(getWebClientData());
+    dispatch(getWebClientLookUp());
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (userProfileDetails?.data) {
-      setValue("name", userProfileDetails?.data?.name);
-      setValue("email", userProfileDetails?.data?.email);
-      setValue("phone_number", userProfileDetails?.data?.phone_number);
-      setValue("address", userProfileDetails?.data?.address);
-      setValue("address_2", userProfileDetails?.data?.address_2);
-      setValue("city", userProfileDetails?.data?.city);
-      setValue("country", userProfileDetails?.data?.country);
-      setValue("passcode", userProfileDetails?.data?.passcode);
+  const getActiveStepComponent = () => {
+    switch (activeStep) {
+      case 1:
+        return (
+          <Step1
+            register={register}
+            errors={errors}
+            control={control}
+            watch={watch}
+            setValue={setValue}
+            headingData={headingData}
+          />
+        );
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+        return (
+          <Step2
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+            control={control}
+            stepperData={labelAndValue}
+            name={name}
+            inputType={inputType}
+            selectOptions={skillListMapped}
+            headingData={headingData}
+            label={label}
+          />
+        );
+      case 7:
+      case 8:
+        return (
+          <Step3
+            register={register}
+            errors={errors}
+            control={control}
+            watch={watch}
+            setValue={setValue}
+            name={name}
+            headingData={headingData}
+          />
+        );
+      default:
+        return;
     }
-  }, [userProfileDetails]);
-
-  const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
-
-  const onSubmit = (values) => {
-    // let formData = new FormData();
-    // let fileData = new FormData();
-    // for (const key in values) {
-    //   formData.append(key, values[key]);
-    // }
-    // fileData.append("file", file);
-    // if (file == null) {
-    //   let data = {
-    //     ...values,
-    //     user_id: userId,
-    //   };
-    //   dispatch(updateDeveloperProfile(data));
-    // } else {
-    //   dispatch(
-    //     filePreassignedUrlGenerate(fileData, (url) => {
-    //       let data = {
-    //         ...values,
-    //         profile_picture: url,
-    //         user_id: userId,
-    //       };
-    //       dispatch(updateDeveloperProfile(data));
-    //     })
-    //   );
-    // }
   };
-  const validatePassword = (value) => {
-    if (value === "") {
-      return true; // Password is not required, so return true if empty
-    } else {
-      // Check if password matches the pattern
-      const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-      if (!pattern.test(value)) {
-        return "Password must contain at least a symbol, upper and lower case letters and a number";
-      }
-    }
-    return true; // Password meets the criteria
-  };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFile(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const onSubmit = (stepData) => {
+    console.log(stepData,"ddd")
+
+   let data= {
+      "name": "himanshu",
+      "email": "ram@yopmail.com",
+      "phone_number": "9410514319",
+      "country_code": "45",
+      "password": "Pankaj@0987",
+      "client_type": "individual",
+      "company_logo": "",
+      "company_name": "",
+      "company_tax_id": "",
+      "company_address": "",
+      "company_type": "",
+      "time_zone": "Asia/Kabul"
     }
+    dispatch(applyAsClient(data))
   };
 
   return (
     <>
-     <StepperFormWrapper>
-      <Step1/>
-      <Step2 />
-      <Step1/>
-     </StepperFormWrapper>
+      <section className="card-box">
+        <div>
+          {false ? (
+            <ScreenLoader />
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+              {getActiveStepComponent()}
+
+              {activeStep !== 1 && (
+                <RexettButton
+                  type="button"
+                  text="Back"
+                  onClick={() => {
+                    setActiveStep((prev) => prev - 1);
+                  }}
+                  className="main-btn outline-main-btn px-5"
+                  // disabled={smallLoader}
+                  // isLoading={smallLoader}
+                />
+              )}
+              <RexettButton
+                type="submit"
+                text={activeStep < 3 ? "Continue" : t("submit")}
+                className="main-btn px-5"
+                // onClick={() => {
+                //   setActiveStep((prev) => prev + 1);
+                // }}
+                // disabled={smallLoader}
+                // isLoading={smallLoader}
+              />
+            </form>
+          )}
+        </div>
+      </section>
     </>
   );
 };

@@ -20,7 +20,6 @@ const PrivateLayout = ({ children }) => {
     privateRoute,
     publicRoute,
   } = roleConfig[role || derivedRole];
-console.log(derivedRole,"derivedRole")
   const redirectPath = role ? privateRoute : publicRoute;
 
   if (!token || !roleConfig[role]) {

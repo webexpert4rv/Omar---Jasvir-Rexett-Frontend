@@ -61,6 +61,8 @@ const LeavePlan = () => {
 
   useEffect(() => {
     dispatch(getHolidaysList());
+    // reset()
+
   }, []);
 
   useEffect(() => {
@@ -82,7 +84,9 @@ const LeavePlan = () => {
   };
 
   const handleEditLeave = (id) => {
+    console.log(id,"id")
     const selectedLeave = leaveDetails.find((item) => item.id == id);
+    console.log(selectedLeave,"selectredleave")
     if (selectedLeave) {
       setSelectionRange({
         startDate: new Date(selectedLeave.start_date),
@@ -120,6 +124,7 @@ const LeavePlan = () => {
 
     if (isEdit?.status === true) {
       await dispatch(getUpdateLeave(isEdit?.leaveId, data));
+      // reset()
     } else {
       await dispatch(applyLeave(data));
     }
@@ -288,8 +293,8 @@ const LeavePlan = () => {
                                   <p className="leave-date white-nowrap">
                                     {moment(item.start_date).format(
                                       "MM-DD-YYYY"
-                                    )}{" "}
-                                    to{" "}
+                                    )}
+                                    to
                                     {moment(item.end_date).format("MM-DD-YYYY")}
                                   </p>
                                 </td>

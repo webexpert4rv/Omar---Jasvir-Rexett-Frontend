@@ -14,7 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   filePreassignedUrlGenerate,
   getAddNewDeveloper,
+  getCitiesList,
+  getCoutriesList,
   getSkillList,
+  getStatesList,
+  getTimeZoneForCountry,
 } from "../../redux/slices/clientDataSlice";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
@@ -29,6 +33,8 @@ import { Controller } from "react-hook-form";
 import { EXPERIENCE_OPTIONS } from "../../helper/utlis";
 import Autocomplete from "react-google-autocomplete";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../components/clients/TimeReporiting/constant";
+import CommonReactSelect from "../../components/atomic/CommonReactSelect";
+import ExperienceCV from "../../components/common/Modals/ExperienceCVModal";
 
 const createOption = (label) => ({
   label,
@@ -58,6 +64,8 @@ const RegisterDeveloper = () => {
       url: "",
     },
   ]);
+  const { allTimeZones, countriesList, statesList, citiesList, timeZones } =
+  useSelector((state) => state.clientData);
   const navigate = useNavigate();
   const {
     register,
@@ -124,6 +132,7 @@ const RegisterDeveloper = () => {
 
   useEffect(() => {
     dispatch(getDegreeList());
+    dispatch(getCoutriesList());
   }, []);
 
   useEffect(() => {
@@ -220,6 +229,7 @@ const RegisterDeveloper = () => {
 
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
+    console.log(experiences,"experiences")
     const index = experiences?.findIndex(
       ({
         job_title,
@@ -273,6 +283,20 @@ const RegisterDeveloper = () => {
   useEffect(() => {
     dispatch(getDegreeList());
   }, []);
+
+  useEffect(() => {
+    if (watch("country")?.value) {
+      dispatch(getStatesList(watch("country")?.value));
+      dispatch(getTimeZoneForCountry(watch("country")?.value));
+    }
+  }, [watch("country")]);
+
+  useEffect(() => {
+    if (watch("state")?.value) {
+      dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
+      setValue("city", null);
+    }
+  }, [watch("state")]);
 
   const handleAddMore = () => {
     const educations = watch("educations");
@@ -573,50 +597,65 @@ const RegisterDeveloper = () => {
 
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("city")} *
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="City"
-                      {...register("city", {
-                        required: {
-                          value: true,
-                          message: t("cityValidation"),
-                        },
-                        // pattern: {
-                        //     value: /^[A-Za-z\s]+$/,
-                        //     message: "Country should not contain numbers or special character",
-                        // }
-                      })}
-                    />
-                    <p className="error-message">{errors.city?.message} </p>
+                    <CommonReactSelect
+                    name="country"
+                    errors={errors}
+                    // watch={watch}
+                    control={control}
+                    required="Country is required"
+                    label="Country"
+                    type="country"
+                    options={countriesList}
+                  />
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("state")} *
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="state"
-                      {...register("state", {
-                        required: {
-                          value: true,
-                          message: t("stateValidation"),
-                        },
-                        // pattern: {
-                        //     value: /^[A-Za-z\s]+$/,
-                        //     message: "State should not contain numbers or special character",
-                        // }
-                      })}
-                    />
-                    <p className="error-message">{errors.state?.message} </p>
+                 
+                  <CommonReactSelect
+                    name="state"
+                    errors={errors}
+                    control={control}
+                    required="State is required"
+                    label="State"
+                    type="state"
+                    options={statesList}
+                  />
                   </Form.Group>
                 </Col>
+
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                  <CommonReactSelect
+                    name="city"
+                    errors={errors}
+                    control={control}
+                    // required="City is required"
+                    label="City"
+                    type="city"
+                    options={citiesList}
+                  />
+                  </Form.Group>
+                </Col>
+
+                
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                  <CommonReactSelect
+                    name="time_zone"
+                    errors={errors}
+                    type="timezones"
+                    control={control}
+                    options={timeZones}
+                    required="Time zone is required"
+                    label="Time Zone"
+                  />
+                    
+                  </Form.Group>
+                </Col>
+
+
+             
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -642,29 +681,7 @@ const RegisterDeveloper = () => {
                     </p>
                   </Form.Group>
                 </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("country")} *
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="country"
-                      {...register("country", {
-                        required: {
-                          value: true,
-                          message: t("countryValidation"),
-                        },
-                        // pattern: {
-                        //     value: /^[A-Za-z\s]+$/,
-                        //     message: "Country should not contain numbers or special character",
-                        // }
-                      })}
-                    />
-                    <p className="error-message">{errors.country?.message} </p>
-                  </Form.Group>
-                </Col>
+               
                 <Col md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label className="common-label">
@@ -826,427 +843,13 @@ const RegisterDeveloper = () => {
                 </Col>
               </Row>
             </div>
+            
             <div className="cv-header-wrapper mb-3">
               <h2 className="subheading-resume mb-0">{t("enterExperience")}</h2>
             </div>
-            <div className="inner-form mb-3">
-              {experienceFields.map(
-                (
-                  {
-                    id,
-                    company,
-                    jobPosition,
-                    jobDescription,
-                    startDate,
-                    endDate,
-                    currentlyWorking,
-                  },
-                  index
-                ) => (
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("companyName")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          className="common-field"
-                          {...register(`experiences[${index}].company_name`, {
-                            required: {
-                              value: true,
-                              message: t("compnyNameValidation"),
-                            },
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.company_name && (
-                          <p className="error-message">
-                            {errors.experiences[index].company_name.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
 
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("jobPosition")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          className="common-field"
-                          name="job_title"
-                          placeholder={t("enterJobPosition")}
-                          {...register(`experiences[${index}].job_title`, {
-                            required: t("jobPositionValidation"),
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.job_title && (
-                          <p className="error-message">
-                            {errors.experiences[index].job_title.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("jobDescription")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          as="textarea"
-                          className="common-field"
-                          rows={3}
-                          // placeholder="Enter Job Description"
-                          {...register(`experiences[${index}].description`, {
-                            required: t("descriptionValidation"),
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.description && (
-                          <p className="error-message">
-                            {errors.experiences[index].description.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={3}>
-                      <Form.Group className="mb-4">
-                        <Form.Label>{t("startDate")} *</Form.Label>
-                        <Form.Control
-                          type="date"
-                          className="common-field"
-                          placeholder={t("enterStartDate")}
-                          max={new Date().toISOString().split("T")[0]}
-                          {...register(`experiences[${index}].start_date`, {
-                            required: t("startDateValidation"),
-                            validate: {
-                              dateRange: (value) => {
-                                const end_date = watch(
-                                  `experiences[${index}].end_date`
-                                ); // Get the value of the end date field
-                                // if (!end_date || value <= end_date) {
-                                //     return true;
-                                // }
-                                // return "Start Date must be before End Date";
-                              },
-                            },
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.start_date && (
-                          <p className="error-message">
-                            {errors.experiences[index].start_date.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={3}>
-                      <Form.Group className="mb-4">
-                        <Form.Label>{t("endDate")} *</Form.Label>
-                        <Form.Control
-                          type="date"
-                          className="common-field"
-                          placeholder={t("enterEndDate")}
-                          max={new Date().toISOString().split("T")[0]}
-                          {...register(`experiences[${index}].end_date`, {
-                            required: {
-                              value: disabledEndDates[index] ? false : true,
-                              message: t("endDateValidation"),
-                            },
-                          })}
-                          disabled={disabledEndDates[index]}
-                        />
-                        {errors?.experiences?.[index]?.end_date && (
-                          <p className="error-message">
-                            {errors.experiences[index].end_date.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md="12">
-                      <Form.Group className="mb-4 d-flex gap-2 align-items-center">
-                        <Form.Check
-                          type="checkbox"
-                          className="job-post-checkbox"
-                          id="exp_current"
-                          {...register(
-                            `experiences[${index}].is_still_working`,
-                            {
-                              required: false,
-                            }
-                          )}
-                          onChange={(e) =>
-                            handleCurrentlyWorkingChange(e, index)
-                          }
-                        />
-                        <Form.Label className="mb-0" htmlFor="exp_current">
-                          {t("currentlyWorking")}
-                        </Form.Label>
-                      </Form.Group>
-                    </Col>  {experienceFields?.length > 1 && (
-                      <Col md="12" className="d-flex justify-content-end">
-                        <Button
-                          className="arrow-btn danger-arrow"
-                          onClick={() => handleDeleteFieldExp(index, id)}
-                        >
-                          <FaTrash />
-                        </Button>
-                      </Col>
-                    )}
-                  </Row>
-                )
-              )}
-              <div className="text-end my-3">
-                <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                  <Button
-                    className="arrow-btn primary-arrow ms-auto"
-                    onClick={handleAddMoreExp}
-                  >
-                    +
-                  </Button>
-                </OverlayTrigger>
-              </div>
-            </div>
-
-
-
-
-
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">{t("projects")}</h2>
-            </div>
-            <div className="inner-form mb-3">
-              {experienceFields.map(
-                (
-                  {
-                    id,
-                    Project_title,
-                    Project_description,
-                    Tech_stack_used,
-                    role_in_project,
-                    project_team_size,
-                    project_link,
-                    start_date,
-                    end_date
-                  },
-                  index
-                ) => (
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("Project_title")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          className="common-field"
-                          {...register(`experiences[${index}].company_name`, {
-                            required: {
-                              value: true,
-                              message: t("compnyNameValidation"),
-                            },
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.company_name && (
-                          <p className="error-message">
-                            {errors.experiences[index].company_name.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("Project_description")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          className="common-field"
-                          name="job_title"
-                          placeholder={t("enterJobPosition")}
-                          {...register(`experiences[${index}].job_title`, {
-                            required: t("jobPositionValidation"),
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.job_title && (
-                          <p className="error-message">
-                            {errors.experiences[index].job_title.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("Tech_stack_used")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          as="textarea"
-                          className="common-field"
-                          rows={3}
-                          // placeholder="Enter Job Description"
-                          {...register(`experiences[${index}].description`, {
-                            required: t("descriptionValidation"),
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.description && (
-                          <p className="error-message">
-                            {errors.experiences[index].description.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("project_team_size")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          as="textarea"
-                          className="common-field"
-                          rows={3}
-                          // placeholder="Enter Job Description"
-                          {...register(`experiences[${index}].description`, {
-                            required: t("descriptionValidation"),
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.description && (
-                          <p className="error-message">
-                            {errors.experiences[index].description.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                       <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="common-label">
-                          {t("project_team_size")} *
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          as="textarea"
-                          className="common-field"
-                          rows={3}
-                          // placeholder="Enter Job Description"
-                          {...register(`experiences[${index}].description`, {
-                            required: t("descriptionValidation"),
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.description && (
-                          <p className="error-message">
-                            {errors.experiences[index].description.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={3}>
-                      <Form.Group className="mb-4">
-                        <Form.Label>{t("start_date")} *</Form.Label>
-                        <Form.Control
-                          type="date"
-                          className="common-field"
-                          placeholder={t("enterStartDate")}
-                          max={new Date().toISOString().split("T")[0]}
-                          {...register(`experiences[${index}].start_date`, {
-                            required: t("startDateValidation"),
-                            validate: {
-                              dateRange: (value) => {
-                                const end_date = watch(
-                                  `experiences[${index}].end_date`
-                                ); // Get the value of the end date field
-                                // if (!end_date || value <= end_date) {
-                                //     return true;
-                                // }
-                                // return "Start Date must be before End Date";
-                              },
-                            },
-                          })}
-                        />
-                        {errors?.experiences?.[index]?.start_date && (
-                          <p className="error-message">
-                            {errors.experiences[index].start_date.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={3}>
-                      <Form.Group className="mb-4">
-                        <Form.Label>{t("end_date")} *</Form.Label>
-                        <Form.Control
-                          type="date"
-                          className="common-field"
-                          placeholder={t("enterEndDate")}
-                          max={new Date().toISOString().split("T")[0]}
-                          {...register(`experiences[${index}].end_date`, {
-                            required: {
-                              value: disabledEndDates[index] ? false : true,
-                              message: t("endDateValidation"),
-                            },
-                          })}
-                          disabled={disabledEndDates[index]}
-                        />
-                        {errors?.experiences?.[index]?.end_date && (
-                          <p className="error-message">
-                            {errors.experiences[index].end_date.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col md="12">
-                      <Form.Group className="mb-4 d-flex gap-2 align-items-center">
-                        <Form.Check
-                          type="checkbox"
-                          className="job-post-checkbox"
-                          id="exp_current"
-                          {...register(
-                            `experiences[${index}].is_still_working`,
-                            {
-                              required: false,
-                            }
-                          )}
-                          onChange={(e) =>
-                            handleCurrentlyWorkingChange(e, index)
-                          }
-                        />
-                        <Form.Label className="mb-0" htmlFor="exp_current">
-                          {t("currentlyWorking")}
-                        </Form.Label>
-                      </Form.Group>
-                    </Col>  {experienceFields?.length > 1 && (
-                      <Col md="12" className="d-flex justify-content-end">
-                        <Button
-                          className="arrow-btn danger-arrow"
-                          onClick={() => handleDeleteFieldExp(index, id)}
-                        >
-                          <FaTrash />
-                        </Button>
-                      </Col>
-                    )}
-                  </Row>
-                )
-              )}
-              <div className="text-end my-3">
-                <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                  <Button
-                    className="arrow-btn primary-arrow ms-auto"
-                    onClick={handleAddMoreExp}
-                  >
-                    +
-                  </Button>
-                </OverlayTrigger>
-              </div>
-            </div>
-
-
-
-
-
-
-                   
-
+            <ExperienceCV data={null}/>
+        
             
             <div className="cv-header-wrapper mb-3">
               <h2 className="subheading-resume mb-0">{t("enterExpertise")}</h2>
