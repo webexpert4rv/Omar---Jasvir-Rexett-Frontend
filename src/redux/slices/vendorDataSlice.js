@@ -244,7 +244,7 @@ export function updateVendorProfile(payload) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
         try {
-            let result = await clientInstance.put(`vendor/update-profile`,{...payload})
+            let result = await clientInstance.post(`vendor/update-profile`,{...payload})
             if (result?.status == 200) {
                 dispatch(setVendorSuccess())
                 toast.success("Profile is updated", { position: "top-center" })
