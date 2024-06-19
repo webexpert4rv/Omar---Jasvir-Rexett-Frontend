@@ -177,52 +177,53 @@ const RegisterDeveloper = () => {
   }
 
   const yearsArray = generateYears();
+
   const onSubmit = (data) => {
     console.log(data, "data---");
-    let fileData = new FormData();
-    fileData.append("file", file);
-    let fileCVData = new FormData();
-    fileCVData.append("file", CvFile);
-    let formattedExpertise = [];
-    formattedExpertise = data?.expertise?.map((val) => {
-      return { skill: val?.skill?.label, experience: val?.experience };
-    });
-    let formattedSkills = [];
-    let convertString = selectedOption?.map((item) => item.label);
-    formattedSkills = convertString.map((item) => {
-      return { skill: item, experience: null };
-    });
+    // let fileData = new FormData();
+    // fileData.append("file", file);
+    // let fileCVData = new FormData();
+    // fileCVData.append("file", CvFile);
+    // let formattedExpertise = [];
+    // formattedExpertise = data?.expertise?.map((val) => {
+    //   return { skill: val?.skill?.label, experience: val?.experience };
+    // });
+    // let formattedSkills = [];
+    // let convertString = selectedOption?.map((item) => item.label);
+    // formattedSkills = convertString.map((item) => {
+    //   return { skill: item, experience: null };
+    // });
 
-    const EducationFieldCpy = [...data.educations];
-    let formattedEducationField = [];
-    formattedEducationField = EducationFieldCpy.map((curElem) => {
-      return { ...curElem, degree_id: curElem.degree_id.value };
-    });
+    // const EducationFieldCpy = [...data.educations];
+    // let formattedEducationField = [];
+    // formattedEducationField = EducationFieldCpy.map((curElem) => {
+    //   return { ...curElem, degree_id: curElem.degree_id.value };
+    // });
 
-    if (data) {
-      let resume;
-      console.log(data, "formData");
-      // dispatch(
-      //   filePreassignedUrlGenerate(fileCVData, (url) => {
-      //     resume=url
-      //   }))
-      dispatch(
-        filePreassignedUrlGenerate(fileData, (url) => {
-          let formData = {
-            ...data,
-            skills: formattedSkills,
-            expertise: formattedExpertise,
-            profile_picture: url,
-            educations: formattedEducationField,
-          };
-          dispatch(
-            getAddNewDeveloper(formData, () => {
-              navigate("/vendor-dashboard");
-            })
-          );
-        })
-      );
-    }
+    // if (data) {
+    //   let resume;
+    //   console.log(data, "formData");
+    //   dispatch(
+    //     filePreassignedUrlGenerate(fileCVData, (url) => {
+    //       resume=url
+    //     }))
+    //   dispatch(
+    //     filePreassignedUrlGenerate(fileData, (url) => {
+    //       let formData = {
+    //         ...data,
+    //         skills: formattedSkills,
+    //         expertise: formattedExpertise,
+    //         profile_picture: url,
+    //         educations: formattedEducationField,
+    //       };
+    //       dispatch(
+    //         getAddNewDeveloper(formData, () => {
+    //           navigate("/vendor-dashboard");
+    //         })
+    //       );
+    //     })
+    //   );
+    // }
   };
 
   const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
@@ -848,7 +849,7 @@ const RegisterDeveloper = () => {
               <h2 className="subheading-resume mb-0">{t("enterExperience")}</h2>
             </div>
 
-            <ExperienceCV data={null}/>
+            <ExperienceCV data={null} role="vendor" onSubmitVendor={onSubmit} />
         
             
             <div className="cv-header-wrapper mb-3">
