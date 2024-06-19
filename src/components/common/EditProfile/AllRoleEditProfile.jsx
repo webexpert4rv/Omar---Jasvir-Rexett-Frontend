@@ -100,7 +100,7 @@ const AllRoleEditProfile = ({ role }) => {
 
   useEffect(() => {
     if (watch("state")?.value) {
-      dispatch(getCitiesList(watch("country")?.value, watch("state")?.label));
+      dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
       setValue("city", null);
     }
   }, [watch("state")]);
@@ -112,12 +112,11 @@ const AllRoleEditProfile = ({ role }) => {
       setValue("phone_number", userProfileDetails?.data?.phone_number);
       setValue("address", userProfileDetails?.data?.address);
       setValue("address_2", userProfileDetails?.data?.address_2);
-      setValue("city", userProfileDetails?.data?.city);
-      setValue("country", userProfileDetails?.data?.country);
+      setValue("city", {label:userProfileDetails?.data?.city,value:null});
+      setValue("country", {label:userProfileDetails?.data?.country,value:null});
       setValue("passcode", userProfileDetails?.data?.passcode);
-      setValue("country", userProfileDetails?.data?.country);
-      setValue("time_zone", userProfileDetails?.data?.time_zone);
-      setValue("state", userProfileDetails?.data?.state);
+      setValue("time_zone", {label:userProfileDetails?.data?.time_zone,value:userProfileDetails?.data?.time_zone});
+      setValue("state", {label:userProfileDetails?.data?.state,value:null});
       if (userProfileDetails?.data?.is_2FA_enabled) {
         setValue("is_2FA_enabled", userProfileDetails?.data?.is_2FA_enabled);
       } else {
@@ -140,10 +139,12 @@ const AllRoleEditProfile = ({ role }) => {
       let data = {
         ...values,
         user_id: userId,
-        // country: values?.country?.label,
-        // state: values?.state?.label,
-        // time_zone: values?.time_zone?.label,
-        // city :values?.city?.label
+        country: values?.country?.label,
+        country_iso_code:values?.country.value,
+        state: values?.state?.label,
+        state_iso_code:values?.state?.value,
+        time_zone: values?.time_zone?.label,
+        city :values?.city?.label
       };
       // dispatch(updateDeveloperProfile(data));
       // dispatch(updateAdminProfile(data))
@@ -155,10 +156,12 @@ const AllRoleEditProfile = ({ role }) => {
             ...values,
             profile_picture: url,
             user_id: userId,
-            // country: values?.country?.label,
-            // state: values?.state?.label,
-            // time_zone: values?.time_zone?.label,
-            // city :values?.city?.label
+            country: values?.country?.label,
+            country_iso_code:values?.country.value,
+            state: values?.state?.label,
+            state_iso_code:values?.state?.value,
+            time_zone: values?.time_zone?.label,
+            city :values?.city?.label
           };
           // dispatch(updateDeveloperProfile(data));
           // dispatch(updateAdminProfile(data))
@@ -284,8 +287,8 @@ const AllRoleEditProfile = ({ role }) => {
                   <CommonAutocomplete
                     label={t("address") + " 2"}
                     name="address_2"
-                    control={control}
-                    rules={{ required: false }}
+                    control={control} 
+                    rules={{ required: false }}  
                     error={errors.address_2}
                     apiKey={GOOGLE_MAP_API_KEY}
                     onPlaceSelected={(place) => {

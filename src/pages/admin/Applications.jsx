@@ -306,6 +306,7 @@ const Applications = () => {
                           </th>
                           <th>{t("phoneNumber")}</th>
                           <th>{t("action")}</th>
+                          <th>Send Email</th>
                           <th>{t("status")}</th>
                         </tr>
                       </thead>
@@ -424,24 +425,44 @@ const Applications = () => {
                                               redirectToWebsiteForm(
                                                 "client",
                                                 item?.id,
+                                                3
+                                              )
+                                            }
+                                          >
+                                          <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                         
+                                            Complete Your Profile
+                                          <FiExternalLink />
+                                        </span>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </td>
+                                    <td>
+                                    {  item?.verification_reminder_count<2?<div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "client",
+                                                item?.id,
                                                 item?.verification_reminder_count
                                               )
                                             }
                                           >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              {smallLoader
-                                                ? item.id === loadingRow && (
-                                                    <RexettSpinner />
-                                                  )
-                                                : item?.verification_reminder_count <
-                                                  2
-                                                ? "Send Email"
-                                                : "Complete Your Profile"}{" "}
-                                              <FiExternalLink />
-                                            </span>
+                                         <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          {item.id === loadingRow
+                                            ?  smallLoader && (
+                                                <RexettSpinner />
+                                              )
+                                            : "Send Email"
+                                            }
+                                          <FiExternalLink />
+                                        </span>
+                                      
+                                      
                                           </div>
-                                        </div>
-                                      )}
+                                        </div>:"Maximum Limit reached"}
                                     </td>
                                     <td>
                                       <span
@@ -667,6 +688,7 @@ const Applications = () => {
                       </th>
                       <th>{t("availability")}</th> */}
                           <th>{t("action")}</th>
+                          <th>Send Email</th>
                           <th>{t("status")}</th>
                         </tr>
                       </thead>
@@ -718,6 +740,7 @@ const Applications = () => {
                                     {/* <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
                                 <td>{item?.company?.yearly_revenue}</td> */}
+                                    
                                     <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
@@ -782,6 +805,28 @@ const Applications = () => {
                                         <div className="d-flex gap-3">
                                           <div
                                             onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "client",
+                                                item?.id,
+                                                3
+                                              )
+                                            }
+                                          >
+                                          <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                         
+                                            Complete Your Profile
+                                          <FiExternalLink />
+                                        </span>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </td>
+                                    <td>
+                                    {  item?.verification_reminder_count<2?<div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
                                               redirectToWebsiteForm(
                                                 "vendor",
                                                 item?.id,
@@ -789,16 +834,19 @@ const Applications = () => {
                                               )
                                             }
                                           >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              {item?.verification_reminder_count <
-                                              2
-                                                ? "Send Email"
-                                                : "Complete Your Profile"}{" "}
-                                              <FiExternalLink />
-                                            </span>
+                                         <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          {item.id === loadingRow
+                                            ?  smallLoader && (
+                                                <RexettSpinner />
+                                              )
+                                            : "Send Email"
+                                            }
+                                          <FiExternalLink />
+                                        </span>
+                                      
+                                      
                                           </div>
-                                        </div>
-                                      )}
+                                        </div>:"Maximum Limit reached"}
                                     </td>
                                     <td>
                                       <span
@@ -1149,9 +1197,11 @@ const Applications = () => {
                             {t("email")} {t("address")}
                           </th>
                           <th>{t("phoneNumber")}</th>
+                         
                           <th>{t("action")}</th>
+                          <th>Send Email</th>
                           <th>Resume</th>
-                          <th>Screening Status</th>
+                       
                           <th>Status</th>
                         </tr>
                       </thead>
@@ -1199,6 +1249,8 @@ const Applications = () => {
                                       </span>
                                     </td>
                                     <td>{item?.phone_number}</td>
+                                    <td>
+                                     
                                     <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
@@ -1263,6 +1315,30 @@ const Applications = () => {
                                         <div className="d-flex gap-3">
                                           <div
                                             onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "client",
+                                                item?.id,
+                                                3
+                                              )
+                                            }
+                                          >
+                                          <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                         
+                                            Complete Your Profile
+                                          <FiExternalLink />
+                                        </span>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </td>
+                                  
+                                    </td>
+                                    <td>
+                                    { item?.verification_reminder_count<2?<div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
                                               redirectToWebsiteForm(
                                                 "developer",
                                                 item?.id,
@@ -1270,16 +1346,19 @@ const Applications = () => {
                                               )
                                             }
                                           >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              {item?.verification_reminder_count <
-                                              2
-                                                ? "Send Email"
-                                                : "Complete Your Profile"}{" "}
-                                              <FiExternalLink />
-                                            </span>
+                                         <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                          {item.id === loadingRow
+                                            ?  smallLoader && (
+                                                <RexettSpinner />
+                                              )
+                                            : "Send Email"
+                                            }
+                                          <FiExternalLink />
+                                        </span>
+                                      
+                                      
                                           </div>
-                                        </div>
-                                      )}
+                                        </div>:"Maximum Limit reached"}
                                     </td>
                                     <td>
                                       <RexettButton
@@ -1307,7 +1386,7 @@ const Applications = () => {
                                         }`}
                                       />
                                     </td>
-                                    <td>
+                                    {/* <td>
                                       <Button
                                         variant="transparent"
                                         onClick={handleScreeningShow}
@@ -1341,7 +1420,7 @@ const Applications = () => {
                                           Screening Done
                                         </span>
                                       </div>
-                                    </td>
+                                    </td> */}
                                     <td>
                                       <span
                                         className={`white-nowrap ${

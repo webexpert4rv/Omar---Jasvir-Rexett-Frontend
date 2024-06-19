@@ -221,7 +221,7 @@ export function updateProfileDetails(payload, UpdateRolesEndpoint) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.put(UpdateRolesEndpoint, {
+      let result = await clientInstance.post(UpdateRolesEndpoint, {
         ...payload,
       });
       if (result.status === 200) {
@@ -321,6 +321,7 @@ export function applyLeave(payload) {
 }
 
 export function getLeaveHistory(id , payload ) {
+  console.log(payload,"payload")
   return async (dispatch) => {
     try {
       let result = await clientInstance.get(generateApiUrl(payload,`common/get-leave-history/${id}`));

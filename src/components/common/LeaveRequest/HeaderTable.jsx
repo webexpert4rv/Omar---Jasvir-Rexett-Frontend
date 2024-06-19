@@ -9,17 +9,22 @@ import NoDataFound from "../../atomic/NoDataFound";
 import userImg from "../../../assets/img/user-img.jpg";
 import RexettButton from "../../atomic/RexettButton";
 import RexettSpinner from "../../atomic/RexettSpinner";
+import ScreenLoader from "../../atomic/ScreenLoader";
 
 function HeaderTable({
   tableData,
   currentTab,
   handleApproveReject,
   approvedLoader,
-  selectedIndex,
+  approveIndex,
+  screenLoader,
+
 }) {
+  console.log(approveIndex , "approveINdex")
   return (
     <div>
-      {tableData?.length > 0 ? (
+      {screenLoader ? <ScreenLoader/> : 
+      tableData?.length > 0 ? (
         <table className="table time-table table-bordered table-ui-custom">
           <tbody>
             {tableData?.map((item, index) => (
@@ -78,28 +83,23 @@ function HeaderTable({
                         <RexettButton
                           variant="transparent"
                           className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
-                          icon={
-                            selectedIndex == index ? (
-                              <RexettSpinner/>
-                            ) : (
-                              <IoCheckmark />
-                            )
-                          }
-                          onClick={() =>
-                            handleApproveReject(item?.id, "Approved", index)
-                          }
+                          icon={approveIndex == index ? approvedLoader :  <IoCheckmark />}
+                          onClick={() =>handleApproveReject(item?.id, "Approved", index)}
+                          isLoading={  approveIndex == index ? approvedLoader :false } 
                         />
                       </ToolTip>
                       <ToolTip text="Reject">
-                        <Button
+                        <RexettButton
                           variant="transparent"
                           className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
+                          icon = { <IoCloseOutline />}
                           onClick={() =>
-                            handleApproveReject(item?.id, "Rejected")
+                            handleApproveReject(item?.id, "Rejected" ,index)
                           }
+                          // isLoading={  selectedRejectIndex == index ? approvedLoader: false}
                         >
-                          <IoCloseOutline />
-                        </Button>
+                         
+                        </RexettButton>
                       </ToolTip>
                     </div>
                   )}
@@ -113,8 +113,9 @@ function HeaderTable({
           <NoDataFound />
         </td>
       )}
-    </div>
+    </div> 
   );
+  
 }
 
 export default HeaderTable;

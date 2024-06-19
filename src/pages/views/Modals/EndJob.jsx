@@ -61,7 +61,7 @@ const RejectModal = ({
               }}
               disabled={feedback?.length === 0}
             >
-              {smallLoader ? <RexettSpinner /> : submit}{" "}
+              {smallLoader ? <RexettSpinner /> : submit}
             </Button>
           </div>
         </Form>

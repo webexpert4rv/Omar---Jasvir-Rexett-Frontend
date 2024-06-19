@@ -254,15 +254,7 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
   const deletetooltip = <Tooltip id="tooltip">{t("deleteRow")}</Tooltip>;
   const addtooltip = <Tooltip id="tooltip">{t("addRow")}</Tooltip>;
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      centered
-      className="custom-modal"
-      animation
-    >
-      <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
-      <Modal.Body>
+    
         <div>
           <h3 className="popup-heading">{t("projects")}</h3>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -535,8 +527,6 @@ const ProjectsModal = ({ show, handleClose, data, id, role }) => {
             </div>
           </form>
         </div>
-      </Modal.Body>
-    </Modal>
   );
 };
 

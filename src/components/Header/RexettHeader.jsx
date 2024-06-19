@@ -27,6 +27,10 @@ const RexettHeader = ({ role }) => {
       "single-job": "/client/job-posted",
       "client-single-developer": "/client/dashboard",
       "admin-single-job": "/admin/admin-job-listing",
+      "admin":"admin/notification-admin",
+      "client":"client/notification-client",
+      "developer":"developer/notification-developer",
+      "vendor":"notification-vendor"
     };
 
     return data[isSingleJob] || false;
@@ -41,6 +45,8 @@ const RexettHeader = ({ role }) => {
     let routeName = routePath(isSingleJob);
     navigate(routeName);
   };
+
+  console.log(routePath(role),"routePath(isSingleJob)")
 
   return (
     <>
@@ -65,7 +71,7 @@ const RexettHeader = ({ role }) => {
             {role == "developer" ? <DeveloperCheckInOut /> : ""}
             <LanguageChange />
             <Notification
-              route="notification-client"
+              route={routePath(role)}
               job="single-job"
               doc="documents"
             />

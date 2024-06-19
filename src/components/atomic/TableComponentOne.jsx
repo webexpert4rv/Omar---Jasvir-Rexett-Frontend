@@ -138,7 +138,8 @@ const TableComponentOne = ({ data, columns, page, setPage, totalPages}) => {
                 </tr>
               ))
             ) : (
-              <NoDataFound/>
+              <td colSpan={10}> <div className="simple-no-data"><NoDataFound /></div>  </td>
+            
             )}
           </tbody>
         </table>

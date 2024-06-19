@@ -186,7 +186,9 @@ const DeveloperList = () => {
                                         </div>
                                     </>
                                 )
-                            }) : <NoDataFound />}
+                            }) :  <td colSpan={8}>
+                            <NoDataFound />
+                          </td>}
                         </div>
                     </Tab.Pane>
                     <Tab.Pane eventKey="list-view">
