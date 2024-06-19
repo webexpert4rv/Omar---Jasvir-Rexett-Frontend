@@ -7,3 +7,14 @@ export const getCurrentRoleEndPoint = (role) => {
 
   return obj[role];
 };
+
+
+export const updateCurrentRoleEndPoint = (role) => {
+  let obj = {
+    developer: "common/update-profile/",
+    admin: "admin/update-profile",
+    client: "client/update-profile/",
+  };
+
+  return obj[role];
+};

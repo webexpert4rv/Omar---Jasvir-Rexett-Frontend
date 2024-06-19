@@ -22,7 +22,11 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
     trigger,
     setError, 
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues:{
+      test:[]
+    }
+  });
   const { t } =  useTranslation()
   const { fields, append, remove, replace } = useFieldArray({
     control,
@@ -122,22 +126,11 @@ const ExperienceCVModal = ({ show, handleClose, data ,id ,role }) => {
 
 console.log(fields,"firldssssss")
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      centered
-      className="custom-modal"
-      size="lg"
-      animation
-      scrollable
-    >
-      <Modal.Header closeButton className="border-0 pb-3">
-        {/* <Modal.Title>Experience CV Section</Modal.Title> */}
-      </Modal.Header>
-      <Modal.Body>
-        <h3 className="popup-heading">{t("experience")} CV {t("section")}</h3>
+    
+     <>
+      <h3 className="popup-heading">{t("experience")} CV {t("section")}</h3>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          {fields.map((item, index) => (
+          {fields?.map((item, index) => (
             <div className="experience-container mb-3" key={item.id}>
               <Row>
                 <Col md="12">
@@ -283,8 +276,9 @@ console.log(fields,"firldssssss")
             />
           </div>
         </form>
-      </Modal.Body>
-    </Modal>
+     </>
+       
+     
   );
 };
 

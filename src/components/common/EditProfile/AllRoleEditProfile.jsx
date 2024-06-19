@@ -18,20 +18,23 @@ import {
   getEnableDisableAccount,
   getStatesList,
   getTimeZoneForCountry,
+  updateClientProfile,
 } from "../../../redux/slices/clientDataSlice";
 import {
   getProfileDetails,
   updateDeveloperProfile,
+  updateProfileDetails,
 } from "../../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import RexettButton from "../../atomic/RexettButton";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import CommonInput from "../../atomic/CommonInput";
 import CommonAutocomplete from "../../atomic/CommonAutoComplete";
-import { getCurrentRoleEndPoint } from "./helper";
+import { getCurrentRoleEndPoint, updateCurrentRoleEndPoint } from "./helper";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import CommonReactSelect from "../../atomic/CommonReactSelect";
+import { updateAdminProfile } from "../../../redux/slices/adminDataSlice";
 
 const AllRoleEditProfile = ({ role }) => {
   const userId = localStorage.getItem("userId");
@@ -97,7 +100,7 @@ const AllRoleEditProfile = ({ role }) => {
 
   useEffect(() => {
     if (watch("state")?.value) {
-      dispatch(getCitiesList(watch("country")?.value, watch("state")?.label));
+      dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
       setValue("city", null);
     }
   }, [watch("state")]);
@@ -109,12 +112,11 @@ const AllRoleEditProfile = ({ role }) => {
       setValue("phone_number", userProfileDetails?.data?.phone_number);
       setValue("address", userProfileDetails?.data?.address);
       setValue("address_2", userProfileDetails?.data?.address_2);
-      setValue("city", userProfileDetails?.data?.city);
-      setValue("country", userProfileDetails?.data?.country);
+      setValue("city", {label:userProfileDetails?.data?.city,value:null});
+      setValue("country", {label:userProfileDetails?.data?.country,value:null});
       setValue("passcode", userProfileDetails?.data?.passcode);
-      setValue("country", userProfileDetails?.data?.country);
-      setValue("time_zone", userProfileDetails?.data?.time_zone);
-      setValue("state", userProfileDetails?.data?.state);
+      setValue("time_zone", {label:userProfileDetails?.data?.time_zone,value:userProfileDetails?.data?.time_zone});
+      setValue("state", {label:userProfileDetails?.data?.state,value:null});
       if (userProfileDetails?.data?.is_2FA_enabled) {
         setValue("is_2FA_enabled", userProfileDetails?.data?.is_2FA_enabled);
       } else {
@@ -123,9 +125,9 @@ const AllRoleEditProfile = ({ role }) => {
     }
   }, [userProfileDetails]);
 
-  const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
 
   const onSubmit = (values) => {
+   let currentRoleUpdateProfile= updateCurrentRoleEndPoint(role)
     let formData = new FormData();
     let fileData = new FormData();
     for (const key in values) {
@@ -137,12 +139,16 @@ const AllRoleEditProfile = ({ role }) => {
       let data = {
         ...values,
         user_id: userId,
-        // country: values?.country?.label,
-        // state: values?.state?.label,
-        // time_zone: values?.time_zone?.label,
-        // city :values?.city?.label
+        country: values?.country?.label,
+        country_iso_code:values?.country.value,
+        state: values?.state?.label,
+        state_iso_code:values?.state?.value,
+        time_zone: values?.time_zone?.label,
+        city :values?.city?.label
       };
-      dispatch(updateDeveloperProfile(data));
+      // dispatch(updateDeveloperProfile(data));
+      // dispatch(updateAdminProfile(data))
+      dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
     } else {
       dispatch(
         filePreassignedUrlGenerate(fileData, (url) => {
@@ -150,14 +156,17 @@ const AllRoleEditProfile = ({ role }) => {
             ...values,
             profile_picture: url,
             user_id: userId,
-            // country: values?.country?.label,
-            // state: values?.state?.label,
-            // time_zone: values?.time_zone?.label,
-            // city :values?.city?.label
+            country: values?.country?.label,
+            country_iso_code:values?.country.value,
+            state: values?.state?.label,
+            state_iso_code:values?.state?.value,
+            time_zone: values?.time_zone?.label,
+            city :values?.city?.label
           };
-          dispatch(updateDeveloperProfile(data));
-          // dispatch(updateAdminProfile(formData))
+          // dispatch(updateDeveloperProfile(data));
+          // dispatch(updateAdminProfile(data))
           // dispatch(updateClientProfile(data));
+          dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
         })
       );
     }
@@ -277,8 +286,8 @@ const AllRoleEditProfile = ({ role }) => {
                   <CommonAutocomplete
                     label={t("address") + " 2"}
                     name="address_2"
-                    control={control}
-                    rules={{ required: false }}
+                    control={control} 
+                    rules={{ required: false }}  
                     error={errors.address_2}
                     apiKey={GOOGLE_MAP_API_KEY}
                     onPlaceSelected={(place) => {

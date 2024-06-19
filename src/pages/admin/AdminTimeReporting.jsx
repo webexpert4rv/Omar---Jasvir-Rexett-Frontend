@@ -139,9 +139,9 @@ const AdminTimeReporting = () => {
                                     {t("totalIndivisualDev")}
 
                                 </th>
-                                <th className="time-table-head">
+                                {/* <th className="time-table-head">
                                     {t("contract")}
-                                </th>
+                                </th> */}
                             </thead>
                             <tbody>
                                 {screenLoader ? <ScreenLoader /> : <>
@@ -155,12 +155,12 @@ const AdminTimeReporting = () => {
                                                         <td className="time-table-data">{total_projects}</td>
                                                         <td className="time-table-data">{total_vendors_dev}</td>
                                                         <td className="time-table-data">{total_individual_dev}</td>
-                                                        <td className="time-table-data">{}</td>
+                                                        {/* <td className="time-table-data">{}</td> */}
                                                     </tr>
                                                 </Fragment>
                                             )
                                         })
-                                        : <td colSpan={6}><NoDataFound /></td>}
+                                        :<td colSpan={10}> <div className="simple-no-data">  <NoDataFound/></div>  </td>}
                                 </>}
                             </tbody>
                         </table>
