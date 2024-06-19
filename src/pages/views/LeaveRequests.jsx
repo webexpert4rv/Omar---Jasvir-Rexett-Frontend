@@ -35,12 +35,13 @@ const LeaveRequest = () => {
   const [currentTab, setCurrentTab] = useState("first");
   const { clientHolidayList } = useSelector((state) => state.clientData);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedRejectIndex , setSelectedRejectIndex] = useState(null)
+  const [approveIndex , setApproveIndex] =  useState(null)
   const [status, setStatus] = useState({
     id: "",
     status: "",
   });
-  const { screenLoader, approvedLoader, smallLoader, clientLeaveHistory } =
-    useSelector((state) => state.clientData);
+  const { screenLoader, approvedLoader, smallLoader, clientLeaveHistory } =useSelector((state) => state.clientData);
   const [leaveId, setLeaveId] = useState();
   const [deleteShowModal, setDeleteShowModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -49,6 +50,7 @@ const LeaveRequest = () => {
     setCurrentTab(selectedTab);
   };
 
+ 
   console.log(deleteId, "deleteId");
   const handleCloseDeleteModal = () => {
     setDeleteShowModal(false);
@@ -72,8 +74,10 @@ const LeaveRequest = () => {
   };
 
   const handleApproveReject = async (id, status, index) => {
-    setSelectedIndex(index);
-    setLeaveId(id);
+    console.log(status,"status")
+    console.log(index,"index")
+      setApproveIndex(index);
+      setLeaveId(id);
     if (status === "Approved") {
       let payload = {
         leaveId: id,
@@ -109,6 +113,7 @@ const LeaveRequest = () => {
         approval_status: "Withdrawn",
       };
     }
+    console.log(data,"data")
     dispatch(getClientLeaveHistory(data));
   }, [currentTab]);
 
@@ -137,7 +142,11 @@ const LeaveRequest = () => {
   }, []);
 
   const handleAproveDisapprove = async (id, status, idx) => {
+    if(status== "disapprove"){
+    setSelectedRejectIndex(idx)
+    }else {
     setSelectedIndex(idx);
+    }
     const payload = {
       action: status,
     };
@@ -154,7 +163,6 @@ const LeaveRequest = () => {
   };
   const handleAction = async (e) => {
     e.preventDefault();
-    console.log(deleteId, "deleteion");
     await dispatch(clientDeleteHoliday(deleteId));
     dispatch(getClientHolidayList());
     setDeleteShowModal(false);
@@ -193,7 +201,7 @@ const LeaveRequest = () => {
       <Tab.Container
         id="left-tabs-example"
         defaultActiveKey="devleave-request"
-        onSelect={handleSelect}
+        // onSelect={handleSelect}
       >
         <Nav variant="pills" className="mb-4 application-pills">
           <Nav.Item className="application-item">
@@ -220,7 +228,8 @@ const LeaveRequest = () => {
               currentTab={currentTab}
               handleApproveReject={handleApproveReject}
               approvedLoader={approvedLoader}
-              selectedIndex={selectedIndex}
+              approveIndex={approveIndex}
+              screenLoader={screenLoader}
             />
             {showRejectModal && (
               <RejectModal
@@ -243,8 +252,9 @@ const LeaveRequest = () => {
               handleShowEvent={handleShowEvent}
               handleDelete={handleDelete}
               handleAproveDisapprove={handleAproveDisapprove}
-              approvedLoader={approvedLoader}
               selectedIndex={selectedIndex}
+              selectedRejectIndex = {selectedRejectIndex}
+              approvedLoader = {approvedLoader}
             />
           </Tab.Pane>
           <NewEvent

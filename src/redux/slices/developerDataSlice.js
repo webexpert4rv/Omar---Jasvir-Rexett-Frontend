@@ -321,6 +321,7 @@ export function applyLeave(payload) {
 }
 
 export function getLeaveHistory(id , payload ) {
+  console.log(payload,"payload")
   return async (dispatch) => {
     try {
       let result = await clientInstance.get(generateApiUrl(payload,`common/get-leave-history/${id}`));
