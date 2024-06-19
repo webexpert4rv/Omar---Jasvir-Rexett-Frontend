@@ -36,10 +36,10 @@ const LeavePlan = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const { screenLoader, leaveDetails, allContracts, holidayList ,smallLoader } = useSelector(
+  const { screenLoader, leaveDetails, allContracts, holidayList ,smallLoader  } = useSelector(
     (state) => state.developerData
   );
-
+const [selectedLeave ,setSelectedLeave] = useState()
   const [leaveId , setLeaveId] = useState(null)
   const {
     handleSubmit,
@@ -51,10 +51,6 @@ const LeavePlan = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = useState("first");
-  const [isEdit, setIsEdit] = useState({
-    status: false,
-    leaveId: "",
-  });
   const today = new Date();
   const start_date = moment(selectionRange?.startDate).format("MM-DD-YYYY");
   const end_date = moment(selectionRange?.endDate).format("MM-DD-YYYY");
@@ -62,8 +58,6 @@ const LeavePlan = () => {
 
   useEffect(() => {
     dispatch(getHolidaysList());
-    // reset()
-
   }, []);
 
   useEffect(() => {
@@ -84,25 +78,8 @@ const LeavePlan = () => {
     setSelectionRange(ranges.selection);
   };
 
-  // const handleEditLeave = (id) => {
-  //   setLeaveId(id)
-  //   console.log(id,"id")
-  //   const selectedLeave = leaveDetails.find((item) => item.id == id);
-  //   console.log(selectedLeave,"selectredleave")
-  //   if (selectedLeave) {
-  //     setSelectionRange({
-  //       startDate: new Date(selectedLeave.start_date),
-  //       endDate: new Date(selectedLeave.end_date),
-  //       key: "selection",
-  //     });
-
-  //     setIsEdit({ status: true, leaveId: id });
-  //     setValue("client_name", selectedLeave?.contract_id);
-  //     setValue("leave_type", selectedLeave?.type);
-  //     setValue("reason", selectedLeave?.reason_for_leave);
-  //   }
-  // };
-  const handleCancelLeave = async (id) => {
+  const handleCancelLeave = async (id ,idx) => {
+    setSelectedLeave(idx)
     let data = {
       withdrawal_reason: "reason",
     };
@@ -113,31 +90,7 @@ const LeavePlan = () => {
     dispatch(getLeaveHistory(user_id, payload));
   };
 
-  const onSubmit = async (values) => {
-    let data = {
-      contract_id: +values.client_name,
-      start_date: start_date,
-      end_date: end_date,
-      start_time: null,
-      end_time: null,
-      type: values.leave_type,
-      reason_for_leave: values.reason,
-  }
-
-    if (isEdit?.status === true) {
-      await dispatch(getUpdateLeave(isEdit?.leaveId, data));
-    } else {
-      await dispatch(applyLeave(data));
-    }
-    let payload = {
-      approval_status: "Under Approval",
-    };
-    dispatch(getLeaveHistory(user_id, payload));
-    setIsEdit({ status: false, leaveId: "" });
-    reset()
-
-  };
-
+ 
   const listHolidays = (data) => {
     const holidays = data?.map((value) => new Date(value?.date));
     return holidays;
@@ -227,14 +180,15 @@ const LeavePlan = () => {
                                 </div>
                                 <div className="d-flex gap-3">
                                   <ToolTip text="Cancel Leave">
-                                    <Button
+                                    <RexettButton
                                       className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
                                       onClick={() =>
-                                        handleCancelLeave(field?.id)
+                                        handleCancelLeave(field?.id , idx)
                                       }
+                                      isLoading={selectedLeave === idx ? smallLoader : false}
                                     >
                                       <IoClose />
-                                    </Button>
+                                    </RexettButton>
                                   </ToolTip>
                                   <ToolTip text="Edit Leave">
                                     <Button
@@ -255,7 +209,7 @@ const LeavePlan = () => {
                         )}
                       </Row>
                     </div>
-                      <ApplyLeaveSection allContracts={allContracts} handleRange={handleRange} selectionRange ={selectionRange} setSelectionRange = {setSelectionRange} handleSubmit = {handleSubmit} onSubmit={onSubmit} smallLoader = {smallLoader} id = {leaveId}  />
+                      <ApplyLeaveSection allContracts={allContracts} handleRange={handleRange} selectionRange ={selectionRange} setSelectionRange = {setSelectionRange} smallLoader = {smallLoader} id = {leaveId} start_date = {start_date} end_date = {end_date}  />
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
                     <div className="table-responsive">
