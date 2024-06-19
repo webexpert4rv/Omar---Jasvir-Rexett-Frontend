@@ -75,16 +75,8 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
   };
 
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      centered
-      className="custom-modal"
-      animation
-    >
-      <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
-      <Modal.Body>
-        <h3 className="popup-heading">{t("skills")}</h3>
+    <>
+    <h3 className="popup-heading">{t("skills")}</h3>
         <form onSubmit={handleSubmit}>
           <div className="experience-container">
             <Row>
@@ -116,8 +108,10 @@ const SkillsModal = ({ show, handleClose, data, id, role }) => {
             />
           </div>
         </form>
-      </Modal.Body>
-    </Modal>
+    </>
+  
+        
+    
   );
 };
 export default SkillsModal;

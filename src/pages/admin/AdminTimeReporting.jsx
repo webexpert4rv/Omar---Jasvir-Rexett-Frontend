@@ -160,7 +160,7 @@ const AdminTimeReporting = () => {
                                                 </Fragment>
                                             )
                                         })
-                                        : <td colSpan={6}><NoDataFound /></td>}
+                                        :<td colSpan={10}> <div className="simple-no-data">  <NoDataFound/></div>  </td>}
                                 </>}
                             </tbody>
                         </table>

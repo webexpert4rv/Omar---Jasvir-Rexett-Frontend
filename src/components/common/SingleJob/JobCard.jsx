@@ -50,7 +50,7 @@ console.log(screenLoader,"screenloader")
 
   const handleDeveloperCard = (e, id) => {
     if (role == "client") {
-      navigate(`client/client-single-developer/${id}`);
+      navigate(`/client/client-single-developer/${id}`);
     } else if (role === "admin") {
       navigate(`/admin-single-developer/${id}`);
     }
