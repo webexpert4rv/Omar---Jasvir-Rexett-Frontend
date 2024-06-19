@@ -40,6 +40,7 @@ const LeavePlan = () => {
     (state) => state.developerData
   );
 
+  const [leaveId , setLeaveId] = useState(null)
   const {
     handleSubmit,
     register,
@@ -83,23 +84,24 @@ const LeavePlan = () => {
     setSelectionRange(ranges.selection);
   };
 
-  const handleEditLeave = (id) => {
-    console.log(id,"id")
-    const selectedLeave = leaveDetails.find((item) => item.id == id);
-    console.log(selectedLeave,"selectredleave")
-    if (selectedLeave) {
-      setSelectionRange({
-        startDate: new Date(selectedLeave.start_date),
-        endDate: new Date(selectedLeave.end_date),
-        key: "selection",
-      });
+  // const handleEditLeave = (id) => {
+  //   setLeaveId(id)
+  //   console.log(id,"id")
+  //   const selectedLeave = leaveDetails.find((item) => item.id == id);
+  //   console.log(selectedLeave,"selectredleave")
+  //   if (selectedLeave) {
+  //     setSelectionRange({
+  //       startDate: new Date(selectedLeave.start_date),
+  //       endDate: new Date(selectedLeave.end_date),
+  //       key: "selection",
+  //     });
 
-      setIsEdit({ status: true, leaveId: id });
-      setValue("client_name", selectedLeave?.contract_id);
-      setValue("leave_type", selectedLeave?.type);
-      setValue("reason", selectedLeave?.reason_for_leave);
-    }
-  };
+  //     setIsEdit({ status: true, leaveId: id });
+  //     setValue("client_name", selectedLeave?.contract_id);
+  //     setValue("leave_type", selectedLeave?.type);
+  //     setValue("reason", selectedLeave?.reason_for_leave);
+  //   }
+  // };
   const handleCancelLeave = async (id) => {
     let data = {
       withdrawal_reason: "reason",
@@ -124,7 +126,6 @@ const LeavePlan = () => {
 
     if (isEdit?.status === true) {
       await dispatch(getUpdateLeave(isEdit?.leaveId, data));
-      // reset()
     } else {
       await dispatch(applyLeave(data));
     }
@@ -143,10 +144,8 @@ const LeavePlan = () => {
   };
 
   const [value, onChange] = useState(new Date());
-  // Define the dates you want to mark
   const markedDates = listHolidays(holidayList);
 
-  // Function to add custom content to tile
   const tileContent = ({ date, view }) => {
     if (
       view === "month" &&
@@ -213,11 +212,10 @@ const LeavePlan = () => {
                                   </h4>
                                   <div>
                                     <p className="leave-date">
-                                      {" "}
                                       {moment(field?.start_date).format(
                                         "MM-DD-YYYY"
-                                      )}{" "}
-                                      to{" "}
+                                      )}
+                                      to
                                       {moment(field?.end_date).format(
                                         "MM-DD-YYYY"
                                       )}
@@ -241,7 +239,7 @@ const LeavePlan = () => {
                                   <ToolTip text="Edit Leave">
                                     <Button
                                       className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
-                                      onClick={() => handleEditLeave(field?.id)}
+                                      onClick={() => setLeaveId(field?.id)}
                                     >
                                       <MdModeEditOutline />
                                     </Button>
@@ -257,7 +255,7 @@ const LeavePlan = () => {
                         )}
                       </Row>
                     </div>
-                      <ApplyLeaveSection allContracts={allContracts} handleRange={handleRange} selectionRange ={selectionRange} handleSubmit = {handleSubmit} onSubmit={onSubmit} smallLoader = {smallLoader}/>
+                      <ApplyLeaveSection allContracts={allContracts} handleRange={handleRange} selectionRange ={selectionRange} setSelectionRange = {setSelectionRange} handleSubmit = {handleSubmit} onSubmit={onSubmit} smallLoader = {smallLoader} id = {leaveId}  />
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
                     <div className="table-responsive">
