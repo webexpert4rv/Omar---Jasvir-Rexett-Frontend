@@ -273,7 +273,6 @@ const AllRoleEditProfile = ({ role }) => {
                       setValue("address", e.target.value);
                     }}
                     options={{ types: ["establishment", "geocode"] }}
-                    r
                   />
                   <CommonAutocomplete
                     label={t("address") + " 2"}

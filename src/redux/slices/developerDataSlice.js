@@ -842,3 +842,29 @@ export function getAllCountries() {
       }
   };
 }
+
+
+export function postDeveloperStepData(url, payload,increaseStep,callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(
+        `${url}`,
+        payload
+      );
+      // dispatch(setLastTimeLog(result.data));
+      if (result?.status == 200||201) {
+        // toast.success("Reconciliation is submitted successfully", {
+        //   position: "top-center",
+        // });
+        increaseStep()
+      }
+      dispatch(setSuccessActionData());
+      (callback) && callback()
+    } catch (error) {
+      console.log(error, "error");
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+

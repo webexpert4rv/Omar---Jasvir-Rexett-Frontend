@@ -17,14 +17,19 @@ import CommonInput from "../../../components/atomic/CommonInput";
 import ScreenLoader from "../../../components/atomic/ScreenLoader";
 import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import RexettButton from "../../../components/atomic/RexettButton";
-import { getAllCountries } from "../../../redux/slices/authenticationDataSlice";
-
+import CommonStep1 from "./CommonStep1";
+import { getActiveStepURL, getCurrentStepInfo } from "./developeStepConstant";
+import { getCoutriesList } from "../../../redux/slices/clientDataSlice";
+import { postDeveloperStepData } from "../../../redux/slices/developerDataSlice";
+const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 const DeveloperRegisterForm = ({ role }) => {
   const userId = localStorage.getItem("userId");
+  const [activeStep, setActiveStep] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
   const {
     register,
+    watch = { watch },
     setValue,
     control,
     handleSubmit,
@@ -32,63 +37,23 @@ const DeveloperRegisterForm = ({ role }) => {
   } = useForm({});
   const dispatch = useDispatch();
 
-  const [isPassword, setPassword] = useState({
-    firstPass: false,
-    secondPass: false,
-  });
+  // const [isPassword, setPassword] = useState({
+  //   firstPass: false,
+  //   secondPass: false,
+  // });
   const [file, setFile] = useState(null);
   const { smallLoader, userProfileDetails, screenLoader, countries } =
     useSelector((state) => state.developerData);
-
-  const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
-
-  console.log(userProfileDetails, "userProfileDetails");
+  let { headingData, fields } = getCurrentStepInfo(activeStep);
 
   useEffect(() => {
-    dispatch(getAllCountries());
-  }, []);
-
-  useEffect(() => {
-    if (userProfileDetails?.data) {
-      setValue("name", userProfileDetails?.data?.name);
-      setValue("email", userProfileDetails?.data?.email);
-      setValue("phone_number", userProfileDetails?.data?.phone_number);
-      setValue("address", userProfileDetails?.data?.address);
-      setValue("address_2", userProfileDetails?.data?.address_2);
-      setValue("city", userProfileDetails?.data?.city);
-      setValue("country", userProfileDetails?.data?.country);
-      setValue("passcode", userProfileDetails?.data?.passcode);
+    if (activeStep === 1) {
+      dispatch(getCoutriesList());
     }
-  }, [userProfileDetails]);
+  }, [activeStep]);
 
   const disableProfile = <Tooltip id="tooltip">Disable your Account</Tooltip>;
 
-  const onSubmit = (values) => {
-    // let formData = new FormData();
-    // let fileData = new FormData();
-    // for (const key in values) {
-    //   formData.append(key, values[key]);
-    // }
-    // fileData.append("file", file);
-    // if (file == null) {
-    //   let data = {
-    //     ...values,
-    //     user_id: userId,
-    //   };
-    //   dispatch(updateDeveloperProfile(data));
-    // } else {
-    //   dispatch(
-    //     filePreassignedUrlGenerate(fileData, (url) => {
-    //       let data = {
-    //         ...values,
-    //         profile_picture: url,
-    //         user_id: userId,
-    //       };
-    //       dispatch(updateDeveloperProfile(data));
-    //     })
-    //   );
-    // }
-  };
   const validatePassword = (value) => {
     if (value === "") {
       return true; // Password is not required, so return true if empty
@@ -113,26 +78,51 @@ const DeveloperRegisterForm = ({ role }) => {
       reader.readAsDataURL(file);
     }
   };
+  const increaseActiveStepCount = () => {
+    setActiveStep((prev) => prev + 1);
+  };
+  const decreaseActiveStepCount = () => {
+    setActiveStep((prev) => prev - 1);
+  };
+  const renderActiveStep = () => {
+    switch (activeStep) {
+      case 1:
+      case 2:
+        return (
+          <CommonStep1
+            control={control}
+            errors={errors}
+            fields={fields}
+            headingData={headingData}
+            setValue={setValue}
+            watch={watch}
+            countries={countries}
+          />
+        );
+    }
+  };
+
+  const onSubmit = (values) => {
+    const URL = getActiveStepURL(activeStep)
+    let payload = {}
+    if(activeStep === 1) {
+      payload = {
+        ...values,
+      }
+    }
+    postDeveloperStepData(URL,payload,increaseActiveStepCount)
+  };
 
   return (
     <>
       <section className="card-box">
-        <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
-          <h2 className="section-head-sub mb-0 border-0">
-            Add your Contact Details We are a Global tech talent and solutions
-            provider. Join our platform and take advantage of the opportunity to
-            enhance your talent acquisition journey with Rexett, all while
-            enjoying significant savings of up to 72% on hiring staff. Join the
-            ranks of over 100 satisfied clients who have chosen to partner with
-            Rexett.
-          </h2>
-        </div>
         <div>
           {screenLoader ? (
             <ScreenLoader />
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-              <Row className="mb-4">
+              {renderActiveStep()}
+              {/* <Row className="mb-4">
                 <Col md="6">
                   <div className="inner-form">
                     <div>
@@ -351,15 +341,29 @@ const DeveloperRegisterForm = ({ role }) => {
                     </div>
                   </div>
                 </Col>
-              </Row>
+              </Row> */}
               <div className="text-center">
+                {activeStep !== 1 && (
+                  <RexettButton
+                    type="button"
+                    text="Back"
+                    onClick={() => {
+                      setActiveStep((prev) => prev - 1);
+                    }}
+                    className="main-btn outline-main-btn px-5"
+                    // disabled={smallLoader}
+                    // isLoading={smallLoader}
+                  />
+                )}
                 <RexettButton
                   type="submit"
-                  text={t("updateProfile")}
+                  text={activeStep < 8 ? "Continue" : t("submit")}
                   className="main-btn px-5"
-                  variant="transparent"
-                  disabled={smallLoader}
-                  isLoading={smallLoader}
+                  // onClick={() => {
+                  //   setActiveStep((prev) => prev + 1);
+                  // }}
+                  // disabled={smallLoader}
+                  // isLoading={smallLoader}
                 />
               </div>
             </form>

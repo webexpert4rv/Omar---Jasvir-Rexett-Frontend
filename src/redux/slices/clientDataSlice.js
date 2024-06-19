@@ -4,6 +4,8 @@ import clientInstance from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
 import axios from "axios";
 import authInstance from "../../services/auth.instance";
+import { VERIFY_USER_MESSAGE } from "../../pages/websiteRegisterForm/client/constant";
+import { setSuccessActionData } from "./developerDataSlice";
 
 const initialClientData = {
 
@@ -174,10 +176,12 @@ export const clientDataSlice = createSlice({
         state.screenLoader = false;
       },
       setStatesList: (state,action)=>{
-        state.statesList = action.payload
+        state.statesList = action.payload;
+        state.screenLoader = false;
       },
       setCitiesList:(state,action)=>{
-        state.citiesList = action.payload
+        state.citiesList = action.payload;
+        state.screenLoader = false;
       },
   }
 })
@@ -1011,12 +1015,13 @@ export function getCitiesList(countryCode,stateName) {
 }
 
 
-export function getWebsiteSkills(countryCode,stateName) {
+export function getWebsiteSkills(callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await authInstance.get(`web/skills`);
       dispatch(setSkillList(result?.data?.data));
+      callback(result?.data?.data)
     } catch (error) {
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1025,12 +1030,13 @@ export function getWebsiteSkills(countryCode,stateName) {
   };
 }
 
-export function getWebClientData(countryCode,stateName) {
+export function getWebClientData(clientId,callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await authInstance.get(`web/get-client-data?user_id=${1}`);
+      let result = await authInstance.get(`web/get-client-data?user_id=${clientId}`);
       dispatch(setWebClientData(result?.data?.data));
+      callback(result?.data?.data);
     } catch (error) {
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1053,12 +1059,33 @@ export function getWebClientLookUp() {
   };
 }
 
-export function applyAsClient(payload) {
+export function applyAsClient(payload,callback,triggerVerificationModal) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await authInstance.post(`web/apply-as-client`,{...payload});
+      localStorage.setItem("clientId",result?.data?.data?.id);
+      callback()
+    } catch (error) {
+      const message = error?.message;
+      // if (error?.message === VERIFY_USER_MESSAGE) {
+        if (error.response?.data?.verify_user) {
+        triggerVerificationModal("verify"); 
+      } else {
+        toast.error(error?.response?.data?.message, { position: "top-center" });
+      }
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function clientPostJob(payload,callback) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.post(`web/client/post-job`,{...payload});
       // dispatch(setClientLook(result?.data?.data));
+      callback()
     } catch (error) {
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1066,6 +1093,40 @@ export function applyAsClient(payload) {
     }
   };
 }
+
+export function sendVerificationOtp(payload,handleStep) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader())
+    try {
+      let result = await authInstance.post(`web/send-otp`,{...payload});
+      dispatch(setSuccessActionData)
+      toast.success(result?.data?.message, { position: "top-center" });
+      dispatch(setActionSuccessFully());
+       (handleStep) && handleStep("verify-otp");
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function verifyOtp(payload,callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await authInstance.post(`web/verify-otp`,{...payload});
+      dispatch(setActionSuccessFully());
+      toast.success(result?.data?.message, { position: "top-center" });
+      (callback) && callback(result?.data?.data?.completed_steps)
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
 
 
 

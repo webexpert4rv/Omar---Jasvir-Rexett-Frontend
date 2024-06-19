@@ -390,6 +390,10 @@
         "leaveRequests" : "Leave Requests",
         "clientNameRequired":"clientNameRequired",
         "leaveTypeRequired":"Leave Type Required",
-        "reasonRequired" : "Reason Required"
+        "reasonRequired" : "Reason Required",
+        "ready_to_relocate":"Are you willing to relocate ?",
+        "firstName":"First Name",
+        "lastName":"Last Name"
+
 }
 }
