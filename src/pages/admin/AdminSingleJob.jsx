@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row, Tab, Tabs } from "react-bootstrap";
+import { Button, Col, Form, Nav, Row, Tab, Tabs } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { adminSingleJob, getDeveloperSuggestList, suggestDeveloper } from "../../redux/slices/adminDataSlice";
@@ -9,7 +9,17 @@ import { useTranslation } from "react-i18next";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { FaRegHandshake } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import sowDoc from '../../assets/img/aws_examples_sows.pdf';
+import MeetingInfo from "./Modals/MeetingInfo";
+import { FaClipboardUser } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa";
+import { PiChatsFill } from "react-icons/pi";
+import { FaHandshake } from "react-icons/fa";
+import { MdWorkHistory } from "react-icons/md";
+import devImg from '../../assets/img/demo-img.jpg';
+import { FaLink } from "react-icons/fa6";
 
 const AdminSingleJob = () => {
     const { t } = useTranslation();
@@ -22,7 +32,19 @@ const AdminSingleJob = () => {
     const [singleJobDescription, setSingleJobDescription] = useState({})
     const [selectedTabsData, setSelectedTabsData] = useState([]);
     const [suggestedData, setSuggestedData] = useState(null)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
+    const [value, setValue] = useState('');
+    const [ showMeetingInfo, setShowMeetingInfo ] = useState(false);
+    const handleShowMeetingInfo = () => {
+        setShowMeetingInfo(!showMeetingInfo)
+    }
+    const handleCloseMeetingInfo = () => {
+        setShowMeetingInfo(false)
+    }
+
+    const handleChange = (content) => {
+        setValue(content);
+    };
 
     useEffect(() => {
         if (id) {
@@ -94,6 +116,11 @@ const AdminSingleJob = () => {
             }
         }
     };
+    let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> 4</div></div>;
+    let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1"><span className="stage-icon"><FaClipboardUser /></span> 1</div></div>;
+    let interview = <div>Interviews <div className="stage-indicator ms-1 stage-interview gap-1"><span className="stage-icon"><PiChatsFill /></span> 2</div></div>;
+    let offered = <div>Offered <div className="stage-indicator ms-1 stage-offer gap-1"><span className="stage-icon"><FaHandshake /></span> 0</div></div>;
+    let hired = <div>Hired <div className="stage-indicator ms-1 stage-hired gap-1"><span className="stage-icon"><MdWorkHistory /></span> 0</div></div>;
 
     return (
         <>
@@ -122,6 +149,20 @@ const AdminSingleJob = () => {
                             <SlLocationPin />
                             {/* <h3 className="req-heading mt-4">{t("location")}</h3> */}
                             <p className="req-text mb-0">{singleJobDescription?.job_type}</p>
+                        </div>
+                        <div className="d-flex align-items-center gap-2">
+                            <SlLocationPin />
+                            <p className={returnExperienceFromScreeningQuestions(
+                                singleJobDescription?.screening_questions
+                            ) ? `req-text` : ""} >
+                                {singleJobDescription?.screening_questions &&
+                                    returnExperienceFromScreeningQuestions(
+                                        singleJobDescription?.screening_questions
+                                    )}
+                                {returnExperienceFromScreeningQuestions(
+                                    singleJobDescription?.screening_questions
+                                ) && " years"}
+                            </p>
                         </div>
                     </div>
                     <div>
@@ -162,63 +203,63 @@ const AdminSingleJob = () => {
                     </div>
                 </div>
                 {/* <div className="single-job-card">
-                            <Row>
-                                <Col md="4">
-                                    <h3 className="req-heading">{t("clientName")}</h3>
+                    <Row>
+                        <Col md="4">
+                            <h3 className="req-heading">{t("clientName")}</h3>
 
-                                </Col>
-                                <Col md="4">
-                                    <h3 className="req-heading">{t("experienceRequirements")}</h3>
-                                    <p className={returnExperienceFromScreeningQuestions(
+                        </Col>
+                        <Col md="4">
+                            <h3 className="req-heading">{t("experienceRequirements")}</h3>
+                            <p className={returnExperienceFromScreeningQuestions(
+                                singleJobDescription?.screening_questions
+                            ) ? `req-text` : ""} >
+                                {singleJobDescription?.screening_questions &&
+                                    returnExperienceFromScreeningQuestions(
                                         singleJobDescription?.screening_questions
-                                    ) ? `req-text` : ""} >
-                                        {singleJobDescription?.screening_questions &&
-                                            returnExperienceFromScreeningQuestions(
-                                                singleJobDescription?.screening_questions
-                                            )}
-                                        {returnExperienceFromScreeningQuestions(
-                                            singleJobDescription?.screening_questions
-                                        ) && " years"}
-                                    </p>
-                                </Col>
-                                <Col md="4">
-                                </Col>
-                                <Col md="4">
-                                </Col>
-                            </Row>
-                        </div>
-                        <div className="single-job-card">
-                            <Row>
-                                <Col>
-                                    <h3 className="req-heading">{t("skillsRequired")}</h3>
-                                    {singleJobDescription?.skills?.length > 0 ? <ul className="skills-listing mb-0">
-                                        {
-                                            convertToArray(singleJobDescription?.skills)?.map((item, index) => {
-                                                return (
-                                                    <>
-                                                        <li key={index}>{item}</li>
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                    </ul> : "Not Mentioned"}
-                                </Col>
-                                <Col>
-                                    <h3 className="req-heading">{t("optionalSkills")}</h3>
-                                    {singleJobDescription?.optional_skills?.length > 0 ? <ul className="skills-listing mb-0">
-                                        {
-                                            convertToArray(singleJobDescription?.optional_skills)?.map((item, index) => {
-                                                return (
-                                                    <>
-                                                        <li key={index}>{item}</li>
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                    </ul> : "Not Mentioned"}
-                                </Col>
-                            </Row>
-                        </div> */}
+                                    )}
+                                {returnExperienceFromScreeningQuestions(
+                                    singleJobDescription?.screening_questions
+                                ) && " years"}
+                            </p>
+                        </Col>
+                        <Col md="4">
+                        </Col>
+                        <Col md="4">
+                        </Col>
+                    </Row>
+                </div>
+                <div className="single-job-card">
+                    <Row>
+                        <Col>
+                            <h3 className="req-heading">{t("skillsRequired")}</h3>
+                            {singleJobDescription?.skills?.length > 0 ? <ul className="skills-listing mb-0">
+                                {
+                                    convertToArray(singleJobDescription?.skills)?.map((item, index) => {
+                                        return (
+                                            <>
+                                                <li key={index}>{item}</li>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </ul> : "Not Mentioned"}
+                        </Col>
+                        <Col>
+                            <h3 className="req-heading">{t("optionalSkills")}</h3>
+                            {singleJobDescription?.optional_skills?.length > 0 ? <ul className="skills-listing mb-0">
+                                {
+                                    convertToArray(singleJobDescription?.optional_skills)?.map((item, index) => {
+                                        return (
+                                            <>
+                                                <li key={index}>{item}</li>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </ul> : "Not Mentioned"}
+                        </Col>
+                    </Row>
+                </div> */}
             </section>}
             <div className="job-tab-detail">
                 <Tabs
@@ -237,56 +278,469 @@ const AdminSingleJob = () => {
                             ></p>
                         </div>
                     </Tab>
-                    <Tab eventKey="suggested" title="Suggestions">
+                    <Tab eventKey="suggested" title={suggest}>
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>
-                    <Tab eventKey="shortlisted" title="Shortlisted">
+                    <Tab eventKey="shortlisted" title={shortlist}>
                         <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
                     </Tab>
-                    <Tab eventKey="interviewing" title="Interviewing">
-                        <JobCard type="Interviewing" data={selectedTabsData} role="admin" />
-                    </Tab>
-                    <Tab eventKey="documentation" title="Documentation">
-                        <div className="card-box">
-                            <h3 className="mb-3 doc-heading">Client's Documentation</h3>
+                    <Tab eventKey="interviewing" title={interview}>
+                        <div className="interview-scheduled pt-3">
                             <Row>
-                                <Col md={4}>
-                                    <div>
-                                        <Form.Label>Statement of work(SOW)</Form.Label>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
-                                            <div className="preview-doc">
-                                                <iframe src={sowDoc}></iframe>
-                                            </div>
-                                            <Button className="main-btn font-14">Sign Document</Button>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Pankaj Pundir
+                                            </p>
+                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-upcoming">Upcoming in 1hr</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>View Details</Button>
                                         </div>
                                     </div>
                                 </Col>
-                                <Col md={4}>
-                                    <div>
-                                        <Form.Label>MCA agreement</Form.Label>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
-                                            <div className="preview-doc">
-                                                <iframe src={sowDoc}></iframe>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-finished">Completed</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <Button className="main-btn font-14">Sign Document</Button>
+                                            <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
                                         </div>
                                     </div>
                                 </Col>
-                                <Col md={4}>
-                                    <div>
-                                        <Form.Label>Non disclosure Agreement(NDA)</Form.Label>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
-                                            <div className="preview-doc">
-                                                <iframe src={sowDoc}></iframe>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-rejected">Declined</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <Button className="main-btn font-14">Sign Document</Button>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>View Details</Button>
                                         </div>
                                     </div>
                                 </Col>
                             </Row>
                         </div>
+                        <JobCard type="Interviewing" data={selectedTabsData} role="admin" />
                     </Tab>
-                    <Tab eventKey="hired" title="Hired">
+                    <Tab eventKey="documentation" title={offered}>
+                        <div className="card-box">
+                            <div className="mb-4">
+                                <h3 className="mb-3 doc-heading">Client's Documentation</h3>
+                                <Row>
+                                    <Tab.Container
+                                        id="left-tabs-example"
+                                        defaultActiveKey="create_client_sow"
+                                        onSelect={handleSelect}
+                                    >
+                                        <Nav variant="pills" className="application-pills">
+                                            <Nav.Item className="application-item">
+                                                <Nav.Link eventKey="create_client_sow" className="application-link">
+                                                    Create SOW
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item className="application-item">
+                                                <Nav.Link eventKey="create-client_noc" className="application-link">
+                                                    Create NOC
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                        </Nav>
+                                        <Tab.Content>
+                                            <Tab.Pane eventKey="create_client_sow" className="py-4">
+                                                <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
+                                                <div>
+                                                    <div>
+                                                        <Row>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Project Title</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Client Name</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Client Address</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Client Contact Information</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Project Budget</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Project Objective</Form.Label>
+                                                                    <div className="custom-rich-editor">
+                                                                        <ReactQuill value={value} onChange={handleChange} />
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Scope of work</Form.Label>
+                                                                    <div className="custom-rich-editor">
+                                                                        <ReactQuill value={value} onChange={handleChange} />
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Responsibilities</Form.Label>
+                                                                    <div className="custom-rich-editor">
+                                                                        <ReactQuill value={value} onChange={handleChange} />
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        <div className="text-center mt-3">
+                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Tab.Pane>
+                                            <Tab.Pane eventKey="create-client_noc" className="py-4">
+                                                <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
+                                                <div>
+                                                    <div>
+                                                        <Row>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Client Name</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Client Address</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Client Contact Information</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        <div className="text-center mt-3">
+                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Tab.Pane>
+
+                                        </Tab.Content>
+                                    </Tab.Container>
+                                    {/* <Col md={4}>
+                                        <div>
+                                            <Form.Label>Statement of work(SOW)</Form.Label>
+                                            <div>
+                                                <Button className="main-btn font-14">Sign Document</Button>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                    <Col md={4}>
+                                        <div>
+                                            <Form.Label>Non disclosure Agreement(NDA)</Form.Label>
+                                            <div>
+                                                <Button className="main-btn font-14">Sign Document</Button>
+                                            </div>
+                                        </div>
+                                    </Col> */}
+                                </Row>
+                            </div>
+                            <div className="mb-3">
+                                <h3 className="mb-3 doc-heading">Vendor's Documentation</h3>
+                                <Tab.Container
+                                    id="left-tabs-example"
+                                    defaultActiveKey="create_sow"
+                                    onSelect={handleSelect}
+                                >
+                                    <Nav variant="pills" className="application-pills">
+                                        <Nav.Item className="application-item">
+                                            <Nav.Link eventKey="create_sow" className="application-link">
+                                                Create SOW
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item className="application-item">
+                                            <Nav.Link eventKey="create_noc" className="application-link">
+                                                Create NOC
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                    </Nav>
+                                    <Tab.Content>
+                                        <Tab.Pane eventKey="create_sow" className="py-4">
+                                            <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
+                                            <div>
+                                                <div>
+                                                    <Row>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Project Title</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Vendor Name</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Vendor Address</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Vendor Contact Information</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Project Budget</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={12}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Project Objective</Form.Label>
+                                                                <div className="custom-rich-editor">
+                                                                    <ReactQuill value={value} onChange={handleChange} />
+                                                                </div>
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={12}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Scope of work</Form.Label>
+                                                                <div className="custom-rich-editor">
+                                                                    <ReactQuill value={value} onChange={handleChange} />
+                                                                </div>
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={12}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Responsibilities</Form.Label>
+                                                                <div className="custom-rich-editor">
+                                                                    <ReactQuill value={value} onChange={handleChange} />
+                                                                </div>
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                    <div className="text-center mt-3">
+                                                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="create_noc" className="py-4">
+                                            <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
+                                            <div>
+                                                <div>
+                                                    <Row>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Vendor Name</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Vendor Address</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={4}>
+                                                            <div className="mb-3">
+                                                                <Form.Label>Vendor Contact Information</Form.Label>
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                    <div className="text-center mt-3">
+                                                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Tab.Pane>
+
+                                    </Tab.Content>
+                                </Tab.Container>
+                                <div className="mb-3">
+                                    <h3 className="mb-3 doc-heading">Developer's Documentation</h3>
+                                    <Tab.Container
+                                        id="left-tabs-example"
+                                        defaultActiveKey="create_sow"
+                                        onSelect={handleSelect}
+                                    >
+                                        <Nav variant="pills" className="application-pills">
+                                            <Nav.Item className="application-item">
+                                                <Nav.Link eventKey="create_sow" className="application-link">
+                                                    Create SOW
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item className="application-item">
+                                                <Nav.Link eventKey="create_noc" className="application-link">
+                                                    Create NOC
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                        </Nav>
+                                        <Tab.Content>
+                                            <Tab.Pane eventKey="create_sow" className="py-4">
+                                                <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
+                                                <div>
+                                                    <div>
+                                                        <Row>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Project Title</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Developer Name</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Developer Address</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Developer Contact Information</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Project Budget</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Project Objective</Form.Label>
+                                                                    <div className="custom-rich-editor">
+                                                                        <ReactQuill value={value} onChange={handleChange} />
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Scope of work</Form.Label>
+                                                                    <div className="custom-rich-editor">
+                                                                        <ReactQuill value={value} onChange={handleChange} />
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Responsibilities</Form.Label>
+                                                                    <div className="custom-rich-editor">
+                                                                        <ReactQuill value={value} onChange={handleChange} />
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        <div className="text-center mt-3">
+                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Tab.Pane>
+                                            <Tab.Pane eventKey="create_noc" className="py-4">
+                                                <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
+                                                <div>
+                                                    <div>
+                                                        <Row>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Developer Name</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Developer Address</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={4}>
+                                                                <div className="mb-3">
+                                                                    <Form.Label>Developer Contact Information</Form.Label>
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        <div className="text-center mt-3">
+                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Tab.Pane>
+
+                                        </Tab.Content>
+                                    </Tab.Container>
+                                </div>
+                            </div>
+                        </div>
+                    </Tab>
+                    <Tab eventKey="hired" title={hired}>
                         <JobCard type="Hired" data={selectedTabsData} role="admin" />
                     </Tab>
                 </Tabs >
@@ -294,6 +748,7 @@ const AdminSingleJob = () => {
             {/* <EndJobModal show={showEndJobModal} handleClose={handleCloseEndJobModal} /> */}
             < ConfirmationModal text={(suggestedData?.status) ? t("suggestDeveloper") : t("removeDeveloperFromSuggestion")
             } show={showEndJobModal} handleClose={handleCloseEndJobModal} onClick={handleJobStatusAction} smallLoader={smallLoader} />
+            <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
         </>
     )
 }

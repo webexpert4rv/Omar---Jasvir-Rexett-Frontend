@@ -200,6 +200,12 @@ ul {
 .sidebar-logo img {
     max-width: 130px;
 }
+::-webkit-scrollbar:hover,
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-track:hover
+{
+    width: 8px;
+}
 
 .main-wrapper {
     width: calc(100% - 350px);
@@ -381,7 +387,13 @@ ul {
     outline: none;
     transition: .4s ease;
 }
-
+.link-btn
+{
+    border: none;
+    color: #037563;
+    text-decoration: underline;
+    font-weight: 500;
+}
 .red-btn {
     display: inline-block;
     padding: 10px;
@@ -2858,6 +2870,14 @@ input[type="radio"]:checked {
     background-color: #d1fff8;
     color: #037563;
 }
+.status-info {
+    font-size: 13px;
+    border-radius: 30px;
+    padding: 5px 17px;
+    display: inline-block;
+    background-color: #d1e1ff;
+    color: #031275;
+}
 
 .status-unpublished {
     font-size: 13px;
@@ -2884,6 +2904,14 @@ input[type="radio"]:checked {
     display: inline-block;
     background-color: #fffdd1;
     color: #756f03;
+}
+.status-upcoming {
+    font-size: 13px;
+    border-radius: 30px;
+    padding: 5px 17px;
+    display: inline-block;
+    background-color: #ffedd5;
+    color: #9a3412;
 }
 
 .developer-table tbody tr {
@@ -5671,6 +5699,7 @@ input[type="radio"]:checked {
 {
     background-color: #fff;
     border: 1px solid #ccc;
+    color: #000;
 }
 .role-wrapper
 {
@@ -5829,22 +5858,22 @@ input[type="radio"]:checked {
 }
 .interview-details
 {
-    display: flex;
+    display: grid;
     gap: 20px;
     padding: 20px;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background: #f7f7f7;
+    grid-template-columns: repeat(4, 1fr);
+    background: #037563;
     border-radius: 20px;
 }
 .detail-name
 {
     font-size: 14px;
     font-weight: 400;
-    color: #505050;
+    color: #fff;
 }
 .detail-info
 {
+    color: #fff;
     font-size: 17px;
     font-weight: 600;
     margin-bottom: 0px;
@@ -5866,7 +5895,6 @@ input[type="radio"]:checked {
     background-color: #f7f7f7;
     border-radius: 10px;
     padding: 17px;
-    max-height: 400px;
     overflow: auto;
 }
 .transript-wrapper > div
@@ -5955,6 +5983,877 @@ input[type="radio"]:checked {
 .doc-heading
 {
     font-size: 20px;
+    font-weight: 600;
+}
+.doc-subheading
+{
+    font-size: 17px;
+    font-weight: 500;
+}
+.uploaded-social
+{
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #2b303a;
+    color: #fff;
+    font-size: 20px;
+}
+.custom-rich-editor .quill
+{
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+}
+.custom-rich-editor .ql-toolbar.ql-snow
+{
+    border-radius: 10px;
+    background-color: #fff;
+}
+.custom-rich-editor .ql-container.ql-snow
+{
+    border: none;
+    height: 200px;
+}
+.ratinng-wrapper
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.ratinng-wrapper .rating-progress
+{
+    width: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 90px;
+}
+.ratinng-wrapper .rating-bx span
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    opacity: .2;
+}
+.ratinng-wrapper .rating-bx span.active
+{
+    width: 38px;
+    height: 38px;
+    opacity: 1;
+}
+.ratinng-wrapper .rating-bx span.very-poor
+{
+    background-color: #ffb3b0;
+    color: #7f1c1e;
+}
+.ratinng-wrapper .rating-bx span.poor
+{
+    background-color: #ffd6d6;
+    color: #991b1b;
+}
+.ratinng-wrapper .rating-bx span.neutral
+{
+    background-color: #fdefb9;
+    color: #92400d;
+}
+.ratinng-wrapper .rating-bx span.good
+{
+    background-color: #d2f579;
+    color: #3f6212;
+}
+.ratinng-wrapper .rating-bx span.very-good
+{
+    background-color: #a8ff58;
+    color: #365313;
+}
+.ratinng-wrapper p
+{
+    margin-bottom: 0px;
+}
+.to-do-icon
+{
+    display: inline-block;
+    font-size: 24px;
+    cursor: pointer;
+    color: #037563;
+}
+.booking-icon
+{
+    display: inline-block;
+    font-size: 24px;
+    cursor: pointer;
+    color: #037563;
+}
+.email-icon
+{
+    display: inline-block;
+    font-size: 26px;
+    color: #037563;
+}
+.todo-wrapper
+{
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 15px;
+}
+.checkbox-custom input
+{
+    width: 20px;
+    height: 20px;
+    box-shadow: none !important;
+    margin: 0px;
+}
+.checkbox-custom input:checked
+{
+    background-color: #037563;
+}
+.schedule-heading
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.schedule-heading span
+{
+    font-size: 17px;
+    line-height: 1;
+    display: inline-block;
+}
+.client-imgbx img
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.video-meetbx img
+{
+    width: 30px;
+}
+.datefield-wrapper .react-date-picker
+{
+    width: 100%;
+}
+.datefield-wrapper .react-date-picker__wrapper
+{
+    width: 100%;
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    background: #f5f5f5;
+}
+.datefield-wrapper .react-date-picker__calendar
+{
+    width: 270px;
+    border: none;
+}
+.datefield-wrapper .react-calendar
+{
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,.1);
+    overflow: hidden;
+}
+.datefield-wrapper .react-calendar__year-view .react-calendar__tile
+{
+    padding: 18px 0.5em;
+}
+.datefield-wrapper .react-calendar__tile--hasActive,
+.datefield-wrapper .react-calendar__tile--active
+{
+    background-color: #037563;
+    color: #fff;
+}
+.datefield-wrapper .react-calendar__navigation__prev2-button,
+.datefield-wrapper .react-calendar__navigation__next2-button
+{
+    display: none;
+}
+.datefield-wrapper .react-calendar__navigation button .react-calendar__navigation__label__labelText
+{
+    font-size: 13px !important;
+}
+.datefield-wrapper .react-calendar__tile--now:enabled:hover
+{
+    background: #ebfffc;
+    color: #037563;
+}
+.datefield-wrapper .react-calendar__tile--active:enabled:hover
+{
+    background: #037563;
+    color: #fff;
+}
+.datefield-wrapper .react-calendar__tile
+{
+    font-size: 12px;
+}
+.interview-wrapper
+{
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03), 0px 7px 25px rgba(0, 0, 0, 0.03), 0px 0px 0px 1px rgba(0, 0, 0, 0.05);
+}
+.interview-wrapper .interview-title
+{
+    font-size: 18px;
+    font-weight: 600;
+}
+.video-screen
+{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.screen-col
+{
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(90, 0, 0, .05);
+    border-radius: 20px;
+}
+.video-box
+{
+    background-color: #212121;
+    height: 300px;
+    border-radius: 20px 20px 0px 0px;
+}
+.media-field-wrapper
+{
+    position: relative;
+}
+.media-field-wrapper .common-field
+{
+    padding-left: 40px;
+}
+.media-field-wrapper .media-icon
+{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+}
+.mic-bars
+{
+    display: flex;
+    gap: 3px;
+}
+.mic-bars > div
+{
+    flex: none;
+    height: 32px;
+    width: 4px;
+    border-radius: 40px;
+    background-color: #dddee1;
+}
+.meeting-title
+{
+    font-size: 24px;
+    font-weight: 600;
+}
+.attendee-heading
+{
+    font-size: 18px;
+    font-weight: 500;
+}
+.attendee-wrapper
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f7f7f7;
+}
+.attendee-wrapper .attendee-imgbx
+{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.attendee-wrapper .attendee-imgbx img
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.assigned-user img
+{
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.today-text
+{
+    color: #037563;
+}
+.tomorrow-text
+{
+    color: #00b377;
+}
+.today-todo-wrapper
+{
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #0375630f;
+    margin-bottom: 10px;
+}
+.today-todo-number
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #03756342;
+    color: #037563;
+}
+.to-donumber
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #037563;
+    color: #fff;
+    border-radius: 20px;
+    min-width: 27px;
+    margin-left: 6px;
+    height: 27px;
+}
+.meeting-booking
+{
+    margin-bottom: 20px;
+}
+.meeting-booking .react-calendar
+{
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.meeting-booking .react-date-picker__calendar
+{
+    width: 270px;
+    border: none;
+}
+.meeting-booking .react-calendar
+{
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,.1);
+    overflow: hidden;
+}
+.meeting-booking .react-calendar__year-view .react-calendar__tile
+{
+    padding: 18px 0.5em;
+}
+.meeting-booking .react-calendar__tile--hasActive,
+.meeting-booking .react-calendar__tile--active
+{
+    background-color: #037563;
+    color: #fff;
+}
+.meeting-booking .react-calendar__navigation__prev2-button,
+.meeting-booking .react-calendar__navigation__next2-button
+{
+    display: none;
+}
+.meeting-booking .react-calendar__navigation button .react-calendar__navigation__label__labelText
+{
+    font-size: 13px !important;
+}
+.meeting-booking .react-calendar__tile--now:enabled:hover
+{
+    background: #ebfffc;
+    color: #037563;
+}
+.meeting-booking .react-calendar__tile--active:enabled:hover
+{
+    background: #037563;
+    color: #fff;
+}
+.meeting-booking .react-calendar__tile
+{
+    font-size: 12px;
+}
+.cancel-btn
+{
+    color: #dc2626;
+    display: inline-block;
+    padding: 10px;
+    background-color: #fff9f9 !important;
+    border-radius: 8px;
+    font-weight: 400;
+    border: 1px solid #fff9f9 !important;
+    outline: none;
+    transition: .4s ease;
+}
+.cancel-btn:hover
+{
+    background-color: #fff9f9 !important;
+    color: #dc2626;
+}
+.stage-heading
+{
+    font-size: 16px;
+    font-weight: 700;
+}
+.stage-wrapper
+{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.stage-indicator
+{
+    min-width: 36px;
+    border-radius: 9999px;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10px;
+    font-size: 14px;
+    display: inline-flex;
+    font-weight: 600;
+    height: 28px;
+    line-height: 1;
+}
+.stage-indicator .stage-icon
+{
+    font-size: 16px;
+}
+.stage-suggest
+{
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+.stage-shortlist
+{
+    background-color: #ffedd5;
+    color: #9a3412;
+}
+.stage-interview
+{
+    background-color: #f3e8ff;
+    color: #6b21a8;
+}
+.stage-offer
+{
+    background-color: #fef9c3;
+    color: #854d0e;
+}
+.stage-hired
+{
+    background-color: #defade;
+    color: #16651a;
+}
+.new-todo
+{
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, .6);
+    backdrop-filter: blur(10px);
+    /* display: none; */
+    width: 96%;
+    /* transform: translateY(-20px); */
+    /* opacity: 0;
+    visibility: hidden; */
+}
+.new-todo.active
+{
+    display: block;
+    animation: slideUp 2s linear forwards;
+}
+@keyframes slideUp
+{
+    0%
+    {
+        transform: translateY(-20px);
+        opacity: 0;
+        visibility: hidden;
+    }
+    100%
+    {
+        transform: translateY(0px);
+        opacity: 1;
+        visibility: visible;
+    }
+}
+.to-dos-wrapper.active
+{
+    padding-bottom: 177px;
+}
+.assign-user,
+.calendar-assign
+{
+    font-size: 20px;
+}
+.sort-dropdown
+{
+    border: none;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, .1);
+    margin-top: 10px;
+    width: 280px;
+}
+.filter-btn
+{
+    background: transparent;
+    color: #333;
+    padding: 0px !important;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #333;
+}
+.filter-btn::after
+{
+    display: none;
+}
+.complete-wrapper
+{
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+}
+.chat-profile-wrapper
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+}
+.chat-profile-img
+{
+    width: 60px;
+    height: 60px;
+    flex: none;
+    border-radius: 50%;
+}
+.chat-profile-img img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.chat-profile-info .chat-name
+{
+    font-size: 16px;   
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 80%;
+    color: #037563;
+    overflow: hidden;
+}
+.chat-profile-info .chat-time
+{
+    font-size: 12px;
+    font-weight: 500;
+    color: #383838;
+}
+.chat-profile-info .chat-message
+{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #505050;
+    font-size: 14px;
+}
+.message-offcanvas
+{
+    width: 100% !important;
+    max-width: 1200px;
+}
+.inner-message-area
+{
+    width: 400px;
+    flex: none;
+}
+.message-wrapper
+{
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+    border-left: 1px solid #ccc;
+}
+.message-wrapper-header .about-chat
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.message-wrapper-header .about-chat img
+{
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.message-wrapper-header .about-chat h3
+{
+    font-size: 16px;
+    font-weight: 600;
+    color: #121212;
+    margin: 0;
+}
+.message-wrapper-header
+{
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.message-options
+{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.message-header-icon
+{
+    font-size: 20px;
+    color: #999999;
+}
+.main-message-area
+{
+    height: calc(100% - 300px);
+    overflow: auto;
+    padding: 16px;
+}
+.area-profile
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+.area-profile img
+{
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.area-profile h4
+{
+    font-size: 20px;
+    font-weight: 600;
+    color: #505050;
+    margin-bottom: 0px;
+}
+.msg-subject-name
+{
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+.msg-subject-name::before
+{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    z-index: -1;
+}
+.msg-subject-name .subject-name
+{
+    display: inline-block;
+    padding:  10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #505050;
+    background-color: #fff;
+}
+.sender-message
+{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: 70%;
+    margin-left: auto;
+}
+.sender-message .message
+{
+    padding: 15px;
+    background-color: #037563;
+    color: #fff;
+    border-radius: 20px 20px 0px 20px;
+    font-size: 15px;
+    margin-bottom: 1px;
+}
+.sender-message .sender-profile
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.sender-message .sender-profile img
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.receiver-message
+{
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: 70%;
+    margin-right: auto;
+}
+.receiver-message .message
+{
+    padding: 15px;
+    background-color: #e5e5e5;
+    color: #505050;
+    border-radius: 20px 20px 20px 0px;
+    font-size: 15px;
+    margin-bottom: 1px;
+}
+.main-message-area .message-time
+{
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 0px;
+}
+.sender-message .message-time
+{
+    text-align: right;
+}
+.receiver-message .receiver-profile
+{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.receiver-message .receiver-profile img
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.write-message-area
+{
+    padding: 16px;
+}
+.custom-rich-editor.message-field .ql-container.ql-snow
+{
+    height: 100px;
+}
+.field-msg-options
+{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+}
+.inner-field-msg-options
+{
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+.field-msg-options span
+{
+    font-size: 19px;
+    color: #333;
+    cursor: pointer;
+}
+.new-subject
+{
+    cursor: pointer;
+    font-weight: 600;
+    color: #037563;
+}
+.completed-task
+{
+    color: #999;
+    text-decoration: line-through;
+}
+.todo-canvas-body
+{
+    padding-bottom: 165px;
+}
+.job-info-wrapper
+{
+    max-width: 40%;
+    width: 100%;
+}
+.dev-name
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+.dev-name img
+{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.status-interview
+{
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.rating-container
+{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+.topic-counter
+{
+    min-width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    font-size: 14px;
+    padding: 0 8px;
+    font-weight: 600;
+    background-color: #037563;
+    color: #fff;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
@@ -6270,6 +7169,25 @@ input[type="radio"]:checked {
         height: auto !important;
     }
 }
+@media only screen and (max-width: 1200px)
+{
+    .job-posted-list {
+        display: block;
+    }
+    .status-wrapper {
+        margin-left: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .job-info-wrapper
+    {
+        max-width: 100%;
+        width: 100%;
+    }
+}
 @media only screen and (max-width: 992px) {
     .about-info {
         border-left: none;
@@ -6332,18 +7250,7 @@ input[type="radio"]:checked {
         margin-left: 5px;
     }
 
-    .job-posted-list {
-        display: block;
-    }
 
-    .status-wrapper {
-        margin-left: 0px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        margin-top: 20px;
-    }
 
     .status-wrapper p {
         display: flex;

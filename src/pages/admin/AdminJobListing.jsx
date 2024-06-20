@@ -44,14 +44,11 @@ const AdminJobListing = () => {
 
             <section className="job-posted-section">
                 <Tabs
-                    defaultActiveKey="all"
+                    defaultActiveKey="new"
                     id="justify-tab-example"
                     className="mb-3 notification-tabs job-listing-tabs gap-md-0 gap-3"
                     onSelect={handleSelect}
                 >
-                    <Tab eventKey="all" title={t("all")}>
-                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} screenLoader={screenLoader} />
-                    </Tab>
                     {/* <Tab eventKey="need_suggest" title="Need to Suggest">
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab> */}
@@ -61,8 +58,14 @@ const AdminJobListing = () => {
                     <Tab eventKey="in-progress" title={t("inProgress")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
                     </Tab>
+                    <Tab eventKey="in-contracts" title={t("in Contract")}>
+                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
+                    </Tab>
                     <Tab eventKey="ended" title={t("endJobs")}>
                         <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} />
+                    </Tab>
+                    <Tab eventKey="all" title={t("all")}>
+                        <JobTabs jobListing={jobListing?.data} jobCategoryList={jobCategoryList} screenLoader={screenLoader} />
                     </Tab>
                 </Tabs>
             </section>
