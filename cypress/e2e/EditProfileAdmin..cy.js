@@ -40,7 +40,6 @@ const login = (email, password) => {
 
         //Submit button to update the profile
         cy.contains('button', 'Update Profile').should('be.visible');
-
         cy.contains('button','Update Profile').click()
         
     })
