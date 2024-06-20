@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import clientInstance from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
+import axios from "axios";
+import authInstance from "../../services/auth.instance";
 
 const initialClientData = {
 
@@ -28,7 +30,14 @@ const initialClientData = {
   reconciliationsData:[],
   clientHolidayList:[],
   addHoliday:{},
-  approveDisapprove:{}
+  approveDisapprove:{},
+  timeZones:[],
+  countriesList:[],
+  statesList:[],
+  citiesList:[],
+  timeZone:{},
+  webClientData:{},
+  clientLook:{}
 };
  
 export const clientDataSlice = createSlice({
@@ -53,6 +62,16 @@ export const clientDataSlice = createSlice({
           state.assignedDeveloperList = action.payload
           state.screenLoader = false;
       },
+
+      setClientLook: (state, action) => {
+        state.clientLook = action.payload
+        state.screenLoader = false;
+    },
+
+      setWebClientData: (state, action) => {
+        state.webClientData = action.payload
+        state.screenLoader = false;
+    },
 
       setFailClientData: (state, action) => {
           state.smallLoader = false;
@@ -145,9 +164,21 @@ export const clientDataSlice = createSlice({
       },
       setSuggstedDeveloper:(state,action)=>{
         state.smallLoader = false
-      }
-
-
+      },
+      setTimeZones:(state,action)=>{
+       state.timeZones = action.payload;
+       state.screenLoader = false;
+      },
+      setCountriesList:(state,action)=>{
+        state.countriesList = action.payload;
+        state.screenLoader = false;
+      },
+      setStatesList: (state,action)=>{
+        state.statesList = action.payload
+      },
+      setCitiesList:(state,action)=>{
+        state.citiesList = action.payload
+      },
   }
 })
 
@@ -155,7 +186,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const { setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const {setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -165,7 +196,6 @@ export function developerAssignList(payload) {
       let result = await clientInstance.get(
         `client/assigned-developers?page=${payload}`
       );
-      console.log(result.data.data, "result");
       if (result.status === 200) {
         dispatch(setAssignDeveloperList(result?.data?.data));
       }
@@ -278,8 +308,8 @@ export function getClientLeaveHistory(payload, callback) {
                
         } catch (error) {
           console.log(error,"error")
-            const message = error?.response?.data?.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response?.data?.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailClientData())
         }
     };
@@ -920,6 +950,120 @@ export function clientDeleteHoliday(id){
     }
   }
 
+}
+
+
+// --------------------------------website API------------------------------------------
+
+export function getTimeZoneForCountry(countryCode) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/${countryCode}/timezones`);
+      dispatch(setTimeZones(result?.data?.data?.timezones));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getCoutriesList() {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/`);
+      dispatch(setCountriesList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getStatesList(countryCode) {
+  console.log(countryCode,"country code inside api")
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/${countryCode}/states`);
+      dispatch(setStatesList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getCitiesList(countryCode,stateName) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/${countryCode}/states/${stateName}/cities`);
+      dispatch(setCitiesList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+
+export function getWebsiteSkills(countryCode,stateName) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.get(`web/skills`);
+      dispatch(setSkillList(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function getWebClientData(countryCode,stateName) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.get(`web/get-client-data?user_id=${1}`);
+      dispatch(setWebClientData(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function getWebClientLookUp() {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.get(`web/get-lookups`);
+      dispatch(setClientLook(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function applyAsClient(payload) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.post(`web/apply-as-client`,{...payload});
+      // dispatch(setClientLook(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
 }
 
 

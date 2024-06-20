@@ -185,7 +185,8 @@ const JobListing = () => {
                       );
                     })
                   ) : (
-                    <NoDataFound data="No Jobs are available" />
+                  
+                    <td colSpan={10}> <div className="simple-no-data">  <NoDataFound data="No Jobs are available" /></div>  </td>
                   )}
                 </div>
               </section>

@@ -50,7 +50,7 @@ console.log(screenLoader,"screenloader")
 
   const handleDeveloperCard = (e, id) => {
     if (role == "client") {
-      navigate(`client/client-single-developer/${id}`);
+      navigate(`/client/client-single-developer/${id}`);
     } else if (role === "admin") {
       navigate(`/admin-single-developer/${id}`);
     }
@@ -58,7 +58,7 @@ console.log(screenLoader,"screenloader")
   return (
     <>
       {screenLoader ? <ScreenLoader /> : <>
-        <div className="developers-list job-card ">
+        <div className="developers-list job-card pt-0">
           {data?.length > 0 ? (
             <>
               {data?.map((item, index) => {
@@ -205,7 +205,6 @@ console.log(screenLoader,"screenloader")
             </>
           ) : (
             <div>
-              {" "}
               <NoDataFound data="No developer found" />
             </div>
           )}

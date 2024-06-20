@@ -263,3 +263,31 @@ export const MEMBERS_FILTER_FIELDS = {
   ],
   searchFilter: { key: "search", placeholder: "Enter search keywords" },
 };
+
+export const APPLICANT_FILTER_FIELDS = {
+  selectFilters: [
+    {
+      filterLabel: "Select Status",
+      key: "approval_status",
+      options: MEMBERS_STATUS_OPTIONS,
+    },
+    {
+      filterLabel: "Sort by name",
+      key:"order_alphabetically",
+      options:ORDER_OPTIONS,
+      defaultValueRequired:true
+    },
+    {
+      filterLabel: "Select Date",
+      key:"created_at",
+      isDate:true
+    },
+    {
+      filterLabel:"Sort by  created at",
+      key:"order_created_at",
+      options:ORDER_OPTIONS
+      
+    }
+  ],
+  searchFilter: { key: "search", placeholder: "Enter search keywords" },
+};

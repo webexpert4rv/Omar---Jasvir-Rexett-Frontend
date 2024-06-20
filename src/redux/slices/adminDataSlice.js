@@ -659,13 +659,13 @@ export function rejectEditAction(payload) {
         }
     };
 }
-export function addToFeature(query,closeModal,data,isFeatured) {
+export function addToFeature(query,closeModal,data,toastMessage) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
-        try {   
+        try {
             let result = await clientInstance.put(`/admin/set-featured-and-trusted/${query}`)
             if (result.status === 200) {
-                toast.success((isFeatured) ?("Added to featured members successfully"):("Removed from featured members successfully"), { position: "top-center" })
+                toast.success(toastMessage, { position: "top-center" })
                 closeModal();
                 dispatch(setSuccessAdminData())
                 dispatch(allMemberList(data));
@@ -674,6 +674,24 @@ export function addToFeature(query,closeModal,data,isFeatured) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             closeModal();
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function sendMailForCompleteProfile(payload,data) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.post(`/admin/send-reminder`,{...payload})
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setSuccessAdminData())
+                dispatch(allApplicationsList(data))
+            }
+        } catch (error) {
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };

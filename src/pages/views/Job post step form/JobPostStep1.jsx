@@ -8,7 +8,6 @@ import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../../components/clients/TimeReporiting/constant";
 
-
 const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const handleScriptLoad = () => {
@@ -69,11 +68,11 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>{t("companyName")}</Form.Label>
+              <Form.Label className="d-flex gap-2 align-items-center">{t("companyName")}</Form.Label>
               <p className="common-field font-14 d-flex align-items-center gap-2">
                 {/* <img src={companyLogo} className="company-imgbx" /> */}
                 <Form.Control
-                  type = "text"
+                  type="text"
                   {...register("company_name", {
                     required: "Company name is required",
                   })}
@@ -93,7 +92,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                   required: "Workplace type is required",
                 })}
               >
-                <option value="" disabled selected >
+                <option value="" disabled selected>
                   Please select workplace options
                 </option>
                 {WORKPLACE_TYPES_OPTIONS?.map(({ value, label }, idx) => (
@@ -148,13 +147,13 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                 name="job_location"
                 className="common-field font-14 p-2"
                 rules={{
-                  required: "Job location is required"
+                  required: "Job location is required",
                 }}
                 control={control}
-                render={({ field ,fieldState}) => (
+                render={({ field, fieldState }) => (
                   <Autocomplete
                     {...field}
-                    errors ={fieldState?.errors}
+                    errors={fieldState?.errors}
                     apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                     debounce={1000}
                     className="common-field font-14 w-100 p-2"
@@ -185,7 +184,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                   />
                 )}
               />
-                {/* {errors && <div style={{ color: "red" }}>{errors.message}</div>} */}
+              {/* {errors && <div style={{ color: "red" }}>{errors.message}</div>} */}
               {errors?.job_location && (
                 <p className="error-message"> {errors.job_location?.message}</p>
               )}
@@ -198,7 +197,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                 })}
                 className="common-field font-14 p-2"
               >
-                <option value="" disabled selected >
+                <option value="" disabled selected>
                   Please select job type
                 </option>
                 {JOB_TYPES_OPTIONS?.map(({ value, label }) => (
@@ -207,6 +206,39 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               </Form.Select>
               {errors?.contract_type && (
                 <p className="error-message">{errors.contract_type?.message}</p>
+              )}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className="d-flex gap-2 align-items-center">{t("jobPositions")}</Form.Label>
+              <Controller
+                name="job_positions"
+                control={control}
+                rules={{required:"Number of job position is required"}}
+                render={({ field }) => (
+                  <input
+                  {...field}
+                    type="text"
+                    className="common-field font-14 p-2 w-100"
+                    onChange={(e) => {
+                      const numericValue = e.target.value.replace(
+                        /[^0-9]/g,
+                        ""
+                      );
+                      field.onChange(numericValue);
+                    }}
+                  />
+                )}
+              />
+              {/* <input
+                type="number"
+                className="common-field font-14 p-2 w-100"
+                min={0}
+                {...register("job_positions", {
+                  required: "Number of job positions is required",
+                })}
+              /> */}
+              {errors?.job_positions && (
+                <p className="error-message">{errors.job_positions?.message}</p>
               )}
             </Form.Group>
           </Col>

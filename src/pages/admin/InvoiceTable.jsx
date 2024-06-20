@@ -6,21 +6,22 @@ import invoiceIcon from "../../assets/img/invoice_paid.png";
 import invoicePendingIcon from "../../assets/img/invoice_unpaid.png";
 
 const InvoiceTable = ({ data, columns, isRaisedByDev = false }) => {
+  const role = localStorage.getItem("role");
   const downloadtimesheet = <Tooltip id="tooltip">Download Timesheet</Tooltip>;
   const downloadinvoice = <Tooltip id="tooltip">Download Invoice</Tooltip>;
 
   const handleDownload = (fileUrl) => {
-     if (fileUrl) {
-       const newTab = window.open(fileUrl, "_blank");
-       if (newTab) {
-         newTab.focus();
-       } else {
-         // If the popup blocker prevents opening the new tab
-         alert(
-           "Please allow pop-ups for this site to download the file in a new tab."
-         );
-       }
-     }
+    if (fileUrl) {
+      const newTab = window.open(fileUrl, "_blank");
+      if (newTab) {
+        newTab.focus();
+      } else {
+        // If the popup blocker prevents opening the new tab
+        alert(
+          "Please allow pop-ups for this site to download the file in a new tab."
+        );
+      }
+    }
   };
   return (
     <>
@@ -78,17 +79,19 @@ const InvoiceTable = ({ data, columns, isRaisedByDev = false }) => {
                           }
                         </td>
                       ) : key === "associatedWith" ? (
-                        <td className="time-table-data">
-                          <p className="associate-text font-14 mt-2 mb-2">
-                            <span
-                              className={`${
-                                curData?.[key] && "associate"
-                              } mb-1 font-14`}
-                            >
-                              {curData?.[key]}
-                            </span>
-                          </p>
-                        </td>
+                        role !== "client" && (
+                          <td className="time-table-data">
+                            <p className="associate-text font-14 mt-2 mb-2">
+                              <span
+                                className={`${
+                                  curData?.[key] && "associate"
+                                } mb-1 font-14`}
+                              >
+                                {curData?.[key]}
+                              </span>
+                            </p>
+                          </td>
+                        )
                       ) : isAction ? (
                         <td className="time-table-data text-start">
                           <div className="d-flex align-items-center gap-2">

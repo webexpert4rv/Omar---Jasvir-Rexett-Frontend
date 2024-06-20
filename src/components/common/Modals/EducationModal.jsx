@@ -165,21 +165,8 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
   const next = degreeList.find((option) => option.value === fields.degree_id);
   console.log(next, "next");
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      centered
-      scrollable
-      className="custom-modal"
-      animation
-      size="lg"
-    >
-      <Modal.Header closeButton className="border-0 pb-3">
-        {/* <Modal.Title>Education</Modal.Title> */}
-      </Modal.Header>
-
-      <Modal.Body>
-        <h3 className="popup-heading">Education</h3>
+    <>
+      <h3 className="popup-heading">Education</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           {fields.map((item, index) => (
             <div className="experience-container mb-3" key={item.id}>
@@ -423,8 +410,10 @@ const EducationCV = ({ show, handleClose, data, id, role }) => {
             />
           </div>
         </form>
-      </Modal.Body>
-    </Modal>
+    </>
+    
+      
+     
   );
 };
 

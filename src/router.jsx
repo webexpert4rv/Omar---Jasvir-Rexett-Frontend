@@ -7,6 +7,8 @@ import JobPostStepContainer from "./pages/views/Job post step form/JobPostStepCo
 import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
 import Customization from "./pages/admin/Customization";
 import RolesPermission from "./pages/admin/RolesPermissions";
+import InterviewListing from "./pages/admin/InterviewListing";
+import InterviewDetail from "./pages/admin/InterviewDetail";
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -521,6 +523,18 @@ export const route = [
   {
     path: "/admin/roles-permissions",
     element: <RolesPermission/>,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/interviews",
+    element: <InterviewListing/>,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/interview-detail",
+    element: <InterviewDetail/>,
     isAdmin: true,
     private: true,
   },
