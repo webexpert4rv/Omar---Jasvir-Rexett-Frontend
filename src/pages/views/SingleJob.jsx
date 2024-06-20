@@ -672,12 +672,6 @@ const SingleJob = () => {
         smallLoader={smallLoader}
         type={currentTabsStatus}
       />
-      {/* <ConfirmationModal
-                text={ `Are you sure you want to delete this job`}
-                show={showModal} onClick={handleAction}
-                handleClose={handleDelete}
-                smallLoader={smallLoader}
-            /> */}
     </>
   );
 };

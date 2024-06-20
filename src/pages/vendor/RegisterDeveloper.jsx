@@ -384,7 +384,7 @@ const RegisterDeveloper = () => {
   };
 
   const handleFileChange = (event) => {
-    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const allowedTypes = ["image/jpeg", "image/png", "image/svg"];
     const file = event.target.files[0];
     if (file && allowedTypes.includes(file.type)) {
       // clearErrors("profile_picture");

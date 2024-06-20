@@ -5,10 +5,10 @@ import "./assets/css/style.css";
 import { lazy } from "react";
 import JobPostStepContainer from "./pages/views/Job post step form/JobPostStepContainer";
 import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
-import Customization from "./pages/admin/Customization";
 import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
+import Customization from "./pages/admin/Configuration/CRM/Customization";
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
