@@ -215,6 +215,9 @@ const InterviewFeedback = () => {
                         </div>
                         <Form.Control as="textarea" className="common-field font-14" placeholder="Enter your overall feedback" rows="3" />
                     </div>
+                    <div className="text-center">
+                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                    </div>
                     <div className="mb-4">
                         <h4 className="section-subhead mb-3">Summary</h4>
                         <div className="transript-wrapper">

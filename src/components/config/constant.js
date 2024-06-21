@@ -11,6 +11,7 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { PiCoinsFill, PiUsersFourFill, PiUsersThreeFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
 import { IoIosLaptop } from "react-icons/io";
+import { FaList } from "react-icons/fa6";
 
 
 export const DEVELOPER_SIDE_BAR_ITEMS = [
@@ -19,6 +20,7 @@ export const DEVELOPER_SIDE_BAR_ITEMS = [
     { to: "/developer/edit-developer-profile", icon: <IoIosSettings />, text:"editProfile" },
     { to: "/developer/developer-documents", icon: <IoDocuments />, text: "documents" },
     { to: "/developer/developer-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
+    { to: "/developer/project-history", icon: <FaList />, text: "Project History" },
     { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday" },
     { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip" },
 ];

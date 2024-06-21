@@ -7,12 +7,14 @@ import RexettButton from "../../atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
   filePreassignedUrlGenerate,
+  getAllTimezones,
   getClientProfile,
   updateClientProfile,
 } from "../../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
 import companyLogo from "../../../assets/img/amazon.png";
 import CommonAutocomplete from "../../atomic/CommonAutoComplete";
+import Select from "react-select";
 
 const CompanyProfile = () => {
   const userId = localStorage.getItem("userId");
@@ -33,8 +35,12 @@ const CompanyProfile = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { smallLoader, clientProfileDetails, screenLoader, approvedLoader } =
-    useSelector((state) => state.clientData);
+  const {
+    smallLoader,
+    clientProfileDetails,
+    screenLoader,
+    approvedLoader,
+  } = useSelector((state) => state.clientData);
 
   useEffect(() => {
     dispatch(getClientProfile());
@@ -82,7 +88,6 @@ const CompanyProfile = () => {
   //   return true;
   // };
   const onSubmit = (values) => {
-    console.log(values, "companyDetailsSubmit");
     const clientProfileDetails = watch();
     const payload = {
       ...values,
@@ -217,7 +222,7 @@ const CompanyProfile = () => {
             <Form.Group className="mb-3">
               <CommonAutocomplete
                 label={t("Company Address") + " *"}
-                name="address"
+                name="company_address"
                 control={control}
                 rules={{ required: "Company Address is required" }}
                 error={errors.company_address}
@@ -256,7 +261,7 @@ const CompanyProfile = () => {
               )}
             </Form.Group>
           </Col>
-          <Col md={12}>
+          <Col md={6}>
             <div className="text-center">
               <RexettButton
                 type="submit"

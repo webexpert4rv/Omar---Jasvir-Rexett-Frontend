@@ -21,8 +21,9 @@ const CommonInput = ({
   onChange,
   accept,
   options = [], // For radio inputs or select options
-  selectOptions = [], // For react-select options
+  selectOptions, // For react-select options
 }) => {
+  console.log(selectOptions,"selectOptions")
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleTogglePassword = () => {
@@ -75,7 +76,7 @@ const CommonInput = ({
                   className="common-field"
                   isDisabled={readOnly}
                   onChange={(selectedOption) => field.onChange(selectedOption)}
-                  value={selectOptions.find(option => option.value === field.value)}
+                  value={selectOptions?.find(option => option.value === field.value)}
                   placeholder={placeholder}
                 />
               );

@@ -119,7 +119,7 @@ const HiredDevelopers = () => {
                             </tr>
                           </>
                         );
-                      }) : <td colSpan={4}><NoDataFound /></td>}
+                      }) :<td colSpan={10}> <div className="simple-no-data"><NoDataFound /></div>  </td>}
                     </tbody>
                   </table>
                 </div>
@@ -132,7 +132,7 @@ const HiredDevelopers = () => {
                         <Cards item={item} handleCardClick={() => handleCardClick(item?.developer_id)} />
                       </>
                     );
-                  }) : <NoDataFound />}
+                  }) : <td colSpan={10}> <div className="simple-no-data"><NoDataFound /></div>  </td>}
                 </div>
               </Tab.Pane>
             </Tab.Content>

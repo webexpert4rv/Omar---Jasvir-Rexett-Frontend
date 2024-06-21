@@ -43,6 +43,13 @@ const InterviewDetail = () => {
                         <p className="detail-info">James Williams</p>
                     </div>
                     <div>
+                        <h4 className="detail-name">Panel List</h4>
+                        <div className="panel-list-name">
+                            <p className="panel-name">James Williams, Robin Gautam, Steve Warne</p>
+                            <p className="more-panel">2+</p>
+                        </div>
+                    </div>
+                    <div>
                         <h4 className="detail-name">Date</h4>
                         <p className="detail-info">11-06-2024</p>
                     </div>
@@ -64,49 +71,49 @@ const InterviewDetail = () => {
                     <div className="rating-container">
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px' })} maxValue={10} />
+                                <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({pathColor: '#037563', textColor: '#121212', textSize: '25px' , trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>React JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px' })} maxValue={10} />
+                                <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Vue JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px' })} maxValue={10} />
+                                <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>JavaScript</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px' })} maxValue={10} />
+                                <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Angular JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px' })} maxValue={10} />
+                                <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>MongoDB</p>
                             <p className="font-14">(Data Structure & Algorithms)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px' })} maxValue={10} />
+                                <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Node JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px' })} maxValue={10} />
+                                <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Communication</p>
                         </div>

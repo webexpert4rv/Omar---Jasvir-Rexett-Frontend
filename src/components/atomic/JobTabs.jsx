@@ -184,7 +184,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
           );
         })
       ) : (
-        <NoDataFound />
+         <div className="simple-no-data"><NoDataFound /></div> 
       )}
     </div>
   );
