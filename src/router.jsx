@@ -12,6 +12,8 @@ import InterviewDetail from "./pages/admin/InterviewDetail";
 import VideoCallScreen from "./pages/admin/videoCall";
 import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
+import ProjectHistory from "./pages/developer/ProjectHistory";
+import ProjectDetail from "./pages/developer/ProjectDetail";
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -326,6 +328,18 @@ export const route = [
   {
     path: "developer/leave-plan",
     element: <DeveloperLeaveApply />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/project-history",
+    element: <ProjectHistory />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/project-detail",
+    element: <ProjectDetail />,
     isDeveloper: true,
     private: true,
   },

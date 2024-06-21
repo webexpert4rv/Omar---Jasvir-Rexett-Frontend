@@ -113,6 +113,12 @@ const Schedulemeeting = ({ show, handleClose }) => {
         toast("Meeting Scheduled");
     }
 
+    const [meetingType, setMeetingType] = useState('instant'); // initial state set to 'instant'
+
+    const handleMeetingTypeChange = (e) => {
+        setMeetingType(e.target.id);
+    };
+
     return (
         <>
             <Modal show={show} onHide={handleClose} centered size="lg" animation className="custom-modal">
@@ -163,47 +169,73 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
-                                    <div className="d-flex align-items-center gap-3 mb-2">
-                                        <Form.Select
-                                            className="common-field font-14 w-auto"
-                                            value={firstSlot}
-                                            onChange={handleFirstSlotChange}
-                                        >
-                                            <option value="">Select Time</option>
-                                            {timeSlots.map((slot, index) => (
-                                                <option key={index} value={slot}>
-                                                    {slot}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
-                                        <span className="arrow-icon">
-                                            <FaArrowRightLong />
-                                        </span>
-                                        <Form.Select
-                                            className="common-field font-14 w-auto"
-                                            value={secondSlot}
-                                            onChange={handleSecondSlotChange}
-                                        >
-                                            <option value="">Select Time</option>
-                                            {filteredTimeSlots.map((slot, index) => (
-                                                <option key={index} value={slot} disabled={slot === firstSlot}>
-                                                    {slot}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
-                                        <span className="font-14">{calculateDuration(firstSlot, secondSlot)}</span>
-                                    </div>
-                                    <div className="mb-2 datefield-wrapper">
-                                        <DatePicker onChange={onChange} value={value} />
-                                    </div>
                                     <div>
-                                        <Form.Select className="common-field font-14">
-                                            {timeZones.map((zone, index) => (
-                                                <option key={index} value={zone.value}>
-                                                    {zone.label}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
+                                        <div className="mb-2">
+                                            <Form.Check
+                                                type="radio"
+                                                name="meeting-time"
+                                                label="Instant Meeting"
+                                                id="instant_meeting"
+                                                className="d-inline-block meeting-radio ps-0 me-2"
+                                                checked={meetingType === 'instant_meeting'}
+                                                onChange={handleMeetingTypeChange}
+                                            />
+                                            <Form.Check
+                                                type="radio"
+                                                name="meeting-time"
+                                                label="Specific Date & Time"
+                                                id="specific_meeting"
+                                                className="d-inline-block meeting-radio ps-0"
+                                                checked={meetingType === 'specific_meeting'}
+                                                onChange={handleMeetingTypeChange}
+                                            />
+                                        </div>
+                                        {meetingType === 'specific_meeting' && (
+                                            <div className="specific-datetime">
+                                                <div className="d-flex align-items-center gap-3 mb-2">
+                                                    <Form.Select
+                                                        className="common-field font-14 w-auto"
+                                                        value={firstSlot}
+                                                        onChange={handleFirstSlotChange}
+                                                    >
+                                                        <option value="">Select Time</option>
+                                                        {timeSlots.map((slot, index) => (
+                                                            <option key={index} value={slot}>
+                                                                {slot}
+                                                            </option>
+                                                        ))}
+                                                    </Form.Select>
+                                                    <span className="arrow-icon">
+                                                        <FaArrowRightLong />
+                                                    </span>
+                                                    <Form.Select
+                                                        className="common-field font-14 w-auto"
+                                                        value={secondSlot}
+                                                        onChange={handleSecondSlotChange}
+                                                    >
+                                                        <option value="">Select Time</option>
+                                                        {filteredTimeSlots.map((slot, index) => (
+                                                            <option key={index} value={slot} disabled={slot === firstSlot}>
+                                                                {slot}
+                                                            </option>
+                                                        ))}
+                                                    </Form.Select>
+                                                    <span className="font-14">{calculateDuration(firstSlot, secondSlot)}</span>
+                                                </div>
+                                                <div className="mb-2 datefield-wrapper">
+                                                    <DatePicker onChange={onChange} value={value} />
+                                                </div>
+                                                <div>
+                                                    <Form.Select className="common-field font-14">
+                                                        {timeZones.map((zone, index) => (
+                                                            <option key={index} value={zone.value}>
+                                                                {zone.label}
+                                                            </option>
+                                                        ))}
+                                                    </Form.Select>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -244,7 +276,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                             </Row>
                         </div>
                         <div className="text-center">
-                            <Button variant="transparent" onClick= {() => { handleClose(); meetingToast(); }} className="main-btn px-4 font-14 fw-semibold">Send Invite</Button>
+                            <Button variant="transparent" onClick={() => { handleClose(); meetingToast(); }} className="main-btn px-4 font-14 fw-semibold">Send Invite</Button>
                         </div>
                     </Form>
                 </Modal.Body>

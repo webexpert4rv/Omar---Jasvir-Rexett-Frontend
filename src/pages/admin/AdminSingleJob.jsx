@@ -34,7 +34,7 @@ const AdminSingleJob = () => {
     const [suggestedData, setSuggestedData] = useState(null)
     const [page, setPage] = useState(1);
     const [value, setValue] = useState('');
-    const [ showMeetingInfo, setShowMeetingInfo ] = useState(false);
+    const [showMeetingInfo, setShowMeetingInfo] = useState(false);
     const handleShowMeetingInfo = () => {
         setShowMeetingInfo(!showMeetingInfo)
     }
@@ -282,10 +282,8 @@ const AdminSingleJob = () => {
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>
                     <Tab eventKey="shortlisted" title={shortlist}>
-                        <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
-                    </Tab>
-                    <Tab eventKey="interviewing" title={interview}>
-                        <div className="interview-scheduled pt-3">
+                        <h4 className="font-22 mb-4 fw-bold">Scheduled Interview</h4>
+                        <div className="interview-scheduled pt-2 mb-3">
                             <Row>
                                 <Col lg={4}>
                                     <div className="interview-wrapper position-relative mb-3 pt-4">
@@ -321,16 +319,25 @@ const AdminSingleJob = () => {
                                             <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
                                         </div>
                                         <div className="mb-2 status-interview">
-                                            <span className="status-finished">Completed</span>
+                                            <span className="status-rejected">Declined</span>
                                         </div>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div>
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>Reschedule</Button>
                                         </div>
                                     </div>
                                 </Col>
+                            </Row>
+                        </div>
+                        <h4 className="font-22 mb-4 fw-bold">Need to schedule</h4>
+                        <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
+                    </Tab>
+                    <Tab eventKey="interviewing" title={interview}>
+                        <div>
+                            <h4 className="font-22 mb-4 fw-bold">Interview Completed</h4>
+                            <Row>
                                 <Col lg={4}>
                                     <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
@@ -344,13 +351,13 @@ const AdminSingleJob = () => {
                                             <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
                                         </div>
                                         <div className="mb-2 status-interview">
-                                            <span className="status-rejected">Declined</span>
+                                            <span className="status-finished">Completed</span>
                                         </div>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div>
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>View Details</Button>
+                                            <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
                                         </div>
                                     </div>
                                 </Col>

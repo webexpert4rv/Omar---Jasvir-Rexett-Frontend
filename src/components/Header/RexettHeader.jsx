@@ -167,16 +167,18 @@ const RexettHeader = ({ role }) => {
             ) : (
               ""
             )}
+            {role == "admin" ? (
             <OverlayTrigger placement="bottom" overlay={chatText}>
               <span onClick={handleShowMessages} className="email-icon">
                 <RiChat3Line />
               </span>
-            </OverlayTrigger>
+            </OverlayTrigger> ) : ( "" )}
+            {role == "admin" ? (
             <OverlayTrigger placement="bottom" overlay={booking}>
               <span onClick={handleShowMeetings} className="booking-icon cursor-pointer">
                 <FaCalendarDays />
               </span>
-            </OverlayTrigger>
+            </OverlayTrigger>) : ( "" )}
             {role == "developer" ? <DeveloperCheckInOut /> : ""}
             <LanguageChange />
             <Notification
