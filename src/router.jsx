@@ -9,6 +9,11 @@ import Customization from "./pages/admin/Customization";
 import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
+import VideoCallScreen from "./pages/admin/videoCall";
+import MeetingDetail from "./pages/MeetingDetail";
+import InterviewFeedback from "./pages/admin/InterviewFeedback";
+import ProjectHistory from "./pages/developer/ProjectHistory";
+import ProjectDetail from "./pages/developer/ProjectDetail";
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -326,6 +331,18 @@ export const route = [
     isDeveloper: true,
     private: true,
   },
+  {
+    path: "developer/project-history",
+    element: <ProjectHistory />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/project-detail",
+    element: <ProjectDetail />,
+    isDeveloper: true,
+    private: true,
+  },
 
   // <------------------------------------------------------------------------------! Developer Flow !-----------------------------------------------------------------------------?
 
@@ -535,6 +552,24 @@ export const route = [
   {
     path: "/admin/interview-detail",
     element: <InterviewDetail/>,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/video-screen",
+    element: <VideoCallScreen />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/meeting-detail",
+    element: <MeetingDetail />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/interview-feedback",
+    element: <InterviewFeedback />,
     isAdmin: true,
     private: true,
   },

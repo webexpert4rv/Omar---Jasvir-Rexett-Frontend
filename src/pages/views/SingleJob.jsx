@@ -35,6 +35,8 @@ import { FaTrashCan } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
 import RexettButton from "../../components/atomic/RexettButton";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { FaRegHandshake } from "react-icons/fa6";
+import { SlLocationPin } from "react-icons/sl";
 
 const SingleJob = () => {
   const [selectedTabsData, setSelectedTabsData] = useState([]);
@@ -50,7 +52,7 @@ const SingleJob = () => {
   const location = useLocation();
   let id = location.pathname.split("/")[3];
   const clientId = localStorage.getItem("userId")
-  console.log(clientId,"clientid")
+  console.log(clientId, "clientid")
   const {
     allJobPostedList,
     jobCategoryList,
@@ -62,7 +64,7 @@ const SingleJob = () => {
   const { t } = useTranslation();
   useEffect(() => {
     if (id) {
-      dispatch(singleJobPostData(id, () => {}));
+      dispatch(singleJobPostData(id, () => { }));
     }
     dispatch(getJobCategoryList());
   }, []);
@@ -83,7 +85,7 @@ const SingleJob = () => {
   const handleUnpublished = (id, data) => {
     dispatch(
       publishedPost(id, data, () => {
-        dispatch(singleJobPostData(id, () => {}));
+        dispatch(singleJobPostData(id, () => { }));
       })
     );
   };
@@ -115,7 +117,7 @@ const SingleJob = () => {
         dispatch(
           publishedPost(singleJobDescription?.id, data, () => {
             setStatusModal({});
-            dispatch(singleJobPostData(id, () => {}));
+            dispatch(singleJobPostData(id, () => { }));
           })
         );
       } else if (data.status == "application") {
@@ -190,7 +192,7 @@ const SingleJob = () => {
       dispatch(
         publishedPost(singleJobDescription?.id, data, () => {
           setStatusModal({});
-          dispatch(singleJobPostData(id, () => {}));
+          dispatch(singleJobPostData(id, () => { }));
         })
       );
     } else if (data.status == "application") {
@@ -292,199 +294,253 @@ const SingleJob = () => {
     }
   };
 
-  const handleSuggestions=()=>{
-    let payload={
-      clientId : clientId,
-      jobId : id,
-      message : "Suggest Developer"
+  const handleSuggestions = () => {
+    let payload = {
+      clientId: clientId,
+      jobId: id,
+      message: "Suggest Developer"
     }
-    console.log(payload,"payload")
+    console.log(payload, "payload")
     dispatch(getSuggestedDeveloper(payload))
 
   }
 
   return (
     <>
-      <Tabs
-        defaultActiveKey="application"
-        id="fill-tab-example"
-        className="mb-3 job-tabs"
-        onSelect={handleSelect}
-      >
-        <Tab eventKey="application" title={t("jobDetails")}>
-         {screenLoader? <ScreenLoader/> : <section className="single-job-section">
-            <div className="single-job-card job-information-wrapper">
-              <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
-                <div className="d-flex align-items-center gap-3">
-                  <h2 className="single-job-title text-start mb-0">
-                    {singleJobDescription?.title}
-                  </h2>
-                  <p
-                    className={`mb-0 ${currentStatusCssClass(
-                      singleJobDescription?.status
-                    )}`}
-                  >
-                    <span>
-                      {singleJobDescription?.status?.charAt(0)?.toUpperCase() +
-                        singleJobDescription?.status?.slice(1)}
-                    </span>
-                  </p>
-                </div>
-                <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
-                  {singleJobDescription?.status !== "ended" ? (
-                    <>
-                      <OverlayTrigger placement="top" overlay={endjob}>
-                        <Button
-                          variant="transparent"
-                          onClick={(e) =>
-                            handleJobStatusModal(
-                              e,
-                              singleJobDescription?.id,
-                              "ended"
-                            )
-                          }
-                          className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
-                        >
-                          <MdOutlineDoNotDisturbAlt />
-                        </Button>
-                      </OverlayTrigger>
-                      <OverlayTrigger placement="top" overlay={publishjob}>
-                        <Button
-                          variant="transparent"
-                          className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
-                          onClick={() => {
-                            let data = {
-                              status:
-                                singleJobDescription?.status == "published"
-                                  ? "Unpublished"
-                                  : "published",
-                            };
-                            handleUnpublished(singleJobDescription?.id, data);
-                          }}
-                        >
-                          {approvedLoader ? (
-                            <RexettSpinner />
-                          ) : singleJobDescription?.status == "published" ? (
-                            <BsFillSendXFill />
-                          ) : (
-                            <BsFillSendFill />
-                          )}
-                        </Button>
-                      </OverlayTrigger>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                  {singleJobDescription?.status !== "ended" ? (
-                    <OverlayTrigger placement="top" overlay={deletejob}>
-                      <Button
-                        className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
-                        variant="transparent"
-                        onClick={() =>
-                          handleDelete("application", singleJobDescription?.id)
-                        }
-                      >
-                        <FaTrashCan />
-                      </Button>
-                    </OverlayTrigger>
-                  ) : (
-                    ""
-                  )}
-                  {singleJobDescription?.status !== "ended" ? (
-                    <OverlayTrigger placement="top" overlay={editjob}>
-                      <Button
-                        className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
-                        variant="transparent"
-                        onClick={() =>
-                          handleEdit("application", singleJobDescription?.id)
-                        }
-                      >
-                        <TiEdit />
-                      </Button>
-                    </OverlayTrigger>
-                  ) : (
-                    ""
-                  )}
-                </div>
+      {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
+        <div className="single-job-card job-information-wrapper mb-0">
+          <div className="d-flex justify-content-between align-items-md-center flex-md-row flex-column-reverse">
+            <div>
+              <div className="d-flex align-items-center gap-3">
+                <h2 className="single-job-title text-start mb-0">
+                  {singleJobDescription?.title}
+                </h2>
+                <p
+                  className={`mb-0 ${currentStatusCssClass(
+                    singleJobDescription?.status
+                  )}`}
+                >
+                  <span>
+                    {singleJobDescription?.status?.charAt(0)?.toUpperCase() +
+                      singleJobDescription?.status?.slice(1)}
+                  </span>
+                </p>
               </div>
-              <p className="req-heading mb-1 mt-3">About this job</p>
-              <p
-                className="single-job-description mb-0"
-                dangerouslySetInnerHTML={{
-                  __html: singleJobDescription?.description,
-                }}
-              ></p>
+              <div>
+                <p className="req-text mt-2">
+                  by {singleJobDescription?.client?.name}
+                </p>
+              </div>
             </div>
-            <div className="single-job-card">
-              <Row>
-                <Col md="4">
-                  <h3 className="req-heading">{t("clientName")}</h3>
-                  <p className="req-text">
-                    {singleJobDescription?.client?.name}
-                  </p>
-                </Col>
-                <Col md="4">
-                  <h3 className="req-heading">{t("experienceRequirements")}</h3>
-                  <p className="req-text">
-                    {/* {singleJobDescription?.experience?.split("_").join(" ") ||
-                      "Not Mentioned"} */}
-                   {location?.state?.workExperienceyears ? `${location?.state?.workExperienceyears} years` :"Not Mentioned"}
-                  </p>
-                </Col>
-                <Col md="4">
-                  <h3 className="req-heading">{t("contract")}</h3>
-                  <p className="req-text">
-                    {singleJobDescription?.contract_type}
-                  </p>
-                </Col>
-                <Col md="4">
-                  <h3 className="req-heading mt-4">{t("location")}</h3>
-                  <p className="req-text">{singleJobDescription?.job_type}</p>
-                </Col>
-              </Row>
-            </div>
-            <div className="single-job-card">
-              <Row>
-                <Col md="4">
-                  <h3 className="req-heading">{t("skillsRequired")}</h3>
-                  {singleJobDescription?.skills?.length > 0 ? (
-                    <ul className="skills-listing mb-0">
-                      {convertToArray(singleJobDescription?.skills)?.map(
-                        (item, index) => {
-                          return (
-                            <>
-                              <li key={index}>{item}</li>
-                            </>
-                          );
-                        }
+            <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
+              {singleJobDescription?.status !== "ended" ? (
+                <>
+                  <OverlayTrigger placement="top" overlay={endjob}>
+                    <Button
+                      variant="transparent"
+                      onClick={(e) =>
+                        handleJobStatusModal(
+                          e,
+                          singleJobDescription?.id,
+                          "ended"
+                        )
+                      }
+                      className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
+                    >
+                      <MdOutlineDoNotDisturbAlt />
+                    </Button>
+                  </OverlayTrigger>
+                  <OverlayTrigger placement="top" overlay={publishjob}>
+                    <Button
+                      variant="transparent"
+                      className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
+                      onClick={() => {
+                        let data = {
+                          status:
+                            singleJobDescription?.status == "published"
+                              ? "Unpublished"
+                              : "published",
+                        };
+                        handleUnpublished(singleJobDescription?.id, data);
+                      }}
+                    >
+                      {approvedLoader ? (
+                        <RexettSpinner />
+                      ) : singleJobDescription?.status == "published" ? (
+                        <BsFillSendXFill />
+                      ) : (
+                        <BsFillSendFill />
                       )}
-                    </ul>
-                  ) : (
-                    "Not Mentioned"
-                  )}{" "}
-                </Col>
-                <Col md="4">
-                  <h3 className="req-heading">{t("optionalSkills")}</h3>
-                  {singleJobDescription?.optional_skills?.length > 0 ? (
-                    <ul className="skills-listing mb-0">
-                      {convertToArray(
-                        singleJobDescription?.optional_skills
-                      )?.map((item, index) => {
+                    </Button>
+                  </OverlayTrigger>
+                </>
+              ) : (
+                ""
+              )}
+              {singleJobDescription?.status !== "ended" ? (
+                <OverlayTrigger placement="top" overlay={deletejob}>
+                  <Button
+                    className="px-3 mb-2 arrow-btn danger-arrow font-16 text-decoration-none"
+                    variant="transparent"
+                    onClick={() =>
+                      handleDelete("application", singleJobDescription?.id)
+                    }
+                  >
+                    <FaTrashCan />
+                  </Button>
+                </OverlayTrigger>
+              ) : (
+                ""
+              )}
+              {singleJobDescription?.status !== "ended" ? (
+                <OverlayTrigger placement="top" overlay={editjob}>
+                  <Button
+                    className="px-3 mb-2 arrow-btn info-arrow font-16 text-decoration-none"
+                    variant="transparent"
+                    onClick={() =>
+                      handleEdit("application", singleJobDescription?.id)
+                    }
+                  >
+                    <TiEdit />
+                  </Button>
+                </OverlayTrigger>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+          <div className="d-flex align-items-center gap-3 my-3">
+            <div className="d-flex align-items-center gap-2">
+              {/* <h3 className="req-heading">{t("contract")}</h3> */}
+              <FaRegHandshake />
+              <p className="req-text mb-0">{singleJobDescription?.contract_type}</p>
+            </div>
+            <div className="d-flex align-items-center gap-2">
+              <SlLocationPin />
+              {/* <h3 className="req-heading mt-4">{t("location")}</h3> */}
+              <p className="req-text mb-0">{singleJobDescription?.job_type}</p>
+            </div>
+            <div className="d-flex align-items-center gap-2">
+              <SlLocationPin />
+              <p className="req-text" >
+                {singleJobDescription?.experience?.split("_").join(" ") ||
+                  "Not Mentioned"}
+                {location?.state?.workExperienceyears ? `${location?.state?.workExperienceyears} years` : "Not Mentioned"}
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <Row>
+              <Col md="4">
+                <h3 className="req-heading">{t("skillsRequired")}</h3>
+                {singleJobDescription?.skills?.length > 0 ? (
+                  <ul className="skills-listing mb-0">
+                    {convertToArray(singleJobDescription?.skills)?.map(
+                      (item, index) => {
                         return (
                           <>
                             <li key={index}>{item}</li>
                           </>
                         );
-                      })}
-                    </ul>
-                  ) : (
-                    "Not Mentioned"
+                      }
+                    )}
+                  </ul>
+                ) : (
+                  "Not Mentioned"
+                )}{" "}
+              </Col>
+              <Col md="4">
+                <h3 className="req-heading">{t("optionalSkills")}</h3>
+                {singleJobDescription?.optional_skills?.length > 0 ? (
+                  <ul className="skills-listing mb-0">
+                    {convertToArray(
+                      singleJobDescription?.optional_skills
+                    )?.map((item, index) => {
+                      return (
+                        <>
+                          <li key={index}>{item}</li>
+                        </>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  "Not Mentioned"
+                )}
+              </Col>
+            </Row>
+          </div>
+        </div>
+        {/* <div className="single-job-card">
+          <Row>
+            <Col md="4">
+              <h3 className="req-heading">{t("clientName")}</h3>
+              <p className="req-text">
+                {singleJobDescription?.client?.name}
+              </p>
+            </Col>
+            <Col md="4">
+              <h3 className="req-heading">{t("experienceRequirements")}</h3>
+              <p className="req-text">
+                {singleJobDescription?.experience?.split("_").join(" ") ||
+                      "Not Mentioned"}
+                {location?.state?.workExperienceyears ? `${location?.state?.workExperienceyears} years` : "Not Mentioned"}
+              </p>
+            </Col>
+            <Col md="4">
+              <h3 className="req-heading">{t("contract")}</h3>
+              <p className="req-text">
+                {singleJobDescription?.contract_type}
+              </p>
+            </Col>
+            <Col md="4">
+              <h3 className="req-heading mt-4">{t("location")}</h3>
+              <p className="req-text">{singleJobDescription?.job_type}</p>
+            </Col>
+          </Row>
+        </div> */}
+        {/* <div className="single-job-card">
+          <Row>
+            <Col md="4">
+              <h3 className="req-heading">{t("skillsRequired")}</h3>
+              {singleJobDescription?.skills?.length > 0 ? (
+                <ul className="skills-listing mb-0">
+                  {convertToArray(singleJobDescription?.skills)?.map(
+                    (item, index) => {
+                      return (
+                        <>
+                          <li key={index}>{item}</li>
+                        </>
+                      );
+                    }
                   )}
-                </Col>
-              </Row>
-            </div>
-            {/* commented for future use */}
-            {/* <div className="single-job-card">
+                </ul>
+              ) : (
+                "Not Mentioned"
+              )}{" "}
+            </Col>
+            <Col md="4">
+              <h3 className="req-heading">{t("optionalSkills")}</h3>
+              {singleJobDescription?.optional_skills?.length > 0 ? (
+                <ul className="skills-listing mb-0">
+                  {convertToArray(
+                    singleJobDescription?.optional_skills
+                  )?.map((item, index) => {
+                    return (
+                      <>
+                        <li key={index}>{item}</li>
+                      </>
+                    );
+                  })}
+                </ul>
+              ) : (
+                "Not Mentioned"
+              )}
+            </Col>
+          </Row>
+        </div> */}
+        {/* commented for future use */}
+        {/* <div className="single-job-card">
               <Row>
                 <Col md="4">
                   {singleJobDescription?.screening_questions.length &&
@@ -501,15 +557,24 @@ const SingleJob = () => {
                 </Col>
               </Row>
             </div> */}
-          </section>}
+      </section>}
+      <div className="job-tab-detail">
+      <Tabs
+        defaultActiveKey="application"
+        id="fill-tab-example"
+        className="mb-3 job-tabs"
+        onSelect={handleSelect}
+      >
+        <Tab eventKey="application" title={t("jobDetails")}>
+
         </Tab>
         <Tab eventKey="suggested" title={t("suggestions")}>
           <div className="text-end">
-            <RexettButton className="main-btn px-4 py-2 font-14" 
-            text = "Make Suggestion Request"
-            isLoading={approvedLoader} 
-            disabled={approvedLoader} 
-            onClick = {()=>handleSuggestions()}/>
+            <RexettButton className="main-btn px-4 py-2 font-14"
+              text="Make Suggestion Request"
+              isLoading={approvedLoader}
+              disabled={approvedLoader}
+              onClick={() => handleSuggestions()} />
           </div>
           <JobCard
             handleJobStatusModal={handleJobStatusModal}
@@ -643,6 +708,7 @@ const SingleJob = () => {
           />
         </Tab>
       </Tabs>
+      </div>
       <RejectModal
         show={statusModal?.rejected}
         handleClose={handleJobStatusModal}
