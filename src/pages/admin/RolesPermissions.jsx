@@ -8,10 +8,13 @@ import NewPermissions from "./Modals/NewPermissions";
 import NewRoles from "./Modals/NewRoles";
 import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import { FaEye } from "react-icons/fa6";
+import EditRole from "./Modals/EditRole";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
     const [newRoles, setNewRoles] = useState(false);
     const [newUser, setNewUser] = useState(false);
+    const [editRoleModal , setRoleModal] = useState(false);
     const handleNewPermission = () => {
         setNewPermissions(true);
     }
@@ -31,6 +34,13 @@ const RolesPermission = () => {
     const handleCloseNewRoles = () => {
         setNewRoles(false);
     }
+    const handleShowEditRole = () => {
+        setRoleModal(true)
+    }
+    const handleHideEditRole = () => {
+        setRoleModal(false)
+    }
+
     const action_application = (
         <Tooltip>The ability to approve or reject new applications is a critical role that ensures only suitable candidates gain access to your platform.</Tooltip>
     )
@@ -88,7 +98,7 @@ const RolesPermission = () => {
                         <Nav variant="pills" className="application-pills">
                             <Nav.Item className="application-item">
                                 <Nav.Link eventKey="all_users" className="application-link">
-                                    Manage Users
+                                    Manage Employees
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="application-item">
@@ -102,7 +112,7 @@ const RolesPermission = () => {
                         <Tab.Pane eventKey="all_users" className="py-4">
                             <div>
                                 <div className="d-flex justify-content-end mb-3">
-                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewUser}>+ New User</Button>
+                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewUser}>+ New Employee</Button>
                                 </div>
                                 <div className="table-responsive">
                                     <table className="table table-ui-custom">
@@ -122,23 +132,12 @@ const RolesPermission = () => {
                                                     <div className="d-flex align-items-center gap-2">
                                                         <span className="role-pill">Workspace Admin</span>
                                                         <Button variant="transparent" className="edit-role">
-                                                            <MdOutlineModeEditOutline />
+                                                            <FaEye />
                                                         </Button>
                                                     </div>
                                                 </td>
                                                 <td className="align-middle">
-                                                    <OverlayTrigger
-                                                        placement="bottom"
-                                                        overlay={disableProfile}
-                                                    >
-                                                        <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0">
-                                                            <input
-                                                                class="form-check-input toggle-switch-custom ps-0 ms-0"
-                                                                type="checkbox"
-                                                                role="switch"
-                                                            />
-                                                        </div>
-                                                    </OverlayTrigger>
+                                                    <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -148,23 +147,12 @@ const RolesPermission = () => {
                                                     <div className="d-flex align-items-center gap-2">
                                                         <span className="role-pill no-role">No role assigned</span>
                                                         <Button variant="transparent" className="edit-role">
-                                                            <MdOutlineModeEditOutline />
+                                                            <FaEye />
                                                         </Button>
                                                     </div>
                                                 </td>
                                                 <td className="align-middle">
-                                                    <OverlayTrigger
-                                                        placement="bottom"
-                                                        overlay={disableProfile}
-                                                    >
-                                                        <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0">
-                                                            <input
-                                                                class="form-check-input toggle-switch-custom ps-0 ms-0"
-                                                                type="checkbox"
-                                                                role="switch"
-                                                            />
-                                                        </div>
-                                                    </OverlayTrigger>
+                                                    <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -873,6 +861,7 @@ const RolesPermission = () => {
             <NewPermissions show={newpermission} handleClose={handleCloseNewPermission} />
             <NewRoles show={newRoles} handleClose={handleCloseNewRoles}/>
             <NewUser show={newUser} handleClose={handleCloseNewUser}/>
+            <EditRole show={editRoleModal} handleClose={handleHideEditRole} />
         </>
     )
 }

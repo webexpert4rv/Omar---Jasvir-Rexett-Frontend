@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-const EditRole = ({ show, handleClose}) => {
-    return(
+import { FaTrashCan } from "react-icons/fa6";
+const EditRole = ({ show, handleClose }) => {
+    return (
         <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
             <Modal.Header closeButton className="border-0 pb-3">
             </Modal.Header>
@@ -11,7 +12,7 @@ const EditRole = ({ show, handleClose}) => {
                 <Form>
                     <Form.Group className="mb-4">
                         <Form.Label className="font-14" >Name</Form.Label>
-                        <Form.Control className="common-field" placeholder="Enter role name" value="John Smith" />
+                        <Form.Control className="common-field font-14" placeholder="Enter role name" value="John Smith" readOnly />
                     </Form.Group>
                     <Form.Group className="mb-4">
                         <Form.Label className="font-14" >Permission</Form.Label>
@@ -26,8 +27,24 @@ const EditRole = ({ show, handleClose}) => {
                             <option value="assistance">Assistance</option>
                         </Form.Select>
                     </Form.Group>
-                    <div className="text-center">
-                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                    <div className="d-flex gap-3 align-items-center mb-4">
+                        <Form.Label htmlFor="deactivate-toggle" className="font-14 lh-1 cursor-pointer">Deactivate Account</Form.Label>
+                        <div class="form-check form-switch toggle-switch-wrapper">
+                            <input
+                                class="form-check-input toggle-switch-custom mt-0 cursor-pointer shadow-none"
+                                type="checkbox"
+                                role="switch"
+                                id="deactivate-toggle"
+                            />
+                        </div>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div className="d-flex align-items-center gap-2">
+                            <Button variant="transparent" className="cancel-btn font-14 bg-transparent"><FaTrashCan /> Delete Employee</Button>
+                        </div>
+                        <div className="text-center">
+                            <Button variant="transparent" className="main-btn font-14">Update Employee</Button>
+                        </div>
                     </div>
                 </Form>
             </Modal.Body>

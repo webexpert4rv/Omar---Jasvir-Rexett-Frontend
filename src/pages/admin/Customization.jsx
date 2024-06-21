@@ -542,6 +542,48 @@ const Customization = () => {
                                                     </div>
                                                 </Form.Group>
                                             </div>
+                                            <div className="mt-4">
+                                                <div className="uploaded-social position-relative me-3">
+                                                    <div>
+                                                        <FaFacebookF />
+                                                    </div>
+                                                    <div>
+                                                        <Button variant="transparent" className="remove-preview-img">
+                                                            &times;
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                                <div className="uploaded-social position-relative me-3">
+                                                    <div>
+                                                        <FaXTwitter />
+                                                    </div>
+                                                    <div>
+                                                        <Button variant="transparent" className="remove-preview-img">
+                                                            &times;
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                                <div className="uploaded-social position-relative me-3">
+                                                    <div>
+                                                        <FaInstagram />
+                                                    </div>
+                                                    <div>
+                                                        <Button variant="transparent" className="remove-preview-img">
+                                                            &times;
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                                <div className="uploaded-social position-relative me-3">
+                                                    <div>
+                                                        <FaLinkedinIn />
+                                                    </div>
+                                                    <div>
+                                                        <Button variant="transparent" className="remove-preview-img">
+                                                            &times;
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </Col>
                                     <Col md={6} className="mb-4">
@@ -579,7 +621,7 @@ const Customization = () => {
                                             <h3 className="main-customization-heading mb-3">Color Scheme</h3>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Heading Color</h3>
                                             <p className="customization-text">The heading color is a crucial aspect of your site's design, as it affects the readability and visual impact of your content.</p>
@@ -591,7 +633,10 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <h2 className="preview-heading-color">Heading</h2>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Body text Color</h3>
                                             <p className="customization-text">Choose a color that provides good contrast with your background to ensure your content is easy to read and visually appealing.</p>
@@ -603,12 +648,15 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
+                                    <Col md={6} className="mb-4">
+                                        <p className="preview-text-color">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                    </Col>
                                     <Col md={12} className="mb-2">
                                         <div>
                                             <h3 className="main-customization-heading mb-3">Typography</h3>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Heading Font Size</h3>
                                             <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
@@ -620,7 +668,10 @@ const Customization = () => {
                                             </div>
                                         </div>
                                     </Col>
-                                    <Col md={4} className="mb-4">
+                                    <Col md={6} className="mb-4">
+                                        <h2 className="preview-heading-size">Heading</h2>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
                                         <div>
                                             <h3 className="customization-heading">Body Font Size</h3>
                                             <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
@@ -631,6 +682,9 @@ const Customization = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                    </Col>
+                                    <Col md={6} className="mb-4">
+                                        <p className="preview-text-size">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                                     </Col>
                                 </Row>
                             </div>

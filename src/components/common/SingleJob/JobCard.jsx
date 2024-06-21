@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import userImg from "../../../assets/img/user-img.jpg";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +13,8 @@ import { PiUserRectangleFill } from "react-icons/pi";
 import { ImUserMinus } from "react-icons/im";
 import { RiUserAddFill } from "react-icons/ri";
 import ScreenLoader from "../../atomic/ScreenLoader";
+import { LuMessagesSquare } from "react-icons/lu";
+import ScheduleMeeting from "../Modals/ScheduleMeeting";
 
 const JobCard = ({
   handleJobStatusModal,
@@ -24,17 +26,20 @@ const JobCard = ({
   page,
 }) => {
   const navigate = useNavigate();
-  const { singleJobPagination ,screenLoader} = useSelector(
+  const { singleJobPagination, screenLoader } = useSelector(
     (state) => state.adminData
   );
-console.log(screenLoader,"screenloader")
+  const scheduleInterview = (
+    <Tooltip>Schedule Interview</Tooltip>
+  )
+  console.log(screenLoader, "screenloader")
   const developerCardToolTip = (
     <Tooltip id="tooltip">
       {type === "Interviewing"
         ? "Hire"
         : type === "Shortlisted"
-        ? "Interview"
-        : "Shortlist"}
+          ? "Interview"
+          : "Shortlist"}
     </Tooltip>
   );
 
@@ -55,6 +60,15 @@ console.log(screenLoader,"screenloader")
       navigate(`/admin-single-developer/${id}`);
     }
   };
+  
+  const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
+  const handleShowScheduleMeeting = () => {
+    setShowScheduleMeet(!showScheduleMeeting);
+  }
+  const handleCloseScheduleMeeting = () =>{
+    setShowScheduleMeet(false);
+  }
+
   return (
     <>
       {screenLoader ? <ScreenLoader /> : <>
@@ -113,10 +127,10 @@ console.log(screenLoader,"screenloader")
                           </ul>
                           <div className="job-card-btns">
                             {role !== "admin" &&
-                            (type === "Shortlisted" ||
-                              type === "Suggested" ||
-                              type === "Interviewing") &&
-                            type !== "Hired" ? (
+                              (type === "Shortlisted" ||
+                                type === "Suggested" ||
+                                type === "Interviewing") &&
+                              type !== "Hired" ? (
                               <OverlayTrigger
                                 placement="bottom"
                                 overlay={developerCardToolTip}
@@ -195,6 +209,13 @@ console.log(screenLoader,"screenloader")
                                 </Button>
                               </OverlayTrigger>
                             )}
+                            {role === "admin" && (
+                              <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                <Button onClick={handleShowScheduleMeeting} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
+                                  <LuMessagesSquare />
+                                </Button>
+                              </OverlayTrigger>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -211,21 +232,22 @@ console.log(screenLoader,"screenloader")
 
         </div>
 
-      {role === "admin" && type === "Suggested" ? (
-        <div className="d-flex w-100 align-items-center justify-content-between my-4">
-          <p className="mb-0">
-            Showing {singleJobPagination?.data?.length} results
-          </p>
-          <RexettPagination
-            number={singleJobPagination?.total_pages_for_all}
-            setPage={setPage}
-            page={page}
-          />
-        </div>
-      ) : (
-        ""
-      )}
-   </> }
+        {role === "admin" && type === "Suggested" ? (
+          <div className="d-flex w-100 align-items-center justify-content-between my-4">
+            <p className="mb-0">
+              Showing {singleJobPagination?.data?.length} results
+            </p>
+            <RexettPagination
+              number={singleJobPagination?.total_pages_for_all}
+              setPage={setPage}
+              page={page}
+            />
+          </div>
+        ) : (
+          ""
+        )}
+      </>}
+      <ScheduleMeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting}  />
     </>
   );
 };
