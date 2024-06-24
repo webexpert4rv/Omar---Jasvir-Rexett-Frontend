@@ -260,27 +260,29 @@ const ClientInterviewFeedback = () => {
                         </Col>
                         <Col lg={4}>
                             <div>
-                                <div className="ratinng-wrapper d-flex align-items-center mb-2">
-                                    <div>
-                                        <p className="text-start fw-medium">HTML</p>
+                                <div className="ratinng-wrapper">
+                                    <div className="d-flex align-items-center mb-2">
+                                        <div>
+                                            <p className="text-start fw-medium">HTML</p>
+                                        </div>
+                                        <div className="d-flex align-items-center gap-2">
+                                            <Button variant="transparent" className="arrow-btn danger-arrow shadow-none p-0 bg-transparent border-0 w-auto h-auto lh-1 ms-2">&times;</Button>
+                                        </div>
                                     </div>
-                                    <div className="d-flex align-items-center gap-2">
-                                        <Button variant="transparent" className="arrow-btn danger-arrow shadow-none p-0 bg-transparent border-0">&times;</Button>
-                                    </div>
-                                </div>
-                                <div>
                                     <div>
-                                        <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_one" label="1" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_two" label="2" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_three" label="3" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_four" label="4" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_five" label="5" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_six" label="6" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_seven" label="7" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_eight" label="8" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_nine" label="9" />
-                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_ten" label="10" />
+                                        <div>
+                                            <div className="rating_btn_wrapper">
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_one" label="1" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_two" label="2" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_three" label="3" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_four" label="4" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_five" label="5" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_six" label="6" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_seven" label="7" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_eight" label="8" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_nine" label="9" />
+                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_ten" label="10" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
