@@ -2286,6 +2286,7 @@ select.common-field {
 .font-18 {
     font-size: 18px !important;
 }
+
 .font-17 {
     font-size: 17px !important;
 }
@@ -6032,9 +6033,9 @@ input[type="radio"]:checked {
 }
 
 .ratinng-wrapper {
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; */
     margin-bottom: 15px;
     padding: 10px;
     border-radius: 10px;
@@ -6986,6 +6987,11 @@ input[type="radio"]:checked {
     align-items: center;
     min-height: 100vh;
     width: 100%;
+    padding-top: 59px;
+}
+
+.single-page-wrapper .card-box .associate-text .associate {
+    background-color: #f4f4f5;
 }
 
 .header-single img {
@@ -7216,8 +7222,8 @@ input[type="radio"]:checked {
     font-size: 29px;
     transition: color 0.2s;
 }
-.resize-none
-{
+
+.resize-none {
     resize: none;
 }
 
@@ -7229,6 +7235,340 @@ input[type="radio"]:checked {
 .rating-box .rating-container label:hover~label,
 .rating-box .rating-container input:checked~label {
     color: gold;
+}
+
+.personal-info-wrapper>div p {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.personal-info-wrapper>div:not(:last-child) p::after {
+    content: "|";
+    position: relative;
+    display: inline-block;
+    font-size: 15px;
+    margin-left: 0px;
+    font-size: 22px;
+    font-weight: 300;
+    color: #a5a5a5;
+}
+
+.personal-info-wrapper>div p span {
+    font-size: 18px;
+    line-height: 1;
+    display: inline-block;
+    color: #a5a5a5;
+}
+
+.interview-decision input {
+    display: none;
+}
+
+.interview-decision label {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #f5f5f5;
+    color: #aaa;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.interview-decision input:checked+label {
+    background-color: #037563;
+    color: #fff;
+}
+
+.interview-decision #candidate-rejected:checked+label {
+    background-color: #b70000;
+    color: #fff;
+}
+
+.rating_btn_wrapper {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rating_btn_wrapper .rating_button {
+    display: inline-block;
+
+}
+
+.rating_btn_wrapper .rating_button input {
+    display: none;
+}
+
+.rating_btn_wrapper .rating_button label {
+    display: inline-flex;
+    min-width: 33px;
+    height: 33px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    color: #a5a5a5;
+    cursor: pointer;
+    line-height: 1;
+    font-size: 14px;
+    transition: all .3s ease;
+}
+
+.rating_btn_wrapper .rating_button:first-child input:checked+label {
+    background-color: #FF6666;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(2) input:checked+label {
+    background-color: #FF9999;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(3) input:checked+label {
+    background-color: #FFCCCC;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(4) input:checked+label {
+    background-color: #FF9966;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(5) input:checked+label {
+    background-color: #FFCC66;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(6) input:checked+label {
+    background-color: #FFFF00;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(7) input:checked+label {
+    background-color: #CCFF99;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(8) input:checked+label {
+    background-color: #99FF99;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(9) input:checked+label {
+    background-color: #66FF99;
+    color: #000;
+}
+
+.rating_btn_wrapper .rating_button:nth-child(10) input:checked+label {
+    background-color: #66FF66;
+    color: #000;
+}
+
+.video-area-section {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #0d0d0d;
+}
+
+.video-area-section .video-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: #0d0d0d;
+    z-index: 2;
+}
+
+.video-area-section .logo-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+}
+
+.video-area-section .logo-brand img {
+    width: 100px;
+}
+
+.video-area-section .logo-brand span {
+    font-size: 14px;
+    color: #fff;
+}
+
+.video-area-section .video-area {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding-top: 76px;
+    padding-bottom: 76px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100vh;
+    gap: 15px;
+}
+
+.video-area-section .video-area .myvideo,
+.video-area-section .video-area .joinee-video {
+    height: 100%;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.video-area-section .video-area .myvideo .video-profile-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.video-area-section .name-joinee {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background-color: rgba(255, 255, 255, .3);
+    color: #fff;
+    font-size: 12px;
+    margin-bottom: 0px;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.video-area-section .video-options-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    background-color: #0d0d0d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+}
+
+.video-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 4px;
+    color: #fff;
+    min-width: 90px;
+    font-size: 12px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    transition: all .3s ease;
+}
+
+.video-btn:hover {
+    background-color: #ffffff17;
+    color: #fffc;
+}
+
+.video-btn span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.video-options-wrapper>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.joinee-no {
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.video-area-section .joinee-nametag {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #037563;
+    color: #fff;
+    font-size: 70px;
+}
+
+.video-area-section .leave-meeting-btn {
+    background-color: #cc0000;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+    gap: 5px;
+    transition: all .3s ease;
+}
+
+.video-area-section .leave-meeting-btn:hover {
+    background-color: #b70000;
+}
+
+.video-area-section .leave-meeting-btn span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.zoom-modal .modal-dialog {
+    animation: zoomIn 0.3s ease-in-out;
+}
+
+.intro-video-close
+{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    border-radius: 50%;
+}
+.zoom-modal .modal-content
+{
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0px;
+}
+.intro-video-close .btn-close
+{
+    margin: 0px;
+    padding: 0px;
 }
 
 @media only screen and (max-width: 1550px) {
@@ -7535,6 +7875,24 @@ input[type="radio"]:checked {
         height: 40px !important;
     }
 
+    .rating_btn_wrapper {
+        gap: 2px;
+    }
+
+    .rating_btn_wrapper .rating_button label {
+        min-width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    .about-info .rating-container
+    {
+        grid-template-columns: repeat(4 , 1fr);
+    }
+    .about-info .ratinng-wrapper .rating-progress
+    {
+        width: 80px;
+        height: 80px;
+    }
 }
 
 @media only screen and (max-width: 1400px) {

@@ -5,9 +5,14 @@ import { FaMicrophone } from "react-icons/fa6";
 import { FaClock } from "react-icons/fa6";
 import { FaCalendarDays } from "react-icons/fa6";
 import attendeeImg from '../../assets/img/demo-img.jpg';
+import { Link } from "react-router-dom";
+import logoRexett from '../../assets/img/rexett-logo.png';
 const VideoCallScreen = () => {
     return(
         <>
+            <div className="header-single">
+                <img src={logoRexett} />
+            </div>
             <div className="video-screen">
                 <div className="inner-video-screen">
                     <Row>
@@ -74,7 +79,7 @@ const VideoCallScreen = () => {
                                     </div>
                                     <div className="d-flex align-items-center gap-3">
                                         <Form.Control type="text" className="common-field font-14" placeholder="Enter your name" />
-                                        <Button variant="transparent" className="main-btn font-14">Join</Button>
+                                        <Link to={'/join-meeting'} className="text-decoration-none main-btn font-14">Join</Link>
                                     </div>
                                 </div>
                             </div>

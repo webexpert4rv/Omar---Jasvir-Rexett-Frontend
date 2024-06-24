@@ -8,7 +8,7 @@ import NewPermissions from "./Modals/NewPermissions";
 import NewRoles from "./Modals/NewRoles";
 import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
-import { FaEye } from "react-icons/fa6";
+import { FaEye, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
@@ -142,7 +142,10 @@ const RolesPermission = () => {
                                                     </div>
                                                 </td>
                                                 <td className="align-middle">
-                                                    <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
+                                                    <div className="d-flex gap-3">
+                                                        <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
+                                                        <Button variant="transparent" className="arrow-btn danger-arrow"><FaTrashCan /></Button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -316,7 +319,10 @@ const RolesPermission = () => {
                                                     </div>
                                                 </td>
                                                 <td className="align-middle">
-                                                    <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
+                                                    <div className="d-flex gap-3">
+                                                        <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
+                                                        <Button variant="transparent" className="arrow-btn danger-arrow"><FaTrashCan /></Button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>

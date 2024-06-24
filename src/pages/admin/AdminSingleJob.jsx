@@ -313,7 +313,7 @@ const AdminSingleJob = () => {
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>
                     <Tab eventKey="shortlisted" title={shortlist}>
-                        <h4 className="font-22 mb-4 fw-bold">Scheduled Interview</h4>
+                        <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
                         <div className="interview-scheduled pt-2 mb-3">
                             <Row>
                                 <Col lg={4}>
@@ -370,12 +370,12 @@ const AdminSingleJob = () => {
                                 </Col>
                             </Row>
                         </div>
-                        <h4 className="font-22 mb-4 fw-bold">Need to schedule</h4>
+                        <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>
                         <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>
                         <div>
-                            <h4 className="font-22 mb-4 fw-bold">Interview Completed</h4>
+                            <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
                             <Row>
                                 <Col lg={4}>
                                     <div className="interview-wrapper position-relative mb-3 pt-4">
@@ -430,7 +430,7 @@ const AdminSingleJob = () => {
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
                                             <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -459,7 +459,7 @@ const AdminSingleJob = () => {
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
                                             <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
                                             </div>
                                         </div>
                                     </div>
