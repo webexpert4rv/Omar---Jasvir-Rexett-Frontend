@@ -186,11 +186,11 @@ const RexettHeader = ({ role }) => {
               job="single-job"
               doc="documents"
             />
-            {role == "client" ? (
+            {role == "client" || role=="admin" ? (
               <ToolTip text="Create Job">
                 <button
                   className="main-btn add-new-job-btn"
-                  onClick={() => navigate("/client/job-post")}
+                  onClick={() => navigate(`/${role}/job-post`)}
                 >
                   +
                 </button>

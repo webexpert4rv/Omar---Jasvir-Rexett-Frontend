@@ -227,7 +227,7 @@ const SingleJob = () => {
       if (savedStep) {
         localStorage.setItem("activeStep", 1);
       }
-      navigate(`/job-edit-post/${id}`);
+      navigate(`/client/job-edit-post/${id}`);
     }
   };
 

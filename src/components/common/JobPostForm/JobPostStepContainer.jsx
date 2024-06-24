@@ -3,7 +3,7 @@ import JobPostStep1 from "./JobPostStep1";
 import JobPostStep2 from "./JobPostStep2";
 import JobPostStep3 from "./JobPostStep3";
 import { useForm } from "react-hook-form";
-import RexettButton from "../../../components/atomic/RexettButton";
+import RexettButton from "../../atomic/RexettButton";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,7 +20,7 @@ import {
 } from "../../../redux/slices/clientDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { current } from "@reduxjs/toolkit";
-import ScreenLoader from "../../../components/atomic/ScreenLoader";
+import ScreenLoader from "../../atomic/ScreenLoader";
 
 // add this inside constant file later
 const hasNullOrUndefinedProperties = (obj,activeStep) => {
@@ -77,6 +77,7 @@ const JobPostStepContainer = () => {
   // const skillListMapped = skillList.map((item) => {
   //   return { value: item.id, label: item.title };
   // });
+  const userId = localStorage.getItem("userId");
   const [skillCate, setSkillsCate] = useState([]);
   const [activeStep, setActiveStep] = useState(1);
   const ACTIVE_STEP_API_KEYS = ["", "step1", "step2", "step3"];
@@ -245,12 +246,14 @@ const JobPostStepContainer = () => {
       if (curKey in stepData) {
         payload = {
           ...payload,
+          user_id:userId,
           [curKey]: stepData[curKey],
         };
       }
     });
     payload = {
       ...payload,
+      user_id:userId,
       step: activeStep,
       job_id: jobID,
     };

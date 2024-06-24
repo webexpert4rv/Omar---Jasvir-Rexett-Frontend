@@ -6,7 +6,7 @@ import { BsQuestionCircleFill } from "react-icons/bs";
 import companyLogo from "../../../assets/img/aviox-logo.png";
 import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
-import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../../components/clients/TimeReporiting/constant";
+import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../clients/TimeReporiting/constant";
 
 const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);

@@ -1,7 +1,7 @@
 import React from 'react'
 import JobPostStepContainer from '../../components/common/JobPostForm/JobPostStepContainer'
 
-const JobPost = () => {
+const AdminJobPost = () => {
   return (
     <>
     <JobPostStepContainer/>
@@ -9,4 +9,4 @@ const JobPost = () => {
   )
 }
 
-export default JobPost
+export default AdminJobPost
