@@ -370,7 +370,7 @@ const AdminSingleJob = () => {
                                 </Col>
                             </Row>
                         </div>
-                        <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>
+                       {role!=="developer" && <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>}
                         <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>
@@ -466,7 +466,7 @@ const AdminSingleJob = () => {
                                 </Col>
                             </Row>
                         </div>
-                        <JobCard type="Interviewing" data={selectedTabsData} role="admin" />
+                        {/* <JobCard type="Interviewing" data={selectedTabsData} role="admin" /> */}
                     </Tab>
                     <Tab eventKey="documentation" title={offered}>
                         <div className="card-box">

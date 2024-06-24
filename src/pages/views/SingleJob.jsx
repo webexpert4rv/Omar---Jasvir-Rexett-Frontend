@@ -51,6 +51,7 @@ import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 
 const SingleJob = () => {
+  const role=localStorage.getItem("role")
   const [selectedTabsData, setSelectedTabsData] = useState([]);
   const [currentTabsStatus, setCurrnetTabsStatus] = useState("application");
   const [currentTab, setCurrentTab] = useState("application");
@@ -688,7 +689,7 @@ const SingleJob = () => {
                 </Col>
               </Row>
             </div>
-            <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>
+            {role!=="developer" &&<h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>}
             {/* <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Shortlisted</div>
@@ -815,12 +816,12 @@ const SingleJob = () => {
                 </Col>
               </Row>
             </div>
-            <JobCard
+            {/* <JobCard
               handleJobStatusModal={handleJobStatusModal}
               type="Interviewing"
               data={selectedTabsData}
               jobStatus={singleJobDescription?.status}
-            />
+            /> */}
             {/* <div className="developers-list job-card">
                         <div className="developer-card">
                             <div className="tag-developer">Interviewing</div>
