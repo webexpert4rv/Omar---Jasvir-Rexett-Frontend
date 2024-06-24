@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import interviewVideo from '../../assets/img/interview-video.mp4';
 import { HiDownload } from "react-icons/hi";
 import { Button, Col, Form, Row } from "react-bootstrap";
@@ -6,14 +6,15 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { TbFileDescription } from "react-icons/tb";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import 'react-circular-progressbar/dist/styles.css';
+import AddOtherSkill from "./Modals/AddOtherSkill";
 const InterviewFeedback = () => {
-    const reactRating = 9;
-    const vueRating = 7;
-    const jsRating = 8;
-    const nextRating = 5;
-    const angularRating = 6;
-    const nodeRating = 7;
-    const commRating = 8;
+    const [showAddSkill, setShowAddSkill] = useState(false);
+    const handleShowOtherSkill = () =>{
+        setShowAddSkill(!showAddSkill);
+    }
+    const handleCloseOtherSkill = () => {
+        setShowAddSkill(false);
+    }
     return (
         <>
             <div className="card-box">
@@ -60,7 +61,7 @@ const InterviewFeedback = () => {
                     </div>
                 </div>
                 <h3 className="section-subhead mb-3">Interviewer's Decision</h3>
-                <div className="d-flex align-items-center gap-3 mb-3">
+                <div className="d-flex align-items-center gap-3 mb-4">
                     <Form.Select className="common-field font-14 w-auto">
                         <option value="">Select Decision</option>
                         <option value="selected">Selected</option>
@@ -68,7 +69,12 @@ const InterviewFeedback = () => {
                     </Form.Select>
                 </div>
                 <div className="mb-4">
-                    <h3 className="section-subhead mb-3">Candidate's Rating</h3>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h3 className="section-subhead mb-0">Candidate's Rating</h3>
+                        <Button onClick={handleShowOtherSkill} variant="transparent" className="main-btn font-14">
+                            Add other skill
+                        </Button>
+                    </div>
                     <Row>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
@@ -236,6 +242,29 @@ const InterviewFeedback = () => {
                                 </Form.Select>
                             </div>
                         </Col>
+                        <Col lg={4}>
+                            <div className="ratinng-wrapper text-center">
+                                <div>
+                                    <p className="text-start">HTML</p>
+                                </div>
+                                <div className="d-flex align-items-center gap-2">
+                                    <Form.Select className="common-field font-14 w-auto">
+                                        <option value="">Select Rating</option>
+                                        <option value="one">1</option>
+                                        <option value="two">2</option>
+                                        <option value="three">3</option>
+                                        <option value="four">4</option>
+                                        <option value="five">5</option>
+                                        <option value="six">6</option>
+                                        <option value="seven">7</option>
+                                        <option value="eight">8</option>
+                                        <option value="nine">9</option>
+                                        <option value="ten">10</option>
+                                    </Form.Select>
+                                    <Button variant="transparent" className="arrow-btn danger-arrow shadow-none">&times;</Button>
+                                </div>
+                            </div>
+                        </Col>
                     </Row>
                     <div className="mb-4">
                         <div className="d-flex align-items-center justify-content-between mb-3">
@@ -313,6 +342,7 @@ const InterviewFeedback = () => {
                     </div>
                 </div>
             </div>
+            <AddOtherSkill show={showAddSkill} handleClose={handleCloseOtherSkill} />
         </>
     )
 }

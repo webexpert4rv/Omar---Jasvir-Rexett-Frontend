@@ -22,6 +22,7 @@ import devImg from '../../assets/img/demo-img.jpg';
 import { FaLink } from "react-icons/fa6";
 import ManualSuggestions from "./Modals/ManualSuggestion";
 import AddCandidate from "./Modals/AddCandidate";
+import Schedulemeeting from "../../components/common/Modals/ScheduleMeeting";
 
 const AdminSingleJob = () => {
     const { t } = useTranslation();
@@ -138,6 +139,14 @@ const AdminSingleJob = () => {
     }
     const handleCloseaddCandidate = () => {
         showaddCandidate(false);
+    }
+
+    const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
+    const handleShowScheduleMeeting = () => {
+      setShowScheduleMeet(!showScheduleMeeting);
+    }
+    const handleCloseScheduleMeeting = () =>{
+      setShowScheduleMeet(false);
     }
 
     return (
@@ -355,7 +364,7 @@ const AdminSingleJob = () => {
                                             <div>
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>Reschedule</Button>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowScheduleMeeting}>Reschedule</Button>
                                         </div>
                                     </div>
                                 </Col>
@@ -852,6 +861,7 @@ const AdminSingleJob = () => {
             <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
             <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
             <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
+            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting}  />
         </>
     )
 }
