@@ -51,7 +51,7 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                     favicon: url,
                 };
                 dispatch(getUploadFile(payload));
-                dispatch(getConfigDetails())
+                // dispatch(getConfigDetails())
             }));
         }
     }
