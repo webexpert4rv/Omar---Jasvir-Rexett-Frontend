@@ -336,7 +336,7 @@ const SingleJob = () => {
   const [value, setValue] = useState('');
   const handleChange = (content) => {
     setValue(content);
-};
+  };
 
   let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> 4</div></div>;
   let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1"><span className="stage-icon"><FaClipboardUser /></span> 1</div></div>;
@@ -631,6 +631,7 @@ const SingleJob = () => {
             />
           </Tab>
           <Tab eventKey="shortlisted" title={shortlist}>
+            <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
             <div className="interview-scheduled pt-2 mb-3">
               <Row>
                 <Col lg={4}>
