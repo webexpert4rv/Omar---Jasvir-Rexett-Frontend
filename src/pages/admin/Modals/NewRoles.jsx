@@ -10,7 +10,7 @@ const NewRoles = ({ show, handleClose}) => {
                 <h3 className="popup-heading">New Roles</h3>
                 <Form>
                     <Form.Group className="mb-4">
-                        <Form.Label className="font-14" >Role Name</Form.Label>
+                        <Form.Label className="font-14 fw-medium" >Role Name</Form.Label>
                         <Form.Control className="common-field" placeholder="Enter role name" />
                     </Form.Group>
                     <div className="text-center">

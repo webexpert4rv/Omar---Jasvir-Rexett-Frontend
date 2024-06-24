@@ -6,8 +6,8 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { TbFileDescription } from "react-icons/tb";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import 'react-circular-progressbar/dist/styles.css';
-import AddOtherSkill from "./Modals/AddOtherSkill";
-const InterviewFeedback = () => {
+import ClientAddOtherSkill from "./Modals/ClientAddOtherSkill";
+const ClientInterviewFeedback = () => {
     const [showAddSkill, setShowAddSkill] = useState(false);
     const handleShowOtherSkill = () => {
         setShowAddSkill(!showAddSkill);
@@ -363,8 +363,8 @@ const InterviewFeedback = () => {
                     </div>
                 </div>
             </div>
-            <AddOtherSkill show={showAddSkill} handleClose={handleCloseOtherSkill} />
+            <ClientAddOtherSkill show={showAddSkill} handleClose={handleCloseOtherSkill} />
         </>
     )
 }
-export default InterviewFeedback;
+export default ClientInterviewFeedback;

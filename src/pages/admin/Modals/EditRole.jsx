@@ -27,7 +27,7 @@ const EditRole = ({ show, handleClose }) => {
                             <option value="assistance">Assistance</option>
                         </Form.Select>
                     </Form.Group>
-                    <div className="d-flex gap-3 align-items-center mb-4">
+                    {/* <div className="d-flex gap-3 align-items-center mb-4">
                         <Form.Label htmlFor="deactivate-toggle" className="font-14 lh-1 cursor-pointer fw-medium">Deactivate Account</Form.Label>
                         <div class="form-check form-switch toggle-switch-wrapper">
                             <input
@@ -37,10 +37,10 @@ const EditRole = ({ show, handleClose }) => {
                                 id="deactivate-toggle"
                             />
                         </div>
-                    </div>
+                    </div> */}
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="d-flex align-items-center gap-2">
-                            <Button variant="transparent" className="cancel-btn font-14 bg-transparent"><FaTrashCan /> Delete Account</Button>
+                            <Button variant="transparent" className="cancel-btn font-14 bg-transparent">Deactivate Account</Button>
                         </div>
                         <div className="text-center">
                             <Button variant="transparent" className="main-btn font-14">Update Role</Button>
