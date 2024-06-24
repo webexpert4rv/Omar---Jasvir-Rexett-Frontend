@@ -1,12 +1,13 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-function UploadFile({handleImageUpload , text}) {
+function UploadFile({ handleImageUpload, text, name }) {
     return (
-        <div>
+        <>
             <Form.Control
                 type="file"
                 className="upload-custom-field"
+                name={name}
                 id="company-logo"
                 accept="image/jpeg, image/png, image/svg+xml"
                 onChange={handleImageUpload}
@@ -18,7 +19,7 @@ function UploadFile({handleImageUpload , text}) {
 
 
 
-        </div>
+        </>
     )
 }
 

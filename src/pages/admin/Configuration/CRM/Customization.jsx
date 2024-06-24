@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Nav, Row, Tab } from "react-bootstrap";
 import Tabs from "../../../../components/common/LeaveRequest/Tabs";
 import ColorScheme from "./ColorScheme";
@@ -7,18 +7,26 @@ import { configurationTabText } from "../../../../components/clients/TimeReporit
 import UploadFiles from "./UploadFiles";
 import EmailTemplate from "../EmailTemplate/EmailTemplate";
 import CompanyDetails from "../CompanyDetails/CompanyDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { getConfigDetails } from "../../../../redux/slices/adminDataSlice";
+import ScreenLoader from "../../../../components/atomic/ScreenLoader";
 
 const Customization = () => {
     const [previewUrl, setPreviewUrl] = useState('');
     const [currentTab, setCurrentTab] = useState("first")
+    const dispatch =  useDispatch()
+    const {screenLoader} = useSelector(state => state.adminData)
 
-
+    useEffect (()=>{
+    dispatch(getConfigDetails())
+    },[])
     const handleSelect = (selectedTab) => {
         setCurrentTab(selectedTab);
     };
 
     return (
         <>
+           { screenLoader ? <ScreenLoader/> : 
             <div className="card-box">
                 <div className="border-bottom-grey pb-3 mb-4 d-md-flex justify-content-between align-items-center">
                     <h2 className="section-head border-0 mb-0 pb-0">Configuration</h2>
@@ -48,6 +56,7 @@ const Customization = () => {
                     </Tab.Content>
                 </Tab.Container>
             </div>
+            }
         </>
     )
 }

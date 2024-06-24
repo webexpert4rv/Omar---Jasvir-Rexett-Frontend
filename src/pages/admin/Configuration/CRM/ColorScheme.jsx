@@ -3,14 +3,52 @@ import { Button, Col, Form } from 'react-bootstrap'
 import companyLogoImg from '../../../../assets/img/rexett-logo-white.png';
 
 
-function ColorScheme({previewUrl}) {
+function ColorScheme({ previewUrl }) {
     const [selectedColorType, setSelectedColorType] = useState('gradient-sidecolor');
+    console.log(selectedColorType, "selectedColorType")
+
+    const [colorValue, setColorValue] = useState('#000000'); 
+
+    const handleColorInputChange = (event) => {
+        const newColorValue = event.target.value;
+        setColorValue(newColorValue);
+    };
+
+
+    console.log(colorValue,"colorValue")
+
+    const handleChangeText = (event) => {
+        console.log(event.target.value, "eventttt")
+
+        const elementId = event.target.id
+        const colorType = elementId.split('-')[1];
+
+        switch (colorType) {
+            case 'color1':
+                console.log("Color 1 changed:", event.target.value)
+                // Perform actions for color1 change
+                break;
+            case 'color2':
+                console.log("Color 2 changed:", event.target.value)
+                // Perform actions for color2 change
+                break;
+            default:
+                break;
+        }
+    }
+
+    const handleColorChange = (event) => {
+        console.log(event.target.value, "colorChange")
+
+    }
 
 
     const handleColorTypeChange = (event) => {
-        console.log(event, "event")
+        console.log(event.target.id, "eventcolortype")
         setSelectedColorType(event.target.id);
     };
+
+
     return (
         <>
             <Col md={12} className="mb-2">
@@ -36,6 +74,7 @@ function ColorScheme({previewUrl}) {
                                 <span></span> Gradient Color
                             </Form.Label>
                         </div>
+
                         <div>
                             <Form.Control
                                 type="radio"
@@ -51,29 +90,37 @@ function ColorScheme({previewUrl}) {
                         </div>
                     </div>
 
-                    {selectedColorType === 'solid-sidecolor' && (
-                        <div className="solid-color-wrapper">
-                            <div className="common-field color-field-wrapper">
-                                <Form.Control type="color" className="color-field" />
-                                <Form.Control type="text" placeholder="#000000" className="colortext-field shadow-none" />
-                            </div>
-                        </div>
-                    )}
                     {selectedColorType === 'gradient-sidecolor' && (
                         <div className="gradient-color-wrapper d-flex align-items-center gap-3">
                             <div>
                                 <Form.Label className="font-14">1st Color</Form.Label>
                                 <div className="common-field color-field-wrapper">
                                     <Form.Control type="color" className="color-field" />
-                                    <Form.Control type="text" placeholder="#000000" className="colortext-field" />
+                                    {/* <Form.Control type="text" placeholder="#000000" className="colortext-field" id="gradient-sidecolor-color1" /> */}
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="#000000"
+                                        className="colortext-field"
+                                        value={colorValue}
+                                        onChange={handleColorInputChange}
+                                    />
                                 </div>
                             </div>
                             <div>
                                 <Form.Label className="font-14">2nd Color</Form.Label>
                                 <div className="common-field color-field-wrapper">
                                     <Form.Control type="color" className="color-field" />
-                                    <Form.Control type="text" placeholder="#000000" className="colortext-field" />
+                                    <Form.Control type="text" placeholder="#000000" className="colortext-field" id="gradient-sidecolor-color2" />
                                 </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {selectedColorType === 'solid-sidecolor' && (
+                        <div className="solid-color-wrapper">
+                            <div className="common-field color-field-wrapper">
+                                <Form.Control type="color" className="color-field" />
+                                <Form.Control type="text" placeholder="#000000" className="colortext-field shadow-none" />
                             </div>
                         </div>
                     )}

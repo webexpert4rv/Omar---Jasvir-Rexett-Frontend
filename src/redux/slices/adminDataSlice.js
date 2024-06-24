@@ -28,7 +28,8 @@ const initialAdminData = {
     invoiceDetails:{},
     developerTimeReport:[],
     invoiceTotalPage : null,
-    timeReportingDetailTotalPage:null
+    timeReportingDetailTotalPage:null,
+    configDetails: []
 }
 
 export const adminDataSlice = createSlice({
@@ -144,11 +145,14 @@ export const adminDataSlice = createSlice({
         setDeveloperTimeReport:(state,action) => {
          state.smallLoader = false;
          state.developerTimeReport = action.payload;
-        }
+        },
+        setConfigDetails : (state,action) => {
+         state.configDetails = action.payload
+        },
     }
 })
 
-export const { setTimeReportDetails,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setConfigDetails ,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -671,7 +675,7 @@ export function addToFeature(query,closeModal,data,toastMessage) {
                 dispatch(allMemberList(data));
             }
         } catch (error) {
-            const message = error.message || "Something went wrong";
+            const message = error.message || "Something went wrong"
             toast.error(message, { position: "top-center" })
             closeModal();
             dispatch(setFailAdminData())
@@ -695,4 +699,44 @@ export function sendMailForCompleteProfile(payload,data) {
             dispatch(setFailAdminData())
         }
     };
+}
+
+export function getConfigDetails() {
+    return async(dispatch)=>{
+        dispatch(setScreenLoader())
+        try{
+            let result = await clientInstance.get(`/admin/configuration`)
+            console.log(result.data,"result")
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setSuccessAdminData())
+                dispatch(setConfigDetails(result.data))
+            }
+        }catch(error){
+            // const message = error?.response.data.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
+            // dispatch(setFailAdminData())
+            console.log(error,"configgerror")
+
+        }
+    }
+}
+
+export function getUploadFile(payload){
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.patch(`admin/configuration` , {...payload})
+            console.log(result.data,"result")
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setSuccessAdminData())
+            }
+        }catch(error){
+            // const message = error?.response.data.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
+            // dispatch(setFailAdminData())
+
+            console.log(error,"error")
+        }
+    }
 }

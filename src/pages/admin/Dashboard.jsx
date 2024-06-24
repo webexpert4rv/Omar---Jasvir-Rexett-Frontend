@@ -483,12 +483,9 @@ const AdminDashboard = () => {
   return (
     <>
       {screenLoader ? (
-        <ScreenLoader />
+        <ScreenLoader/>
       ) : (
         <div>
-          <section className="loading-screen">
-            <span className="loader-wrapper"> </span>
-          </section>
           <h2 className="section-head mb-4">{t("overview")}</h2>
           <div className="overview-card-wrapper mb-5">
             {/* <div className="overview-card">
