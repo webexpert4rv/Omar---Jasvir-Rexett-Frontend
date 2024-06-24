@@ -21,9 +21,10 @@ import devImg from '../../../assets/img/demo-img.jpg';
 import { FaLink } from "react-icons/fa6";
 import ManualSuggestions from  "../../../pages/admin/Modals/ManualSuggestion";
 import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
+import Schedulemeeting from "../Modals/ScheduleMeeting";
 
-const SingleJobDetails = () => {
-    const role=localStorage.getItem("role")
+const AdminSingleJob = () => {
+    const role = localStorage.getItem("role")
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation()
@@ -140,6 +141,14 @@ const SingleJobDetails = () => {
         showaddCandidate(false);
     }
 
+    const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
+    const handleShowScheduleMeeting = () => {
+      setShowScheduleMeet(!showScheduleMeeting);
+    }
+    const handleCloseScheduleMeeting = () =>{
+      setShowScheduleMeet(false);
+    }
+
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -147,7 +156,7 @@ const SingleJobDetails = () => {
                     {/* <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2> */}
                     <div className="d-flex justify-content-between align-items-center flex-md-row flex-column-reverse">
                         <div>
-                            <h2 className="single-job-title mb-0">{singleJobDescription?.title ? singleJobDescription?.title :"New Ui changes for admin panel" }</h2>
+                            <h2 className="single-job-title mb-0">{singleJobDescription?.title ? singleJobDescription?.title :"Need to work on new changes on admin panel"}</h2>
                             <p className="req-text fw-normal mt-2">by {singleJobDescription?.client?.name}</p>
                         </div>
                         <div className="d-flex gap-3 align-items-center mb-md-0 mb-3">
@@ -296,7 +305,7 @@ const SingleJobDetails = () => {
                             ></p>
                         </div>
                     </Tab>
-                   {role!=="developer" && <Tab eventKey="suggested" title={suggest}>
+                    {role!=="developer" &&<Tab eventKey="suggested" title={suggest}>
                         <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
                             <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Add Manual Suggestion</Button>
                             {/* <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button> */}
@@ -304,7 +313,7 @@ const SingleJobDetails = () => {
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>}
                     <Tab eventKey="shortlisted" title={shortlist}>
-                        <h4 className="font-22 mb-4 fw-bold">Scheduled Interview</h4>
+                        <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
                         <div className="interview-scheduled pt-2 mb-3">
                             <Row>
                                 <Col lg={4}>
@@ -355,20 +364,20 @@ const SingleJobDetails = () => {
                                             <div>
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>Reschedule</Button>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowScheduleMeeting}>Reschedule</Button>
                                         </div>
                                     </div>
                                 </Col>
                             </Row>
                         </div>
-                        <h4 className="font-22 mb-4 fw-bold">Need to schedule</h4>
+                        <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>
                         <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>
                         <div>
-                            <h4 className="font-22 mb-4 fw-bold">Interview Completed</h4>
+                            <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
                             <Row>
-                                <Col lg={4}>
+                               { role!=="developer" && <Col lg={4}>
                                     <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
                                             <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
@@ -396,7 +405,7 @@ const SingleJobDetails = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </Col>
+                                </Col>}
                                 <Col lg={4}>
                                     <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
@@ -421,7 +430,7 @@ const SingleJobDetails = () => {
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
                                             <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -450,7 +459,7 @@ const SingleJobDetails = () => {
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
                                             <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -852,7 +861,9 @@ const SingleJobDetails = () => {
             <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
             <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
             <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
+            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting}  />
         </>
     )
 }
-export default SingleJobDetails;
+
+export default AdminSingleJob
