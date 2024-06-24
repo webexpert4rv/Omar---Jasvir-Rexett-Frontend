@@ -358,6 +358,7 @@ export function getCancelLeave(id , payload ) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.put(`/developer/withdraw-leave-request/${id}`,{...payload});
+      dispatch(setActionSuccessFully())
     } catch (error) {
       const message = error.message || "Something went wrong";
       dispatch(setFailDeveloperData());

@@ -150,8 +150,7 @@ const AllRoleEditProfile = ({ role }) => {
       // dispatch(updateAdminProfile(data))
       dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
     } else {
-      dispatch(
-        filePreassignedUrlGenerate(fileData, (url) => {
+      dispatch(filePreassignedUrlGenerate(fileData, (url) => {
           let data = {
             ...values,
             profile_picture: url,
