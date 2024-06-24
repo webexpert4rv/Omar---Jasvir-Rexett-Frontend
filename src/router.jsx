@@ -3,9 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
 
 import { lazy } from "react";
-import JobPostStepContainer from "./pages/views/Job post step form/JobPostStepContainer";
+import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
 import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
-import Customization from "./pages/admin/Customization";
 import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
@@ -14,6 +13,8 @@ import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
 import ProjectHistory from "./pages/developer/ProjectHistory";
 import ProjectDetail from "./pages/developer/ProjectDetail";
+import AdminJobPost from "./pages/admin/AdminJobPost";
+import Customization from "./pages/admin/Configuration/CRM/Customization";
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -238,7 +239,7 @@ export const route = [
   },
   {
     path: "/client/job-post",
-    element: <JobPostStepContainer />,
+    element: <JobPost />,
     private: true,
     isClient: true,
   },
@@ -443,6 +444,12 @@ export const route = [
   {
     path: "/admin/edit-admin-profile",
     element: <EditAdminProfile />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/job-post",
+    element: <AdminJobPost />,
     isAdmin: true,
     private: true,
   },
