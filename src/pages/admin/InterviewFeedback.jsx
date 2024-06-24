@@ -59,9 +59,37 @@ const InterviewFeedback = () => {
                         <span className="status-finished">Completed</span>
                     </div>
                 </div>
+                <h3 className="section-subhead mb-3">Interviewer's Decision</h3>
+                <div className="d-flex align-items-center gap-3 mb-3">
+                    <Form.Select className="common-field font-14 w-auto">
+                        <option value="">Select Decision</option>
+                        <option value="selected">Selected</option>
+                        <option value="reject">Rejected</option>
+                    </Form.Select>
+                </div>
                 <div className="mb-4">
                     <h3 className="section-subhead mb-3">Candidate's Rating</h3>
                     <Row>
+                        <Col lg={4}>
+                            <div className="ratinng-wrapper text-center">
+                                <div>
+                                    <p className="text-start">Overall</p>
+                                </div>
+                                <Form.Select className="common-field font-14 mb-2 w-auto">
+                                    <option value="">Select Rating</option>
+                                    <option value="one">1</option>
+                                    <option value="two">2</option>
+                                    <option value="three">3</option>
+                                    <option value="four">4</option>
+                                    <option value="five">5</option>
+                                    <option value="six">6</option>
+                                    <option value="seven">7</option>
+                                    <option value="eight">8</option>
+                                    <option value="nine">9</option>
+                                    <option value="ten">10</option>
+                                </Form.Select>
+                            </div>
+                        </Col>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
                                 <div>

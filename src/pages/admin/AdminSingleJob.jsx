@@ -20,6 +20,8 @@ import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import devImg from '../../assets/img/demo-img.jpg';
 import { FaLink } from "react-icons/fa6";
+import ManualSuggestions from "./Modals/ManualSuggestion";
+import AddCandidate from "./Modals/AddCandidate";
 
 const AdminSingleJob = () => {
     const { t } = useTranslation();
@@ -121,6 +123,22 @@ const AdminSingleJob = () => {
     let interview = <div>Interviews <div className="stage-indicator ms-1 stage-interview gap-1"><span className="stage-icon"><PiChatsFill /></span> 2</div></div>;
     let offered = <div>Offered <div className="stage-indicator ms-1 stage-offer gap-1"><span className="stage-icon"><FaHandshake /></span> 0</div></div>;
     let hired = <div>Hired <div className="stage-indicator ms-1 stage-hired gap-1"><span className="stage-icon"><MdWorkHistory /></span> 0</div></div>;
+
+    const [ manualSuggestion , showManualSuggestion ] = useState(false);
+    const handleShowManualSuggestion = () => {
+        showManualSuggestion(!manualSuggestion);
+    }
+    const handleCloseManualSuggestion = () => {
+        showManualSuggestion(false);
+    }
+
+    const [ addCandidateModal , showaddCandidate ] = useState(false);
+    const handleShowaddCandidate = () => {
+        showaddCandidate(!manualSuggestion);
+    }
+    const handleCloseaddCandidate = () => {
+        showaddCandidate(false);
+    }
 
     return (
         <>
@@ -279,6 +297,10 @@ const AdminSingleJob = () => {
                         </div>
                     </Tab>
                     <Tab eventKey="suggested" title={suggest}>
+                        <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
+                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Add Manual Suggestion</Button>
+                            {/* <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button> */}
+                        </div>
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>
                     <Tab eventKey="shortlisted" title={shortlist}>
@@ -295,7 +317,11 @@ const AdminSingleJob = () => {
                                                 </div>
                                                 Pankaj Pundir
                                             </p>
-                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="mb-2 status-interview">
                                             <span className="status-upcoming">Upcoming in 1hr</span>
@@ -316,7 +342,11 @@ const AdminSingleJob = () => {
                                                 </div>
                                                 Rohit Sharma
                                             </p>
-                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="mb-2 status-interview">
                                             <span className="status-rejected">Declined</span>
@@ -348,7 +378,11 @@ const AdminSingleJob = () => {
                                                 </div>
                                                 Rohit Sharma
                                             </p>
-                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="mb-2 status-interview">
                                             <span className="status-finished">Completed</span>
@@ -357,7 +391,67 @@ const AdminSingleJob = () => {
                                             <div>
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
+                                            <div className="d-flex align-items-center gap-2">
+                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-finished">Selected</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2">
+                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-rejected">Rejected</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2">
+                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </Col>
@@ -756,6 +850,8 @@ const AdminSingleJob = () => {
             < ConfirmationModal text={(suggestedData?.status) ? t("suggestDeveloper") : t("removeDeveloperFromSuggestion")
             } show={showEndJobModal} handleClose={handleCloseEndJobModal} onClick={handleJobStatusAction} smallLoader={smallLoader} />
             <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
+            <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
+            <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
         </>
     )
 }

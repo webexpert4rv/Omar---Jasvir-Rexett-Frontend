@@ -13,6 +13,7 @@ import { FaVideo } from "react-icons/fa6";
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { toast } from 'react-toastify'
+import CreatableSelect from 'react-select/creatable';
 const Schedulemeeting = ({ show, handleClose }) => {
     const [value, onChange] = useState(new Date());
     const [firstSlot, setFirstSlot] = useState("");
@@ -145,6 +146,14 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                 <Col lg={8} className="mb-3">
                                     <div>
                                         <Form.Control type="text" className="common-field font-14" placeholder="Add title" />
+                                    </div>
+                                </Col>
+                                <Col lg={4} className="mb-lg-3 mb-1">
+                                    <p className="font-14 schedule-heading"><span><FaVideo /></span>Interviewer's list</p>
+                                </Col>
+                                <Col lg={8} className="mb-3">
+                                    <div>
+                                        <CreatableSelect isMulti />
                                     </div>
                                 </Col>
                                 {/* <Col lg={4} className="mb-lg-3 mb-1">

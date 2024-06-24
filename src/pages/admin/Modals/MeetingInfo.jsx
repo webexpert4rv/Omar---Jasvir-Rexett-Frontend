@@ -40,12 +40,49 @@ const MeetingInfo = ({ show, handleClose }) => {
                                 </div>
                             </Col>
                             <Col lg={4} className="mb-lg-3 mb-1">
-                                <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Client</p>
+                                <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Company Name</p>
                             </Col>
                             <Col lg={8} className="mb-3">
                                 <div className="d-flex align-items-center gap-3 client-imgbx">
                                     <img src={clientImg} />
                                     <p className="font-14 mb-0">Amazon</p>
+                                </div>
+                            </Col>
+                            <Col lg={4} className="mb-lg-3 mb-1">
+                                <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Interviewer's List</p>
+                            </Col>
+                            <Col lg={8} className="mb-3">
+                                <div className="d-flex flex-wrap gap-2 align-items-start">
+                                    <div className="associate-text d-inline-block">
+                                        <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                            <img src={devImg} />
+                                            <p className="mb-0">robingautam@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <div className="associate-text d-inline-block">
+                                        <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                            <span className="prefix-latter">RG</span>
+                                            <p className="mb-0">robingautam@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <div className="associate-text d-inline-block">
+                                        <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                            <span className="prefix-latter">RG</span>
+                                            <p className="mb-0">robingautam@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <div className="associate-text d-inline-block">
+                                        <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                            <span className="prefix-latter">RG</span>
+                                            <p className="mb-0">robingautam@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <div className="associate-text d-inline-block">
+                                        <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                            <span className="prefix-latter">RG</span>
+                                            <p className="mb-0">robingautam@gmail.com</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </Col>
                             <Col lg={4} className="mb-lg-3 mb-1">
@@ -90,6 +127,7 @@ const MeetingInfo = ({ show, handleClose }) => {
                                 <p className="font-14 schedule-heading">Status</p>
                             </Col>
                             <Col lg={8} className="mb-3">
+                                <span className="status-finished mb-2">Accepted</span>
                                 <div className="">
                                     <span className="status-rejected mb-2">Declined</span>
                                     <div>
