@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Form, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import Cards from "../../components/atomic/Cards";
@@ -24,12 +24,14 @@ import NoDataFound from "../../components/atomic/NoDataFound";
 import { useTranslation } from "react-i18next";
 import invoiceUnpaid from '../../assets/img/invoice_unpaid.png'
 import invoicePaid from '../../assets/img/invoice_paid.png'
+import Calendar from "react-calendar";
 
 const Dashboard = (cardDetails) => {
     const dispatch = useDispatch();
     const { assignedDeveloperList, screenLoader } = useSelector(state => state.clientData)
     const navigate = useNavigate()
     const { t } = useTranslation();
+    const [value, onChange] = useState(new Date());
 
     // const userName = localStorage.getItem("userName")
     useEffect(() => {
@@ -44,6 +46,14 @@ const Dashboard = (cardDetails) => {
     const handleRowClick = (id) => {
         dispatch(getDeveloperDetails(id))
         navigate(`/client/client-single-developer/${id}`)
+    }
+
+    const [showMeetingInfo, setShowMeetingInfo] = useState(false);
+    const handleShowMeetingInfo = () => {
+        setShowMeetingInfo(!showMeetingInfo)
+    }
+    const handleCloseMeetingInfo = () => {
+        setShowMeetingInfo(false)
     }
 
    
@@ -433,140 +443,59 @@ const Dashboard = (cardDetails) => {
 
                 <div>
                     <Row>
-                        <Col md={6} className="mb-4">
-                            <div className="card-box">
-                                <div className="d-flex justify-content-between align-items-center mb-4">
-                                    <h3 className="section-head pb-0 border-0 mb-0">Recent Invoice</h3>
+                    
+                        <Col lg={6} className="mb-4">
+                            <div className="card-box h-100">
+                                <h3 className="section-head pb-0 border-0 mb-4">Upcoming Events</h3>
+                                <div className="meeting-booking">
+                                    <Calendar onChange={onChange} value={value} />
                                 </div>
-                                <div className="">
-                                    <div className="table-responsive activity-log-table ongoing-project-table">
-                                        <table className="table table-ui-custom">
-                                            <thead>
-                                                <tr>
-                                                    <th className="white-nowrap">Developer Name</th>
-                                                    <th className="white-nowrap">Project</th>
-                                                    {/* <th className="white-nowrap">Associated with</th> */}
-                                                    <th className="white-nowrap">Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <div className="developer-wrapper">
-                                                            <img src={userImg} />
-                                                            Rohit Sharma
-                                                        </div>
-                                                    </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        AI Bot Project
-                                                    </td>
-                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
-                                                        <span className="associate-text">
-                                                            <span className="associate">Individual</span>
-                                                        </span>
-                                                    </td> */}
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={invoiceUnpaid} className="invoice-img-wrapper" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <div className="developer-wrapper white-nowrap">
-                                                            <img src={userImg} />
-                                                            Rohit Sharma
-                                                        </div>
-                                                    </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        AI Bot Project
-                                                    </td>
-                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
-                                                        <span className="associate-text">
-                                                            <span className="associate">Individual</span>
-                                                        </span>
-                                                    </td> */}
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={invoiceUnpaid} className="invoice-img-wrapper" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <div className="developer-wrapper">
-                                                            <img src={userImg} />
-                                                            Rohit Sharma
-                                                        </div>
-                                                    </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        AI Bot Project
-                                                    </td>
-                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
-                                                        <OverlayTrigger placement="bottom" overlay={companytext}>
-                                                            <img src={companyLogo} className="company-logo-wrapper" />
-                                                        </OverlayTrigger>
-                                                    </td> */}
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={invoicePaid} className="invoice-img-wrapper" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <div className="developer-wrapper">
-                                                            <img src={userImg} />
-                                                            Rohit Sharma
-                                                        </div>
-                                                    </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        AI Bot Project
-                                                    </td>
-                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
-                                                        <OverlayTrigger placement="bottom" overlay={companytext}>
-                                                            <img src={companyLogo} className="company-logo-wrapper" />
-                                                        </OverlayTrigger>
-                                                    </td> */}
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={invoicePaid} className="invoice-img-wrapper" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <div className="developer-wrapper">
-                                                            <img src={userImg} />
-                                                            Rohit Sharma
-                                                        </div>
-                                                    </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        AI Bot Project
-                                                    </td>
-                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
-                                                        <OverlayTrigger placement="bottom" overlay={companytext}>
-                                                            <img src={companyLogo} className="company-logo-wrapper" />
-                                                        </OverlayTrigger>
-                                                    </td> */}
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={invoicePaid} className="invoice-img-wrapper" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <div className="developer-wrapper">
-                                                            <img src={userImg} />
-                                                            Rohit Sharma
-                                                        </div>
-                                                    </td>
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        AI Bot Project
-                                                    </td>
-                                                    {/* <td className="time-table-data text-start font-14 fw-normal">
-                                                        <OverlayTrigger placement="bottom" overlay={companytext}>
-                                                            <img src={companyLogo} className="company-logo-wrapper" />
-                                                        </OverlayTrigger>
-                                                    </td> */}
-                                                    <td className="time-table-data text-start font-14 fw-normal">
-                                                        <img src={invoicePaid} className="invoice-img-wrapper" />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                <div className="interview-scheduled mt-3">
+                                    <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Pankaj Pundir
+                                            </p>
+                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-upcoming">Upcoming in 1hr</span>
+                                        </div>
                                     </div>
+                                    <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Pankaj Pundir
+                                            </p>
+                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-upcoming">Upcoming in 3hr</span>
+                                        </div>
+                                    </div>
+                                    {/* <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Pankaj Pundir
+                                            </p>
+                                            <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-upcoming">Upcoming in 3hr</span>
+                                        </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </Col>

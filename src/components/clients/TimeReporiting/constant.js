@@ -206,5 +206,21 @@ export const yearOption = [
   "2017"
 ]
 
+export const configurationTabText = [
+  {
+    key:"first",
+    value:"CRM"
+  },
+  { 
+    key:"second",
+    value: "Email Template"
+   },
+   {
+    key:"third",
+    value:"Company Details"
+  },
+ 
+]
+
 
 export const GOOGLE_AUTOCOMPLETE_API_KEY="AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"

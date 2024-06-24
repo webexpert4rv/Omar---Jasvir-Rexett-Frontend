@@ -25,16 +25,25 @@ const PrivateLayout = ({ children }) => {
   if (!token || !roleConfig[role]) {
     return <Navigate to={`${redirectPath}`} />;
   }
+  console.log(basePath, "basePath")
 
   return (
     <div className="dashboard-layout">
-      <RexettSideBar
-        sidebarItems={sidebarItems}
-        floatingOptions={floatingOptions}
-      />
-      <main className="main-wrapper">
-        <RexettHeader {...headerProps} />
+      {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
+        <RexettSideBar sidebarItems={sidebarItems} floatingOptions={floatingOptions} role={role} />
+      ) : (
         <Outlet />
+      )}
+
+      <main className="main-wrapper">
+        {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
+          <>
+            <RexettHeader {...headerProps} />
+            <Outlet />
+          </>
+        ) : (
+          ""
+        )}
       </main>
     </div>
   );
