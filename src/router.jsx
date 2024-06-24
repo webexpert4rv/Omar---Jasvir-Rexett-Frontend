@@ -15,6 +15,8 @@ import ProjectHistory from "./pages/developer/ProjectHistory";
 import ProjectDetail from "./pages/developer/ProjectDetail";
 import AdminJobPost from "./pages/admin/AdminJobPost";
 import Customization from "./pages/admin/Configuration/CRM/Customization";
+import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
+import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -341,6 +343,18 @@ export const route = [
   {
     path: "developer/project-detail",
     element: <ProjectDetail />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/job-posted",
+    element: <DeveloperJobListing />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/developer-single-job/:id",
+    element: <DeveloperSingleJob />,
     isDeveloper: true,
     private: true,
   },

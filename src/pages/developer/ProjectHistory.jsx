@@ -1,6 +1,11 @@
 import React from "react";
 import { Nav, Tab } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 const ProjectHistory = () => {
+    const navigate=useNavigate();
+    const redirectToProject=()=>{
+        navigate("/developer/project-detail")
+    }
     return (
         <>
             <div className="card-box">
@@ -42,7 +47,7 @@ const ProjectHistory = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr className="application-row">
+                                            <tr className="application-row" onClick={redirectToProject} >
                                                 <td className="font-14 align-middle">Frontend developer</td>
                                                 <td className="font-14 align-middle">Amazon</td>
                                                 <td className="font-14 align-middle">02 May 2024</td>
@@ -69,7 +74,7 @@ const ProjectHistory = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr className="application-row">
+                                            <tr className="application-row" onClick={redirectToProject}>
                                                 <td className="font-14 align-middle">AI Chat Bot</td>
                                                 <td className="font-14 align-middle">Google</td>
                                                 <td className="font-14 align-middle">12 Dec 2023</td>
@@ -77,7 +82,7 @@ const ProjectHistory = () => {
                                                 <td className="font-14 align-middle">3000hrs</td>
                                                 <td className="font-14 align-middle">12</td>
                                             </tr>
-                                            <tr className="application-row">
+                                            <tr className="application-row" onClick={redirectToProject}>
                                                 <td className="font-14 align-middle">Figma to UI</td>
                                                 <td className="font-14 align-middle">RV Technologies</td>
                                                 <td className="font-14 align-middle">10 Nov 2023</td>
