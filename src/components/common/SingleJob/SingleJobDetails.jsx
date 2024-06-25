@@ -7,7 +7,7 @@ import JobCard from "../../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import { useTranslation } from "react-i18next";
 import ScreenLoader from "../../../components/atomic/ScreenLoader";
-import { FaRegHandshake } from "react-icons/fa6";
+import { FaCheck, FaRegHandshake } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -154,12 +154,14 @@ const AdminSingleJob = () => {
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
                 <div className="single-job-card job-information-wrapper mb-0">
                     {/* <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2> */}
-                    <div className="d-flex justify-content-between align-items-center flex-md-row flex-column-reverse">
+                    <div className="d-flex justify-content-between align-items-start flex-md-row flex-column-reverse">
                         <div>
                             <h2 className="single-job-title mb-0">{singleJobDescription?.title ? singleJobDescription?.title :"Need to work on new changes on admin panel"}</h2>
                             <p className="req-text fw-normal mt-2">by {singleJobDescription?.client?.name}</p>
                         </div>
                         <div className="d-flex gap-3 align-items-center mb-md-0 mb-3">
+                            <Button variant="transparent" className="main-btn font-14">Apply this job</Button>
+                            <span className="status-finished">Already Applied <FaCheck /> </span>
                             <p className={`status-text ${currentStatusCssClass(
                                 singleJobDescription?.status
                             )}`}>{singleJobDescription?.status?.charAt(0).toUpperCase() + singleJobDescription?.status?.slice(1)}</p>
@@ -310,6 +312,9 @@ const AdminSingleJob = () => {
                             <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Add Manual Suggestion</Button>
                             {/* <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button> */}
                         </div>
+                        <h5 className="font-22 mb-4 fw-bold">Applied Candidates</h5>
+                        <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                        <h5 className="font-22 mb-4 fw-bold">Suggested Candidates</h5>
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>}
                     <Tab eventKey="shortlisted" title={shortlist}>

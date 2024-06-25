@@ -61,44 +61,44 @@ const AddCandidate = ({ show, handleClose }) => {
                     <Row>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">First Name</Form.Label>
-                                <Form.Control type="text" className="common-field" />
+                                <Form.Label className="font-14 fw-medium">First Name</Form.Label>
+                                <Form.Control type="text" className="common-field font-14" />
                             </div>
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">Last Name</Form.Label>
-                                <Form.Control type="text" className="common-field" />
+                                <Form.Label className="font-14 fw-medium">Last Name</Form.Label>
+                                <Form.Control type="text" className="common-field font-14" />
                             </div>
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">Email Address</Form.Label>
-                                <Form.Control type="email" className="common-field" />
+                                <Form.Label className="font-14 fw-medium">Email Address</Form.Label>
+                                <Form.Control type="email" className="common-field font-14" />
                             </div>
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">Phone Number</Form.Label>
-                                <Form.Control type="text" className="common-field" />
+                                <Form.Label className="font-14 fw-medium">Phone Number</Form.Label>
+                                <Form.Control type="text" className="common-field font-14" />
                             </div>
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">Designation</Form.Label>
-                                <Form.Control type="text" className="common-field" />
+                                <Form.Label className="font-14 fw-medium">Designation</Form.Label>
+                                <Form.Control type="text" className="common-field font-14" />
                             </div>
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">Total Experience</Form.Label>
-                                <Form.Control type="text" className="common-field" />
+                                <Form.Label className="font-14 fw-medium">Total Experience</Form.Label>
+                                <Form.Control type="text" className="common-field font-14" />
                             </div>
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">Country</Form.Label>
-                                <Form.Select className="common-field">
+                                <Form.Label className="font-14 fw-medium">Country</Form.Label>
+                                <Form.Select className="common-field font-14">
                                     <option>Select Country</option>
                                     <option>Sweden</option>
                                     <option>India</option>
@@ -108,8 +108,8 @@ const AddCandidate = ({ show, handleClose }) => {
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">State</Form.Label>
-                                <Form.Select className="common-field">
+                                <Form.Label className="font-14 fw-medium">State</Form.Label>
+                                <Form.Select className="common-field font-14">
                                     <option>Select State</option>
                                     <option>Bohuslän</option>
                                     <option>Dalsland</option>
@@ -122,8 +122,8 @@ const AddCandidate = ({ show, handleClose }) => {
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">City</Form.Label>
-                                <Form.Select className="common-field">
+                                <Form.Label className="font-14 fw-medium">City</Form.Label>
+                                <Form.Select className="common-field font-14">
                                     <option>Select City</option>
                                     <option>Stockholm</option>
                                     <option>Gothenburg</option>
@@ -136,11 +136,11 @@ const AddCandidate = ({ show, handleClose }) => {
                         </Col>
                         <Col lg={6}>
                             <div className="mb-2">
-                                <Form.Label className="font-14">Zipcode</Form.Label>
-                                <Form.Control type="text" className="common-field" />
+                                <Form.Label className="font-14 fw-medium">Zipcode</Form.Label>
+                                <Form.Control type="text" className="common-field font-14" />
                             </div>
                         </Col>
-                        <Col lg={12}>
+                        <Col lg={12} className="my-3">
                             {!uploadedResume && (
                                 <div>
                                     <input type="file" className="d-none" id="resume-upload" onChange={handleResumeUpload} />

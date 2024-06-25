@@ -311,7 +311,15 @@ const SingleDeveloper = ({ data, role }) => {
                       </div>
                       <div>
                         <p className="mb-0 font-14">
-                          <span><MdLocationOn /></span> Mohali, Punjab, India (160055)</p>
+                          <span><MdLocationOn /></span>India</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><GoClockFill /></span> Remote</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
                       </div>
                       <div>
                         <p className="mb-0 font-14">
@@ -346,14 +354,14 @@ const SingleDeveloper = ({ data, role }) => {
                             )}
                           </li>
                         </ul>
-                        {role !== "client" && (
+                        {/* {role !== "client" && (
                           <div
                             className="add_more_section"
                             onClick={handleShowSocialMediaModal}
                           >
                             <MdEditNote size={25} />
                           </div>
-                        )}
+                        )} */}
                       </div>
                     ) : (
                       ""

@@ -31,6 +31,9 @@ import { HiOutlineLink } from "react-icons/hi";
 import { MdGifBox } from "react-icons/md";
 import { MdEmojiEmotions } from "react-icons/md";
 import Schedulemeeting from "../common/Modals/ScheduleMeeting";
+import { CgCalendar } from "react-icons/cg";
+import { TbCalendarShare } from "react-icons/tb";
+import { TiWeatherSunny } from "react-icons/ti";
 
 const clientName = localStorage
   .getItem("userName")
@@ -48,10 +51,10 @@ const RexettHeader = ({ role }) => {
       "single-job": "/client/job-posted",
       "client-single-developer": "/client/dashboard",
       "admin-single-job": "/admin/admin-job-listing",
-      "admin":"admin/notification-admin",
-      "client":"client/notification-client",
-      "developer":"developer/notification-developer",
-      "vendor":"notification-vendor"
+      "admin": "admin/notification-admin",
+      "client": "client/notification-client",
+      "developer": "developer/notification-developer",
+      "vendor": "notification-vendor"
     };
 
     return data[isSingleJob] || false;
@@ -107,7 +110,7 @@ const RexettHeader = ({ role }) => {
     <Tooltip>Meeting Booking</Tooltip>
   )
   const assignText = (
-    <Tooltip>Assign a User</Tooltip>
+    <Tooltip>Assign to employee</Tooltip>
   )
   const calendarText = (
     <Tooltip>Select Date</Tooltip>
@@ -136,7 +139,7 @@ const RexettHeader = ({ role }) => {
   const [value, onChange] = useState(new Date());
 
 
-  console.log(routePath(role),"routePath(isSingleJob)")
+  console.log(routePath(role), "routePath(isSingleJob)")
 
   return (
     <>
@@ -168,17 +171,17 @@ const RexettHeader = ({ role }) => {
               ""
             )}
             {role == "admin" ? (
-            <OverlayTrigger placement="bottom" overlay={chatText}>
-              <span onClick={handleShowMessages} className="email-icon">
-                <RiChat3Line />
-              </span>
-            </OverlayTrigger> ) : ( "" )}
+              <OverlayTrigger placement="bottom" overlay={chatText}>
+                <span onClick={handleShowMessages} className="email-icon">
+                  <RiChat3Line />
+                </span>
+              </OverlayTrigger>) : ("")}
             {role == "admin" ? (
-            <OverlayTrigger placement="bottom" overlay={booking}>
-              <span onClick={handleShowMeetings} className="booking-icon cursor-pointer">
-                <FaCalendarDays />
-              </span>
-            </OverlayTrigger>) : ( "" )}
+              <OverlayTrigger placement="bottom" overlay={booking}>
+                <span onClick={handleShowMeetings} className="booking-icon cursor-pointer">
+                  <FaCalendarDays />
+                </span>
+              </OverlayTrigger>) : ("")}
             {role == "developer" ? <DeveloperCheckInOut /> : ""}
             <LanguageChange />
             <Notification
@@ -186,7 +189,7 @@ const RexettHeader = ({ role }) => {
               job="single-job"
               doc="documents"
             />
-            {role == "client" || role=="admin" ? (
+            {role == "client" || role == "admin" ? (
               <ToolTip text="Create Job">
                 <button
                   className="main-btn add-new-job-btn"
@@ -473,7 +476,7 @@ const RexettHeader = ({ role }) => {
           </div>
         </div>
       </Offcanvas>
-      <Offcanvas show={showToDo} placement="end" onHide={handleCloseToDo}>
+      <Offcanvas show={showToDo} placement="end" className="todo-canvas" onHide={handleCloseToDo}>
         <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
           <div className="d-flex align-items-center gap-2">
             <Offcanvas.Title>
@@ -502,9 +505,9 @@ const RexettHeader = ({ role }) => {
                   </div>
                 </Dropdown.Menu>
               </Dropdown>
-              <OverlayTrigger placement="bottom" overlay={newTodoText}>
+              {/* <OverlayTrigger placement="bottom" overlay={newTodoText}>
                 <Button className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
-              </OverlayTrigger>
+              </OverlayTrigger> */}
             </div>
           </div>
         </Offcanvas.Header>
@@ -535,7 +538,7 @@ const RexettHeader = ({ role }) => {
                     <span className="font-14 fw-semibold">0/3</span>
                   </div>
                   <div className="mb-3">
-                    <div className="todo-wrapper mb-2">
+                    <div className="todo-wrapper mb-3">
                       <div className="d-flex align-items-start gap-2">
                         <div>
                           <Form.Check type="checkbox" className="checkbox-custom" />
@@ -552,7 +555,7 @@ const RexettHeader = ({ role }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="todo-wrapper mb-2">
+                    <div className="todo-wrapper mb-3">
                       <div className="d-flex align-items-start gap-2">
                         <div>
                           <Form.Check type="checkbox" className="checkbox-custom" />
@@ -766,16 +769,78 @@ const RexettHeader = ({ role }) => {
               <Form.Control type="text" className="common-field font-14 mb-2" placeholder="Add your to-do description..." />
               <div className="d-flex justify-content-between align-items-center pt-2">
                 <div className="d-flex align-items-center gap-3">
-                  <OverlayTrigger placement="top" overlay={assignText}>
-                    <span className="assign-user">
-                      <RiUserAddFill />
-                    </span>
-                  </OverlayTrigger>
-                  <OverlayTrigger placement="top" overlay={calendarText}>
-                    <span className="calendar-assign">
-                      <FaCalendarDays />
-                    </span>
-                  </OverlayTrigger>
+                  <Dropdown className="assign-dropdown">
+                    <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
+                      <OverlayTrigger placement="top" overlay={assignText}>
+                        <span className="assign-user cursor-pointer">
+                          <RiUserAddFill />
+                        </span>
+                      </OverlayTrigger>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className="assign-dropdown-menu">
+                      <div className="search-field-employee">
+                        <Form.Control type="text" className="common-field font-12 mb-2" placeholder="Search Employee" />
+                      </div>
+                      <div className="employee-listing">
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                          <span className="profile-pic-prefix">RG</span>
+                          <span className="font-12">robingautam@gmail.com</span>
+                        </div>
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                          <span className="profile-pic-prefix">RG</span>
+                          <span className="font-12">robingautam@gmail.com</span>
+                        </div>
+                      </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <Dropdown className="assign-dropdown">
+                    <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
+                      <OverlayTrigger placement="top" overlay={calendarText}>
+                        <span className="calendar-assign">
+                          <FaCalendarDays />
+                        </span>
+                      </OverlayTrigger>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className="assign-dropdown-menu">
+                      <div>
+                        <span className="font-14 fw-medium d-block mb-2">Quick schedule</span>
+                      </div>
+                      <ul className="quick-listing">
+                        <li>
+                          <span className="d-inline-flex align-items-center gap-1">
+                            <span className="quick-icon">
+                              <CgCalendar />
+                            </span> 
+                            Today
+                          </span>
+                          <span className="fw-medium">26 Jun</span>
+                        </li>
+                        <li>
+                          <span className="d-inline-flex align-items-center gap-1">
+                            <span className="quick-icon">
+                              <TiWeatherSunny />
+                            </span>
+                            Tomorrow
+                          </span>
+                          <span className="fw-medium">27 Jun</span>
+                        </li>
+                        <li>
+                          <span className="d-inline-flex align-items-center gap-1">
+                            <span className="quick-icon">
+                              <TbCalendarShare />
+                            </span>
+                            Friday
+                          </span>
+                          <span className="fw-medium">28 Jun</span>
+                        </li>
+                      </ul>
+                      <div className="meeting-booking mt-3 to-doschedule mb-0">
+                        <Calendar onChange={onChange} value={value} />
+                      </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </div>
                 <div className="d-flex align-items-center gap-2">
                   <Button variant="transparent" className="font-14 border-0 p-0">Cancel</Button>
