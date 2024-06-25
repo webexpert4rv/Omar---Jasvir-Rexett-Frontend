@@ -441,12 +441,12 @@ export const route = [
     isAdmin: true,
     private: true,
   },
-  {
-    path: "/admin/edit-admin-profile",
-    element: <EditAdminProfile />,
-    isAdmin: true,
-    private: true,
-  },
+  // {
+  //   path: "/admin/edit-admin-profile",
+  //   element: <EditAdminProfile />,
+  //   isAdmin: true,
+  //   private: true,
+  // },
   {
     path: "/admin/job-post",
     element: <AdminJobPost />,

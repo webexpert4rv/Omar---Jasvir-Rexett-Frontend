@@ -29,7 +29,7 @@ const initialAdminData = {
     developerTimeReport:[],
     invoiceTotalPage : null,
     timeReportingDetailTotalPage:null,
-    configDetails: []
+    configDetails: {}
 }
 
 export const adminDataSlice = createSlice({
@@ -706,17 +706,16 @@ export function getConfigDetails() {
         dispatch(setScreenLoader())
         try{
             let result = await clientInstance.get(`/admin/configuration`)
-            console.log(result.data,"result")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
-                dispatch(setConfigDetails(result.data))
+                dispatch(setConfigDetails(result.data.data))
             }
         }catch(error){
             // const message = error?.response.data.message || "Something went wrong";
             // toast.error(message, { position: "top-center" })
             // dispatch(setFailAdminData())
-            console.log(error,"configgerror")
+            console.log(error,"error")
 
         }
     }
@@ -726,7 +725,7 @@ export function getUploadFile(payload){
     return async (dispatch)=>{
         try{
             let result = await clientInstance.patch(`admin/configuration` , {...payload})
-            console.log(result.data,"result")
+            // console.log(result.data,"result")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())

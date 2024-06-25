@@ -7,8 +7,10 @@ import { useTranslation } from "react-i18next";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaTimes } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 const RexettSideBar = ({ sidebarItems,floatingOptions }) => {
+    const {configDetails} = useSelector(state=>state.adminData)
     const { t } = useTranslation();
     const logout = () => {
         localStorage.clear();
@@ -26,7 +28,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions }) => {
                     <div className="w-100">
                         <div className="sidebar-logo mt-3 mb-4">
                             <a href="https://www.rexett.com/">
-                                <img src={sidebarLogo} alt="Sidebar Logo" />
+                                <img src={configDetails?.company_logo ? configDetails?.company_logo :sidebarLogo} alt="Sidebar Logo" />
                             </a>
                         </div>
                         {sidebarItems.map((item, index) => (

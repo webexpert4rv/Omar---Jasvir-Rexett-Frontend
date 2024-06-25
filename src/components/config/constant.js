@@ -59,7 +59,7 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications" },
     { to: "/admin/members", icon: <PiUsersFourFill />, text: "members" },
     { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing" },
-    { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
+    // { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
     { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images" },
     { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting" },
     { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
