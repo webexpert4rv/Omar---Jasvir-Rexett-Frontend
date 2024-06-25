@@ -12,9 +12,12 @@ import { useSelector } from "react-redux";
 const RexettSideBar = ({ sidebarItems,floatingOptions }) => {
     const {configDetails} = useSelector(state=>state.adminData)
     const { t } = useTranslation();
+
+    let currentRoute= role=="client"?"/":`/${role}-login`
+    
     const logout = () => {
         localStorage.clear();
-        window.location.href = "/developer-login";
+        window.location.href = currentRoute;
     };
     const [floatingShow, setFloatingShow] = useState(false);
     const handleFloating = () => {

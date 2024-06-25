@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import resumeImg from "../../../assets/img/user-img.jpg";
 import { Link, useLocation } from "react-router-dom";
 import { FaGithub, FaStar } from "react-icons/fa6";
@@ -37,6 +37,8 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { TbFileDownload } from "react-icons/tb";
 import introVideo from '../../../assets/img/interview-video.mp4'
+import { FaCirclePlay } from "react-icons/fa6";
+import IntroVideo from "../Modals/IntroVideo";
 
 const SingleDeveloper = ({ data, role }) => {
   const { startTour, closeTour } = useTourContext();
@@ -204,6 +206,28 @@ const SingleDeveloper = ({ data, role }) => {
   const nodeRating = 7;
   const commRating = 8;
 
+  const [isFeedbackVisible, setIsFeedbackVisible] = useState(false);
+
+  const toggleFeedbackSection = () => {
+    setIsFeedbackVisible(!isFeedbackVisible);
+  };
+
+  const introVideo = (
+    <Tooltip>Introduction Video</Tooltip>
+  )
+
+  const seeReview = (
+    <Tooltip>See Review</Tooltip>
+  )
+
+  const [showIntroVideo, setShowIntroVideo] = useState(false);
+  const handleShowIntroVideo = () => {
+    setShowIntroVideo(!showIntroVideo);
+  }
+  const handleCloseIntroVideo = () => {
+    setShowIntroVideo(false);
+  }
+
   return (
     <>
       {screenLoader ? (
@@ -261,10 +285,39 @@ const SingleDeveloper = ({ data, role }) => {
                         className="resume-img"
                       />
                     </div>
-                    <h3 className="resume-name">{data?.name}</h3>
+                    <h3 className="resume-name">
+                      {data?.name}
+                      <OverlayTrigger placement="bottom" overlay={introVideo}>
+                        <span onClick={handleShowIntroVideo} className="text-green ms-2 cursor-pointer">
+                          <FaCirclePlay />
+                        </span>
+                      </OverlayTrigger>
+                    </h3>
                     <p className="resume-designation">
                       {data?.developer_detail?.professional_title}
                     </p>
+                    <div className="text-start mt-3 d-flex align-items-center gap-2 flex-wrap justify-content-center mb-3 personal-info-wrapper">
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdAlternateEmail /></span> robertjohnson@gmail.com</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdLocalPhone /></span> +91 123456789</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdWork /></span> 5 years</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdLocationOn /></span> Mohali, Punjab, India (160055)</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
+                      </div>
+                    </div>
                     {data?.developer_detail ? (
                       <div className="px-3 d-flex justify-content-center align-items-center gap-2 mb-3">
                         <ul className="social-media">
@@ -306,14 +359,17 @@ const SingleDeveloper = ({ data, role }) => {
                       ""
                     )}
                     <div>
-                      <span className="status-upcoming">
-                        <FaStar /> 4 (1)
-                      </span>
-                      <Button variant="transparent" className="ms-2 link-btn shadow-none font-14 p-0">Read Reviews</Button>
-                      <Button variant="transparent" className="ms-2 link-btn shadow-none font-14 p-0">Add Review</Button>
+                      <OverlayTrigger placement="bottom" overlay={seeReview}>
+                        <span className="status-upcoming rating-status cursor-pointer" onClick={toggleFeedbackSection}>
+                          <FaStar /> 4 (2)
+                        </span>
+                      </OverlayTrigger>
+                      {/* <Button variant="transparent" className="ms-2 link-btn shadow-none font-14 p-0">Read Reviews</Button> */}
+                      {/* <Button variant="transparent" className="ms-2 link-btn shadow-none font-14 p-0">Add Review</Button> */}
                     </div>
-                    <div className="connect-social-media px-3">
-                      <div className="write-review-wrapper mb-3">
+                    {isFeedbackVisible && (
+                      <div className="connect-social-media border-bottom-0 pb-0">
+                        {/* <div className="write-review-wrapper mb-3">
                         <Form.Control as="textarea" rows={2} className="common-field font-14 bg-white resize-none" placeholder="Whats your overall impression of this candidate" />
                         <div className="d-flex justify-content-between align-items-center p-2">
                           <div>
@@ -336,124 +392,62 @@ const SingleDeveloper = ({ data, role }) => {
                             <Button variant="transparent" className="main-btn font-14">Submit</ Button>
                           </div>
                         </div>
-                      </div>
-                      <div className="feedback-section px-2">
-                        <div className="d-flex align-items-start gap-2 text-start feedback-wrapper">
-                          <img src={resumeImg} className="client-review-img" />
-                          <div>
-                            <div className="d-flex align-items-center gap-2">
-                              <p className="font-14 fw-semibold mb-0">Michael Brown</p> <span className="font-14 text-dark">Today</span>
+                      </div> */}
+                        <div className="feedback-section px-2">
+                          <div className="d-flex align-items-start gap-2 text-start feedback-wrapper">
+                            <img src={resumeImg} className="client-review-img" />
+                            <div>
+                              <div className="d-flex align-items-center gap-2">
+                                <p className="font-14 fw-semibold mb-0">Michael Brown</p> <span className="font-14 text-dark">Today</span>
+                              </div>
+                              <div className="star-rating">
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span>
+                                  <FaStar />
+                                </span>
+                              </div>
+                              <p className="text-grey mt-1 mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
                             </div>
-                            <div className="star-rating">
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span>
-                                <FaStar />
-                              </span>
+                          </div>
+                          <div className="d-flex align-items-start gap-2 text-start feedback-wrapper">
+                            <img src={resumeImg} className="client-review-img" />
+                            <div>
+                              <div className="d-flex align-items-center gap-2">
+                                <p className="font-14 fw-semibold mb-0">Michael Brown</p> <span className="font-14 text-dark">12-05-2024</span>
+                              </div>
+                              <div className="star-rating">
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span className="active">
+                                  <FaStar />
+                                </span>
+                                <span>
+                                  <FaStar />
+                                </span>
+                              </div>
+                              <p className="text-grey mt-1 mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
                             </div>
-                            <p className="text-grey mt-1 mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
                           </div>
                         </div>
-                        <div className="d-flex align-items-start gap-2 text-start feedback-wrapper">
-                          <img src={resumeImg} className="client-review-img" />
-                          <div>
-                            <div className="d-flex align-items-center gap-2">
-                              <p className="font-14 fw-semibold mb-0">Michael Brown</p> <span className="font-14 text-dark">12-05-2024</span>
-                            </div>
-                            <div className="star-rating">
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span className="active">
-                                <FaStar />
-                              </span>
-                              <span>
-                                <FaStar />
-                              </span>
-                            </div>
-                            <p className="text-grey mt-1 mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-start mt-3">
-                      <div className="mb-2 pb-2">
-                        <Row>
-                          <Col lg={4}>
-                            <p className="mb-0 font-14">
-                              <MdAlternateEmail /> Email
-                            </p>
-                          </Col>
-                          <Col lg={8}>
-                            <p className="mb-0 font-14">robertjohnson@gmail.com</p>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div className="mb-2 pb-2">
-                        <Row>
-                          <Col lg={4}>
-                            <p className="mb-0 font-14">
-                              <MdLocalPhone /> Phone
-                            </p>
-                          </Col>
-                          <Col lg={8}>
-                            <p className="mb-0 font-14">+91 123456789</p>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div className="mb-2 pb-2">
-                        <Row>
-                          <Col lg={4}>
-                            <p className="mb-0 font-14">
-                              <MdWork /> Total Experience
-                            </p>
-                          </Col>
-                          <Col lg={8}>
-                            <p className="mb-0 font-14">5 years</p>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div className="mb-2 pb-2">
-                        <Row>
-                          <Col md={4}>
-                            <p className="mb-0 font-14">
-                              <MdLocationOn /> Location
-                            </p>
-                          </Col>
-                          <Col md={8}>
-                            <p className="mb-0 font-14">Mohali, Punjab, India (160055)</p>
-                          </Col>
-                        </Row>
-                      </div>
-                      <div>
-                        <Row>
-                          <Col md={4}>
-                            <p className="mb-0 font-14">
-                              <GoClockFill /> Timezone
-                            </p>
-                          </Col>
-                          <Col md={8}>
-                            <p className="mb-0 font-14">GMT(+5:30) Kolkata</p>
-                          </Col>
-                        </Row>
-                      </div>
-                    </div>
+                      </div>)}
                     {role !== "client" && (
                       <div
                         className="add_more_section_detail"
@@ -464,7 +458,7 @@ const SingleDeveloper = ({ data, role }) => {
                       </div>
                     )}
                   </div>
-                  <div className="connect-social-media px-3">
+                  {/* <div className="connect-social-media px-3">
                     <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
                       <h3 className="subheading-resume text-center mb-0">
                         Introduction Video
@@ -482,37 +476,7 @@ const SingleDeveloper = ({ data, role }) => {
                     <video className="w-100" controls>
                       <source src={introVideo} />
                     </video>
-                  </div>
-                  <div className="connect-social-media px-3">
-                    <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
-                      <h3 className="subheading-resume text-center mb-0">
-                        {t("skills")}
-                      </h3>
-                      {role !== "client" && (
-                        <div
-                          className="add_more_section"
-                          id="edit_2"
-                          onClick={handleShowSkillsModal}
-                        >
-                          <MdEditNote size={25} />
-                        </div>
-                      )}
-                    </div>
-                    <ul className={`skills-pill text-center }`}>
-                      {data?.other_skills?.map((item, index) => {
-                        return (
-                          <>
-                            <li
-                              key={index}
-                              className={`${item?.is_edited && "resume-edit"}`}
-                            >
-                              <span>{item?.skill}</span>{" "}
-                            </li>
-                          </>
-                        );
-                      })}
-                    </ul>
-                  </div>
+                  </div> */}
                   <div className="connect-social-media px-3">
                     <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
                       <h3 className="subheading-resume mb-0">
@@ -557,6 +521,36 @@ const SingleDeveloper = ({ data, role }) => {
                         ""
                       )}
                     </div>
+                  </div>
+                  <div className="connect-social-media px-3">
+                    <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
+                      <h3 className="subheading-resume text-center mb-0">
+                        {t("skills")}
+                      </h3>
+                      {role !== "client" && (
+                        <div
+                          className="add_more_section"
+                          id="edit_2"
+                          onClick={handleShowSkillsModal}
+                        >
+                          <MdEditNote size={25} />
+                        </div>
+                      )}
+                    </div>
+                    <ul className={`skills-pill text-center }`}>
+                      {data?.other_skills?.map((item, index) => {
+                        return (
+                          <>
+                            <li
+                              key={index}
+                              className={`${item?.is_edited && "resume-edit"}`}
+                            >
+                              <span>{item?.skill}</span>{" "}
+                            </li>
+                          </>
+                        );
+                      })}
+                    </ul>
                   </div>
                   <div className="connect-social-media px-3">
                     <div>
@@ -860,49 +854,49 @@ const SingleDeveloper = ({ data, role }) => {
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>Overall</p>
+                        <p className="font-14">Overall</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>React JS</p>
+                        <p className="font-14">React JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>Vue JS</p>
+                        <p className="font-14">Vue JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>JavaScript</p>
+                        <p className="font-14">JavaScript</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>Angular JS</p>
+                        <p className="font-14">Angular JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>MongoDB</p>
+                        <p className="font-14">MongoDB</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>Node JS</p>
+                        <p className="font-14">Node JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
                           <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
-                        <p>Communication</p>
+                        <p className="font-14">Communication</p>
                       </div>
                     </div>
                     <div className="d-flex justify-content-center gap-2 mt-3">
@@ -1016,8 +1010,8 @@ const SingleDeveloper = ({ data, role }) => {
             role={role}
           />
         </ModalWrapper>
-
       )}
+      <IntroVideo show={showIntroVideo} handleClose={handleCloseIntroVideo} />
     </>
   );
 };

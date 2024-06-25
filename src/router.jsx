@@ -8,13 +8,18 @@ import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/Develop
 import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
-import VideoCallScreen from "./pages/admin/videoCall";
 import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
 import ProjectHistory from "./pages/developer/ProjectHistory";
 import ProjectDetail from "./pages/developer/ProjectDetail";
 import AdminJobPost from "./pages/admin/AdminJobPost";
+import joiningVideo from "./pages/admin/JoiningVideo";
 import Customization from "./pages/admin/Configuration/CRM/Customization";
+import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
+import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
+import ClientInterviewDetail from "./pages/views/InterviewDetail";
+import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -116,6 +121,7 @@ const DeveloperLogin =lazy(() => import("./pages/Authentication/DeveloperLogin")
 const ClientLogin =lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin =lazy(() => import("./pages/Authentication/VendorLogin"));
 const Otp =lazy(() => import("./pages/Authentication/Otp"));
+
 
 
 export const route = [
@@ -267,6 +273,18 @@ export const route = [
     private: true,
     isClient: true,
   },
+  {
+    path: "/client/interview-feedback",
+    element: <ClientInterviewFeedback />,
+    private: true,
+    isClient: true,
+  },
+  {
+    path: "/client/interview-detail",
+    element: <ClientInterviewDetail />,
+    private: true,
+    isClient: true,
+  },
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
 
@@ -341,6 +359,18 @@ export const route = [
   {
     path: "developer/project-detail",
     element: <ProjectDetail />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/job-posted",
+    element: <DeveloperJobListing />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/developer-single-job/:id",
+    element: <DeveloperSingleJob />,
     isDeveloper: true,
     private: true,
   },
@@ -559,12 +589,6 @@ export const route = [
   {
     path: "/admin/interview-detail",
     element: <InterviewDetail/>,
-    isAdmin: true,
-    private: true,
-  },
-  {
-    path: "/admin/video-screen",
-    element: <VideoCallScreen />,
     isAdmin: true,
     private: true,
   },

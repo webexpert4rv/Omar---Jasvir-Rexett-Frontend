@@ -19,10 +19,13 @@ export const DEVELOPER_SIDE_BAR_ITEMS = [
     { to: "/developer/developer-cv", icon: <FaUserLarge />, text: "cv" },
     { to: "/developer/edit-developer-profile", icon: <IoIosSettings />, text:"editProfile" },
     { to: "/developer/developer-documents", icon: <IoDocuments />, text: "documents" },
+    { to: "/developer/job-posted", icon: <FaListUl />, text: "jobs" },
     { to: "/developer/developer-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
     { to: "/developer/project-history", icon: <FaList />, text: "Project History" },
     { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday" },
     { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip" },
+
+
 ];
 export const OTHER_OPTIONS_DEVELOPER  = [
     { to: "https://rexett-support.rvtechnologies.info", icon: <TfiHeadphoneAlt />, text: "Contact Support", external: true },

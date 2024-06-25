@@ -215,13 +215,11 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            {role === "admin" && (
-                              <OverlayTrigger placement="top" overlay={scheduleInterview}>
-                                <Button onClick={handleShowScheduleMeeting} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
-                                  <LuMessagesSquare />
-                                </Button>
-                              </OverlayTrigger>
-                            )}
+                            <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                              <Button onClick={handleShowScheduleMeeting} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
+                                <LuMessagesSquare />
+                              </Button>
+                            </OverlayTrigger>
                           </div>
                         </div>
                       </div>

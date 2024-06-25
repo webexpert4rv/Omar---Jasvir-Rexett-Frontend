@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import interviewVideo from '../../assets/img/interview-video.mp4';
 import { HiDownload } from "react-icons/hi";
 import { Button, Col, Form, Row } from "react-bootstrap";
@@ -6,14 +6,15 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { TbFileDescription } from "react-icons/tb";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import 'react-circular-progressbar/dist/styles.css';
+import AddOtherSkill from "./Modals/AddOtherSkill";
 const InterviewFeedback = () => {
-    const reactRating = 9;
-    const vueRating = 7;
-    const jsRating = 8;
-    const nextRating = 5;
-    const angularRating = 6;
-    const nodeRating = 7;
-    const commRating = 8;
+    const [showAddSkill, setShowAddSkill] = useState(false);
+    const handleShowOtherSkill = () => {
+        setShowAddSkill(!showAddSkill);
+    }
+    const handleCloseOtherSkill = () => {
+        setShowAddSkill(false);
+    }
     return (
         <>
             <div className="card-box">
@@ -60,22 +61,46 @@ const InterviewFeedback = () => {
                     </div>
                 </div>
                 <h3 className="section-subhead mb-3">Interviewer's Decision</h3>
-                <div className="d-flex align-items-center gap-3 mb-3">
-                    <Form.Select className="common-field font-14 w-auto">
+                <div className="d-flex align-items-center gap-3 mb-4">
+                    {/* <Form.Select className="common-field font-14 w-auto">
                         <option value="">Select Decision</option>
                         <option value="selected">Selected</option>
                         <option value="reject">Rejected</option>
-                    </Form.Select>
+                    </Form.Select> */}
+                    <Form.Check type="radio" name="interview-decision" label="Selected" id="candidate-selected" className="interview-decision d-inline-block ps-0" />
+                    <Form.Check type="radio" name="interview-decision" label="Rejected" id="candidate-rejected" className="interview-decision d-inline-block ps-0" />
                 </div>
                 <div className="mb-4">
-                    <h3 className="section-subhead mb-3">Candidate's Rating</h3>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h3 className="section-subhead mb-0">Candidate's Rating</h3>
+                        <Button onClick={handleShowOtherSkill} variant="transparent" className="main-btn font-14">
+                            Add other skill
+                        </Button>
+                    </div>
                     <Row>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start">Overall</p>
+                                <div className="mb-2">
+                                    <p className="text-start fw-medium">React JS</p>
+                                    <p className="font-14 text-start">(Low Level Design)</p>
                                 </div>
-                                <Form.Select className="common-field font-14 mb-2 w-auto">
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_one" label="1" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_two" label="2" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_three" label="3" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_four" label="4" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_five" label="5" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_six" label="6" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_seven" label="7" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_eight" label="8" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_nine" label="9" />
+                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* <Form.Select className="common-field font-14 mb-2 w-auto">
                                     <option value="">Select Rating</option>
                                     <option value="one">1</option>
                                     <option value="two">2</option>
@@ -87,153 +112,178 @@ const InterviewFeedback = () => {
                                     <option value="eight">8</option>
                                     <option value="nine">9</option>
                                     <option value="ten">10</option>
-                                </Form.Select>
+                                </Form.Select> */}
                             </div>
                         </Col>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
                                 <div>
-                                    <p className="text-start">React JS</p>
-                                    <p className="font-14">(Low Level Design)</p>
+                                    <p className="text-start fw-medium">Vue JS</p>
+                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
                                 </div>
-                                <Form.Select className="common-field font-14 mb-2 w-auto">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select>
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_one" label="1" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_two" label="2" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_three" label="3" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_four" label="4" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_five" label="5" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_six" label="6" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_seven" label="7" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_eight" label="8" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_nine" label="9" />
+                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
                                 <div>
-                                    <p className="text-start">Vue JS</p>
-                                    <p className="font-14">(Low Level Design)</p>
+                                    <p className="text-start fw-medium">JavaScript</p>
+                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
                                 </div>
-                                <Form.Select className="common-field font-14 mb-2 w-auto">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select>
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_one" label="1" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_two" label="2" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_three" label="3" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_four" label="4" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_five" label="5" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_six" label="6" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_seven" label="7" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_eight" label="8" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_nine" label="9" />
+                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
                                 <div>
-                                    <p className="text-start">JavaScript</p>
-                                    <p className="font-14">(Low Level Design)</p>
+                                    <p className="text-start fw-medium">Angular JS</p>
+                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
                                 </div>
-                                <Form.Select className="common-field font-14 mb-2 w-auto">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select>
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_one" label="1" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_two" label="2" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_three" label="3" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_four" label="4" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_five" label="5" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_six" label="6" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_seven" label="7" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_eight" label="8" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_nine" label="9" />
+                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
                                 <div>
-                                    <p className="text-start">Angular JS</p>
-                                    <p className="font-14">(Low Level Design)</p>
+                                    <p className="text-start fw-medium">MongoDB</p>
+                                    <p className="font-14 text-start mb-2">(Data Structure & Algorithms)</p>
                                 </div>
-                                <Form.Select className="common-field w-auto font-14 mb-2">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select>
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_one" label="1" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_two" label="2" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_three" label="3" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_four" label="4" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_five" label="5" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_six" label="6" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_seven" label="7" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_eight" label="8" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_nine" label="9" />
+                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
                                 <div>
-                                    <p className="text-start">MongoDB</p>
-                                    <p className="font-14">(Data Structure & Algorithms)</p>
+                                    <p className="text-start fw-medium">Node JS</p>
+                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
                                 </div>
-                                <Form.Select className="common-field w-auto font-14 mb-2">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select>
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_one" label="1" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_two" label="2" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_three" label="3" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_four" label="4" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_five" label="5" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_six" label="6" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_seven" label="7" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_eight" label="8" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_nine" label="9" />
+                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                         <Col lg={4}>
                             <div className="ratinng-wrapper text-center">
                                 <div>
-                                    <p className="text-start">Node JS</p>
-                                    <p className="font-14">(Low Level Design)</p>
+                                    <p className="text-start mb-2 fw-medium">Communication</p>
                                 </div>
-                                <Form.Select className="common-field w-auto font-14 mb-2">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select>
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_one" label="1" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_two" label="2" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_three" label="3" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_four" label="4" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_five" label="5" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_six" label="6" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_seven" label="7" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_eight" label="8" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_nine" label="9" />
+                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                         <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start">Communication</p>
+                            <div>
+                                <div className="ratinng-wrapper d-flex align-items-center mb-2">
+                                    <div>
+                                        <p className="text-start fw-medium">HTML</p>
+                                    </div>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Button variant="transparent" className="arrow-btn danger-arrow shadow-none p-0 bg-transparent border-0">&times;</Button>
+                                    </div>
                                 </div>
-                                <Form.Select className="common-field font-14 w-auto mb-2">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select>
+                                <div>
+                                    <div>
+                                        <div className="rating_btn_wrapper">
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_one" label="1" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_two" label="2" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_three" label="3" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_four" label="4" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_five" label="5" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_six" label="6" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_seven" label="7" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_eight" label="8" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_nine" label="9" />
+                                            <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_ten" label="10" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -313,6 +363,7 @@ const InterviewFeedback = () => {
                     </div>
                 </div>
             </div>
+            <AddOtherSkill show={showAddSkill} handleClose={handleCloseOtherSkill} />
         </>
     )
 }

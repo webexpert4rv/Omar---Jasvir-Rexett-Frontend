@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import NoDataFound from "./NoDataFound";
 import ScreenLoader from "./ScreenLoader";
@@ -10,18 +10,33 @@ import { FaUsers } from "react-icons/fa";
 import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
+import { DUMMY_DATA } from "../../helper/constant";
 
 const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
+   const role=localStorage.getItem("role")
   const { t } = useTranslation()
+  const [stateJobs,setStateJob]=useState([])
+  const navigate=useNavigate()
   const getCategory = (cat) => {
-    let data = jobCategoryList.find((item) => item.id == cat);
+    let data = jobCategoryList?.find((item) => item.id == cat);
     return data?.title;
   };
+
+ useEffect(()=>{
+  if(jobListing?.length>0){
+    setStateJob(jobListing)
+  }else{
+    setStateJob(DUMMY_DATA)
+  }
+
+ },[jobListing])
 
   const convertToArray = (arr) => {
     const skillsArray = arr?.split(",");
     return skillsArray;
   };
+
+
 
 
   const currentStatusCssClass = (status) => {
@@ -71,10 +86,14 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
     <Tooltip>Hired</Tooltip>
   )
 
+  const handleViewRedirection=(id)=>{
+    navigate(`/${role}/${role}-single-job/${id}`)
+  }
+
   return (
     <div className="job-posted-wrapper">
-      {screenLoader ? <ScreenLoader /> : jobListing?.length > 0 ? (
-        jobListing.map((item, index) => {
+      {screenLoader ? <ScreenLoader /> : stateJobs?.length > 0 ? (
+        stateJobs.map((item, index) => {
           return (
             <>
               <div className="job-posted-list flex-column">
@@ -171,12 +190,12 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                       Response Time: <strong>15 Days</strong>
                     </p>
 
-                    <Link
-                      to={`/admin/admin-single-job/${item?.id}`}
+                    <span
+                      onClick={()=>handleViewRedirection(item?.id)}
                       className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                     >
                       <FaEye />
-                    </Link>
+                    </span>
                   </div>
                 </div>
               </div>

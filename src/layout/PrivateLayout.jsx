@@ -30,7 +30,7 @@ const PrivateLayout = ({ children }) => {
   return (
     <div className="dashboard-layout">
       {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
-        <RexettSideBar sidebarItems={sidebarItems} floatingOptions={floatingOptions} />
+        <RexettSideBar sidebarItems={sidebarItems} floatingOptions={floatingOptions} role={role} />
       ) : (
         <Outlet />
       )}
