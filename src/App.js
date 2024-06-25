@@ -15,6 +15,8 @@ import ScreenLoader from './components/atomic/ScreenLoader';
 import PrivateLayout from './layout/PrivateLayout';
 import PublicLayout from './layout/PublicLayout';
 import NotFound from './pages/views/NotFound';
+import JoiningVideo from './pages/admin/JoiningVideo';
+import VideoCallScreen from './pages/admin/videoCall';
 
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
@@ -67,7 +69,8 @@ function App() {
             ) 
           )}
              <Route path="*" element={<NotFound />} />
-
+             <Route path="/join-meeting" element={<JoiningVideo />} />
+             <Route path="/video-screen" element={<VideoCallScreen />} />
         </Routes>
         </Router>
       </Suspense>

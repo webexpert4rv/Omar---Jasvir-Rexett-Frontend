@@ -259,7 +259,7 @@ export function getJobPostData(id, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(`client/get-job-detail/${id}`);
+      let result = await clientInstance.get(`common/get-job-detail/${id}`);
       // toast.success("Job successfully Posted", { position: "top-center" })
       dispatch(setJobPostedData(result.data?.data));
       dispatch(setActionSuccessFully());
@@ -406,7 +406,7 @@ export function clientJobPost(payload, activeStep, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.post(`client/post-job`, { ...payload });
+      let result = await clientInstance.post(`common/post-job`, { ...payload });
       if (result?.data?.[activeStepKey[activeStep]]?.id) {
         localStorage.setItem(
           "jobId",
@@ -439,7 +439,7 @@ export function clientUpdatePost(
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.put(`client/update-job/${id}`, {
+      let result = await clientInstance.put(`common/update-job/${id}`, {
         ...payload,
       });
       // toast.success("Job successfully Updated", { position: "top-center" });

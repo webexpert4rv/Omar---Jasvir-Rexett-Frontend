@@ -35,12 +35,8 @@ const CompanyProfile = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const {
-    smallLoader,
-    clientProfileDetails,
-    screenLoader,
-    approvedLoader,
-  } = useSelector((state) => state.clientData);
+  const { smallLoader, clientProfileDetails, screenLoader, approvedLoader } =
+    useSelector((state) => state.clientData);
 
   useEffect(() => {
     dispatch(getClientProfile());
@@ -136,8 +132,8 @@ const CompanyProfile = () => {
         //   message:
         //     "Please select a valid image file i.e (.png,.jpg,.svg or jpeg)",
         // });
-        setLogo(null);
         setValue("company_logo", null);
+        setLogo(null);
       }
     }
   };
