@@ -1,7 +1,3 @@
-// Import the login function from the login.js file
-import { login } from './LoginClient.cy.js'
-
-
 describe('Title and Project URL Test', () => {
     beforeEach(() => {
         // Load the login page before each test
@@ -48,6 +44,5 @@ describe('Title and Project URL Test', () => {
         //Verify inputs of job post page 
         cy.get("input[placeholder='Enter Job Name']")
         cy.get("input[placeholder='Enter Company Name']")
-        
     })
 })

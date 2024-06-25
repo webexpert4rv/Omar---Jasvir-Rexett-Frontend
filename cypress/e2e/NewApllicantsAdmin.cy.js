@@ -1,7 +1,3 @@
-
-
-
-
 // Define a common function for login
 const login = (email, password) => {
     cy.get("input[name='email']").should('be.visible').type(email)
@@ -12,11 +8,6 @@ const login = (email, password) => {
 const baseUrl = 'http://localhost:3000';
 
 describe('Login Page', () => {
-    // beforeEach(() => {
-    //   // Load the login page before each test
-    //   cy.visit(`${baseUrl}/`);
-    // });
-
     it('should navigate to the dashboard after successful login', () => {
         cy.visit('http://localhost:3000/admin-login')
         // Perform login
@@ -52,10 +43,6 @@ describe('Login Page', () => {
         cy.get('#left-tabs-example-tabpane-vendors > .table-responsive > .table > thead > tr > :nth-child(1)')
         cy.get('#left-tabs-example-tabpane-vendors > .table-responsive > .table > thead > tr > :nth-child(2)')
         cy.get('#left-tabs-example-tabpane-vendors > .table-responsive > .table > thead > tr > :nth-child(3)')
-  
- 
-
-
     });
 });
 

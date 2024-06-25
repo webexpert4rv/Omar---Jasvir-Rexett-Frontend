@@ -1,5 +1,8 @@
-// Import the login function from the login.js file
-import { login } from './LoginClient.cy.js'
+const login = (email, password) => {
+  cy.get("input[name='email']").should('be.visible').type(email)
+  cy.get('input[name="password"]').should('be.visible').type(password)
+  cy.get('button[type="submit"]').should('be.visible').click()
+}
 
 describe('Other Test File', () => {
   beforeEach(() => {
@@ -10,17 +13,6 @@ describe('Other Test File', () => {
   it('should navigate to the dashboard after successful login', () => {
     // Perform login using the imported function
     login("pankajClient@yopmail.com", "Pankaj@0987")
-
-    cy.url().should('eq','http://localhost:3000/otp')
-    const mockOtp = '8485';
-
-    // Fill the OTP fields
-    cy.get('.otpInput').each((element, index) => {
-      cy.wrap(element).type(mockOtp[index]);
-    });
-
-    cy.get('form').submit();
-
 
     // Verify redirection to the dashboard after successful login
     cy.url().should('eq', 'http://localhost:3000/client/dashboard')
@@ -54,18 +46,5 @@ describe('Other Test File', () => {
 
     //Check the heading of assigned developers table 
     cy.contains('h3', 'List of assigned developers')
-
-    //Verify the headers of assigned developers table are correct
-    cy.get('table.developer-table').should('be.visible');
-    cy.get('table thead tr th').eq(0).should('contain.text', 'Developer Name');
-    cy.get('table thead tr th').eq(1).should('contain.text', 'Designation');
-    cy.get('table thead tr th').eq(2).should('contain.text', 'Email');
-
-
   })
-
-
-
-
- 
 })

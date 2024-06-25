@@ -221,6 +221,7 @@ const AllRoleEditProfile = ({ role }) => {
                     control={control}
                     rules={{ required: "Name is required" }}
                     error={errors.name}
+                    data-cy="name"
                   />
                   <CommonInput
                     label={t("email") + " *"}

@@ -60,6 +60,7 @@ const CommonFilterSection = ({
                 {isDate ? (
                   <Form.Control
                     type="date"
+                    data-cy="date"
                     className="time-filter-select shadow-none"
                     placeholder="Select date"
                     max={new Date().toISOString().split("T")[0]}
@@ -69,6 +70,7 @@ const CommonFilterSection = ({
                   <Form.Select
                     {...register(key)}
                     className="time-filter-select shadow-none"
+                    data-cy="timeFilter"
                   >
                     <option disabled selected value="">
                       {filterLabel}
@@ -104,6 +106,7 @@ const CommonFilterSection = ({
               type="text"
               className="common-field font-14 shadow-none"
               placeholder={filterFields["searchFilter"]["placeholder"]}
+              data-cy="search"
             />
             <Button
               type="submit"

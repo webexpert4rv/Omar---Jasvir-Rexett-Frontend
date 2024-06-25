@@ -1,16 +1,33 @@
-// Import the login function from the login.js file
-import { login } from './LoginClient.cy.js'
+const login = (email, password) => {
+    cy.get("input[name='email']").should('be.visible').type(email)
+    cy.get('input[name="password"]').should('be.visible').type(password)
+    cy.get('button[type="submit"]').should('be.visible').click()
+}
 
-describe('Other Test File', () => {
+describe('Hired deveopers Test file', () => {
     beforeEach(() => {
         // Load the login page before each test
         cy.visit('http://localhost:3000/')
     })
 
     it('should navigate to the Hired Developers after successful login', () => {
+                // Mock the API call for getting developer details
+                cy.intercept('GET', '**/common/developer-details/*', {
+                    statusCode: 200,
+                    body: {
+                        data: {
+                            id: '1',
+                            name: 'John Doe',
+                            designation: 'Software Engineer',
+                            email: 'johndoe@example.com',
+                            // add other details as per your response structure
+                        }
+                    }
+                }).as('getDeveloperDetails');
+        
 
         // Perform login using the imported function
-        login("damini@avioxtechnologies.com", "Damini@1234")
+        login("pankajClient@yopmail.com", "Pankaj@0987")
 
         // Verify redirection to the dashboard after successful login
         cy.url().should('eq', 'http://localhost:3000/client/dashboard')
@@ -38,9 +55,12 @@ describe('Other Test File', () => {
         // Click on the first row in the table
         cy.get('table.developer-table tbody tr').first().click()
 
-       // Ensure the URL has changed to the developer details page
+        // Ensure the URL has changed to the developer details page
         cy.url().should('include', '/client/client-single-developer/')
 
-    })
+        // Wait for the API call to complete
+        cy.wait('@getDeveloperDetails').its('response.statusCode').should('eq', 200);
 
+
+    })
 })

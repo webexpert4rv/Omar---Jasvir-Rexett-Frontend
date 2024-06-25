@@ -8,11 +8,6 @@ const login = (email, password) => {
 const baseUrl = 'http://localhost:3000';
 
 describe('Login Page', () => {
-    // beforeEach(() => {
-    //   // Load the login page before each test
-    //   cy.visit(`${baseUrl}/`);
-    // });
-
     it('should navigate to the dashboard after successful login', () => {
         cy.visit('http://localhost:3000/admin-login')
         // Perform login
@@ -21,7 +16,7 @@ describe('Login Page', () => {
         //Visit to Dashboard Page
         cy.url().should('eq', `${baseUrl}/admin/admin-dashboard`);
 
-        //Visit to New Apllicants page
+        //Visit to Job listing page
         cy.visit('http://localhost:3000/admin/admin-job-listing')
 
         //Verify if the tabs present there !
@@ -63,9 +58,5 @@ describe('Login Page', () => {
             expect(interception.response.body).to.have.property('data')
             expect(interception.response.body.data).to.be.an('array')
         })
-
-
-
-
     });
 });

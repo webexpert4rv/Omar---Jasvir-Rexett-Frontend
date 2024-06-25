@@ -1,12 +1,9 @@
-// Import the login function from the login.js file
-// import { login } from './LoginClient.cy.js'
 const login = (email, password) => {
-    cy.get("input[name='email']").should('be.visible').type(email)
-    cy.get('input[name="password"]').should('be.visible').type(password)
-    cy.get('button[type="submit"]').should('be.visible').click()
+  cy.get("input[name='email']").should('be.visible').type(email)
+  cy.get('input[name="password"]').should('be.visible').type(password)
+  cy.get('button[type="submit"]').should('be.visible').click()
 }
-  
-  const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://localhost:3000';
 
 describe('Other Test File', () => {
   beforeEach(() => {
@@ -34,14 +31,7 @@ describe('Other Test File', () => {
     cy.get('table thead tr th').eq(2).should('have.text', 'Time');
 
     //Verify List of clients section !
-    cy.get('.col-md-12 > .d-flex > .section-head-sub').should("have.text","List Of Clients")
+    cy.get('.col-md-12 > .d-flex > .section-head-sub').should("have.text", "List Of Clients")
     cy.get('.col-md-12 > .d-flex > .section-head-sub')
-
-
   })
-
-
-
-
- 
 })
