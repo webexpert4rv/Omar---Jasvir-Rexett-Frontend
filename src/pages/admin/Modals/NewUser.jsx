@@ -10,11 +10,11 @@ const NewUser = ({ show, handleClose}) => {
                 <h3 className="popup-heading">New Employee</h3>
                 <Form>
                     <Form.Group className="mb-4">
-                        <Form.Label className="font-14" >Email Address</Form.Label>
+                        <Form.Label className="font-14 fw-medium" >Email Address</Form.Label>
                         <Form.Control className="common-field font-14" placeholder="Enter email address" />
                     </Form.Group>
                     <Form.Group className="mb-4">
-                        <Form.Label className="font-14" >Select Role</Form.Label>
+                        <Form.Label className="font-14 fw-medium" >Select Role</Form.Label>
                         <Form.Select className="common-field font-14">
                             <option>Select Permission</option>
                             <option value="workspace_admin">Workspace Admin</option>

@@ -150,8 +150,7 @@ const AllRoleEditProfile = ({ role }) => {
       // dispatch(updateAdminProfile(data))
       dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
     } else {
-      dispatch(
-        filePreassignedUrlGenerate(fileData, (url) => {
+      dispatch(filePreassignedUrlGenerate(fileData, (url) => {
           let data = {
             ...values,
             profile_picture: url,
@@ -213,6 +212,44 @@ const AllRoleEditProfile = ({ role }) => {
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Row className="mb-4">
+              <Col md="12" className="mb-3">
+                <h5 className="fw-semibold mb-3">Security</h5>
+                <Form.Group className="mb-3">
+                  <Row className="gx-4">
+                    <Col md={8}>
+                      <Form.Label className="common-label font-16 fw-semibold mb-0">
+                        Enable Two Factor Authentication
+                      </Form.Label>
+                      <p className="font-14 mb-0">Two-Factor Authentication (2FA) is a security process in which users provide two different authentication factors to verify their identity. This method adds an additional layer of security, making it more difficult for unauthorized individuals to access your accounts.</p>
+                    </Col>
+                    <Col md={4}>
+                      <div class="form-check form-switch toggle-switch-wrapper">
+                        <Controller
+                          name="is_2FA_enabled"
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              {...field}
+                              onChange={(e) => {
+                                toggleConfirmationModal(e);
+                              }}
+                              checked={
+                                watch("is_2FA_enabled") === true ? true : false
+                              }
+                              class="form-check-input toggle-switch-custom"
+                              type="checkbox"
+                              role="switch"
+                            />
+                          )}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </Form.Group>
+              </Col>
+              <Col md="12">
+                <h5 className="fw-semibold mb-3">Personal Information</h5>
+              </Col>
               <Col md="6">
                 <div className="inner-form">
                   <CommonInput
@@ -282,7 +319,6 @@ const AllRoleEditProfile = ({ role }) => {
                       setValue("address", e.target.value);
                     }}
                     options={{ types: ["establishment", "geocode"] }}
-                    r
                   />
                   <CommonAutocomplete
                     label={t("address") + " 2"}
@@ -429,35 +465,6 @@ const AllRoleEditProfile = ({ role }) => {
                     />
                   </div>
                 </div>
-              </Col>
-              <Col md="6">
-                <Form.Group className="mb-3">
-                  <Form.Label className="common-label">
-                    Enable Two Factor Authentication
-                  </Form.Label>
-                  {/* <Form.Control> */}
-                  <div class="form-check form-switch toggle-switch-wrapper">
-                    <Controller
-                      name="is_2FA_enabled"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          onChange={(e) => {
-                            toggleConfirmationModal(e);
-                          }}
-                          checked={
-                            watch("is_2FA_enabled") === true ? true : false
-                          }
-                          class="form-check-input toggle-switch-custom"
-                          type="checkbox"
-                          role="switch"
-                        />
-                      )}
-                    />
-                  </div>
-                  {/* </Form.Control> */}
-                </Form.Group>
               </Col>
             </Row>
             <div className="text-center">

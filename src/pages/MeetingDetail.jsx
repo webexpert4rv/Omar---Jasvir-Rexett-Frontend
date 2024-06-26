@@ -25,6 +25,14 @@ const MeetingDetail = () => {
                             <div>
                                 <Row>
                                     <Col lg={4} className="mb-lg-3 mb-1">
+                                        <p className="font-14 schedule-heading"><span><BiFont /></span>Title</p>
+                                    </Col>
+                                    <Col lg={8} className="mb-3">
+                                        <div>
+                                            Interview Call for Figma to UI Project
+                                        </div>
+                                    </Col>
+                                    <Col lg={4} className="mb-lg-3 mb-1">
                                         <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Developer Name</p>
                                     </Col>
                                     <Col lg={8} className="mb-3">
@@ -34,14 +42,43 @@ const MeetingDetail = () => {
                                         </div>
                                     </Col>
                                     <Col lg={4} className="mb-lg-3 mb-1">
-                                        <p className="font-14 schedule-heading"><span><BiFont /></span>Title</p>
+                                        <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Interviewer's List</p>
                                     </Col>
                                     <Col lg={8} className="mb-3">
-                                        <div>
-                                            Interview Call for Figma to UI Project
+                                        <div className="d-flex flex-wrap gap-2 align-items-start">
+                                            <div className="associate-text d-inline-block">
+                                                <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                                    <img src={devImg} />
+                                                    <p className="mb-0">robingautam@gmail.com</p>
+                                                </div>
+                                            </div>
+                                            <div className="associate-text d-inline-block">
+                                                <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                                    <span className="prefix-latter">RG</span>
+                                                    <p className="mb-0">robingautam@gmail.com</p>
+                                                </div>
+                                            </div>
+                                            <div className="associate-text d-inline-block">
+                                                <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                                    <span className="prefix-latter">RG</span>
+                                                    <p className="mb-0">robingautam@gmail.com</p>
+                                                </div>
+                                            </div>
+                                            <div className="associate-text d-inline-block">
+                                                <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                                    <span className="prefix-latter">RG</span>
+                                                    <p className="mb-0">robingautam@gmail.com</p>
+                                                </div>
+                                            </div>
+                                            <div className="associate-text d-inline-block">
+                                                <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
+                                                    <span className="prefix-latter">RG</span>
+                                                    <p className="mb-0">robingautam@gmail.com</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </Col>
-                                    <Col lg={4} className="mb-lg-3 mb-1">
+                                    {/* <Col lg={4} className="mb-lg-3 mb-1">
                                         <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Client</p>
                                     </Col>
                                     <Col lg={8} className="mb-3">
@@ -49,7 +86,7 @@ const MeetingDetail = () => {
                                             <img src={clientImg} />
                                             <p className="font-14 mb-0">Amazon</p>
                                         </div>
-                                    </Col>
+                                    </Col> */}
                                     <Col lg={4} className="mb-lg-3 mb-1">
                                         <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
                                     </Col>
@@ -63,7 +100,7 @@ const MeetingDetail = () => {
                                                 <Button variant="transparent" className="copy-link">
                                                     <FaRegCopy />
                                                 </Button>
-                                                <Link to={'/admin/video-screen'} target="_blank" variant="transparent" className="text-decoration-none main-btn font-14 py-2">
+                                                <Link to={'/video-screen'} target="_blank" variant="transparent" className="text-decoration-none main-btn font-14 py-2">
                                                     <FaVideo /> Join
                                                 </Link>
 
@@ -73,17 +110,19 @@ const MeetingDetail = () => {
                                     <Col lg={4} className="mb-lg-3 mb-1">
                                         <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
                                     </Col>
-                                    <Col lg={8} className="mb-3">
-                                        <div className="d-flex align-items-center gap-3 mb-2">
-                                            <p className="font-14 mb-0">18:30</p>
-                                            <span className="arrow-icon">
-                                                <FaArrowRightLong />
-                                            </span>
-                                            <p className="font-14 mb-0">19:30</p>
-                                            <span className="font-14">1h</span>
-                                        </div>
-                                        <div className="mb-2 datefield-wrapper">
-                                            <p className="font-14">19-06-2024</p>
+                                    <Col lg={8} className="mb-3 associate-text">
+                                        <div className="d-inline-flex align-items-center gap-2">
+                                            <div className="datefield-wrapper associate">
+                                                <p className="font-14 mb-0">19-06-2024</p>
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 associate">
+                                                <p className="font-14 mb-0">18:30</p>
+                                                <span className="arrow-icon">
+                                                    <FaArrowRightLong />
+                                                </span>
+                                                <p className="font-14 mb-0">19:30</p>
+                                                <span className="font-14">1h</span>
+                                            </div>
                                         </div>
                                     </Col>
                                 </Row>

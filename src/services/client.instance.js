@@ -5,6 +5,9 @@ import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utli
 
 const clientInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
+});
+export const clientFormInstance = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
 
 });
 
@@ -12,6 +15,17 @@ const clientInstance = axios.create({
 clientInstance.interceptors.request.use(
   (config) => {
     config.headers["Authorization"] = `${getToken("token")}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+clientFormInstance.interceptors.request.use(
+  (config) => {
+    config.headers["Authorization"] = `${getToken("token")}`;
+    config.headers["content-type"] = "multipart/form-data";
     return config;
   },
   (error) => {

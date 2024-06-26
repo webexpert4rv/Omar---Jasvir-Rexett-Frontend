@@ -23,12 +23,6 @@ const ListOfHolidays = ({
   const [selectedMonth, setSelectedMonth] = useState("All");
   const [selectedYear, setSelectedYear] = useState("2024");
   let role = localStorage.getItem("role");
-  console.log(selectedIndex,"selectedIndex")
-
-  console.log(holidayList, "holidaylist");
-  console.log(data, "data");
-  console.log(selectedIndex,"selectedindex")
-  console.log(selectedRejectIndex,"selectedRejectindex")
 
   useEffect(() => {
     const yearDetails = holidayList?.filter(
@@ -42,7 +36,6 @@ const ListOfHolidays = ({
   const FilteredDeveloperData = data?.filter(
     (values) => values?.is_approved_by_client == true
   );
-  console.log(FilteredDeveloperData, "filterData");
 
   const handleYearFilter = (year) => {
     setSelectedYear(year);

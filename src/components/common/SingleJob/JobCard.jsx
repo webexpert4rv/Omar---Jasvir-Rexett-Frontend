@@ -15,6 +15,7 @@ import { RiUserAddFill } from "react-icons/ri";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import { LuMessagesSquare } from "react-icons/lu";
 import ScheduleMeeting from "../Modals/ScheduleMeeting";
+import { FaStar } from "react-icons/fa";
 
 const JobCard = ({
   handleJobStatusModal,
@@ -108,6 +109,11 @@ const JobCard = ({
                         </div>
                         <div className="text-center">
                           <h3 className="user-name">{item?.developer?.name}</h3>
+                          <div className="mb-2">
+                            <span className="status-upcoming d-inline-flex align-items-center gap-1">
+                              <FaStar /> 4.4
+                            </span>
+                          </div>
                           <p className="designation-user">Software Developer</p>
                           <p className="email-user">{item?.developer?.email}</p>
                           <ul className="social-icons">
@@ -209,13 +215,11 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            {role === "admin" && (
-                              <OverlayTrigger placement="top" overlay={scheduleInterview}>
-                                <Button onClick={handleShowScheduleMeeting} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
-                                  <LuMessagesSquare />
-                                </Button>
-                              </OverlayTrigger>
-                            )}
+                            <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                              <Button onClick={handleShowScheduleMeeting} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
+                                <LuMessagesSquare />
+                              </Button>
+                            </OverlayTrigger>
                           </div>
                         </div>
                       </div>

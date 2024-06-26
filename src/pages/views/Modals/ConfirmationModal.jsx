@@ -3,15 +3,18 @@ import { Modal, Button, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices/clientDataSlice";
 import { useDispatch } from "react-redux";
-const ConfirmationModal = ({ text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
+const ConfirmationModal = ({ submitText="",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
     const callBackBtn=(e )=>{
         let data={
             status: type,
         }
         onClick(e,data)
     }
+    // const handle = () => {
+    //     handleAction();
+    // }
     return(
-        <Modal show={show} onHide={(e)=>handleClose(e)} centered animation className="custom-modal">
+        <Modal show={show} onHide={(e)=>handleClose(e)} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">
             {/* <Modal.Title>End Job</Modal.Title> */}
             </Modal.Header>
@@ -24,7 +27,7 @@ const ConfirmationModal = ({ text,show, handleClose,onClick ,handleAction,smallL
                     <div className="text-center">
                         <RexettButton
                             type="submit"
-                            text="Yes"
+                            text={submitText ? submitText : ""}
                             onClick={type ? callBackBtn : handleAction}
                             // onClick={callBackBtn}
                             className="main-btn px-4 me-3 font-14 fw-semibold"
@@ -32,7 +35,7 @@ const ConfirmationModal = ({ text,show, handleClose,onClick ,handleAction,smallL
                             disabled={smallLoader}
                             isLoading={smallLoader}
                         />
-                        <Button variant="transparent" onClick={handleClose} className="outline-main-btn font-14 fw-semibold bg-transparent border-black text-black px-4" >No</Button>
+                        <Button variant="transparent" onClick={handleClose} disabled={smallLoader} className="outline-main-btn font-14 fw-semibold bg-transparent border-black text-black px-4" >No</Button>
                     </div>
                 </Form>
             </Modal.Body>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import clientInstance from "../../services/client.instance";
+import clientInstance, { clientFormInstance } from "../../services/client.instance";
 import { toast } from "react-toastify";
 import { generateApiUrl } from "../../helper/utlis";
 
@@ -294,4 +294,67 @@ export function getDeleteDeveloper(id) {
 
 }
 
+export function postVendorStepData(URL,payload,callback,activeStep,triggerVerificationModal) {
+    return async (dispatch) => {
+        // dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.post(`${URL}`,{...payload})
+            if(activeStep === 1){
+                const companyId = result?.data?.data?.company?.id;
+                const vendorUserId = result?.data?.data?.vendor?.id
+                localStorage.setItem("companyId",companyId);
+                localStorage.setItem("vendorUserId",vendorUserId);
 
+            }
+            callback && callback()
+            if (result?.status == 200) {
+                dispatch(setVendorSuccess())
+            }
+        } catch (error) {
+            const message = error.message
+            if (error.response?.data?.verify_user) {
+                triggerVerificationModal("verify");
+              } else {
+                toast.error(message, { position: "top-center" })
+              }
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
+
+
+
+export function getVendorStepData(user_id ,callback) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get( `web/get-vendor-data/?user_id=${user_id}`)
+            callback(result?.data?.data);
+            dispatch(setVendorSuccess())
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+        }
+    }
+}
+export const uploadFileToS3Bucket = (payload,callback) => {
+    return async (dispatch) => {
+      dispatch(setScreenLoader());
+      try {
+        let result = await clientFormInstance.post(`/web/upload-file/`, payload);
+        callback && callback(result?.data?.data?.Location);
+        dispatch(setVendorSuccess())
+        // toast.success("project added successfully", {
+        //   position: "top-center",
+        // });
+      } catch (error) {
+        toast.error(error?.response?.data?.message, { position: "top-center" });
+        dispatch(setFailVendorData());
+      }
+    };
+  };
+  
