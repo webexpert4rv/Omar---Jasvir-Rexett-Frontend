@@ -9,9 +9,6 @@ import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
 import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
-const ClientRegisterForm = lazy(() =>
-  import("./pages/websiteRegisterForm/client/ClientRegisterForm")
-);
 import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
 import ProjectHistory from "./pages/developer/ProjectHistory";
@@ -23,6 +20,9 @@ import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+const ClientRegisterForm = lazy(() =>
+  import("./pages/websiteRegisterForm/client/ClientRegisterForm")
+);
 
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
@@ -364,7 +364,8 @@ export const route = [
     private: true,
   },
   {
-    path: "developer/project-detail",
+    // add a appropriate name instead of projectid if needed
+    path: "developer/project-detail/:projectId",
     element: <ProjectDetail />,
     isDeveloper: true,
     private: true,

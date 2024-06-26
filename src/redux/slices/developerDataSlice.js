@@ -3,7 +3,9 @@ import authInstance from "../../services/auth.instance";
 import { toast } from "react-toastify";
 import developerInstance from "../../services/developer.instance";
 import { generateApiUrl } from "../../helper/utlis";
-import clientInstance, { clientFormInstance } from "../../services/client.instance";
+import clientInstance, {
+  clientFormInstance,
+} from "../../services/client.instance";
 import { createToastMessage } from "../../pages/websiteRegisterForm/developer/developeStepConstant";
 
 const initialDeveloperData = {
@@ -29,6 +31,9 @@ const initialDeveloperData = {
   totalPaySlipPages: null,
   countries: [],
   degreeOptions: [],
+  projectHistoryDetail: [],
+  projectHistoryPagination: {},
+  projectDetail: {},
 };
 
 export const developerDataSlice = createSlice({
@@ -140,13 +145,24 @@ export const developerDataSlice = createSlice({
       state.degreeOptions = action.payload;
       state.screenLoader = false;
     },
+    setProjectHistoryDetail: (state, action) => {
+      state.projectHistoryDetail = action.payload?.data;
+      state.projectHistoryPagination = action.payload?.pagination;
+      state.screenLoader = false;
+    },
+    setProjectDetail: (state, action) => {
+      state.projectDetail=action.payload;
+      state.screenLoader = false;
+    },
   },
 });
 
 export const {
   setSmallLoader,
+  setProjectDetail,
   setDegreeOptions,
   setLanguageOptions,
+  setProjectHistoryDetail,
   setSkillOptions,
   setShareDocument,
   setScreenLoader,
@@ -392,7 +408,7 @@ export function getCancelLeave(id, payload) {
         `/developer/withdraw-leave-request/${id}`,
         { ...payload }
       );
-      dispatch(setActionSuccessFully())
+      dispatch(setActionSuccessFully());
     } catch (error) {
       const message = error.message || "Something went wrong";
       dispatch(setFailDeveloperData());
@@ -1088,7 +1104,7 @@ export const addDeveloperProject = (payload, callback, closeLoader) => {
   };
 };
 
-export function deleteDeveloperProject(id,payload, callback) {
+export function deleteDeveloperProject(id, payload, callback, closeLoader) {
   return async (dispatch) => {
     // dispatch(setScreenLoader());
     try {
@@ -1131,7 +1147,7 @@ export function getDeveloperProjects(developerId, callback, closeLoader) {
   };
 }
 
-export const uploadFileToS3Bucket = (payload,callback) => {
+export const uploadFileToS3Bucket = (payload, callback) => {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
@@ -1147,3 +1163,37 @@ export const uploadFileToS3Bucket = (payload,callback) => {
     }
   };
 };
+
+export function getProjectHistoryDetail(filters) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(
+        generateApiUrl(filters, `developer/get-project-history`)
+      );
+      dispatch(setProjectHistoryDetail(result.data));
+      // return callback()
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+// for single project detail page
+export function getProjectDetail(id,callback) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(
+        `developer/get-project-time-report/${id}`
+      );
+      dispatch(setProjectDetail(result.data?.data));
+      callback && callback(result.data?.data)
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
