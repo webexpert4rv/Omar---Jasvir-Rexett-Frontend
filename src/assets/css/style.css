@@ -7698,6 +7698,206 @@ input[type="radio"]:checked {
     padding: 0px;
 }
 
+/* new css start 26-06-24 */
+.registration-form::after {
+    content: "";
+    background: url(https://rexett-web.rvtechnologies.in/wp-content/uploads/2024/03/diamondBG.png);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-position: top center;
+    background-size: cover;
+    left: 0;
+    top: 0;
+    border-radius: 40px;
+    mix-blend-mode: multiply;
+    z-index: 0;
+    z-index: -1;
+}
+.registration-form {
+    padding: 40px 50px;
+    background: linear-gradient(to right, rgba(17, 153, 142, 1) 0%, rgba(56, 239, 125, 1) 100%) !important;
+    position: relative;
+    border-radius: 40px;
+    min-height: 550px;
+    /* display: flex;
+    flex-direction: column; */
+    justify-content: center;
+    z-index: 1;
+    max-height: 90vh;
+    overflow: auto;
+}
+.registration-form h2 {
+    font-weight: 300;
+    color: #fff;
+    font-size: 32px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+.registration-form p {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+    line-height: 18px;
+    margin-bottom: 6px;
+}
+.form-check-login-form .form-check {
+    color: #fff;
+    margin-right: 20px;
+}
+.form-check-login-form .form-check input{
+    height: 18px;
+    width: 18px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+.form-check-login-form .position-relative {
+    display: flex;
+    align-items: center;
+}
+.form-check-login-form .common-label {
+    display: none;
+}
+.select-idel-length .common-label {
+    display: none;
+}
+.card-box label {
+    font-size: 14px;
+    color: #fff;
+}
+.card-box .registration-form .row input {
+    background: transparent;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #fff !important;
+    color: #fff;
+    box-sizing: border-box;
+    outline: none;
+    box-shadow: none;
+    display: block;
+    width: 100%;
+    resize: none;
+}
+.card-box .PhoneInputCountry {
+    font-size: 14px;
+    background: transparent;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #fff !important;
+    color: #fff;
+    box-sizing: border-box;
+}
+.registration-form .css-b62m3t-container {
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #fff;
+    border-radius: 8px;
+}
+.registration-form .css-b62m3t-container  .css-qbdosj-Input::placeholder {
+    color: #fff !important;
+}
+.registration-form .css-1xc3v61-indicatorContainer svg {
+    color: #fff;
+}
+.registration-form .css-1jqq78o-placeholder
+{
+    color: #fff;
+}
+.registration-form .css-1dimb5e-singleValue
+{
+    color: #fff;
+}
+.error-message {
+    color: red !important;
+}
+.registration-form .css-t3ipsp-control {
+    min-height: 1px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0px !important;
+    border-style: none !important;
+    border-width: 0px !important;
+    box-shadow: none !important;
+    padding: 0px !important;
+}
+.css-1u9des2-indicatorSeparator {
+    background-color: #fff !important;
+}
+.css-15lsz6c-indicatorContainer {
+    padding: 0px !important;
+    color: #fff !important;
+}
+.select-idel-length .form-check
+{
+    position: relative;
+    padding-left: 0px;
+}
+.select-idel-length .form-check input
+{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    margin-top: 0px;
+}
+.select-idel-length .form-check label {
+    width: 100%;
+    display: block;
+    padding: 22px 25px 22px 15px;
+    border: 1px solid #fff;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.select-idel-length .form-check label:hover {
+    color: #129b8e;
+    transition: .3s ease;
+}
+.select-idel-length .form-check label:hover {
+    background-color: #fff;
+}
+.css-1p3m7a8-multiValue {
+    display: -webkit-inline-box !important;
+    padding: 4px 20px !important;
+    background: #fff !important;
+    border-radius: 40px !important;
+    margin-right: 5px !important;
+    margin-bottom: 7px !important;
+    white-space: nowrap !important;
+} 
+.css-1u9des2-indicatorSeparator {
+    display: none;
+}
+.common-field .css-b62m3t-container {
+    position: relative !important;
+}
+.registration-form .select-idel-length .position-relative .common-field  {
+    background: transparent !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    border: 1px solid #fff !important;
+    color: #fff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    box-shadow: none !important;
+    display: block !important;
+    width: 100% !important;
+    resize: none !important;
+}
+
+
+
+
+
+
+
+
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;

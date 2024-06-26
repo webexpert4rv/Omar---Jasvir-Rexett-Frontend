@@ -6,6 +6,7 @@ import {
   getTimeZoneForCountry,
 } from "../../../redux/slices/clientDataSlice";
 import CommonReactSelect from "../../../components/atomic/CommonReactSelect";
+import { Col, Row } from "react-bootstrap";
 
 const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
   const { countriesList, statesList, citiesList } = useSelector(
@@ -41,6 +42,8 @@ const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
   };
   return (
     <>
+    <Row>
+      <Col md={6}>
       <CommonReactSelect
         name="country_code"
         errors={errors}
@@ -52,7 +55,9 @@ const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
         type="country"
         options={countriesList}
       />
-
+      </Col>
+      
+      <Col md={6}>
       <CommonReactSelect
         name="state_iso_code"
         errors={errors}
@@ -64,6 +69,8 @@ const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
         type="state"
         options={statesList}
       />
+      </Col>
+      <Col md={6}>
       <CommonReactSelect
         name="city"
         errors={errors}
@@ -75,6 +82,12 @@ const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
         watch={watch}
         options={citiesList}
       />
+      </Col>
+    </Row>
+      
+
+      
+      
     </>
   );
 };
