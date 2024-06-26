@@ -19,6 +19,7 @@ import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
 
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
@@ -447,6 +448,12 @@ export const route = [
   {
     path: "/vendor-faq",
     element: <Faq />,
+    isVendor: true,
+    private: true,
+  },
+  {
+    path: "/vendor-time-detail",
+    element: <VendorTimeDetail />,
     isVendor: true,
     private: true,
   },

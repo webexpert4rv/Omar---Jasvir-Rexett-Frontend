@@ -293,6 +293,14 @@ const Applications = () => {
                     </span>
                   </Nav.Link>
                 </Nav.Item>
+                <Nav.Item className="application-item">
+                  <Nav.Link eventKey="developers" className="application-link">
+                    Unregistered
+                    <span className="new-app">
+                      {allApplications?.developers?.length}
+                    </span>
+                  </Nav.Link>
+                </Nav.Item>
               </Nav>
               <Tab.Content>
                 <Tab.Pane eventKey="clients" className="py-4">

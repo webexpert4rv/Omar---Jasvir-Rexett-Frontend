@@ -143,18 +143,17 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                     </div>
                   </div>
                   <div>
-                    <div>
-                      <span className="status-finished w-auto d-inline-block mb-2">Matching with your profile - <strong>95%</strong></span>
-                    </div>
-                    <div>
-                      <span className="status-upcoming w-auto d-inline-block mb-2">Matching with your profile - <strong>60%</strong></span>
-                    </div>
-                    <div>
-                      <span className="status-progress w-auto d-inline-block mb-2">Matching with your profile - <strong>40%</strong></span>
-                    </div>
-                    <div>
-                      <span className="status-rejected w-auto d-inline-block mb-2">Matching with your profile - <strong>20%</strong></span>
-                    </div>
+                    {role == "developer" &&
+                      <><div>
+                        <span className="status-finished w-auto d-inline-block mb-2">Matching with your profile - <strong>95%</strong></span>
+                      </div><div>
+                          <span className="status-upcoming w-auto d-inline-block mb-2">Matching with your profile - <strong>60%</strong></span>
+                        </div><div>
+                          <span className="status-progress w-auto d-inline-block mb-2">Matching with your profile - <strong>40%</strong></span>
+                        </div><div>
+                          <span className="status-rejected w-auto d-inline-block mb-2">Matching with your profile - <strong>20%</strong></span>
+                        </div></>
+                    }
                     <div className="mb-3 mt-xl-0 mt-3">
                       <h4 className="stage-heading mb-3">Stages</h4>
                       <div className="stage-wrapper">
@@ -201,9 +200,12 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                       Response Time: <strong>15 Days</strong>
                     </p>
                     <div className="d-flex align-items-center gap-3">
-                      <div>
-                        <Button variant="transparent" className="main-btn font-14 mb-2">Apply this job</Button>
-                      </div>
+
+                      {role == "developer" &&
+                        <div>
+                          <Button variant="transparent" className="main-btn font-14 mb-2">Apply this job</Button>
+                        </div>
+                      }
                       <span
                         onClick={() => handleViewRedirection(item?.id)}
                         className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none cursor-pointer"
