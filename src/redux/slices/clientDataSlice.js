@@ -39,7 +39,8 @@ const initialClientData = {
   citiesList:[],
   timeZone:{},
   webClientData:{},
-  clientLook:{}
+  clientLook:{},
+  OtpLoader:false
 };
  
 export const clientDataSlice = createSlice({
@@ -79,12 +80,14 @@ export const clientDataSlice = createSlice({
           state.smallLoader = false;
           state.approvedLoader = false;
           state.screenLoader = false;
+          state.OtpLoader = false
       },
 
       setActionSuccessFully: (state, action) => {
           state.smallLoader = false;
           state.approvedLoader = false;
-          state.screenLoader=false
+          state.screenLoader=false;
+          state.OtpLoader = false
       },
 
       setClientProfileDetails: (state, action) => {
@@ -183,6 +186,10 @@ export const clientDataSlice = createSlice({
         state.citiesList = action.payload;
         state.screenLoader = false;
       },
+      setOTPloader:(state,action) => {
+        state.OtpLoader = true;
+      }
+      
   }
 })
 
@@ -190,7 +197,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const {setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const {setOTPloader,setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -974,7 +981,7 @@ export function getTimeZoneForCountry(countryCode) {
 }
 export function getCoutriesList() {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    // dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`web/countries/`);
       dispatch(setCountriesList(result?.data?.data));
@@ -988,7 +995,7 @@ export function getCoutriesList() {
 export function getStatesList(countryCode) {
   console.log(countryCode,"country code inside api")
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    // dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`web/countries/${countryCode}/states`);
       dispatch(setStatesList(result?.data?.data));
@@ -1001,7 +1008,7 @@ export function getStatesList(countryCode) {
 }
 export function getCitiesList(countryCode,stateName) {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    // dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`web/countries/${countryCode}/states/${stateName}/cities`);
       dispatch(setCitiesList(result?.data?.data));
@@ -1044,12 +1051,13 @@ export function getWebClientData(clientId,callback) {
   };
 }
 
-export function getWebClientLookUp() {
+export function getWebClientLookUp(callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await authInstance.get(`web/get-lookups`);
       dispatch(setClientLook(result?.data?.data));
+      callback && callback(result?.data?.data)
     } catch (error) {
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1095,7 +1103,8 @@ export function clientPostJob(payload,callback) {
 
 export function sendVerificationOtp(payload,handleStep) {
   return async (dispatch) => {
-    dispatch(setSmallLoader())
+    dispatch(setSmallLoader());
+    dispatch(setOTPloader());
     try {
       let result = await authInstance.post(`web/send-otp`,{...payload});
       dispatch(setSuccessActionData)
@@ -1113,6 +1122,7 @@ export function sendVerificationOtp(payload,handleStep) {
 export function verifyOtp(payload,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
+    dispatch(setOTPloader())
     try {
       let result = await authInstance.post(`web/verify-otp`,{...payload});
       dispatch(setActionSuccessFully());
@@ -1125,6 +1135,7 @@ export function verifyOtp(payload,callback) {
     }
   };
 }
+
 
 
 

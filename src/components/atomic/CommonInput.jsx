@@ -4,6 +4,9 @@ import { Controller } from "react-hook-form";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Select from "react-select";
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
 
 const CommonInput = ({
   label,
@@ -25,7 +28,8 @@ const CommonInput = ({
   isMulti = false,
   isMinRequired = false,
   isMaxRequired = false,
-  defaultOption=""
+  defaultOption = "",
+  rows = null,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -35,7 +39,6 @@ const CommonInput = ({
       onTogglePassword();
     }
   };
-
   return (
     <Form.Group className="mb-3">
       <Form.Label className="common-label">{label}</Form.Label>
@@ -61,7 +64,7 @@ const CommonInput = ({
               return (
                 <PhoneInput
                   placeholder={placeholder}
-                  value={field.value}
+                  value={field.value ? String(field.value) : ""}
                   onChange={field.onChange}
                   inputProps={{
                     name: name,
@@ -69,6 +72,21 @@ const CommonInput = ({
                     autoComplete: autoComplete,
                     className: "common-field",
                   }}
+                />
+              );
+            } else if (type === "select2") {
+              return (
+                <Select
+                  {...field}
+                  options={selectOptions}
+                  className="common-field"
+                  isDisabled={readOnly}
+                  // onChange={(selectedOption) => field.onChange(selectedOption)}
+                  // value={selectOptions?.find(
+                  //   (option) => option.value === field.value
+                  // )}
+                  placeholder={placeholder}
+                  isMulti={isMulti}
                 />
               );
             } else if (type === "select") {
@@ -88,14 +106,17 @@ const CommonInput = ({
               );
             } else if (type === "normal-select") {
               return (
-              <Form.Select {...field} className="filter-select width-full shadow-none">
-                <option value="">{defaultOption}</option>
-                {options?.map(({ label, value }) => (
-                  <option value={value}>{label}</option>
-                ))}
-              </Form.Select>
-
-              )
+                <Form.Select {...field} className="common-field">
+                  <option disabled selected value="">
+                    {defaultOption}
+                  </option>
+                  {options?.map(({ label, value }, idx) => (
+                    <option key={idx} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </Form.Select>
+              );
             } else if (type === "multi-select") {
               return (
                 <Select
@@ -121,11 +142,49 @@ const CommonInput = ({
                   max={isMaxRequired && new Date().toISOString().split("T")[0]}
                 />
               );
+            } else if (type === "onlyNumber") {
+              return (
+                <Form.Control
+                  {...field}
+                  type="text"
+                  className="common-field"
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                    field.onChange(numericValue);
+                  }}
+                />
+              );
             } else if (type === "time") {
               return (
                 <Form.Control {...field} type="time" className="common-field" />
               );
-            } else {
+            } else if (type === "textarea") {
+              return (
+                <Form.Control
+                  {...field}
+                  as={type}
+                  className="common-field"
+                  rows={3}
+                />
+              );
+            } 
+            else if (type === "year-picker") {
+              console.log(field.value,"this is field.value")
+              // return (
+              //   <DatePicker
+              //     {...field}
+              //     selected={field.value && field.value}  
+              //     maxDate={new Date().toISOString().split("T")[0]}
+              //     maxDetail="decade"
+              //     onChange={(date) => field.onChange(date)}
+              //     showYearPicker
+              //     dateFormat="yyyy"
+              //     placeholderText="Select year"
+              //     className="common-field"
+              //   />
+              // )
+            } 
+            else {
               return (
                 <Form.Control
                   {...field}

@@ -1,46 +1,53 @@
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import CommonInput from "../../../components/atomic/CommonInput";
 import { Col, Form, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { FaEye } from "react-icons/fa";
-import { HiUpload } from "react-icons/hi";
 import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
-import { validatePassword } from "../../../components/utils";
 import PasswordSection from "./PasswordSection";
 import LocationSection from "./LocationSection";
+import { createOptionsForReactSelect } from "./developeStepConstant";
+import PhoneInput from "react-phone-number-input";
+
 // this step is for first and second step
 const CommonStep1 = ({
   control,
   errors,
+  register,
   name,
   setValue,
   watch,
+  setError,
   fields,
+  clearErrors,
   headingData,
-  countries
+  countries,
+  skillOptions,
+  languageOptions,
 }) => {
   const { t } = useTranslation();
   const [file, setFile] = useState(null);
   const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
-
-  const [isPassword, setPassword] = useState({
-    firstPass: false,
-    secondPass: false,
-  });
-
+  const [skillOptionsForSelect, setSkillOptionsForSelect] = useState([]);
+  const [languageOptionsForSelect, setLanguageOptionsForSelect] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-
-  const handleFileChange = (event, field) => {
-    const file = event.target.files[0];
-    setFile(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+  useEffect(() => {
+    if (skillOptions?.length) {
+      const formattedSkillOptions = createOptionsForReactSelect(
+        skillOptions,
+        "id",
+        "title"
+      );
+      setSkillOptionsForSelect(formattedSkillOptions);
     }
-  };
+    if (languageOptions?.length) {
+      const formattedLanguageOptions = createOptionsForReactSelect(
+        languageOptions,
+        "id",
+        "name"
+      );
+      setLanguageOptionsForSelect(formattedLanguageOptions);
+    }
+  }, [skillOptions, languageOptions]);
   return (
     <>
       <section className="card-box">
@@ -54,19 +61,22 @@ const CommonStep1 = ({
               <div className="inner-form">
                 <div>
                   {fields.map(
-                    ({
-                      fieldName,
-                      type,
-                      label,
-                      rules,
-                      isRequired,
-                      isPassword,
-                      isAutocomplete,
-                      options,
-                      isLocation,
-                      defaultOption,
-                    }) => (
-                      <>
+                    (
+                      {
+                        fieldName,
+                        type,
+                        label,
+                        rules,
+                        isRequired,
+                        isPassword,
+                        isAutocomplete,
+                        options,
+                        isLocation,
+                        defaultOption,
+                      },
+                      index
+                    ) => (
+                      <Fragment key={index}>
                         {isAutocomplete && (
                           <CommonAutocomplete
                             label={t(`${label}`) + `${isRequired && " *"}`}
@@ -85,11 +95,18 @@ const CommonStep1 = ({
                           />
                         )}
                         {isPassword && (
-                          <PasswordSection control={control} errors={errors} />
+                          <PasswordSection
+                            control={control}
+                            errors={errors}
+                            setError={setError}
+                            watch={watch}
+                            clearErrors={clearErrors}
+                          />
                         )}
                         {isLocation && (
                           <LocationSection
                             watch={watch}
+                            clearErrors={clearErrors}
                             setValue={setValue}
                             countries={countries}
                             control={control}
@@ -97,7 +114,7 @@ const CommonStep1 = ({
                           />
                         )}
 
-                        {(!isAutocomplete && !isPassword && !isLocation) && (
+                        {!isAutocomplete && !isPassword && !isLocation && (
                           <CommonInput
                             label={t(`${label}`) + `${isRequired && " *"}`}
                             name={fieldName}
@@ -105,14 +122,22 @@ const CommonStep1 = ({
                             control={control}
                             rules={{ ...rules }}
                             error={errors?.[fieldName]}
+                            // if we have skill or language options then use that because they are fetched from API
+                            // otherwise use options given in the field
                             options={options}
                             defaultOption={defaultOption}
+                            selectOptions={
+                              fieldName === "skill"
+                                ? skillOptionsForSelect
+                                : fieldName === "language" &&
+                                  languageOptionsForSelect
+                            }
                           />
                         )}
-                      </>
+                      </Fragment>
                     )
                   )}
-              </div>
+                </div>
               </div>
             </Col>
           </Row>

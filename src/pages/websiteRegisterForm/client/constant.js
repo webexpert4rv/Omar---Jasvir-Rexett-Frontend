@@ -160,10 +160,10 @@ export const convertSkills = ({
       const newSkillOptions = originalSkillArray?.filter(({ title }) =>
         arr.includes(title)
       );
-      const skilloptionsForSelect = newSkillOptions.map((curElem)=>{
-        return {label:curElem?.title,value:curElem.id}
-      })
-      return skilloptionsForSelect
+      const skilloptionsForSelect = newSkillOptions.map((curElem) => {
+        return { label: curElem?.title, value: curElem.id };
+      });
+      return skilloptionsForSelect;
     }
   }
 };

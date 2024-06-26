@@ -35,7 +35,7 @@ const ConfirmationModal = ({ submitText="",text,show, handleClose,onClick ,handl
                             disabled={smallLoader}
                             isLoading={smallLoader}
                         />
-                        <Button variant="transparent" onClick={handleClose} className="outline-main-btn font-14 fw-semibold bg-transparent border-black text-black px-4" >No</Button>
+                        <Button variant="transparent" onClick={handleClose} disabled={smallLoader} className="outline-main-btn font-14 fw-semibold bg-transparent border-black text-black px-4" >No</Button>
                     </div>
                 </Form>
             </Modal.Body>

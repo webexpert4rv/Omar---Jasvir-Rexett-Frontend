@@ -9,7 +9,10 @@ import Customization from "./pages/admin/Customization";
 import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
-const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
+import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
+const ClientRegisterForm = lazy(() =>
+  import("./pages/websiteRegisterForm/client/ClientRegisterForm")
+);
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
 );
@@ -26,9 +29,7 @@ const NotificationDeveloper = lazy(() =>
 const DeveloperInvoice = lazy(() =>
   import("./pages/developer/DeveloperInvoice")
 );
-const DeveloperLeaveApply = lazy(() =>
-  import("./pages/developer/PlanLeave")
-);
+const DeveloperLeaveApply = lazy(() => import("./pages/developer/PlanLeave"));
 const Faq = lazy(() => import("./pages/views/Faq"));
 const ContactSupport = lazy(() => import("./pages/views/ContactSupport"));
 const JobPost = lazy(() => import("./pages/views/JobPost"));
@@ -106,14 +107,14 @@ const DeveloperTimeReporting = lazy(() =>
 );
 const DeveloperCV = lazy(() => import("./pages/developer/DeveloperCV"));
 const AdminLogin = lazy(() => import("./pages/Authentication/AdminLogin"));
-const DeveloperLogin =lazy(() => import("./pages/Authentication/DeveloperLogin"));
-const ClientLogin =lazy(() => import("./pages/Authentication/Login"));
-const VendorLogin =lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp =lazy(() => import("./pages/Authentication/Otp"));
-
+const DeveloperLogin = lazy(() =>
+  import("./pages/Authentication/DeveloperLogin")
+);
+const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
+const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
+const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
 export const route = [
-
   {
     path: "/client-registration",
     element: <ClientRegisterForm />,
@@ -125,8 +126,13 @@ export const route = [
     public: true,
   },
   {
+    path: "/vendor-registration",
+    element: <VendorRegisterForm />,
+    public: true,
+  },
+  {
     path: "/otp",
-    element: <Otp/>,
+    element: <Otp />,
     public: true,
   },
   {
@@ -221,7 +227,7 @@ export const route = [
   },
   {
     path: "/client/leave-request",
-    element: <LeaveRequest/>,
+    element: <LeaveRequest />,
     private: true,
     isClient: true,
   },
@@ -319,7 +325,7 @@ export const route = [
     isDeveloper: true,
     private: true,
   },
- 
+
   {
     path: "developer/leave-plan",
     element: <DeveloperLeaveApply />,
@@ -456,7 +462,7 @@ export const route = [
   {
     path: "/admin/admin-invoice",
     // element: <AdminInvoice />,
-    element:<Revenue/>,
+    element: <Revenue />,
     isAdmin: true,
     private: true,
   },
@@ -516,28 +522,27 @@ export const route = [
   },
   {
     path: "/admin/customization",
-    element: <Customization/>,
+    element: <Customization />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/roles-permissions",
-    element: <RolesPermission/>,
+    element: <RolesPermission />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/interviews",
-    element: <InterviewListing/>,
+    element: <InterviewListing />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/interview-detail",
-    element: <InterviewDetail/>,
+    element: <InterviewDetail />,
     isAdmin: true,
     private: true,
   },
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
-
 ];

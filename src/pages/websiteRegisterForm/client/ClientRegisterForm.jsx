@@ -43,6 +43,7 @@ import {
 import RemainingSteps from "./RemainingSteps";
 import ConfirmationModal from "../../views/Modals/ConfirmationModal";
 import Otp from "../../Authentication/Otp";
+import LastStep from "../developer/LastStep";
 
 const ClientRegisterForm = ({ role }) => {
   const { t } = useTranslation();
@@ -50,6 +51,8 @@ const ClientRegisterForm = ({ role }) => {
     register,
     control,
     reset,
+    setError,
+    clearErrors,
     watch,
     setValue,
     handleSubmit,
@@ -65,10 +68,9 @@ const ClientRegisterForm = ({ role }) => {
   // const toggleVerificationModal = () =>
   //   setShowVerificationModal(!showVerificationModal);
   const dispatch = useDispatch();
-  const { skillList, clientLook, webClientData ,smallLoader,screenLoader} = useSelector(
-    (state) => state.clientData
-  );
-  const handleStep = (stepAction,completedStep) => {
+  const { skillList, clientLook, webClientData, smallLoader, screenLoader } =
+    useSelector((state) => state.clientData);
+  const handleStep = (stepAction, completedStep) => {
     if (stepAction === "verify") {
       setShowVerificationModal(true);
       setStep("verify");
@@ -81,7 +83,7 @@ const ClientRegisterForm = ({ role }) => {
       setShowVerificationModal(false);
     }
   };
-  let { data, name, inputType, headingData, label, optionKey } =
+  let { name, inputType, headingData, label, optionKey } =
     getCurrentStepper(activeStep);
 
   const skillListMapped = skillList.map((item) => {
@@ -93,19 +95,35 @@ const ClientRegisterForm = ({ role }) => {
   });
 
   useEffect(() => {
+    const storedStep = localStorage.getItem("clientActiveStep");
+    if (storedStep) {
+      setActiveStep(Number(storedStep));
+    }
+  }, []);
+  useEffect(() => {
     if (activeStep === 1) {
       setValue("client_type", "individual");
-      dispatch(getCoutriesList())
+      dispatch(getCoutriesList());
     }
     dispatch(getWebClientLookUp());
-  }, [dispatch]);
+  }, []);
+  const increaseActiveStep = () => {
+    setActiveStep((prev) => prev + 1);
+    localStorage.setItem("clientActiveStep", activeStep + 1);
+  };
+  const decreaseActiveStep = () => {
+    setActiveStep((prev) => prev - 1);
+    localStorage.setItem("clientActiveStep", activeStep - 1);
+  };
 
   useEffect(() => {
     let originalSkillArray = [];
     if (activeStep === 6) {
-    dispatch(getWebsiteSkills((skillArray)=>{
-     originalSkillArray=skillArray
-    }))
+      dispatch(
+        getWebsiteSkills((skillArray) => {
+          originalSkillArray = skillArray;
+        })
+      );
     }
     if (clientId) {
       dispatch(
@@ -128,15 +146,22 @@ const ClientRegisterForm = ({ role }) => {
               } else if (key === "email") {
                 setEmail(data[key]);
                 setValue(key, data[key]);
-              } else if (key === "engagement_type" || key === "project_length"){
-                setValue(key,data.jobs[0][key]);
+              } else if (
+                key === "engagement_type" ||
+                key === "project_length"
+              ) {
+                setValue(key, data.jobs[0][key]);
               } else if (key === "when_should_the_development_start") {
-                setValue(key,data?.jobs[0]["development_should_start_in"])
+                setValue(key, data?.jobs[0]["development_should_start_in"]);
               } else if (key === "availability") {
-                setValue(key,data?.jobs[0]["contract_type"])
-              }else if (key === "skills"){
-                 const skillsForSelect =  convertSkills({convertTo:"array",string:data?.jobs[0][key],originalSkillArray:originalSkillArray})
-                 setValue(key,skillsForSelect);
+                setValue(key, data?.jobs[0]["contract_type"]);
+              } else if (key === "skills") {
+                const skillsForSelect = convertSkills({
+                  convertTo: "array",
+                  string: data?.jobs[0][key],
+                  originalSkillArray: originalSkillArray,
+                });
+                setValue(key, skillsForSelect);
               } else {
                 setValue(key, data[key]);
               }
@@ -145,25 +170,12 @@ const ClientRegisterForm = ({ role }) => {
         })
       );
     }
-  }, [activeStep,showVerificationModal]);
+  }, [activeStep, showVerificationModal]);
 
   const onSubmit = (stepData) => {
-    // let data = {
-    //   name: "himanshu",
-    //   email: "ram@yopmail.com",
-    //   phone_number: "9410514319",
-    //   country_code: "45",
-    //   password: "Pankaj@0987",
-    //   client_type: "individual",
-    //   company_logo: "",
-    //   company_name: "",
-    //   company_tax_id: "",
-    //   company_address: "",
-    //   company_type: "",
-    //   time_zone: "Asia/Kabul",
-    // };
+    let payload = {};
     if (activeStep === 1) {
-      const payload = {
+      payload = {
         ...stepData,
         country_code: stepData["country_code"]?.value,
         state_iso_code: stepData["state_iso_code"]?.value,
@@ -174,7 +186,6 @@ const ClientRegisterForm = ({ role }) => {
           : null,
         profile_picture: selectedImage,
       };
-      console.log(payload, "payload");
       dispatch(
         applyAsClient(
           payload,
@@ -184,8 +195,8 @@ const ClientRegisterForm = ({ role }) => {
           handleStep
         )
       );
-    } else {
-      let  payload = {
+    } else if (activeStep === 6) {
+      payload = {
         ...stepData,
         client_id: clientId,
       };
@@ -193,17 +204,31 @@ const ClientRegisterForm = ({ role }) => {
         payload = {
           ...stepData,
           client_id: clientId,
-          skills:  convertSkills({convertTo:"string",options:stepData?.skills})
+          skills: convertSkills({
+            convertTo: "string",
+            options: stepData?.skills,
+          }),
         };
       }
-      dispatch(
-        clientPostJob(payload, () => {
-          setActiveStep((prev) => prev + 1);
-        })
-      );
-      console.log(payload, "payload");
+    } else {
+      // for step 2,3,4,5 and 7
+      let currentStepData;
+      const activeStepKeys = getKeysForActiveStep(activeStep);
+      activeStepKeys?.map((curKey) => {
+        if (curKey in stepData) {
+          currentStepData = {
+            ...currentStepData,
+            [curKey]: stepData[curKey],
+          };
+        }
+      });
+      payload = {
+        client_id: clientId,
+        ...currentStepData,
+      };
     }
     reset();
+    activeStep !== 1 && dispatch(clientPostJob(payload, increaseActiveStep));
     // if (activeStep < 8) {
     //   setActiveStep((prev) => prev + 1);
     // }
@@ -215,9 +240,11 @@ const ClientRegisterForm = ({ role }) => {
   };
 
   const handleVerifyOtp = (otp) => {
-    dispatch(verifyOtp({ email: email, otp: otp },(completedStep)=>{
-      handleStep("verify-otp-success",completedStep);
-    }));
+    dispatch(
+      verifyOtp({ email: email, otp: otp }, (completedStep) => {
+        handleStep("verify-otp-success", completedStep);
+      })
+    );
   };
   return (
     <>
@@ -236,9 +263,13 @@ const ClientRegisterForm = ({ role }) => {
                     selectedImage={selectedImage}
                     setSelectedImage={setSelectedImage}
                     watch={watch}
+                    setError={setError}
+                    clearErrors={clearErrors}
                     setValue={setValue}
                     headingData={headingData}
                   />
+                ) : activeStep === 8 ? (
+                  <LastStep role={"client"} />
                 ) : (
                   <RemainingSteps
                     headingData={headingData}
@@ -246,6 +277,10 @@ const ClientRegisterForm = ({ role }) => {
                     setValue={setValue}
                     skillList={skillList}
                     label={label}
+                    setError={setError}
+                    register={register}
+                    watch={watch}
+                    clearErrors={clearErrors}
                     inputType={inputType}
                     errors={errors}
                     control={control}
@@ -255,30 +290,28 @@ const ClientRegisterForm = ({ role }) => {
                 )}
 
                 {/* {activeStep !== 8 && ( */}
-                  <>
-                    {activeStep !== 1 && (
-                      <RexettButton
-                        type="button"
-                        text="Back"
-                        onClick={() => {
-                          setActiveStep((prev) => prev - 1);
-                        }}
-                        className="main-btn outline-main-btn px-5"
-                        // disabled={smallLoader}
-                        // isLoading={smallLoader}
-                      />
-                    )}
+                <>
+                  {activeStep !== 1 && (
                     <RexettButton
-                      type="submit"
-                      text={activeStep < 8 ? "Continue" : t("submit")}
-                      className="main-btn px-5"
-                      // onClick={() => {
-                      //   setActiveStep((prev) => prev + 1);
-                      // }}
+                      type="button"
+                      text="Back"
+                      onClick={decreaseActiveStep}
+                      className="main-btn outline-main-btn px-5"
                       // disabled={smallLoader}
                       // isLoading={smallLoader}
                     />
-                  </>
+                  )}
+                  <RexettButton
+                    type="submit"
+                    text={activeStep < 8 ? "Continue" : t("submit")}
+                    className="main-btn px-5"
+                    // onClick={() => {
+                    //   setActiveStep((prev) => prev + 1);
+                    // }}
+                    // disabled={smallLoader}
+                    // isLoading={smallLoader}
+                  />
+                </>
                 {/* )} */}
               </form>
             )
@@ -290,7 +323,9 @@ const ClientRegisterForm = ({ role }) => {
           text={VERIFY_USER_MESSAGE}
           show={showVerificationModal}
           handleAction={handleSendOtp}
-          handleClose={()=>{setShowVerificationModal(false)}}
+          handleClose={() => {
+            setShowVerificationModal(false);
+          }}
           submitText="Verify"
           smallLoader={smallLoader}
         />
