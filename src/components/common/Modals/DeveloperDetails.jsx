@@ -28,8 +28,11 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
         setValue("total_experience" , experience)
     }, [name, position ,experience])
 
+    console.log(selectedImage,"selectedImage")
+
     const handleChange = (e) => {
         const file = e.target.files[0];
+        console.log(file,'file')
         setFile(file)
         if (file) {
             const reader = new FileReader();
@@ -39,6 +42,7 @@ const DeveloperDetails = ({ show, handleClose, name, position, profile ,experien
             reader.readAsDataURL(file);
         }
     };
+    console.log(selectedImage,"selectedImage")
 
    
 

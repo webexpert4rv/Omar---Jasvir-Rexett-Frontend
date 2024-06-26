@@ -21,6 +21,7 @@ function HeaderTable({
 
 }) {
   console.log(approveIndex , "approveINdex")
+  console.log(tableData , "tableData")
   return (
     <div>
       {screenLoader ? <ScreenLoader/> : 
@@ -85,7 +86,7 @@ function HeaderTable({
                           className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
                           icon={approveIndex == index ? approvedLoader :  <IoCheckmark />}
                           onClick={() =>handleApproveReject(item?.id, "Approved", index)}
-                          isLoading={  approveIndex == index ? approvedLoader :false } 
+                          isLoading = {approveIndex == index ? approvedLoader : false } 
                         />
                       </ToolTip>
                       <ToolTip text="Reject">

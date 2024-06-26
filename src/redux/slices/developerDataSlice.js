@@ -392,6 +392,7 @@ export function getCancelLeave(id, payload) {
         `/developer/withdraw-leave-request/${id}`,
         { ...payload }
       );
+      dispatch(setActionSuccessFully())
     } catch (error) {
       const message = error.message || "Something went wrong";
       dispatch(setFailDeveloperData());

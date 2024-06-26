@@ -1,6 +1,11 @@
 import React from "react";
 import userImg from '../../assets/img/user-img.jpg';
+import { useNavigate } from "react-router-dom";
 const InterviewListing = () => {
+    const navigate=useNavigate()
+    const redirectToInterview=()=>{
+        navigate("/admin/interview-detail")
+    }
     return(
         <>
             <div className="card-box">
@@ -19,7 +24,7 @@ const InterviewListing = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="application-row">
+                            <tr className="application-row" onClick={redirectToInterview}>
                                 <td className="align-middle font-14">
                                     <div className="d-flex align-items-center gap-2">
                                         <img src={userImg} className="table-user-img" />
@@ -46,7 +51,7 @@ const InterviewListing = () => {
                                     </span>
                                 </td>
                             </tr>
-                            <tr className="application-row">
+                            <tr className="application-row" onClick={redirectToInterview}>
                                 <td className="align-middle font-14">
                                     <div className="d-flex align-items-center gap-2">
                                         <img src={userImg} className="table-user-img" />

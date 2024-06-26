@@ -1,20 +1,72 @@
 import { Row, Col, Form } from 'react-bootstrap';
 import RexettButton from "../../components/atomic/RexettButton";
 import { LEAVE_TYPE } from "../../components/clients/TimeReporiting/constant";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { DateRangePicker } from "react-date-range";; // Adjust import according to your date picker library
+import { DateRangePicker } from "react-date-range";import { useDispatch, useSelector } from 'react-redux';
+import { applyLeave, getLeaveHistory, getUpdateLeave } from '../../redux/slices/developerDataSlice';
 
 
-const ApplyLeaveSection=({ allContracts, handleRange, selectionRange, onSubmit, smallLoader }) =>{
-  const { register,handleSubmit, formState: { errors } } = useForm({});
+const ApplyLeaveSection=({ allContracts, handleRange,id,selectionRange,setSelectionRange, smallLoader ,start_date , end_date  }) =>{
+  const { register,handleSubmit ,setValue ,reset ,formState: { errors } } = useForm({});
+  const {leaveDetails} = useSelector(state => state.developerData)
+  const today = new Date();
   const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const user_id = localStorage.getItem("userId");
   const [isEdit, setIsEdit] = useState({
     status: false,
-    leaveId: '',
+    leaveId: "",
   });
-  const today = new Date();
+
+  useEffect(()=>{
+    const selectedLeave = leaveDetails.find((item) => item.id == id);
+    if (selectedLeave) {
+      setSelectionRange({
+        startDate: new Date(selectedLeave.start_date),
+        endDate: new Date(selectedLeave.end_date),
+        key: "selection",
+      });
+
+      setIsEdit({ status: true, leaveId: id });
+      setValue("client_name", selectedLeave?.contract_id);
+      setValue("leave_type", selectedLeave?.type);
+      setValue("reason", selectedLeave?.reason_for_leave);
+    }
+
+  },[id])
+
+  const onSubmit = async (values) => {
+    let data = {
+      contract_id: +values.client_name,
+      start_date: start_date,
+      end_date: end_date,
+      start_time: null,
+      end_time: null,
+      type: values.leave_type,
+      reason_for_leave: values.reason,
+  }
+
+    if (isEdit?.status === true) {
+      await dispatch(getUpdateLeave(isEdit?.leaveId, data));
+    } else {
+      await dispatch(applyLeave(data));
+    }
+    let payload = {
+      approval_status: "Under Approval",
+    };
+    dispatch(getLeaveHistory(user_id, payload))
+    setIsEdit({ status: false, leaveId: "" })
+    reset()
+    setSelectionRange({
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    }) 
+  };
+
+
 
   return (
     <Row className="gx-4">

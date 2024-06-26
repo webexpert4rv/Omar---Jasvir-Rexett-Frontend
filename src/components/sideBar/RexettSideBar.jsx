@@ -8,11 +8,14 @@ import { PiSignOutBold } from "react-icons/pi";
 import { FaTimes } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
 
-const RexettSideBar = ({ sidebarItems,floatingOptions }) => {
+const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
     const { t } = useTranslation();
+
+    let currentRoute= role=="client"?"/":`/${role}-login`
+    
     const logout = () => {
         localStorage.clear();
-        window.location.href = "/developer-login";
+        window.location.href = currentRoute;
     };
     const [floatingShow, setFloatingShow] = useState(false);
     const handleFloating = () => {

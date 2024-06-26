@@ -1,13 +1,30 @@
 import React from "react";
 import interviewVideo from '../../assets/img/interview-video.mp4';
 import { HiDownload } from "react-icons/hi";
-import { Button } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { TbFileDescription } from "react-icons/tb";
+import { MdOutlineOndemandVideo } from "react-icons/md";
+import 'react-circular-progressbar/dist/styles.css';
+import { HiThumbUp } from "react-icons/hi";
 const InterviewDetail = () => {
+    const overallRating = 7;
+    const reactRating = 9;
+    const vueRating = 7;
+    const jsRating = 8;
+    const nextRating = 5;
+    const angularRating = 6;
+    const nodeRating = 7;
+    const commRating = 8;
     return (
         <>
             <div className="card-box">
-                <div className="border-bottom-grey pb-3 mb-4">
+                <div className="border-bottom-grey pb-3 mb-4 d-flex justify-content-between align-items-center">
                     <h2 className="section-head border-0 mb-0 pb-0">Interview Detail</h2>
+                    <div>
+                        <Button className="main-btn font-14 me-2 py-2"><span className="font-18 me-1"><MdOutlineOndemandVideo /></span> Playback</Button>
+                        <Button className="main-btn font-14 py-2"><span className="font-18 me-1"><TbFileDescription /></span>Transcript</Button>
+                    </div>
                 </div>
                 <div className="interview-details mb-4">
                     <div>
@@ -16,12 +33,35 @@ const InterviewDetail = () => {
                     </div>
 
                     <div>
-                        <h4 className="detail-name">Developer Name</h4>
+                        <h4 className="detail-name">Candidate Name</h4>
                         <p className="detail-info">Rohit Sharma</p>
                     </div>
                     <div>
-                        <h4 className="detail-name">Client Name</h4>
+                        <h4 className="detail-name">Company Name</h4>
                         <p className="detail-info">Amazon</p>
+                    </div>
+                    <div>
+                        <h4 className="detail-name">Interviewer Name</h4>
+                        <p className="detail-info">James Williams</p>
+                    </div>
+                    <div>
+                        <h4 className="detail-name">Panel List</h4>
+                        <div className="panel-list-name">
+                            <p className="panel-name"><span className="visible-name">James Williams, Robin Gautam, Steve Warne</span>
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="transparent" className="p-0 border-0 shadow-none filter-btn" id="dropdown-basic">
+                                        <span className="total-panel">+2</span>
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu className="sort-dropdown">
+                                        <Dropdown.Item className="font-14">James Williams</Dropdown.Item>
+                                        <Dropdown.Item className="font-14">Robin Gautam</Dropdown.Item>
+                                        <Dropdown.Item className="font-14">Steve Warne</Dropdown.Item>
+                                        <Dropdown.Item className="font-14">John Doe</Dropdown.Item>
+                                        <Dropdown.Item className="font-14">Robert Johnson</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </p>
+                        </div>
                     </div>
                     <div>
                         <h4 className="detail-name">Date</h4>
@@ -37,27 +77,151 @@ const InterviewDetail = () => {
                     </div>
                     <div>
                         <h4 className="detail-name">Status</h4>
-                        <span className="status-finished">Completed</span>
+                        <span className="status-finished font-17">Completed</span>
+                    </div>
+                    <div>
+                        <h4 className="detail-name">Interviewer's Decision</h4>
+                        <span className="status-finished font-17">Selected <span className="lh-1"><HiThumbUp /></span></span>
                     </div>
                 </div>
                 <div className="mb-4">
-                    <h4 className="section-subhead">Summary</h4>
-                    <p>The interview begins with an introduction to Figma, a web-based design tool, and its significance in the field of user interface (UI) design. Figma's growing popularity among designers due to its innovative features is highlighted. Key features of Figma are discussed, including its vector editing tools, design systems support, prototyping capabilities, and integration with other tools. The interview emphasizes Figma's versatility in handling various aspects of UI design from wireframing to high-fidelity mockups. The conversation moves to the advantages of using Figma over other design tools like Sketch and Adobe XD. Notable benefits include Figma's cloud-based nature, which allows for easy access and sharing, as well as its robust real-time collaboration features.</p>
-                </div>
-                <div className="mb-4">
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                        <h4 className="section-subhead mb-0">Attachment</h4>
-                        <Button className="main-btn font-14"><HiDownload />Download</Button>
+                    <h3 className="section-subhead mb-3">Candidate's Rating</h3>
+                    <div className="rating-container">
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>Overall Rating</p>
+                        </div>
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>React JS</p>
+                            <p className="font-14">(Low Level Design)</p>
+                        </div>
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>Vue JS</p>
+                            <p className="font-14">(Low Level Design)</p>
+                        </div>
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>JavaScript</p>
+                            <p className="font-14">(Low Level Design)</p>
+                        </div>
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>Angular JS</p>
+                            <p className="font-14">(Low Level Design)</p>
+                        </div>
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>MongoDB</p>
+                            <p className="font-14">(Data Structure & Algorithms)</p>
+                        </div>
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>Node JS</p>
+                            <p className="font-14">(Low Level Design)</p>
+                        </div>
+                        <div className="ratinng-wrapper d-block text-center">
+                            <div className="rating-progress mb-2">
+                                <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                            </div>
+                            <p>Communication</p>
+                        </div>
                     </div>
-                    <video controls className="interview-video">
+                    <div className="mb-4">
+                        <div className="d-flex align-items-center justify-content-between mb-3">
+                            <h4 className="section-subhead mb-0">Client's Overall Feedback</h4>
+                        </div>
+                        <div className="transript-wrapper">
+                            <p className="mb-0">The interview highlights Figma's popularity due to its web-based nature and real-time collaboration capabilities. Core features like vector editing, prototyping, and design systems are emphasized, along with its seamless integration into the design-to-development workflow. A case study showcases its impact on a financial services app, illustrating how Figma's collaborative features and design systems ensured efficiency and consistency. John Doe also offers practical tips for new users and expresses confidence in Figma's future role in UI design.</p>
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <h4 className="section-subhead mb-3">Summary</h4>
+                        <div className="transript-wrapper">
+                            <p className="fw-semibold">Questions asked</p>
+                            <p className="fw-14">Introduction:</p>
+                            <ol>
+                                <li className="mb-2">3 years of experience</li>
+                                <li className="mb-2">React JS framework</li>
+                                <li className="mb-2">Analytical Thinker</li>
+                                <li className="mb-2">Giving Tech Talks or Blogs</li>
+                            </ol>
+                            <div className="border-bottom-0">
+                                <div className="d-flex gap-2 align-items-center mb-3">
+                                    <span className="topic-counter">1</span>
+                                    <span className="fw-semibold font-18">Low-level Design</span>
+                                </div>
+                                <h4 className="font-16 fw-bold">React JS (9/10)</h4>
+                                <p className="font-16 fw-medium">Ability to identify entities, knowledge of joins, able to give practical application of indexes, right understanding of when to use what kind of join</p>
+                                <ol className="mb-3">
+                                    <li className="mb-2">The candidate came up with different entities and explained mapping one-toone, one-to-many and many-to-many mappings between them.</li>
+                                    <li className="mb-2">He was good at defining different fields which be part of the entities and did not need any hand-holding.</li>
+                                    <li className="mb-2">He also explained how he will handle race conditions when multiple users are trying to book the same seats. He used a cache layer for reserved seats with an expiry time to allow the user to do payment</li>
+                                </ol>
+                                <h4 className="font-16 fw-bold">Vue JS (7/10)</h4>
+                                <p className="font-16 fw-medium">Ability to identify entities, knowledge of joins, able to give practical application of indexes, right understanding of when to use what kind of join</p>
+                                <ol className="mb-3">
+                                    <li className="mb-2">The candidate came up with different entities and explained mapping one-toone, one-to-many and many-to-many mappings between them.</li>
+                                    <li className="mb-2">He was good at defining different fields which be part of the entities and did not need any hand-holding.</li>
+                                    <li className="mb-2">He also explained how he will handle race conditions when multiple users are trying to book the same seats. He used a cache layer for reserved seats with an expiry time to allow the user to do payment</li>
+                                </ol>
+                                <h4 className="font-16 fw-bold">JavaScript (8/10)</h4>
+                                <p className="font-16 fw-medium">Ability to identify entities, knowledge of joins, able to give practical application of indexes, right understanding of when to use what kind of join</p>
+                                <ol className="mb-3">
+                                    <li className="mb-2">The candidate came up with different entities and explained mapping one-toone, one-to-many and many-to-many mappings between them.</li>
+                                    <li className="mb-2">He was good at defining different fields which be part of the entities and did not need any hand-holding.</li>
+                                    <li className="mb-2">He also explained how he will handle race conditions when multiple users are trying to book the same seats. He used a cache layer for reserved seats with an expiry time to allow the user to do payment</li>
+                                </ol>
+                                <h4 className="font-16 fw-bold">Angular JS (6/10)</h4>
+                                <p className="font-16 fw-medium">Ability to identify entities, knowledge of joins, able to give practical application of indexes, right understanding of when to use what kind of join</p>
+                                <ol className="mb-3">
+                                    <li className="mb-2">The candidate came up with different entities and explained mapping one-toone, one-to-many and many-to-many mappings between them.</li>
+                                    <li className="mb-2">He was good at defining different fields which be part of the entities and did not need any hand-holding.</li>
+                                    <li className="mb-2">He also explained how he will handle race conditions when multiple users are trying to book the same seats. He used a cache layer for reserved seats with an expiry time to allow the user to do payment</li>
+                                </ol>
+                                <h4 className="font-16 fw-bold">Node JS (7/10)</h4>
+                                <p className="font-16 fw-medium">Ability to identify entities, knowledge of joins, able to give practical application of indexes, right understanding of when to use what kind of join</p>
+                                <ol className="mb-3">
+                                    <li className="mb-2">The candidate came up with different entities and explained mapping one-toone, one-to-many and many-to-many mappings between them.</li>
+                                    <li className="mb-2">He was good at defining different fields which be part of the entities and did not need any hand-holding.</li>
+                                    <li className="mb-2">He also explained how he will handle race conditions when multiple users are trying to book the same seats. He used a cache layer for reserved seats with an expiry time to allow the user to do payment</li>
+                                </ol>
+                                <div className="d-flex gap-2 align-items-center mb-3">
+                                    <span className="topic-counter">2</span>
+                                    <span className="fw-semibold font-18">Data Structure & Algorithms</span>
+                                </div>
+                                <h4 className="font-16 fw-bold">MongoDB (5/10)</h4>
+                                <p className="font-16 fw-medium">Ability to identify entities, knowledge of joins, able to give practical application of indexes, right understanding of when to use what kind of join</p>
+                                <ol className="mb-3">
+                                    <li className="mb-2">The candidate came up with different entities and explained mapping one-toone, one-to-many and many-to-many mappings between them.</li>
+                                    <li className="mb-2">He was good at defining different fields which be part of the entities and did not need any hand-holding.</li>
+                                    <li className="mb-2">He also explained how he will handle race conditions when multiple users are trying to book the same seats. He used a cache layer for reserved seats with an expiry time to allow the user to do payment</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="mb-4">
+                        <video controls className="interview-video">
                         <source src={interviewVideo} type="video/mp4" />
                     </video>
-                </div>
-                <div className="mb-4">
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                        <h4 className="section-subhead mb-0">Transcript</h4>
-                    </div>
-                    <div className="transript-wrapper">
+                    </div> */}
+                    {/* <div className="mb-4">
+                        <div className="transript-wrapper">
                         <div className="d-flex align-items-start gap-3 mb-2">
                             <span className="time-interview">11:03 AM</span>
                             <p className="mb-0"><strong>Amazon:</strong> Welcome to our discussion on Figma and its role in UI design. Today, we have Rohit Sharma, a seasoned UI/UX designer, to share his insights. Rohit, could you start by telling us a bit about Figma and why it's become so popular in the design community?</p>
@@ -123,14 +287,7 @@ const InterviewDetail = () => {
                             <p className="mb-0"><strong>Amazon:</strong> Thanks for sharing your insights, Rohit. It’s been a pleasure having you.</p>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                        <h4 className="section-subhead mb-0">Client's Feedback</h4>
-                    </div>
-                    <div className="transript-wrapper">
-                        <p className="mb-0">The interview highlights Figma's popularity due to its web-based nature and real-time collaboration capabilities. Core features like vector editing, prototyping, and design systems are emphasized, along with its seamless integration into the design-to-development workflow. A case study showcases its impact on a financial services app, illustrating how Figma's collaborative features and design systems ensured efficiency and consistency. John Doe also offers practical tips for new users and expresses confidence in Figma's future role in UI design.</p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

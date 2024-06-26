@@ -3,9 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
 
 import { lazy } from "react";
-import JobPostStepContainer from "./pages/views/Job post step form/JobPostStepContainer";
+import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
 import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
-import Customization from "./pages/admin/Customization";
 import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
@@ -13,6 +12,19 @@ import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegiste
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
+import MeetingDetail from "./pages/MeetingDetail";
+import InterviewFeedback from "./pages/admin/InterviewFeedback";
+import ProjectHistory from "./pages/developer/ProjectHistory";
+import ProjectDetail from "./pages/developer/ProjectDetail";
+import AdminJobPost from "./pages/admin/AdminJobPost";
+import joiningVideo from "./pages/admin/JoiningVideo";
+import Customization from "./pages/admin/Configuration/CRM/Customization";
+import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
+import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
+import ClientInterviewDetail from "./pages/views/InterviewDetail";
+import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+
+// const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
 );
@@ -113,6 +125,7 @@ const DeveloperLogin = lazy(() =>
 const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
 const Otp = lazy(() => import("./pages/Authentication/Otp"));
+
 
 export const route = [
   {
@@ -239,7 +252,7 @@ export const route = [
   },
   {
     path: "/client/job-post",
-    element: <JobPostStepContainer />,
+    element: <JobPost />,
     private: true,
     isClient: true,
   },
@@ -264,6 +277,18 @@ export const route = [
   {
     path: "/client/client-single-developer/:id",
     element: <ClientSingleDeveloper />,
+    private: true,
+    isClient: true,
+  },
+  {
+    path: "/client/interview-feedback",
+    element: <ClientInterviewFeedback />,
+    private: true,
+    isClient: true,
+  },
+  {
+    path: "/client/interview-detail",
+    element: <ClientInterviewDetail />,
     private: true,
     isClient: true,
   },
@@ -329,6 +354,30 @@ export const route = [
   {
     path: "developer/leave-plan",
     element: <DeveloperLeaveApply />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/project-history",
+    element: <ProjectHistory />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/project-detail",
+    element: <ProjectDetail />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/job-posted",
+    element: <DeveloperJobListing />,
+    isDeveloper: true,
+    private: true,
+  },
+  {
+    path: "developer/developer-single-job/:id",
+    element: <DeveloperSingleJob />,
     isDeveloper: true,
     private: true,
   },
@@ -432,6 +481,12 @@ export const route = [
   {
     path: "/admin/edit-admin-profile",
     element: <EditAdminProfile />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/job-post",
+    element: <AdminJobPost />,
     isAdmin: true,
     private: true,
   },
@@ -541,6 +596,18 @@ export const route = [
   {
     path: "/admin/interview-detail",
     element: <InterviewDetail />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/meeting-detail",
+    element: <MeetingDetail />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/interview-feedback",
+    element: <InterviewFeedback />,
     isAdmin: true,
     private: true,
   },
