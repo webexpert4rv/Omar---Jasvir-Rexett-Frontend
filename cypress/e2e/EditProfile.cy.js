@@ -38,6 +38,7 @@ describe('Edit Profile Test File', () => {
 
         // Click on the Company Details tab and verify its content
         cy.get('.application-pills .application-link').contains('Company Details').click();
+        
 
     })
     it('should navigate to the Edit Profile and update Company details', () => {

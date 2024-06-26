@@ -20,12 +20,10 @@ describe('Hired deveopers Test file', () => {
                             name: 'John Doe',
                             designation: 'Software Engineer',
                             email: 'johndoe@example.com',
-                            // add other details as per your response structure
                         }
                     }
                 }).as('getDeveloperDetails');
         
-
         // Perform login using the imported function
         login("pankajClient@yopmail.com", "Pankaj@0987")
 
@@ -60,6 +58,22 @@ describe('Hired deveopers Test file', () => {
 
         // Wait for the API call to complete
         cy.wait('@getDeveloperDetails').its('response.statusCode').should('eq', 200);
+
+        //verify developer head
+        cy.contains('h2.section-head', 'Overview')
+
+        //Verify dev name 
+        cy.contains('h3.resume-name' , 'John Doe' )
+
+        //Verify other texts
+        cy.contains('h3.subheading-resume',"Skills")
+
+        //Verify Playback button and Transcript button
+        cy.get('button').contains('Playback')
+        cy.get('button').contains('Transcript')
+
+        //Verify back button and click on it 
+        cy.get('button').contains('Back').click()
 
 
     })
