@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { IoSearch } from "react-icons/io5";
 import {
@@ -12,6 +12,7 @@ import {
 } from "../../pages/admin/adminConstant";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom"; 
 
 const CommonFilterSection = ({
   filters,
@@ -28,9 +29,11 @@ const CommonFilterSection = ({
     setValue: setSearchValue,
   } = useForm();
 
+  const location = useLocation(); 
+
   useEffect(() => {
     for (let key in filters) {
-        setValue(key, filters[key]);
+      setValue(key, filters[key]);
     }
     setSearchValue(
       filterFields?.["searchFilter"]?.["key"],
@@ -44,19 +47,27 @@ const CommonFilterSection = ({
       ...selectedFilters,
     });
   };
+
   const isAnyFieldFilled = () => {
     const fields = watch();
     return Object.values(fields).some((value) => value !== "");
   };
+  console.log("Current Route:", location.pathname);
 
   return (
     <div className="filter-section d-lg-flex align-items-center mb-4 justify-content-between">
       {text && <h2 className="section-head border-0 mb-0 pb-0">{text}</h2>}
       <Form onSubmit={handleSubmit(onSubmitFilters)}>
         <div className="d-flex align-items-center gap-2 mb-lg-0 mb-3 flex-wrap">
-          {filterFields?.selectFilters?.map(
-            ({ key, filterLabel, options, isDate, defaultValueRequired }) => (
-              <div>
+          {filterFields?.selectFilters
+            ?.filter(({ key }) => {
+              if (location.pathname === "/admin/members" && key === "approval_status") {
+                return false;
+              }
+              return true;
+            })
+            .map(({ key, filterLabel, options, isDate, defaultValueRequired }) => (
+              <div key={key}>
                 {isDate ? (
                   <Form.Control
                     type="date"
@@ -75,13 +86,12 @@ const CommonFilterSection = ({
                     </option>
 
                     {options?.map(({ label, value }) => (
-                      <option value={value}>{label}</option>
+                      <option key={value} value={value}>{label}</option>
                     ))}
                   </Form.Select>
                 )}
               </div>
-            )
-          )}
+            ))}
           <div>
             <Button
               disabled={!isAnyFieldFilled()}
@@ -107,7 +117,7 @@ const CommonFilterSection = ({
             />
             <Button
               type="submit"
-              // disabled = {watchSearch("developerName") === ""}
+              // disabled={watchSearch("developerName") === ""}
               variant="transparent"
               className="main-btn px-3 search-btn"
             >

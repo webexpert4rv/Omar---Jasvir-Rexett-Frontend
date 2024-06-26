@@ -36,9 +36,6 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
     return skillsArray;
   };
 
-
-
-
   const currentStatusCssClass = (status) => {
     console.log(status, "status")
     switch (status) {
@@ -87,7 +84,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
   )
 
   const handleViewRedirection=(id)=>{
-    navigate(`/${role}/${role}-single-job/${id}`)
+    navigate(`/${role}-single-job/${id}`)
   }
 
   return (

@@ -547,7 +547,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/admin-single-job/:id",
+    path: "/admin-single-job/:id",
     element: <AdminSingleJob />,
     isAdmin: true,
     private: true,
