@@ -18,11 +18,17 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
     const dispatch = useDispatch()
     const { configDetails } = useSelector(state => state.adminData)
 
-    // console.log(colorValue, "colorValue")
-    // console.log(configDetails, "configDetails")
-    // console.log(solidColor,"solidColor")
-    // console.log(previewUrl,"previewUrl")
-    // console.log(sideBarColor,"sideBarColor")
+    console.log(colorValue, "colorValue")
+    console.log(newColorValue, "newColorValue")
+    console.log(solidColor,"solidColor")
+
+    useEffect(()=>{
+        setColorValue('')
+        setNewColorValue('')
+        setSolidColor('')
+        setSelectedColorType("gradient-sidecolor")
+    },[setColorValue,setNewColorValue,setSolidColor,setSelectedColorType])
+  
 
     const handleColorChange = (e)=>{
         setColorValue(e.target.value)  
@@ -52,7 +58,8 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
         e.preventDefault()
         setColorValue(e.target.value)
         let data = {
-            crm_sidebar_bg_gradient_color_1: colorValue
+            crm_sidebar_bg_gradient_color_1: colorValue,
+            crm_sidebar_bg_solid_color:"",
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
@@ -62,7 +69,8 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
         setNewColorValue(e.target.value)
         setPreviewUrl(e.target.value)
         let data = {
-            crm_sidebar_bg_gradient_color_2: newColorValue
+            crm_sidebar_bg_gradient_color_2: newColorValue,
+            crm_sidebar_bg_solid_color:"",
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
@@ -70,7 +78,9 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
     const handleSolidColorBlur = async(e) => {
         setSolidColor(e.target.value)
         let data = {
-            crm_sidebar_bg_solid_color: solidColor
+            crm_sidebar_bg_solid_color: solidColor,
+            crm_sidebar_bg_gradient_color_1: "",
+            crm_sidebar_bg_gradient_color_2: ""
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())

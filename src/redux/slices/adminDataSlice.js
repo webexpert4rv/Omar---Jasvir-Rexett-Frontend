@@ -43,9 +43,13 @@ export const adminDataSlice = createSlice({
         setBtnLoader: (state, action) => {
             state.smallLoader = true;
         },
+        setApprovedLoader: (state, action) => {
+            state.approvedLoader = true;
+        },
         setSuccessAdminData: (state, action) => {
             state.smallLoader = false;
             state.screenLoader = false;
+            state.approvedLoader = false;
         },
 
         setSuccessApplicationList: (state, action) => {
@@ -96,9 +100,6 @@ export const adminDataSlice = createSlice({
             state.smallLoader = false;
             state.screenLoader = false;
             state.approvedLoader = false;
-        },
-        setApprovedLoader: (state, action) => {
-            state.approvedLoader = true;
         },
         setSuggestedDeveloper: (state, action) => {
             let recomnd = action.payload?.recommended_developers?.map((item) => { return { ...item, recommed: true } })
@@ -724,6 +725,9 @@ export function getConfigDetails() {
 
 export function getUploadFile(payload){
     return async (dispatch)=>{
+        dispatch(setBtnLoader())
+        dispatch(setApprovedLoader())
+
         try{
             let result = await clientInstance.patch(`admin/configuration` , {...payload})
             // console.log(result.data,"result")
