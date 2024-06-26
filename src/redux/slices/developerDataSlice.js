@@ -1107,7 +1107,7 @@ export function deleteDeveloperProject(id,payload, callback) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       // dispatch(setFailDeveloperData());
-      closeLoader();
+      // closeLoader();
     }
   };
 }

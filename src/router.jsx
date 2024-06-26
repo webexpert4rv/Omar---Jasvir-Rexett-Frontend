@@ -1,6 +1,17 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
+import MeetingDetail from "./pages/MeetingDetail";
+import InterviewFeedback from "./pages/admin/InterviewFeedback";
+import ProjectHistory from "./pages/developer/ProjectHistory";
+import ProjectDetail from "./pages/developer/ProjectDetail";
+import AdminJobPost from "./pages/admin/AdminJobPost";
+import joiningVideo from "./pages/admin/JoiningVideo";
+import Customization from "./pages/admin/Configuration/CRM/Customization";
+import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
+import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
+import ClientInterviewDetail from "./pages/views/InterviewDetail";
+import ClientInterviewFeedback from "./pages/views/InterviewFeedback"
 
 import { lazy } from "react";
 import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
@@ -12,17 +23,7 @@ import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegiste
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
-import MeetingDetail from "./pages/MeetingDetail";
-import InterviewFeedback from "./pages/admin/InterviewFeedback";
-import ProjectHistory from "./pages/developer/ProjectHistory";
-import ProjectDetail from "./pages/developer/ProjectDetail";
-import AdminJobPost from "./pages/admin/AdminJobPost";
-import joiningVideo from "./pages/admin/JoiningVideo";
-import Customization from "./pages/admin/Configuration/CRM/Customization";
-import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
-import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
-import ClientInterviewDetail from "./pages/views/InterviewDetail";
-import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+;
 
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
