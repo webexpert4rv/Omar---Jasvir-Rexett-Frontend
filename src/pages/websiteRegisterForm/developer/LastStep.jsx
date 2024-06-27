@@ -76,7 +76,7 @@ const LastStep = ({ role }) => {
               type="button"
               text="Back to home"
               onClick={() => {
-                clearStorage();d
+                clearStorage();
                 window.location.href = "https://www.rexett.com";
               }}
               className="main-btn outline-main-btn px-5"
