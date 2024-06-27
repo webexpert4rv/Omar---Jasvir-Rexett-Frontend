@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getVerifyOtp, loginUser, resendOtpDispatch } from "../../redux/slices/authenticationDataSlice";
 import OTPInput from "react-otp-input";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
+import { sendVerificationOtp } from "../../redux/slices/clientDataSlice";
 
-const Otp = ({ userType }) => {
+const Otp = ({ userType ,handleVerifyOtp=null,isRegisterStepForm=false, email,isLoading}) => {
     const [otp, setOtpValue] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -21,7 +22,6 @@ const Otp = ({ userType }) => {
         register,
         setValue,
         handleSubmit,
-
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
 
@@ -33,7 +33,12 @@ const Otp = ({ userType }) => {
            otp: otp,
            email: email
         }
-        dispatch(getVerifyOtp(data))
+        if (isRegisterStepForm) {
+            handleVerifyOtp(otp)
+        } else {
+            dispatch(getVerifyOtp(data))
+        }
+        // (isRegisterStepForm) ? handleVerifyOtp(otp) : dispatch(getVerifyOtp(data))
     }
 
 
@@ -44,8 +49,12 @@ const Otp = ({ userType }) => {
 
   
     const resendOtpSys = () => {
-        let email=localStorage.getItem("email")
-        dispatch(resendOtpDispatch({email:email}))
+        if(isRegisterStepForm) {
+           dispatch(sendVerificationOtp({email:email}));     
+          } else {
+            let email=localStorage.getItem("email")
+            dispatch(resendOtpDispatch({email:email}))
+        }
     }
 
     return (
@@ -115,7 +124,7 @@ const Otp = ({ userType }) => {
                                             text="Submit"
                                             className="auth-btn d-block text-decoration-none"
                                             variant="transparent"
-                                            isLoading={smallLoader}
+                                            isLoading={isRegisterStepForm ? isLoading : smallLoader}
                                         />
                                     </form>
                                     <div className="mt-3 text-center resend-top" onClick={resendOtpSys}>{otpLoader?<RexettSpinner/>: "Resend OTP"}</div>

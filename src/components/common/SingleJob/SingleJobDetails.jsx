@@ -308,7 +308,7 @@ const AdminSingleJob = () => {
                     {role!=="developer" &&<Tab eventKey="suggested" title={suggest}>
                         <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
                             <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Add Manual Suggestion</Button>
-                            {/* <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button> */}
+                            <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>}
