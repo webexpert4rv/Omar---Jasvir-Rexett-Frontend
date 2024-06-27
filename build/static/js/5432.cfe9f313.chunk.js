@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkrexett=self.webpackChunkrexett||[]).push([[5432],{55432:(e,t,a)=>{a.r(t),a.d(t,{default:()=>i});var l=a(65043),s=a(83003),n=a(82139),r=a(4970),c=a(73216),d=a(70579);const i=()=>{const e=(0,s.wA)(),{developerDetails:t}=(0,s.d4)((e=>e.clientData));let a=(0,c.zy)().pathname.split("/")[2];return(0,l.useEffect)((()=>{e((0,r.vS)(a))}),[]),console.log(t,"adminsingledeveloperDetails"),(0,d.jsx)(d.Fragment,{children:(0,d.jsx)(n.A,{data:t,role:"admin"})})}}}]);
+//# sourceMappingURL=5432.cfe9f313.chunk.js.map
