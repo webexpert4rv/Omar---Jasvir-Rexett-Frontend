@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
     const {configDetails} = useSelector(state=>state.adminData)
     const { t } = useTranslation();
-    const role = localStorage.getItem("role")
 
     let currentRoute= role=="client"?"/":`/${role}-login`
     
