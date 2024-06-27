@@ -10,7 +10,7 @@ import RexettMarquee from "./RexettMarquee";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FaRegCircleCheck } from "react-icons/fa6";
+import { FaPencil, FaRegCircleCheck, FaTrash } from "react-icons/fa6";
 import { RiChat3Line } from "react-icons/ri";
 import devImg from '../../assets/img/user-img.jpg';
 import Calendar from 'react-calendar';
@@ -38,6 +38,7 @@ import { TbCalendarShare } from "react-icons/tb";
 import { TiWeatherSunny } from "react-icons/ti";
 import { TbArrowBarToLeft } from "react-icons/tb";
 import AddUserConversation from "../common/Modals/AddUsers";
+import DeleteToDo from "../common/Modals/DeleteToDo";
 
 const clientName = localStorage
   .getItem("userName")
@@ -211,7 +212,15 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     showAddUserConversation(false);
   }
 
-  // console.log(routePath(role),"routePath(isSingleJob)")
+  const [deletetodo, showDeletetodo] = useState(false);
+  const handleShowDeleteToDo = () => {
+    showDeletetodo(!deletetodo);
+  }
+  const handleCloseDeleteToDo = () => {
+    showDeletetodo(false);
+  }
+
+  console.log(routePath(role), "routePath(isSingleJob)")
 
   return (
     <>
@@ -407,9 +416,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                         <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                           <span className="font-14">Mark as unread</span>
                         </div>
-                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                        {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                           <span className="font-14 d-inline-block cursor-pointer" onClick={handleShowUserConversation}>Add users</span>
-                        </div>
+                        </div> */}
                         <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                           <span className="font-14 text-danger">Leave conversation</span>
                         </div>
@@ -550,26 +559,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                   <Form.Control type="text" placeholder="Search here..." className="common-field font-14 mb-2" />
                 </div>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="all-message">
-                  <div className="d-flex justify-content-center">
-                    <Nav variant="pills" className="application-pills message-pills">
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="all-message" className="application-link">All</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="client-message" className="application-link">Clients</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="devs-message" className="application-link">Devs</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="team-members" className="application-link">Team Members</Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                  </div>
                   <Tab.Content>
                     <Tab.Pane eventKey="all-message" className="pt-3 pb-4">
                       <Tab.Container id="left-tabs-example" defaultActiveKey="all-in-message">
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex">
                           <Nav variant="pills" className="application-pills message-info-pills">
                             <Nav.Item className="application-item">
                               <Nav.Link eventKey="all-in-message" className="application-link inner_tab_link">All</Nav.Link>
@@ -578,16 +571,13 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                               <Nav.Link eventKey="unread-all-message" className="application-link inner_tab_link">Unread</Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="application-item">
-                              <Nav.Link eventKey="unans-all-message" className="application-link inner_tab_link">Unanswered</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item className="application-item">
                               <Nav.Link eventKey="archieve-all-messages" className="application-link inner_tab_link">Archieve</Nav.Link>
                             </Nav.Item>
                           </Nav>
                         </div>
                         <Tab.Content>
                           <Tab.Pane eventKey="all-in-message" className="mt-2">
-                            <div className="chat-profile-wrapper position-relative py-2 px-3" onClick={handleChatProfileClick}>
+                            <div className={messageWrapperVisible ? "chat-profile-wrapper position-relative active-chat py-2 px-3" : "chat-profile-wrapper position-relative py-2 px-3"} onClick={handleChatProfileClick}>
                               <span className="more-chat-options">
                                 <Dropdown className="assign-dropdown">
                                   <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
@@ -603,9 +593,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                                       <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                                         <span className="font-14">Reassign user</span>
                                       </div>
-                                      <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                      {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                                         <span className="font-14 d-inline-block cursor-pointer" onClick={handleShowUserConversation}>Add users</span>
-                                      </div>
+                                      </div> */}
                                       <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                                         <span className="font-14">Archieve</span>
                                       </div>
@@ -641,7 +631,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
         <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
           <div className="d-flex align-items-center gap-2">
             <Offcanvas.Title>
-              To Do List
+              To do list
             </Offcanvas.Title>
             <div className="d-flex align-items-center gap-1">
               <Dropdown className="d-inline mx-2" autoClose="outside">
@@ -699,7 +689,15 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                     <span className="font-14 fw-semibold">0/3</span>
                   </div>
                   <div className="mb-3">
-                    <div className="todo-wrapper mb-3">
+                    <div className="todo-wrapper position-relative mb-3">
+                      <div className="todo-option">
+                        <Button variant="transparent" className="shadow-none">
+                          <FaPencil />
+                        </Button>
+                        <Button variant="transparent" onClick={handleShowDeleteToDo} className="shadow-none text-danger">
+                          <FaTrash />
+                        </Button>
+                      </div>
                       <div className="d-flex align-items-start gap-2">
                         <div>
                           <Form.Check type="checkbox" className="checkbox-custom" />
@@ -716,7 +714,15 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="todo-wrapper mb-3">
+                    <div className="todo-wrapper position-relative mb-3">
+                      <div className="todo-option">
+                        <Button variant="transparent" className="shadow-none">
+                          <FaPencil />
+                        </Button>
+                        <Button variant="transparent" onClick={handleShowDeleteToDo} className="shadow-none text-danger">
+                          <FaTrash />
+                        </Button>
+                      </div>
                       <div className="d-flex align-items-start gap-2">
                         <div>
                           <Form.Check type="checkbox" className="checkbox-custom" />
@@ -755,7 +761,15 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                     <span className="font-14 fw-semibold">Tomorrow</span>
                     <span className="font-14 fw-semibold">1</span>
                   </div>
-                  <div className="todo-wrapper mb-2">
+                  <div className="todo-wrapper position-relative mb-2">
+                    <div className="todo-option">
+                      <Button variant="transparent" className="shadow-none">
+                        <FaPencil />
+                      </Button>
+                      <Button variant="transparent" onClick={handleShowDeleteToDo} className="shadow-none text-danger">
+                        <FaTrash />
+                      </Button>
+                    </div>
                     <div className="d-flex align-items-start gap-2">
                       <div>
                         <Form.Check type="checkbox" className="checkbox-custom" />
@@ -1014,6 +1028,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       </Offcanvas>
       <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
       <AddUserConversation show={adduserconversation} handleClose={handleCloseUserConversation} />
+      <DeleteToDo show={deletetodo} handleClose={handleCloseDeleteToDo} />
     </>
   );
 };

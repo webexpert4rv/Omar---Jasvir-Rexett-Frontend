@@ -6273,6 +6273,7 @@ input[type="radio"]:checked {
 }
 
 .todo-wrapper {
+    position: relative;
     background-color: #f7f7f7;
     border-radius: 10px;
     padding: 15px;
@@ -6717,6 +6718,7 @@ input[type="radio"]:checked {
     cursor: pointer;
     border-radius: 6px;
     transition: .3s ease;
+    border: 1px solid transparent;
 }
 
 .chat-profile-img {
@@ -8222,6 +8224,11 @@ select.apply-field
 {
     background-color: #f7f7f7;
 }
+.chat-profile-wrapper.active-chat
+{
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+}
 .template-check label
 {
     gap: 10px;
@@ -8256,6 +8263,110 @@ select.apply-field
     border-radius: 20px;
     text-align: center;
     cursor: pointer;
+}
+.candidate-form
+{
+    max-height: 550px;
+    overflow: auto;
+}
+.step-count
+{
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid #037563;
+    color: #037563;
+    margin-bottom: 7px;
+}
+.step-countbx.active .step-count
+{
+    background-color: #037563;
+    color: #fff;
+}
+.step-countbx.active
+{
+    color: #037563;
+}
+.avatar-company
+{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.primary-checkbox input
+{
+    width: 18px;
+    height: 18px;
+    margin-top: 0px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: none !important;
+    background-color: #ccc;
+}
+.primary-checkbox input:checked
+{
+    background-color: #037563;
+}
+.assign-table
+{
+    max-height: 400px;
+    overflow: auto;
+}
+.assign-table thead
+{
+    position: sticky;
+    top: 0;
+}
+.todo-option
+{
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .05);
+    border-radius: 7px;
+    border: 1px solid #ccc;
+    padding: 4px 0;
+    display: none;
+}
+.todo-wrapper:hover .todo-option
+{
+    display: inline-flex;
+}
+.todo-option button
+{
+    min-width: 42px;
+    padding: 2px 10px;
+    text-align: center;
+    border: none;
+    border-radius: 0px;
+}
+.todo-option button:not(:last-child)
+{
+    border-right: 1px solid #ccc;
+}
+.delete-main-btn
+{
+    display: inline-block;
+    padding: 7px 19px;
+    color: var(--white) !important;
+    background-color: #d0021b !important;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 400;
+    border: 1px solid #d0021b !important;
+    outline: none;
+    transition: .4s ease;
+}
+.delete-main-btn:hover
+{
+    color: #d0021b !important;
+    background-color: transparent !important;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
@@ -8580,6 +8691,15 @@ select.apply-field
     {
         width: 80px;
         height: 80px;
+    }
+    .sidebar.collapse-active .dashboard-link
+    {
+        width: 41px;
+        padding-left: 11px;
+    }
+    .sidebar.collapse-active .sidebar-logo img
+    {
+        max-width: 60px;
     }
 }
 
