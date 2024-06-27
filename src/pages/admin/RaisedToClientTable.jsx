@@ -35,7 +35,7 @@ const RaisedToClientTable = ({
   const toggleInvoicePaidModal = () =>
     setShowInvoicePaidModal(!showInvoicePaidModal);
   useEffect(() => {
-    // dispatch(timeReporting({}, "developer"));
+    // dispatch(timeReporting({}, "developer"));  
   }, []);
   const companyname = (
     <Tooltip id="tooltip">Aviox Technologies Pvt Ltd</Tooltip>
@@ -67,6 +67,7 @@ const RaisedToClientTable = ({
       })
     );
   };
+  console.log(expandedRow,"expandedRow");
 
   return (
     <>
@@ -231,7 +232,7 @@ const RaisedToClientTable = ({
                                 </Button>
                               </OverlayTrigger>
                             </div>
-                          </td>
+                          </td> 
                         ) : key === "project_status" ? (
                           <td className="time-table-data text-start">
                             {
