@@ -8,7 +8,7 @@ import NewPermissions from "./Modals/NewPermissions";
 import NewRoles from "./Modals/NewRoles";
 import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
-import { FaEye, FaTrashCan } from "react-icons/fa6";
+import { FaEye, FaRotateRight, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
 import { TiUserAdd } from "react-icons/ti";
 import AssignChat from "./Modals/AssignChat";
@@ -50,13 +50,13 @@ const RolesPermission = () => {
 
     const [assignchat, showAssignChat] = useState(false);
     const handleShowAssignChat = () => {
-      showAssignChat(!assignchat);
+        showAssignChat(!assignchat);
     }
     const handleCloseAssignChat = () => {
-      showAssignChat(false);
+        showAssignChat(false);
     }
     const assignEmployeeText = (
-      <Tooltip>Assign Chat</Tooltip>
+        <Tooltip>Assign Chat</Tooltip>
     )
 
     const action_application = (
@@ -101,11 +101,14 @@ const RolesPermission = () => {
     const disableProfile = (
         <Tooltip>Disable Account</Tooltip>
     )
+    const reassignEmployee = (
+        <Tooltip>Reassign Chat</Tooltip>
+    )
     return (
         <>
             <div className="card-box">
                 <div className="border-bottom-grey pb-3 mb-4">
-                    <h2 className="section-head border-0 mb-3 pb-0">Roles & Permissions</h2>
+                    <h2 className="section-head border-0 mb-3 pb-0">Employees & Permissions</h2>
                     <p className="text-grey font-14 mb-0">Managing roles and permissions is essential for maintaining security and organization within your platform. By defining roles and assigning permissions, you can control access to various features and ensure that users have the appropriate level of access based on their responsibilities.</p>
                 </div>
                 <Tab.Container
@@ -158,10 +161,18 @@ const RolesPermission = () => {
                                                 <td>
                                                     <div>
                                                         <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow">
+                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow mb-1">
                                                                 <TiUserAdd />
                                                             </Button>
                                                         </OverlayTrigger>
+                                                        <span className="associate-text d-inline-flex align-items-center gap-2">
+                                                            <span className="associate">3 chats assigned</span>
+                                                            <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
+                                                                <span onClick={handleShowAssignChat} className="reschedule-btn flex-none">
+                                                                    <FaRotateRight />
+                                                                </span>
+                                                            </OverlayTrigger>
+                                                        </span>
                                                     </div>
                                                 </td>
                                                 <td className="align-middle">
@@ -344,10 +355,18 @@ const RolesPermission = () => {
                                                 <td>
                                                     <div>
                                                         <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow">
+                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow mb-1">
                                                                 <TiUserAdd />
                                                             </Button>
                                                         </OverlayTrigger>
+                                                        <span className="associate-text d-inline-flex align-items-center gap-2">
+                                                            <span className="associate">3 chats assigned</span>
+                                                            <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
+                                                                <span onClick={handleShowAssignChat} className="reschedule-btn flex-none">
+                                                                    <FaRotateRight />
+                                                                </span>
+                                                            </OverlayTrigger>
+                                                        </span>
                                                     </div>
                                                 </td>
                                                 <td className="align-middle">

@@ -6126,6 +6126,7 @@ input[type="radio"]:checked {
 }
 
 .todo-wrapper {
+    position: relative;
     background-color: #f7f7f7;
     border-radius: 10px;
     padding: 15px;
@@ -8173,6 +8174,53 @@ select.apply-field
     position: sticky;
     top: 0;
 }
+.todo-option
+{
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .05);
+    border-radius: 7px;
+    border: 1px solid #ccc;
+    padding: 4px 0;
+    display: none;
+}
+.todo-wrapper:hover .todo-option
+{
+    display: inline-flex;
+}
+.todo-option button
+{
+    min-width: 42px;
+    padding: 2px 10px;
+    text-align: center;
+    border: none;
+    border-radius: 0px;
+}
+.todo-option button:not(:last-child)
+{
+    border-right: 1px solid #ccc;
+}
+.delete-main-btn
+{
+    display: inline-block;
+    padding: 7px 19px;
+    color: var(--white) !important;
+    background-color: #d0021b !important;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 400;
+    border: 1px solid #d0021b !important;
+    outline: none;
+    transition: .4s ease;
+}
+.delete-main-btn:hover
+{
+    color: #d0021b !important;
+    background-color: transparent !important;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -8494,6 +8542,15 @@ select.apply-field
     {
         width: 80px;
         height: 80px;
+    }
+    .sidebar.collapse-active .dashboard-link
+    {
+        width: 41px;
+        padding-left: 11px;
+    }
+    .sidebar.collapse-active .sidebar-logo img
+    {
+        max-width: 60px;
     }
 }
 
