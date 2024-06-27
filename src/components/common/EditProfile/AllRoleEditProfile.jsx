@@ -34,7 +34,7 @@ import { getCurrentRoleEndPoint, updateCurrentRoleEndPoint } from "./helper";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import CommonReactSelect from "../../atomic/CommonReactSelect";
-import { updateAdminProfile } from "../../../redux/slices/adminDataSlice";
+import { getConfigDetails, getUploadFile, updateAdminProfile } from "../../../redux/slices/adminDataSlice";
 
 const AllRoleEditProfile = ({ role }) => {
   const userId = localStorage.getItem("userId");
@@ -105,6 +105,12 @@ const AllRoleEditProfile = ({ role }) => {
     }
   }, [watch("state")]);
 
+  // useEffect(()=>{
+  //   if(role==="admin"){
+  //     dispatch(getConfigDetails())
+  //   }
+  // },[role ,dispatch])
+
   useEffect(() => {
     if (userProfileDetails?.data) {
       setValue("name", userProfileDetails?.data?.name);
@@ -112,11 +118,11 @@ const AllRoleEditProfile = ({ role }) => {
       setValue("phone_number", userProfileDetails?.data?.phone_number);
       setValue("address", userProfileDetails?.data?.address);
       setValue("address_2", userProfileDetails?.data?.address_2);
-      setValue("city", {label:userProfileDetails?.data?.city,value:null});
-      setValue("country", {label:userProfileDetails?.data?.country,value:null});
+      setValue("city", { label: userProfileDetails?.data?.city, value: null });
+      setValue("country", { label: userProfileDetails?.data?.country, value: null });
       setValue("passcode", userProfileDetails?.data?.passcode);
-      setValue("time_zone", {label:userProfileDetails?.data?.time_zone,value:userProfileDetails?.data?.time_zone});
-      setValue("state", {label:userProfileDetails?.data?.state,value:null});
+      setValue("time_zone", { label: userProfileDetails?.data?.time_zone, value: userProfileDetails?.data?.time_zone });
+      setValue("state", { label: userProfileDetails?.data?.state, value: null });
       if (userProfileDetails?.data?.is_2FA_enabled) {
         setValue("is_2FA_enabled", userProfileDetails?.data?.is_2FA_enabled);
       } else {
@@ -126,8 +132,22 @@ const AllRoleEditProfile = ({ role }) => {
   }, [userProfileDetails]);
 
 
-  const onSubmit = (values) => {
-   let currentRoleUpdateProfile= updateCurrentRoleEndPoint(role)
+  const onSubmit = async (values) => {
+    if (role === "admin") {
+      let data = {
+        ...values,
+        company_name: values.name,
+        company_address: values?.address,
+        company_tex_id: values?.tax_id,
+        company_contact_number: values?.phone_number,
+        company_email: values?.email,
+        company_time_zone: values?.time_zone,
+      }
+      await dispatch(getUploadFile(data))
+      dispatch(getConfigDetails())
+
+    }else{
+    let currentRoleUpdateProfile = updateCurrentRoleEndPoint(role)
     let formData = new FormData();
     let fileData = new FormData();
     for (const key in values) {
@@ -140,47 +160,44 @@ const AllRoleEditProfile = ({ role }) => {
         ...values,
         user_id: userId,
         country: values?.country?.label,
-        country_iso_code:values?.country.value,
+        country_iso_code: values?.country.value,
         state: values?.state?.label,
-        state_iso_code:values?.state?.value,
+        state_iso_code: values?.state?.value,
         time_zone: values?.time_zone?.label,
-        city :values?.city?.label
+        city: values?.city?.label
       };
       // dispatch(updateDeveloperProfile(data));
       // dispatch(updateAdminProfile(data))
-      dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
+      dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
     } else {
       dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-          let data = {
-            ...values,
-            profile_picture: url,
-            user_id: userId,
-            country: values?.country?.label,
-            country_iso_code:values?.country.value,
-            state: values?.state?.label,
-            state_iso_code:values?.state?.value,
-            time_zone: values?.time_zone?.label,
-            city :values?.city?.label
-          };
-          // dispatch(updateDeveloperProfile(data));
-          // dispatch(updateAdminProfile(data))
-          // dispatch(updateClientProfile(data));
-          dispatch(updateProfileDetails(data,currentRoleUpdateProfile))
-        })
+        let data = {
+          ...values,
+          profile_picture: url,
+          user_id: userId,
+          country: values?.country?.label,
+          country_iso_code: values?.country.value,
+          state: values?.state?.label,
+          state_iso_code: values?.state?.value,
+          time_zone: values?.time_zone?.label,
+          city: values?.city?.label
+        }
+        dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
+      })
       );
     }
   };
+}
   const validatePassword = (value) => {
     if (value === "") {
-      return true; // Password is not required, so return true if empty
+      return true; 
     } else {
-      // Check if password matches the pattern
       const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
       if (!pattern.test(value)) {
         return "Password must contain at least a symbol, upper and lower case letters and a number";
       }
     }
-    return true; // Password meets the criteria
+    return true; 
   };
 
   const handleFileChange = (event) => {
@@ -247,13 +264,15 @@ const AllRoleEditProfile = ({ role }) => {
                   </Row>
                 </Form.Group>
               </Col>
-              <Col md="12">
+              {role === 'admin' ? <Col md="12">
+                <h5 className="fw-semibold mb-3">Company Information</h5>
+              </Col> : <Col md="12">
                 <h5 className="fw-semibold mb-3">Personal Information</h5>
-              </Col>
+              </Col>}
               <Col md="6">
                 <div className="inner-form">
                   <CommonInput
-                    label={t("clientName") + " *"}
+                    label={t("name") + " *"}
                     name="name"
                     control={control}
                     rules={{ required: "Name is required" }}
@@ -323,8 +342,8 @@ const AllRoleEditProfile = ({ role }) => {
                   <CommonAutocomplete
                     label={t("address") + " 2"}
                     name="address_2"
-                    control={control} 
-                    rules={{ required: false }}  
+                    control={control}
+                    rules={{ required: false }}
                     error={errors.address_2}
                     apiKey={GOOGLE_MAP_API_KEY}
                     onPlaceSelected={(place) => {
@@ -337,6 +356,29 @@ const AllRoleEditProfile = ({ role }) => {
                     options={{ types: ["establishment", "geocode"] }}
                   />
                 </div>
+              
+              {role === "admin" &&
+                <>
+                    <div>
+                      <CommonInput
+                        label={t("Tax ID") + " *"}
+                        name="tax_id"
+                        control={control}
+                        rules={{ required: "Tax Id is required" }}
+                        error={errors.tax_id}
+                      />
+                    </div>
+                    <div >
+                      <CommonInput
+                        label={t("CIN Number") + " *"}
+                        name="cin_number"
+                        control={control}
+                        rules={{ required: "CIN Number is required" }}
+                        error={errors.cin_number}
+                      />
+                    </div>
+                </>
+              }
               </Col>
               <Col md="6">
                 <div>
@@ -493,9 +535,8 @@ const AllRoleEditProfile = ({ role }) => {
           handleClose={closeConfirmationModal}
           handleAction={handleTwoFaAction}
           smallLoader={smallLoader}
-          text={`Are you sure, you want to ${
-            twoFactorStatus ? "enable" : "disable"
-          } two factor authentication`}
+          text={`Are you sure, you want to ${twoFactorStatus ? "enable" : "disable"
+            } two factor authentication`}
         />
       )}
     </>

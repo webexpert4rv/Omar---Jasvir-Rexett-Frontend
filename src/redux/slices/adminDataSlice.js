@@ -29,7 +29,7 @@ const initialAdminData = {
     developerTimeReport:[],
     invoiceTotalPage : null,
     timeReportingDetailTotalPage:null,
-    configDetails: []
+    configDetails: {}
 }
 
 export const adminDataSlice = createSlice({
@@ -43,9 +43,13 @@ export const adminDataSlice = createSlice({
         setBtnLoader: (state, action) => {
             state.smallLoader = true;
         },
+        setApprovedLoader: (state, action) => {
+            state.approvedLoader = true;
+        },
         setSuccessAdminData: (state, action) => {
             state.smallLoader = false;
             state.screenLoader = false;
+            state.approvedLoader = false;
         },
 
         setSuccessApplicationList: (state, action) => {
@@ -96,9 +100,6 @@ export const adminDataSlice = createSlice({
             state.smallLoader = false;
             state.screenLoader = false;
             state.approvedLoader = false;
-        },
-        setApprovedLoader: (state, action) => {
-            state.approvedLoader = true;
         },
         setSuggestedDeveloper: (state, action) => {
             let recomnd = action.payload?.recommended_developers?.map((item) => { return { ...item, recommed: true } })
@@ -706,18 +707,17 @@ export function getConfigDetails() {
     return async(dispatch)=>{
         dispatch(setScreenLoader())
         try{
-            let result = await clientInstance.get(`/admin/configuration`)
-            console.log(result.data,"result")
+            let result = await clientInstance.get(`/common/configuration`)
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
-                dispatch(setConfigDetails(result.data))
+                dispatch(setConfigDetails(result.data.data))
             }
         }catch(error){
             // const message = error?.response.data.message || "Something went wrong";
             // toast.error(message, { position: "top-center" })
             // dispatch(setFailAdminData())
-            console.log(error,"configgerror")
+            console.log(error,"error")
 
         }
     }
@@ -725,9 +725,12 @@ export function getConfigDetails() {
 
 export function getUploadFile(payload){
     return async (dispatch)=>{
+        dispatch(setBtnLoader())
+        dispatch(setApprovedLoader())
+
         try{
             let result = await clientInstance.patch(`admin/configuration` , {...payload})
-            console.log(result.data,"result")
+            // console.log(result.data,"result")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())

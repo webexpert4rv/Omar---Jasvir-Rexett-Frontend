@@ -20,9 +20,18 @@ import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
+import { lazy } from "react";
+import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
+import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
+import RolesPermission from "./pages/admin/RolesPermissions";
+import InterviewListing from "./pages/admin/InterviewListing";
+import InterviewDetail from "./pages/admin/InterviewDetail";
+import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
+;
 
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
@@ -458,6 +467,12 @@ export const route = [
     isVendor: true,
     private: true,
   },
+  {
+    path: "/vendor-time-detail",
+    element: <VendorTimeDetail />,
+    isVendor: true,
+    private: true,
+  },
   // <------------------------------------------------------------------------------! Vendor Flow !-----------------------------------------------------------------------------?
 
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
@@ -479,12 +494,12 @@ export const route = [
     isAdmin: true,
     private: true,
   },
-  {
-    path: "/admin/edit-admin-profile",
-    element: <EditAdminProfile />,
-    isAdmin: true,
-    private: true,
-  },
+  // {
+  //   path: "/admin/edit-admin-profile",
+  //   element: <EditAdminProfile />,
+  //   isAdmin: true,
+  //   private: true,
+  // },
   {
     path: "/admin/job-post",
     element: <AdminJobPost />,

@@ -17,6 +17,9 @@ import PublicLayout from './layout/PublicLayout';
 import NotFound from './pages/views/NotFound';
 import JoiningVideo from './pages/admin/JoiningVideo';
 import VideoCallScreen from './pages/admin/videoCall';
+import UnregisteredForm from './pages/admin/UnregisteredForm';
+import ScreeningDetails from './pages/admin/StepForm/ScreeningDetails';
+import ThankYou from './pages/admin/StepForm/ThankYou';
 
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
@@ -71,6 +74,9 @@ function App() {
              <Route path="*" element={<NotFound />} />
              <Route path="/join-meeting" element={<JoiningVideo />} />
              <Route path="/video-screen" element={<VideoCallScreen />} />
+             <Route path="/apply-job" element={<UnregisteredForm />} />
+             <Route path="/screening-details" element={<ScreeningDetails />} />
+             <Route path="/thank-you" element={<ThankYou />} />
         </Routes>
         </Router>
       </Suspense>

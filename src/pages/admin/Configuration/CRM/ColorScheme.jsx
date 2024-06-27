@@ -1,50 +1,128 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Form } from 'react-bootstrap'
 import companyLogoImg from '../../../../assets/img/rexett-logo-white.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { getConfigDetails, getUploadFile } from '../../../../redux/slices/adminDataSlice';
+import { getConfig } from '@testing-library/react';
 
 
-function ColorScheme({ previewUrl }) {
-    const [selectedColorType, setSelectedColorType] = useState('gradient-sidecolor');
-    console.log(selectedColorType, "selectedColorType")
+function ColorScheme({ previewUrl ,setPreviewUrl}) {
+    const [selectedColorType, setSelectedColorType] = useState("gradient-sidecolor");
+    const [colorValue, setColorValue] = useState('');
+    const [newColorValue, setNewColorValue] = useState('')
+    const [sideBarColor ,setSideBarColor] = useState('')
+    const [solidColor, setSolidColor] = useState('')
+    const [primaryColor , setPrimaryColor] = useState('')
+    const [headingColor , setHeadingColor] = useState('')
+    const [bodyTextColor , setBodyTextColor] = useState('')
+    const dispatch = useDispatch()
+    const { configDetails } = useSelector(state => state.adminData)
 
-    const [colorValue, setColorValue] = useState('#000000'); 
+    console.log(colorValue, "colorValue")
+    console.log(newColorValue, "newColorValue")
+    console.log(solidColor,"solidColor")
 
-    const handleColorInputChange = (event) => {
-        const newColorValue = event.target.value;
-        setColorValue(newColorValue);
-    };
+    useEffect(()=>{
+        setColorValue('')
+        setNewColorValue('')
+        setSolidColor('')
+        setSelectedColorType("gradient-sidecolor")
+    },[setColorValue,setNewColorValue,setSolidColor,setSelectedColorType])
+  
+
+    const handleColorChange = (e)=>{
+        setColorValue(e.target.value)  
+    }
+    const handleNewColorChange = (e)=>{
+        setNewColorValue(e.target.value)  
+    }
+    const handleSolidColorChange =(e)=>{
+        setSolidColor(e.target.value)
+    }
+    const handleSideBarChange = (e)=>{
+        setSideBarColor(e.target.value)
+    }
+    const handlePrimaryColorChange = (e)=>{
+        setPrimaryColor(e.target.value)
+    }
+    const handleHeadingColorChange = (e)=>{
+        setHeadingColor(e.target.value)
+    }
+    const handleBodyTextColorChange=(e)=>{
+        setBodyTextColor(e.target.value)
+
+    }
 
 
-    console.log(colorValue,"colorValue")
-
-    const handleChangeText = (event) => {
-        console.log(event.target.value, "eventttt")
-
-        const elementId = event.target.id
-        const colorType = elementId.split('-')[1];
-
-        switch (colorType) {
-            case 'color1':
-                console.log("Color 1 changed:", event.target.value)
-                // Perform actions for color1 change
-                break;
-            case 'color2':
-                console.log("Color 2 changed:", event.target.value)
-                // Perform actions for color2 change
-                break;
-            default:
-                break;
+    const handleColorBlur = async (e) => {
+        e.preventDefault()
+        setColorValue(e.target.value)
+        let data = {
+            crm_sidebar_bg_gradient_color_1: colorValue,
+            crm_sidebar_bg_solid_color:"",
         }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
     }
 
-    const handleColorChange = (event) => {
-        console.log(event.target.value, "colorChange")
+    const handleSecondColorBlur = async (e) => {
+        setNewColorValue(e.target.value)
+        setPreviewUrl(e.target.value)
+        let data = {
+            crm_sidebar_bg_gradient_color_2: newColorValue,
+            crm_sidebar_bg_solid_color:"",
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
+    }
+    const handleSolidColorBlur = async(e) => {
+        setSolidColor(e.target.value)
+        let data = {
+            crm_sidebar_bg_solid_color: solidColor,
+            crm_sidebar_bg_gradient_color_1: "",
+            crm_sidebar_bg_gradient_color_2: ""
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
+    }
+    const handleSideBarBlur= async(e)=>{
+        let data = {
+            crm_sidebar_link_color: sideBarColor
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
+    }
+    const handlePrimaryColorBlur= async(e)=>{
+        let data = {
+            crm_primary_color: primaryColor
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
+    }
+    const handleHeadingColorBlur= async(e)=>{
+        let data = {
+            crm_heading_color: headingColor
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
+    }
+    const handleBodyTextColorBlur=async(e)=>{
+        let data = {
+            crm_body_text_color: bodyTextColor
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
 
     }
+    
+    
+
+    
+
+
 
 
     const handleColorTypeChange = (event) => {
-        console.log(event.target.id, "eventcolortype")
         setSelectedColorType(event.target.id);
     };
 
@@ -94,23 +172,46 @@ function ColorScheme({ previewUrl }) {
                         <div className="gradient-color-wrapper d-flex align-items-center gap-3">
                             <div>
                                 <Form.Label className="font-14">1st Color</Form.Label>
-                                <div className="common-field color-field-wrapper">
-                                    <Form.Control type="color" className="color-field" />
-                                    {/* <Form.Control type="text" placeholder="#000000" className="colortext-field" id="gradient-sidecolor-color1" /> */}
+                                <div
+                                    className="common-field color-field-wrapper"
+                                >
+                                    <Form.Control
+                                        type="color"
+                                        className="color-field"
+                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_1 : colorValue}
+                                        onBlur={handleColorBlur}
+                                        onChange = {handleColorChange}
+
+                                    />
                                     <Form.Control
                                         type="text"
                                         placeholder="#000000"
                                         className="colortext-field"
-                                        value={colorValue}
-                                        onChange={handleColorInputChange}
+                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_1 : colorValue}
+                                       
+
                                     />
                                 </div>
                             </div>
                             <div>
                                 <Form.Label className="font-14">2nd Color</Form.Label>
                                 <div className="common-field color-field-wrapper">
-                                    <Form.Control type="color" className="color-field" />
-                                    <Form.Control type="text" placeholder="#000000" className="colortext-field" id="gradient-sidecolor-color2" />
+                                    <Form.Control
+                                        type="color"
+                                        className="color-field"
+                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : newColorValue}
+                                        onBlur={handleSecondColorBlur}
+                                        onChange = {handleNewColorChange}
+                                    />
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="#000000"
+                                        className="colortext-field"
+                                        value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : newColorValue}
+                                       
+
+                                    />
+
                                 </div>
                             </div>
                         </div>
@@ -119,27 +220,41 @@ function ColorScheme({ previewUrl }) {
                     {selectedColorType === 'solid-sidecolor' && (
                         <div className="solid-color-wrapper">
                             <div className="common-field color-field-wrapper">
-                                <Form.Control type="color" className="color-field" />
-                                <Form.Control type="text" placeholder="#000000" className="colortext-field shadow-none" />
+                                <Form.Control
+                                    type="color"
+                                    className="color-field"
+                                    value={configDetails?.crm_sidebar_bg_solid_color ? configDetails?.crm_sidebar_bg_solid_color : solidColor}
+                                    onBlur={handleSolidColorBlur}
+                                    onChange = {handleSolidColorChange} 
+                                    
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="#000000"
+                                    className="colortext-field"
+                                    value={configDetails?.crm_sidebar_bg_solid_color ? configDetails?.crm_sidebar_bg_solid_color : solidColor}
+                                                              
+                              />
+
                             </div>
                         </div>
                     )}
                 </div>
             </Col>
-            <Col md={6} className="mb-4">
-                <div className="preview-company-wrapper">
-                    <div className="position-relative">
-                        <div className="preview-sidebar">
+            <Col md={6} className="mb-4" >
+                <div className="preview-company-wrapper" >
+                    <div className="position-relative"  >
+                        <div className="preview-sidebar"  >
                             <div>
                                 {previewUrl ? (
-                                    <img src={previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
+                                    <img src={companyLogoImg} className="preview-company-logo"  alt="Company Logo Preview" />
                                 ) : (
                                     <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
                                 )}
                             </div>
-                            <div className="skeleton-container mt-4">
+                            <div className="skeleton-container mt-4"  >
                                 {[...Array(4)].map((_, index) => (
-                                    <div key={index} className="mb-3 d-flex align-items-center gap-3">
+                                    <div key={index} className="mb-3 d-flex align-items-center gap-3"  >
                                         <div className="skeleton-circle"></div>
                                         <div className="skeleton-bar"></div>
                                     </div>
@@ -155,8 +270,21 @@ function ColorScheme({ previewUrl }) {
                     <p className="customization-text">Choosing a distinctive and readable color for your sidebar links helps users easily identify and interact with menu items.</p>
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
-                            <Form.Control type="color" className="color-field" />
-                            <Form.Control type="text" placeholder="#000000" className="colortext-field shadow-none" />
+                            <Form.Control
+                                    type="color"
+                                    className="color-field"
+                                    value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor}
+                                    onBlur={handleSideBarBlur}
+                                    onChange = {handleSideBarChange} 
+                                    
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="#000000"
+                                    className="colortext-field"
+                                    value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor}
+                                                              
+                              />
                         </div>
                     </div>
                 </div>
@@ -166,16 +294,16 @@ function ColorScheme({ previewUrl }) {
                     <div className="position-relative">
                         <div className="preview-sidebar">
                             <div>
-                                {/* {previewUrl ? (
-                                                            <img src={previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
+                                {sideBarColor ? (
+                                                            <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
                                                         ) : (
                                                             <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
-                                                        )} */}
+                                                        )}
                             </div>
                             <div className="skeleton-container mt-4">
                                 {[...Array(4)].map((_, index) => (
                                     <div key={index} className="mb-3 d-flex align-items-center gap-3">
-                                        <div className="skeleton-circle"></div>
+                                        <div className="skeleton-circle"  style={{ backgroundColor: configDetails?.crm_sidebar_link_color  ? configDetails?.crm_sidebar_link_color :sideBarColor  }}></div>
                                         <p className="preview-sidelink mb-0">Link {index + 1}</p>
                                     </div>
                                 ))}
@@ -190,8 +318,21 @@ function ColorScheme({ previewUrl }) {
                     <p className="customization-text">This Primary color will be used for key elements such as buttons, links, highlights and tabs ensuring a consistent and visually appealing interface.</p>
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
-                            <Form.Control type="color" className="color-field" />
-                            <Form.Control type="text" placeholder="#000000" className="colortext-field shadow-none" />
+                        <Form.Control
+                                    type="color"
+                                    className="color-field"
+                                    value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : primaryColor}
+                                    onBlur={handlePrimaryColorBlur}
+                                    onChange = {handlePrimaryColorChange} 
+                                    
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="#000000"
+                                    className="colortext-field"
+                                    value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : primaryColor}
+                                                              
+                              />
                         </div>
                     </div>
                 </div>
@@ -199,11 +340,11 @@ function ColorScheme({ previewUrl }) {
             <Col md={6} className="mb-4">
                 <div className="preview-primary-color">
                     <div className="mb-3">
-                        <Button variant="transparent" className="preview-color-btn">Button</Button>
+                        <Button variant="transparent" className="preview-color-btn" style={{backgroundColor : configDetails?.crm_primary_color}}>Button</Button>
                     </div>
                     <div className="tabs-preview-color">
-                        <Button variant="transparent" className="preview-tab active">Tab 1</Button>
-                        <Button variant="transparent" className="preview-tab">Tab 2</Button>
+                        <Button variant="transparent" className="preview-tab active" style={{backgroundColor : configDetails?.crm_primary_color}}>Tab 1</Button>
+                        <Button variant="transparent" className="preview-tab" >Tab 2</Button>
                         <Button variant="transparent" className="preview-tab">Tab 3</Button>
                     </div>
                 </div>
@@ -215,14 +356,27 @@ function ColorScheme({ previewUrl }) {
                     <p className="customization-text">The heading color is a crucial aspect of your site's design, as it affects the readability and visual impact of your content.</p>
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
-                            <Form.Control type="color" className="color-field" />
-                            <Form.Control type="text" placeholder="#000000" className="colortext-field shadow-none" />
+                        <Form.Control
+                                    type="color"
+                                    className="color-field"
+                                    value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}
+                                    onBlur={handleHeadingColorBlur}
+                                    onChange = {handleHeadingColorChange} 
+                                    
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="#000000"
+                                    className="colortext-field"
+                                    value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}
+                                                              
+                              />
                         </div>
                     </div>
                 </div>
             </Col>
             <Col md={6} className="mb-4">
-                <h2 className="preview-heading-color">Heading</h2>
+                <h2 className="preview-heading-color" style={{color : configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}}>Heading</h2>
             </Col>
             <Col md={6} className="mb-4">
                 <div>
@@ -230,14 +384,27 @@ function ColorScheme({ previewUrl }) {
                     <p className="customization-text">Choose a color that provides good contrast with your background to ensure your content is easy to read and visually appealing.</p>
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
-                            <Form.Control type="color" className="color-field" />
-                            <Form.Control type="text" placeholder="#000000" className="colortext-field shadow-none" />
+                        <Form.Control
+                                    type="color"
+                                    className="color-field"
+                                    value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor}
+                                    onBlur={handleBodyTextColorBlur}
+                                    onChange = {handleBodyTextColorChange} 
+                                    
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="#000000"
+                                    className="colortext-field"
+                                    value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor}
+                                                              
+                              />
                         </div>
                     </div>
                 </div>
             </Col>
             <Col md={6} className="mb-4">
-                <p className="preview-text-color">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p className="preview-text-color" style={{color : configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
             </Col>
 
 

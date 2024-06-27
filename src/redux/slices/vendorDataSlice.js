@@ -347,7 +347,7 @@ export const uploadFileToS3Bucket = (payload,callback) => {
       try {
         let result = await clientFormInstance.post(`/web/upload-file/`, payload);
         callback && callback(result?.data?.data?.Location);
-        dispatch(setActionSuccessFully());
+        dispatch(setVendorSuccess())
         // toast.success("project added successfully", {
         //   position: "top-center",
         // });

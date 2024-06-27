@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 
 const Tabs = ({ handleSelect, tabText ,currentTab }) => {
-  console.log(currentTab,"currentTab")
+  // console.log(currentTab,"currentTab")
   return (
     <div>
      
