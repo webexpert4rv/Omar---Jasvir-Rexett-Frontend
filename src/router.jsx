@@ -20,6 +20,8 @@ import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
 import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
+import ForgotPassword from "./pages/Authentication/ForgotPassword";
+import ResetPassword from "./pages/Authentication/ResetPassword";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -176,6 +178,17 @@ export const route = [
     private: true,
     isClient: true,
   },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword/>,
+    public: true,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword/>,
+    public: true,
+  },
+
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
   {

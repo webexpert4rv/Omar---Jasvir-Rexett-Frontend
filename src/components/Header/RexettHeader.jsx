@@ -94,8 +94,9 @@ const RexettHeader = ({ role }) => {
   }, []);
 
   const backBtn = () => {
-    let routeName = routePath(isSingleJob);
-    navigate(routeName);
+    navigate(-1)
+    // let routeName = routePath(isSingleJob);
+    // navigate(routeName);
   };
   const todoList = (
     <Tooltip>To Do List</Tooltip>
