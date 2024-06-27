@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 const LastStep = ({ role }) => {
   const navigate = useNavigate();
-  useEffect(()=>{
+  useEffect(() => {
     // handleRedirect()
     clearStorage();
-  },[role])
+  }, [role]);
   const handleRedirect = () => {
     switch (role) {
       case "developer":
@@ -37,6 +37,8 @@ const LastStep = ({ role }) => {
 
         break;
       case "client":
+        localStorage.removeItem("clientId");
+        localStorage.removeItem("clientActiveStep");
     }
   };
   const getLastStepHeading = () => {
@@ -74,7 +76,7 @@ const LastStep = ({ role }) => {
               type="button"
               text="Back to home"
               onClick={() => {
-                clearStorage();
+                clearStorage();d
                 window.location.href = "https://www.rexett.com";
               }}
               className="main-btn outline-main-btn px-5"
