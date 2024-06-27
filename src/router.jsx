@@ -13,6 +13,7 @@ import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
 import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
+import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
 
 import { lazy } from "react";
 import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
@@ -616,6 +617,12 @@ export const route = [
   {
     path: "/admin/interview-feedback",
     element: <InterviewFeedback />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/create-message-template",
+    element: <CreateMessageTemplate />,
     isAdmin: true,
     private: true,
   },
