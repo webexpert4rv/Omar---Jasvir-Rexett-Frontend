@@ -6,12 +6,13 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 import NewPermissions from "./Modals/NewPermissions";
 import NewRoles from "./Modals/NewRoles";
-import NewUser from "./Modals/NewUser"
+// import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FaEye, FaRotateRight, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
 import { TiUserAdd } from "react-icons/ti";
 import AssignChat from "./Modals/AssignChat";
+import NewEmployee from "./Modals/NewEmployee";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
     const [newRoles, setNewRoles] = useState(false);
@@ -1081,7 +1082,7 @@ const RolesPermission = () => {
             </div>
             <NewPermissions show={newpermission} handleClose={handleCloseNewPermission} />
             <NewRoles show={newRoles} handleClose={handleCloseNewRoles} />
-            <NewUser show={newUser} handleClose={handleCloseNewUser} />
+            <NewEmployee show={newUser} handleClose={handleCloseNewUser} />
             <EditRole show={editRoleModal} handleClose={handleHideEditRole} />
             <AssignChat show={assignchat} handleClose={handleCloseAssignChat} />
         </>
