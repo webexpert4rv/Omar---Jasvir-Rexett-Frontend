@@ -101,7 +101,7 @@ const ProjectsSection = ({
         deleteDeveloperProject(id, payload, (data) => {
           setProjects(data);
           closeLoader();
-        })
+        },closeLoader)
       );
     }
   };

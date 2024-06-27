@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import sidebarLogo from "../../assets/img/rexett-logo-white.png";
-import { Link, NavLink } from "react-router-dom"; // Import NavLink instead of Link
-
+import { Link, NavLink } from "react-router-dom"; 
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaTimes } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
-const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
+   
+const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) => {
     const { t } = useTranslation();
-
+    const {configDetails} = useSelector(state=>state.adminData)
     let currentRoute= role=="client"?"/":`/${role}-login`
     
     const logout = () => {
@@ -24,12 +25,12 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
 
     return (
         <>
-            <aside className="sidebar">
+            <aside className={collapseActive ? "sidebar collapse-active" : "sidebar"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
                         <div className="sidebar-logo mt-3 mb-4">
                             <a href="https://www.rexett.com/">
-                                <img src={sidebarLogo} alt="Sidebar Logo" />
+                                <img src={configDetails?.company_logo ? configDetails?.company_logo :sidebarLogo} alt="Sidebar Logo" />
                             </a>
                         </div>
                         {sidebarItems.map((item, index) => (
@@ -39,7 +40,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
                                 className="dashboard-link"
                                 activeClassName="active"
                             >
-                                {item.icon} {t(item.text)}
+                                <span className="sidebar-icon">{item.icon}</span> <span className="sidebar-text">{t(item.text)}</span>
                             </NavLink>
                         ))}
                     </div>
@@ -50,7 +51,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
                                 className="bottom-link"
                                 activeClassName="active"
                             >
-                                <PiSignOutBold /> {t("signOut")}
+                                <span className="sidebar-icon"><PiSignOutBold /></span> <span className="sidebar-text">{t("signOut")}</span>
                             </Link>
                         </div>
                     </div>

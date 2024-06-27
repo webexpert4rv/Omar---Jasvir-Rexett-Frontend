@@ -10,10 +10,6 @@ const NewPermissions = ({ show, handleClose}) => {
                 <h3 className="popup-heading">New Permission</h3>
                 <Form>
                     <Form.Group className="mb-4">
-                        <Form.Label className="font-14 fw-medium" >Permission Name</Form.Label>
-                        <Form.Control className="common-field" placeholder="Enter permission name" />
-                    </Form.Group>
-                    <Form.Group className="mb-4">
                         <Form.Label className="font-14 fw-medium" >Permission Category</Form.Label>
                         <Form.Select className="common-field font-14">
                             <option>Select Category</option>
@@ -25,9 +21,10 @@ const NewPermissions = ({ show, handleClose}) => {
                             <option value="profile_updation">Profile Updation</option>
                         </Form.Select>
                     </Form.Group>
-                    <div className="text-center">
-                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                    </div>
+                    <Form.Group className="mb-4">
+                        <Form.Label className="font-14 fw-medium" >Permission Name</Form.Label>
+                        <Form.Control className="common-field" placeholder="Enter permission name" />
+                    </Form.Group>
                 </Form>
             </Modal.Body>
         </Modal>

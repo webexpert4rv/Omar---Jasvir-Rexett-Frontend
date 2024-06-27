@@ -1,12 +1,13 @@
 import React from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
+import EditAdminProfile from '../../EditAdminProfile'
 
 function CompanyDetails({currentTab}) {
     return (
         <div>
            {currentTab ==="third" &&
                 <div>
-                    <Row>
+                    {/* <Row>
                         <Col md={4}>
                             <Form.Label className="font-14">Company Name</Form.Label>
                             <div className="mb-4 custom-wrapper">
@@ -90,8 +91,9 @@ function CompanyDetails({currentTab}) {
                             <div className="mb-4 custom-wrapper">
                                 <Form.Control type="text" className="common-field" value="GMT(+5:30) Calcutta" readOnly />
                             </div>
-                        </Col>
-                    </Row>
+                        </Col> */}
+                    {/* </Row> */}
+                    <EditAdminProfile />
                 </div>}
         </div>
     )

@@ -80,9 +80,15 @@ const HiredDevelopers = () => {
                         <th>
                           <span>{t("email")}</span>
                         </th>
-                        {/* <th>
-                          <span>Connects</span>
-                        </th> */}
+                        <th>
+                          <span>Project start date</span>
+                        </th>
+                        <th>
+                          <span>Project name</span>
+                        </th>
+                        <th>
+                          <span>Hiring Price</span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -114,6 +120,15 @@ const HiredDevelopers = () => {
                                     {item?.developer?.email}
                                   </p>
                                 </span>
+                              </td>
+                              <td>
+                                <span><p className="designation-user color-121212 mb-0">12-05-2024</p></span>
+                              </td>
+                              <td>
+                                <span><p className="designation-user color-121212 mb-0">Build AI Bot</p></span>
+                              </td>
+                              <td>
+                                <span><p className="designation-user color-121212 mb-0">$1240.00</p></span>
                               </td>
                       
                             </tr>

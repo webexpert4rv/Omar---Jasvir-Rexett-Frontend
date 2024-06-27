@@ -51,6 +51,7 @@ const CommonInput = ({
             if (type === "radio") {
               return options.map((option, index) => (
                 <Form.Check
+                {...field}
                   key={index}
                   type="radio"
                   id={`${name}-${index}`}

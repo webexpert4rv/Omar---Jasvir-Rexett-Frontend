@@ -10,6 +10,8 @@ import CompanyDetails from "../CompanyDetails/CompanyDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfigDetails } from "../../../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../../../components/atomic/ScreenLoader";
+import MessageTemplate from "../MessageTemplate/MessageTemplate";
+import NotificationSetting from "../NotificationSettings/NotificationSetting";
 
 const Customization = () => {
     const [previewUrl, setPreviewUrl] = useState('');
@@ -46,13 +48,15 @@ const Customization = () => {
                             <div>
                                 <Row>
                                     <UploadFiles previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} />
-                                    <ColorScheme previewUrl={previewUrl} />
-                                    <Typography previewUrl={previewUrl} />
+                                    <ColorScheme previewUrl={previewUrl} setPreviewUrl={setPreviewUrl}/>
+                                    <Typography previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} />
                                 </Row>
                             </div>
                         }
                         <EmailTemplate currentTab={currentTab} previewUrl={previewUrl} />
                         <CompanyDetails currentTab={currentTab} />
+                        <MessageTemplate currentTab={currentTab} />
+                        <NotificationSetting currentTab={currentTab} />
                     </Tab.Content>
                 </Tab.Container>
             </div>

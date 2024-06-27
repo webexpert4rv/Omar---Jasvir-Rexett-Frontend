@@ -68,7 +68,9 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">{t("companyName")}</Form.Label>
+              <Form.Label className="d-flex gap-2 align-items-center">
+                {t("companyName")}
+              </Form.Label>
               <p className="common-field font-14 d-flex align-items-center gap-2">
                 {/* <img src={companyLogo} className="company-imgbx" /> */}
                 <Form.Control
@@ -157,11 +159,6 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                     apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                     debounce={1000}
                     className="common-field font-14 w-100 p-2"
-                    autocompletionRequest={
-                      {
-                        // componentRestrictions: { country: ["us"] }, // Uncomment to restrict to specific country
-                      }
-                    }
                     options={{
                       types: ["establishment", "geocode"], // Allows searching for places like buildings, landmarks, etc.
                     }}
@@ -209,14 +206,16 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">{t("jobPositions")}</Form.Label>
+              <Form.Label className="d-flex gap-2 align-items-center">
+                {t("jobPositions")}
+              </Form.Label>
               <Controller
                 name="job_positions"
                 control={control}
-                rules={{required:"Number of job position is required"}}
+                rules={{ required: "Number of job position is required" }}
                 render={({ field }) => (
                   <input
-                  {...field}
+                    {...field}
                     type="text"
                     className="common-field font-14 p-2 w-100"
                     onChange={(e) => {
@@ -241,6 +240,25 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                 <p className="error-message">{errors.job_positions?.message}</p>
               )}
             </Form.Group>
+            {/* <Form.Group className="mb-3">
+              <Form.Label className="d-flex gap-2 align-items-center">
+                {t("responseTime")}
+              </Form.Label>
+              <p className="common-field font-14 d-flex align-items-center gap-2">
+                <Form.Control
+                  type="date"
+                  {...register("response_time", {
+                    required: "Response time is required",
+                  })}
+                  min={new Date().toISOString().split("T")[0]}
+                  className="common-field font-14 p-2"
+                  placeholder="Enter response time"
+                />
+              </p>
+              {errors?.response_time && (
+                <p className="error-message">{errors.response_time?.message}</p>
+              )}
+            </Form.Group> */}
           </Col>
         </Row>
       </section>

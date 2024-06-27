@@ -18,22 +18,22 @@ const SCREENING_OPTIONS = [
     question_type: "Degree",
     title: "",
     question: "Have you completed the following level of education: [Degree]",
-    ideal_answer:"Yes",
-    uniqueId:"2"
+    ideal_answer: "Yes",
+    uniqueId: "2"
   },
   {
     label: "Language",
     title: "",
     question_type: "language",
     question: "What is your level of proficiency in [Language]?",
-    uniqueId:"3"
+    uniqueId: "3"
   },
- 
+
   {
     label: "Location",
     title: "",
     question_type: "",
-    ideal_answer:"Yes",
+    ideal_answer: "Yes",
     question: "Are you comfortable commuting to this job's location?",
 
   },
@@ -42,12 +42,12 @@ const SCREENING_OPTIONS = [
     title: "",
     question_type: "",
     question: "Are you comfortable working in a remote setting?",
-    ideal_answer:"Yes",
+    ideal_answer: "Yes",
 
   },
   {
     label: "Expertise with Skill",
-    title:"",
+    title: "",
     question_type: "Skill",
     question: "Have many years of work experience do you have with [Skill]?",
   },
@@ -56,8 +56,8 @@ const SCREENING_OPTIONS = [
     title: "",
     question: "Are you comfortable working in an onsite setting?",
     // inputType: "",
-    ideal_answer:"Yes",
-    uniqueId:"1"
+    ideal_answer: "Yes",
+    uniqueId: "1"
   },
 ];
 
@@ -72,7 +72,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
       question_type: opt.question_type,
       question: opt.question,
       title: opt?.title,
-      ideal_answer: opt?.ideal_answer ? opt.ideal_answer :"",
+      ideal_answer: opt?.ideal_answer ? opt.ideal_answer : "",
       must_have: false,
       alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
     });
@@ -80,7 +80,7 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
   const isFieldAlreadyAdded = (idx) => {
     const screeningQuestions = watch("screening_questions");
     const index = screeningQuestions?.findIndex(
-      (curElem,index) => index === idx
+      (curElem, index) => index === idx
     );
     if (index !== -1) {
       return true;
@@ -138,37 +138,37 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
                 <Form.Group>
                   <Form.Label className="font-14">Ideal answer</Form.Label>
                   {field?.ideal_answer === "Yes" ? (
-                     <Form.Control
-                     type="text"
-                     readOnly
-                     {...register(`screening_questions.${idx}.ideal_answer`, {
-                       required: t("required_message"),
-                     })}
-                     value="Yes"
-                     className="common-field font-14"
-                     placeholder="Enter Answer"
-                   />
-                  ) : field?.question_type === "language" ? (
-                    <>
-                    <Form.Select
+                    <Form.Control
+                      type="text"
+                      readOnly
                       {...register(`screening_questions.${idx}.ideal_answer`, {
                         required: t("required_message"),
                       })}
-                    >
-                      <option selected value="conversational">
-                        Conversational
-                      </option>
-                      <option value="none">None</option>
-                      <option value="professional">Professional</option>
-                      <option value="nativeOrBilingual">
-                        Native or bilinguals
-                      </option>
-                    </Form.Select>
+                      value="Yes"
+                      className="common-field font-14"
+                      placeholder="Enter Answer"
+                    />
+                  ) : field?.question_type === "language" ? (
+                    <>
+                      <Form.Select
+                        {...register(`screening_questions.${idx}.ideal_answer`, {
+                          required: t("required_message"),
+                        })}
+                      >
+                        <option selected value="conversational">
+                          Conversational
+                        </option>
+                        <option value="none">None</option>
+                        <option value="professional">Professional</option>
+                        <option value="nativeOrBilingual">
+                          Native or bilinguals
+                        </option>
+                      </Form.Select>
                     </>
                   ) : (
                     <Form.Control
-                      type={(field?.question_type === "Years" || "Expertise with Skill") ? "number" :"text"}
-                      min={field?.question_type === "Years" ? 0 :null}
+                      type={(field?.question_type === "Years" || "Expertise with Skill") ? "number" : "text"}
+                      min={field?.question_type === "Years" ? 0 : null}
                       {...register(`screening_questions.${idx}.ideal_answer`, {
                         required: t("required_message"),
                       })}
@@ -212,6 +212,60 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
             </Row>
           </div>
         ))}
+
+        <div className="screening-wrapper mb-4">
+          <div className="d-flex justify-content-between align-items-center screen-wrapper-heading gap-5">
+            <Form.Control type="text" className="common-field font-14 bg-white" placeholder="Try asking a question" />
+            <Button
+              variant="transparent"
+              className="border-0 p-0"
+            >
+              <IoClose />
+            </Button>
+          </div>
+          <Row className="align-items-start screening-grid">
+            <Col md="4" className="mb-md-0 mb-4">
+              <Form.Group>
+                <Form.Label className="font-14">
+                  Response Type
+                </Form.Label>
+                <Form.Select className="common-field font-14">
+                  <option value="yes/no">Yes/No</option>
+                  <option value="subjective">Subjective</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md="4" className="mb-md-0 mb-4">
+              <Form.Group>
+                <Form.Label className="font-14">Ideal answer</Form.Label>
+                <div className="d-flex align-items-center gap-3">
+                  <Form.Check type="radio" name="ideal-radio" className="font-14" label="Yes" id="ideal-yes" />
+                  <Form.Check type="radio" name="ideal-radio" className="font-14" label="No" id="ideal-no" />
+                </div>
+              </Form.Group>
+            </Col>
+            <Col md="4" className="mb-md-0 mb-4">
+              <Form.Group>
+                <Form.Label className="font-14">Ideal answer</Form.Label>
+                  <Form.Control
+                    type="text"
+                    className="common-field font-14"
+                    placeholder="Enter Answer"
+                  />
+              </Form.Group>
+            </Col>
+            {/* <Col md="4" className="pb-md-2">
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  className="font-14 job-post-checkbox"
+                  id="must2"
+                  label="Must have qualification"
+                />
+              </Form.Group>
+            </Col> */}
+          </Row>
+        </div>
         {/* <div className="screening-wrapper mb-3">
           <div className="d-flex justify-content-between align-items-center screen-wrapper-heading">
             <h3 className="mb-0">
@@ -395,6 +449,12 @@ const JobPostStep3 = ({ register, errors, control, watch }) => {
               {curElem.label}
             </Button>
           ))}
+          <Button
+            variant="transparent"
+            className="outline-main-btn px-4 py-2 d-inline-block me-1 mb-1 rounded-full cursor-pointer"
+          >
+            Custom question
+          </Button>
           {/* <Button
             variant="transparent"
             className="outline-main-btn px-4 py-2 d-inline-block me-1 mb-1 rounded-full cursor-pointer"

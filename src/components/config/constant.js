@@ -53,7 +53,7 @@ export const CLIENT_SIDE_BAR_ITEMS = [
     { to: "/client/time-reporting", icon: <BsClockFill />, text: "timeReporting" },
     { to: "/client/leave-request", icon: <GiPalmTree />, text: "leaveRequests" },
     { to: "/client/job-posted", icon: <FaListUl />, text: "jobs" },
-    { to: "/client/earned-back", icon: <PiCoinsFill />, text: "earnedBack" },
+    // { to: "/client/earned-back", icon: <PiCoinsFill />, text: "earnedBack" },
     { to: "/client/invoice", icon: <FaFileInvoice />, text: "invoice" },
 ];
 
@@ -62,12 +62,12 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications" },
     { to: "/admin/members", icon: <PiUsersFourFill />, text: "members" },
     { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing" },
-    { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
+    // { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
     { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images" },
     { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting" },
-    { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
+    // { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
     { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice" },
-    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Roles & Permissions" },
+    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions" },
     { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration" },
   ]
 

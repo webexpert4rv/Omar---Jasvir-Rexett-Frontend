@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const convertCountriesForSelect = (options,type) => {
     console.log(options,"options inside countries select");
     let formattedCountryOptions=[]
@@ -25,3 +27,11 @@ export const validatePassword = (value) => {
     }
     return true; // Password meets the criteria
   };
+
+  export const getDateInRequiredFormat = (date,format) => {
+    if(date){
+      return moment(date).format(format)
+    } else {
+      return ""
+    }
+  }

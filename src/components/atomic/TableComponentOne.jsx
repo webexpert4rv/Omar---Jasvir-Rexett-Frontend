@@ -9,7 +9,7 @@ import RexettPagination from "./RexettPagination";
 import { useTranslation } from "react-i18next";
 
 const TableComponentOne = ({ data, columns, page, setPage, totalPages}) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const downloadtimesheet = <Tooltip id="tooltip">Download Timesheet</Tooltip>;
   const downloadinvoice = <Tooltip id="tooltip">Download Invoice</Tooltip>;
 
@@ -48,7 +48,7 @@ const TableComponentOne = ({ data, columns, page, setPage, totalPages}) => {
                     ({
                       key,
                       subkey,
-                      profilePictureKey,
+                      profilePictureKey,  
                       isStatus,
                       isHours,
                       isAction,

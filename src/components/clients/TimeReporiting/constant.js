@@ -17,7 +17,6 @@ function showMonthDates() {
 var dates = showMonthDates();
 
 export function weeklyTimeReports(data, currentPeriod) {
-  console.log(data,"data inside weekly time reports");
  if (currentPeriod === "weekly") {
      let start_date = new Date(data?.startDate);
      var dayIndex = start_date.getDay();
@@ -109,6 +108,17 @@ export const tabText= [
     key:"fourth",
     value:"Cancelled Leaves"
   }
+]
+
+export const timeReportTabText= [
+  {
+    key:"first",
+    value:"Developers"
+  },
+  { 
+    key:"second",
+    value: "Timesheet"
+   },
 ]
 
 
@@ -218,6 +228,14 @@ export const configurationTabText = [
    {
     key:"third",
     value:"Company Details"
+  },
+  {
+    key:"four",
+    value:"Message Template"
+  },
+  {
+    key:"five",
+    value:"Notification Settings"
   },
  
 ]

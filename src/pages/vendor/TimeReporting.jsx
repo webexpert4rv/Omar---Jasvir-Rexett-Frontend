@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
-
 import { useDispatch, useSelector } from "react-redux";
 import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
@@ -33,6 +32,10 @@ const TimeReporting = () => {
     const handleCloseEditTimeModal = () => {
         setShowEditTimeModal(false);
     };
+    const handleRowClick = ()=>{
+        navigate("/vendor-time-detail")
+    }
+
 
     const [showUploadInvoice, setShowUploadInvoice] = useState(false);
     const handleShowUploadInvoice = (id) => {
@@ -106,28 +109,38 @@ const TimeReporting = () => {
                     <div className="table-responsive">
                         <table className="table time-table table-bordered table-ui-custom">
                             <thead>
-                                <th className="time-table-head">
-                                    {t("clientName")}
+                                <th className="time-table-head text-start">
+                                    Project Name
                                 </th>
-                                <th className="time-table-head">
+                                <th className="time-table-head text-start">
+                                    Project start date
+                                </th>
+                                <th className="time-table-head text-start">
                                     {t("totalHiredDevelopers")}
                                 </th>
-                                <th className="time-table-head">
-                                    {t("totalProjects")}
-                                </th>
-                                <th className="time-table-head">
-                                    Total Developers
-                                </th>
-                                <th className="time-table-head">
+                                <th className="time-table-head text-start">
                                     Contract
-
                                 </th>
                                 {/* <th className="time-table-head">
                                     {t("contract")}
                                 </th> */}
                             </thead>
                             <tbody>
-                                {screenLoader ? <ScreenLoader /> : <>
+                                <tr className="application-row" onClick={handleRowClick}>
+                                    <td className="align-middle font-14">
+                                        Figma to ui
+                                    </td>
+                                    <td className="align-middle font-14">
+                                        14-05-2024
+                                    </td>
+                                    <td className="align-middle font-14">
+                                        3
+                                    </td>
+                                    <td className="align-middle font-14">
+                                        6 months
+                                    </td>
+                                </tr>
+                                {/* {screenLoader ? <ScreenLoader /> : <>
                                     {adminTimeReportingList?.length > 0 ?
                                         adminTimeReportingList?.map(({client_name,client_id,total_hired_developers,total_individual_dev,total_projects,total_vendors_dev,contracts}, index) => {
                                             return (
@@ -138,14 +151,13 @@ const TimeReporting = () => {
                                                         <td className="time-table-data">{total_projects}</td>
                                                         <td className="time-table-data">{total_vendors_dev}</td>
                                                         <td className="time-table-data">{total_individual_dev}</td>
-                                                        {/* <td className="time-table-data">{}</td> */}
                                                     </tr>
                                                 </Fragment>
                                             )
                                         })
                                         : <td colSpan={10}> <div className="simple-no-data">  <NoDataFound/></div>  </td>
                                         }
-                                </>}
+                                </>} */}
                             </tbody>
                         </table>
                     </div>
