@@ -7,7 +7,7 @@ import JobCard from "../../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import { useTranslation } from "react-i18next";
 import ScreenLoader from "../../../components/atomic/ScreenLoader";
-import { FaRegHandshake } from "react-icons/fa6";
+import { FaCheck, FaRegHandshake } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -19,7 +19,7 @@ import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import devImg from '../../../assets/img/demo-img.jpg';
 import { FaLink } from "react-icons/fa6";
-import ManualSuggestions from  "../../../pages/admin/Modals/ManualSuggestion";
+import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
 
@@ -125,7 +125,7 @@ const AdminSingleJob = () => {
     let offered = <div>Offered <div className="stage-indicator ms-1 stage-offer gap-1"><span className="stage-icon"><FaHandshake /></span> 0</div></div>;
     let hired = <div>Hired <div className="stage-indicator ms-1 stage-hired gap-1"><span className="stage-icon"><MdWorkHistory /></span> 0</div></div>;
 
-    const [ manualSuggestion , showManualSuggestion ] = useState(false);
+    const [manualSuggestion, showManualSuggestion] = useState(false);
     const handleShowManualSuggestion = () => {
         showManualSuggestion(!manualSuggestion);
     }
@@ -133,7 +133,7 @@ const AdminSingleJob = () => {
         showManualSuggestion(false);
     }
 
-    const [ addCandidateModal , showaddCandidate ] = useState(false);
+    const [addCandidateModal, showaddCandidate] = useState(false);
     const handleShowaddCandidate = () => {
         showaddCandidate(!manualSuggestion);
     }
@@ -141,12 +141,12 @@ const AdminSingleJob = () => {
         showaddCandidate(false);
     }
 
-    const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
+    const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
     const handleShowScheduleMeeting = () => {
-      setShowScheduleMeet(!showScheduleMeeting);
+        setShowScheduleMeet(!showScheduleMeeting);
     }
-    const handleCloseScheduleMeeting = () =>{
-      setShowScheduleMeet(false);
+    const handleCloseScheduleMeeting = () => {
+        setShowScheduleMeet(false);
     }
 
     return (
@@ -154,12 +154,19 @@ const AdminSingleJob = () => {
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
                 <div className="single-job-card job-information-wrapper mb-0">
                     {/* <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2> */}
-                    <div className="d-flex justify-content-between align-items-center flex-md-row flex-column-reverse">
+                    <div className="d-flex justify-content-between align-items-start flex-md-row flex-column-reverse">
                         <div>
-                            <h2 className="single-job-title mb-0">{singleJobDescription?.title ? singleJobDescription?.title :"Need to work on new changes on admin panel"}</h2>
+                            <h2 className="single-job-title mb-0">{singleJobDescription?.title ? singleJobDescription?.title : "Need to work on new changes on admin panel"}</h2>
                             <p className="req-text fw-normal mt-2">by {singleJobDescription?.client?.name}</p>
                         </div>
                         <div className="d-flex gap-3 align-items-center mb-md-0 mb-3">
+
+                            {role == "developer" &&
+                                <>
+                                    <Button variant="transparent" className="main-btn font-14">Apply this job</Button>
+                                    <span className="status-finished">Already Applied <FaCheck /> </span>
+                                </>
+                            }
                             <p className={`status-text ${currentStatusCssClass(
                                 singleJobDescription?.status
                             )}`}>{singleJobDescription?.status?.charAt(0).toUpperCase() + singleJobDescription?.status?.slice(1)}</p>
@@ -305,11 +312,14 @@ const AdminSingleJob = () => {
                             ></p>
                         </div>
                     </Tab>
-                    {role!=="developer" &&<Tab eventKey="suggested" title={suggest}>
+                    {role !== "developer" && <Tab eventKey="suggested" title={suggest}>
                         <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
-                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Add Manual Suggestion</Button>
+                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Manual Suggestion</Button>
                             <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
+                        <h5 className="font-22 mb-4 fw-bold">Applied Candidates</h5>
+                        <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                        <h5 className="font-22 mb-4 fw-bold">Suggested Candidates</h5>
                         <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
                     </Tab>}
                     <Tab eventKey="shortlisted" title={shortlist}>
@@ -370,14 +380,14 @@ const AdminSingleJob = () => {
                                 </Col>
                             </Row>
                         </div>
-                       {role!=="developer" && <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>}
+                        {role !== "developer" && <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>}
                         <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>
                         <div>
                             <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
                             <Row>
-                               { role!=="developer" && <Col lg={4}>
+                                {role !== "developer" && <Col lg={4}>
                                     <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
                                             <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
@@ -861,7 +871,7 @@ const AdminSingleJob = () => {
             <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
             <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
             <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
-            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting}  />
+            <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} />
         </>
     )
 }

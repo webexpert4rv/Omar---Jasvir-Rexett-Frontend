@@ -11,7 +11,8 @@ import Customization from "./pages/admin/Configuration/CRM/Customization";
 import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
-import ClientInterviewFeedback from "./pages/views/InterviewFeedback"
+import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
 
 import { lazy } from "react";
 import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
@@ -455,6 +456,12 @@ export const route = [
   {
     path: "/vendor-faq",
     element: <Faq />,
+    isVendor: true,
+    private: true,
+  },
+  {
+    path: "/vendor-time-detail",
+    element: <VendorTimeDetail />,
     isVendor: true,
     private: true,
   },
