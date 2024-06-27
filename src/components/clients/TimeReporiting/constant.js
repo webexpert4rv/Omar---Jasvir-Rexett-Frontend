@@ -111,6 +111,17 @@ export const tabText= [
   }
 ]
 
+export const timeReportTabText= [
+  {
+    key:"first",
+    value:"Developers"
+  },
+  { 
+    key:"second",
+    value: "Timesheet"
+   },
+]
+
 
 export const planLeaveTabs= [
   {

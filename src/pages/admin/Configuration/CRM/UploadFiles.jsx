@@ -16,7 +16,6 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
     const { configDetails } = useSelector(state => state.adminData)
     const dispatch = useDispatch()
 
-    console.log(configDetails,'configDetails')
 
     const handleImageUpload = async (event, filename) => {
         console.log(filename, "filename");
@@ -57,7 +56,6 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                 }
             } catch (error) {
                 console.error("Error handling image upload:", error);
-                // Handle error as needed
             }
         }
     };
@@ -134,12 +132,12 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         <Form.Control
                             type="file"
                             className="upload-custom-field"
-                            name="favicon"
-                            id="favicon"
+                            name="company-logo_1"
+                            id="company-logo_1"
                             accept="image/jpeg, image/png, image/svg+xml"
                             onChange={(e) => handleImageUpload(e, "favicon")}
                         />
-                        <Form.Label htmlFor="favicon" className="upload-field-label">
+                        <Form.Label htmlFor="company-logo_1" className="upload-field-label">
                             Upload File
                         </Form.Label>
                         <p className="note-text">Only Accepted formats: JPEG, PNG, SVG. Recommended size: 16x16 pixels, 32x32 pixels, or 48x48 pixels</p>

@@ -18,6 +18,7 @@
     --body_font_size : 14px;
     --heading_color : #7f7f7f; 
     --body_text_color: #7f7f7f;  
+    --sidebar-link-bg-color : #fff
 
 }
 
@@ -254,7 +255,7 @@ ul {
 
 .dashboard-link.active {
     color:var(--sidebar-link-color);
-    background-color: var(--white);
+    background-color: var(--sidebar-link-bg-color);
 }
 
 .dashboard-link svg {
@@ -2801,9 +2802,15 @@ input[type="radio"]:checked {
 .table-ui-custom th span {
     background-color: var(--primary);
     color: #fff;
+    /* color : Black; */
     display: block;
     padding: 0px;
     border-collapse: collapse;
+}
+.time-sheet-btn{
+    
+    text-align: center;
+    align-items: center;
 }
 
 .table-ui-custom tbody td {

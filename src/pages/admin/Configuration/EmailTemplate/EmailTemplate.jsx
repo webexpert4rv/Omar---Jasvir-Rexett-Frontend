@@ -76,7 +76,7 @@ function EmailTemplate({ currentTab, previewUrl }) {
 
     const handleSubmit = async (index) => {
         const validInputs = inputs.filter(input => input.social && input.value);
-        const socialMediaLinks = validInputs.map(input => ({
+        const socialMediaLinks = validInputs?.map(input => ({
             name: input.social,
             url: input.value
         }));
@@ -181,7 +181,7 @@ function EmailTemplate({ currentTab, previewUrl }) {
                                     <h3 className="customization-heading">Social Media Links</h3>
                                     <p className="customization-text">Adjusting the font size allows you to emphasize important sections and improve the user experience.</p>
                                     <div>
-                                        {inputs.map((input, index) => (
+                                        {inputs?.map((input, index) => (
                                             <Form.Group key={input.id} className="d-flex gap-2 align-items-center">
                                                 <Form.Select
                                                     className="common-field font-14 w-auto"
@@ -236,7 +236,7 @@ function EmailTemplate({ currentTab, previewUrl }) {
                                         <div className="preview-email-footer">
                                             <div>
                                                 <ul className="social-listing mb-0 ps-0">
-                                                    {configDetails?.social_media_link.map((item, index) => {
+                                                    {configDetails?.social_media_link?.map((item, index) => {
                                                         if (item.name === "x(Twitter)") {
                                                             return (
                                                                 <li key={index}>

@@ -6,51 +6,55 @@ import { getConfigDetails, getUploadFile } from '../../../../redux/slices/adminD
 import { getConfig } from '@testing-library/react';
 
 
-function ColorScheme({ previewUrl ,setPreviewUrl}) {
+function ColorScheme({ previewUrl, setPreviewUrl }) {
     const [selectedColorType, setSelectedColorType] = useState("gradient-sidecolor");
     const [colorValue, setColorValue] = useState('');
     const [newColorValue, setNewColorValue] = useState('')
-    const [sideBarColor ,setSideBarColor] = useState('')
+    const [sideBarColor, setSideBarColor] = useState('')
     const [solidColor, setSolidColor] = useState('')
-    const [primaryColor , setPrimaryColor] = useState('')
-    const [headingColor , setHeadingColor] = useState('')
-    const [bodyTextColor , setBodyTextColor] = useState('')
+    const [primaryColor, setPrimaryColor] = useState('')
+    const [headingColor, setHeadingColor] = useState('')
+    const [bodyTextColor, setBodyTextColor] = useState('')
+    const [sideBarLinkBgColor , setSideBarLinkBgColor] = useState("")
     const dispatch = useDispatch()
     const { configDetails } = useSelector(state => state.adminData)
 
     console.log(colorValue, "colorValue")
     console.log(newColorValue, "newColorValue")
-    console.log(solidColor,"solidColor")
+    console.log(solidColor, "solidColor")
 
-    useEffect(()=>{
+    useEffect(() => {
         setColorValue('')
         setNewColorValue('')
         setSolidColor('')
         setSelectedColorType("gradient-sidecolor")
-    },[setColorValue,setNewColorValue,setSolidColor,setSelectedColorType])
-  
+    }, [setColorValue, setNewColorValue, setSolidColor, setSelectedColorType])
 
-    const handleColorChange = (e)=>{
-        setColorValue(e.target.value)  
+
+    const handleColorChange = (e) => {
+        setColorValue(e.target.value)
     }
-    const handleNewColorChange = (e)=>{
-        setNewColorValue(e.target.value)  
+    const handleNewColorChange = (e) => {
+        setNewColorValue(e.target.value)
     }
-    const handleSolidColorChange =(e)=>{
+    const handleSolidColorChange = (e) => {
         setSolidColor(e.target.value)
     }
-    const handleSideBarChange = (e)=>{
+    const handleSideBarChange = (e) => {
         setSideBarColor(e.target.value)
     }
-    const handlePrimaryColorChange = (e)=>{
+    const handlePrimaryColorChange = (e) => {
         setPrimaryColor(e.target.value)
     }
-    const handleHeadingColorChange = (e)=>{
+    const handleHeadingColorChange = (e) => {
         setHeadingColor(e.target.value)
     }
-    const handleBodyTextColorChange=(e)=>{
+    const handleBodyTextColorChange = (e) => {
         setBodyTextColor(e.target.value)
 
+    }
+    const handleSideBarLinkChange = (e)=>{
+        setSideBarLinkBgColor(e.target.value)
     }
 
 
@@ -59,7 +63,7 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
         setColorValue(e.target.value)
         let data = {
             crm_sidebar_bg_gradient_color_1: colorValue,
-            crm_sidebar_bg_solid_color:"",
+            crm_sidebar_bg_solid_color: "",
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
@@ -70,12 +74,12 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
         setPreviewUrl(e.target.value)
         let data = {
             crm_sidebar_bg_gradient_color_2: newColorValue,
-            crm_sidebar_bg_solid_color:"",
+            crm_sidebar_bg_solid_color: "",
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
     }
-    const handleSolidColorBlur = async(e) => {
+    const handleSolidColorBlur = async (e) => {
         setSolidColor(e.target.value)
         let data = {
             crm_sidebar_bg_solid_color: solidColor,
@@ -85,28 +89,28 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
     }
-    const handleSideBarBlur= async(e)=>{
+    const handleSideBarBlur = async (e) => {
         let data = {
             crm_sidebar_link_color: sideBarColor
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
     }
-    const handlePrimaryColorBlur= async(e)=>{
+    const handlePrimaryColorBlur = async (e) => {
         let data = {
             crm_primary_color: primaryColor
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
     }
-    const handleHeadingColorBlur= async(e)=>{
+    const handleHeadingColorBlur = async (e) => {
         let data = {
             crm_heading_color: headingColor
         }
         await dispatch(getUploadFile(data))
         dispatch(getConfigDetails())
     }
-    const handleBodyTextColorBlur=async(e)=>{
+    const handleBodyTextColorBlur = async (e) => {
         let data = {
             crm_body_text_color: bodyTextColor
         }
@@ -114,10 +118,20 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
         dispatch(getConfigDetails())
 
     }
-    
-    
+    const handleSideBarLinkBlur = async (e) =>{
+        let data = {
+            crm_sidebar_bg_link_color: sideBarLinkBgColor
+        }
+        await dispatch(getUploadFile(data))
+        dispatch(getConfigDetails())
+
+    }
 
     
+
+
+
+
 
 
 
@@ -180,7 +194,7 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                                         className="color-field"
                                         value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_1 : colorValue}
                                         onBlur={handleColorBlur}
-                                        onChange = {handleColorChange}
+                                        onChange={handleColorChange}
 
                                     />
                                     <Form.Control
@@ -188,7 +202,7 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                                         placeholder="#000000"
                                         className="colortext-field"
                                         value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_1 : colorValue}
-                                       
+
 
                                     />
                                 </div>
@@ -201,14 +215,14 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                                         className="color-field"
                                         value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : newColorValue}
                                         onBlur={handleSecondColorBlur}
-                                        onChange = {handleNewColorChange}
+                                        onChange={handleNewColorChange}
                                     />
                                     <Form.Control
                                         type="text"
                                         placeholder="#000000"
                                         className="colortext-field"
                                         value={configDetails?.crm_sidebar_bg_gradient_color_1 ? configDetails?.crm_sidebar_bg_gradient_color_2 : newColorValue}
-                                       
+
 
                                     />
 
@@ -225,16 +239,16 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                                     className="color-field"
                                     value={configDetails?.crm_sidebar_bg_solid_color ? configDetails?.crm_sidebar_bg_solid_color : solidColor}
                                     onBlur={handleSolidColorBlur}
-                                    onChange = {handleSolidColorChange} 
-                                    
+                                    onChange={handleSolidColorChange}
+
                                 />
                                 <Form.Control
                                     type="text"
                                     placeholder="#000000"
                                     className="colortext-field"
                                     value={configDetails?.crm_sidebar_bg_solid_color ? configDetails?.crm_sidebar_bg_solid_color : solidColor}
-                                                              
-                              />
+
+                                />
 
                             </div>
                         </div>
@@ -247,7 +261,7 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                         <div className="preview-sidebar"  >
                             <div>
                                 {previewUrl ? (
-                                    <img src={companyLogoImg} className="preview-company-logo"  alt="Company Logo Preview" />
+                                    <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
                                 ) : (
                                     <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
                                 )}
@@ -271,40 +285,90 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
                             <Form.Control
-                                    type="color"
-                                    className="color-field"
-                                    value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor}
-                                    onBlur={handleSideBarBlur}
-                                    onChange = {handleSideBarChange} 
-                                    
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="#000000"
-                                    className="colortext-field"
-                                    value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor}
-                                                              
-                              />
+                                type="color"
+                                className="color-field"
+                                value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor}
+                                onBlur={handleSideBarBlur}
+                                onChange={handleSideBarChange}
+
+                            />
+                            <Form.Control
+                                type="text"
+                                placeholder="#000000"
+                                className="colortext-field"
+                                value={configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor}
+
+                            />
                         </div>
                     </div>
                 </div>
             </Col>
+
             <Col md={6} className="mb-4">
                 <div className="preview-company-wrapper">
                     <div className="position-relative">
                         <div className="preview-sidebar">
                             <div>
                                 {sideBarColor ? (
-                                                            <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
-                                                        ) : (
-                                                            <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
-                                                        )}
+                                    <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
+                                ) : (
+                                    <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
+                                )}
                             </div>
                             <div className="skeleton-container mt-4">
                                 {[...Array(4)].map((_, index) => (
                                     <div key={index} className="mb-3 d-flex align-items-center gap-3">
-                                        <div className="skeleton-circle"  style={{ backgroundColor: configDetails?.crm_sidebar_link_color  ? configDetails?.crm_sidebar_link_color :sideBarColor  }}></div>
+                                        <div className="skeleton-circle" style={{ backgroundColor: configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor }}></div>
                                         <p className="preview-sidelink mb-0">Link {index + 1}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Col>
+            <Col md={6} className="mb-4">
+                <div>
+                    <h3 className="customization-heading">Sidebar Link Background Color</h3>
+                    <p className="customization-text">Choosing a distinctive and readable color for your sidebar links helps users easily identify and interact with menu items.</p>
+                    <div className="solid-color-wrapper">
+                        <div className="common-field color-field-wrapper">
+                            <Form.Control
+                                type="color"
+                                className="color-field"
+                                value={configDetails?.crm_sidebar_bg_link_color ? configDetails?.crm_sidebar_bg_link_color : sideBarLinkBgColor}
+                                onBlur={handleSideBarLinkBlur}
+                                onChange={handleSideBarLinkChange}
+
+                            />
+                            <Form.Control
+                                type="text"
+                                placeholder="#000000"
+                                className="colortext-field"
+                                value={configDetails?.crm_sidebar_bg_link_color ? configDetails?.crm_sidebar_bg_link_color : sideBarLinkBgColor}
+
+                            />
+                        </div>
+                    </div>
+                </div>
+            </Col>
+            <Col md={6} className="mb-4">
+                <div className="preview-company-wrapper">
+                    <div className="position-relative"> 
+                        <div className="preview-sidebar">
+                            <div>
+                                {sideBarLinkBgColor ? (
+                                    <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
+                                ) : (
+                                    <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
+                                )}
+                            </div>
+                            <div className="skeleton-container mt-4">
+                                {[...Array(4)]?.map((_, index) => (
+                                    <div key={index} className="mb-3 d-flex align-items-center gap-3"  
+                                    >
+                                        <div className="skeleton-circle" style={{ backgroundColor: configDetails?.crm_sidebar_link_color ? configDetails?.crm_sidebar_link_color : sideBarColor }}></div>
+                                        <p className="preview-sidelink mb-0"   >Link {index + 1}</p>
                                     </div>
                                 ))}
                             </div>
@@ -318,21 +382,21 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                     <p className="customization-text">This Primary color will be used for key elements such as buttons, links, highlights and tabs ensuring a consistent and visually appealing interface.</p>
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
-                        <Form.Control
-                                    type="color"
-                                    className="color-field"
-                                    value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : primaryColor}
-                                    onBlur={handlePrimaryColorBlur}
-                                    onChange = {handlePrimaryColorChange} 
-                                    
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="#000000"
-                                    className="colortext-field"
-                                    value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : primaryColor}
-                                                              
-                              />
+                            <Form.Control
+                                type="color"
+                                className="color-field"
+                                value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : primaryColor}
+                                onBlur={handlePrimaryColorBlur}
+                                onChange={handlePrimaryColorChange}
+
+                            />
+                            <Form.Control
+                                type="text"
+                                placeholder="#000000"
+                                className="colortext-field"
+                                value={configDetails?.crm_primary_color ? configDetails?.crm_primary_color : primaryColor}
+
+                            />
                         </div>
                     </div>
                 </div>
@@ -340,10 +404,10 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
             <Col md={6} className="mb-4">
                 <div className="preview-primary-color">
                     <div className="mb-3">
-                        <Button variant="transparent" className="preview-color-btn" style={{backgroundColor : configDetails?.crm_primary_color}}>Button</Button>
+                        <Button variant="transparent" className="preview-color-btn" style={{ backgroundColor: configDetails?.crm_primary_color }}>Button</Button>
                     </div>
                     <div className="tabs-preview-color">
-                        <Button variant="transparent" className="preview-tab active" style={{backgroundColor : configDetails?.crm_primary_color}}>Tab 1</Button>
+                        <Button variant="transparent" className="preview-tab active" style={{ backgroundColor: configDetails?.crm_primary_color }}>Tab 1</Button>
                         <Button variant="transparent" className="preview-tab" >Tab 2</Button>
                         <Button variant="transparent" className="preview-tab">Tab 3</Button>
                     </div>
@@ -356,27 +420,27 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                     <p className="customization-text">The heading color is a crucial aspect of your site's design, as it affects the readability and visual impact of your content.</p>
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
-                        <Form.Control
-                                    type="color"
-                                    className="color-field"
-                                    value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}
-                                    onBlur={handleHeadingColorBlur}
-                                    onChange = {handleHeadingColorChange} 
-                                    
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="#000000"
-                                    className="colortext-field"
-                                    value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}
-                                                              
-                              />
+                            <Form.Control
+                                type="color"
+                                className="color-field"
+                                value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}
+                                onBlur={handleHeadingColorBlur}
+                                onChange={handleHeadingColorChange}
+
+                            />
+                            <Form.Control
+                                type="text"
+                                placeholder="#000000"
+                                className="colortext-field"
+                                value={configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}
+
+                            />
                         </div>
                     </div>
                 </div>
             </Col>
             <Col md={6} className="mb-4">
-                <h2 className="preview-heading-color" style={{color : configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor}}>Heading</h2>
+                <h2 className="preview-heading-color" style={{ color: configDetails?.crm_heading_color ? configDetails?.crm_heading_color : headingColor }}>Heading</h2>
             </Col>
             <Col md={6} className="mb-4">
                 <div>
@@ -384,27 +448,27 @@ function ColorScheme({ previewUrl ,setPreviewUrl}) {
                     <p className="customization-text">Choose a color that provides good contrast with your background to ensure your content is easy to read and visually appealing.</p>
                     <div className="solid-color-wrapper">
                         <div className="common-field color-field-wrapper">
-                        <Form.Control
-                                    type="color"
-                                    className="color-field"
-                                    value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor}
-                                    onBlur={handleBodyTextColorBlur}
-                                    onChange = {handleBodyTextColorChange} 
-                                    
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="#000000"
-                                    className="colortext-field"
-                                    value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor}
-                                                              
-                              />
+                            <Form.Control
+                                type="color"
+                                className="color-field"
+                                value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor}
+                                onBlur={handleBodyTextColorBlur}
+                                onChange={handleBodyTextColorChange}
+
+                            />
+                            <Form.Control
+                                type="text"
+                                placeholder="#000000"
+                                className="colortext-field"
+                                value={configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor}
+
+                            />
                         </div>
                     </div>
                 </div>
             </Col>
             <Col md={6} className="mb-4">
-                <p className="preview-text-color" style={{color : configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <p className="preview-text-color" style={{ color: configDetails?.crm_body_text_color ? configDetails?.crm_body_text_color : bodyTextColor }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
             </Col>
 
 

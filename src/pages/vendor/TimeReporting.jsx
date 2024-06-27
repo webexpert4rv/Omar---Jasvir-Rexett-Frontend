@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { HiUpload } from "react-icons/hi";
-
 import { useDispatch, useSelector } from "react-redux";
 import { adminTimeReporting } from "../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
@@ -33,6 +32,10 @@ const TimeReporting = () => {
     const handleCloseEditTimeModal = () => {
         setShowEditTimeModal(false);
     };
+    const handleRowClick = ()=>{
+        navigate("/vendor-time-detail")
+    }
+
 
     const [showUploadInvoice, setShowUploadInvoice] = useState(false);
     const handleShowUploadInvoice = (id) => {
@@ -123,7 +126,7 @@ const TimeReporting = () => {
                                 </th> */}
                             </thead>
                             <tbody>
-                                <tr className="application-row">
+                                <tr className="application-row" onClick={handleRowClick}>
                                     <td className="align-middle font-14">
                                         Figma to ui
                                     </td>

@@ -111,6 +111,7 @@ const RexettHeader = ({ role }) => {
   const bodyFontSize = configDetails?.crm_body_font_size
   const headingTextColor = configDetails?.crm_heading_color
   const bodyTextColor = configDetails?.crm_body_text_color
+  const linkBgColor = configDetails?.crm_sidebar_bg_link_color
 
 
   useEffect(() => {
@@ -126,6 +127,7 @@ const RexettHeader = ({ role }) => {
     document.documentElement.style.setProperty('--body_font_size',  `${bodyFontSize}px`)
     document.documentElement.style.setProperty('--heading_color',  headingTextColor)
     document.documentElement.style.setProperty('--body_text_color',  bodyTextColor)
+    document.documentElement.style.setProperty('--sidebar-link-bg-color',  linkBgColor)
     document.getElementById('favicon').href = filename;
 
   }, [configDetails])
