@@ -31,6 +31,8 @@ import { HiOutlineLink } from "react-icons/hi";
 import { MdGifBox } from "react-icons/md";
 import { MdEmojiEmotions } from "react-icons/md";
 import Schedulemeeting from "../common/Modals/ScheduleMeeting";
+import { useDispatch, useSelector } from "react-redux";
+import { getConfigDetails } from "../../redux/slices/adminDataSlice";
 
 const clientName = localStorage
   .getItem("userName")
@@ -43,15 +45,17 @@ const RexettHeader = ({ role }) => {
   const [fridayMarquee, setFridayMarquee] = useState(false);
   const { pathname } = useLocation();
   const isSingleJob = pathname.split("/")[2];
+  const { configDetails } = useSelector(state => state.adminData)
+  const dispatch = useDispatch()
   const routePath = (isSingleJob) => {
     const data = {
       "single-job": "/client/job-posted",
       "client-single-developer": "/client/dashboard",
       "admin-single-job": "/admin/admin-job-listing",
-      "admin":"admin/notification-admin",
-      "client":"client/notification-client",
-      "developer":"developer/notification-developer",
-      "vendor":"notification-vendor"
+      "admin": "admin/notification-admin",
+      "client": "client/notification-client",
+      "developer": "developer/notification-developer",
+      "vendor": "notification-vendor"
     };
 
     return data[isSingleJob] || false;
@@ -92,6 +96,22 @@ const RexettHeader = ({ role }) => {
     const dt = moment(new Date(), "YYYY-MM-DD HH:mm:ss").format("dddd");
     setFridayMarquee(dt);
   }, []);
+
+  const color1 = configDetails?.crm_sidebar_bg_gradient_color_1;
+  const color2 = configDetails?.crm_sidebar_bg_gradient_color_2;
+  console.log(color1, 'color1')
+  console.log(color2, "color2")
+
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--sidebar-bg', `linear-gradient(to bottom,${color1},${color2})`)
+  }, [configDetails])
+
+  useEffect(() => {
+    dispatch(getConfigDetails())
+  }, [dispatch])
+
+
 
   const backBtn = () => {
     let routeName = routePath(isSingleJob);
@@ -136,7 +156,7 @@ const RexettHeader = ({ role }) => {
   const [value, onChange] = useState(new Date());
 
 
-  console.log(routePath(role),"routePath(isSingleJob)")
+  // console.log(routePath(role),"routePath(isSingleJob)")
 
   return (
     <>
@@ -168,17 +188,17 @@ const RexettHeader = ({ role }) => {
               ""
             )}
             {role == "admin" ? (
-            <OverlayTrigger placement="bottom" overlay={chatText}>
-              <span onClick={handleShowMessages} className="email-icon">
-                <RiChat3Line />
-              </span>
-            </OverlayTrigger> ) : ( "" )}
+              <OverlayTrigger placement="bottom" overlay={chatText}>
+                <span onClick={handleShowMessages} className="email-icon">
+                  <RiChat3Line />
+                </span>
+              </OverlayTrigger>) : ("")}
             {role == "admin" ? (
-            <OverlayTrigger placement="bottom" overlay={booking}>
-              <span onClick={handleShowMeetings} className="booking-icon cursor-pointer">
-                <FaCalendarDays />
-              </span>
-            </OverlayTrigger>) : ( "" )}
+              <OverlayTrigger placement="bottom" overlay={booking}>
+                <span onClick={handleShowMeetings} className="booking-icon cursor-pointer">
+                  <FaCalendarDays />
+                </span>
+              </OverlayTrigger>) : ("")}
             {role == "developer" ? <DeveloperCheckInOut /> : ""}
             <LanguageChange />
             <Notification
@@ -186,7 +206,7 @@ const RexettHeader = ({ role }) => {
               job="single-job"
               doc="documents"
             />
-            {role == "client" || role=="admin" ? (
+            {role == "client" || role == "admin" ? (
               <ToolTip text="Create Job">
                 <button
                   className="main-btn add-new-job-btn"
