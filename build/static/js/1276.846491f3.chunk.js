@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkrexett=self.webpackChunkrexett||[]).push([[1276],{1276:(e,t,r)=>{r.r(t),r.d(t,{default:()=>a});var s=r(65043),n=r(59682),u=r(70579);const a=()=>{const[e,t]=(0,s.useState)(!1);return(0,u.jsx)(u.Fragment,{children:(0,u.jsx)(n.A,{currentRole:"admin"})})}}}]);
-//# sourceMappingURL=1276.846491f3.chunk.js.map
