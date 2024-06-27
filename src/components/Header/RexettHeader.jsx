@@ -34,13 +34,15 @@ import Schedulemeeting from "../common/Modals/ScheduleMeeting";
 import { CgCalendar } from "react-icons/cg";
 import { TbCalendarShare } from "react-icons/tb";
 import { TiWeatherSunny } from "react-icons/ti";
+import { TbArrowBarToLeft } from "react-icons/tb";
+import AddUserConversation from "../common/Modals/AddUsers";
 
 const clientName = localStorage
   .getItem("userName")
   ?.toString()
   .replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
 
-const RexettHeader = ({ role }) => {
+const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [fridayMarquee, setFridayMarquee] = useState(false);
@@ -85,12 +87,6 @@ const RexettHeader = ({ role }) => {
   const handleCloseMessages = () => {
     setShowMessagesInfo(false)
   }
-  const [valuemessga, setValue] = useState('');
-
-  const handleChange = (content) => {
-    setValue(content);
-  };
-
   useEffect(() => {
     const dt = moment(new Date(), "YYYY-MM-DD HH:mm:ss").format("dddd");
     setFridayMarquee(dt);
@@ -136,8 +132,42 @@ const RexettHeader = ({ role }) => {
   const newMeeting = (
     <Tooltip>New Meeting</Tooltip>
   )
+  const assignUser = (
+    <Tooltip>Reassign User</Tooltip>
+  )
   const [value, onChange] = useState(new Date());
+  const [messageWrapperVisible, setMessageWrapperVisible] = useState(false);
+  const [isEditorFocused, setIsEditorFocused] = useState(false);
+  const [hasContent, setHasContent] = useState(false);
+  const [valuemessga, setValuemessga] = useState('');
 
+  const handleChatProfileClick = () => {
+    setMessageWrapperVisible(true);
+  };
+
+  const handleCloseMessageWrapper = () => {
+    setMessageWrapperVisible(false);
+  };
+  const handleEditorFocus = () => {
+    setIsEditorFocused(true);
+  };
+
+  const handleEditorBlur = () => {
+    setIsEditorFocused(false);
+  };
+
+  const handleChange = (value) => {
+    setValuemessga(value);
+    setHasContent(value.trim().length > 0);
+  };
+
+  const [adduserconversation, showAddUserConversation] = useState(false);
+  const handleShowUserConversation = () => {
+    showAddUserConversation(!adduserconversation);
+  }
+  const handleCloseUserConversation = () => {
+    showAddUserConversation(false);
+  }
 
   console.log(routePath(role), "routePath(isSingleJob)")
 
@@ -151,6 +181,7 @@ const RexettHeader = ({ role }) => {
       <header className="mb-4 zIndex3">
         <div className="d-flex align-items-center justify-content-between gap-3">
           <div>
+            <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2 active-collapse" : "shadow-none p-0 collapsable_btn me-2"}><TbArrowBarToLeft /></Button>
             {routePath(isSingleJob) && (
               <Button
                 onClick={backBtn}
@@ -283,105 +314,10 @@ const RexettHeader = ({ role }) => {
           </div>
         </Offcanvas.Body>
       </Offcanvas>
-      <Offcanvas show={showMessagesInfo} placement="end" className="message-offcanvas" onHide={handleCloseMessages}>
+      <Offcanvas show={showMessagesInfo} placement="end" className={`message-offcanvas ${messageWrapperVisible ? 'visible' : ''}`} onHide={handleCloseMessages}>
         <div className="d-flex align-items-start">
-          <div className="inner-message-area">
-            <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
-              <div className="d-flex align-items-center gap-2">
-                <Offcanvas.Title>Message Inbox</Offcanvas.Title>
-                <OverlayTrigger placement="bottom" overlay={newTodoText}>
-                  <Button className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
-                </OverlayTrigger>
-              </div>
-            </Offcanvas.Header>
-            <Offcanvas.Body className="message-canvas-body">
-              <div>
-                <div>
-                  <Form.Control type="text" placeholder="Search here..." className="common-field font-14 mb-2" />
-                </div>
-                <Tab.Container
-                  id="left-tabs-example"
-                  defaultActiveKey="all-message"
-                >
-                  <div className="d-flex justify-content-center">
-                    <Nav variant="pills" className="application-pills">
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="all-message" className="application-link">
-                          All
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="client-message" className="application-link">
-                          Clients
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="devs-message" className="application-link">
-                          Devs
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="team-members" className="application-link">
-                          Team Members
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                  </div>
-                  <Tab.Content>
-                    <Tab.Pane eventKey="all-message" className="pt-3 pb-4">
-                      <div><Tab.Container
-                        id="left-tabs-example"
-                        defaultActiveKey="all-in-message"
-                      >
-                        <div className="d-flex justify-content-center">
-                          <Nav variant="pills" className="application-pills">
-                            <Nav.Item className="application-item">
-                              <Nav.Link eventKey="all-in-message" className="application-link inner_tab_link">
-                                All
-                              </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item className="application-item">
-                              <Nav.Link eventKey="unread-all-message" className="application-link inner_tab_link">
-                                Unread
-                              </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item className="application-item">
-                              <Nav.Link eventKey="unans-all-message" className="application-link inner_tab_link">
-                                Unanswered
-                              </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item className="application-item">
-                              <Nav.Link eventKey="archieve-all-messages" className="application-link inner_tab_link">
-                                Archieve
-                              </Nav.Link>
-                            </Nav.Item>
-                          </Nav>
-                        </div>
-                        <Tab.Content>
-                          <Tab.Pane eventKey="all-in-message" className="py-4">
-                            <div className="chat-profile-wrapper">
-                              <div className="chat-profile-img">
-                                <img src={devImg} />
-                              </div>
-                              <div className="chat-profile-info">
-                                <div className="d-flex align-items-center justify-content-between">
-                                  <h3 className="chat-name">Pankaj Pundir</h3>
-                                  <p className="chat-time">8 hours</p>
-                                </div>
-                                <p className="chat-message mb-0">Hi,Welcome and thank you for showing an interest in Aviox technologies pvt ltd. Being connected to our company means you get the chance to let us get to know you even more. Start by introducing yourself on your personal profile. A good and informative profile will help us find a right match. We will keep you up to date with jobs that suit your profile.</p>
-                              </div>
-                            </div>
-                          </Tab.Pane>
-                        </Tab.Content>
-                      </Tab.Container>
-                      </div>
-                    </Tab.Pane>
-                  </Tab.Content>
-                </Tab.Container>
-              </div>
-            </Offcanvas.Body>
-          </div>
-          <div className="message-wrapper">
+
+          <div className={`message-wrapper ${messageWrapperVisible ? 'visible' : ''}`}>
             <div className="message-wrapper-header">
               <div className="about-chat">
                 <img src={devImg} />
@@ -389,18 +325,57 @@ const RexettHeader = ({ role }) => {
               </div>
               <div className="message-options">
                 <span className="message-header-icon">
-                  <FaCalendarDays />
-                </span>
-                <span className="message-header-icon">
-                  <FaUserCircle />
+                  <Dropdown className="assign-dropdown">
+                    <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
+                      <OverlayTrigger placement="bottom" overlay={assignUser}>
+                        <span className="assign-user cursor-pointer">
+                          <FaUserCircle />
+                        </span>
+                      </OverlayTrigger>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="assign-dropdown-menu">
+                      <div className="search-field-employee">
+                        <Form.Control type="text" className="common-field font-12 mb-2" placeholder="Search Employee" />
+                      </div>
+                      <div className="employee-listing">
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                          <span className="profile-pic-prefix">RG</span>
+                          <span className="font-12">robingautam@gmail.com</span>
+                        </div>
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                          <span className="profile-pic-prefix">RG</span>
+                          <span className="font-12">robingautam@gmail.com</span>
+                        </div>
+                      </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </span>
                 <span className="message-header-icon">
                   <IoArchiveSharp />
                 </span>
                 <span className="message-header-icon">
-                  <HiOutlineDotsVertical />
+                  <Dropdown className="assign-dropdown">
+                    <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
+                      <span className="assign-user cursor-pointer">
+                        <HiOutlineDotsVertical />
+                      </span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
+                      <div className="employee-listing">
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                          <span className="font-14">Mark as unread</span>
+                        </div>
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                          <span className="font-14 d-inline-block cursor-pointer" onClick={handleShowUserConversation}>Add users</span>
+                        </div>
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                          <span className="font-14 text-danger">Leave conversation</span>
+                        </div>
+                      </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </span>
-                <span className="message-header-icon">
+                <span className="message-header-icon" onClick={handleCloseMessageWrapper}>
                   <IoClose />
                 </span>
               </div>
@@ -414,7 +389,7 @@ const RexettHeader = ({ role }) => {
               <div>
                 <p className="msg-subject-name"><span className="subject-name">Invited</span></p>
                 <div className="sender-message">
-                  <div className="">
+                  <div>
                     <p className="message">You are invited<br /><br /> -- <br /><br /> Aviox Technologies Pvt Ltd.</p>
                     <p className="message-time">1 hour ago</p>
                   </div>
@@ -434,30 +409,77 @@ const RexettHeader = ({ role }) => {
               </div>
             </div>
             <div className="write-message-area">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <p className="mb-0"><span className="fw-medium">Subject: <span className="ongoing-subject">Re: Invited</span></span> <span className="new-subject">+ New Subject</span></p>
+                <div className="sender-profile">
+                  <img src={devImg} />
+                </div>
+              </div>
               <div>
-                <p><span className="fw-medium">Subject: <span className="ongoing-subject">Re: Invited</span></span> <span className="new-subject">+ New Subject</span></p>
+                <Form.Control type="text" className="common-field font-14 mb-2" placeholder="Enter new subject" />
               </div>
               <div className="position-relative">
-                <div className="custom-rich-editor message-field">
-                  <ReactQuill value={valuemessga} onChange={handleChange} />
+                <div className={`custom-rich-editor message-field ${(isEditorFocused || hasContent) ? 'focused' : ''}`}>
+                  <ReactQuill value={valuemessga} onChange={handleChange} onFocus={handleEditorFocus} onBlur={handleEditorBlur} />
                 </div>
-                <div className="field-msg-options d-flex align-items-center gap-3">
+                <div className={`field-msg-options d-flex align-items-center gap-3 ${(isEditorFocused || hasContent) ? 'focused' : ''}`}>
                   <div className="inner-field-msg-options">
-                    <OverlayTrigger placement="top" overlay={templateText}>
-                      <span>
-                        <TbMessage />
-                      </span>
-                    </OverlayTrigger>
+                    <Dropdown className="assign-dropdown">
+                      <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
+                        <OverlayTrigger placement="top" overlay={templateText}>
+                          <span>
+                            <TbMessage />
+                          </span>
+                        </OverlayTrigger>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
+                        <div className="search-field-employee">
+                          <Form.Control type="text" className="common-field font-12 mb-2" placeholder="Search Template" />
+                        </div>
+                        <div className="employee-listing">
+                          <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                            <span className="font-14">Default reply</span>
+                          </div>
+                          <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                            <span className="font-14">Reject mail</span>
+                          </div>
+                          {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                            <span className="font-14">Welcome to company</span>
+                          </div> */}
+                        </div>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <input type="file" id="attach-file-msg" className="d-none" />
                     <OverlayTrigger placement="top" overlay={attachmentText}>
-                      <span>
-                        <GrAttachment />
-                      </span>
+                      <label htmlFor="attach-file-msg">
+                        <span>
+                          <GrAttachment />
+                        </span>
+                      </label>
                     </OverlayTrigger>
-                    <OverlayTrigger placement="top" overlay={smartLinkText}>
-                      <span>
-                        <HiOutlineLink />
-                      </span>
-                    </OverlayTrigger>
+                    <Dropdown className="assign-dropdown">
+                      <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
+                        <OverlayTrigger placement="top" overlay={smartLinkText}>
+                          <span>
+                            <HiOutlineLink />
+                          </span>
+
+                        </OverlayTrigger>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
+                        <div className="search-field-employee">
+                          <Form.Control type="text" className="common-field font-12 mb-2" placeholder="Search Pages" />
+                        </div>
+                        <div className="employee-listing">
+                          <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                            <span className="font-14">Career page</span>
+                          </div>
+                          <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                            <span className="font-14">Job page</span>
+                          </div>
+                        </div>
+                      </Dropdown.Menu>
+                    </Dropdown>
                     <OverlayTrigger placement="top" overlay={gifText}>
                       <span>
                         <MdGifBox />
@@ -473,6 +495,103 @@ const RexettHeader = ({ role }) => {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="inner-message-area">
+            <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
+              <div className="d-flex align-items-center gap-2">
+                <Offcanvas.Title>Message Inbox</Offcanvas.Title>
+              </div>
+            </Offcanvas.Header>
+            <Offcanvas.Body className="message-canvas-body">
+              <div>
+                <div>
+                  <Form.Control type="text" placeholder="Search here..." className="common-field font-14 mb-2" />
+                </div>
+                <Tab.Container id="left-tabs-example" defaultActiveKey="all-message">
+                  <div className="d-flex justify-content-center">
+                    <Nav variant="pills" className="application-pills message-pills">
+                      <Nav.Item className="application-item">
+                        <Nav.Link eventKey="all-message" className="application-link">All</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item className="application-item">
+                        <Nav.Link eventKey="client-message" className="application-link">Clients</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item className="application-item">
+                        <Nav.Link eventKey="devs-message" className="application-link">Devs</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item className="application-item">
+                        <Nav.Link eventKey="team-members" className="application-link">Team Members</Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                  </div>
+                  <Tab.Content>
+                    <Tab.Pane eventKey="all-message" className="pt-3 pb-4">
+                      <Tab.Container id="left-tabs-example" defaultActiveKey="all-in-message">
+                        <div className="d-flex justify-content-center">
+                          <Nav variant="pills" className="application-pills message-info-pills">
+                            <Nav.Item className="application-item">
+                              <Nav.Link eventKey="all-in-message" className="application-link inner_tab_link">All</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item className="application-item">
+                              <Nav.Link eventKey="unread-all-message" className="application-link inner_tab_link">Unread</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item className="application-item">
+                              <Nav.Link eventKey="unans-all-message" className="application-link inner_tab_link">Unanswered</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item className="application-item">
+                              <Nav.Link eventKey="archieve-all-messages" className="application-link inner_tab_link">Archieve</Nav.Link>
+                            </Nav.Item>
+                          </Nav>
+                        </div>
+                        <Tab.Content>
+                          <Tab.Pane eventKey="all-in-message" className="mt-2">
+                            <div className="chat-profile-wrapper position-relative py-2 px-3" onClick={handleChatProfileClick}>
+                              <span className="more-chat-options">
+                                <Dropdown className="assign-dropdown">
+                                  <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
+                                    <span className="assign-user cursor-pointer">
+                                      <HiOutlineDotsVertical />
+                                    </span>
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
+                                    <div className="employee-listing">
+                                      <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                        <span className="font-14">Mark as unread</span>
+                                      </div>
+                                      <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                        <span className="font-14">Reassign user</span>
+                                      </div>
+                                      <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                        <span className="font-14 d-inline-block cursor-pointer" onClick={handleShowUserConversation}>Add users</span>
+                                      </div>
+                                      <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                        <span className="font-14">Archieve</span>
+                                      </div>
+                                    </div>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </span>
+                              <div className="chat-profile-img">
+                                <img src={devImg} />
+                              </div>
+                              <div className="chat-profile-info">
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <h3 className="chat-name">Pankaj Pundir</h3>
+                                  <p className="chat-time">8 hours</p>
+                                </div>
+                                <p className="chat-message mb-0">
+                                  Hi,Welcome and thank you for showing an interest in Aviox technologies pvt ltd. Being connected to our company means you get the chance to let us get to know you even more. Start by introducing yourself on your personal profile. A good and informative profile will help us find a right match. We will keep you up to date with jobs that suit your profile.
+                                </p>
+                              </div>
+                            </div>
+                          </Tab.Pane>
+                        </Tab.Content>
+                      </Tab.Container>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Tab.Container>
+              </div>
+            </Offcanvas.Body>
           </div>
         </div>
       </Offcanvas>
@@ -812,7 +931,7 @@ const RexettHeader = ({ role }) => {
                           <span className="d-inline-flex align-items-center gap-1">
                             <span className="quick-icon">
                               <CgCalendar />
-                            </span> 
+                            </span>
                             Today
                           </span>
                           <span className="fw-medium">26 Jun</span>
@@ -852,6 +971,7 @@ const RexettHeader = ({ role }) => {
         </Offcanvas.Body>
       </Offcanvas>
       <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
+      <AddUserConversation show={adduserconversation} handleClose={handleCloseUserConversation} />
     </>
   );
 };

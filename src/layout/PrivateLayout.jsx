@@ -13,6 +13,12 @@ const PrivateLayout = ({ children }) => {
 
   const basePath = pathname.split("-")[0];
   const derivedRole = basePath.split("/")[1];
+
+  const [collapseLayout , showCollapseLayout] = useState(false);
+  const handleShowCollpaseLayout = () => {
+    showCollapseLayout(!collapseLayout);
+  }
+  
   const {
     sidebarItems,
     floatingOptions,
@@ -27,18 +33,19 @@ const PrivateLayout = ({ children }) => {
   }
   console.log(basePath, "basePath")
 
+
   return (
     <div className="dashboard-layout">
       {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
-        <RexettSideBar sidebarItems={sidebarItems} floatingOptions={floatingOptions} role={role} />
+        <RexettSideBar collapseActive={collapseLayout} sidebarItems={sidebarItems} floatingOptions={floatingOptions} role={role} />
       ) : (
         <Outlet />
       )}
 
-      <main className="main-wrapper">
+      <main className={collapseLayout ? "main-wrapper collapsable-active" : "main-wrapper"}>
         {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
           <>
-            <RexettHeader {...headerProps} />
+            <RexettHeader collapseLayout={collapseLayout} handleCollapseSidebar={handleShowCollpaseLayout} {...headerProps} />
             <Outlet />
           </>
         ) : (
