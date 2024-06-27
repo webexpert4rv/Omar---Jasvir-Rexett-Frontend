@@ -85,7 +85,7 @@ const VendorTimeDetail = () => {
                     </div>
                   
 
-                    <RexettTimeReporting  timeReportingData={TIME_REPORTING}  role="developer"/>
+                    <RexettTimeReporting  timeReportingData={TIME_REPORTING}  role="client"/>
             </div>
             </div>
         </>

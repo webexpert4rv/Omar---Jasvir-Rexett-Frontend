@@ -618,7 +618,7 @@ const VendorDashboard = () => {
           </div>
           <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom-grey">
             <h2 className="section-head-sub">
-              {t("listOfAllRegisterDevelopers")}
+             List of Developers
             </h2>
           </div>
           <div className="developers-list mb-3">
