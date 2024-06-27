@@ -3,18 +3,25 @@ import { Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { FiCheck } from 'react-icons/fi'
 import { IoIosInformationCircle } from 'react-icons/io'
 import { IoCloseOutline } from 'react-icons/io5'
+import RolesPermissionWrapper from '../../../../pages/admin/Modals/RolesPermissionWrapper'
+import { useSelector } from 'react-redux'
 
 const RolesPermissionSection = () => {
-    const [showRoleInfo, setShowRoleInfo] = useState(false);
-    const [newpermission, setNewPermissions] = useState(false);
-    const [newRoles, setNewRoles] = useState(false);
-    const handleCloseRoleInfo = () => setShowRoleInfo(false);
-    const handleNewRoles = () => {
-        setNewRoles(true);
+
+    const {allPermissionList}=useSelector((state)=>state.adminData)
+   const [modalConfiguration,setModalConfiguration]=useState({
+    name:"",
+    isTrue:false
+   })
+
+
+    const handleModal = (name) => {
+        setModalConfiguration({
+          name:name,
+          isTrue:!modalConfiguration.isTrue
+        })
     }
-    const handleNewPermission = () => {
-        setNewPermissions(true);
-    }
+  
     const action_application = (
         <Tooltip>The ability to approve or reject new applications is a critical role that ensures only suitable candidates gain access to your platform.</Tooltip>
     )
@@ -82,8 +89,8 @@ const RolesPermissionSection = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex gap-3">
-                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewRoles} >+ New Role</Button>
-                                    <Button variant="transparent" onClick={handleNewPermission} className="main-btn font-14">+ New Permission</Button>
+                                    <Button variant="transparent" className="main-btn font-14" onClick={()=>handleModal("newRole")}  >+ New Role</Button>
+                                    <Button variant="transparent" onClick={()=>handleModal("permission")} className="main-btn font-14">+ New Permission</Button>
                                 </div>
                             </div>
                             <div className="table-responsive">
@@ -101,50 +108,48 @@ const RolesPermissionSection = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="main-permission-data">
+                                        {/* {
+                                            allPermissionList?.map((item)=>{
+                                                return(
+                                                    <>
+                                                 <tr className="sub-permission-data">
                                             <td className="align-middle">
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
-                                                    <h3 className="mb-0 font-16">
-                                                        New Applications
+                                                    <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
+                                                        {item?.name}
+                                                        <OverlayTrigger placement="bottom" overlay={action_application}>
+                                                            <span className="info-permission"><IoIosInformationCircle /></span>
+                                                        </OverlayTrigger>
                                                     </h3>
                                                 </div>
                                             </td>
                                             <td className="text-center">
-                                                <span className="partial-approved">
-                                                    <FiCheck />
-                                                </span>
+                                                <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <span className="full-approved">
-                                                    <FiCheck />
-                                                </span>
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
-                                                <span className="full-approved">
-                                                    <FiCheck />
-                                                </span>
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                             <td className="text-center">
-                                                <span className="not-approved">
-                                                    <IoCloseOutline />
-                                                </span>
+                                                <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <span className="not-approved">
-                                                    <IoCloseOutline />
-                                                </span>
+                                                <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <span className="not-approved">
-                                                    <IoCloseOutline />
-                                                </span>
+                                                <Form.Check type="checkbox" className="permission-checkbox" />
                                             </td>
                                             <td className="text-center">
-                                                <span className="full-approved">
-                                                    <FiCheck />
-                                                </span>
+                                                <Form.Check type="checkbox" className="permission-checkbox" checked />
                                             </td>
                                         </tr>
+                                                    </>
+                                                )
+                                            })
+                                        } */}
+                                       
                                         <tr className="sub-permission-data">
                                             <td className="align-middle">
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
@@ -753,6 +758,8 @@ const RolesPermissionSection = () => {
                                     </tbody>
                                 </table>
                             </div>
+
+                            <RolesPermissionWrapper show={modalConfiguration.isTrue} handleClose={handleModal} heading={modalConfiguration.name=="permission"?"New Permission" :"New Roles "} modalName={modalConfiguration.name=="permission"?"permission":"role"} options={[]} />
     </>
   )
 }

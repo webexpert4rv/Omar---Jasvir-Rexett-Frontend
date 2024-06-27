@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-const NewUser = ({ show, handleClose}) => {
+const NewEmployee = () => {
     return(
-        <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
-            <Modal.Header closeButton className="border-0 pb-3">
-            </Modal.Header>
-
-            <Modal.Body>
-                <h3 className="popup-heading">New Employee</h3>
-                <Form>
-                    <Form.Group className="mb-4">
+        <>
+           <Form.Group className="mb-4">
                         <Form.Label className="font-14 fw-medium" >Email Address</Form.Label>
                         <Form.Control className="common-field font-14" placeholder="Enter email address" />
                     </Form.Group>
@@ -29,9 +23,9 @@ const NewUser = ({ show, handleClose}) => {
                     <div className="text-center">
                         <Button variant="transparent" className="main-btn font-14">Send Invite</Button>
                     </div>
-                </Form>
-            </Modal.Body>
-        </Modal>
+        </>
+                 
+              
     )
 }
-export default NewUser;
+export default NewEmployee;

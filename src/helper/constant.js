@@ -71,3 +71,15 @@ export const DUMMY_DATA=[
         "job_category": null
     },
 ]
+
+
+
+export const EMPLOYEE_ROLE=[
+    { label: "Workspace Admin", value: "workspace_admin" },
+    { label: "Admin", value: "admin" },
+    { label: "Support Assistance", value: "support_assistance" },
+    { label: "Maintainance", value: "maintainance" },
+    { label: "Accountant", value: "accountant" },
+    { label: "HR", value: "hr" },
+    { label: "Assistance", value: "assistance" },
+  ]
