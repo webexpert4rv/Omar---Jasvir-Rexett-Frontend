@@ -69,6 +69,8 @@ export const COMPLETED_PROJECT_COLUMNS = [
   {
     label: "startDate",
     key: "start_date",
+    isDate: true,
+    format: "DD MMMM YYYY",
   },
   {
     label: "completionDate",
@@ -102,10 +104,52 @@ export const PROJECT_DETAIL_SECTION_1_FIELDS = [
     isDate: true,
     format: "DD MMMM YYYY",
   },
-  { label: "status", key: "status" ,isStatus:true },
-  { label: "totalHoursSpend", key: "total_hours" ,isHours:true},
+  { label: "status", key: "status", isStatus: true },
+  { label: "totalHoursSpend", key: "total_hours", isHours: true },
   { label: "totalInvoiceRaised", key: "total_invoice_raised" },
 ];
 
-export const PROJECT_HISTORY_PER_PAGE = 10;
+export const PROJECT_HISTORY_TIMEREPORTS_FIELDS = [
+  {
+    label: "clientName",
+    key: "job_title",
+  },
+];
+const TIME_SHEET_VIEW_OPTIONS = [
+  {
+    label: "Weekly",
+    value: "weekly",
+  },
+  {
+    label: "Monthly",
+    value: "monthly",
+  },
+  {
+    label: "Yearly",
+    value: "yearly",
+  },
+];
 
+export const PROJECT_HISTORY_PER_PAGE = 10;
+export const PROJECT_DETAIL_FILTER_FIELDS = {
+  selectFilters: [
+    {
+      filterLabel: "Select view",
+      key: "filter",
+      options: TIME_SHEET_VIEW_OPTIONS,
+    },
+    {
+      filterLabel: "Select start date",
+      key: "startDate",
+      isDate: true,
+      formLabel: "Select start date",
+    },
+    {
+      filterLabel: "Select end date",
+      key: "endDate",
+      isDate: true,
+      formLabel: "Select end date",
+    },
+  ],
+  // searchFilter: { key: "search", placeholder: "Enter search keywords" },
+};

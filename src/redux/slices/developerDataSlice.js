@@ -151,7 +151,7 @@ export const developerDataSlice = createSlice({
       state.screenLoader = false;
     },
     setProjectDetail: (state, action) => {
-      state.projectDetail=action.payload;
+      state.projectDetail = action.payload;
       state.screenLoader = false;
     },
   },
@@ -1181,15 +1181,15 @@ export function getProjectHistoryDetail(filters) {
   };
 }
 // for single project detail page
-export function getProjectDetail(id,callback) {
+export function getProjectDetail(filters, id, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(
-        `developer/get-project-time-report/${id}`
+        generateApiUrl(filters, `developer/get-project-time-report/${id}`)
       );
       dispatch(setProjectDetail(result.data?.data));
-      callback && callback(result.data?.data)
+      callback && callback(result.data?.data);
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });

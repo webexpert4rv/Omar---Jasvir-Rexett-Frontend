@@ -13,6 +13,7 @@ import SimpleTableComponent from "../../components/atomic/SimpleTableComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjectHistoryDetail } from "../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 const ProjectHistory = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,6 +23,8 @@ const ProjectHistory = () => {
     PROJECT_HISTORY_TABS.activeProject
   );
   const [page, setPage] = useState(1);
+  // const [filters,setFilters] = useState({
+  // });
   useEffect(() => {
     const filters = {
       page: page,
@@ -33,7 +36,6 @@ const ProjectHistory = () => {
   const redirectToProject = (id) => {
     navigate(`/developer/project-detail/${id}`);
   };
-  console.log(projectHistoryDetail, "projectHistoryDetail");
   return (
     <>
       {screenLoader ? (
@@ -105,7 +107,7 @@ const ProjectHistory = () => {
                 />
               </Tab.Pane>
               <Tab.Pane eventKey="completed">
-                <div>
+                {/* <div>
                   <div className="table-responsive">
                     <table className="table table-ui-custom">
                       <thead>
@@ -146,7 +148,13 @@ const ProjectHistory = () => {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </div> */}
+                {/* <CommonFilterSection
+                  filters={filters}
+                  setFilters={setFilters}
+                  filterFields={APPLICANT_FILTER_FIELDS}
+                  // text={t("applications")}
+                /> */}
                 <SimpleTableComponent
                   columns={COMPLETED_PROJECT_COLUMNS}
                   data={projectHistoryDetail}
@@ -154,6 +162,7 @@ const ProjectHistory = () => {
                   setPage={setPage}
                   totalPages={projectHistoryPagination?.totalPages}
                   onClick={redirectToProject}
+                  keyToSendOnClick={"id"}
                 />
               </Tab.Pane>
             </Tab.Content>

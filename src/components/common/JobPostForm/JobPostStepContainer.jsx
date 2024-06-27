@@ -23,14 +23,11 @@ import { current } from "@reduxjs/toolkit";
 import ScreenLoader from "../../atomic/ScreenLoader";
 
 // add this inside constant file later
-const hasNullOrUndefinedProperties = (obj,activeStep) => {
-  if(activeStep === 3){
-     return !obj?.screening_questions?.length
-  }
-  else{
-    return Object.values(obj).some( 
-      (value) => value === null 
-    );
+const hasNullOrUndefinedProperties = (obj, activeStep) => {
+  if (activeStep === 3) {
+    return !obj?.screening_questions?.length;
+  } else {
+    return Object.values(obj).some((value) => value === null);
   }
 };
 
@@ -46,26 +43,24 @@ const DEFAULT_SCREENING_DATA = [
     title: "",
     question_type: "",
     question: "How many years of experience do you currently have?",
-    isRecommended:true,
-
+    isRecommended: true,
   },
   {
     label: "Education",
     question_type: "Degree",
     title: "",
-    ideal_answer :"Yes",
+    ideal_answer: "Yes",
     question: "Have you completed the following level of education: [Degree]",
-    isRecommended:true,
-
+    isRecommended: true,
   },
   {
     label: "Language",
     title: "",
     question_type: "language",
     question: "What is your level of proficiency in [Language]?",
-    isRecommended:true,
+    isRecommended: true,
   },
-]
+];
 
 const JobPostStepContainer = () => {
   const { t } = useTranslation();
@@ -118,15 +113,13 @@ const JobPostStepContainer = () => {
   }, [activeStep, dispatch]);
 
   useEffect(() => {
-    localStorage.setItem("activeStep", activeStep);
+    // localStorage.setItem("activeStep", activeStep);
     let jobId = localStorage.getItem("jobId");
-    if(id){
+    if (id) {
       setJobID(id);
       jobId = id;
-    }
-    else if (jobId){
+    } else if (jobId) {
       setJobID(Number(jobId));
-
     }
     // if (jobId) {
     //   setJobID(Number(jobId));
@@ -146,7 +139,8 @@ const JobPostStepContainer = () => {
             Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length
           ) {
             const IsNull = hasNullOrUndefinedProperties(
-              jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]],activeStep
+              jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]],
+              activeStep
             );
             setIsEdit(!IsNull);
           }
@@ -176,20 +170,20 @@ const JobPostStepContainer = () => {
                       );
                     }
                   }
-                } 
-                else if (activeStep === 3){
-                  if(key === "screening_questions"){
-                    if(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]?.length){
+                } else if (activeStep === 3) {
+                  if (key === "screening_questions") {
+                    if (
+                      jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]?.length
+                    ) {
                       setValue(
                         key,
                         jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
                       );
                     } else {
-                      setValue("screening_questions",DEFAULT_SCREENING_DATA)
+                      setValue("screening_questions", DEFAULT_SCREENING_DATA);
                     }
                   }
-                }
-                else {
+                } else {
                   setValue(
                     key,
                     jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]
@@ -202,7 +196,6 @@ const JobPostStepContainer = () => {
       );
     }
   }, [activeStep, dispatch, skillCate]);
-  console.log(isEdit,"isEdit")
 
   const getActiveStepComponent = () => {
     switch (activeStep) {
@@ -238,6 +231,19 @@ const JobPostStepContainer = () => {
         );
     }
   };
+  const increaseStep = () => {
+    if (activeStep < 3) {
+      setActiveStep((prev) => prev + 1);
+    } else {
+      navigate("/client/job-posted");
+    }
+    localStorage.setItem("activeStep", activeStep + 1);
+  };
+
+  const decreaseStep = () => {
+    setActiveStep((prev) => prev - 1);
+    localStorage.setItem("activeStep", activeStep - 1);
+  };
   const onSubmit = (stepData) => {
     let payload = {};
 
@@ -246,14 +252,14 @@ const JobPostStepContainer = () => {
       if (curKey in stepData) {
         payload = {
           ...payload,
-          user_id:userId,
+          user_id: userId,
           [curKey]: stepData[curKey],
         };
       }
     });
     payload = {
       ...payload,
-      user_id:userId,
+      user_id: userId,
       step: activeStep,
       job_id: jobID,
     };
@@ -270,9 +276,9 @@ const JobPostStepContainer = () => {
       payload["optional_skills"] = formattedOptionSkills;
     }
     if (isEdit) {
-      dispatch(clientUpdatePost(payload,isEdit, activeStep, jobID, () => {}));
+      dispatch(clientUpdatePost(payload, isEdit, activeStep, jobID, increaseStep));
     } else {
-      dispatch(clientJobPost(payload, activeStep, () => {}));
+      dispatch(clientJobPost(payload, activeStep, increaseStep));
     }
 
     // if (jobID) {
@@ -281,11 +287,11 @@ const JobPostStepContainer = () => {
     //   dispatch(clientJobPost(payload, activeStep, () => {}));
     // }
     // dispatch(clientUpdatePost(payload, activeStep, jobID, () => {}));
-    if (activeStep < 3) {
-      setActiveStep((prev) => prev + 1);
-    } else {
-      navigate("/client/job-posted");
-    }
+    // if (activeStep < 3) {
+    //   setActiveStep((prev) => prev + 1);
+    // } else {
+    //   navigate("/client/job-posted");
+    // }
 
     // if (jobId) {
     //   dispatch(clientUpdatePost(payload, jobId, () => {}));
@@ -353,9 +359,7 @@ const JobPostStepContainer = () => {
                   <RexettButton
                     type="button"
                     text="Back"
-                    onClick={() => {
-                      setActiveStep((prev) => prev - 1);
-                    }}
+                    onClick={decreaseStep}
                     className="main-btn outline-main-btn px-5"
                     disabled={smallLoader}
                     isLoading={smallLoader}

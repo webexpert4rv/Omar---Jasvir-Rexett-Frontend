@@ -6,19 +6,20 @@ const LastStep = ({ role }) => {
   const navigate = useNavigate();
   useEffect(()=>{
     // handleRedirect()
+    clearStorage();
   },[role])
   const handleRedirect = () => {
     switch (role) {
       case "developer":
-        clearStorage();
+        // clearStorage();
         navigate("/developer-login");
         break;
       case "client":
-        clearStorage();
+        // clearStorage();
         navigate("/");
         break;
       case "vendor":
-        clearStorage();
+        // clearStorage();
         navigate("/vendor-login");
         break;
     }

@@ -82,15 +82,6 @@ const Step1 = ({
                       { label: "As Company", value: "company" },
                     ]}
                   />
-                  {/* <CommonInput
-                        // label={t("As Company")}
-                        name="name"
-                        control={control}
-                        rules={{ required: "Name is required" }}
-                        error={errors.name}
-                        type="radio"
-                        options={[{ label: "As Company", value: "as_company" }]}
-                      /> */}
                 </div>
                 {watch("client_type") === "company" && (
                   <>
@@ -272,7 +263,7 @@ const Step1 = ({
                     selectOptions={countries}
                     error={errors?.country}
                   /> */}
-                  
+
                 <LocationSection
                   control={control}
                   errors={errors}
