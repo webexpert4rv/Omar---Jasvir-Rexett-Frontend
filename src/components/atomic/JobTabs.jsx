@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Button, Col, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import NoDataFound from "./NoDataFound";
@@ -13,23 +13,23 @@ import { MdWorkHistory } from "react-icons/md";
 import { DUMMY_DATA } from "../../helper/constant";
 
 const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
-   const role=localStorage.getItem("role")
+  const role = localStorage.getItem("role")
   const { t } = useTranslation()
-  const [stateJobs,setStateJob]=useState([])
-  const navigate=useNavigate()
+  const [stateJobs, setStateJob] = useState([])
+  const navigate = useNavigate()
   const getCategory = (cat) => {
     let data = jobCategoryList?.find((item) => item.id == cat);
     return data?.title;
   };
 
- useEffect(()=>{
-  if(jobListing?.length>0){
-    setStateJob(jobListing)
-  }else{
-    setStateJob(DUMMY_DATA)
-  }
+  useEffect(() => {
+    if (jobListing?.length > 0) {
+      setStateJob(jobListing)
+    } else {
+      setStateJob(DUMMY_DATA)
+    }
 
- },[jobListing])
+  }, [jobListing])
 
   const convertToArray = (arr) => {
     const skillsArray = arr?.split(",");
@@ -86,7 +86,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
     <Tooltip>Hired</Tooltip>
   )
 
-  const handleViewRedirection=(id)=>{
+  const handleViewRedirection = (id) => {
     navigate(`/${role}/${role}-single-job/${id}`)
   }
 
@@ -143,7 +143,17 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                     </div>
                   </div>
                   <div>
-
+                    {role == "developer" &&
+                      <><div>
+                        <span className="status-finished w-auto d-inline-block mb-2">Matching with your profile - <strong>95%</strong></span>
+                      </div><div>
+                          <span className="status-upcoming w-auto d-inline-block mb-2">Matching with your profile - <strong>60%</strong></span>
+                        </div><div>
+                          <span className="status-progress w-auto d-inline-block mb-2">Matching with your profile - <strong>40%</strong></span>
+                        </div><div>
+                          <span className="status-rejected w-auto d-inline-block mb-2">Matching with your profile - <strong>20%</strong></span>
+                        </div></>
+                    }
                     <div className="mb-3 mt-xl-0 mt-3">
                       <h4 className="stage-heading mb-3">Stages</h4>
                       <div className="stage-wrapper">
@@ -189,13 +199,20 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                     <p className="font-15">
                       Response Time: <strong>15 Days</strong>
                     </p>
+                    <div className="d-flex align-items-center gap-3">
 
-                    <span
-                      onClick={()=>handleViewRedirection(item?.id)}
-                      className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none"
-                    >
-                      <FaEye />
-                    </span>
+                      {role == "developer" &&
+                        <div>
+                          <Button variant="transparent" className="main-btn font-14 mb-2">Apply this job</Button>
+                        </div>
+                      }
+                      <span
+                        onClick={() => handleViewRedirection(item?.id)}
+                        className="px-3 mb-2 arrow-btn primary-arrow font-16 text-decoration-none cursor-pointer"
+                      >
+                        <FaEye />
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -203,7 +220,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
           );
         })
       ) : (
-         <div className="simple-no-data"><NoDataFound /></div> 
+        <div className="simple-no-data"><NoDataFound /></div>
       )}
     </div>
   );

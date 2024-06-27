@@ -33,8 +33,8 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
     return { value: item.id, label: item.title };
   });
   const getPlainText = (string) => {
-    if(string){
-      const plainText =  string.replace(/(<([^>]+)>)/ig, '');
+    if (string) {
+      const plainText = string.replace(/(<([^>]+)>)/ig, '');
       return plainText
     } else {
       return "";
@@ -167,7 +167,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                 <Controller
                   name="description"
                   control={control}
-                  rules={{required:"Description is required"}}
+                  rules={{ required: "Description is required" }}
                   render={({ field }) => (
                     <ReactQuill
                       {...field}
@@ -175,7 +175,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                       value={watch("description")}
                       theme="snow"
                       onChange={(html) => {
-                        handleChange(html,field);
+                        handleChange(html, field);
                         // field.onChange(html);
                         // setValue("description", html);
                       }}
@@ -183,7 +183,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                   )}
                 />
 
-                <p className="text-end text-muted font-14 mt-1">{`${getPlainText(watch("description"))?.length ?getPlainText(watch("description")).length : 0}/10,000`}</p>
+                <p className="text-end text-muted font-14 mt-1">{`${getPlainText(watch("description"))?.length ? getPlainText(watch("description")).length : 0}/10,000`}</p>
               </div>
               {errors?.description && (
                 <p className="error-message ">{errors.description?.message}</p>
@@ -249,6 +249,95 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
             )}
           </Col>
         </Row>
+        <div className="skill-weight-wrapper mb-3">
+          <Row>
+
+            <Col md={8}>
+              <div>
+                <h4 className="font-18 fw-medium">Skills and traits</h4>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div>
+                <h5 className="text-center font-18 fw-medium">Weight</h5>
+                <div className="d-flex justify-content-center gap-3">
+                  <span className="font-14">Low</span>
+                  <span className="font-14">Medium</span>
+                  <span className="font-14">High</span>
+                </div>
+              </div>
+            </Col>
+            <Col md={8} className="mb-3">
+              <div>
+                <div className="skill-progress low-skill">
+                  <span className="skill-progress-name fw-semibold">
+                    React JS
+                  </span>
+                  <span className="skill-percent">5%</span>
+                </div>
+              </div>
+            </Col>
+            <Col md={4} className="align-self-center mb-3">
+              <div className="d-flex justify-content-center gap-3">
+                <div className="low-wrapper">
+                  <Form.Check type="radio" name="react-skill-weight" className="weight-radio" checked />
+                </div>
+                <div className="medium-wrapper">
+                  <Form.Check type="radio" name="react-skill-weight" className="weight-radio" />
+                </div>
+                <div className="high-wrapper">
+                  <Form.Check type="radio" name="react-skill-weight" className="weight-radio" />
+                </div>
+              </div>
+            </Col>
+            <Col md={8} className="mb-3">
+              <div>
+                <div className="skill-progress medium-skill">
+                  <span className="skill-progress-name fw-semibold">
+                    Vue Js
+                  </span>
+                  <span className="skill-percent">16%</span>
+                </div>
+              </div>
+            </Col>
+            <Col md={4} className="align-self-center mb-3">
+              <div className="d-flex justify-content-center gap-3">
+                <div className="low-wrapper">
+                  <Form.Check type="radio" name="vue-skill-weight" className="weight-radio" />
+                </div>
+                <div className="medium-wrapper">
+                  <Form.Check type="radio" name="vue-skill-weight" className="weight-radio" checked />
+                </div>
+                <div className="high-wrapper">
+                  <Form.Check type="radio" name="vue-skill-weight" className="weight-radio" />
+                </div>
+              </div>
+            </Col>
+            <Col md={8} className="mb-3">
+              <div>
+                <div className="skill-progress high-skill">
+                  <span className="skill-progress-name fw-semibold">
+                    Angular Js
+                  </span>
+                  <span className="skill-percent">21%</span>
+                </div>
+              </div>
+            </Col>
+            <Col md={4} className="align-self-center mb-3">
+              <div className="d-flex justify-content-center gap-3">
+                <div className="low-wrapper">
+                  <Form.Check type="radio" name="angular-skill-weight" className="weight-radio" />
+                </div>
+                <div className="medium-wrapper">
+                  <Form.Check type="radio" name="angular-skill-weight" className="weight-radio" />
+                </div>
+                <div className="high-wrapper">
+                  <Form.Check type="radio" name="angular-skill-weight" className="weight-radio" checked />
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
       </section>
     </div>
   );
