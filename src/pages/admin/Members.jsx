@@ -30,10 +30,12 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
 import ConfirmationModal from "../views/Modals/ConfirmationModal";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 import { MEMBERS_FILTER_FIELDS, buildQueryFromObjects } from "./adminConstant";
+import { TiUserAdd } from "react-icons/ti";
+import AssignEmployee from "./Modals/AssignEmployee";
 
 let STATUS = [
   {
@@ -283,7 +285,16 @@ const Members = () => {
       )
     );
   };
-
+  const [assignemployee, showAssignEmployee] = useState(false);
+  const handleShowAssignEmployee = () => {
+    showAssignEmployee(!assignemployee);
+  }
+  const handleCloseAssignEmployee = () => {
+    showAssignEmployee(false);
+  }
+  const assignEmployeeText = (
+    <Tooltip>Assign Chat</Tooltip>
+  )
   const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal);
   const handleCloseTrustedModal = () => setShowTrustedModal(!showTrustedModal);
 
@@ -402,13 +413,17 @@ const Members = () => {
                 <table className="table w-100 engagement-table table-ui-custom">
                   <thead>
                     <tr>
-                      <th>{t("clientName")}</th>
+                      <th>Company/Individual Name</th>
                       <th>
-                        {t("email")} {t("address")}
+                        Contact {t("email")}
                       </th>
-                      <th>{t("phoneNumber")}</th>
+                      <th>Contact Phone Detail</th>
+                      <th>Company Type</th>
+                      <th>Tax Id</th>
+                      <th>Applied on</th>
                       <th>{t("status")}</th>
-                      <th>Disabled/Enabled</th>
+                      <th>Action</th>
+                      <th>Assign Chat</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -457,6 +472,9 @@ const Members = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
+                                <td className="text-capitalize">{item?.client_type}</td>
+                                <td>{item?.company_tax_id}</td>
+                                <td>{item?.created_at?.slice(0, 10)}</td>
                                 <td>
                                   <span
                                     className={`${
@@ -473,7 +491,7 @@ const Members = () => {
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block">
                                       <input
                                         class="form-check-input toggle-switch-custom"
                                         type="checkbox"
@@ -484,6 +502,15 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
+                                <td>
+                                  <div>
+                                    <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto">
+                                        <TiUserAdd />
+                                      </Button>
+                                    </OverlayTrigger>
+                                  </div>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -491,7 +518,7 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                  <td colSpan="8">
+                                  <td colSpan="9">
                                     <div>
                                       <Row>
                                         {/* {item?.client_type == "company" && ( */}
@@ -717,6 +744,7 @@ const Members = () => {
                       </th>
                       <th>{t("status")}</th>
                       <th>Enable/Disable</th>
+                      <th>Assign Chat</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -781,7 +809,7 @@ const Members = () => {
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block">
                                       <input
                                         class="form-check-input toggle-switch-custom"
                                         type="checkbox"
@@ -792,6 +820,15 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
+                                <td>
+                                  <div>
+                                    <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto">
+                                        <TiUserAdd />
+                                      </Button>
+                                    </OverlayTrigger>
+                                  </div>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
@@ -799,7 +836,7 @@ const Members = () => {
                                     expandedRow === index ? "open" : ""
                                   }`}
                                 >
-                                  <td colSpan="8">
+                                  <td colSpan="9">
                                     <div>
                                       <Row>
                                         <Col md={3} className="mb-3">
@@ -1112,6 +1149,7 @@ const Members = () => {
                       <th>Enable/Disable</th>
                       <th>Featured On Website</th>
                       <th>Trusted Tech Expert</th>
+                      <th>Assign Chat</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1233,6 +1271,15 @@ const Members = () => {
                                       />
                                     </div>
                                   </OverlayTrigger>
+                                </td>
+                                <td>
+                                  <div>
+                                    <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto">
+                                        <TiUserAdd />
+                                      </Button>
+                                    </OverlayTrigger>
+                                  </div>
                                 </td>
                               </tr>
                               {expandedRow === index && (
@@ -1548,6 +1595,7 @@ const Members = () => {
           />
         )}
       </div>
+      <AssignEmployee show={assignemployee} handleClose={handleCloseAssignEmployee} />
     </>
   );
 };

@@ -10,6 +10,8 @@ import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FaEye, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
+import { TiUserAdd } from "react-icons/ti";
+import AssignChat from "./Modals/AssignChat";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
     const [newRoles, setNewRoles] = useState(false);
@@ -45,6 +47,17 @@ const RolesPermission = () => {
 
     const handleCloseRoleInfo = () => setShowRoleInfo(false);
     const handleShowRoleInfo = () => setShowRoleInfo(true);
+
+    const [assignchat, showAssignChat] = useState(false);
+    const handleShowAssignChat = () => {
+      showAssignChat(!assignchat);
+    }
+    const handleCloseAssignChat = () => {
+      showAssignChat(false);
+    }
+    const assignEmployeeText = (
+      <Tooltip>Assign Chat</Tooltip>
+    )
 
     const action_application = (
         <Tooltip>The ability to approve or reject new applications is a critical role that ensures only suitable candidates gain access to your platform.</Tooltip>
@@ -126,6 +139,7 @@ const RolesPermission = () => {
                                                 <th>Name</th>
                                                 <th>Email Address</th>
                                                 <th>Role</th>
+                                                <th>Assign chat</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -141,6 +155,15 @@ const RolesPermission = () => {
                                                         </Button>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div>
+                                                        <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow">
+                                                                <TiUserAdd />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </td>
                                                 <td className="align-middle">
                                                     <div className="d-flex gap-3">
                                                         <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
@@ -149,7 +172,7 @@ const RolesPermission = () => {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colSpan={4}>
+                                                <td colSpan={5}>
                                                     <p className="font-14">A Workspace Admin, with full access, is responsible for managing user accounts, permissions, and security policies within the digital workspace. They oversee workspace configuration, data management, and ensure compliance with organizational policies. Additionally, they provide technical support, training, and monitor system performance to maintain an optimized and secure environment.</p>
                                                     <div>
                                                         <h5 className="mb-3">Permissions</h5>
@@ -316,6 +339,15 @@ const RolesPermission = () => {
                                                         <Button variant="transparent" className="edit-role">
                                                             <FaEye />
                                                         </Button>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow">
+                                                                <TiUserAdd />
+                                                            </Button>
+                                                        </OverlayTrigger>
                                                     </div>
                                                 </td>
                                                 <td className="align-middle">
@@ -1032,6 +1064,7 @@ const RolesPermission = () => {
             <NewRoles show={newRoles} handleClose={handleCloseNewRoles} />
             <NewUser show={newUser} handleClose={handleCloseNewUser} />
             <EditRole show={editRoleModal} handleClose={handleHideEditRole} />
+            <AssignChat show={assignchat} handleClose={handleCloseAssignChat} />
         </>
     )
 }

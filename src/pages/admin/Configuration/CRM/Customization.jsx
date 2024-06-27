@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getConfigDetails } from "../../../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../../../components/atomic/ScreenLoader";
 import MessageTemplate from "../MessageTemplate/MessageTemplate";
+import NotificationSetting from "../NotificationSettings/NotificationSetting";
 
 const Customization = () => {
     const [previewUrl, setPreviewUrl] = useState('');
@@ -55,6 +56,7 @@ const Customization = () => {
                         <EmailTemplate currentTab={currentTab} previewUrl={previewUrl} />
                         <CompanyDetails currentTab={currentTab} />
                         <MessageTemplate currentTab={currentTab} />
+                        <NotificationSetting currentTab={currentTab} />
                     </Tab.Content>
                 </Tab.Container>
             </div>

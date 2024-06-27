@@ -223,6 +223,10 @@ export const configurationTabText = [
     key:"four",
     value:"Message Template"
   },
+  {
+    key:"five",
+    value:"Notification Settings"
+  },
  
 ]
 

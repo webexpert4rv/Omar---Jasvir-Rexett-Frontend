@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import ReactQuill, { Quill } from 'react-quill';
 
 const CreateMessageTemplate = () => {
@@ -104,6 +104,9 @@ const CreateMessageTemplate = () => {
                             </p>
                         </Form.Label>
                     </div>
+                </div>
+                <div className='text-center'>
+                    <Button variant='transparent' className="main-btn font-14">Create Template</Button>
                 </div>
             </div>
         </div>

@@ -508,26 +508,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                   <Form.Control type="text" placeholder="Search here..." className="common-field font-14 mb-2" />
                 </div>
                 <Tab.Container id="left-tabs-example" defaultActiveKey="all-message">
-                  <div className="d-flex justify-content-center">
-                    <Nav variant="pills" className="application-pills message-pills">
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="all-message" className="application-link">All</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="client-message" className="application-link">Clients</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="devs-message" className="application-link">Devs</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="team-members" className="application-link">Team Members</Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                  </div>
                   <Tab.Content>
                     <Tab.Pane eventKey="all-message" className="pt-3 pb-4">
                       <Tab.Container id="left-tabs-example" defaultActiveKey="all-in-message">
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex">
                           <Nav variant="pills" className="application-pills message-info-pills">
                             <Nav.Item className="application-item">
                               <Nav.Link eventKey="all-in-message" className="application-link inner_tab_link">All</Nav.Link>
@@ -536,16 +520,13 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                               <Nav.Link eventKey="unread-all-message" className="application-link inner_tab_link">Unread</Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="application-item">
-                              <Nav.Link eventKey="unans-all-message" className="application-link inner_tab_link">Unanswered</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item className="application-item">
                               <Nav.Link eventKey="archieve-all-messages" className="application-link inner_tab_link">Archieve</Nav.Link>
                             </Nav.Item>
                           </Nav>
                         </div>
                         <Tab.Content>
                           <Tab.Pane eventKey="all-in-message" className="mt-2">
-                            <div className="chat-profile-wrapper position-relative py-2 px-3" onClick={handleChatProfileClick}>
+                            <div className={messageWrapperVisible ? "chat-profile-wrapper position-relative active-chat py-2 px-3" : "chat-profile-wrapper position-relative py-2 px-3"} onClick={handleChatProfileClick}>
                               <span className="more-chat-options">
                                 <Dropdown className="assign-dropdown">
                                   <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
@@ -599,7 +580,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
         <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
           <div className="d-flex align-items-center gap-2">
             <Offcanvas.Title>
-              To Do List
+              To do list
             </Offcanvas.Title>
             <div className="d-flex align-items-center gap-1">
               <Dropdown className="d-inline mx-2" autoClose="outside">

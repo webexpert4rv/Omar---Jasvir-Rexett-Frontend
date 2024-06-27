@@ -6570,6 +6570,7 @@ input[type="radio"]:checked {
     cursor: pointer;
     border-radius: 6px;
     transition: .3s ease;
+    border: 1px solid transparent;
 }
 
 .chat-profile-img {
@@ -8075,6 +8076,11 @@ select.apply-field
 {
     background-color: #f7f7f7;
 }
+.chat-profile-wrapper.active-chat
+{
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+}
 .template-check label
 {
     gap: 10px;
@@ -8109,6 +8115,63 @@ select.apply-field
     border-radius: 20px;
     text-align: center;
     cursor: pointer;
+}
+.candidate-form
+{
+    max-height: 550px;
+    overflow: auto;
+}
+.step-count
+{
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid #037563;
+    color: #037563;
+    margin-bottom: 7px;
+}
+.step-countbx.active .step-count
+{
+    background-color: #037563;
+    color: #fff;
+}
+.step-countbx.active
+{
+    color: #037563;
+}
+.avatar-company
+{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.primary-checkbox input
+{
+    width: 18px;
+    height: 18px;
+    margin-top: 0px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: none !important;
+    background-color: #ccc;
+}
+.primary-checkbox input:checked
+{
+    background-color: #037563;
+}
+.assign-table
+{
+    max-height: 400px;
+    overflow: auto;
+}
+.assign-table thead
+{
+    position: sticky;
+    top: 0;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
