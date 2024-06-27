@@ -707,7 +707,7 @@ export function getConfigDetails() {
     return async(dispatch)=>{
         dispatch(setScreenLoader())
         try{
-            let result = await clientInstance.get(`/admin/configuration`)
+            let result = await clientInstance.get(`/common/configuration`)
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
