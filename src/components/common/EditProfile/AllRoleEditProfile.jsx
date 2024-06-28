@@ -45,6 +45,8 @@ const AllRoleEditProfile = ({ role }) => {
     useSelector((state) => state.clientData);
   const { t } = useTranslation();
   // const [countryList,setCountryList] = useState([]);
+
+  console.log(countriesList, "countriesList")
   const {
     register,
     setValue,
@@ -94,7 +96,7 @@ const AllRoleEditProfile = ({ role }) => {
       dispatch(getTimeZoneForCountry(watch("country")?.value));
       setValue("time_zone", null);
       setValue("state", null);
-      // setValue("city",null);
+      setValue("city",null);
     }
   }, [watch("country")]);
 
@@ -509,7 +511,7 @@ const AllRoleEditProfile = ({ role }) => {
                 </div>
               </Col>
             </Row>
-            <div className="text-center">
+           {role === "vendor" && <div className="text-center">
               <RexettButton
                 type="submit"
                 text={t("updateProfile")}
@@ -518,7 +520,7 @@ const AllRoleEditProfile = ({ role }) => {
                 disabled={smallLoader}
                 isLoading={smallLoader}
               />
-            </div>
+            </div>}
           </form>
         )}
       </div>
