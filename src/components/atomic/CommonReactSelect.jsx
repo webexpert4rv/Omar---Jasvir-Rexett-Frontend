@@ -14,7 +14,7 @@ const CommonReactSelect = ({ control, name, errors, options, required ,label,typ
   
   return (
      <Form.Group className="mb-3">
-      <Form.Label className="common-label">{label}{required && "*"}</Form.Label>
+      <Form.Label className="common-label font-14 fw-medium">{label}{required && "*"}</Form.Label>
       <Controller
         name={name}
         control={control}
@@ -24,7 +24,7 @@ const CommonReactSelect = ({ control, name, errors, options, required ,label,typ
             message: required,
           },
         }}
-        render={({ field }) => <Select className="common-field" {...field} options={formattedOptions}/>}
+        render={({ field }) => <Select className="common-field font-14" {...field} options={formattedOptions}/>}
       />
       {errors[name] && <p className="error-message">{errors[name]?.message}</p>}
       </Form.Group>

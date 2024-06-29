@@ -8221,6 +8221,123 @@ select.apply-field
     color: #d0021b !important;
     background-color: transparent !important;
 }
+.register-collapse-item
+{
+    border: none;
+    margin-bottom: 10px;
+}
+.register-collapse-body
+{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.register-collapse-item .register-collapse-header button
+{
+    background: #ffffff;
+    border: 1px solid #b1b1b1;
+    box-shadow: 0px 0px 10px rgb(74 74 74 / 12%);
+    border-radius: 10px;
+    color: #b1b1b1;
+    padding: 14px 18px;
+    transition: .3s ease;
+}
+.register-collapse-item .register-collapse-header button:after
+{
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23b1b1b1%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e');
+    transition: .3s ease;
+}
+.register-collapse-item .register-collapse-header button:not(.collapsed):after
+{
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e')
+}
+.register-collapse-main .register-collapse-item:first-of-type,
+.register-collapse-main .register-collapse-item:first-of-type .register-collapse-header button
+{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.register-collapse-main .register-collapse-item:last-of-type,
+.register-collapse-main .register-collapse-item:last-of-type > .register-collapse-header button.collapsed
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.register-collapse-item .register-collapse-header button:not(.collapsed)
+{
+    background-color: #037563;
+    border: 1px solid #037563;
+    color: #fff;
+}
+.register-collapse-item  .subheading-resume
+{
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.register-collapse-main .register-collapse-item.completed .register-collapse-header button
+{
+    background-color: #037563;
+    border: 1px solid #037563;
+    color: #fff;
+}
+.register-collapse-main .register-collapse-item.completed .register-collapse-header button:after
+{
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e')
+}
+.upload-cv-label
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border: 2px dashed #ccc;
+    border-radius: 15px;
+    padding: 23px 0;
+}
+.register-collapse-item  .subheading-resume .resume-step
+{
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #b1b1b1;
+    color: #b1b1b1;
+    border-radius: 50%;
+    font-size: 14px;
+    transition: .3s ease;
+}
+.register-collapse-item .register-collapse-header button:not(.collapsed) .subheading-resume  .resume-step
+{
+    border: 1px solid #fff;
+    color: #037563;
+    background-color: #fff;
+}
+.register-collapse-main .register-collapse-item.completed .register-collapse-header button .subheading-resume  .resume-step
+{
+    border: 1px solid #fff;
+    color: #037563;
+    background-color: #fff;
+}
+.register-collapse-main .register-collapse-item.completed .register-collapse-header button .subheading-resume  .resume-step .count
+{
+    display: none;
+}
+.register-collapse-main .register-collapse-item.completed .register-collapse-header button .subheading-resume  .resume-step .compl-check
+{
+    display: block;
+}
+.register-collapse-main .register-collapse-item.completed .register-collapse-header:hover button .subheading-resume  .resume-step .compl-check
+{
+    display: none;
+}
+.register-collapse-main .register-collapse-item.completed .register-collapse-header:hover button .subheading-resume  .resume-step .count
+{
+    display: block;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;

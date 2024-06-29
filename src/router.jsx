@@ -21,6 +21,7 @@ import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
 import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
 import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
+import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
 
 const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
@@ -618,6 +619,11 @@ export const route = [
     isAdmin: true,
     private: true,
   },
+  {
+    path: "/admin/website-builder",
+    element: <WebsiteBuilder />,
+    isAdmin: true,
+    private: true,
+  },
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
-
 ];

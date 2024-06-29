@@ -523,7 +523,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                         <div className="d-flex">
                           <Nav variant="pills" className="application-pills message-info-pills">
                             <Nav.Item className="application-item">
-                              <Nav.Link eventKey="all-in-message" className="application-link inner_tab_link">All</Nav.Link>
+                              <Nav.Link eventKey="all-in-message" className="application-link inner_tab_link">Inbox</Nav.Link>
                             </Nav.Item>
                             <Nav.Item className="application-item">
                               <Nav.Link eventKey="unread-all-message" className="application-link inner_tab_link">Unread</Nav.Link>
