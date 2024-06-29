@@ -3,8 +3,8 @@ import UploadFile from '../../../../components/common/UploadFile/UploadFile'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import companyLogoImg from '../../../../assets/img/rexett-logo-white.png';
 import favIconImgLogo from '../../../../assets/img/favicon.png'
-import { getUploadFile } from '../../../../redux/slices/adminDataSlice';
-import { useDispatch } from 'react-redux';
+import { getConfigDetails, getUploadFile } from '../../../../redux/slices/adminDataSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { filePreassignedUrlGenerate } from '../../../../redux/slices/clientDataSlice';
 
 function UploadFiles({ previewUrl, setPreviewUrl }) {
@@ -13,10 +13,14 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
     const [selectedImage, setSelectedImage] = useState("")
     const [favIconLogo, setFavIconLogo] = useState(null);
     const [uploadFavIcon, setUploadedFavIcon] = useState("")
+    const { configDetails } = useSelector(state => state.adminData)
     const dispatch = useDispatch()
 
-    const handleImageUpload =  (event, filename) => {
+
+    const handleImageUpload = async (event, filename) => {
+        console.log(filename, "filename");
         const file = event.target.files[0];
+    
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -24,37 +28,39 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                 if (filename === "companyLogo") {
                     setPreviewUrl(reader.result);
                 } else {
-                    setFavIconPreviewUrl(reader.result)
+                    setFavIconPreviewUrl(reader.result);
                 }
-
             };
-            reader.readAsDataURL(file)
+            reader.readAsDataURL(file);
+    
+            let fileData = new FormData();
+            fileData.append("file", file);
+    
+            try {
+                const url = await new Promise((resolve, reject) => {
+                    dispatch(filePreassignedUrlGenerate(fileData, resolve, reject));
+                });
+    
+                if (filename === "companyLogo") {
+                    let payload = {
+                        company_logo: url,
+                    };
+                    await dispatch(getUploadFile(payload));
+                     dispatch(getConfigDetails());
+                } else {
+                    let payload = {
+                        favicon: url,
+                    };
+                    await dispatch(getUploadFile(payload));
+                     dispatch(getConfigDetails());
+                }
+            } catch (error) {
+                console.error("Error handling image upload:", error);
+            }
         }
+    };
+    
 
-
-        let fileData = new FormData()
-        fileData.append("file", file)
-
-        if (filename === "companyLogo") {
-            dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-                console.log(url, "url");
-                let payload = {
-                    company_logo: url,
-                };
-                dispatch(getUploadFile(payload))
-            //   dispatch(getConfigDetails())
-            }));
-        } else {
-            dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-                console.log(url, "url");
-                let payload = {
-                    favicon: url,
-                };
-                dispatch(getUploadFile(payload));
-                // dispatch(getConfigDetails())
-            }));
-        }
-    }
     const handleRemoveImage = () => {
         setCompanyLogo(null);
         setPreviewUrl('');
@@ -65,7 +71,7 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
         setFavIconLogo(null);
         setFavIconPreviewUrl('');
     };
-    
+
     return (
         <div>
             <Row>
@@ -75,17 +81,24 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         Your company logo is an essential part of your brand identity. Uploading it here will ensure it is prominently displayed across various sections of our platform, enhancing your brand's visibility and consistency.
                     </p>
                     <div className="mb-4 custom-wrapper">
-                        <UploadFile handleImageUpload={(e) => handleImageUpload(e, "compnyLogo")} text={"Upload File"} name={"company-logo"} />
+                        <Form.Control
+                            type="file"
+                            className="upload-custom-field"
+                            name="company-logo"
+                            id="company-logo"
+                            accept="image/jpeg, image/png, image/svg+xml"
+                            onChange={(e) => handleImageUpload(e, "companyLogo")}
+                        />
+                        <Form.Label htmlFor="company-logo" className="upload-field-label">
+                            Upload File
+                        </Form.Label>
                         <p className="note-text">Only Accepted formats: JPEG, PNG, SVG</p>
-                        {previewUrl && (
                             <div className="preview-upload-imgwrapper">
-                                <div></div>
-                                <img src={previewUrl} className="upload-preview-img" alt="Company Logo" />
+                                <img src={configDetails?.company_logo ? configDetails?.company_logo :previewUrl} className="upload-preview-img" alt="Company Logo" />
                                 <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveImage}>
                                     &times;
                                 </Button>
                             </div>
-                        )}
                     </div>
                 </Col>
                 <Col md={6} className="mb-4">
@@ -93,11 +106,10 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         <div className="position-relative">
                             <div className="preview-sidebar">
                                 <div>
-                                    {previewUrl ? (
-                                        <img src={previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
-                                    ) : (
+                                        <img src={configDetails?.company_logo ? configDetails?.company_logo :previewUrl} className="preview-company-logo" alt="Company Logo Preview" />
+                                    {/* ) : (
                                         <img src={companyLogoImg} className="preview-company-logo" alt="Company Logo Preview" />
-                                    )}
+                                    )} */}
                                 </div>
                                 <div className="skeleton-container mt-4">
                                     {[...Array(4)].map((_, index) => (
@@ -117,30 +129,37 @@ function UploadFiles({ previewUrl, setPreviewUrl }) {
                         The favicon is a small but crucial element of your brand's online presence. It appears in browser tabs, bookmarks, and other places to help users quickly identify your site.
                     </p>
                     <div className="mb-4 custom-wrapper">
-                        <UploadFile handleImageUpload={(e) => handleImageUpload(e, "favicon")} text={"Upload File"} name={"favicon"} />
+                        <Form.Control
+                            type="file"
+                            className="upload-custom-field"
+                            name="company-logo_1"
+                            id="company-logo_1"
+                            accept="image/jpeg, image/png, image/svg+xml"
+                            onChange={(e) => handleImageUpload(e, "favicon")}
+                        />
+                        <Form.Label htmlFor="company-logo_1" className="upload-field-label">
+                            Upload File
+                        </Form.Label>
                         <p className="note-text">Only Accepted formats: JPEG, PNG, SVG. Recommended size: 16x16 pixels, 32x32 pixels, or 48x48 pixels</p>
                     </div>
 
-                    {favIconPreviewUrl && (
                         <div className="preview-upload-imgwrapper">
-                            <div></div>
-                            <img src={favIconPreviewUrl} className="upload-preview-img" alt="Company Logo" />
+                            <img src={configDetails?.favicon ? configDetails?.favicon : favIconPreviewUrl} className="upload-preview-img" alt="Company Logo" />
                             <Button variant="transparent" className="remove-preview-img" onClick={handleRemoveFavIcon}>
                                 &times;
                             </Button>
                         </div>
-                    )}
                 </Col>
                 <Col md={6} className="mb-4">
                     <div className="preview-statusbar-wrapper">
                         <div className="position-relative">
                             <div className="preview-statusbar">
                                 <div className="d-flex align-items-center w-100 gap-2">
-                                    {favIconPreviewUrl ? (
-                                        <img src={favIconPreviewUrl} className="preview-favicon-logo" alt="Favicon Preview" />
-                                    ) : (
+                                    {/* {favIconPreviewUrl ? ( */}
+                                        <img src={configDetails?.favicon ? configDetails?.favicon : favIconPreviewUrl}className="preview-favicon-logo" alt="Favicon Preview" />
+                                    {/* ) : (
                                         <img src={favIconImgLogo} className="preview-favicon-logo" alt="Favicon Preview" />
-                                    )}
+                                    )} */}
                                     <div className="skeleton-bar dark w-75"></div>
                                 </div>
                             </div>

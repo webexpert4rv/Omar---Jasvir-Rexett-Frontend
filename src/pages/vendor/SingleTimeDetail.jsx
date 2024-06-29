@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import companyLogo from "../../assets/img/amazon.png";
-import { Col, Nav, Row, Tab } from "react-bootstrap";
+import { Button, Col, Nav, Row, Tab } from "react-bootstrap";
 import { FiCalendar } from "react-icons/fi";
+import { timeReportTabText } from "../../components/clients/TimeReporiting/constant";
+import { useTranslation } from "react-i18next";
+import { TIME_REPORTING } from "../../helper/constant";
+import RexettTimeReporting from "../../components/clients/TimeReporiting/RexettTimeReporting";
+
 const VendorTimeDetail = () => {
+    const [currentTab, setCurrentTab] = useState("first")
+    const { t } = useTranslation()
+
+    const handleSelect = (selectedTab) => {
+        setCurrentTab(selectedTab)
+    }
     return (
         <>
             <div className="detail-view">
@@ -67,22 +78,15 @@ const VendorTimeDetail = () => {
                                 </Col>
                             </Row>
                         </div>
-                        <div className="d-flex justify-content-center mt-3">
-                            <Nav variant="pills" className="application-pills">
-                                <Nav.Item className="application-item">
-                                    <Nav.Link eventKey="timesheet_project" className="application-link">
-                                        Developers
-                                    </Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item className="application-item">
-                                    <Nav.Link eventKey="invoice_project" className="application-link">
-                                        Timesheet
-                                    </Nav.Link>
-                                </Nav.Item>
-                            </Nav>
-                        </div>
                     </div>
                 </Tab.Container>
+                <div className="card-box mb-4 p-3">
+                    <div className="align-items-center gap-3">
+                    </div>
+                  
+
+                    <RexettTimeReporting  timeReportingData={TIME_REPORTING}  role="developer"/>
+            </div>
             </div>
         </>
     )

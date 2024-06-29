@@ -8,8 +8,18 @@
 :root {
     --primary-color: linear-gradient(93.07deg, #11998E 4.54%, #38EF7D 95.98%);
     --sidebar-bg: linear-gradient(to bottom, #5ed074, #037563);
+    --solid_color: #037563;
     --white: #fff;
     --grey: #ccc;
+    --primary: #037563;
+    --sidebar-link-color: #5ed074;
+    --sideLink_font_size : 14px;
+    --heading_font_size : 22px;
+    --body_font_size : 14px;
+    --heading_color : #7f7f7f; 
+    --body_text_color: #7f7f7f;  
+    --sidebar-link-bg-color : #fff
+
 }
 
 body {
@@ -82,7 +92,7 @@ ul {
 }
 
 .text-green {
-    color: #037563 !important;
+    color: var(--primary) !important;
 }
 
 .label-form {
@@ -172,7 +182,8 @@ ul {
     height: 100vh;
     padding: 20px 0px 10px 30px;
     transition: .4s ease;
-    background: linear-gradient(to bottom, #5ed074, #037563);
+    background: var(--sidebar-bg);
+    /* background: var(--solid_color); */
     overflow: auto;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
@@ -243,7 +254,7 @@ ul {
     text-decoration: none;
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
-    font-size: 16px;
+    font-size: var(--sideLink_font_size);
     font-weight: 500;
     width: 100%;
     margin-bottom: 10px;
@@ -251,8 +262,8 @@ ul {
 }
 
 .dashboard-link.active {
-    color: #5ed074;
-    background-color: var(--white);
+    color:var(--sidebar-link-color);
+    background-color: var(--sidebar-link-bg-color);
 }
 
 .dashboard-link svg {
@@ -282,7 +293,8 @@ ul {
     display: flex;
     align-items: center;
     gap: 30px;
-    font-size: 16px;
+    font-size: var(--sideLink_font_size);
+    /* font-size: 16px; */
     font-weight: 500;
     color: var(--white);
     text-decoration: none;
@@ -294,7 +306,7 @@ ul {
 }
 
 .side-link.active {
-    color: #5ed074;
+    color: var(--sidebar-link-color);
     background-color: var(--white);
 }
 
@@ -320,8 +332,8 @@ ul {
 
 .showing-result {
     margin-bottom: 10px;
-    /* background-color: #037563; Change background color */
-    color: #037563;
+    /* background-color: var(--primary); Change background color */
+    color: var(--primary);
     /* Change text color */
 }
 
@@ -333,7 +345,7 @@ ul {
 
 .pagination-arrow {
     cursor: pointer;
-    color: #037563 !important;
+    color: var(--primary) !important;
     ;
     /* Change text color */
 
@@ -342,7 +354,7 @@ ul {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff !important;
-    background-color: #037563 !important;
+    background-color: var(--primary) !important;
 }
 
 .pages-link {
@@ -377,9 +389,9 @@ ul {
 
 .pagination-item.active {
     font-weight: bold;
-    background-color: #037563;
+    background-color: var(--primary);
     /* Change background color of active page */
-    color: #037563;
+    color: var(--primary);
     /* Change text color of active page */
 }
 
@@ -387,18 +399,18 @@ ul {
     display: inline-block;
     padding: 10px;
     color: var(--white) !important;
-    background-color: #037563 !important;
+    background-color: var(--primary) !important;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 400;
-    border: 1px solid #037563 !important;
+    border: 1px solid var(--primary) !important;
     outline: none;
     transition: .4s ease;
 }
 
 .link-btn {
     border: none;
-    color: #037563;
+    color: var(--primary);
     text-decoration: underline;
     font-weight: 500;
 }
@@ -428,7 +440,7 @@ ul {
 }
 
 .main-btn:hover {
-    color: #037563 !important;
+    color: var(--primary) !important;
     background-color: transparent !important;
 }
 
@@ -577,7 +589,7 @@ ul {
 }
 
 .overview-card.active {
-    background: var(--primary-color);
+    background: var(--primary);
     border: 1px solid var(--primary-color);
 }
 
@@ -763,14 +775,14 @@ ul {
     padding: 5px 17px;
     color: var(--white);
     border-radius: 5px;
-    background: #037563;
+    background: var(--primary);
     transition: .4s ease;
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
 }
 
 .link-text-dark:hover {
     background: transparent !important;
-    color: #037563;
+    color: var(--primary);
 }
 
 .resend-top {
@@ -831,7 +843,7 @@ select.common-field {
     position: relative;
     /* padding: 12px 20px;
     background-color: #deeaff; */
-    color: #11998E;
+    color: var(--primary);
     /* border-radius: 12px;
     display: flex;
     align-items: center; */
@@ -975,7 +987,7 @@ select.common-field {
 }
 
 .slot-indicate.workday {
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .time-table-head {
@@ -1012,7 +1024,7 @@ select.common-field {
 }
 
 .time-table-data.workday-data {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     cursor: pointer;
 }
@@ -1031,17 +1043,17 @@ select.common-field {
 }
 
 .outline-main-btn {
-    border: 1px solid #037563 !important;
+    border: 1px solid var(--primary) !important;
     background-color: transparent !important;
-    color: #037563 !important;
+    color: var(--primary) !important;
     padding: 10px 15px;
     font-size: 15px;
     font-weight: 500;
 }
 
 .outline-main-btn:hover {
-    border: 1px solid #037563 !important;
-    color: #037563;
+    border: 1px solid var(--primary) !important;
+    color: var(--primary);
 }
 
 .stats-chart-wrapper canvas {
@@ -1250,7 +1262,7 @@ select.common-field {
 }
 
 .social-media {
-    color: #037563;
+    color: var(--primary);
 
 }
 
@@ -1335,7 +1347,7 @@ select.common-field {
     cursor: pointer;
     width: 40px;
     height: 40px;
-    background-color: #037563;
+    background-color: var(--primary);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -1865,7 +1877,7 @@ select.common-field {
 }
 
 .notification-tabs li .nav-link.active {
-    background: #037563;
+    background: var(--primary);
     color: var(--white);
 }
 
@@ -1911,7 +1923,7 @@ select.common-field {
 
 .notification-wrapper:hover .notification-heading,
 .notification-wrapper:hover .notification-text {
-    color: #037563;
+    color: var(--primary);
 }
 
 .notify-recieve {
@@ -2017,7 +2029,7 @@ select.common-field {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    color: #037563;
+    color: var(--primary);
     border-radius: 10px;
     font-size: 15px;
     transition: .3s ease;
@@ -2032,8 +2044,8 @@ select.common-field {
     align-items: center;
     background: #0375631c;
     font-weight: 500;
-    border: 1px solid #037563;
-    color: #037563;
+    border: 1px solid var(--primary);
+    color: var(--primary);
 }
 
 .dropdown-notify-wrapper {
@@ -2095,7 +2107,7 @@ select.common-field {
 }
 
 .single-job-card .skills-listing li {
-    background: #037563;
+    background: var(--primary);
     color: var(--white);
     border-radius: 30px;
     font-size: 14px;
@@ -2124,8 +2136,8 @@ select.common-field {
 
 .publish-job-btn {
     min-width: 40px;
-    background-color: #037563;
-    border: 1px solid #037563 !important;
+    background-color: var(--primary);
+    border: 1px solid var(--primary) !important;
     color: var(--white);
     padding: 0px 0px;
     height: 36px;
@@ -2138,7 +2150,7 @@ select.common-field {
 }
 
 .publish-job-btn:hover {
-    color: #037563 !important;
+    color: var(--primary) !important;
 }
 
 .edit-job-btn {
@@ -2161,7 +2173,7 @@ select.common-field {
 }
 
 .edit-job-btn:hover {
-    color: #037563 !important;
+    color: var(--primary) !important;
 }
 
 .unpublish-btn {
@@ -2218,7 +2230,7 @@ select.common-field {
     margin-bottom: 6px;
     font-size: 14px;
     font-weight: 600;
-    color: #037563;
+    color: var(--primary);
 }
 
 .profile-req .grid-text:not(:last-child):after {
@@ -2317,7 +2329,7 @@ select.common-field {
 
 .custom-pagination-item .page-link {
     font-size: 14px !important;
-    color: #037563 !important;
+    color: var(--primary) !important;
 }
 
 .custom-pagination-item .page-link:focus {
@@ -2326,7 +2338,7 @@ select.common-field {
 
 .custom-pagination-item.active .page-link {
     border-color: var(--primary-color);
-    background: #037563;
+    background: var(--primary);
     font-size: 14px !important;
     color: var(--white);
 }
@@ -2415,7 +2427,7 @@ select.common-field {
 }
 
 .step-counts .count.current {
-    background-color: #037563;
+    background-color: var(--primary);
     color: var(--white);
 }
 
@@ -2513,7 +2525,7 @@ select.common-field {
 }
 
 .document-view-pill {
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
     border-radius: 30px;
 }
 
@@ -2525,7 +2537,7 @@ select.common-field {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #11998E;
+    color: var(--primary);
 }
 
 .document-view-pill .document-view-item:first-child .document-view-link {
@@ -2549,7 +2561,7 @@ select.common-field {
 
 .document-view-item .document-view-link.active {
     color: var(--white);
-    background-color: #11998E;
+    background-color: var(--primary);
 }
 
 .filename-data .folder-icon {
@@ -2659,13 +2671,13 @@ input[type="radio"]:checked {
 }
 
 .application-item .application-link {
-    color: #037563;
+    color: var(--primary);
     font-size: 14px;
 }
 
 .application-item .application-link.active {
     color: var(--white);
-    background: #037563;
+    background: var(--primary);
 }
 
 .new-app {
@@ -2778,7 +2790,7 @@ input[type="radio"]:checked {
 }
 
 .developer-table th span {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     display: block;
     width: 100%;
@@ -2796,11 +2808,17 @@ input[type="radio"]:checked {
 }
 
 .table-ui-custom th span {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
+    /* color : Black; */
     display: block;
     padding: 0px;
     border-collapse: collapse;
+}
+.time-sheet-btn{
+    
+    text-align: center;
+    align-items: center;
 }
 
 .table-ui-custom tbody td {
@@ -2845,7 +2863,7 @@ input[type="radio"]:checked {
 }
 
 .table-ui-custom th {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     border: none;
     padding: 12px 15px;
@@ -2994,7 +3012,7 @@ input[type="radio"]:checked {
 }
 
 .date-text {
-    color: #037563;
+    color: var(--primary);
     font-weight: 700;
     font-size: 18px !important;
 }
@@ -3040,7 +3058,7 @@ input[type="radio"]:checked {
     width: 40px;
     height: 40px;
     margin: 0 auto 10px;
-    color: #037563;
+    color: var(--primary);
     background-color: #e2fffb;
     display: flex;
     justify-content: center;
@@ -3118,11 +3136,11 @@ input[type="radio"]:checked {
     text-transform: capitalize;
     color: #fff;
     border-radius: 30px;
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .application-text.status-text.active {
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .application-text.status-text.inactive,
@@ -3163,23 +3181,23 @@ input[type="radio"]:checked {
     font-size: 12px;
     color: #fff;
     border-radius: 30px;
-    background-color: #037563;
+    background-color: var(--primary);
     margin-right: 3px;
     margin-bottom: 3px;
 }
 
 .side-link .new-app {
     background-color: #fff;
-    color: #037563;
+    color: var(--primary);
 }
 
 .side-link.active .new-app {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
 .list-dev-check svg {
-    color: #037563;
+    color: var(--primary);
     width: 15px;
     height: 15px;
     transition: .4s ease;
@@ -3285,7 +3303,7 @@ input[type="radio"]:checked {
 
 .dropdown-notify-item:hover .dropdown-notifyheading,
 .dropdown-notify-item:hover .dropdown-notify-item {
-    color: #037563;
+    color: var(--primary);
 }
 
 .arrow-btn {
@@ -3312,13 +3330,13 @@ input[type="radio"]:checked {
 .primary-arrow {
     background-color: #defade;
     border: 1px solid #defade;
-    color: #037563;
+    color: var(--primary);
 }
 
 .primary-arrow:hover {
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
     background-color: #fff;
-    color: #037563;
+    color: var(--primary);
 }
 
 .danger-arrow {
@@ -3541,8 +3559,8 @@ input[type="radio"]:checked {
 .action-btn {
     width: 40px;
     height: 40px;
-    background-color: #037563;
-    border: 1px solid #037563;
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
     color: #fff;
     display: flex;
     justify-content: center;
@@ -3558,7 +3576,7 @@ input[type="radio"]:checked {
 }
 
 .action-btn:hover {
-    color: #037563;
+    color: var(--primary);
     background-color: transparent;
 }
 
@@ -3633,18 +3651,18 @@ input[type="radio"]:checked {
     justify-content: center;
     align-items: center;
     border-radius: 10px 10px 0 0;
-    background: #037563;
+    background: var(--primary);
     font-size: 14px;
     letter-spacing: 1px;
     color: #fff;
     transition: .4s ease;
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
     /* animation: pulse-animation 2s infinite; */
 }
 
 .contact-support:hover {
     background-color: #fff;
-    color: #037563;
+    color: var(--primary);
 }
 
 .no-anwser {
@@ -3686,7 +3704,7 @@ input[type="radio"]:checked {
 }
 
 .select-radiolabel input:checked+label {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -3750,7 +3768,7 @@ input[type="radio"]:checked {
 }
 
 .remarks-text {
-    color: #037563;
+    color: var(--primary);
     text-decoration: underline;
     margin-bottom: 0px;
     font-size: 14px;
@@ -3839,13 +3857,13 @@ input[type="radio"]:checked {
 }
 
 .weekly-tabs .weekly-tab-item .weekly-tab-link {
-    color: #037563;
+    color: var(--primary);
     font-size: 14px;
 }
 
 .weekly-tab-link .number {
     font-size: 12px;
-    color: #037563;
+    color: var(--primary);
     background-color: #fff;
     border-radius: 50%;
     min-width: 20px;
@@ -3856,7 +3874,7 @@ input[type="radio"]:checked {
 }
 
 .weekly-tabs .weekly-tab-item .weekly-tab-link.active {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -3871,8 +3889,8 @@ input[type="radio"]:checked {
     font-weight: 400;
     border-radius: 20px;
     background: #dbfbf5;
-    color: #037563;
-    border: 1px solid #037563;
+    color: var(--primary);
+    border: 1px solid var(--primary);
     text-transform: capitalize;
 }
 
@@ -3893,9 +3911,9 @@ input[type="radio"]:checked {
     font-size: 12px;
     font-weight: 400;
     border-radius: 20px;
-    background: #037563;
+    background: var(--primary);
     color: #fff;
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
 }
 
 .removed-section {
@@ -3909,7 +3927,7 @@ input[type="radio"]:checked {
     padding: 10px;
     border-radius: 10px;
     background: #d4fff8;
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
 }
 
 .max-w-300px {
@@ -3925,7 +3943,7 @@ input[type="radio"]:checked {
 .made-changes li {
     display: inline-block;
     padding: 5px 10px;
-    background: #037563;
+    background: var(--primary);
     color: #fff;
     border-radius: 10px;
     font-size: 12px;
@@ -3944,7 +3962,7 @@ input[type="radio"]:checked {
 }
 
 .toggle-switch-custom:checked {
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .expertise-card {
@@ -3989,7 +4007,7 @@ input[type="radio"]:checked {
 
 .cv-header-wrapper {
     padding: 13px;
-    background: #037563;
+    background: var(--primary);
     border-radius: 14px;
     color: #fff;
 }
@@ -4034,7 +4052,7 @@ input[type="radio"]:checked {
 
 .heading-box {
     padding: 13px;
-    background: #037563;
+    background: var(--primary);
     border-radius: 14px;
     color: #fff;
 }
@@ -4053,7 +4071,7 @@ input[type="radio"]:checked {
     min-width: 25px;
     height: 25px;
     background-color: #fff;
-    color: #037563;
+    color: var(--primary);
     border-radius: 50%;
     display: inline-flex;
     justify-content: center;
@@ -4090,10 +4108,10 @@ input[type="radio"]:checked {
 .view-time-btn {
     width: 24px;
     height: 24px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     border-radius: 6px;
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -4124,7 +4142,7 @@ input[type="radio"]:checked {
 }
 
 .download-btn:hover {
-    background-color: #037563 !important;
+    background-color: var(--primary) !important;
 }
 
 .helper-text-section {
@@ -4163,7 +4181,7 @@ input[type="radio"]:checked {
 .info-box {
     padding: 10px;
     border-radius: 10px;
-    background: #037563;
+    background: var(--primary);
     color: #fff;
 }
 
@@ -4279,7 +4297,7 @@ input[type="radio"]:checked {
     min-width: 20px;
     height: 20px;
     font-size: 12px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     border-radius: 20px;
 }
@@ -4329,7 +4347,7 @@ input[type="radio"]:checked {
 
 .checkin-text {
     font-weight: 600;
-    color: #037563;
+    color: var(--primary);
 }
 
 .colorful {
@@ -4478,17 +4496,17 @@ input[type="radio"]:checked {
 .leave-calendar .rdrInRange,
 .leave-calendar .rdrStartEdge,
 .leave-calendar .rdrEndEdge {
-    color: #037563 !important;
+    color: var(--primary) !important;
 }
 
 .leave-calendar .rdrDayStartPreview,
 .leave-calendar .rdrDayInPreview,
 .leave-calendar .rdrDayEndPreview {
-    color: #037563 !important;
+    color: var(--primary) !important;
 }
 
 .leave-calendar .rdrDayToday .rdrStartEdge {
-    color: #037563 !important;
+    color: var(--primary) !important;
 }
 
 .leave-calendar .rdrMonthAndYearPickers select {
@@ -4521,8 +4539,8 @@ input[type="radio"]:checked {
 }
 
 .leave_type_radio:checked+.leave_label {
-    background-color: #037563;
-    border: 1px solid #037563;
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
     color: #fff;
 }
 
@@ -4544,7 +4562,7 @@ input[type="radio"]:checked {
 .leave-type-heading {
     font-size: 16px;
     font-weight: 600;
-    color: #037563;
+    color: var(--primary);
 }
 
 .leave-date {
@@ -4645,7 +4663,7 @@ input[type="radio"]:checked {
 }
 
 .job-post-checkbox input:checked {
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .job-post-checkbox label {
@@ -4674,7 +4692,7 @@ input[type="radio"]:checked {
     right: -10px;
     width: 40px;
     height: 40px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     font-size: 18px;
     border: 3px solid #fff;
@@ -4755,17 +4773,17 @@ input[type="radio"]:checked {
 
 .calendar-container .react-calendar .react-calendar__tile.react-calendar__tile--now abbr {
     background-color: #0375631c;
-    color: #037563;
+    color: var(--primary);
 }
 
 .calendar-container .react-calendar .react-calendar__tile.react-calendar__tile--active abbr {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
 .calendar-container .react-calendar__navigation {
     padding: 6px;
-    background: #037563;
+    background: var(--primary);
     border-radius: 10px;
     height: auto;
 }
@@ -4787,7 +4805,7 @@ input[type="radio"]:checked {
 .calendar-container .react-calendar__navigation .react-calendar__navigation__prev-button:hover,
 .calendar-container .react-calendar__navigation .react-calendar__navigation__next-button:hover {
     background: #fff !important;
-    color: #037563;
+    color: var(--primary);
 }
 
 .calendar-container .react-calendar__navigation .react-calendar__navigation__label {
@@ -4820,7 +4838,7 @@ input[type="radio"]:checked {
     align-items: center;
     justify-content: space-between;
     padding: 15px 10px;
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .eventdate-text {
@@ -4860,7 +4878,7 @@ input[type="radio"]:checked {
 .dot {
     height: 5px;
     width: 5px;
-    background-color: #037563;
+    background-color: var(--primary);
     border-radius: 50%;
     display: inline-block;
 }
@@ -4917,7 +4935,7 @@ input[type="radio"]:checked {
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     font-size: 12px;
 }
@@ -4976,7 +4994,7 @@ input[type="radio"]:checked {
     font-size: 64px;
     line-height: 1;
     border-radius: 50%;
-    color: #037563;
+    color: var(--primary);
     opacity: .2;
 }
 
@@ -5043,8 +5061,8 @@ input[type="radio"]:checked {
     height: 55px;
     font-size: 22px;
     border-radius: 50%;
-    background-color: #037563;
-    border: 1px solid #037563 !important;
+    background-color: var(--primary);
+    border: 1px solid var(--primary) !important;
     color: #fff;
     display: flex;
     justify-content: center;
@@ -5054,7 +5072,7 @@ input[type="radio"]:checked {
 
 .floating-btn:hover {
     background-color: #fff;
-    color: #037563;
+    color: var(--primary);
 }
 
 .floating-options {
@@ -5119,8 +5137,8 @@ input[type="radio"]:checked {
     height: 55px;
     font-size: 22px;
     border-radius: 50%;
-    background-color: #037563;
-    border: 1px solid #037563 !important;
+    background-color: var(--primary);
+    border: 1px solid var(--primary) !important;
     color: #fff;
     display: flex;
     justify-content: center;
@@ -5135,8 +5153,8 @@ input[type="radio"]:checked {
     justify-content: center;
     align-items: center;
     background-color: #fff;
-    color: #037563;
-    border: 2px solid #037563;
+    color: var(--primary);
+    border: 2px solid var(--primary);
     border-radius: 50%;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .1);
     font-size: 20px;
@@ -5203,7 +5221,7 @@ input[type="radio"]:checked {
 .quiz-text .quiz-icon {
     font-size: 20px;
     margin-right: 10px;
-    color: #037563;
+    color: var(--primary);
 }
 
 .quiz-actions {
@@ -5263,7 +5281,7 @@ input[type="radio"]:checked {
 
 .skill-filters span.active {
     color: #fff;
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .quiz-progress-wrapper {
@@ -5282,7 +5300,7 @@ input[type="radio"]:checked {
     width: 90%;
     height: 100%;
     border-radius: 30px;
-    background-color: #037563;
+    background-color: var(--primary);
     transition: .3s ease;
 }
 
@@ -5303,7 +5321,7 @@ input[type="radio"]:checked {
     font-size: 20px;
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     border-radius: 10px;
 }
@@ -5393,7 +5411,7 @@ input[type="radio"]:checked {
     padding: 10px 10px;
     text-decoration: none;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
-    color: #037563;
+    color: var(--primary);
     font-size: 14px;
     border-radius: 6px;
 }
@@ -5415,9 +5433,9 @@ input[type="radio"]:checked {
 .timeslot-radio label {
     display: block;
     padding: 8px;
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
     text-align: center;
-    color: #037563;
+    color: var(--primary);
     font-size: 14px;
     border-radius: 6px;
     cursor: pointer;
@@ -5425,7 +5443,7 @@ input[type="radio"]:checked {
 }
 
 .timeslot-radio input:checked+label {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -5435,8 +5453,8 @@ input[type="radio"]:checked {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #037563;
-    color: #037563;
+    border: 1px solid var(--primary);
+    color: var(--primary);
     font-size: 12px;
     border-radius: 50%;
     padding: 0;
@@ -5448,8 +5466,8 @@ input[type="radio"]:checked {
 }
 
 .customization-text {
-    font-size: 14px;
-    color: #7f7f7f;
+    font-size: var(--body_font_size);
+    color: var(--body_text_color);
 }
 
 .upload-custom-field {
@@ -5461,8 +5479,8 @@ input[type="radio"]:checked {
     padding: 20px;
     text-align: center;
     border-radius: 10px;
-    border: 2px dashed #037563;
-    color: #037563;
+    border: 2px dashed var(--primary);
+    color: var(--primary);
     cursor: pointer;
 }
 
@@ -5500,7 +5518,7 @@ input[type="radio"]:checked {
 .skeleton-circle {
     width: 30px;
     height: 30px;
-    background-color: rgba(255, 255, 255, .6);
+    /* background-color: rgba(255, 255, 255, .6); */
     border-radius: 50%;
     flex: none;
 }
@@ -5542,6 +5560,133 @@ input[type="radio"]:checked {
     object-fit: cover;
     flex: none;
 }
+/* common card component css */
+/* Card.css */
+.card-container {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-header h2 {
+    font-size: 1.5em;
+    margin: 0;
+  }
+  
+  .card-header p {
+    margin: 0;
+  }
+  
+  .remove-button {
+    background: none;
+    border: none;
+    color: #ff5c5c;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+  
+  .card-body {
+    margin-top: 10px;
+  }
+  
+/* common card component css */
+
+/* links css for step 6 */
+.social-media-input {
+    padding: 10px;
+  }
+  
+  .social-media-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group select,
+  .input-group input,
+  .input-group button {
+    padding: 8px;
+    font-size: 14px;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-group select {
+    width: 100px;
+  }
+  
+  .input-group input {
+    flex: 1;
+  }
+  
+  .input-group button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .input-group button:hover {
+    background-color: #218838;
+  }
+  
+  .social-links {
+    margin-top: 10px;
+  }
+  
+  .social-link {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+.appendButton{
+    background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}  
+.delete-button {
+    background-color: #ff4c4c !important;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+/* links css for step 6 */
+
 
 .close-text {
     font-size: 22px;
@@ -5597,7 +5742,7 @@ input[type="radio"]:checked {
 }
 
 .color-radio:checked+label {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -5624,7 +5769,7 @@ input[type="radio"]:checked {
 }
 
 .color-radio:checked+label {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -5665,7 +5810,7 @@ input[type="radio"]:checked {
     font-size: 22px;
     padding: 12px;
     border-radius: 7px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     font-weight: 600;
 }
@@ -5747,7 +5892,7 @@ input[type="radio"]:checked {
 
 .permission-text {
     font-size: 16px;
-    color: #037563;
+    color: var(--primary);
     font-weight: 500;
 }
 
@@ -5767,7 +5912,7 @@ input[type="radio"]:checked {
 }
 
 .permission-checkbox input:checked {
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .partial-approved {
@@ -5776,7 +5921,7 @@ input[type="radio"]:checked {
 }
 
 .full-approved {
-    color: #037563;
+    color: var(--primary);
     font-size: 23px;
 }
 
@@ -5824,9 +5969,9 @@ input[type="radio"]:checked {
 .edit-role {
     width: 30px;
     height: 30px;
-    color: #037563;
+    color: var(--primary);
     border-radius: 50%;
-    border: 1px solid #037563;
+    border: 1px solid var(--primary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -5863,8 +6008,8 @@ input[type="radio"]:checked {
 
 .job-tab-detail .job-tabs li .nav-link.active {
     background: transparent;
-    border-bottom: 1px solid #037563;
-    color: #037563;
+    border-bottom: 1px solid var(--primary);
+    color: var(--primary);
 }
 
 .single-job-card.job-information-wrapper {
@@ -5886,7 +6031,7 @@ input[type="radio"]:checked {
     gap: 20px;
     padding: 20px;
     grid-template-columns: repeat(4, 1fr);
-    background: #037563;
+    background: var(--primary);
     border-radius: 20px;
 }
 
@@ -5939,7 +6084,7 @@ input[type="radio"]:checked {
 
 .preview-primary-color .preview-color-btn {
     font-size: 14px;
-    background-color: #037563;
+    /* background-color: var(--primary); */
     color: #fff;
     border-radius: 7px;
     padding: 7px 14px;
@@ -5958,18 +6103,18 @@ input[type="radio"]:checked {
     font-size: 14px;
     padding: 7px 14px;
     border-radius: 7px;
-    color: #037563;
+    color: var(--primary);
     background-color: transparent;
     pointer-events: none;
 }
 
 .tabs-preview-color .preview-tab.active {
-    background-color: #037563 !important;
+    /* background-color: var(--primary) !important; */
     color: #fff;
 }
 
 .preview-sidelink {
-    font-size: 14px;
+    /* font-size: 14px; */
     color: #fff;
     font-weight: 500;
 }
@@ -6109,20 +6254,20 @@ input[type="radio"]:checked {
     display: inline-block;
     font-size: 24px;
     cursor: pointer;
-    color: #037563;
+    color: var(--primary);
 }
 
 .booking-icon {
     display: inline-block;
     font-size: 24px;
     cursor: pointer;
-    color: #037563;
+    color: var(--primary);
 }
 
 .email-icon {
     display: inline-block;
     font-size: 26px;
-    color: #037563;
+    color: var(--primary);
 }
 
 .todo-wrapper {
@@ -6140,7 +6285,7 @@ input[type="radio"]:checked {
 }
 
 .checkbox-custom input:checked {
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .schedule-heading {
@@ -6197,7 +6342,7 @@ input[type="radio"]:checked {
 
 .datefield-wrapper .react-calendar__tile--hasActive,
 .datefield-wrapper .react-calendar__tile--active {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -6212,11 +6357,11 @@ input[type="radio"]:checked {
 
 .datefield-wrapper .react-calendar__tile--now:enabled:hover {
     background: #ebfffc;
-    color: #037563;
+    color: var(--primary);
 }
 
 .datefield-wrapper .react-calendar__tile--active:enabled:hover {
-    background: #037563;
+    background: var(--primary);
     color: #fff;
 }
 
@@ -6324,7 +6469,7 @@ input[type="radio"]:checked {
 }
 
 .today-text {
-    color: #037563;
+    color: var(--primary);
 }
 
 .tomorrow-text {
@@ -6349,14 +6494,14 @@ input[type="radio"]:checked {
     height: 40px;
     border-radius: 50%;
     border: 3px solid #03756342;
-    color: #037563;
+    color: var(--primary);
 }
 
 .to-donumber {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     border-radius: 20px;
     min-width: 27px;
@@ -6393,7 +6538,7 @@ input[type="radio"]:checked {
 
 .meeting-booking .react-calendar__tile--hasActive,
 .meeting-booking .react-calendar__tile--active {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -6408,11 +6553,11 @@ input[type="radio"]:checked {
 
 .meeting-booking .react-calendar__tile--now:enabled:hover {
     background: #ebfffc;
-    color: #037563;
+    color: var(--primary);
 }
 
 .meeting-booking .react-calendar__tile--active:enabled:hover {
-    background: #037563;
+    background: var(--primary);
     color: #fff;
 }
 
@@ -6596,7 +6741,7 @@ input[type="radio"]:checked {
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 80%;
-    color: #037563;
+    color: var(--primary);
     overflow: hidden;
 }
 
@@ -6764,7 +6909,7 @@ input[type="radio"]:checked {
 
 .sender-message .message {
     padding: 15px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     border-radius: 20px 20px 0px 20px;
     font-size: 15px;
@@ -6907,7 +7052,7 @@ input[type="radio"]:checked {
 .new-subject {
     cursor: pointer;
     font-weight: 600;
-    color: #037563;
+    color: var(--primary);
 }
 
 .completed-task {
@@ -6960,7 +7105,7 @@ input[type="radio"]:checked {
     font-size: 14px;
     padding: 0 8px;
     font-weight: 600;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -6983,7 +7128,7 @@ input[type="radio"]:checked {
     border-radius: 50%;
     display: inline-block;
     position: relative;
-    color: #037563;
+    color: var(--primary);
     -webkit-animation: loaderdots 2s linear infinite;
     animation: loaderdots 2s linear infinite;
 }
@@ -7048,7 +7193,7 @@ input[type="radio"]:checked {
 }
 
 .meeting-radio input:checked+label {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -7060,7 +7205,7 @@ input[type="radio"]:checked {
 
 .permission-heading {
     border-radius: 10px 10px 0px 0px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     font-size: 16px;
     padding: 10px;
@@ -7126,7 +7271,7 @@ input[type="radio"]:checked {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    color: #037563;
+    color: var(--primary);
     background-color: #fff;
     flex: none;
     font-size: 14px;
@@ -7146,7 +7291,7 @@ input[type="radio"]:checked {
     width: 30px;
     height: 30px;
     font-size: 11px;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     border-radius: 50%;
     justify-content: center;
@@ -7163,7 +7308,7 @@ input[type="radio"]:checked {
 }
 
 .primary_checkbox input:checked {
-    background-color: #037563;
+    background-color: var(--primary);
 }
 
 .suggestion-table {
@@ -7378,7 +7523,7 @@ input[type="radio"]:checked {
 }
 
 .interview-decision input:checked+label {
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -7599,7 +7744,7 @@ input[type="radio"]:checked {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: #037563;
+    background-color: var(--primary);
     color: #fff;
     font-size: 70px;
 }
@@ -8351,7 +8496,7 @@ select.apply-field
     .dashboard-link {
         padding: 10px 15px;
         margin-bottom: 6px;
-        font-size: 14px;
+        font-size: var(--sideLink_font_size)
     }
 
     .side-link {
@@ -8394,11 +8539,13 @@ select.apply-field
     }
 
     .section-head {
-        font-size: 22px;
+        font-size: var(--heading_font_size);
+        color : var(--heading_color)
+
     }
 
     .common-field {
-        padding: 8px 14px;
+        padding: 8px 14px;  
         font-size: 14px;
         border-radius: 7px;
     }

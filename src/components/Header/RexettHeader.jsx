@@ -31,6 +31,8 @@ import { HiOutlineLink } from "react-icons/hi";
 import { MdGifBox } from "react-icons/md";
 import { MdEmojiEmotions } from "react-icons/md";
 import Schedulemeeting from "../common/Modals/ScheduleMeeting";
+import { useDispatch, useSelector } from "react-redux";
+import { getConfigDetails } from "../../redux/slices/adminDataSlice";
 import { CgCalendar } from "react-icons/cg";
 import { TbCalendarShare } from "react-icons/tb";
 import { TiWeatherSunny } from "react-icons/ti";
@@ -49,6 +51,8 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const [fridayMarquee, setFridayMarquee] = useState(false);
   const { pathname } = useLocation();
   const isSingleJob = pathname.split("/")[2];
+  const { configDetails } = useSelector(state => state.adminData)
+  const dispatch = useDispatch()
   const routePath = (isSingleJob) => {
     const data = {
       "single-job": "/client/job-posted",
@@ -92,6 +96,44 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     const dt = moment(new Date(), "YYYY-MM-DD HH:mm:ss").format("dddd");
     setFridayMarquee(dt);
   }, []);
+
+  const color1 = configDetails?.crm_sidebar_bg_gradient_color_1;
+  const color2 = configDetails?.crm_sidebar_bg_gradient_color_2;
+  const solidColor = configDetails?.crm_sidebar_bg_solid_color
+  const primaryColor = configDetails?.crm_primary_color
+  const filename = configDetails?.favicon
+  const linkColor = configDetails?.crm_sidebar_link_color
+  const sideBarFontSize = configDetails?.crm_sidebar_font_size
+  const headingFontSize = configDetails?.crm_heading_font_size
+  const bodyFontSize = configDetails?.crm_body_font_size
+  const headingTextColor = configDetails?.crm_heading_color
+  const bodyTextColor = configDetails?.crm_body_text_color
+  const linkBgColor = configDetails?.crm_sidebar_bg_link_color
+
+
+  useEffect(() => {
+    if(solidColor){
+    document.documentElement.style.setProperty('--sidebar-bg', solidColor)
+    }else{
+     document.documentElement.style.setProperty('--sidebar-bg', `linear-gradient(to bottom,${color1},${color2})`)
+    }
+    document.documentElement.style.setProperty('--primary', primaryColor )
+    document.documentElement.style.setProperty('--sidebar-link-color', linkColor )
+    document.documentElement.style.setProperty('--sideLink_font_size',  `${sideBarFontSize}px`)
+    document.documentElement.style.setProperty('--heading_font_size',  `${headingFontSize}px`)
+    document.documentElement.style.setProperty('--body_font_size',  `${bodyFontSize}px`)
+    document.documentElement.style.setProperty('--heading_color',  headingTextColor)
+    document.documentElement.style.setProperty('--body_text_color',  bodyTextColor)
+    document.documentElement.style.setProperty('--sidebar-link-bg-color',  linkBgColor)
+    document.getElementById('favicon').href = filename;
+
+  }, [configDetails])
+
+  useEffect(() => {
+    dispatch(getConfigDetails())
+  }, [dispatch])
+
+
 
   const backBtn = () => {
     let routeName = routePath(isSingleJob);
@@ -178,7 +220,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     showDeletetodo(false);
   }
 
-  console.log(routePath(role), "routePath(isSingleJob)")
+  // console.log(routePath(role),"routePath(isSingleJob)")
 
   return (
     <>

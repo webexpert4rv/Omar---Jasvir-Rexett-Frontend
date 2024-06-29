@@ -223,7 +223,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                   ""
                 )}
               </thead>
-
               <tbody>
                 {data?.length > 0 ? (
                   data?.map((item, index) => {

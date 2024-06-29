@@ -1,13 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
-
-import { lazy } from "react";
-import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
-import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
-import RolesPermission from "./pages/admin/RolesPermissions";
-import InterviewListing from "./pages/admin/InterviewListing";
-import InterviewDetail from "./pages/admin/InterviewDetail";
 import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
 import ProjectHistory from "./pages/developer/ProjectHistory";
@@ -23,7 +16,19 @@ import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
 import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
 import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
 
-const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
+import { lazy } from "react";
+import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
+import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
+import RolesPermission from "./pages/admin/RolesPermissions";
+import InterviewListing from "./pages/admin/InterviewListing";
+import InterviewDetail from "./pages/admin/InterviewDetail";
+import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
+const ClientRegisterForm = lazy(() =>
+  import("./pages/websiteRegisterForm/client/ClientRegisterForm")
+);
+;
+
+// const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
 );
@@ -40,9 +45,7 @@ const NotificationDeveloper = lazy(() =>
 const DeveloperInvoice = lazy(() =>
   import("./pages/developer/DeveloperInvoice")
 );
-const DeveloperLeaveApply = lazy(() =>
-  import("./pages/developer/PlanLeave")
-);
+const DeveloperLeaveApply = lazy(() => import("./pages/developer/PlanLeave"));
 const Faq = lazy(() => import("./pages/views/Faq"));
 const ContactSupport = lazy(() => import("./pages/views/ContactSupport"));
 const JobPost = lazy(() => import("./pages/views/JobPost"));
@@ -120,15 +123,15 @@ const DeveloperTimeReporting = lazy(() =>
 );
 const DeveloperCV = lazy(() => import("./pages/developer/DeveloperCV"));
 const AdminLogin = lazy(() => import("./pages/Authentication/AdminLogin"));
-const DeveloperLogin =lazy(() => import("./pages/Authentication/DeveloperLogin"));
-const ClientLogin =lazy(() => import("./pages/Authentication/Login"));
-const VendorLogin =lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp =lazy(() => import("./pages/Authentication/Otp"));
-
+const DeveloperLogin = lazy(() =>
+  import("./pages/Authentication/DeveloperLogin")
+);
+const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
+const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
+const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
 
 export const route = [
-
   {
     path: "/client-registration",
     element: <ClientRegisterForm />,
@@ -140,8 +143,13 @@ export const route = [
     public: true,
   },
   {
+    path: "/vendor-registration",
+    element: <VendorRegisterForm />,
+    public: true,
+  },
+  {
     path: "/otp",
-    element: <Otp/>,
+    element: <Otp />,
     public: true,
   },
   {
@@ -236,7 +244,7 @@ export const route = [
   },
   {
     path: "/client/leave-request",
-    element: <LeaveRequest/>,
+    element: <LeaveRequest />,
     private: true,
     isClient: true,
   },
@@ -346,7 +354,7 @@ export const route = [
     isDeveloper: true,
     private: true,
   },
- 
+
   {
     path: "developer/leave-plan",
     element: <DeveloperLeaveApply />,
@@ -480,12 +488,12 @@ export const route = [
     isAdmin: true,
     private: true,
   },
-  {
-    path: "/admin/edit-admin-profile",
-    element: <EditAdminProfile />,
-    isAdmin: true,
-    private: true,
-  },
+  // {
+  //   path: "/admin/edit-admin-profile",
+  //   element: <EditAdminProfile />,
+  //   isAdmin: true,
+  //   private: true,
+  // },
   {
     path: "/admin/job-post",
     element: <AdminJobPost />,
@@ -519,7 +527,7 @@ export const route = [
   {
     path: "/admin/admin-invoice",
     // element: <AdminInvoice />,
-    element:<Revenue/>,
+    element: <Revenue />,
     isAdmin: true,
     private: true,
   },
@@ -579,25 +587,25 @@ export const route = [
   },
   {
     path: "/admin/customization",
-    element: <Customization/>,
+    element: <Customization />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/roles-permissions",
-    element: <RolesPermission/>,
+    element: <RolesPermission />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/interviews",
-    element: <InterviewListing/>,
+    element: <InterviewListing />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/interview-detail",
-    element: <InterviewDetail/>,
+    element: <InterviewDetail />,
     isAdmin: true,
     private: true,
   },

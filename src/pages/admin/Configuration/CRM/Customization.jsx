@@ -48,8 +48,8 @@ const Customization = () => {
                             <div>
                                 <Row>
                                     <UploadFiles previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} />
-                                    <ColorScheme previewUrl={previewUrl} />
-                                    <Typography previewUrl={previewUrl} />
+                                    <ColorScheme previewUrl={previewUrl} setPreviewUrl={setPreviewUrl}/>
+                                    <Typography previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} />
                                 </Row>
                             </div>
                         }
