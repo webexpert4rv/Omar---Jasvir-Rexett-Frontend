@@ -49,7 +49,7 @@ const CommonReactSelect = ({
             />
           ) : (
             <Select
-              className="common-field"
+              className="common-field 14"
               {...field}
               options={formattedOptions}
             />

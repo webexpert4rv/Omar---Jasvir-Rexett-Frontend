@@ -27,7 +27,7 @@ const CommonAutocomplete = ({
                     onPlaceSelected={onPlaceSelected}
                     options={options}
                     placeholder={placeholder}
-                    className="common-field font-14 w-100 p-2"
+                    className="common-field font-14 w-100"
                 />
             )}
         />

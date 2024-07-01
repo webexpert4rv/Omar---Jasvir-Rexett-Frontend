@@ -10,7 +10,9 @@ import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FaEye, FaRotateRight, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
+import AssignChat from "./Modals/AssignChat";
 import RolesPermissionSection from "../../components/common/AdminRoleAndPermission/RolesPermission/RolesPermissionSection";
+import { TiUserAdd } from "react-icons/ti";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
     const [showRoleInfo, setShowRoleInfo] = useState(false);
@@ -40,7 +42,20 @@ const RolesPermission = () => {
     const handleHideEditRole = () => {
         setRoleModal(false)
     }
+    const [assignchat, showAssignChat] = useState(false);
+    const handleShowAssignChat = () => {
+        showAssignChat(!assignchat);
+    }
+    const handleCloseAssignChat = () => {
+        showAssignChat(false);
+    }
+    const assignEmployeeText = (
+        <Tooltip>Assign Chat</Tooltip>
+    )
 
+    const reassignEmployee = (
+        <Tooltip>Reassign Chat</Tooltip>
+    )
 
 
   
