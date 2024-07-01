@@ -78,11 +78,11 @@ const EditVendorProfile = () => {
     setValue("state_iso_code", stateValue);
 
     // for setting city value
-    // const cityValue = {
-    //   label: vendorProfile?.company?.["city"],
-    //   value: vendorProfile?.["state_iso_code"],
-    // }
-    // setValue("state_iso_code", stateValue);
+    const cityValue = {
+      label: vendorProfile?.company?.["city"],
+      value: vendorProfile?.["city_iso_code"],
+    }
+    setValue("city_iso_code", cityValue);
 
 
     // for setting time zone
@@ -146,7 +146,6 @@ const EditVendorProfile = () => {
   const handleSelect = (event) => {
     setSelectedType(event.target.value)
   }
-  console.log(selectedType, "selectedtype")
 
 
 
@@ -184,6 +183,7 @@ const EditVendorProfile = () => {
 
 
     dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+
       let payload = {
         email: values.email,
         previous_password: values.previous_password,
@@ -195,18 +195,19 @@ const EditVendorProfile = () => {
         passcode: values.passcode,
         time_zone: values?.time_zone?.label,
         profile_picture: url,
-        country: values.country.label,
-        state: values.state.label,
-        city: values.city.label,
+        country: values.country_code.label,
+        // state: values.state.label,
+        // city: values.city.label,
         company: {
           name: values.company_name,
           email: values.email,
           country:values.country_code?.label,
-          // country_code: values.country_code?.value,
-          // state:values.state_iso_code?.label,
-          // state_iso_code:values.state_iso_code?.value,
+          country_code: values.country_code?.value,
+          state:values.state_iso_code?.label,
+          state_iso_code:values.state_iso_code?.value,
           time_zone:values?.time_zone?.label,
-          city:values?.city?.label,
+          // may be need to uncomment in future
+          // city:values?.city?.label,  
           phone_number: values.company_phone_number,
           type_of_company: values.type_of_company,
           city: values.company_city,
@@ -241,7 +242,7 @@ const EditVendorProfile = () => {
       dispatch(updateVendorProfile(payload));
     }))
   };
-  
+
 
   const validatePassword = (value) => {
     if (value === "") {
@@ -255,9 +256,6 @@ const EditVendorProfile = () => {
     }
     return true;
   };
-  console.log(watch("country_code"),"country code ");
-  console.log(watch("state_iso_code"),"state code ");
-
 
   return (
     <>

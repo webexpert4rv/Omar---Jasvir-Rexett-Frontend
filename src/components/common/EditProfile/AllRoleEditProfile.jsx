@@ -511,7 +511,7 @@ const AllRoleEditProfile = ({ role }) => {
                 </div>
               </Col>
             </Row>
-           {role === "vendor" && <div className="text-center">
+            <div className="text-center">
               <RexettButton
                 type="submit"
                 text={t("updateProfile")}
@@ -520,7 +520,7 @@ const AllRoleEditProfile = ({ role }) => {
                 disabled={smallLoader}
                 isLoading={smallLoader}
               />
-            </div>}
+            </div>
           </form>
         )}
       </div>

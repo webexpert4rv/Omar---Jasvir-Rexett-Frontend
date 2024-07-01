@@ -257,8 +257,7 @@ const CompanyProfile = () => {
               )}
             </Form.Group>
           </Col>
-          <Col md={6}>
-            <div className="text-center">
+          <div className="text-center">
               <RexettButton
                 type="submit"
                 text={t("updateProfile")}
@@ -268,7 +267,6 @@ const CompanyProfile = () => {
                 isLoading={smallLoader}
               />
             </div>
-          </Col>
         </Row>
       </form>
     </div>
