@@ -8,7 +8,7 @@ import { FaTimes } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
-const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
+const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) => {
     const {configDetails} = useSelector(state=>state.adminData)
     const { t } = useTranslation();
 
@@ -25,7 +25,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
 
     return (
         <>
-            <aside className="sidebar">
+            <aside className={collapseActive ? "sidebar collapse-active" : "sidebar"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
                         <div className="sidebar-logo mt-3 mb-4">
@@ -40,7 +40,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
                                 className="dashboard-link"
                                 activeClassName="active"
                             >
-                                {item.icon} {t(item.text)}
+                                <span className="sidebar-icon">{item.icon}</span> <span className="sidebar-text">{t(item.text)}</span>
                             </NavLink>
                         ))}
                     </div>
@@ -51,7 +51,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role }) => {
                                 className="bottom-link"
                                 activeClassName="active"
                             >
-                                <PiSignOutBold /> {t("signOut")}
+                                <span className="sidebar-icon"><PiSignOutBold /></span> <span className="sidebar-text">{t("signOut")}</span>
                             </Link>
                         </div>
                     </div>

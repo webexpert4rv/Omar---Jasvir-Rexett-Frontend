@@ -89,55 +89,55 @@ const InterviewDetail = () => {
                     <div className="rating-container">
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#00af6c', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Overall Rating</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#00af6c', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>React JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffcb1a', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Vue JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#05db8a', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>JavaScript</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#eaeb08', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Angular JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#eaeb08', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>MongoDB</p>
                             <p className="font-14">(Data Structure & Algorithms)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffcb1a', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Node JS</p>
                             <p className="font-14">(Low Level Design)</p>
                         </div>
                         <div className="ratinng-wrapper d-block text-center">
                             <div className="rating-progress mb-2">
-                                <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                                <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#05db8a', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                             </div>
                             <p>Communication</p>
                         </div>
