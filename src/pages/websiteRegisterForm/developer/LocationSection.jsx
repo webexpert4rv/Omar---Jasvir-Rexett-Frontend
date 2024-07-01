@@ -24,7 +24,7 @@ const LocationSection = ({
     if (watch("country_code")) {
       dispatch(getStatesList(watch("country_code")?.value));
       // the line below is breaking the code
-      dispatch(getTimeZoneForCountry(watch("country_code")?.value));
+      // dispatch(getTimeZoneForCountry(watch("country_code")?.value));
     }
   }, []);
 
@@ -55,9 +55,6 @@ const LocationSection = ({
 
     }
   };
-  console.log(statesList,"statesList")
-  console.log(countriesList,"countriesList")
-  console.log(citiesList,"citiesList")
   return (
     <>
       <CommonReactSelect
@@ -83,7 +80,7 @@ const LocationSection = ({
         type="state"
         options={statesList}
       />
-      <CommonReactSelect
+      {/* <CommonReactSelect
         name="city"
         errors={errors}
         handleChange={handleDropDownChange}
@@ -93,7 +90,7 @@ const LocationSection = ({
         type="city"
         watch={watch}
         options={citiesList}
-      />
+      /> */}
       {/* may be need to verify name of timezone value */}
       {isTimeZoneRequired && (
         <CommonReactSelect

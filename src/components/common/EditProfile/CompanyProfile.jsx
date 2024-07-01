@@ -231,11 +231,11 @@ const CompanyProfile = () => {
                 }}
                 options={{ types: ["establishment", "geocode"] }}
               />
-              {errors?.company_address && (
+              {/* {errors?.company_address && (
                 <p className="error-message">
                   {errors.company_address?.message}
                 </p>
-              )}
+              )} */}
             </Form.Group>
           </Col>
           <Col md={6}>

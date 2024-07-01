@@ -96,7 +96,7 @@ const AllRoleEditProfile = ({ role }) => {
       dispatch(getTimeZoneForCountry(watch("country")?.value));
       setValue("time_zone", null);
       setValue("state", null);
-      setValue("city",null);
+      setValue("city", null);
     }
   }, [watch("country")]);
 
@@ -107,11 +107,7 @@ const AllRoleEditProfile = ({ role }) => {
     }
   }, [watch("state")]);
 
-  // useEffect(()=>{
-  //   if(role==="admin"){
-  //     dispatch(getConfigDetails())
-  //   }
-  // },[role ,dispatch])
+
 
   useEffect(() => {
     if (userProfileDetails?.data) {
@@ -120,6 +116,8 @@ const AllRoleEditProfile = ({ role }) => {
       setValue("phone_number", userProfileDetails?.data?.phone_number);
       setValue("address", userProfileDetails?.data?.address);
       setValue("address_2", userProfileDetails?.data?.address_2);
+      setValue("tax_id", userProfileDetails?.data?.tax_id);
+      setValue("cin", userProfileDetails?.data?.cin);
       setValue("city", { label: userProfileDetails?.data?.city, value: null });
       setValue("country", { label: userProfileDetails?.data?.country, value: null });
       setValue("passcode", userProfileDetails?.data?.passcode);
@@ -135,20 +133,6 @@ const AllRoleEditProfile = ({ role }) => {
 
 
   const onSubmit = async (values) => {
-    if (role === "admin") {
-      let data = {
-        ...values,
-        company_name: values.name,
-        company_address: values?.address,
-        company_tex_id: values?.tax_id,
-        company_contact_number: values?.phone_number,
-        company_email: values?.email,
-        company_time_zone: values?.time_zone,
-      }
-      await dispatch(getUploadFile(data))
-      dispatch(getConfigDetails())
-
-    }else{
     let currentRoleUpdateProfile = updateCurrentRoleEndPoint(role)
     let formData = new FormData();
     let fileData = new FormData();
@@ -166,13 +150,17 @@ const AllRoleEditProfile = ({ role }) => {
         state: values?.state?.label,
         state_iso_code: values?.state?.value,
         time_zone: values?.time_zone?.label,
-        city: values?.city?.label
+        city: values?.city?.label,
+        tax_id: values?.tax_id,
+        cin: values?.cin,
+
       };
       // dispatch(updateDeveloperProfile(data));
       // dispatch(updateAdminProfile(data))
       dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
     } else {
       dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+        console.log(url,"url")
         let data = {
           ...values,
           profile_picture: url,
@@ -182,24 +170,25 @@ const AllRoleEditProfile = ({ role }) => {
           state: values?.state?.label,
           state_iso_code: values?.state?.value,
           time_zone: values?.time_zone?.label,
-          city: values?.city?.label
+          city: values?.city?.label,
+          tax_id: values?.tax_id,
+          cin: values?.cin,
         }
         dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
       })
       );
     }
   };
-}
   const validatePassword = (value) => {
     if (value === "") {
-      return true; 
+      return true;
     } else {
       const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
       if (!pattern.test(value)) {
         return "Password must contain at least a symbol, upper and lower case letters and a number";
       }
     }
-    return true; 
+    return true;
   };
 
   const handleFileChange = (event) => {
@@ -299,7 +288,7 @@ const AllRoleEditProfile = ({ role }) => {
                     name="previous_password"
                     control={control}
                     type={isPassword.firstPass ? "text" : "password"}
-                    rules={{ validate: validatePassword }}
+                    // rules={{ validate: validatePassword }}
                     error={errors.previous_password}
                     isPassword
                     onTogglePassword={() =>
@@ -358,9 +347,9 @@ const AllRoleEditProfile = ({ role }) => {
                     options={{ types: ["establishment", "geocode"] }}
                   />
                 </div>
-              
-              {role === "admin" &&
-                <>
+
+                {role === "admin" &&
+                  <>
                     <div>
                       <CommonInput
                         label={t("Tax ID") + " *"}
@@ -373,14 +362,14 @@ const AllRoleEditProfile = ({ role }) => {
                     <div >
                       <CommonInput
                         label={t("CIN Number") + " *"}
-                        name="cin_number"
+                        name="cin"
                         control={control}
                         rules={{ required: "CIN Number is required" }}
-                        error={errors.cin_number}
+                        error={errors.cin}
                       />
                     </div>
-                </>
-              }
+                  </>
+                }
               </Col>
               <Col md="6">
                 <div>
