@@ -1,3 +1,10 @@
+// Define a common function for login
+const login = (email, password) => {
+    cy.get("input[name='email']").should('be.visible').type(email)
+    cy.get('input[name="password"]').should('be.visible').type(password)
+    cy.get('button[type="submit"]').should('be.visible').click()
+  }
+
 describe('Title and Project URL Test', () => {
     beforeEach(() => {
         // Load the login page before each test
@@ -5,7 +12,7 @@ describe('Title and Project URL Test', () => {
     })
     it('should navigate to the Edit profile after successful login', () => {
         // Perform login using the imported function
-        login("damini@avioxtechnologies.com", "Damini@1234")
+        login("pankajClient@yopmail.com", "Pankaj@0987")
 
         // Verify redirection to the dashboard after successful login
         cy.url().should('eq', 'http://localhost:3000/client/dashboard')
@@ -43,6 +50,7 @@ describe('Title and Project URL Test', () => {
 
         //Verify inputs of job post page 
         cy.get("input[placeholder='Enter Job Name']")
-        cy.get("input[placeholder='Enter Company Name']")
+        cy.get("input[placeholder='Enter company name']")
+        cy.get("input[placeholder='Enter a location']")
     })
 })
