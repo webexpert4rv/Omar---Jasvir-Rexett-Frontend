@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSkillList } from "../../../redux/slices/clientDataSlice";
 import CreatableSelect from "react-select/creatable";
 import { BsCloudLightning } from "react-icons/bs";
-import { Editor } from "@tinymce/tinymce-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -243,7 +242,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
               />
             </Form.Group>
             {errors?.optional_skills && (
-              <p className="error-message ">
+              <p className="error-message">
                 {errors.optional_skills?.message}
               </p>
             )}
@@ -251,7 +250,6 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
         </Row>
         <div className="skill-weight-wrapper mb-3">
           <Row>
-
             <Col md={8}>
               <div>
                 <h4 className="font-18 fw-medium">Skills and traits</h4>
@@ -290,6 +288,8 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                 </div>
               </div>
             </Col>
+
+
             <Col md={8} className="mb-3">
               <div>
                 <div className="skill-progress medium-skill">

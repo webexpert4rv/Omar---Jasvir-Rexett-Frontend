@@ -22,7 +22,7 @@ const CommonReactSelect = ({
     const formattedOptions = convertCountriesForSelect(options, type);
     setFormattedOptions(formattedOptions);
   }, [options]);
-
+console.log(formattedOptions,"these are formatted options")
   return (
     <Form.Group className="mb-3">
       <Form.Label className="common-label">

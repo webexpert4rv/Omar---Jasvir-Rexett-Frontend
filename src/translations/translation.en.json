@@ -436,6 +436,6 @@
         "totalInvoiceRaised":"Total invoice raised",
         "projectName":"Project name",
         "completionDate":"Completion date",
-        "responseTime" : "Response Time"
+        "responseDate" : "Response Date"
       }
 }

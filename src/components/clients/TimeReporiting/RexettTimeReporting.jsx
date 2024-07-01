@@ -114,7 +114,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                             <option value="" disabled selected>
                                                 {t("selectYear")}
                                             </option>
-                                            {yearOption?.map((item )=>(
+                                            {yearOption?.map((item ) => (
                                                  <option key={item}>{item}</option>
                                             ))}
                                         </Form.Select>

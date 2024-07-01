@@ -66,7 +66,27 @@ const TimeSheetTable = ({
                 {timeReports?.length > 0 ? (
                   <>
                     <td className="time-table-data ">
-                      {projectDetail?.contractDetails?.client_name}
+                      <div className="d-flex align-items-center gap-2">
+                        <div className="d-flex gap-2 align-items-center white-nowrap">
+                          <div className="position-relative">
+                            <img
+                              src={
+                                projectDetail?.contractDetails?.profile_picture
+                                  ? projectDetail?.contractDetails
+                                      ?.profile_picture
+                                  : "/demo-user.png"
+                              }
+                              className="developer-img"
+                              // alt="/demo-user.png"
+                            />
+                            {/* <span className="number-count overlay">
+                                    1
+                                  </span> */}
+                          </div>{" "}
+                          {projectDetail?.contractDetails?.client_name}
+                        </div>
+                      </div>
+                      {/* {projectDetail?.contractDetails?.client_name} */}
                     </td>
                     {timeReports?.map((reprt, inx) => {
                       if (reprt.report_date) {

@@ -7,17 +7,26 @@ import {
 } from "../../../redux/slices/clientDataSlice";
 import CommonReactSelect from "../../../components/atomic/CommonReactSelect";
 
-const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
-  const { countriesList, statesList, citiesList } = useSelector(
+const LocationSection = ({
+  setValue,
+  watch,
+  errors,
+  control,
+  clearErrors,
+  isTimeZoneRequired = false,
+}) => {
+  const dispatch = useDispatch();
+  const { countriesList, statesList, citiesList, timeZones } = useSelector(
     (state) => state.clientData
   );
 
   useEffect(() => {
     if (watch("country_code")) {
       dispatch(getStatesList(watch("country_code")?.value));
+      dispatch(getTimeZoneForCountry(watch("country_code")?.value));   
     }
   }, []);
-  const dispatch = useDispatch();
+
   const handleDropDownChange = (value, name) => {
     if (name === "country_code") {
       setValue("country_code", value);
@@ -30,6 +39,8 @@ const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
     } else if (name === "state_iso_code") {
       setValue("state_iso_code", value);
       clearErrors("state_iso_code");
+      // timezone logic
+      // setValue("timezone", value);
       dispatch(
         getCitiesList(
           watch("country_code")?.value,
@@ -37,6 +48,10 @@ const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
         )
       );
       setValue("city", null);
+    } else if (name === "time_zone") {
+      setValue("time_zone", value);
+      clearErrors("time_zone");
+
     }
   };
   return (
@@ -75,6 +90,21 @@ const LocationSection = ({ setValue, watch, errors, control, clearErrors }) => {
         watch={watch}
         options={citiesList}
       />
+      {/* may be need to verify name of timezone value */}
+      {isTimeZoneRequired && (
+        <CommonReactSelect
+          name="time_zone"
+          errors={errors}
+          handleChange={handleDropDownChange}
+          control={control}
+          // required="City is required"
+          label="Timezone"
+          type="timezones"
+          required="Timezone is required"
+          watch={watch}
+          options={timeZones}
+        />
+      )}
     </>
   );
 };

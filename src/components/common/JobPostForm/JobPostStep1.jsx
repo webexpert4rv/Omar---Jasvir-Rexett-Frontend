@@ -7,8 +7,9 @@ import companyLogo from "../../../assets/img/aviox-logo.png";
 import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../clients/TimeReporiting/constant";
+import LocationSection from "../../../pages/websiteRegisterForm/developer/LocationSection";
 
-const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
+const JobPostStep1 = ({ register, errors, control, setValue, watch ,setError,clearErrors}) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const handleScriptLoad = () => {
     setScriptLoaded(true);
@@ -240,9 +241,9 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                 <p className="error-message">{errors.job_positions?.message}</p>
               )}
             </Form.Group>
-            {/* <Form.Group className="mb-3">
+            <Form.Group className="mb-3">
               <Form.Label className="d-flex gap-2 align-items-center">
-                {t("responseTime")}
+                {t("responseDate")}
               </Form.Label>
               <p className="common-field font-14 d-flex align-items-center gap-2">
                 <Form.Control
@@ -258,7 +259,16 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               {errors?.response_time && (
                 <p className="error-message">{errors.response_time?.message}</p>
               )}
-            </Form.Group> */}
+            </Form.Group>
+            <LocationSection
+              control={control}
+              errors={errors}
+              LocationSection={true}
+              watch={watch}
+              setValue={setValue}
+              setError={setError}
+              clearErrors={clearErrors}
+            />{" "}
           </Col>
         </Row>
       </section>

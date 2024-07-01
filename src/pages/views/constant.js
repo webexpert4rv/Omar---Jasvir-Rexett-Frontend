@@ -8,4 +8,5 @@ export const COMPANY_TYPES = [
     { value: 'franchise', label: 'Franchise' },
     { value: 'joint_venture', label: 'Joint Venture' },
   ];
+  export const JOB_LISTING_PER_PAGE = 10;
   
