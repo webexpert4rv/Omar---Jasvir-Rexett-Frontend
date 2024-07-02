@@ -40,6 +40,7 @@ export const STEP_LABELS = [
 ];
 const DEFAULT_SCREENING_DATA = [
   {
+    optionId: 1,
     label: "Work Experience",
     title: "",
     question_type: "",
@@ -47,6 +48,7 @@ const DEFAULT_SCREENING_DATA = [
     isRecommended: true,
   },
   {
+    optionId: 2,
     label: "Education",
     question_type: "Degree",
     title: "",
@@ -55,6 +57,7 @@ const DEFAULT_SCREENING_DATA = [
     isRecommended: true,
   },
   {
+    optionId: 3,
     label: "Language",
     title: "",
     question_type: "language",
@@ -93,9 +96,9 @@ const JobPostStepContainer = ({ role }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues:{
-      screening_questions:DEFAULT_SCREENING_DATA
-    }
+    defaultValues: {
+      screening_questions: DEFAULT_SCREENING_DATA,
+    },
   });
   const getActiveStepLocalStorageKey = () => {
     const activeStepKey =
@@ -181,8 +184,7 @@ const JobPostStepContainer = ({ role }) => {
                     const newValue = { label: data[key], value: data[key] };
                     setValue(key, newValue);
                   }
-                } 
-                else if (activeStep === 2) {
+                } else if (activeStep === 2) {
                   if (key === "skills" || key === "optional_skills") {
                     if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]) {
                       const convertedArray =
@@ -202,11 +204,11 @@ const JobPostStepContainer = ({ role }) => {
                       );
                     }
                   }
-                }
-                 else if (activeStep === 3) {
+                } else if (activeStep === 3) {
                   if (key === "screening_questions") {
-                    const data = jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key];
-                    console.log(data,"screening question data inside data")
+                    const data =
+                      jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key];
+                    console.log(data, "screening question data inside data");
                     if (
                       jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]?.length
                     ) {
@@ -271,12 +273,14 @@ const JobPostStepContainer = ({ role }) => {
   const increaseStep = () => {
     if (activeStep < 3) {
       setActiveStep((prev) => prev + 1);
+      localStorage.setItem(getActiveStepLocalStorageKey(), activeStep + 1);
     } else {
       const navigationUrl =
         role === "admin" ? "/admin/admin-job-listing" : "/client/job-posted";
+      localStorage.setItem(getActiveStepLocalStorageKey(), 1);
+
       navigate(navigationUrl);
     }
-    localStorage.setItem(getActiveStepLocalStorageKey(), activeStep + 1);
   };
 
   const decreaseStep = () => {
@@ -331,7 +335,6 @@ const JobPostStepContainer = ({ role }) => {
     } else {
       dispatch(clientJobPost(payload, activeStep, increaseStep));
     }
-
   };
 
   return (

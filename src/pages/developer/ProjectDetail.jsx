@@ -108,7 +108,7 @@ const ProjectDetail = () => {
                                         ? projectDetail?.contractDetails?.[
                                             imageKey
                                           ]
-                                        : companyLogo
+                                        : "/demo-user.png"
                                     }
                                   />
                                   {projectDetail?.contractDetails?.[key]}

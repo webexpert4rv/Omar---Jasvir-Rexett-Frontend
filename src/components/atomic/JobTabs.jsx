@@ -196,7 +196,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                     <p className="font-15">
                       Posted Date: <strong>{item.created_at.slice(0, 10)}</strong>
                     </p>
-                    <p className="font-15">
+                    <p className="font-15"> 
                       Response Time: <strong>15 Days</strong>
                     </p>
                     <div className="d-flex align-items-center gap-3">

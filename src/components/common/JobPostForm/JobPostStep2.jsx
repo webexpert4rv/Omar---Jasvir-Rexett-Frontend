@@ -42,16 +42,15 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   const handleChange = (html, field) => {
     const editor = quillRef?.current?.getEditor();
     const plainText = getPlainText(html);
-
     if (plainText.length <= MAX_LENGTH) {
-      field.onChange(html);
+      field.onChange(html); 
     } else {
       // Prevent further input
       const currentLength = editor?.getLength();
-      if (currentLength > MAX_LENGTH + 1) {
+      if (currentLength > MAX_LENGTH + 1) { 
         editor.deleteText(MAX_LENGTH, currentLength);
       }
-    }
+    } 
   };
 
   return (
@@ -61,108 +60,8 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
         <Row>
           <Col md="12" className="mb-4">
             <Form.Group>
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Description *</Form.Label>
               <div id="custom-ck">
-                {/* <Editor
-                  {...register("description", {
-                    required : "Description is required",
-                  },
-                )}
-                  apiKey="nvg2dnotqh9tmlf2j3hvf7w101gjpz2l5jobxsa9avkvr5pa"
-                  value={watch("description")}
-                  onEditorChange={(content, editor) => {
-                    setValue("description",content)
-                    setText(editor.getContent({ format: "text" }));
-                  }}
-                  //initialValue={content}
-                  //outputFormat="text"
-                  onInit={(evt, editor) => (editorRef.current = editor)}
-                  onBlur={(e, editor) => {
-                    // Set the field value on blur to prevent clearing
-                    const element = editor.getElement();
-                    setValue("description", editor.getContent());
-                  }}
-                  // onLoadContent={}
-                  // initialValue="<p>This is the initial content of the editor.</p>"
-                  init={{
-                    height: 500,
-                    menubar: false,
-                    plugins: [
-                      "mentions advlist autolink lists link image charmap print preview anchor",
-                      "searchreplace visualblocks code fullscreen",
-                      "insertdatetime media paste code help wordcount",
-                    ],
-                    toolbar:
-                      "undo redo | formatselect | " +
-                      "bold italic backcolor | alignleft aligncenter " +
-                      "alignright alignjustify | bullist numlist outdent indent | " +
-                      "removeformat | emoticons| help",
-                    content_style:
-                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                    emoticons_append: {
-                      custom_mind_explode: {
-                        keywords: ["brain", "mind", "explode", "blown"],
-                        char: "🤯",
-                      },
-                    },
-                  }}
-                /> */}
-                {/* <Controller
-                  name="description"
-                  rules={{required:"Description is required"}}
-                  control={control}
-                  render={({ field: { ref, ...field }  }) => (
-                    <CKEditor
-                      {...field}
-                      type=""
-                      editor={ClassicEditor}
-                      config={{
-                        // plugins: [ Paragraph, Bold, Italic, Essentials ],
-                        toolbar: {
-                          items: [
-                            "undo",
-                            "redo",
-                            "|",
-                            "heading",
-                            "|",
-                            "fontfamily",
-                            "fontsize",
-                            "fontColor",
-                            "fontBackgroundColor",
-                            "|",
-                            "bold",
-                            "italic",
-                            "strikethrough",
-                            "subscript",
-                            "superscript",
-                            "|",
-                            "link",
-                            "blockQuote",
-                            "|",
-                            "bulletedList",
-                            "numberedList",
-                            ,
-                            "outdent",
-                            "indent",
-                          ],
-                        },
-                      }}
-                      //   config={{
-                      //     ckfinder: {
-                      //       // Upload the images to the server using the CKFinder QuickUpload command
-                      //       // You have to change this address to your server that has the ckfinder php connector
-                      //       uploadUrl: "" //Enter your upload url
-                      //     }
-                      //   }}
-                      data={watch("description")}
-                      value={watch("description")}
-                      onChange={(event, editor) => {
-                        const value = editor.getData();
-                        field.onChange(value)
-                      }}
-                    />
-                  )}
-                /> */}
                 <Controller
                   name="description"
                   control={control}
@@ -175,8 +74,6 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                       theme="snow"
                       onChange={(html) => {
                         handleChange(html, field);
-                        // field.onChange(html);
-                        // setValue("description", html);
                       }}
                     />
                   )}
@@ -191,7 +88,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
           </Col>
           <Col md="6" className="mb-4">
             <Form.Group>
-              <Form.Label>Skills</Form.Label>
+              <Form.Label>Skills *</Form.Label>
               <Controller
                 name="skills"
                 control={control}
@@ -223,9 +120,9 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
           </Col>
           <Col md="6" className="mb-4">
             <Form.Group>
-              <Form.Label>Good to have skills</Form.Label>
+              <Form.Label>Good to have skills *</Form.Label>  
               <Controller
-                name="optional_skills"
+                name="optional_skills"  
                 control={control}
                 rules={{ required: "Good to have skills are required" }}
                 render={({ field }) => (
@@ -271,7 +168,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
                   <span className="skill-progress-name fw-semibold">
                     React JS
                   </span>
-                  <span className="skill-percent">5%</span>
+                  <span className="skill-percent">5%</span> 
                 </div>
               </div>
             </Col>
