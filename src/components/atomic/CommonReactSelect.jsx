@@ -25,7 +25,7 @@ const CommonReactSelect = ({
 console.log(formattedOptions,"these are formatted options")
   return (
     <Form.Group className="mb-3">
-      <Form.Label className="common-label">
+      <Form.Label className="common-label font-14 fw-medium">
         {label}
         {required && "*"}
       </Form.Label>
@@ -41,7 +41,7 @@ console.log(formattedOptions,"these are formatted options")
         render={({ field }) =>
           handleChange ? (
             <Select
-              className="common-field"
+              className="common-field font-14"
               {...field}
               value={watch(name)}
               onChange={(selectedOption) => {handleChange(selectedOption,name)}}
@@ -49,7 +49,7 @@ console.log(formattedOptions,"these are formatted options")
             />
           ) : (
             <Select
-              className="common-field"
+              className="common-field 14"
               {...field}
               options={formattedOptions}
             />
