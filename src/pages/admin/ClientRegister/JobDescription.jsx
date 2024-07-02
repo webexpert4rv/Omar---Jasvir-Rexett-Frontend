@@ -5,7 +5,7 @@ import { FaArrowLeft, FaCheck, FaChevronDown, FaFilter, FaPencil, FaPlus } from 
 import { Link } from "react-router-dom";
 import { IoAddCircle, IoAddOutline, IoCheckmark, IoTrash } from "react-icons/io5";
 import ReactQuill from "react-quill";
-const ClientSkillNeed = () => {
+const JobDescription = () => {
     const [valuedescr, setValueDescr] = useState('');
     const handleChange = (value) => {
         setValueDescr(value);
@@ -30,61 +30,34 @@ const ClientSkillNeed = () => {
                             </li>
                             <li className="active-step">
                                 <span className="resume-count">
-                                    <span className="resume-step">2</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Engagment</span>
-                            </li>
-                            <li className="active-step">
-                                <span className="resume-count">
                                     <span className="resume-step">3</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagement length</span>
+                                <span>Job Info</span>
                             </li>
-                            <li className="active-step">
+                            <li>
                                 <span className="resume-count">
                                     <span className="resume-step">4</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Start Team</span>
+                                <span>Job Description</span>
                             </li>
-                            <li className="active-step">
+                            <li>
                                 <span className="resume-count">
                                     <span className="resume-step">5</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Availability</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">6</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Skillset</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">7</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Book Meeting</span>
+                                <span>Screening info</span>
                             </li>
                         </ul>
                     </div>
-                    <h4 className="resume-sideheading mt-3">Completeness:</h4>
+                    <h4 className="resume-sideheading mt-3">Resume Completeness:</h4>
                     <div className="resume-progress-wrapper">
                         <div className="resume-progressbx">
                             <div></div>
@@ -101,24 +74,24 @@ const ClientSkillNeed = () => {
                                     <Col md={12}>
                                         <div>
                                             <h2 className="resume-heading">
-                                                What skillset you need
+                                                Briefly tell us about your job
                                             </h2>
-                                            <p>Choose from our pre-written examples below or write your own.</p>
+                                            <p>Choose from our pre-written skils below or write your own.</p>
                                         </div>
                                         <div>
                                             <Row>
+                                                <Col md={12}>
+                                                    <Form.Label className="font-14 fw-medium">Job Description</Form.Label>
+                                                    <div id="custom-ck">
+                                                        <ReactQuill value={valuedescr} onChange={handleChange} />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-14 mt-3 fw-semibold">Add Skills</p>
+                                                    </div>
+                                                </Col>
+
                                                 <Col md={6}>
                                                     <div>
-                                                        <div className="search-filter mb-3">
-                                                            <p className="font-14 fw-semibold mb-1">Search By Job Title For Pre-Written Examples</p>
-                                                            <Form.Control type="text" placeholder="Search by job title" className="common-field font-14" />
-                                                        </div>
-                                                        <div className="showing-results-wrapper mb-3">
-                                                            <div>
-                                                                <p className="font-14 mb-0">Showing results for</p>
-                                                                <p className="font-14 mb-0 fw-semibold">Web Developer</p>
-                                                            </div>
-                                                        </div>
                                                         <div className="recommended-desc">
                                                             <div className="d-flex align-items-center gap-3">
                                                                 <Button variant="transparent" className="arrow-btn primary-arrow shadow-none">
@@ -181,7 +154,12 @@ const ClientSkillNeed = () => {
                                                                 <Form.Control type="text" placeholder="Enter Skill" className="common-field font-14" />
                                                             </div>
                                                             <div className="w-100">
-                                                                <Form.Control type="text" placeholder="Enter Experience" className="common-field font-14" />
+                                                                <Form.Select className="common-field font-14">
+                                                                    <option>Select level</option>
+                                                                    <option value="beginner">Beginner</option>
+                                                                    <option value="intermediate">Intermediate</option>
+                                                                    <option value="expert">Expert</option>
+                                                                </Form.Select>
                                                             </div>
                                                             <Button variant="transparent" className="text-green font-24 p-0 shadow-none border-0">
                                                                 <IoAddCircle />
@@ -202,7 +180,7 @@ const ClientSkillNeed = () => {
 
                                 </div>
                                 <div>
-                                    <Link to={'/client-book-meeting'} variant="transparent" className="main-btn font-14 text-decoration-none">Next : Book Meeting</Link>
+                                    <Link to={'/screening-info'} variant="transparent" className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
                         </div>
@@ -212,4 +190,4 @@ const ClientSkillNeed = () => {
         </>
     )
 }
-export default ClientSkillNeed;
+export default JobDescription;

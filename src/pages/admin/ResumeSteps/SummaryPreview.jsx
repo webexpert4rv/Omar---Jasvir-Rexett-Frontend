@@ -44,7 +44,7 @@ const SummaryPreview = () => {
                                 </span>
                                 <span>Work History</span>
                             </li>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">3</span>
                                     <span className="resume-check">
@@ -53,7 +53,7 @@ const SummaryPreview = () => {
                                 </span>
                                 <span>Education</span>
                             </li>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">4</span>
                                     <span className="resume-check">

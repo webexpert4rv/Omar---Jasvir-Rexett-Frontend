@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import profileImg from '../../../assets/img/dummy-logo.jpg';
-import { IoCameraOutline, IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
+import { IoCameraOutline } from "react-icons/io5";
 import SetupJob from "./Modal/Setupjob";
 import ThankRegister from "../ResumeSteps/Modals/ThankRegister";
-const ClientPersonal = () => {
+const ClientIndividual = () => {
     const [showsetupjob, showSetupjob] = useState(false);
     const handleShowSetupjob = () => {
         showSetupjob(!showsetupjob);
@@ -15,11 +15,11 @@ const ClientPersonal = () => {
     const handleCloseSetupjob = () => {
         showSetupjob(false);
     }
-    const [showthanksregister, setShowThanksRegister] = useState(false);
-    const handleShowThanksRegister = () => {
+    const [showthanksregister , setShowThanksRegister] = useState(false);
+    const handleShowThanksRegister = () =>{
         setShowThanksRegister(!showthanksregister)
     }
-    const handleCloseThanksRegister = () => {
+    const handleCloseThanksRegister = () =>{
         setShowThanksRegister(false);
     }
     return (
@@ -104,66 +104,19 @@ const ClientPersonal = () => {
                                             <Row>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Company Name</Form.Label>
-                                                        <div className="position-relative resume-field-wrapper">
-                                                            <Form.Control type="text" className="common-field font-14" placeholder="e.g. Microsoft" />
-                                                            <span className="valid-data">
-                                                                <IoCheckmarkCircle />
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Tax ID</Form.Label>
-                                                        <div className="position-relative resume-field-wrapper">
-                                                            <Form.Control type="text" className="common-field font-14 invalid-field" placeholder="Enter Tax" />
-                                                            <span className="invalid-data">
-                                                                <IoCloseCircle />
-                                                            </span>
-                                                        </div>
-                                                        <p className="field-error">This field is required</p>
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Estbl. Year *</Form.Label>
-                                                        <Form.Control type="date" className="common-field font-14" placeholder="E.g. 15,000" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Website URL *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="E.g. www.xyztechnology.com" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Yearly revenue (in USD)</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 15,000" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Employees strength</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="E.g. 100" />
-                                                    </div>
-                                                </Col>
-                                                {/* <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">First Name</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">First Name *</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Surname</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Surname *</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. Doe" />
                                                     </div>
-                                                </Col> */}
+                                                </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Phone Number</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Phone Number *</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. +91 123 456 7890" />
                                                     </div>
                                                 </Col>
@@ -183,6 +136,18 @@ const ClientPersonal = () => {
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Confirm new password</Form.Label>
                                                         <Form.Control type="password" className="common-field font-14" placeholder="Enter confirm password" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Tax ID</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="Enter Tax ID" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Yearly revenue</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="Enter Tax ID" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
@@ -240,10 +205,10 @@ const ClientPersonal = () => {
                         </div >
                     </Container >
                 </div >
-            </section >
+            </section>
             <SetupJob show={showsetupjob} handleClose={handleCloseSetupjob} />
-            <ThankRegister show={showthanksregister} handleClose={handleCloseThanksRegister} />
+            <ThankRegister show={showthanksregister} handleClose={handleCloseThanksRegister} /> 
         </>
     )
 }
-export default ClientPersonal;
+export default ClientIndividual;

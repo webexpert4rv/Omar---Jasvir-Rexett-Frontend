@@ -34,12 +34,9 @@ import AddProjects from './pages/admin/ResumeSteps/AddProjects';
 import ProjectSummary from './pages/admin/ResumeSteps/ProjectSummary';
 import FinalizeResume from './pages/admin/ResumeSteps/FinalizeResume';
 import ClientPersonal from './pages/admin/ClientRegister/PersonalDetails';
-import ClientEngagement from './pages/admin/ClientRegister/Engagement';
-import ClientEngagementLength from './pages/admin/ClientRegister/EngagementLength';
-import TeamStart from './pages/admin/ClientRegister/TeamStart';
-import ClientAvailability from './pages/admin/ClientRegister/AvailabilityClient';
-import ClientSkillNeed from './pages/admin/ClientRegister/SkillsetNeed';
-import ClientBookMeeting from './pages/admin/ClientRegister/BookMeetingClient';
+import JobInfo from './pages/admin/ClientRegister/JobInfo';
+import JobDescription from './pages/admin/ClientRegister/JobDescription';
+import ScreeningInfo from './pages/admin/ClientRegister/ScreeningInfo';
 import VendorPersonal from './pages/admin/VendorRegister/VendorPersonal';
 import DecisionMakers from './pages/admin/VendorRegister/DecisionMakers';
 import CompanyInfo from './pages/admin/VendorRegister/CompanyInfo';
@@ -48,6 +45,8 @@ import EducationSelect from './pages/admin/ResumeSteps/EducationSelect';
 import SummaryPreview from './pages/admin/ResumeSteps/SummaryPreview';
 import SkillPreview from './pages/admin/ResumeSteps/SkillsPreview';
 import GoodHaveSkills from './pages/admin/ResumeSteps/GoodSkills';
+import ClientStep1 from './pages/admin/ClientRegister/ClientStep1';
+import ClientIndividual from './pages/admin/ClientRegister/ClientIndividual';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
@@ -104,6 +103,7 @@ function App() {
              <Route path="/apply-job" element={<UnregisteredForm />} />
              <Route path="/screening-details" element={<ScreeningDetails />} />
              <Route path="/thank-you" element={<ThankYou />} />
+             {/* Dev Register */}
              <Route path="/resume-detail" element={<ResumeStep1 />} />
              <Route path="/resume-work-detail" element={<ResumeStep2 />} />
              <Route path="/resume-work-history" element={<ResumeStep2a />} />
@@ -123,12 +123,11 @@ function App() {
              <Route path="/good-have-skills" element={<GoodHaveSkills />} />
              {/* Client Register */}
              <Route path="/client-personal" element={<ClientPersonal />} />
-             <Route path="/client-engagement" element={<ClientEngagement />} />
-             <Route path="/client-engagement-length" element={<ClientEngagementLength />} />
-             <Route path="/client-team-start" element={<TeamStart />} />
-             <Route path="/client-availability" element={<ClientAvailability />} />
-             <Route path="/client-skill-need" element={<ClientSkillNeed />} />
-             <Route path="/client-book-meeting" element={<ClientBookMeeting />} />
+             <Route path="/job-info" element={<JobInfo />} />
+             <Route path="/job-description" element={<JobDescription />} />
+             <Route path="/screening-info" element={<ScreeningInfo />} />
+             <Route path="/client-register" element={<ClientStep1 />} />
+             <Route path="/client-individual" element={<ClientIndividual />} />
              {/* Vendor Register */}
              <Route path="/vendor-personal" element={<VendorPersonal />} />
              <Route path="/desicion-makers" element={<DecisionMakers />} />

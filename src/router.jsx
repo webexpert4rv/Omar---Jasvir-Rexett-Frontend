@@ -23,6 +23,10 @@ import RolesPermission from "./pages/admin/RolesPermissions";
 import InterviewListing from "./pages/admin/InterviewListing";
 import InterviewDetail from "./pages/admin/InterviewDetail";
 import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
+import VendorSettings from "./pages/vendor/VendorSettings";
+import DeveloperSettings from "./pages/developer/DeveloperSettings";
+import ClientSettings from "./pages/views/ClientSettings";
+
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -296,6 +300,12 @@ export const route = [
     private: true,
     isClient: true,
   },
+  {
+    path: "/client/client-settings",
+    element: <ClientSettings />,
+    private: true,
+    isClient: true,
+  },
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
 
@@ -385,6 +395,12 @@ export const route = [
     isDeveloper: true,
     private: true,
   },
+  {
+    path: "/developer/developer-settings",
+    element: <DeveloperSettings />,
+    isDeveloper: true,
+    private: true,
+  },
 
   // <------------------------------------------------------------------------------! Developer Flow !-----------------------------------------------------------------------------?
 
@@ -464,6 +480,12 @@ export const route = [
   {
     path: "/vendor-time-detail",
     element: <VendorTimeDetail />,
+    isVendor: true,
+    private: true,
+  },
+  {
+    path: "/vendor/vendor-settings",
+    element: <VendorSettings />,
     isVendor: true,
     private: true,
   },

@@ -285,7 +285,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
             )}
             {role == "vendor" ? (
               <Link
-                to={"/register-developer"}
+                to={"/resume-detail"}
                 className="text-decoration-none main-btn"
               >
                 {t("registerNewDeveloper")}

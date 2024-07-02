@@ -199,6 +199,14 @@ const AddSkills = () => {
                                                             <div className="w-100">
                                                                 <Form.Control type="text" placeholder="Enter Experience" className="common-field font-14" />
                                                             </div>
+                                                            <div className="w-100">
+                                                                <Form.Select className="common-field font-14">
+                                                                    <option>Select Level</option>
+                                                                    <option value="beginner">Beginner</option>
+                                                                    <option value="intermediate">Intermediate</option>
+                                                                    <option value="expert">Expert</option>
+                                                                </Form.Select>
+                                                            </div>
                                                             <Button variant="transparent" className="text-green font-24 p-0 shadow-none border-0">
                                                                 <IoAddCircle />
                                                             </Button>

@@ -35,15 +35,6 @@ const DecisionMakers = () => {
                             </li>
                             <li>
                                 <span className="resume-count">
-                                    <span className="resume-step">3</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Company Info</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
                                     <span className="resume-step">4</span>
                                     <span className="resume-check">
                                         <FaCheck />
@@ -77,10 +68,22 @@ const DecisionMakers = () => {
                                         <p className="font-12 fw-medium">* includes a required field</p>
                                         <div>
                                             <Row>
-                                                <Col md={12}>
+                                                <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">CEO Name *</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Name *</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Position *</Form.Label>
+                                                        <Form.Select className="common-field font-14">
+                                                            <option>Select Position</option>
+                                                            <option value="ceo">CEO</option>
+                                                            <option value="cto">CTO</option>
+                                                            <option value="cmo">CMO</option>
+                                                            <option value="md">Managing Director</option>
+                                                        </Form.Select>
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
@@ -95,35 +98,20 @@ const DecisionMakers = () => {
                                                         <Form.Control type="email" className="common-field font-14" placeholder="e.g. johndoe123@gmail.com" />
                                                     </div>
                                                 </Col>
-                                                <Col md={12}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Contact Person's Name *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Contact Person's Phone Number *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. +91 123 456 7890" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Contact Person's Email *</Form.Label>
-                                                        <Form.Control type="email" className="common-field font-14" placeholder="e.g. johndoe123@gmail.com" />
-                                                    </div>
-                                                </Col>
                                             </Row>
+                                            <div className="">
+                                                <Button variant="transparent" className="position-btn">+ Add another member</Button>
+                                            </div>
                                         </div>
                                     </Col>
                                 </Row>
                             </div>
-                            <div className="d-flex justify-content-between align-items-center">
+                            <div className="d-flex justify-content-between align-items-center mt-3">
                                 <div>
 
                                 </div>
                                 <div>
-                                    <Link to={'/company-info'} className="main-btn font-14 text-decoration-none">Next: Company Info</Link>
+                                    <Link to={'/area-expertise'} className="main-btn font-14 text-decoration-none">Next: Area of Expertise</Link>
                                 </div>
                             </div>
                         </div >
