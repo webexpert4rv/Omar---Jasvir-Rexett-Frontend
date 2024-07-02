@@ -66,23 +66,23 @@ const EditVendorProfile = () => {
     setValue("address", vendorProfile?.address);
     // for setting country value
     const countryValue = {
-      label: vendorProfile?.company?.["country"],
-      value: vendorProfile?.company?.["country_code"],
+      label: vendorProfile?.["country"],
+      value: vendorProfile?.["country_code"],
     };
     setValue("country_code", countryValue);
     // for setting time value
     const stateValue = {
-      label: vendorProfile?.company?.["state"],
+      label: vendorProfile?.["state"],
       value: vendorProfile?.["state_iso_code"],
     }
     setValue("state_iso_code", stateValue);
 
     // for setting city value
-    // const cityValue = {
-    //   label: vendorProfile?.company?.["city"],
-    //   value: vendorProfile?.["state_iso_code"],
-    // }
-    // setValue("state_iso_code", stateValue);
+    const cityValue = {
+      label: vendorProfile?.["city"],
+      value: vendorProfile?.["city_iso_code"],
+    }
+    setValue("city_iso_code", cityValue);
 
 
     // for setting time zone
@@ -98,11 +98,9 @@ const EditVendorProfile = () => {
     setValue("company_phone_number", vendorProfile?.company?.phone_number);
     setValue("success_story", vendorProfile?.company?.success_story);
     setValue("total_employees", vendorProfile?.company?.total_employees);
-    // setValue("company_city", vendorProfile?.company?.city);
-    // setValue("company_country", vendorProfile?.company?.country);
-    // setValue("country_code", vendorProfile?.company?.country_code);
     setValue("establishment_year", vendorProfile?.company?.establishment_year);
     setValue("gst_number", vendorProfile?.company?.gst_number);
+    setValue("cin", vendorProfile?.company?.cin);
     setValue("total_it_recruiter", vendorProfile?.company?.total_it_recruiter);
     setValue("turn_around_time_to_close_contract_position", vendorProfile?.company?.trun_around_time_to_close_contract_position);
     setValue("turn_around_time_to_close_permanent_position", vendorProfile?.company?.trun_around_time_to_close_permanent_position);
@@ -126,27 +124,10 @@ const EditVendorProfile = () => {
     dispatch(getCoutriesList());
   }, []);
 
-  // useEffect(() => {
-  //   if (watch("country")?.value) {
-  //     dispatch(getStatesList(watch("country")?.value));
-  //     dispatch(getTimeZoneForCountry(watch("country")?.value));
-  //     // setValue("time_zone", null);
-  //     setValue("state", null);
-  //     setValue("city", null);
-  //   }
-  // }, [watch("country")]);
-
-  // useEffect(() => {
-  //   if (watch("state")?.value) {
-  //     dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
-  //     setValue("city", null);
-  //   }
-  // }, [watch("state")]);
-
+  
   const handleSelect = (event) => {
     setSelectedType(event.target.value)
   }
-  console.log(selectedType, "selectedtype")
 
 
 
@@ -184,6 +165,7 @@ const EditVendorProfile = () => {
 
 
     dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+
       let payload = {
         email: values.email,
         previous_password: values.previous_password,
@@ -195,20 +177,24 @@ const EditVendorProfile = () => {
         passcode: values.passcode,
         time_zone: values?.time_zone?.label,
         profile_picture: url,
-        country: values.country.label,
-        state: values.state.label,
-        city: values.city.label,
+        country: values.country_code.label,
+        // state: values.state.label,
+        // city: values.city.label,
         company: {
           name: values.company_name,
           email: values.email,
+          country:values.country_code?.label,
+          country_code: values.country_code?.value,
+          state:values.state_iso_code?.label,
+          state_iso_code:values.state_iso_code?.value,
+          time_zone:values?.time_zone?.label,
+          // may be need to uncomment in future
+          // city:values?.city?.label,  
           country: values.country_code?.label,
-          // country_code: values.country_code?.value,
-          // state:values.state_iso_code?.label,
-          // state_iso_code:values.state_iso_code?.value,
           time_zone: values?.time_zone?.label,
           city: values?.city?.label,
           phone_number: values.company_phone_number,
-          type_of_company: values.type_of_company,
+          // type_of_company: values.type_of_company,
           city: values.company_city,
           state: values.company_state,
           country: values.company_country,
@@ -220,8 +206,8 @@ const EditVendorProfile = () => {
           total_it_recruiter: values.total_it_recruiter,
           yearly_revenue: values.yearly_revenue,
           website: values.website,
-          gst_number: values.gst_number,
-          // cin_number:values.cin_number,
+          tax_id: values.tax_id,
+          cin:values.cin,
           service_offering: values.service_offering,
           specialization: values.specialization,
           turn_around_time_to_close_contract_position:
@@ -255,8 +241,6 @@ const EditVendorProfile = () => {
     }
     return true;
   };
-  console.log(watch("country_code"), "country code ");
-  console.log(watch("state_iso_code"), "state code ");
 
 
   return (
@@ -856,22 +840,36 @@ const EditVendorProfile = () => {
                         <Form.Label className="common-label">
                           CIN Number*
                         </Form.Label>
-                        <Form.Control type="text" placeholder="CIN Number" className="common-field font-14" />
+                        <Form.Control
+                         type="text"
+                         placeholder="CIN Number"
+                        className="common-field font-14"
+                        name="cin" 
+                        {...register(`cin`, {
+                          required: t("cin"),
+                        })}
+                      />
+                      {errors?.cin && (
+                        <p className="error-message">
+                          {errors.cin.message}
+                        </p>
+                      )}
                       </Form.Group>
                     </Col>
                   </Row>
-                  {/* <Form.Control
+                  {/* <Form.Group className="mb-3">
+                  <Form.Control
                       type="text"
                       className="cv-field"
-                      name="cin_number"
+                      name="cin"
                       placeholder="Enter CIN number"
-                      {...register(`cin_number`, {
+                      {...register(`cin`, {
                         required: t("CIN number is required"),
                       })}
                     />
-                    {errors?.cin_number && (
+                    {errors?.cin && (
                       <p className="error-message">
-                        {errors.cin_number.message}
+                        {errors.cin.message}
                       </p>
                     )}
                   </Form.Group> */}
