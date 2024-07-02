@@ -549,11 +549,144 @@ const EditVendorProfile = () => {
                   </Col>
                 </Row>
               </div>
+              <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
+                <h2 className="section-head-sub mb-0 border-0">Decision makers Details</h2>
+              </div>
+              <div className="inner-form mb-3">
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label font-14 fw-medium">
+                        CEO Name*
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="common-field font-14"
+                        name="proprietor_name"
+                        placeholder={t("enterProprietorName")}
+                        {...register(`proprietor_name`, {
+                          required: t("nameValidation"),
+                        })}
+                      />
+                      {errors?.proprietor_name && (
+                        <p className="error-message">
+                          {errors.proprietor_name.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label font-14 fw-medium">
+                        CEO Contact Number*
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        className="common-field font-14"
+                        name="proprietor_contact_number"
+                        placeholder={t("enterProprietorContactNumber")}
+                        {...register(`proprietor_contact_number`, {
+                          required: t("contactNumberValidation"),
+                        })}
+                      />
+                      {errors?.proprietor_contact_number && (
+                        <p className="error-message">
+                          {errors.proprietor_contact_number.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label font-14 fw-medium">
+                        CEO {t("email")}*
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="common-field font-14"
+                        name="proprietor_email"
+                        placeholder={t("enterProprietorEmail")}
+                        {...register(`proprietor_email`, {
+                          required: t("emailValidation"),
+                        })}
+                      />
+                      {errors?.proprietor_email && (
+                        <p className="error-message">
+                          {errors.proprietor_email.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label font-14 fw-medium">
+                        {t("contactPersonName")}*
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="common-field font-14"
+                        name="proprietor_contact_person_name"
+                        placeholder={t("enterContactPersonName")}
+                        {...register(`proprietor_contact_person_name`, {
+                          required: t("contactNameValidation"),
+                        })}
+                      />
+                      {errors?.proprietor_contact_person_name && (
+                        <p className="error-message">
+                          {errors.proprietor_contact_person_name.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label font-14 fw-medium">
+                        {t("contactPhoneNumber")}*
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="common-field font-14"
+                        name="proprietor_contact_person_phone_number"
+                        placeholder={t("enterContactPersonNumber")}
+                        {...register(`proprietor_contact_person_phone_number`, {
+                          required: t("contactNameValidation"),
+                        })}
+                      />
+                      {errors?.proprietor_contact_person_phone_number && (
+                        <p className="error-message">
+                          {errors.proprietor_contact_person_phone_number.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="common-label font-14 fw-medium">
+                        {t("contactPersonEmail")}*
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="common-field font-14"
+                        name="proprietor_contact_person_email"
+                        placeholder={t("enterContactPersonEmail")}
+                        {...register(`proprietor_contact_person_email`, {
+                          required: t("contactEmailValidation"),
+                        })}
+                      />
+                      {errors?.proprietor_contact_person_email && (
+                        <p className="error-message">
+                          {errors.proprietor_contact_person_email.message}
+                        </p>
+                      )}
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </div>
               <div>
                 <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
                   <h2 className="section-head-sub mb-0 border-0">Company Information Details</h2>
                 </div>
-                <div className="inner-form">
+                <div className="inner-form mb-3">
                   <Row>
                     <Col md={6}>
                       <Form.Group className="mb-3">
@@ -853,7 +986,7 @@ const EditVendorProfile = () => {
                     </Col>
                   </Row>
                 </div>
-                <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
+                {/* <div className="d-flex justify-content-between pb-2 mb-3 border-bottom-grey">
                   <h2 className="section-head-sub mb-0 border-0">Decision makers Details</h2>
                 </div>
                 <div className="inner-form">
@@ -985,7 +1118,7 @@ const EditVendorProfile = () => {
                       </Form.Group>
                     </Col>
                   </Row>
-                </div>
+                </div> */}
                 <div className="text-center mt-3">
                   <RexettButton
                     type="submit"

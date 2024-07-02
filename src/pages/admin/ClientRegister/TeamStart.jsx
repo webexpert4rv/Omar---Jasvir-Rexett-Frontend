@@ -101,27 +101,27 @@ const TeamStart = () => {
                                             </h2>
                                             <p>Select the ideal length for your engagement</p>
                                         </div>
-                                        <p className="font-12 fw-medium">* includes a required field</p>
+                                        {/* <p className="font-12 fw-medium">* includes a required field</p> */}
                                         <div className="">
                                             <Row>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="teamstart" id="in_one_two_week" label="Within 1 to 2 weeks" />
+                                                        <Form.Check type="radio" className="client_radio" name="teamstart" id="in_one_two_week" label="Within 1 to 2 weeks" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="teamstart" id="in_two_three_week" label="Within 2 to 3 weeks" />
+                                                        <Form.Check type="radio" className="client_radio" name="teamstart" id="in_two_three_week" label="Within 2 to 3 weeks" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="teamstart" id="in_third_days" label="Within 30 days" />
+                                                        <Form.Check type="radio" className="client_radio" name="teamstart" id="in_third_days" label="Within 30 days" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="teamstart" id="not_sure_team" label="I am not sure" />
+                                                        <Form.Check type="radio" className="client_radio" name="teamstart" id="not_sure_team" label="I am not sure" />
                                                     </div>
                                                 </Col>
                                             </Row>

@@ -10,7 +10,7 @@ const EditProfile = () => {
   return (
     <>
       <ProfileWrapper>
-        <section className="card-box">
+        <section>
           <Tab.Container
             id="left-tabs-example"
             defaultActiveKey="personal_details"

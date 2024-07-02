@@ -8503,16 +8503,17 @@ select.apply-field
     height: 100vh;
     background-color: #037563;
     color: #fff;
-    padding: 20px;
+    padding: 40px 20px;
 }
 .resume-main-wrapper
 {
     width: calc(100% - 250px);
     margin-left: auto;
+    padding-bottom: 40px;
 }
 .resume-sidebar .resume-sidelogo img
 {
-    max-width: 150px;
+    max-width: 110px;
 }
 .resume-sidebar ul
 {
@@ -8589,11 +8590,22 @@ select.apply-field
 }
 .resume-progressbx
 {
+    position: relative;
     width: 80%;
     flex: none;
     height: 8px;
     background-color: #fff;
     border-radius: 30px;
+}
+.resume-progressbx > div
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 30px;
+    width: 33%;
+    background: linear-gradient(93.07deg, #00ef41 4.54%, #0dad49 95.98%);
 }
 .preview-resume-form
 {
@@ -8758,6 +8770,11 @@ select.apply-field
     font-size: 16px;
     font-weight: 600;
 }
+.position-btn:hover
+{
+    border: 2px dashed #037563;
+    color: #037563;
+}
 .search-filter
 {
     padding: 10px;
@@ -8790,6 +8807,140 @@ select.apply-field
 .skill-recomd
 {
     list-style: disc;
+}
+.client_radio
+{
+    position: relative;
+    z-index: 1;
+    padding-left: 0px;
+}
+.client_radio input
+{
+    position: absolute;
+    top: 50%;
+    left: 37px;
+    transform: translateY(-50%);
+    z-index: 1;
+    cursor: pointer;
+    margin-top: 0px;
+    border: 1px solid transparent;
+    transition: .3s ease;
+    background-color: #ccc;
+}
+.client_radio input:checked + label
+{
+    background-color: #037563;
+    color: #fff;
+    border-color: #037563;
+}
+.client_radio input:checked
+{
+    border: 1px solid #fff;
+}
+.client_radio label
+{
+    display: block;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 16px;
+    padding-left: 40px;
+    transition: .3s ease;
+    cursor: pointer;
+}
+.upload-intro-file
+{
+    width: 100%;
+    display: block;
+    padding: 16px 10px;
+    border-radius: 10px;
+    border: 2px dashed #037563;
+    color: #037563;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+}
+.playback_intro
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    width: calc(100% - 5px);
+    height: calc(100% - 5px);
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    color: #fff;
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+.preview_intro:hover .playback_intro
+{
+    display: flex;
+}
+.custom-modal.modal-90w .modal-dialog.modal-lg
+{
+    max-width: 70vw;
+}
+.mt-n7
+{
+    margin-top: -7px;
+}
+.selection-wrapper
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    justify-content: center;
+}
+.education-selection
+{
+    display: block;
+    padding: 30px 10px;
+    border: 1px solid #037563;
+    color: #037563;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: .3s ease;
+}
+.education-selection:hover
+{
+    background-color: #037563;
+    color: #fff;
+}
+.education-action
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.font-24
+{
+    font-size: 24px !important;
+}
+.resume-section-wrapper .main-btn
+{
+    min-width: 100px;
+    text-align: center;
+}
+.resume-delivers
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background-color: #f2f2f2;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {

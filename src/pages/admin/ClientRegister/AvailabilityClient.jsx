@@ -101,27 +101,27 @@ const ClientAvailability = () => {
                                             </h2>
                                             <p>Select the ideal length for your engagement</p>
                                         </div>
-                                        <p className="font-12 fw-medium">* includes a required field</p>
+                                        {/* <p className="font-12 fw-medium">* includes a required field</p> */}
                                         <div className="">
                                             <Row>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="availability_client" id="fulltime_40" label="Full time (40hrs/week)" />
+                                                        <Form.Check type="radio" className="client_radio" name="availability_client" id="fulltime_40" label="Full time (40hrs/week)" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="availability_client" id="part_time_20" label="Part Time (20hrs/week)" />
+                                                        <Form.Check type="radio" className="client_radio" name="availability_client" id="part_time_20" label="Part Time (20hrs/week)" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="availability_client" id="less_part_time" label="Less than part time (< 20hrs/week)" />
+                                                        <Form.Check type="radio" className="client_radio" name="availability_client" id="less_part_time" label="Less than part time (< 20hrs/week)" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="availability_client" id="not_sure_team" label="I am not sure" />
+                                                        <Form.Check type="radio" className="client_radio" name="availability_client" id="not_sure_team" label="I am not sure" />
                                                     </div>
                                                 </Col>
                                             </Row>

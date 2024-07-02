@@ -217,9 +217,6 @@ const VendorInvoice = () => {
                                                 Total hours spend
                                             </th>
                                             <th className="time-table-head text-start">
-                                                Start date
-                                            </th>
-                                            <th className="time-table-head text-start">
                                                 Invoice Month
                                             </th>
                                             <th className="time-table-head text-start">
@@ -238,7 +235,6 @@ const VendorInvoice = () => {
                                                 </td>
                                                 <td className="time-table-data text-start">140 hrs</td>
                                                 <td className="time-table-data text-start">Jun 2024</td>
-                                                <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                                                 <td className="time-table-data text-start">
                                                     <div className="d-flex align-items-center gap-2">
                                                         <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
@@ -261,7 +257,6 @@ const VendorInvoice = () => {
                                                 </td>
                                                 <td className="time-table-data text-start">140 hrs</td>
                                                 <td className="time-table-data text-start">Jun 2024</td>
-                                                <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                                                 <td className="time-table-data text-start">
                                                     <div className="d-flex align-items-center gap-2">
                                                         <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
@@ -284,7 +279,6 @@ const VendorInvoice = () => {
                                                 </td>
                                                 <td className="time-table-data text-start">140 hrs</td>
                                                 <td className="time-table-data text-start">Jun 2024</td>
-                                                <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                                                 <td className="time-table-data text-start">
                                                     <div className="d-flex align-items-center gap-2">
                                                         <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>

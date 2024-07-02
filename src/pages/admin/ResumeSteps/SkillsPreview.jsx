@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLightbulb, FaLinkedin } from "react-icons/fa6";
-import { Button, Col, Container, Form, OverlayTrigger, Popover, Row } from "react-bootstrap";
+import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import profileImg from '../../../assets/img/demo-img.jpg';
 import { IoCameraOutline } from "react-icons/io5";
 import { MdLocalPhone, MdLocationOn, MdWork } from "react-icons/md";
-import { IoAddOutline } from "react-icons/io5";
 import { GoClockFill } from "react-icons/go";
 import { FiExternalLink } from "react-icons/fi";
-import ReactQuill from "react-quill";
 import PreviewModal from "./Modals/PreviewResume";
-const AddEducation = () => {
-    const [valuedescr, setValueDescr] = useState('');
-    const handleChange = (value) => {
-        setValueDescr(value);
-    };
+const SkillPreview = () => {
     const [showpreviewmodal , setShowPreviewModal] = useState(false);
     const handleShowPreviewModal = () => {
         setShowPreviewModal(!showpreviewmodal);
@@ -23,19 +17,6 @@ const AddEducation = () => {
     const handleClosePreviewModal = () => {
         setShowPreviewModal(false);
     }
-    const tipstext = (
-        <Popover id="popover-basic">
-            <Popover.Header as="h3">Expert Insights</Popover.Header>
-            <Popover.Body>
-                {/* <p className="font-14 mb-2">Short cut: If you don’t have time to tailor your entire resume for a specific job application, at least change this section so that it matches the opportunity.</p> */}
-                <ul className="ps-3 mb-0 tip-listing">
-                    <li className="font-12">Write a career overview so that hiring managers can immediately see the value that you bring.</li>
-                    <li className="font-12">Not sure how to write this? Choose one of our examples and edit it to match your background.</li>
-                    <li className="font-12">Make your summary sound stronger by writing it in the present tense. Focus on what you can do for a company, rather than what you did in the past.</li>
-                </ul>
-            </Popover.Body>
-        </Popover>
-    )
     return (
         <>
             <section className="resume-section-wrapper">
@@ -63,7 +44,7 @@ const AddEducation = () => {
                                 </span>
                                 <span>Work History</span>
                             </li>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">3</span>
                                     <span className="resume-check">
@@ -126,124 +107,14 @@ const AddEducation = () => {
                                 <Row>
                                     <Col md={8}>
                                         <div>
-                                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                                <h2 className="resume-heading">
-                                                    Tell us about your education
-                                                </h2>
-
-                                                <div>
-                                                    <OverlayTrigger trigger="click" placement="bottom" overlay={tipstext}>
-                                                        <span className="text-green d-flex align-items-center gap-2 cursor-pointer">
-                                                            <FaLightbulb />
-                                                            Tips
-                                                        </span>
-                                                    </OverlayTrigger>
-                                                </div>
-                                            </div>
-                                            <p>Enter your education experience so far, even if you are a current student or did not graduate.</p>
+                                            <h3 className="font-18 fw-semibold">Next, let’s take care of your</h3>
+                                            <h2 className="resume-heading">
+                                                Skills
+                                            </h2>
+                                            <p className="fw-semibold">Here’s what you need to know:</p>
+                                            <p className="mb-1">Employers scan skills for relevant keywords.</p>
+                                            <p>We’ll help you choose the best ones.</p>
                                         </div>
-                                        <p className="font-12 fw-medium">* includes a required field</p>
-                                        <div>
-                                            <Row>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">School Name *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Delhi University" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">School Location</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Delhi, India" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Degree</Form.Label>
-                                                        <Form.Select className="common-field font-14">
-                                                            <option>Select</option>
-                                                            <option>Bachelor of Arts</option>
-                                                            <option>Bachelor of Science</option>
-                                                            <option>BBA</option>
-                                                            <option>High School Diploma</option>
-                                                            <option>GED</option>
-                                                            <option>Associate of Arts</option>
-                                                            <option>Associate of Science</option>
-                                                            <option>Enter a different degree</option>
-                                                        </Form.Select>
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Enter Degree</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Bachelor of science" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Field Of Study</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Financial Accounting" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={3}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Graduation Date</Form.Label>
-                                                        <Form.Select className="common-field font-14">
-                                                            <option>Select Month</option>
-                                                            <option>January</option>
-                                                        </Form.Select>
-                                                    </div>
-                                                </Col>
-                                                <Col md={3} className="align-self-end">
-                                                    <div className="mb-3">
-                                                        <Form.Select className="common-field font-14">
-                                                            <option>Select Year</option>
-                                                            <option>2024</option>
-                                                        </Form.Select>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-
-                                        <Row>
-                                            <Col md={6}>
-                                                <div>
-                                                    <div className="recommended-desc">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button variant="transparent" className="arrow-btn primary-arrow shadow-none">
-                                                                <IoAddOutline />
-                                                            </Button>
-                                                            <div>
-                                                                <p className="font-14 fw-medium mb-1">Expert Recommended</p>
-                                                                <p className="font-14 mb-0">Experienced Web Developer with passion for creating attractive and interactive websites meeting customer needs and exceeding expectations.</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button variant="transparent" className="arrow-btn primary-arrow shadow-none">
-                                                                <IoAddOutline />
-                                                            </Button>
-                                                            <div>
-                                                                <p className="font-14 fw-medium mb-1">Expert Recommended</p>
-                                                                <p className="font-14 mb-0">Driven Web Developer with a proven track record at Aviox, showcasing rapid adaptability and exceptional communication skills.</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button variant="transparent" className="arrow-btn primary-arrow shadow-none">
-                                                                <IoAddOutline />
-                                                            </Button>
-                                                            <div>
-                                                                <p className="font-14 mb-0">Logical and results-driven Web Developer dedicated to building and optimizing user-focused websites for customers with various business objectives.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                            <Col md={6}>
-                                                <div id="custom-ck">
-                                                    <ReactQuill value={valuedescr} onChange={handleChange} />
-                                                </div>
-                                            </Col>
-                                        </Row>
                                     </Col>
                                     <Col md={4}>
                                         <div>
@@ -306,7 +177,7 @@ const AddEducation = () => {
                                                                             </ul>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="connect-social-media px-2">
+                                                                    <div className="connect-social-media px-2  highlight-resume-section">
                                                                         <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                                                             <h3 className="subheading-resume mb-0">
                                                                                 Expertise
@@ -428,7 +299,7 @@ const AddEducation = () => {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="about-info px-2 pt-2 highlight-resume-section">
+                                                                    <div className="about-info px-2 pt-2">
                                                                         <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                                                             <h3 className="subheading-resume mb-0">
                                                                                 Education
@@ -460,7 +331,7 @@ const AddEducation = () => {
                                 </div>
                                 <div>
                                     <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
-                                    <Link to={'/education-summary'} variant="transparent" className="main-btn font-14 text-decoration-none">Next</Link>
+                                    <Link to={'/add-skills'} variant="transparent" className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
                         </div>
@@ -471,4 +342,4 @@ const AddEducation = () => {
         </>
     )
 }
-export default AddEducation;
+export default SkillPreview;

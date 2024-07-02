@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Container, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { FaArrowLeft, FaCheck, FaChevronDown, FaLightbulb, FaPencil } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import PreviewModal from "./Modals/PreviewResume";
+import { TiEdit } from "react-icons/ti";
+import { IoCloseOutline } from "react-icons/io5";
+import DeleteEntry from "./Modals/DeleteEntry";
 const WorkSummary = () => {
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
+    const [showdeleteentry , setShowDeleteEntry] = useState(false);
+    const handleShowDeleteEntry = () => {
+        setShowDeleteEntry(!showdeleteentry);
+    }
+    const handleCloseDeleteEntry = () => {
+        setShowDeleteEntry(false);
+    }
+
     const tipstext = (
         <Popover id="popover-basic">
             <Popover.Header as="h3">Expert Insights</Popover.Header>
             <Popover.Body>
-                <p className="font-14 mb-2">Short cut: If you don’t have time to tailor your entire resume for a specific job application, at least change this section so that it matches the opportunity.</p>
+                {/* <p className="font-14 mb-2">Short cut: If you don’t have time to tailor your entire resume for a specific job application, at least change this section so that it matches the opportunity.</p> */}
                 <ul className="ps-3 mb-0 tip-listing">
                     <li className="font-12">Write a career overview so that hiring managers can immediately see the value that you bring.</li>
                     <li className="font-12">Not sure how to write this? Choose one of our examples and edit it to match your background.</li>
@@ -121,13 +140,12 @@ const WorkSummary = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="work-summary-wrapper mb-3">
-                                            <span className="work-count">1</span>
-                                            <div className="w-100 pt-4">
+                                        <div className="work-summary-wrapper mb-3 position-relative">
+                                            <div className="w-100">
                                                 <h4 className="summary-heading mb-2 fw-semibold">
                                                     Web Developer, Aviox
                                                 </h4>
-                                                <p className="font-14">New Delhi, India |February 2023 - January 2025</p>
+                                                <p className="font-14">New Delhi, India |February 2023 - January 2024</p>
                                                 <ul>
                                                     <li className="font-14">
                                                         Self-motivated, with a strong sense of personal responsibility.
@@ -136,13 +154,21 @@ const WorkSummary = () => {
                                                     </li>
                                                 </ul>
                                                 <div className="d-flex align-items-center justify-content-between mt-4">
-                                                    <Link className="text-decoration-none text-green font-14">
+                                                    <Link to={'/describe-work'} className="text-decoration-none text-green font-14">
                                                         <FaPencil /> Edit description
                                                     </Link>
                                                     <Link className="text-decoration-none text-green font-14">
                                                         Show more detail <FaChevronDown />
                                                     </Link>
                                                 </div>
+                                            </div>
+                                            <div className="education-action">
+                                                <Button variant="transparent" className="arrow-btn info-arrow shadow-none">
+                                                    <TiEdit />
+                                                </Button>
+                                                <Button variant="transparent" onClick={handleShowDeleteEntry} className="arrow-btn danger-arrow shadow-none">
+                                                    <IoCloseOutline />
+                                                </Button>
                                             </div>
                                         </div>
                                         <div className="">
@@ -156,7 +182,7 @@ const WorkSummary = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
                                     <Link to={'/education-preview'} className="main-btn font-14 text-decoration-none">Next: Education</Link>
                                 </div>
                             </div>
@@ -164,6 +190,8 @@ const WorkSummary = () => {
                     </Container>
                 </div>
             </section>
+            <DeleteEntry show={showdeleteentry} handleClose={handleCloseDeleteEntry} />
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

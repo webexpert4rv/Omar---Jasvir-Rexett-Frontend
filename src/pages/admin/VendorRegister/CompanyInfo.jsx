@@ -5,7 +5,7 @@ import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } 
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import profileImg from '../../../assets/img/demo-img.jpg';
 import { IoCameraOutline } from "react-icons/io5";
-const ClientEngagement = () => {
+const CompanyInfo = () => {
     return (
         <>
             <section className="resume-section-wrapper">
@@ -24,14 +24,14 @@ const ClientEngagement = () => {
                                 </span>
                                 <span>Personal</span>
                             </li>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">2</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagment</span>
+                                <span>Decision makers info</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -40,7 +40,7 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagement length</span>
+                                <span>Company Info</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -49,34 +49,7 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Start Team</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">5</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Availability</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">6</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Skillset</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">7</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Book Meeting</span>
+                                <span>Area of expertise</span>
                             </li>
                         </ul>
                     </div>
@@ -97,31 +70,53 @@ const ClientEngagement = () => {
                                     <Col md={12}>
                                         <div>
                                             <h2 className="resume-heading">
-                                                Select the ideal length for your engagement
+                                                Enter Company Information
                                             </h2>
-                                            <p>Select the ideal length for your engagement</p>
+                                            <p>Rexett invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals</p>
                                         </div>
-                                        {/* <p className="font-12 fw-medium">* includes a required field</p> */}
-                                        <div className="">
+                                        <p className="font-12 fw-medium">* includes a required field</p>
+                                        <div>
                                             <Row>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="additional_support" label="Additional support for your current team" />
+                                                        <Form.Label className="font-14 fw-medium">Estbl. Year *</Form.Label>
+                                                        <Form.Control type="month" className="common-field font-14" placeholder="e.g. John" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="starting_project" label="Starting fresh on a new project" />
+                                                        <Form.Label className="font-14 fw-medium">Type of Establishment *</Form.Label>
+                                                        <Form.Select className="common-field font-14">
+                                                            <option>Select</option>
+                                                            <option>Sole Parternship</option>
+                                                            <option>Parternship</option>
+                                                            <option>LLC</option>
+                                                            <option>Corporation</option>
+                                                        </Form.Select>
                                                     </div>
                                                 </Col>
-                                                <Col md={12}>
+                                                <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="need_help" label="Need help with specific tasks" />
+                                                        <Form.Label className="font-14 fw-medium">Total Employees in Company *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 50" />
                                                     </div>
                                                 </Col>
-                                                <Col md={12}>
+                                                <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="not_sure" label="I am not sure at the moment" />
+                                                        <Form.Label className="font-14 fw-medium">Total nos. of IT Recruiters *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 40" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Yearly Revenues(USD) *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 15,000" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Yearly Revenues(USD) *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. https://www.amazon.com" />
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -134,7 +129,7 @@ const ClientEngagement = () => {
 
                                 </div>
                                 <div>
-                                    <Link to={'/client-engagement-length'} className="main-btn font-14 text-decoration-none">Next: Engagement Length</Link>
+                                    <Link to={'/area-expertise'} className="main-btn font-14 text-decoration-none">Next: Area of Expertise</Link>
                                 </div>
                             </div>
                         </div >
@@ -144,4 +139,4 @@ const ClientEngagement = () => {
         </>
     )
 }
-export default ClientEngagement;
+export default CompanyInfo;

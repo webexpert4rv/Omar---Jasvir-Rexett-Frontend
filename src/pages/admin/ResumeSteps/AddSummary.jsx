@@ -5,11 +5,19 @@ import { FaArrowLeft, FaCheck, FaChevronDown, FaFilter, FaPencil, FaPlus } from 
 import { Link } from "react-router-dom";
 import { IoAddOutline, IoCheckmark } from "react-icons/io5";
 import ReactQuill from "react-quill";
+import PreviewModal from "./Modals/PreviewResume";
 const AddSummary = () => {
     const [valuedescr, setValueDescr] = useState('');
     const handleChange = (value) => {
         setValueDescr(value);
     };
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
@@ -163,7 +171,7 @@ const AddSummary = () => {
                                                 <Col md={6}>
                                                     <div className="generate-ai">
                                                         <div>
-                                                                
+
                                                         </div>
                                                     </div>
                                                     <Form.Label className="font-14 fw-medium">Bio</Form.Label>
@@ -181,14 +189,15 @@ const AddSummary = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
-                                    <Link to={'/add-projects'} variant="transparent" className="main-btn font-14">Next</Link>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Link to={'/add-projects'} variant="transparent" className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
                         </div>
                     </Container>
                 </div>
             </section>
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

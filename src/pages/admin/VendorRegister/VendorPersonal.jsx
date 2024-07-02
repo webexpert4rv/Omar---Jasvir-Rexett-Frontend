@@ -5,7 +5,7 @@ import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } 
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import profileImg from '../../../assets/img/demo-img.jpg';
 import { IoCameraOutline } from "react-icons/io5";
-const ClientPersonal = () => {
+const VendorPersonal = () => {
     return (
         <>
             <section className="resume-section-wrapper">
@@ -31,7 +31,7 @@ const ClientPersonal = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagment</span>
+                                <span>Decision makers info</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -40,7 +40,7 @@ const ClientPersonal = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagement length</span>
+                                <span>Company Info</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -49,34 +49,7 @@ const ClientPersonal = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Start Team</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">5</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Availability</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">6</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Skillset</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">7</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Book Meeting</span>
+                                <span>Area of expertise</span>
                             </li>
                         </ul>
                     </div>
@@ -97,9 +70,9 @@ const ClientPersonal = () => {
                                     <Col md={12}>
                                         <div>
                                             <h2 className="resume-heading">
-                                                What's the most convenient way for us to reach out to you?
+                                                Join Rexett as Partner
                                             </h2>
-                                            <p>We suggest including an email and phone number</p>
+                                            <p>Rexett invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals</p>
                                         </div>
                                         <p className="font-12 fw-medium">* includes a required field</p>
                                         <div className="d-flex align-items-start gap-3">
@@ -121,20 +94,26 @@ const ClientPersonal = () => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Type of company</Form.Label>
+                                                        <Form.Select className="common-field font-14">
+                                                            <option>Select</option>
+                                                            <option>Sole Parternship</option>
+                                                            <option>Parternship</option>
+                                                            <option>LLC</option>
+                                                            <option>Corporation</option>
+                                                        </Form.Select>
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Tax ID</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">First Name</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">CIN Number</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Surname</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Doe" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
@@ -210,7 +189,7 @@ const ClientPersonal = () => {
 
                                 </div>
                                 <div>
-                                    <Link to={'/client-engagement'} className="main-btn font-14 text-decoration-none">Next: Engagement</Link>
+                                    <Link to={'/desicion-makers'} className="main-btn font-14 text-decoration-none">Next: Decision Makers</Link>
                                 </div>
                             </div>
                         </div >
@@ -220,4 +199,4 @@ const ClientPersonal = () => {
         </>
     )
 }
-export default ClientPersonal;
+export default VendorPersonal;

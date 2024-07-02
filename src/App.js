@@ -39,6 +39,15 @@ import ClientEngagementLength from './pages/admin/ClientRegister/EngagementLengt
 import TeamStart from './pages/admin/ClientRegister/TeamStart';
 import ClientAvailability from './pages/admin/ClientRegister/AvailabilityClient';
 import ClientSkillNeed from './pages/admin/ClientRegister/SkillsetNeed';
+import ClientBookMeeting from './pages/admin/ClientRegister/BookMeetingClient';
+import VendorPersonal from './pages/admin/VendorRegister/VendorPersonal';
+import DecisionMakers from './pages/admin/VendorRegister/DecisionMakers';
+import CompanyInfo from './pages/admin/VendorRegister/CompanyInfo';
+import AreaExpertise from './pages/admin/VendorRegister/AreaExpertise';
+import EducationSelect from './pages/admin/ResumeSteps/EducationSelect';
+import SummaryPreview from './pages/admin/ResumeSteps/SummaryPreview';
+import SkillPreview from './pages/admin/ResumeSteps/SkillsPreview';
+import GoodHaveSkills from './pages/admin/ResumeSteps/GoodSkills';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 function App() {
@@ -104,16 +113,27 @@ function App() {
              <Route path="/add-summary" element={<AddSummary />} />
              <Route path="/education-preview" element={<EducationPreview />} />
              <Route path="/add-education" element={<AddEducation />} />
+             <Route path="/education-select" element={<EducationSelect />} />
              <Route path="/education-summary" element={<EducationSummary />} />
              <Route path="/add-projects" element={<AddProjects />} />
              <Route path="/project-summary" element={<ProjectSummary />} />
              <Route path="/finalize-resume" element={<FinalizeResume />} />
+             <Route path="/summary-preview" element={<SummaryPreview />} />
+             <Route path="/skill-preview" element={<SkillPreview />} />
+             <Route path="/good-have-skills" element={<GoodHaveSkills />} />
+             {/* Client Register */}
              <Route path="/client-personal" element={<ClientPersonal />} />
              <Route path="/client-engagement" element={<ClientEngagement />} />
              <Route path="/client-engagement-length" element={<ClientEngagementLength />} />
              <Route path="/client-team-start" element={<TeamStart />} />
              <Route path="/client-availability" element={<ClientAvailability />} />
              <Route path="/client-skill-need" element={<ClientSkillNeed />} />
+             <Route path="/client-book-meeting" element={<ClientBookMeeting />} />
+             {/* Vendor Register */}
+             <Route path="/vendor-personal" element={<VendorPersonal />} />
+             <Route path="/desicion-makers" element={<DecisionMakers />} />
+             <Route path="/company-info" element={<CompanyInfo />} />
+             <Route path="/area-expertise" element={<AreaExpertise />} />
         </Routes>
         </Router>
       </Suspense>

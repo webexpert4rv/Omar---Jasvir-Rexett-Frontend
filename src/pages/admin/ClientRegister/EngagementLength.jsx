@@ -101,27 +101,27 @@ const ClientEngagementLength = () => {
                                             </h2>
                                             <p>Select the ideal length for your engagement</p>
                                         </div>
-                                        <p className="font-12 fw-medium">* includes a required field</p>
+                                        {/* <p className="font-12 fw-medium">* includes a required field</p> */}
                                         <div className="">
                                             <Row>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="engagementlength" id="one_four_week" label="1 to 4 weeks" />
+                                                        <Form.Check type="radio" name="engagementlength" className="client_radio" id="one_four_week" label="1 to 4 weeks" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="engagementlength" id="one_three_months" label="1 to 3 months" />
+                                                        <Form.Check type="radio" name="engagementlength" id="one_three_months" className="client_radio" label="1 to 3 months" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="engagementlength" id="three_six_months" label="3 to 6 months" />
+                                                        <Form.Check type="radio" name="engagementlength" id="three_six_months" className="client_radio" label="3 to 6 months" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Check type="radio" name="engagementlength" id="more_six_months" label="More than 6 months" />
+                                                        <Form.Check type="radio" name="engagementlength" id="more_six_months" className="client_radio" label="More than 6 months" />
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -134,7 +134,7 @@ const ClientEngagementLength = () => {
 
                                 </div>
                                 <div>
-                                    <Link to={'/client-team-start'} className="main-btn font-14 text-decoration-none">Next: Engagement</Link>
+                                    <Link to={'/client-team-start'} className="main-btn font-14 text-decoration-none">Next: Start Team</Link>
                                 </div>
                             </div>
                         </div >

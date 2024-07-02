@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { FaArrowLeft, FaCheck, FaChevronDown, FaFilter, FaPencil, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { IoAddOutline, IoCheckmark, IoTrash } from "react-icons/io5";
+import { IoAddCircle, IoAddOutline, IoCheckmark, IoTrash } from "react-icons/io5";
 import ReactQuill from "react-quill";
 const ClientSkillNeed = () => {
     const [valuedescr, setValueDescr] = useState('');
@@ -183,7 +183,10 @@ const ClientSkillNeed = () => {
                                                             <div className="w-100">
                                                                 <Form.Control type="text" placeholder="Enter Experience" className="common-field font-14" />
                                                             </div>
-                                                            <Button variant="transparent" className="text-danger font-18 p-0 shadow-none border-0">
+                                                            <Button variant="transparent" className="text-green font-24 p-0 shadow-none border-0">
+                                                                <IoAddCircle />
+                                                            </Button>
+                                                            <Button variant="transparent" className="text-danger font-24 p-0 shadow-none border-0">
                                                                 <IoTrash />
                                                             </Button>
                                                         </div>
@@ -199,7 +202,7 @@ const ClientSkillNeed = () => {
 
                                 </div>
                                 <div>
-                                    <Link to={'/add-summary'} variant="transparent" className="main-btn font-14 text-decoration">Next</Link>
+                                    <Link to={'/client-book-meeting'} variant="transparent" className="main-btn font-14 text-decoration-none">Next : Book Meeting</Link>
                                 </div>
                             </div>
                         </div>
