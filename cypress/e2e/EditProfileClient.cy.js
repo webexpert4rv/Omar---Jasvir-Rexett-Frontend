@@ -93,7 +93,7 @@ describe('Edit Profile Test File', () => {
       // Verify the profile update API call with increased timeout
       cy.wait('@updateProfile', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
 
-      // Optionally check for a success message or redirection
+      // Optionally check for a success message or redirectionn
       cy.get('.Toastify__toast--success').should('contain.text', 'Profile is Updated');
   });
 })

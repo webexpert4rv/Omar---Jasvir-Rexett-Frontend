@@ -42,4 +42,27 @@ const login = (email, password) => {
         cy.contains('button', 'Update Profile').should('be.visible');
         cy.contains('button','Update Profile').click() 
     })
+
+         // Check for Company Name input
+         cy.get('input[name="company_name"]').should('be.visible').clear().type('My Company');
+
+         // Check for Company Type dropdown and select a value
+         cy.get('select[name="company_type"]').should('be.visible').select('Corporation');
+   
+         // Check for Company Address autocomplete
+         cy.get('input[name="company_address"]').should('be.visible').clear().type('123 Main St, New York, NY, USA');
+   
+         // Check for Tax ID input
+         cy.get('input[name="company_tax_id"]').should('be.visible').clear().type('123-45-6789');
+   
+         // Intercept the API call to update the profile
+         cy.intercept('PUT', '**/client/update-profile/').as('updateProfile');
+   
+         // Ensure the form is properly targeted and submit it
+         cy.get('form').first().submit();
+   
+         // Debug statement to ensure the form is being submitted
+         cy.get('form').first().invoke('submit').then(() => {
+             console.log('Form submitted');
+         });
 })
