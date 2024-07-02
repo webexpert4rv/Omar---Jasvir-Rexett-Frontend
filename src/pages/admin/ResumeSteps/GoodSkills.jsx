@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
-import { FaArrowLeft, FaCheck, FaChevronDown, FaFilter, FaPencil, FaPlus, FaStar } from "react-icons/fa6";
+import { FaArrowLeft, FaCheck, FaChevronDown, FaFilter, FaPencil, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { IoAddOutline, IoCheckmark } from "react-icons/io5";
+import { IoAddCircle, IoAddOutline, IoCheckmark, IoTrash } from "react-icons/io5";
 import ReactQuill from "react-quill";
-import RecomdModal from "./Modals/RecomdModal";
 import PreviewModal from "./Modals/PreviewResume";
-const DescribeWork = () => {
+const GoodHaveSkills = () => {
+
     const [valuedescr, setValueDescr] = useState('');
     const handleChange = (value) => {
         setValueDescr(value);
     };
-    const [showRecomdModal , setShowRecomdModal] = useState(true);
-    // setShowRecomdModal(showRecomdModal);
-    const handleCloseRecomd = () => {
-        setShowRecomdModal(false);
-    }
     const [showpreviewmodal , setShowPreviewModal] = useState(false);
     const handleShowPreviewModal = () => {
         setShowPreviewModal(!showpreviewmodal);
@@ -24,7 +19,6 @@ const DescribeWork = () => {
     const handleClosePreviewModal = () => {
         setShowPreviewModal(false);
     }
-    
     return (
         <>
             <section className="resume-section-wrapper">
@@ -43,7 +37,7 @@ const DescribeWork = () => {
                                 </span>
                                 <span>Heading</span>
                             </li>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">2</span>
                                     <span className="resume-check">
@@ -52,7 +46,7 @@ const DescribeWork = () => {
                                 </span>
                                 <span>Work History</span>
                             </li>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">3</span>
                                     <span className="resume-check">
@@ -116,7 +110,7 @@ const DescribeWork = () => {
                                     <Col md={12}>
                                         <div>
                                             <h2 className="resume-heading">
-                                                Let's describe what you did
+                                                Good to have skills
                                             </h2>
                                             <p>Choose from our pre-written examples below or write your own.</p>
                                         </div>
@@ -133,19 +127,15 @@ const DescribeWork = () => {
                                                                 <p className="font-14 mb-0">Showing results for</p>
                                                                 <p className="font-14 mb-0 fw-semibold">Web Developer</p>
                                                             </div>
-                                                            <div>
-                                                                <Button variant="transparent" className="p-0 border-0 shadow-none text-green fw-semibold">Filter by keyword <FaFilter /> </Button>
-                                                            </div>
                                                         </div>
-                                                        <Form.Control type="text" placeholder="Search keywords" className="common-field font-14 mb-2" />
                                                         <div className="recommended-desc">
                                                             <div className="d-flex align-items-center gap-3">
                                                                 <Button variant="transparent" className="arrow-btn primary-arrow shadow-none">
                                                                     <IoAddOutline />
                                                                 </Button>
                                                                 <div>
-                                                                    <p className="font-14 fw-medium mb-1"><FaStar /> Expert Recommended</p>
-                                                                    <p className="font-14 mb-0">Coded website using HTML, CSS, JavaScript, and jQuery languages.</p>
+                                                                    <p className="font-14 fw-medium mb-1">Expert Recommended</p>
+                                                                    <p className="font-14 mb-0">HTML</p>
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center gap-3">
@@ -153,8 +143,8 @@ const DescribeWork = () => {
                                                                     <IoAddOutline />
                                                                 </Button>
                                                                 <div>
-                                                                    <p className="font-14 fw-medium mb-1"> <FaStar /> Expert Recommended</p>
-                                                                    <p className="font-14 mb-0">Coded website using HTML, CSS, JavaScript, and jQuery languages.</p>
+                                                                    <p className="font-14 fw-medium mb-1">Expert Recommended</p>
+                                                                    <p className="font-14 mb-0">CSS</p>
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center gap-3">
@@ -162,8 +152,8 @@ const DescribeWork = () => {
                                                                     <IoAddOutline />
                                                                 </Button>
                                                                 <div>
-                                                                    <p className="font-14 fw-medium mb-1"><FaStar /> Expert Recommended</p>
-                                                                    <p className="font-14 mb-0">Coded website using HTML, CSS, JavaScript, and jQuery languages.</p>
+                                                                    <p className="font-14 fw-medium mb-1">Expert Recommended</p>
+                                                                    <p className="font-14 mb-0">JavaScript</p>
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center gap-3">
@@ -171,7 +161,7 @@ const DescribeWork = () => {
                                                                     <IoAddOutline />
                                                                 </Button>
                                                                 <div>
-                                                                    <p className="font-14 mb-0">Coded website using HTML, CSS, JavaScript, and jQuery languages.</p>
+                                                                    <p className="font-14 mb-0">Front End Developers</p>
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center gap-3">
@@ -179,7 +169,7 @@ const DescribeWork = () => {
                                                                     <IoAddOutline />
                                                                 </Button>
                                                                 <div>
-                                                                    <p className="font-14 mb-0">Coded website using HTML, CSS, JavaScript, and jQuery languages.</p>
+                                                                    <p className="font-14 mb-0">Website optimization</p>
                                                                 </div>
                                                             </div>
                                                             <div className="d-flex align-items-center gap-3">
@@ -187,7 +177,7 @@ const DescribeWork = () => {
                                                                     <IoAddOutline />
                                                                 </Button>
                                                                 <div>
-                                                                    <p className="font-14 mb-0">Coded website using HTML, CSS, JavaScript, and jQuery languages.</p>
+                                                                    <p className="font-14 mb-0">Programming</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -195,12 +185,17 @@ const DescribeWork = () => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div>
-                                                        <p className="fw-semibold mb-2">Web Developer|Aviox</p>
-                                                        <p className="mb-4 font-14">New Delhi, India - February 2023 - January 2024</p>
-                                                    </div>
-                                                    <Form.Label className="font-14 fw-medium mb-2">Job description</Form.Label>
-                                                    <div id="custom-ck">
-                                                        <ReactQuill value={valuedescr} onChange={handleChange} />
+                                                        <div className="d-flex align-items-center gap-2">
+                                                            <div className="w-100">
+                                                                <Form.Control type="text" placeholder="Enter Skill" className="common-field font-14" />
+                                                            </div>
+                                                            <Button variant="transparent" className="text-green font-24 p-0 shadow-none border-0">
+                                                                <IoAddCircle />
+                                                            </Button>
+                                                            <Button variant="transparent" className="text-danger font-24 p-0 shadow-none border-0">
+                                                                <IoTrash />
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -214,16 +209,15 @@ const DescribeWork = () => {
                                 </div>
                                 <div>
                                     <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
-                                    <Link to={'/work-summary'} className="main-btn font-14 text-decoration-none">Next</Link>
+                                    <Link to={'/summary-preview'} variant="transparent" className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
                         </div>
                     </Container>
                 </div>
             </section>
-            <RecomdModal show={showRecomdModal} handleClose={handleCloseRecomd} />
             <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }
-export default DescribeWork;
+export default GoodHaveSkills;

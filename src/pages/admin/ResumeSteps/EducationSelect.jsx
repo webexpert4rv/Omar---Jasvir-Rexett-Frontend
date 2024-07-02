@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import profileImg from '../../../assets/img/demo-img.jpg';
 import { IoCameraOutline } from "react-icons/io5";
-const ClientEngagement = () => {
+import { MdLocalPhone, MdLocationOn, MdWork } from "react-icons/md";
+import { GoClockFill } from "react-icons/go";
+import { FiExternalLink } from "react-icons/fi";
+import PreviewModal from "./Modals/PreviewResume";
+const EducationSelect = () => {
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
@@ -22,16 +33,16 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Personal</span>
+                                <span>Heading</span>
                             </li>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">2</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagment</span>
+                                <span>Work History</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -40,7 +51,7 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagement length</span>
+                                <span>Education</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -49,7 +60,7 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Start Team</span>
+                                <span>Skills</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -58,7 +69,7 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Availability</span>
+                                <span>Summary</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -67,7 +78,7 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Skillset</span>
+                                <span>Projects</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -76,11 +87,11 @@ const ClientEngagement = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Book Meeting</span>
+                                <span>Finalize</span>
                             </li>
                         </ul>
                     </div>
-                    <h4 className="resume-sideheading mt-3">Completeness:</h4>
+                    <h4 className="resume-sideheading mt-3">Resume Completeness:</h4>
                     <div className="resume-progress-wrapper">
                         <div className="resume-progressbx">
                             <div></div>
@@ -93,55 +104,37 @@ const ClientEngagement = () => {
                         <div>
                             <Link className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium"><FaArrowLeft /> Go Back</Link>
                             <div>
-                                <Row>
-                                    <Col md={12}>
+                                <h2 className="resume-heading">
+                                    What best describes your level of education?
+                                </h2>
+                                <p className="fw-semibold">Select the best option and we'll help you structure your education section.</p>
+                                <Row className="justify-content-center">
+                                    <Col md={10}>
                                         <div>
-                                            <h2 className="resume-heading">
-                                                Select the ideal length for your engagement
-                                            </h2>
-                                            <p>Select the ideal length for your engagement</p>
-                                        </div>
-                                        {/* <p className="font-12 fw-medium">* includes a required field</p> */}
-                                        <div className="">
-                                            <Row>
-                                                <Col md={12}>
-                                                    <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="additional_support" label="Additional support for your current team" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={12}>
-                                                    <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="starting_project" label="Starting fresh on a new project" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={12}>
-                                                    <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="need_help" label="Need help with specific tasks" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={12}>
-                                                    <div className="mb-3">
-                                                        <Form.Check type="radio" className="client_radio" name="engagement" id="not_sure" label="I am not sure at the moment" />
-                                                    </div>
-                                                </Col>
-                                            </Row>
+                                            <div className="mt-5">
+                                                <div className="selection-wrapper">
+                                                    <Link to={'/add-education'} className="education-selection">Secondary School </Link>
+                                                    <Link to={'/add-education'} className="education-selection">Vocational Certificate or Diploma</Link>
+                                                    <Link to={'/add-education'} className="education-selection">Apprenticeship or Internship Training</Link>
+                                                    <Link to={'/add-education'} className="education-selection">Associates </Link>
+                                                    <Link to={'/add-education'} className="education-selection">Bachelors</Link>
+                                                    <Link to={'/add-education'} className="education-selection">Masters</Link>
+                                                    <Link to={'/add-education'} className="education-selection">Doctorate or Ph. D</Link>
+                                                </div>
+                                                <div className="text-center mt-3">
+                                                    <Link to={'/add-education'} className="text-green text-decoration-none font-14 fw-medium">Pefer not to answer</Link>
+                                                </div>
+                                            </div>
                                         </div>
                                     </Col>
                                 </Row>
                             </div>
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div>
-
-                                </div>
-                                <div>
-                                    <Link to={'/client-engagement-length'} className="main-btn font-14 text-decoration-none">Next: Engagement Length</Link>
-                                </div>
-                            </div>
-                        </div >
-                    </Container >
-                </div >
-            </section >
+                        </div>
+                    </Container>
+                </div>
+            </section>
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }
-export default ClientEngagement;
+export default EducationSelect;

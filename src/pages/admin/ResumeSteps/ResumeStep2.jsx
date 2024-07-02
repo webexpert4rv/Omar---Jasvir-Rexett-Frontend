@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
@@ -8,7 +8,15 @@ import { IoCameraOutline } from "react-icons/io5";
 import { MdLocalPhone, MdLocationOn, MdWork } from "react-icons/md";
 import { GoClockFill } from "react-icons/go";
 import { FiExternalLink } from "react-icons/fi";
+import PreviewModal from "./Modals/PreviewResume";
 const ResumeStep2 = () => {
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
@@ -322,7 +330,7 @@ const ResumeStep2 = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
                                     <Link to={'/resume-work-history'} variant="transparent" className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
@@ -330,6 +338,7 @@ const ResumeStep2 = () => {
                     </Container>
                 </div>
             </section>
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

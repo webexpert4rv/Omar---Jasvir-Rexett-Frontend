@@ -5,11 +5,19 @@ import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } 
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { IoAddOutline } from "react-icons/io5";
 import ReactQuill from "react-quill";
+import PreviewModal from "./Modals/PreviewResume";
 const AddProjects = () => {
     const [valuedescr, setValueDescr] = useState('');
     const handleChange = (value) => {
         setValueDescr(value);
     };
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
@@ -122,7 +130,7 @@ const AddProjects = () => {
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Project Tyepe *</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Project Type *</Form.Label>
                                                         <Form.Select className="common-field font-14">
                                                             <option>Select type</option>
                                                             <option>Healthcare</option>
@@ -208,7 +216,7 @@ const AddProjects = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
                                     <Link to={'/project-summary'} className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
@@ -216,6 +224,7 @@ const AddProjects = () => {
                     </Container>
                 </div>
             </section>
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

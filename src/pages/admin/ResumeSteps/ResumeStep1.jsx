@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowUp, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin, FaUpload } from "react-icons/fa6";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import profileImg from '../../../assets/img/demo-img.jpg';
-import { IoCameraOutline } from "react-icons/io5";
+import { IoCameraOutline, IoClose, IoCloudUpload, IoPlay } from "react-icons/io5";
 import { MdLocalPhone, MdLocationOn, MdWork } from "react-icons/md";
 import { GoClockFill } from "react-icons/go";
 import { FiExternalLink } from "react-icons/fi";
+import videoImg from '../../../assets/img/user-img.jpg'
+import IntroVideo from "../../../components/common/Modals/IntroVideo";
+import PreviewModal from "./Modals/PreviewResume";
 const ResumeStep1 = () => {
+    const [showintrovideo , setShowIntroVideo] = useState(false);
+    const handleShowIntroModal = () => {
+        setShowIntroVideo(!showintrovideo);
+    }
+    const handleCloseIntroModal = () => {
+        setShowIntroVideo(false);
+    }
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
@@ -104,6 +121,18 @@ const ResumeStep1 = () => {
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. Software Engineer" />
                                                     </div>
                                                 </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Phone Number</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. +91 123 456 7890" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Email *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. johndoe123@gmail.com" />
+                                                    </div>
+                                                </Col>
                                                 <Col md={4}>
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Country</Form.Label>
@@ -137,16 +166,47 @@ const ResumeStep1 = () => {
                                                         </Form.Select>
                                                     </div>
                                                 </Col>
-                                                <Col md={6}>
+                                                <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Phone Number</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. +91 123 456 7890" />
+                                                        <Form.Label className="font-14 fw-medium">Resume *</Form.Label>
+                                                        <Form.Control type="file" className="d-none" id="intro-video" />
+                                                        <Form.Label htmlFor="intro-video" className="upload-intro-file">Upload Resume</Form.Label>
+                                                    </div>
+                                                    <div>
+                                                        <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3">
+                                                            <span className="font-14 fw-medium">resume-doc1.pdf</span>
+                                                            <span className="cursor-pointer text-danger"><IoClose /> </span>
+                                                        </div>
+                                                    </div>
+                                                </Col>
+                                                <Col md={12}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Intro Video *</Form.Label>
+                                                        <Form.Control type="file" className="d-none" id="intro-video" />
+                                                        <Form.Label htmlFor="intro-video" className="upload-intro-file">Upload Intro Video</Form.Label>
+                                                    </div>
+                                                    <div className="profile-upload-preview position-relative preview_intro">
+                                                        <div className="profile-img-preview w-100 h-100">
+                                                            <img src={videoImg} />
+                                                        </div>
+                                                        <div className="playback_intro" onClick={handleShowIntroModal}>
+                                                            <IoPlay />
+                                                        </div>
+                                                        <Form.Label htmlFor="intro-video" className="profile-img-label">
+                                                            <FaUpload />
+                                                        </Form.Label>
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Email *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. johndoe123@gmail.com" />
+                                                        <Form.Label className="font-14 fw-medium">LinkedIn *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. www.linkedin.com/profile/12345" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Github *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. www.github.com/profile" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
@@ -154,6 +214,7 @@ const ResumeStep1 = () => {
                                                         <Form.Label className="fw-medium">Add additional information to your resume</Form.Label>
                                                         <div>
                                                             <Button variant="transparent" className="outline-main-btn font-14">Linkedin +</Button>
+                                                            <Button variant="transparent" className="outline-main-btn font-14 ms-2">Github +</Button>
                                                             <Button variant="transparent" className="outline-main-btn font-14 ms-2">Intro Video +</Button>
                                                         </div>
                                                     </div>
@@ -163,7 +224,7 @@ const ResumeStep1 = () => {
                                     </Col>
                                     <Col md={4}>
                                         <div>
-                                            <p className="font-12">Our Resume delivers results</p>
+                                            <p className="font-14 resume-delivers"> <FaArrowUp /> Our Resume delivers results</p>
                                             <div className="preview-resume-form">
                                                 <section className="overview-cv">
                                                     <div className="cv-template-section">
@@ -375,7 +436,7 @@ const ResumeStep1 = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
                                     <Link to={'/resume-work-detail'} className="main-btn font-14 text-decoration-none">Next: Work History</Link>
                                 </div>
                             </div>
@@ -383,6 +444,8 @@ const ResumeStep1 = () => {
                     </Container >
                 </div >
             </section >
+            <IntroVideo show={showintrovideo} handleClose={handleCloseIntroModal} />
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }
