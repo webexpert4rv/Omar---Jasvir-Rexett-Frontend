@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import resumeImg from "../../../assets/img/user-img.jpg";
 import { Link, useLocation } from "react-router-dom";
-import { FaGithub, FaStar } from "react-icons/fa6";
+import { FaEnvelope, FaGithub, FaStar } from "react-icons/fa6";
 import { MdEditNote, MdEmail, MdLocalPhone, MdLockClock, MdOutlineOndemandVideo, MdPunchClock, MdWork } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { FaLinkedin } from "react-icons/fa";
@@ -296,76 +296,7 @@ const SingleDeveloper = ({ data, role }) => {
                     <p className="resume-designation">
                       {data?.developer_detail?.professional_title}
                     </p>
-                    <div className="text-start mt-3 d-flex align-items-center gap-2 flex-wrap justify-content-center mb-3 personal-info-wrapper">
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdAlternateEmail /></span> robertjohnson@gmail.com</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdLocalPhone /></span> +91 123456789</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdWork /></span> 5 years</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdLocationOn /></span>India</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><GoClockFill /></span> Remote</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
-                      </div>
-                    </div>
-                    {data?.developer_detail ? (
-                      <div className="px-3 d-flex justify-content-center align-items-center gap-2 mb-3">
-                        <ul className="social-media">
-                          <li>
-                            {data?.developer_detail?.github_url ? (
-                              <Link
-                                className="social-media-link"
-                                to={data?.developer_detail?.github_url}
-                              >
-                                <FaGithub />
-                              </Link>
-                            ) : (
-                              ""
-                            )}
-                          </li>
-                          <li>
-                            {data?.developer_detail?.linkedin_url ? (
-                              <Link
-                                className="social-media-link"
-                                to={data?.developer_detail?.linkedin_url}
-                              >
-                                <FaLinkedin />
-                              </Link>
-                            ) : (
-                              ""
-                            )}
-                          </li>
-                        </ul>
-                        {/* {role !== "client" && (
-                          <div
-                            className="add_more_section"
-                            onClick={handleShowSocialMediaModal}
-                          >
-                            <MdEditNote size={25} />
-                          </div>
-                        )} */}
-                      </div>
-                    ) : (
-                      ""
-                    )}
+
                     <div>
                       <OverlayTrigger placement="bottom" overlay={seeReview}>
                         <span className="status-upcoming rating-status cursor-pointer" onClick={toggleFeedbackSection}>
@@ -456,6 +387,72 @@ const SingleDeveloper = ({ data, role }) => {
                           </div>
                         </div>
                       </div>)}
+                    <div className="text-start mt-3 d-flex align-items-center gap-2 flex-wrap justify-content-center mb-3 personal-info-wrapper">
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><FaEnvelope /></span> robertjohnson@gmail.com</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdLocalPhone /></span> +91 123456789</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdWork /></span> 5 years</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdLocationOn /></span>India</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdWork /></span> Remote</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
+                      </div>
+                    </div>
+                    {data?.developer_detail ? (
+                      <div className="px-3 d-flex justify-content-center align-items-center gap-2">
+                        <ul className="social-media">
+                          <li>
+                            {data?.developer_detail?.github_url ? (
+                              <Link
+                                className="social-media-link"
+                                to={data?.developer_detail?.github_url}
+                              >
+                                <FaGithub />
+                              </Link>
+                            ) : (
+                              ""
+                            )}
+                          </li>
+                          <li>
+                            {data?.developer_detail?.linkedin_url ? (
+                              <Link
+                                className="social-media-link"
+                                to={data?.developer_detail?.linkedin_url}
+                              >
+                                <FaLinkedin />
+                              </Link>
+                            ) : (
+                              ""
+                            )}
+                          </li>
+                        </ul>
+                        {/* {role !== "client" && (
+                          <div
+                            className="add_more_section"
+                            onClick={handleShowSocialMediaModal}
+                          >
+                            <MdEditNote size={25} />
+                          </div>
+                        )} */}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     {role !== "client" && (
                       <div
                         className="add_more_section_detail"
@@ -860,49 +857,49 @@ const SingleDeveloper = ({ data, role }) => {
                     <div className="rating-container">
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#00af6c', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Overall</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#00af6c', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">React JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffcb1a', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Vue JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#05db8a', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">JavaScript</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#eaeb08', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Angular JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#eaeb08', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">MongoDB</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffcb1a', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Node JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#05db8a', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Communication</p>
                       </div>

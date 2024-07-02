@@ -3,7 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices/clientDataSlice";
 import { useDispatch } from "react-redux";
-const ConfirmationModal = ({ submitText="",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
+const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
     const callBackBtn=(e )=>{
         let data={
             status: type,

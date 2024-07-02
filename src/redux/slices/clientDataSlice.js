@@ -606,12 +606,12 @@ export function editTimeReportOfDev(payload, callback) {
   };
 }
 
-export function filePreassignedUrlGenerate(payload, callback) {
+export function filePreassignedUrlGenerate(fileData, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`common/upload-file`, payload);
-      dispatch(setActionSuccessFully());
+      let result = await clientInstance.post(`common/upload-file`, fileData);
+      // dispatch(setActionSuccessFully());
       return callback(result?.data?.data.Location);
     } catch (error) {
       const message = error.message || "Something went wrong";

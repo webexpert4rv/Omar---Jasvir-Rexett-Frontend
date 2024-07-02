@@ -119,7 +119,7 @@ const TimeReporting = () => {
                                     {t("totalHiredDevelopers")}
                                 </th>
                                 <th className="time-table-head text-start">
-                                    Contract
+                                    Total hours spend
                                 </th>
                                 {/* <th className="time-table-head">
                                     {t("contract")}
@@ -137,7 +137,7 @@ const TimeReporting = () => {
                                         3
                                     </td>
                                     <td className="align-middle font-14">
-                                        6 months
+                                        3000 hrs
                                     </td>
                                 </tr>
                                 {/* {screenLoader ? <ScreenLoader /> : <>

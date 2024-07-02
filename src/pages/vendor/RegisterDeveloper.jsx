@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { HiUpload } from "react-icons/hi";
 import {
+  Accordion,
   Button,
   Col,
   Form,
@@ -9,7 +10,7 @@ import {
   Row,
   Tooltip,
 } from "react-bootstrap";
-import { FaTrash } from "react-icons/fa";
+import { FaCheck, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
   filePreassignedUrlGenerate,
@@ -35,6 +36,8 @@ import Autocomplete from "react-google-autocomplete";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../components/clients/TimeReporiting/constant";
 import CommonReactSelect from "../../components/atomic/CommonReactSelect";
 import ExperienceCV from "../../components/common/Modals/ExperienceCVModal";
+import demoImg from '../../assets/img/demo-img.jpg';
+import { IoCameraOutline } from "react-icons/io5";
 
 const createOption = (label) => ({
   label,
@@ -65,7 +68,7 @@ const RegisterDeveloper = () => {
     },
   ]);
   const { allTimeZones, countriesList, statesList, citiesList, timeZones } =
-  useSelector((state) => state.clientData);
+    useSelector((state) => state.clientData);
   const navigate = useNavigate();
   const {
     register,
@@ -230,7 +233,7 @@ const RegisterDeveloper = () => {
 
   const handleAddMoreExp = async () => {
     const experiences = watch("experiences");
-    console.log(experiences,"experiences")
+    console.log(experiences, "experiences")
     const index = experiences?.findIndex(
       ({
         job_title,
@@ -444,61 +447,151 @@ const RegisterDeveloper = () => {
       <section className="register-developer card-box">
         <div className="">
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">
-                {t("enterPersonalDetails")}
-              </h2>
-            </div>
-            <div className="inner-form mb-3">
-              <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("developerName")} *
-                    </Form.Label>
-                    <Form.Control
+            <Accordion className="register-collapse-main" defaultActiveKey="0">
+              <Accordion.Item className="register-collapse-item completed" eventKey="0">
+                <Accordion.Header className="register-collapse-header">
+                  <h2 className="subheading-resume mb-0">
+                    <span className="resume-step"><span className="count">1</span> <span className="compl-check"><FaCheck /></span> </span> {t("enterPersonalDetails")}
+                  </h2>
+                </Accordion.Header>
+                <Accordion.Body className="register-collapse-body">
+
+                  <div className="inner-form mb-3">
+                    <Row>
+
+                      <Col md={6}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="font-14 fw-medium">Image*</Form.Label>
+                          <div className="profile-upload-preview position-relative">
+                            <div className="profile-img-preview w-100 h-100">
+                              <img src={demoImg} className="demo-upload-img" />
+                            </div>
+                            <Form.Control
+                              type="file"
+                              id="developer-image"
+                              name="profile_picture"
+                              {...register("profile_picture", {
+                                onChange: (e) => handleFileChange(e),
+                                required: {
+                                  value: true,
+                                  message: t("profilePictureValidation"),
+                                },
+                              })}
+                              className="d-none"
+                            />
+
+                            <Form.Label
+                              htmlFor="developer-image"
+                              className="profile-img-label border"
+                            >
+                              <IoCameraOutline />
+                            </Form.Label>
+                          </div>
+                          <span className="font-12">{t("uploadImage")}</span>
+                        </Form.Group>
+                        {fileTypeError ? (
+                          <p className="error-message">{t("invalid_file_type")}</p>
+                        ) : (
+                          errors?.profile_picture && (
+                            <p className="error-message">
+                              {" "}
+                              {errors?.profile_picture?.message}
+                            </p>
+                          )
+                        )}
+                        {selectedImage && (
+                          <div>
+                            <img
+                              src={selectedImage && selectedImage}
+                              alt="Selected"
+                              className="uploaded-image"
+                            />
+                          </div>
+                        )}
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label font-14 fw-medium">
+                            Upload CV*
+                          </Form.Label>
+                          <Form.Control
+                            type="file"
+                            id="upload_cv"
+                            name="upload_cv"
+                            {...register("upload_cv", {
+                              onChange: (e) => handleUploadCv(e),
+                              required: {
+                                value: true,
+                                message: t("profilePictureValidation"),
+                              },
+                            })}
+                            className="d-none"
+                          />
+
+                          <Form.Label
+                            htmlFor="upload_cv"
+                            className="upload-cv-label"
+                          >
+                            <HiUpload />
+                            Upload your CV
+                          </Form.Label>
+                          <span className="font-12">Please upload only pdf, jpeg, png format file. Max file size 5MB.</span>
+                        </Form.Group>
+                        {selectedCvErr && (
+                          <p style={{ color: "red" }}>
+                            Please upload a valid PDF file.
+                          </p>
+                        )}
+                        {selectedCv && <div>{selectedCv}</div>}
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label font-14 fw-medium">
+                            {t("developerName")} *
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="common-field font-14"
+                            {...register("name", {
+                              required: {
+                                value: true,
+                                message: t("nameValidation"),
+                              },
+                            })}
+                          />
+                          <p className="error-message">{errors.name?.message}</p>
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label font-14 fw-medium">
+                            {t("email")} *
+                          </Form.Label>
+                          <Form.Control
+                            type="email"
+                            className="common-field font-14"
+                            {...register("email", {
+                              required: {
+                                value: true,
+                                message: t("emailValidation"),
+                              },
+                              pattern: {
+                                value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+                                message: t("invalidEmail"),
+                              },
+                            })}
+                          />
+                          <p className="error-message">{errors.email?.message}</p>
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label font-14 fw-medium">
+                            {t("phoneNumber")} *
+                          </Form.Label>
+                          {/* <Form.Control
                       type="text"
-                      className="common-field"
-                      {...register("name", {
-                        required: {
-                          value: true,
-                          message: t("nameValidation"),
-                        },
-                      })}
-                    />
-                    <p className="error-message">{errors.name?.message}</p>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("email")} *
-                    </Form.Label>
-                    <Form.Control
-                      type="email"
-                      className="common-field"
-                      {...register("email", {
-                        required: {
-                          value: true,
-                          message: t("emailValidation"),
-                        },
-                        pattern: {
-                          value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
-                          message: t("invalidEmail"),
-                        },
-                      })}
-                    />
-                    <p className="error-message">{errors.email?.message}</p>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("phoneNumber")} *
-                    </Form.Label>
-                    {/* <Form.Control
-                      type="text"
-                      className="common-field"
+                      className="common-field font-14"
                       name="phone_number"
                       {...register("phone_number", {
                         required: {
@@ -511,239 +604,196 @@ const RegisterDeveloper = () => {
                         },
                       })}
                     /> */}
-                    <Controller
-                      name="phone_number"
-                      control={control}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: t("phoneNumberValidation"),
-                        },
-                        pattern: {
-                          value: /^[0-9]{10}$/,
-                          message: "Please enter a valid phone number",
-                        },
-                      }}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="common-field form-control"
-                          onChange={(e) => {
-                            const numericValue = e.target.value.replace(
-                              /[^0-9]/g,
-                              ""
-                            );
-                            field.onChange(numericValue);
-                          }}
-                        />
-                      )}
-                    />
-                    {errors?.phone_number && (
-                      <p className="error-message">
-                        {errors?.phone_number?.message}
-                      </p>
-                    )}
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("address")} *
-                    </Form.Label>
-                    {/* <Form.Control
+                          <Controller
+                            name="phone_number"
+                            control={control}
+                            rules={{
+                              required: {
+                                value: true,
+                                message: t("phoneNumberValidation"),
+                              },
+                              pattern: {
+                                value: /^[0-9]{10}$/,
+                                message: "Please enter a valid phone number",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <input
+                                {...field}
+                                type="text"
+                                className="common-field font-14 form-control"
+                                onChange={(e) => {
+                                  const numericValue = e.target.value.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
+                                  field.onChange(numericValue);
+                                }}
+                              />
+                            )}
+                          />
+                          {errors?.phone_number && (
+                            <p className="error-message">
+                              {errors?.phone_number?.message}
+                            </p>
+                          )}
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label font-14 fw-medium">
+                            {t("address")} *
+                          </Form.Label>
+                          {/* <Form.Control
                       type="text"
-                      className="common-field"
+                      className="common-field font-14"
                       // name="address"
                       {...register("address", {
                         required: t("addressValidation"),
                       })}
                     /> */}
-                    <Controller
-                      name="address"
-                      rules={{
-                        required: "Address is required",
-                      }}
-                      className="common-field "
-                      control={control}
-                      render={({ field, fieldState }) => (
-                        <Autocomplete
-                          style={{ width: "500px" }}
-                          errors={fieldState?.errors}
-                          className="common-field font-14 w-100 p-2"
-                          apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
-                          onPlaceSelected={(place) => {
-                            console.log(place);
-                          }}
-                          options={{
-                            types: ["establishment", "geocode"],
-                          }}
-                          onChange={(event) => {
-                            field.onChange(event.target.value);
-                          }}
-                          onLoadFailed={(error) => {
-                            console.error(
-                              "Google Places Autocomplete failed to load",
-                              error
-                            );
-                          }}
-                        />
-                      )}
-                    />
-                    {errors?.address && (
-                      <p className="error-message">{errors.address.message} </p>
-                    )}
-                  </Form.Group>
-                </Col>
+                          <Controller
+                            name="address"
+                            rules={{
+                              required: "Address is required",
+                            }}
+                            className="common-field font-14 "
+                            control={control}
+                            render={({ field, fieldState }) => (
+                              <Autocomplete
+                                style={{ width: "500px" }}
+                                errors={fieldState?.errors}
+                                className="common-field font-14 w-100"
+                                apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
+                                onPlaceSelected={(place) => {
+                                  console.log(place);
+                                }}
+                                options={{
+                                  types: ["establishment", "geocode"],
+                                }}
+                                onChange={(event) => {
+                                  field.onChange(event.target.value);
+                                }}
+                                onLoadFailed={(error) => {
+                                  console.error(
+                                    "Google Places Autocomplete failed to load",
+                                    error
+                                  );
+                                }}
+                              />
+                            )}
+                          />
+                          {errors?.address && (
+                            <p className="error-message">{errors.address.message} </p>
+                          )}
+                        </Form.Group>
+                      </Col>
 
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <CommonReactSelect
-                    name="country"
-                    errors={errors}
-                    // watch={watch}
-                    control={control}
-                    required="Country is required"
-                    label="Country"
-                    type="country"
-                    options={countriesList}
-                  />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                 
-                  <CommonReactSelect
-                    name="state"
-                    errors={errors}
-                    control={control}
-                    required="State is required"
-                    label="State"
-                    type="state"
-                    options={statesList}
-                  />
-                  </Form.Group>
-                </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="common-label font-14 fw-medium">
+                            {t("professional_title")} *
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="common-field font-14"
+                            name="professional_title"
+                            {...register("professional_title", {
+                              required: {
+                                value: true,
+                                message: t("professionalTitleValidation"),
+                              },
+                              // pattern: {
+                              //     value: /^[A-Za-z\s]+$/,
+                              //     message: "Country should not contain numbers or special character",
+                              // }
+                            })}
+                          />
+                          <p className="error-message">
+                            {errors.professional_title?.message}{" "}
+                          </p>
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group>
+                          <Form.Label>{t("experienceRequired")}*</Form.Label>
+                          <Form.Select
+                            className="common-field font-14"
+                            {...register("total_experience", {
+                              required: {
+                                value: true,
+                                message: "Experienced is required",
+                              },
+                            })}
+                          >
+                            <option disabled selected value="">
+                              {t("select")} {t("experienceRequired")}
+                            </option>
+                            <option value="Less_than_one">
+                              {t("lessThan1Year")}
+                            </option>
+                            <option value="1 year">1 {t("year")}</option>
+                            <option value="2 years">2 {t("year")}</option>
+                            <option value="3 years">3 {t("year")}</option>
+                            <option value="4 years">4 {t("year")}</option>
+                            <option value="5 years">5 {t("year")}</option>
+                            <option value="6+ years ">6 +{t("year")}</option>
+                          </Form.Select>
+                        </Form.Group>
+                        <p className="error-message">{errors.experience?.message}</p>
+                      </Col>
 
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                  <CommonReactSelect
-                    name="city"
-                    errors={errors}
-                    control={control}
-                    // required="City is required"
-                    label="City"
-                    type="city"
-                    options={citiesList}
-                  />
-                  </Form.Group>
-                </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
+                          <CommonReactSelect
+                            name="country"
+                            errors={errors}
+                            // watch={watch}
+                            control={control}
+                            required="Country is required"
+                            label="Country"
+                            className="common-field font-14"
+                            type="country"
+                            options={countriesList}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
 
-                
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                  <CommonReactSelect
-                    name="time_zone"
-                    errors={errors}
-                    type="timezones"
-                    control={control}
-                    options={timeZones}
-                    required="Time zone is required"
-                    label="Time Zone"
-                  />
-                    
-                  </Form.Group>
-                </Col>
+                          <CommonReactSelect
+                            name="state"
+                            errors={errors}
+                            control={control}
+                            required="State is required"
+                            label="State"
+                            type="state"
+                            options={statesList}
+                          />
+                        </Form.Group>
+                      </Col>
 
-
-             
-                <Col md={6}>
+                      <Col md={4}>
+                        <Form.Group className="mb-3">
+                          <CommonReactSelect
+                            name="city"
+                            errors={errors}
+                            control={control}
+                            // required="City is required"
+                            label="City"
+                            type="city"
+                            options={citiesList}
+                          />
+                        </Form.Group>
+                      </Col>
+                      {/* <Col md={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("postCode")} *
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="post_code"
-                      {...register("post_code", {
-                        required: {
-                          value: true,
-                          message: t("postCodeValidation"),
-                        },
-                        // pattern: {
-                        //     value: /^[0-9]+$/,
-                        //     message: "Postal code should only contain numbers",
-                        // }
-                      })}
-                    />
-                    <p className="error-message">
-                      {errors.post_code?.message}{" "}
-                    </p>
-                  </Form.Group>
-                </Col>
-               
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("professional_title")} *
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="common-field"
-                      name="professional_title"
-                      {...register("professional_title", {
-                        required: {
-                          value: true,
-                          message: t("professionalTitleValidation"),
-                        },
-                        // pattern: {
-                        //     value: /^[A-Za-z\s]+$/,
-                        //     message: "Country should not contain numbers or special character",
-                        // }
-                      })}
-                    />
-                    <p className="error-message">
-                      {errors.professional_title?.message}{" "}
-                    </p>
-                  </Form.Group>
-                </Col>
-                <Col md="6">
-                  <Form.Group>
-                    <Form.Label>{t("experienceRequired")}*</Form.Label>
-                    <Form.Select
-                      className="common-field"
-                      {...register("total_experience", {
-                        required: {
-                          value: true,
-                          message: "Experienced is required",
-                        },
-                      })}
-                    >
-                      <option disabled selected value="">
-                        {t("select")} {t("experienceRequired")}
-                      </option>
-                      <option value="Less_than_one">
-                        {t("lessThan1Year")}
-                      </option>
-                      <option value="1 year">1 {t("year")}</option>
-                      <option value="2 years">2 {t("year")}</option>
-                      <option value="3 years">3 {t("year")}</option>
-                      <option value="4 years">4 {t("year")}</option>
-                      <option value="5 years">5 {t("year")}</option>
-                      <option value="6+ years ">6 +{t("year")}</option>
-                    </Form.Select>
-                  </Form.Group>
-                  <p className="error-message">{errors.experience?.message}</p>
-                </Col>
-                {/* <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
+                    <Form.Label className="common-label font-14 fw-medium">
                       {t("experience")} *
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      className="common-field"
+                      className="common-field font-14"
                       name="experience"
                       {...register("professional_title", {
                         required: {
@@ -761,238 +811,187 @@ const RegisterDeveloper = () => {
                     </p>
                   </Form.Group>
                 </Col> */}
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("image")}*
-                    </Form.Label>
-                    <Form.Control
-                      type="file"
-                      id="developer-image"
-                      name="profile_picture"
-                      {...register("profile_picture", {
-                        onChange: (e) => handleFileChange(e),
-                        required: {
-                          value: true,
-                          message: t("profilePictureValidation"),
-                        },
-                      })}
-                      className="d-none"
-                    />
-
-                    <Form.Label
-                      htmlFor="developer-image"
-                      className="upload-image-label d-block"
-                    >
-                      <HiUpload />
-                      {t("uploadImage")}
-                    </Form.Label>
-                  </Form.Group>
-                  {fileTypeError ? (
-                    <p className="error-message">{t("invalid_file_type")}</p>
-                  ) : (
-                    errors?.profile_picture && (
-                      <p className="error-message">
-                        {" "}
-                        {errors?.profile_picture?.message}
-                      </p>
-                    )
-                  )}
-                  {selectedImage && (
-                    <div>
-                      <img
-                        src={selectedImage && selectedImage}
-                        alt="Selected"
-                        className="uploaded-image"
-                      />
-                    </div>
-                  )}
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="common-label">
-                      {t("uploadCV")}*
-                    </Form.Label>
-                    <Form.Control
-                      type="file"
-                      id="upload_cv"
-                      name="upload_cv"
-                      {...register("upload_cv", {
-                        onChange: (e) => handleUploadCv(e),
-                        required: {
-                          value: true,
-                          message: t("profilePictureValidation"),
-                        },
-                      })}
-                      className="d-none"
-                    />
-
-                    <Form.Label
-                      htmlFor="upload_cv"
-                      className="upload-image-label d-block"
-                    >
-                      <HiUpload />
-                      {t("upload_cv")}
-                    </Form.Label>
-                  </Form.Group>
-                  {selectedCvErr && (
-                    <p style={{ color: "red" }}>
-                      Please upload a valid PDF file.
-                    </p>
-                  )}
-                  {selectedCv && <div>{selectedCv}</div>}
-                </Col>
-              </Row>
-            </div>
-            
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">{t("enterExperience")}</h2>
-            </div>
-
-            <ExperienceCV data={null} role="vendor" onSubmitVendor={onSubmit} />
-        
-            
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">{t("enterExpertise")}</h2>
-            </div>
-            {expertiseFields.map((field, index) => {
-              return (
-                <Fragment key={field?.id}>
-                  <div>
-                    <Row className="mb-3">
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="common-label">
-                            {t("enterSkill")}
-                          </Form.Label>
-                          <CreatableSelect
-                            className="common-field"
-                            {...register(`expertise.${index}.skill`, {
+                    </Row>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item className="register-collapse-item" eventKey="1">
+                <Accordion.Header className="register-collapse-header">
+                  <h2 className="subheading-resume mb-0"><span className="resume-step">2</span>Add Bio *</h2>
+                </Accordion.Header>
+                <Accordion.Body className="register-collapse-body">
+                  <div className="inner-form mb-3">
+                    <Row>
+                      <Col md="12">
+                        <Form.Group className="mb-4">
+                          <Form.Label className="font-14 fw-medium">Bio</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            placeholder="Add your about"
+                            className="common-field font-14"
+                            name="bio"
+                            {...register("bio", {
                               required: {
                                 value: true,
-                                message: t("required_message"),
+                                message: `${t("AboutRequired")}`,
                               },
                             })}
-                            isClearable
-                            options={skillCate}
-                            onChange={(newValue) => {
-                              // setExpertSkill([newValue]);x
-                              setValue(`expertise.${index}.skill`, newValue);
-                              clearErrors(`expertise.${index}.skill`);
-                            }}
-                            onCreateOption={(val) => {
-                              onChangeSelect(val, "expertise");
-                            }}
-                            // value={expertSkill}
-                            // name={expertSkill}
                           />
+                          <p className="error-message">{errors.bio?.message} </p>
                         </Form.Group>
                       </Col>
-                      <Col md={6}>
-                        <div className="flex-none">
-                          <Form.Label className="common-label">
-                            {t("experience")}
-                          </Form.Label>
-                          <Form.Select
-                            {...register(`expertise.${index}.experience`, {
-                              required: {
-                                value: true,
-                                message: t("required_message"),
-                              },
-                            })}
-                            className="common-field shadow-none"
-                          >
-                            <option value=""> {t("selectExperience")} </option>
-                            {EXPERIENCE_OPTIONS.map(
-                              ({ label, value }, index) => (
-                                <option value={value} key={index}>
-                                  {label} {t("years")}
-                                </option>
-                              )
-                            )}
-                          </Form.Select>
-                          {errors?.skills?.[index]?.experience && (
+                    </Row>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item className="register-collapse-item" eventKey="2">
+                <Accordion.Header className="register-collapse-header">
+                  <h2 className="subheading-resume mb-0"><span className="resume-step">3</span> {t("enterExpertise")}</h2>
+                </Accordion.Header>
+                <Accordion.Body className="register-collapse-body">
+                  {expertiseFields.map((field, index) => {
+                    return (
+                      <Fragment key={field?.id}>
+                        <div>
+                          <Row className="mb-3">
+                            <Col md={6}>
+                              <Form.Group>
+                                <Form.Label className="common-label font-14 fw-medium">
+                                  {t("enterSkill")}
+                                </Form.Label>
+                                <CreatableSelect
+                                  className="common-field font-14"
+                                  {...register(`expertise.${index}.skill`, {
+                                    required: {
+                                      value: true,
+                                      message: t("required_message"),
+                                    },
+                                  })}
+                                  isClearable
+                                  options={skillCate}
+                                  onChange={(newValue) => {
+                                    // setExpertSkill([newValue]);x
+                                    setValue(`expertise.${index}.skill`, newValue);
+                                    clearErrors(`expertise.${index}.skill`);
+                                  }}
+                                  onCreateOption={(val) => {
+                                    onChangeSelect(val, "expertise");
+                                  }}
+                                // value={expertSkill}
+                                // name={expertSkill}
+                                />
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <div className="flex-none">
+                                <Form.Label className="common-label font-14 fw-medium">
+                                  {t("experience")}
+                                </Form.Label>
+                                <Form.Select
+                                  {...register(`expertise.${index}.experience`, {
+                                    required: {
+                                      value: true,
+                                      message: t("required_message"),
+                                    },
+                                  })}
+                                  className="common-field font-14 shadow-none"
+                                >
+                                  <option value=""> {t("selectExperience")} </option>
+                                  {EXPERIENCE_OPTIONS.map(
+                                    ({ label, value }, index) => (
+                                      <option value={value} key={index}>
+                                        {label} {t("years")}
+                                      </option>
+                                    )
+                                  )}
+                                </Form.Select>
+                                {errors?.skills?.[index]?.experience && (
+                                  <p className="error-message">
+                                    {errors?.skills[index]?.experience?.message}
+                                  </p>
+                                )}
+                              </div>
+                            </Col>
+                          </Row>
+                          {errors?.skills?.[index]?.skill && (
                             <p className="error-message">
-                              {errors?.skills[index]?.experience?.message}
+                              {errors?.skills[index]?.skill?.message}
                             </p>
                           )}
                         </div>
-                      </Col>
-                    </Row>
-                    {errors?.skills?.[index]?.skill && (
-                      <p className="error-message">
-                        {errors?.skills[index]?.skill?.message}
-                      </p>
-                    )}
-                  </div>
-                  {expertiseFields?.length > 1 && (
-                    <Col md="12" className="d-flex justify-content-end">
-                      <Button
-                        className="arrow-btn danger-arrow ms-auto"
-                        onClick={() => handleDelete(field?.id, index)}
-                      >
-                        <FaTrash />
-                      </Button>
-                    </Col>
-                  )}
-                </Fragment>
-              );
-            })}
-            <div className="text-end mb-3">
-              <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                <Button
-                  className="arrow-btn primary-arrow ms-auto"
-                  onClick={handleAppend}
-                >
-                  +
-                </Button>
-              </OverlayTrigger>
-            </div>
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">
-                {t("enterEducationDetails")}
-              </h2>
-            </div>
-            <div className="inner-form mb-3">
-              {educationField.map(
-                (
-                  item,
-                  // {
-                  //   id,
-                  //   university_name,
-                  //   degree_id,
-                  //   address,
-                  //   start_year,
-                  //   end_year,
-                  //   currently_attending,
-                  // },
-                  index
-                ) => (
-                  <Row key={item.id}>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>{t("universityName")} *</Form.Label>
-                        <Form.Control
-                          type="text"
-                          className="common-field shadow-none"
-                          {...register(`educations[${index}].university_name`, {
-                            required: {
-                              value: true,
-                              message: t("universityNameValidation"),
-                            },
-                          })}
-                        />
-                        {errors?.educations?.[index]?.university_name && (
-                          <p className="error-message">
-                            {errors.educations[index].university_name.message}
-                          </p>
+                        {expertiseFields?.length > 1 && (
+                          <Col md="12" className="d-flex justify-content-end">
+                            <Button
+                              className="arrow-btn danger-arrow ms-auto"
+                              onClick={() => handleDelete(field?.id, index)}
+                            >
+                              <FaTrash />
+                            </Button>
+                          </Col>
                         )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>{t("degreeName")} *</Form.Label>
-                        {/* <Select
+                      </Fragment>
+                    );
+                  })}
+
+                  <div className="text-end mb-3">
+                    <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                      <Button
+                        className="arrow-btn primary-arrow ms-auto"
+                        onClick={handleAppend}
+                      >
+                        +
+                      </Button>
+                    </OverlayTrigger>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item className="register-collapse-item" eventKey="3">
+                <Accordion.Header className="register-collapse-header">
+                  <h2 className="subheading-resume mb-0">
+                  <span className="resume-step">4</span> {t("enterEducationDetails")}
+                  </h2>
+                </Accordion.Header>
+                <Accordion.Body className="register-collapse-body">
+                  {educationField.map(
+                    (
+                      item,
+                      // {
+                      //   id,
+                      //   university_name,
+                      //   degree_id,
+                      //   address,
+                      //   start_year,
+                      //   end_year,
+                      //   currently_attending,
+                      // },
+                      index
+                    ) => (
+                      <Row key={item.id}>
+                        <Col md={4}>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="font-14 fw-medium">{t("universityName")} *</Form.Label>
+                            <Form.Control
+                              type="text"
+                              className="common-field font-14 shadow-none"
+                              {...register(`educations[${index}].university_name`, {
+                                required: {
+                                  value: true,
+                                  message: t("universityNameValidation"),
+                                },
+                              })}
+                            />
+                            {errors?.educations?.[index]?.university_name && (
+                              <p className="error-message">
+                                {errors.educations[index].university_name.message}
+                              </p>
+                            )}
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group>
+                            <Form.Label className="font-14 fw-medium">{t("degreeName")} *</Form.Label>
+                            {/* <Select
                           options={degreeList}
                           onChange={(val) =>
                             setValue(
@@ -1004,7 +1003,7 @@ const RegisterDeveloper = () => {
                             (option) => option.value === degree_id
                           )}
                         /> */}
-                        {/* <Controller
+                            {/* <Controller
                           name={`educations.${index}.degree_id`}
                           control={control}
                           rules={{required:{
@@ -1027,29 +1026,29 @@ const RegisterDeveloper = () => {
                             />
                           )}
                         /> */}
-                        <CreatableSelect
-                          className="common-field"
-                          {...register(`educations.${index}.degree_id`, {
-                            required: {
-                              value: true,
-                              message: t("degree_name_required_msg"),
-                            },
-                          })}
-                          // value={watch(`educations.${index}.degree_id`)}
-                          isClearable
-                          onChange={(val) => {
-                            setValue(`educations.${index}.degree_id`, val);
-                          }}
-                          // value={degreeList.find((curElem)=>curElem.label === item.label)}
-                          onCreateOption={handleCreate}
-                          options={degreeList}
-                        />
-                        {errors?.educations?.[index]?.degree_id && (
-                          <p className="error-message">
-                            {errors.educations[index].degree_id.message}
-                          </p>
-                        )}
-                        {/* <CreatableSelect
+                            <CreatableSelect
+                              className="common-field font-14"
+                              {...register(`educations.${index}.degree_id`, {
+                                required: {
+                                  value: true,
+                                  message: t("degree_name_required_msg"),
+                                },
+                              })}
+                              // value={watch(`educations.${index}.degree_id`)}
+                              isClearable
+                              onChange={(val) => {
+                                setValue(`educations.${index}.degree_id`, val);
+                              }}
+                              // value={degreeList.find((curElem)=>curElem.label === item.label)}
+                              onCreateOption={handleCreate}
+                              options={degreeList}
+                            />
+                            {errors?.educations?.[index]?.degree_id && (
+                              <p className="error-message">
+                                {errors.educations[index].degree_id.message}
+                              </p>
+                            )}
+                            {/* <CreatableSelect
                             {...register(`expertise.${index}.skill`, {
                               required: {
                                 value: true,
@@ -1069,13 +1068,13 @@ const RegisterDeveloper = () => {
                             // value={expertSkill}
                             // name={expertSkill}
                           /> */}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>{t("address")} *</Form.Label>
-                        {/* <Form.Control
-                          className="common-field"
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="font-14 fw-medium">{t("address")} *</Form.Label>
+                            {/* <Form.Control
+                          className="common-field font-14"
                           type="text"
                           {...register(`educations[${index}].address`, {
                             required: {
@@ -1084,257 +1083,248 @@ const RegisterDeveloper = () => {
                             },
                           })}
                         /> */}
-                        <Controller
-                          name="address"
-                          rules={{
-                            required: "Address is required",
-                          }}
-                          className="common-field "
-                          control={control}
-                          render={({ field, fieldState }) => (
-                            <Autocomplete
-                              style={{ width: "500px" }}
-                              errors={fieldState?.errors}
-                              className="common-field font-14 w-100 p-2"
-                              apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
-                              onPlaceSelected={(place) => {
-                                console.log(place);
+                            <Controller
+                              name="address"
+                              rules={{
+                                required: "Address is required",
                               }}
-                              options={{
-                                types: ["establishment", "geocode"],
-                              }}
+                              className="common-field font-14 "
+                              control={control}
+                              render={({ field, fieldState }) => (
+                                <Autocomplete
+                                  style={{ width: "500px" }}
+                                  errors={fieldState?.errors}
+                                  className="common-field font-14 font-14 w-100 p-2"
+                                  apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
+                                  onPlaceSelected={(place) => {
+                                    console.log(place);
+                                  }}
+                                  options={{
+                                    types: ["establishment", "geocode"],
+                                  }}
+                                />
+                              )}
                             />
-                          )}
-                        />
-                        {errors?.educations?.[index]?.address && (
-                          <p className="error-message">
-                            {errors.educations[index].address.message}
-                          </p>
+                            {errors?.educations?.[index]?.address && (
+                              <p className="error-message">
+                                {errors.educations[index].address.message}
+                              </p>
+                            )}
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group>
+                            <Form.Label className="font-14 fw-medium">{t("startYear")} *</Form.Label>
+                            <Form.Select
+                              className="common-field font-14"
+                              {...register(`educations.${index}.start_year`, {
+                                required: t("startYearValidation"),
+                                validate: {
+                                  lessThanEndYear: (value) => {
+                                    const endYear = watch(
+                                      `educations.${index}.end_year`
+                                    );
+                                    // if (!endYear || parseInt(value) < parseInt(endYear)) {
+                                    //     return true;
+                                    // }
+                                    // return 'Start Year must be less than End Year';
+                                  },
+                                },
+                              })}
+                            >
+                              <option disabled selected>
+                                {t("pleaseSelectYear")}
+                              </option>
+                              {yearsArray?.map((item) => (
+                                <option key={item} value={item}>
+                                  {item}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            {errors &&
+                              errors.educations &&
+                              errors.educations[index] &&
+                              errors.educations[index].start_year && (
+                                <p className="error-message">
+                                  {errors.educations[index].start_year.message}
+                                </p>
+                              )}
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="font-14 fw-medium">{t("endYear")} *</Form.Label>
+                            <Form.Select
+                              className="common-field font-14"
+                              {...register(`educations.${index}.end_year`, {
+                                required: {
+                                  value: disbaleYear[index] ? false : true,
+                                  message: t("endYearValidation"),
+                                },
+                              })}
+                              disabled={disbaleYear[index]}
+                            >
+                              <option disabled selected>
+                                {t("pleaseSelectYear")}
+                              </option>
+                              {yearsArray?.map((item) => (
+                                <option key={item} value={item}>
+                                  {item}
+                                </option>
+                              ))}
+                            </Form.Select>
+                            {errors &&
+                              errors.educations &&
+                              errors.educations[index] &&
+                              errors.educations[index].end_year && (
+                                <p className="error-message">
+                                  {errors.educations[index].end_year.message}
+                                </p>
+                              )}
+                          </Form.Group>
+                        </Col>
+                        <Form.Group className="mb-4 d-flex gap-2 align-items-center">
+                          <Form.Check
+                            type="checkbox"
+                            className="job-post-checkbox font-14 fw-medium"
+                            id="edu-checkbox"
+                            {...register(
+                              `educations[${index}].currently_attending`,
+                              {
+                                required: false,
+                              }
+                            )}
+                            onChange={(e) =>
+                              handleCurrentlyAttendingChange(e, index)
+                            }
+                          />
+                          <Form.Label className="mb-0" htmlFor="edu-checkbox">
+                            {t("currentlyAttending")}
+                          </Form.Label>
+                        </Form.Group>
+                        {watch("educations")?.length > 1 && (
+                          <Col md="12" className="d-flex justify-content-end">
+                            <Button
+                              className="arrow-btn danger-arrow"
+                              // onClick={() => handleDeleteField(index,id)}
+                              onClick={() => {
+                                removeEducationField(index);
+                              }}
+                            >
+                              <FaTrash />
+                            </Button>
+                          </Col>
                         )}
-                      </Form.Group>
-                    </Col>
-                    <Col md={3}>
-                      <Form.Group>
-                        <Form.Label>{t("startYear")} *</Form.Label>
-                        <Form.Select
-                          className="common-field"
-                          {...register(`educations.${index}.start_year`, {
-                            required: t("startYearValidation"),
-                            validate: {
-                              lessThanEndYear: (value) => {
-                                const endYear = watch(
-                                  `educations.${index}.end_year`
-                                );
-                                // if (!endYear || parseInt(value) < parseInt(endYear)) {
-                                //     return true;
-                                // }
-                                // return 'Start Year must be less than End Year';
-                              },
-                            },
-                          })}
-                        >
-                          <option disabled selected>
-                            {t("pleaseSelectYear")}
-                          </option>
-                          {yearsArray?.map((item) => (
-                            <option key={item} value={item}>
-                              {item}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        {errors &&
-                          errors.educations &&
-                          errors.educations[index] &&
-                          errors.educations[index].start_year && (
-                            <p className="error-message">
-                              {errors.educations[index].start_year.message}
-                            </p>
-                          )}
-                      </Form.Group>
-                    </Col>
-                    <Col md="3">
-                      <Form.Group className="mb-3">
-                        <Form.Label>{t("endYear")} *</Form.Label>
-                        <Form.Select
-                          className="common-field"
-                          {...register(`educations.${index}.end_year`, {
-                            required: {
-                              value: disbaleYear[index] ? false : true,
-                              message: t("endYearValidation"),
-                            },
-                          })}
-                          disabled={disbaleYear[index]}
-                        >
-                          <option disabled selected>
-                            {t("pleaseSelectYear")}
-                          </option>
-                          {yearsArray?.map((item) => (
-                            <option key={item} value={item}>
-                              {item}
-                            </option>
-                          ))}
-                        </Form.Select>
-                        {errors &&
-                          errors.educations &&
-                          errors.educations[index] &&
-                          errors.educations[index].end_year && (
-                            <p className="error-message">
-                              {errors.educations[index].end_year.message}
-                            </p>
-                          )}
-                      </Form.Group>
-                    </Col>
-                    <Form.Group className="mb-4 d-flex gap-2 align-items-center">
-                      <Form.Check
-                        type="checkbox"
-                        className="job-post-checkbox"
-                        id="edu-checkbox"
-                        {...register(
-                          `educations[${index}].currently_attending`,
-                          {
-                            required: false,
-                          }
-                        )}
-                        onChange={(e) =>
-                          handleCurrentlyAttendingChange(e, index)
-                        }
-                      />
-                      <Form.Label className="mb-0" htmlFor="edu-checkbox">
-                        {t("currentlyAttending")}
-                      </Form.Label>
-                    </Form.Group>
-                    {watch("educations")?.length > 1 && (
-                      <Col md="12" className="d-flex justify-content-end">
-                        <Button
-                          className="arrow-btn danger-arrow"
-                          // onClick={() => handleDeleteField(index,id)}
-                          onClick={() => {
-                            removeEducationField(index);
-                          }}
-                        >
-                          <FaTrash />
-                        </Button>
-                      </Col>
-                    )}
-                  </Row>
-                )
-              )}
-              <div className="text-end my-3">
-                <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                  <Button
-                    className="arrow-btn primary-arrow ms-auto"
-                    onClick={handleAddMore}
-                  >
-                    +
-                  </Button>
-                </OverlayTrigger>
-              </div>
-            </div>
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">{t("enterAbout")} *</h2>
-            </div>
-            <div className="inner-form mb-3">
-              <Row>
-                <Col md="12">
-                  <Form.Group className="mb-4">
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      placeholder="Add your about"
-                      className="common-field"
-                      name="bio"
-                      {...register("bio", {
-                        required: {
-                          value: true,
-                          message: `${t("AboutRequired")}`,
-                        },
-                      })}
-                    />
-                    <p className="error-message">{errors.bio?.message} </p>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </div>
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">{t("enterSkills")}</h2>
-            </div>
-            <div className="experience-container">
-              <Row>
-                <Col md="12">
-                  <Form.Group className="mb-4">
-                    <CreatableSelect
-                      className="common-field"
-                      isMulti
-                      isClearable
-                      name={selectedOption}
-                      onChange={(newValue) => {
-                        setSelectedOption(newValue);
-                      }}
-                      onCreateOption={(val) => {
-                        onChangeSelect(val, "skills");
-                      }}
-                      options={skillCate}
-                      value={selectedOption}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-            </div>
-            <div className="cv-header-wrapper mb-3">
-              <h2 className="subheading-resume mb-0">{t("addSocialLinks")}</h2>
-            </div>
-            <div className="inner-form">
-              {socialMediaRows.map((row, index) => (
-                <div className="experience-container">
+                      </Row>
+                    )
+                  )}
+
+                  <div className="text-end my-3">
+                    <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                      <Button
+                        className="arrow-btn primary-arrow ms-auto"
+                        onClick={handleAddMore}
+                      >
+                        +
+                      </Button>
+                    </OverlayTrigger>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item className="register-collapse-item" eventKey="4">
+                <Accordion.Header className="register-collapse-header">
+                  <h2 className="subheading-resume mb-0"><span className="resume-step">5</span> {t("enterExperience")}</h2>
+                </Accordion.Header>
+                <Accordion.Body className="register-collapse-body">
+                  <ExperienceCV data={null} role="vendor" onSubmitVendor={onSubmit} />
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item className="register-collapse-item" eventKey="5">
+                <Accordion.Header className="register-collapse-header">
+                  <h2 className="subheading-resume mb-0"><span className="resume-step">6</span> Add Skills *</h2>
+                </Accordion.Header>
+                <Accordion.Body className="register-collapse-body">
                   <Row>
                     <Col md="12">
-                      <InputGroup className="mb-3">
-                        <InputGroup.Text id="basic-addon1 px-0">
-                          <Form.Select
-                            className="py-0 border-0 shadow-none bg-transparent"
-                            {...register(`social_links[${index}].name`)} // Register the name field
-                          >
-                            {/* <option value="facebook_url">Facebook</option> */}
-                            <option value="linkedin_url">
-                              {t("linkedIn")}
-                            </option>
-                            {/* <option value="twitter_url">Twitter</option> */}
-                            <option value="github_url">{t("github")}</option>
-                          </Form.Select>
-                        </InputGroup.Text>
-                        <Form.Control
-                          type="text"
-                          className="common-field"
-                          placeholder={t("enterUrl")}
-                          {...register(`social_links[${index}].url`, {
-                            required: {
-                              value: true,
-                              message: "Url is required",
-                            },
-                          })}
+                      <Form.Group className="mb-4">
+                        <Form.Label className="font-14 fw-medium">Add your skills</Form.Label>
+                        <CreatableSelect
+                          className="common-field font-14"
+                          isMulti
+                          isClearable
+                          name={selectedOption}
+                          onChange={(newValue) => {
+                            setSelectedOption(newValue);
+                          }}
+                          onCreateOption={(val) => {
+                            onChangeSelect(val, "skills");
+                          }}
+                          options={skillCate}
+                          value={selectedOption}
                         />
-
-                        {errors?.social_links?.url && (
-                          <p className="error-message">
-                            {errors.social_links?.url.message}
-                          </p>
-                        )}
-                      </InputGroup>
+                      </Form.Group>
                     </Col>
                   </Row>
-                </div>
-              ))}
-              <div className="text-end mb-3">
-                <OverlayTrigger placement="bottom" overlay={addtooltip}>
-                  <Button
-                    className="arrow-btn primary-arrow ms-auto"
-                    onClick={handleAddMoreSocial}
-                  >
-                    +
-                  </Button>
-                </OverlayTrigger>
-              </div>
-            </div>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item className="register-collapse-item" eventKey="6">
+                <Accordion.Header className="register-collapse-header">
+                  <h2 className="subheading-resume mb-0"><span className="resume-step">7</span> {t("addSocialLinks")}</h2>
+                </Accordion.Header>
+                <Accordion.Body className="register-collapse-body">
+                  {socialMediaRows.map((row, index) => (
+                    <div className="experience-container">
+                      <Row>
+                        <Col md="12">
+                          <InputGroup className="mb-3">
+                            <InputGroup.Text id="basic-addon1 px-0">
+                              <Form.Select
+                                className="py-0 border-0 shadow-none bg-transparent"
+                                {...register(`social_links[${index}].name`)} // Register the name field
+                              >
+                                {/* <option value="facebook_url">Facebook</option> */}
+                                <option value="linkedin_url">
+                                  {t("linkedIn")}
+                                </option>
+                                {/* <option value="twitter_url">Twitter</option> */}
+                                <option value="github_url">{t("github")}</option>
+                              </Form.Select>
+                            </InputGroup.Text>
+                            <Form.Control
+                              type="text"
+                              className="common-field font-14"
+                              placeholder={t("enterUrl")}
+                              {...register(`social_links[${index}].url`, {
+                                required: {
+                                  value: true,
+                                  message: "Url is required",
+                                },
+                              })}
+                            />
+
+                            {errors?.social_links?.url && (
+                              <p className="error-message">
+                                {errors.social_links?.url.message}
+                              </p>
+                            )}
+                          </InputGroup>
+                        </Col>
+                      </Row>
+                    </div>
+                  ))}
+                  <div className="text-end mb-3">
+                    <OverlayTrigger placement="bottom" overlay={addtooltip}>
+                      <Button
+                        className="arrow-btn primary-arrow ms-auto"
+                        onClick={handleAddMoreSocial}
+                      >
+                        +
+                      </Button>
+                    </OverlayTrigger>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
             <div className="text-center">
               <RexettButton
                 type="submit"
