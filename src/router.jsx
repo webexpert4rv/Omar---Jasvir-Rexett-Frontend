@@ -22,8 +22,6 @@ import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
 import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
 import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
-import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
-
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -626,12 +624,6 @@ export const route = [
   {
     path: "/admin/create-message-template",
     element: <CreateMessageTemplate />,
-    isAdmin: true,
-    private: true,
-  },
-  {
-    path: "/admin/website-builder",
-    element: <WebsiteBuilder />,
     isAdmin: true,
     private: true,
   },

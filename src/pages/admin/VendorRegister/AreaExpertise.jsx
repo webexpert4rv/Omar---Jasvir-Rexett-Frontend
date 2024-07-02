@@ -41,15 +41,6 @@ const AreaExpertise = () => {
                                 </span>
                                 <span>Decision makers info</span>
                             </li>
-                            <li className="active-step">
-                                <span className="resume-count">
-                                    <span className="resume-step">3</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Company Info</span>
-                            </li>
                             <li>
                                 <span className="resume-count">
                                     <span className="resume-step">4</span>
@@ -102,24 +93,24 @@ const AreaExpertise = () => {
                                                         <Form.Label className="font-14 fw-medium">Service Offerings *</Form.Label>
                                                         <Form.Select className="common-field font-14">
                                                             <option>Select</option>
+                                                            <option>Web Development</option>
+                                                            <option>Designing</option>
+                                                            <option>Mobile Development</option>
                                                             <option>IoT</option>
-                                                            <option>Python</option>
-                                                            <option>Reactjs</option>
-                                                            <option>Vuejs</option>
-                                                            <option>AngularJS</option>
+                                                            <option>Digital Marketing</option>
                                                         </Form.Select>
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Your Turnaround time to close Contract Positions *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 50" />
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 8 hours" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Your Turnaround time to close Permanent Positions *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 40" />
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 24 hours" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>

@@ -11,10 +11,8 @@ const ThankRegister = ({ show, handleClose }) => {
                 <Modal.Body>
                     <h3 className="popup-heading">Thank you for applying</h3>
                     <p className="text-center">"Welcome to the Rexett Community!"</p>
-                    <p className="text-center">A Rexett Family Team Member Will Reach Out to You Shortly for the Next Steps!</p>
-                    <p className="text-center">Already have an account?</p>
+                    <p className="text-center">A Rexett Team Member Will Reach Out to You Shortly for the Next Steps!</p>
                     <div className="d-flex justify-content-center align-items-center mt-3 gap-3">
-                        <Link to={'/'} variant="transparent" className="main-btn font-14 text-decoration-none">Sign In</Link>
                         <Link to={'#'} variant="transparent" onClick={handleClose} className="outline-main-btn font-14 text-decoration-none rounded-3">Back to home</Link>
                     </div>
                 </Modal.Body>
