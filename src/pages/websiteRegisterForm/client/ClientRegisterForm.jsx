@@ -291,26 +291,30 @@ const ClientRegisterForm = ({ role }) => {
 
                 {/* {activeStep !== 8 && ( */}
                 <>
-                  {activeStep !== 1 && (
-                    <RexettButton
-                      type="button"
-                      text="Back"
-                      onClick={decreaseActiveStep}
-                      className="main-btn outline-main-btn px-5"
-                      // disabled={smallLoader}
-                      // isLoading={smallLoader}
-                    />
+                  {activeStep !== 8 && (
+                    <div className="text-center mr-2">
+                      {activeStep !== 1 && (
+                        <RexettButton
+                          type="button"
+                          text="Back"
+                          onClick={decreaseActiveStep}
+                          className="main-btn outline-main-btn px-5"
+                          // disabled={smallLoader}
+                          // isLoading={smallLoader}
+                        />
+                      )}
+                      <RexettButton
+                        type="submit"
+                        text={activeStep < 8 ? "Continue" : t("submit")}
+                        className="main-btn px-5"
+                        // onClick={() => {
+                        //   setActiveStep((prev) => prev + 1);
+                        // }}
+                        // disabled={smallLoader}
+                        // isLoading={smallLoader}
+                      />
+                    </div>
                   )}
-                  <RexettButton
-                    type="submit"
-                    text={activeStep < 8 ? "Continue" : t("submit")}
-                    className="main-btn px-5"
-                    // onClick={() => {
-                    //   setActiveStep((prev) => prev + 1);
-                    // }}
-                    // disabled={smallLoader}
-                    // isLoading={smallLoader}
-                  />
                 </>
                 {/* )} */}
               </form>

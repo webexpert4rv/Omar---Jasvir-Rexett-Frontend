@@ -29,7 +29,8 @@ const initialAdminData = {
     developerTimeReport:[],
     invoiceTotalPage : null,
     timeReportingDetailTotalPage:null,
-    configDetails: {}
+    configDetails: {},
+    allPermissionList:[]
 }
 
 export const adminDataSlice = createSlice({
@@ -151,10 +152,13 @@ export const adminDataSlice = createSlice({
         setConfigDetails : (state,action) => {
          state.configDetails = action.payload
         },
+        setAllPermissionList : (state,action) => {
+            state.allPermissionList = action.payload
+           },
     }
 })
 
-export const { setTimeReportDetails,setConfigDetails ,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setConfigDetails ,setAllPermissionList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -741,6 +745,23 @@ export function getUploadFile(payload){
             // dispatch(setFailAdminData())
 
             console.log(error,"error")
+        }
+    }
+}
+
+export function getAllPermissionSeeder(){
+    return async (dispatch)=>{
+        dispatch(setBtnLoader())
+        try{
+            let result = await clientInstance.get(`admin/permissions`)
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setAllPermissionList(result.data.data))
+            }
+        }catch(error){
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
         }
     }
 }

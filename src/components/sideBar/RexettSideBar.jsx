@@ -8,10 +8,11 @@ import { FaTimes } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
-const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) => {
-    const {configDetails} = useSelector(state=>state.adminData)
-    const { t } = useTranslation();
 
+   
+const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) => {
+    const { t } = useTranslation();
+    const {configDetails} = useSelector(state=>state.adminData)
     let currentRoute= role=="client"?"/":`/${role}-login`
     
     const logout = () => {

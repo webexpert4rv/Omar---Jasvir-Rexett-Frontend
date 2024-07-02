@@ -39,7 +39,14 @@ const PasswordSection = ({ control, errors, setError, clearErrors, watch }) => {
           <Controller
             name="password"
             control={control}
-            rules={{ required: "Password is required" }}    
+            rules={{
+              required: "Password is required",
+              pattern: {
+                value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+                message:
+                  "Password must contain at least a symbol, upper and lower case letters and a number",
+              },
+            }}
             render={({ field }) => (
               <Form.Control
                 {...field}
@@ -101,7 +108,8 @@ const PasswordSection = ({ control, errors, setError, clearErrors, watch }) => {
             rules={{
               required: "Confirm password is required",
               validate: (value) =>
-                value === watch("password") || "Password and confirm password must match",
+                value === watch("password") ||
+                "Password and confirm password must match",
             }}
             render={({ field }) => (
               <Form.Control

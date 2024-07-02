@@ -25,9 +25,6 @@ const NewPermissions = ({ show, handleClose}) => {
                         <Form.Label className="font-14 fw-medium" >Permission Name</Form.Label>
                         <Form.Control className="common-field" placeholder="Enter permission name" />
                     </Form.Group>
-                    <div className="text-center">
-                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                    </div>
                 </Form>
             </Modal.Body>
         </Modal>

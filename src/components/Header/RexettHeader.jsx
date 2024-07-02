@@ -220,7 +220,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     showDeletetodo(false);
   }
 
-  // console.log(routePath(role),"routePath(isSingleJob)")
+  console.log(routePath(role), "routePath(isSingleJob)")
 
   return (
     <>
