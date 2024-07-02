@@ -80,7 +80,7 @@ const LocationSection = ({
         type="state"
         options={statesList}
       />
-      {/* <CommonReactSelect
+      <CommonReactSelect
         name="city"
         errors={errors}
         handleChange={handleDropDownChange}
@@ -90,7 +90,7 @@ const LocationSection = ({
         type="city"
         watch={watch}
         options={citiesList}
-      /> */}
+      />
       {/* may be need to verify name of timezone value */}
       {isTimeZoneRequired && (
         <CommonReactSelect
