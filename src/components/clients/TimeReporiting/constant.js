@@ -240,5 +240,41 @@ export const configurationTabText = [
  
 ]
 
+export const companyType = [
+  {
+    key:"Sole_Proprietorship",
+    value:"Sole Proprietorship"
+  },
+  { 
+    key:"Partnership",
+    value: "Partnership"
+   },
+   {
+    key:"Limited_Liability",
+    value:"Limited Liability"
+  },
+  {
+    key: "Corporation",
+    value:"Corporation"
+  },
+  {
+    key:"Non_Profit_Organization",
+    value:"Non Profit Organization"
+  },
+  {
+    key:"Cooperative",
+    value:"Cooperative"
+  },
+  {
+    key:"Franchise",
+    value:"Franchise"
+  },
+  {
+    key:"Joint_Venture",
+    value:"Joint Venture"
+  }
+ 
+]
+
 
 export const GOOGLE_AUTOCOMPLETE_API_KEY="AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"

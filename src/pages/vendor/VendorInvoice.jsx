@@ -5,13 +5,11 @@ import { addFileInvoice, getDeveloperList, getClientList } from "../../redux/sli
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import RexettButton from "../../components/atomic/RexettButton";
 import { useTranslation } from "react-i18next";
-import timeSheetIcon from '../../assets/img/timesheet_approved.png';
-import companyLogo from "../../assets/img/amazon.png"
-import invoiceIcon from '../../assets/img/invoice_paid.png'
-import timeSheetNotApproved from '../../assets/img/timesheet_notapproved.png';
-import invoiceUnpaid from '../../assets/img/invoice_unpaid.png'
+import timeSheetIcon from '../../assets/img/timesheet-icon.svg';
+import invoiceIcon from '../../assets/img/invoice-icon.svg'
 import { IoSearch } from "react-icons/io5";
 import userImage from "../../assets/img/user-img.jpg"
+import { RxChevronRight } from "react-icons/rx";
 const VendorInvoice = () => {
     const dispatch = useDispatch()
     const [ids, setIds] = useState({
@@ -116,12 +114,8 @@ const VendorInvoice = () => {
                     </div>
                     <div>
                         <Form.Select className="time-filter-select shadow-none">
-                            <option>Select Client</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
-                            <option>Amazon</option>
+                            <option>Select Project</option>
+                            <option>AI Chat bot</option>
                         </Form.Select>
                     </div>
                     <div>
@@ -156,16 +150,19 @@ const VendorInvoice = () => {
                 <table className="table time-table table-bordered table-ui-custom">
                     <thead>
                         <th className="time-table-head text-start">
-                            Developer Name
+                            Project name
                         </th>
                         <th className="time-table-head text-start">
-                            Client Name
+                            Total hired developers
                         </th>
                         <th className="time-table-head text-start">
-                            Project
+                            Total invoice raised
                         </th>
                         <th className="time-table-head text-start">
-                            Total Hours
+                            Total hours spend
+                        </th>
+                        <th className="time-table-head text-start">
+                            Start date
                         </th>
                         <th className="time-table-head text-start">
                             Invoice Month
@@ -173,196 +170,133 @@ const VendorInvoice = () => {
                         <th className="time-table-head text-start">
                             Project Status
                         </th>
-                        <th className="time-table-head text-start">
-                            Action
-                        </th>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr className="application-row">
                             <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
+                                <span className="developers row-arrow">
+                                    <RxChevronRight />
+                                </span>
+                                Figma to UI
                             </td>
                             <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
+                                3
                             </td>
-                            <td className="time-table-data text-start">AI Bot Project</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
                             <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
+                                5
+                            </td>
+                            <td className="time-table-data text-start">
+                                3000hrs.
+                            </td>
+                            <td className="time-table-data text-start">
+                                10-04-2024
+                            </td>
+                            <td className="time-table-data text-start">
+                                Jun 2024
+                            </td>
+                            <td className="time-table-data text-start">
+                                <span className="status-progress">Progress</span>
                             </td>
                         </tr>
                         <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <img src={timeSheetNotApproved} className="approved_icon" />
-                                    <img src={invoiceUnpaid} className="approved_icon" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-progress">Progress</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <div className="user-imgbx application-imgbx mx-0 mb-0">
-                                        <img src={userImage} className="user-img" />
-                                    </div>
-                                    Rohit Sharma
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">
-                                <div className="text-start">
-                                    <div className="user-imgbx d-inline-flex align-items-center gap-2 application-imgbx associated-logo mx-0 mb-0">
-                                        <img src={companyLogo} className="user-img" />
-                                        Amazon
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="time-table-data text-start">Figma to UI</td>
-                            <td className="time-table-data text-start">140 hrs</td>
-                            <td className="time-table-data text-start">Jan 2024</td>
-                            <td className="time-table-data text-start"><span className="status-finished">Completed</span></td>
-                            <td className="time-table-data text-start">
-                                <div className="d-flex align-items-center gap-2">
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
-                                        <img src={timeSheetIcon} className="approved_icon" />
-                                    </OverlayTrigger>
-                                    <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
-                                        <img src={invoiceIcon} className="approved_icon" />
-                                    </OverlayTrigger>
+                            <td colSpan="7">
+                                <div className="table-responsive">
+                                    <table className="table time-table table-bordered table-ui-custom mb-0">
+                                        <thead>
+                                            <th className="time-table-head text-start">
+                                                Developer Name
+                                            </th>
+                                            <th className="time-table-head text-start">
+                                                Total hours spend
+                                            </th>
+                                            <th className="time-table-head text-start">
+                                                Invoice Month
+                                            </th>
+                                            <th className="time-table-head text-start">
+                                                Action
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className="time-table-data text-start">
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <div className="user-imgbx application-imgbx mx-0 mb-0">
+                                                            <img src={userImage} className="user-img" />
+                                                        </div>
+                                                        John Smith
+                                                    </div>
+                                                </td>
+                                                <td className="time-table-data text-start">140 hrs</td>
+                                                <td className="time-table-data text-start">Jun 2024</td>
+                                                <td className="time-table-data text-start">
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
+                                                            <Button className="main-btn font-14">
+                                                                <img src={timeSheetIcon} className="timesheet-icon" />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                        <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
+                                                            <Button className="main-btn font-14">
+                                                                <img src={invoiceIcon} className="invoice-icon" />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="time-table-data text-start">
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <div className="user-imgbx application-imgbx mx-0 mb-0">
+                                                            <img src={userImage} className="user-img" />
+                                                        </div>
+                                                        Emily Davis
+                                                    </div>
+                                                </td>
+                                                <td className="time-table-data text-start">140 hrs</td>
+                                                <td className="time-table-data text-start">Jun 2024</td>
+                                                <td className="time-table-data text-start">
+                                                <div className="d-flex align-items-center gap-2">
+                                                        <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
+                                                            <Button className="main-btn font-14">
+                                                                <img src={timeSheetIcon} className="timesheet-icon" />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                        <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
+                                                            <Button className="main-btn font-14">
+                                                                <img src={invoiceIcon} className="invoice-icon" />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="time-table-data text-start">
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <div className="user-imgbx application-imgbx mx-0 mb-0">
+                                                            <img src={userImage} className="user-img" />
+                                                        </div>
+                                                        James Taylor
+                                                    </div>
+                                                </td>
+                                                <td className="time-table-data text-start">140 hrs</td>
+                                                <td className="time-table-data text-start">Jun 2024</td>
+                                                <td className="time-table-data text-start">
+                                                <div className="d-flex align-items-center gap-2">
+                                                        <OverlayTrigger placeholder="bottom" overlay={downloadtimesheet}>
+                                                            <Button className="main-btn font-14">
+                                                                <img src={timeSheetIcon} className="timesheet-icon" />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                        <OverlayTrigger placeholder="bottom" overlay={downloadinvoice}>
+                                                            <Button className="main-btn font-14">
+                                                                <img src={invoiceIcon} className="invoice-icon" />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </td>
                         </tr>

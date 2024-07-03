@@ -3,11 +3,11 @@ import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { IoCloudUploadOutline, IoClose } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import devImg from '../../../assets/img/user-img.jpg';
 
 const AddCandidate = ({ show, handleClose }) => {
     const [uploadedImage, setUploadedImage] = useState(null);
     const [uploadedResume, setUploadedResume] = useState(null);
+    const [currentStep, setCurrentStep] = useState(1);
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
@@ -31,36 +31,18 @@ const AddCandidate = ({ show, handleClose }) => {
         setUploadedResume(null);
     };
 
-    return (
-        <>
-            <Modal show={show} onHide={handleClose} centered animation size="lg" className="custom-modal">
-                <Modal.Header closeButton className="border-0 pb-3">
-                </Modal.Header>
+    const nextStep = () => {
+        setCurrentStep((prevStep) => Math.min(prevStep + 1, 5));
+    };
 
-                <Modal.Body>
-                    <h3 className="popup-heading">Add Candidate</h3>
-                    <div className="steps-popup d-flex justify-content-between font-14">
-                        <div className="text-center step-countbx active">
-                            <span className="step-count">1</span>
-                            <p>Contact Details</p>
-                        </div>
-                        <div className="text-center">
-                            <span className="step-count">2</span>
-                            <p>Expertise</p>
-                        </div>
-                        <div className="text-center">
-                            <span className="step-count">3</span>
-                            <p>Past Success</p>
-                        </div>
-                        <div className="text-center">
-                            <span className="step-count">4</span>
-                            <p>Education</p>
-                        </div>
-                        <div className="text-center">
-                            <span className="step-count">5</span>
-                            <p>Project History</p>
-                        </div>
-                    </div>
+    const prevStep = () => {
+        setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
+    };
+
+    const renderStepContent = () => {
+        switch (currentStep) {
+            case 1:
+                return (
                     <div className="candidate-form px-3">
                         <div className="text-center mb-3">
                             {!uploadedImage && (
@@ -195,12 +177,311 @@ const AddCandidate = ({ show, handleClose }) => {
                             </Col>
                         </Row>
                     </div>
-                    <div className="text-center pt-3">
-                        <Button variant="transparent" className="main-btn font-14">Continue</Button>
+                );
+            case 2:
+                return (
+                    <div className="expertise-form candidate-form px-3">
+                        <Row>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">How many years of work experience?</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select years</option>
+                                        <option>0 to 1 years</option>
+                                        <option>1 to 2 years</option>
+                                        <option>2 to 3 years</option>
+                                        <option>5+ years</option>
+                                        <option>10+ years</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Job type</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select Type</option>
+                                        <option>Remote</option>
+                                        <option>Hybrid</option>
+                                        <option>Onsite</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Select Primary Language</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select language</option>
+                                        <option>English</option>
+                                        <option>Swedish</option>
+                                        <option>German</option>
+                                        <option>French</option>
+                                        <option>Hindi</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Primary Language Level</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select level</option>
+                                        <option>Starter</option>
+                                        <option>Intermediate</option>
+                                        <option>Expert</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Select Alternative Language</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select language</option>
+                                        <option>English</option>
+                                        <option>Swedish</option>
+                                        <option>German</option>
+                                        <option>French</option>
+                                        <option>Hindi</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Alternative Language Level</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select level</option>
+                                        <option>Starter</option>
+                                        <option>Intermediate</option>
+                                        <option>Expert</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Select your expertise</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select skills</option>
+                                        <option>React JS</option>
+                                        <option>Vue JS</option>
+                                        <option>Javascript</option>
+                                        <option>HTML</option>
+                                        <option>CSS</option>
+                                        <option>React Native</option>
+                                        <option>Angular</option>
+                                        <option>PHP</option>
+                                        <option>Python</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Select good to have skills</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select skills</option>
+                                        <option>React JS</option>
+                                        <option>Vue JS</option>
+                                        <option>Javascript</option>
+                                        <option>HTML</option>
+                                        <option>CSS</option>
+                                        <option>React Native</option>
+                                        <option>Angular</option>
+                                        <option>PHP</option>
+                                        <option>Python</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                        </Row>
                     </div>
-                </Modal.Body>
-            </Modal>
-        </>
+                );
+            case 3:
+                return (
+                    <div className="past-success-form candidate-form px-3">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h4 className="mb-0">Experience</h4>
+                            <Button variant="transparent" className="main-btn font-14">+ Add Experieence</Button>
+                        </div>
+                        <Row>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Professional title</Form.Label>
+                                    <Form.Control type="text" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Company Name</Form.Label>
+                                    <Form.Control type="text" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">From</Form.Label>
+                                    <Form.Control type="date" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">To</Form.Label>
+                                    <Form.Control type="date" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Description</Form.Label>
+                                    <Form.Control as="textarea" rows={3} className="common-field font-14" />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                );
+            case 4:
+                return (
+                    <div className="education-history-form candidate-form px-3">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h4 className="mb-0">Education</h4>
+                            <Button variant="transparent" className="main-btn font-14">+ Add Education</Button>
+                        </div>
+                        <Row>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Degree/Diploma</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select Degree/Diploma</option>
+                                        <option>Bachelor of Science</option>
+                                        <option>Master of Computer Science</option>
+                                        <option>Bachelor of Arts</option>
+                                        <option>Ph.D in Electical Engineering</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">College/Universtity Name</Form.Label>
+                                    <Form.Control type="text" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">From</Form.Label>
+                                    <Form.Control type="date" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">To</Form.Label>
+                                    <Form.Control type="date" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Description</Form.Label>
+                                    <Form.Control as="textarea" rows={3} className="common-field font-14" />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                );
+            case 5:
+                return (
+                    <div className="project-history-form candidate-form px-3">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h4 className="mb-0">Project History</h4>
+                            <Button variant="transparent" className="main-btn font-14">+ Add Project</Button>
+                        </div>
+                        <Row>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Title</Form.Label>
+                                    <Form.Control type="text" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Skills</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select skills</option>
+                                        <option>React JS</option>
+                                        <option>Vue JS</option>
+                                        <option>Javascript</option>
+                                        <option>HTML</option>
+                                        <option>CSS</option>
+                                        <option>React Native</option>
+                                        <option>Angular</option>
+                                        <option>PHP</option>
+                                        <option>Python</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Role</Form.Label>
+                                    <Form.Control type="text" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Project Type</Form.Label>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Select Type</option>
+                                        <option>Ecommerce</option>
+                                        <option>Dating Apps/Website</option>
+                                        <option>Healthcare</option>
+                                        <option>Artificial Intelligence</option>
+                                    </Form.Select>
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Project URL</Form.Label>
+                                    <Form.Control type="text" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">From</Form.Label>
+                                    <Form.Control type="date" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">To</Form.Label>
+                                    <Form.Control type="date" className="common-field font-14" />
+                                </div>
+                            </Col>
+                            <Col lg={12}>
+                                <div className="mb-2">
+                                    <Form.Label className="font-14 fw-medium">Description</Form.Label>
+                                    <Form.Control as="textarea" rows={3} className="common-field font-14" />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <Modal show={show} onHide={handleClose} size="lg" centered className="custom-modal">
+            <Modal.Header closeButton className="border-0 pb-3">
+            </Modal.Header>
+            <Modal.Body>
+                <h3 className="popup-heading">Add Candidate</h3>
+                {renderStepContent()}
+            </Modal.Body>
+            <Modal.Footer className="justify-content-between">
+                <Button variant="secondary" onClick={prevStep} disabled={currentStep === 1}>
+                    Previous
+                </Button>
+                {currentStep < 5 && (
+                    <div className="text-center pt-3">
+                        <Button variant="transparent" onClick={nextStep} className="main-btn font-14">Continue</Button>
+                    </div>
+                )}
+                {currentStep === 5 && (
+                    <Button variant="transparent" onClick={handleClose} className="main-btn font-14">Submit</Button>
+                )}
+            </Modal.Footer>
+        </Modal>
     );
 };
 
