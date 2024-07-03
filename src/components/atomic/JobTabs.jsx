@@ -36,9 +36,6 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
     return skillsArray;
   };
 
-
-
-
   const currentStatusCssClass = (status) => {
     console.log(status, "status")
     switch (status) {

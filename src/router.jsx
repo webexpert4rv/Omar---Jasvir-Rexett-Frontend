@@ -20,11 +20,10 @@ import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
-import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
-import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
-import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
-import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
+import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
 
+import ForgotPassword from "./pages/Authentication/ForgotPassword";
+import ResetPassword from "./pages/Authentication/ResetPassword";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -183,6 +182,17 @@ export const route = [
     private: true,
     isClient: true,
   },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword/>,
+    public: true,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword/>,
+    public: true,
+  },
+
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
   {
@@ -629,12 +639,6 @@ export const route = [
   {
     path: "/admin/create-message-template",
     element: <CreateMessageTemplate />,
-    isAdmin: true,
-    private: true,
-  },
-  {
-    path: "/admin/website-builder",
-    element: <WebsiteBuilder />,
     isAdmin: true,
     private: true,
   },

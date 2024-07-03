@@ -259,7 +259,7 @@ const EditVendorProfile = () => {
                   </OverlayTrigger> */}
                 </div>
                 <Row className="mb-4">
-                  <Col md="12">
+                  <Col md={6}>
                     <div className="inner-form">
                       <Form.Label>Image*</Form.Label>
                       <Form.Label

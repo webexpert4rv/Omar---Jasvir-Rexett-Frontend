@@ -137,7 +137,7 @@ const EducationSummary = () => {
                                                 <h4 className="summary-heading mb-2 fw-semibold">
                                                     Bachelors of science, PTU
                                                 </h4>
-                                                <p className="font-14">February 2023 - January 2025</p>
+                                                <p className="font-14">July 2017 - May 2021</p>
                                                 <ul>
                                                     <li className="font-14">
                                                         Self-motivated, with a strong sense of personal responsibility.

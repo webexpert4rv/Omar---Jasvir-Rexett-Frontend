@@ -30,7 +30,7 @@ const CommonFilterSection = ({
 
   useEffect(() => {
     for (let key in filters) {
-      setValue(key, filters[key]);
+        setValue(key, filters[key]);
     }
     setSearchValue(
       filterFields?.["searchFilter"]?.["key"],
@@ -55,20 +55,16 @@ const CommonFilterSection = ({
       <Form onSubmit={handleSubmit(onSubmitFilters)}>
         <div className="d-flex align-items-center gap-2 mb-lg-0 mb-3 flex-wrap">
           {filterFields?.selectFilters?.map(
-            ({ key, filterLabel, options,formLabel, isDate, defaultValueRequired }) => (
+            ({ key, filterLabel, options, isDate, defaultValueRequired }) => (
               <div>
                 {isDate ? (
-                  // <div className="d-flex gap-2">
-                  <div >
-                  {formLabel && <Form.Label>{formLabel}</Form.Label>}
-                    <Form.Control
-                      type="date"
-                      className="time-filter-select shadow-none"
-                      placeholder="Select date"
-                      max={new Date().toISOString().split("T")[0]}
-                      {...register(key)}
-                    />
-                  </div>
+                  <Form.Control
+                    type="date"
+                    className="time-filter-select shadow-none"
+                    placeholder="Select date"
+                    max={new Date().toISOString().split("T")[0]}
+                    {...register(key)}
+                  />
                 ) : (
                   <Form.Select
                     {...register(key)}

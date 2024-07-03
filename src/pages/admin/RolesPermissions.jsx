@@ -107,8 +107,6 @@ const action_profile = (
 )
 
   
-
-    
     return (
         <>
             <div className="card-box">

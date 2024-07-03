@@ -3,8 +3,8 @@ import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import profileImg from '../../../assets/img/demo-img.jpg';
-import { IoCameraOutline } from "react-icons/io5";
+import profileImg from '../../../assets/img/dummy-logo.jpg';
+import { IoCameraOutline, IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
 const VendorPersonal = () => {
     return (
         <>
@@ -32,15 +32,6 @@ const VendorPersonal = () => {
                                     </span>
                                 </span>
                                 <span>Decision makers info</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">3</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Company Info</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -88,13 +79,18 @@ const VendorPersonal = () => {
                                             <Row>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Company Name</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
+                                                        <Form.Label className="font-14 fw-medium">Company Name *</Form.Label>
+                                                        <div className="position-relative resume-field-wrapper">
+                                                            <Form.Control type="text" className="common-field font-14" placeholder="E.g. Microsoft" />
+                                                            <span className="valid-data">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Type of company</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Type of company *</Form.Label>
                                                         <Form.Select className="common-field font-14">
                                                             <option>Select</option>
                                                             <option>Sole Parternship</option>
@@ -106,19 +102,49 @@ const VendorPersonal = () => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Tax ID</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
+                                                        <Form.Label className="font-14 fw-medium">Tax ID *</Form.Label>
+                                                        <div className="position-relative resume-field-wrapper">
+                                                            <Form.Control type="text" className="common-field font-14 invalid-field" placeholder="Enter Tax Id" />
+                                                            <span className="invalid-data">
+                                                                <IoCloseCircle />
+                                                            </span>
+                                                        </div>
+                                                        <p className="field-error">This field is required</p>
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">CIN Number</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
+                                                        <Form.Label className="font-14 fw-medium">CIN Number *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="Enter CIN Number" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Phone Number</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Estbl. Year *</Form.Label>
+                                                        <Form.Control type="date" className="common-field font-14" placeholder="E.g. 15,000" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Website URL *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="E.g. www.xyztechnology.com" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Yearly revenue (in USD) *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="E.g. 15,000" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Employees strength *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="E.g. 100" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Phone Number *</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. +91 123 456 7890" />
                                                     </div>
                                                 </Col>
@@ -130,49 +156,49 @@ const VendorPersonal = () => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Password</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Password *</Form.Label>
                                                         <Form.Control type="password" className="common-field font-14" placeholder="Enter password" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Confirm new password</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Confirm new password *</Form.Label>
                                                         <Form.Control type="password" className="common-field font-14" placeholder="Enter confirm password" />
                                                     </div>
                                                 </Col>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Address</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Address *</Form.Label>
                                                         <Form.Control type="password" className="common-field font-14" placeholder="E.g. Street 1341, New area, CA, USA" />
                                                     </div>
                                                 </Col>
                                                 <Col md={4}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Country</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Country *</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. India" />
                                                     </div>
                                                 </Col>
                                                 <Col md={4}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">State</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Punjab" />
+                                                        <Form.Label className="font-14 fw-medium">State *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. New Delhi" />
                                                     </div>
                                                 </Col>
                                                 <Col md={4}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">City</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Amritsar" />
+                                                        <Form.Label className="font-14 fw-medium">City *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. New Delhi" />
                                                     </div>
                                                 </Col>
                                                 <Col md={4}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Pin Code</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 143001" />
+                                                        <Form.Label className="font-14 fw-medium">Pin Code *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 110001" />
                                                     </div>
                                                 </Col>
                                                 <Col md={8}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Timezone</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Timezone *</Form.Label>
                                                         <Form.Select className="common-field font-14">
                                                             <option>Select Timezone</option>
                                                             <option>GMT (+5:30) Kolkata</option>
