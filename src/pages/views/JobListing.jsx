@@ -11,8 +11,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  getAllJobPostedList,
   getJobCategoryList,
+  getJobLists,
 } from "../../redux/slices/clientDataSlice";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { FaEye } from "react-icons/fa6";
@@ -24,13 +24,19 @@ import { FaUsers } from "react-icons/fa";
 import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
+import { JOB_LISTING_PER_PAGE } from "./constant";
 
 const JobListing = () => {
   const [page, setPage] = useState(1);
+  const [activeTab,setActiveTab] = useState("all");
   const dispatch = useDispatch();
-  const { allJobPostedList, jobCategoryList, screenLoader } = useSelector(
+  // const { jobList, jobCategoryList, screenLoader } = useSelector(
+  //   (state) => state.clientData
+  // );
+  const { jobList, jobCategoryList, screenLoader } = useSelector(
     (state) => state.clientData
   );
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -38,8 +44,13 @@ const JobListing = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getAllJobPostedList(page));
-  }, [page]);
+    const filters = {
+      page:page,
+      type: activeTab,
+      perPage:JOB_LISTING_PER_PAGE
+    }
+    dispatch(getJobLists(filters));
+  }, [page,activeTab]);
 
   const getCategory = (cat) => {
     let data = jobCategoryList.find((item) => item.id == cat);
@@ -96,6 +107,7 @@ const JobListing = () => {
   const hiredText = (
     <Tooltip>Hired</Tooltip>
   )
+  console.log(jobList,"jobList")
   return (
     <>
       {screenLoader ? (
@@ -105,13 +117,15 @@ const JobListing = () => {
           <Tabs
             defaultActiveKey="all"
             id="justify-tab-example"
+            activeKey={activeTab}
+            onSelect={(selectedTab)=>setActiveTab(selectedTab)}
             className="mb-3 notification-tabs job-listing-tabs gap-md-0 gap-3"
           >
             <Tab eventKey="all" title={t("all")}>
               <section className="job-posted-section">
                 <div className="job-posted-wrapper">
-                  {allJobPostedList?.data?.length > 0 ? (
-                    allJobPostedList?.data?.map((item) => {
+                  {jobList?.data?.length > 0 ? (
+                    jobList?.data?.map((item) => {
                       return (
                         <>
                           <div className="job-posted-list d-block" key={item.id}>
@@ -243,14 +257,14 @@ const JobListing = () => {
                   )}
                 </div>
               </section>
-              {allJobPostedList?.totalCount > 5 ? (
+              {jobList?.totalCount > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <p className="showing-result">
-                    {t("showing")} {allJobPostedList?.data?.length}{" "}
+                    {t("showing")} {jobList?.data?.length}{" "}
                     {t("results")}
                   </p>
                   <RexettPagination
-                    number={allJobPostedList?.totalPages}
+                    number={jobList?.totalPages}
                     setPage={setPage}
                     page={page}
                   />
@@ -262,8 +276,8 @@ const JobListing = () => {
             <Tab eventKey="in-progress" title={t("inProgress")}>
               <section className="job-posted-section">
                 <div className="job-posted-wrapper">
-                  {allJobPostedList?.data?.length > 0 ? (
-                    allJobPostedList?.data?.map((item) => {
+                  {jobList?.data?.length > 0 ? (
+                    jobList?.data?.map((item) => {
                       return (
                         <>
                           <div className="job-posted-list" key={item.id}>
@@ -343,14 +357,14 @@ const JobListing = () => {
                   )}
                 </div>
               </section>
-              {allJobPostedList?.totalCount > 5 ? (
+              {jobList?.totalCount > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <p className="showing-result">
-                    {t("showing")} {allJobPostedList?.data?.length}{" "}
+                    {t("showing")} {jobList?.data?.length}{" "}
                     {t("results")}
                   </p>
                   <RexettPagination
-                    number={allJobPostedList?.totalPages}
+                    number={jobList?.totalPages}
                     setPage={setPage}
                     page={page}
                   />
@@ -362,8 +376,8 @@ const JobListing = () => {
             <Tab eventKey="ended" title={t("endJobs")}>
               <section className="job-posted-section">
                 <div className="job-posted-wrapper">
-                  {allJobPostedList?.data?.length > 0 ? (
-                    allJobPostedList?.data?.map((item) => {
+                  {jobList?.data?.length > 0 ? (
+                    jobList?.data?.map((item) => {
                       return (
                         <>
                           <div className="job-posted-list" key={item.id}>
@@ -443,14 +457,14 @@ const JobListing = () => {
                   )}
                 </div>
               </section>
-              {allJobPostedList?.totalCount > 5 ? (
+              {jobList?.totalCount > 5 ? (
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <p className="showing-result">
-                    {t("showing")} {allJobPostedList?.data?.length}{" "}
+                    {t("showing")} {jobList?.data?.length}{" "}
                     {t("results")}
                   </p>
                   <RexettPagination
-                    number={allJobPostedList?.totalPages}
+                    number={jobList?.totalPages}
                     setPage={setPage}
                     page={page}
                   />

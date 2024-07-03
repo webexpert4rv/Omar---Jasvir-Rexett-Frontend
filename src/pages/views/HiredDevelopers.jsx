@@ -10,7 +10,7 @@ import { MdEmail } from "react-icons/md";
 import userImg from "../../assets/img/user-img.jpg";
 import { IoGrid } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa6";
-import { Nav, Tab } from "react-bootstrap";
+import { Nav, OverlayTrigger, Tab, Tooltip } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { useTranslation } from "react-i18next";
@@ -39,6 +39,10 @@ const HiredDevelopers = () => {
     dispatch(getDeveloperDetails(id))
     navigate(`/client/client-single-developer/${id}`)
   }
+
+  const disabledDeveloper = (
+    <Tooltip>Disable Developer</Tooltip>
+  )
 
 
   return (
@@ -89,6 +93,9 @@ const HiredDevelopers = () => {
                         <th>
                           <span>Hiring Price</span>
                         </th>
+                        <th className="text-center">
+                          <span>Action</span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -130,7 +137,21 @@ const HiredDevelopers = () => {
                               <td>
                                 <span><p className="designation-user color-121212 mb-0">$1240.00</p></span>
                               </td>
-                      
+                              <td className="text-center">
+                                  <OverlayTrigger
+                                    placement="bottom"
+                                    overlay={disabledDeveloper}
+                                  >
+                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0 d-inline-block my-0">
+                                      <input
+                                        class="form-check-input toggle-switch-custom mx-auto"
+                                        type="checkbox"
+                                        role="switch"
+                                      />
+                                    </div>
+                                  </OverlayTrigger>
+
+                              </td>
                             </tr>
                           </>
                         );

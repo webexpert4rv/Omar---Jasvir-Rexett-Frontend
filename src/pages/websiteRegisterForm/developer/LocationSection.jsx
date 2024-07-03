@@ -13,7 +13,7 @@ const LocationSection = ({
   errors,
   control,
   clearErrors,
-  isTimeZoneRequired = true,
+  isTimeZoneRequired = false,
 }) => {
   const dispatch = useDispatch();
   const { countriesList, statesList, citiesList, timeZones } = useSelector(
@@ -23,8 +23,7 @@ const LocationSection = ({
   useEffect(() => {
     if (watch("country_code")) {
       dispatch(getStatesList(watch("country_code")?.value));
-      // the line below is breaking the code
-      // dispatch(getTimeZoneForCountry(watch("country_code")?.value));
+      dispatch(getTimeZoneForCountry(watch("country_code")?.value));   
     }
   }, []);
 
@@ -41,6 +40,7 @@ const LocationSection = ({
       setValue("state_iso_code", value);
       clearErrors("state_iso_code");
       // timezone logic
+      // setValue("timezone", value);
       setValue("timezone", value);
       dispatch(
         getCitiesList(

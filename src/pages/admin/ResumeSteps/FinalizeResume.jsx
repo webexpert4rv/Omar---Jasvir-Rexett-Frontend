@@ -10,11 +10,99 @@ import { IoAddOutline } from "react-icons/io5";
 import { GoClockFill } from "react-icons/go";
 import { FiExternalLink } from "react-icons/fi";
 import ReactQuill from "react-quill";
+import resumeImg from '../../../assets/img/demo-img.jpg'
+import ThankRegister from "./Modals/ThankRegister";
 const FinalizeResume = () => {
+    const [showthanksregister , setShowThanksRegister] = useState(false);
+    const handleShowThanksRegister = () =>{
+        setShowThanksRegister(!showthanksregister)
+    }
+    const handleCloseThanksRegister = () =>{
+        setShowThanksRegister(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
-                <div className="resume-main-wrapper w-100">
+                <div className="resume-sidebar">
+                    <div className="resume-sidelogo mb-4">
+                        <img src={rexettLogo} />
+                    </div>
+                    <div>
+                        <ul>
+                            <li className="active-step">
+                                <span className="resume-count">
+                                    <span className="resume-step">1</span>
+                                    <span className="resume-check">
+                                        <FaCheck />
+                                    </span>
+                                </span>
+                                <span>Heading</span>
+                            </li>
+                            <li className="active-step">
+                                <span className="resume-count">
+                                    <span className="resume-step">2</span>
+                                    <span className="resume-check">
+                                        <FaCheck />
+                                    </span>
+                                </span>
+                                <span>Work History</span>
+                            </li>
+                            <li className="active-step">
+                                <span className="resume-count">
+                                    <span className="resume-step">3</span>
+                                    <span className="resume-check">
+                                        <FaCheck />
+                                    </span>
+                                </span>
+                                <span>Education</span>
+                            </li>
+                            <li className="active-step">
+                                <span className="resume-count">
+                                    <span className="resume-step">4</span>
+                                    <span className="resume-check">
+                                        <FaCheck />
+                                    </span>
+                                </span>
+                                <span>Skills</span>
+                            </li>
+                            <li className="active-step">
+                                <span className="resume-count">
+                                    <span className="resume-step">5</span>
+                                    <span className="resume-check">
+                                        <FaCheck />
+                                    </span>
+                                </span>
+                                <span>Summary</span>
+                            </li>
+                            <li className="active-step">
+                                <span className="resume-count">
+                                    <span className="resume-step">6</span>
+                                    <span className="resume-check">
+                                        <FaCheck />
+                                    </span>
+                                </span>
+                                <span>Projects</span>
+                            </li>
+                            <li>
+                                <span className="resume-count">
+                                    <span className="resume-step">7</span>
+                                    <span className="resume-check">
+                                        <FaCheck />
+                                    </span>
+                                </span>
+                                <span>Finalize</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4 className="resume-sideheading mt-3">Resume Completeness:</h4>
+                    <div className="resume-progress-wrapper">
+                        <div className="resume-progressbx">
+                            <div></div>
+                        </div>
+                        <span className="resume-progress-status font-12 fw-medium">33%</span>
+                    </div>
+                </div>
+                <div className="resume-main-wrapper">
                     <Container>
                         <div>
                             <Link className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium"><FaArrowLeft /> Go Back</Link>
@@ -22,8 +110,7 @@ const FinalizeResume = () => {
                                 <Row>
                                     <Col md={12}>
                                         <div>
-                                            <p className="font-12">Our Resume delivers results</p>
-                                            <div className="preview-resume-form">
+                                            <div>
                                                 <section className="overview-cv">
                                                     <div className="cv-template-section">
                                                         <div className="">
@@ -32,10 +119,8 @@ const FinalizeResume = () => {
                                                                 <Col md={6} className="px-0 h-100">
                                                                     <div className="resume-basic-info text-center">
                                                                         <div className="resume-imgbx mx-auto mb-2">
-                                                                            {/* <img
-                                                                                
-                                                                                className="resume-img"
-                                                                            /> */}
+                                                                            <img src={resumeImg} className="resume-img"
+                                                                            />
                                                                         </div>
                                                                         <h3 className="resume-name">
                                                                             John Doe
@@ -134,9 +219,9 @@ const FinalizeResume = () => {
                                                                                         </p>
                                                                                     </div>
                                                                                     <div className="d-flex align-items-center gap-2 project-date-wrapper status-finished">
-                                                                                        <p className="project-date mb-0 font-10">10-05-2024</p>
+                                                                                        <p className="project-date mb-0">10-05-2024</p>
                                                                                         -
-                                                                                        <p className="project-date mb-0 font-10">12-05-2024</p>
+                                                                                        <p className="project-date mb-0">12-05-2024</p>
                                                                                     </div>
                                                                                 </div>
                                                                                 <label className="font-14 mb-1">
@@ -156,7 +241,7 @@ const FinalizeResume = () => {
                                                                                     <div>
                                                                                         <a
                                                                                             href={'/'}
-                                                                                            className="project-link main-btn px-1 py-1 font-10 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
+                                                                                            className="project-link main-btn px-1 py-1  outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
                                                                                         >
                                                                                             Show Project <FiExternalLink />
                                                                                         </a>
@@ -179,7 +264,7 @@ const FinalizeResume = () => {
                                                                             </p>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="about-info px-2 pt-2 highlight-resume-section">
+                                                                    <div className="about-info px-2 pt-2">
                                                                         <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                                                             <h3 className="subheading-resume mb-0">
                                                                                 Experience
@@ -210,12 +295,12 @@ const FinalizeResume = () => {
                                                                             </h3>
                                                                         </div>
                                                                         <div className="exp-wrapper">
-                                                                            <p className="font-10">
+                                                                            <p>
                                                                                 20-06-2016 - 10-06-2020 | B.Tech Computer Science
                                                                             </p>
                                                                             <ul className="exp-role">
-                                                                                <li className="font-10">Panjab University</li>
-                                                                                <li className="font-10">Bachelor of Science</li>
+                                                                                <li>Panjab University</li>
+                                                                                <li>Bachelor of Science</li>
                                                                             </ul>
                                                                         </div>
                                                                     </div>
@@ -229,15 +314,16 @@ const FinalizeResume = () => {
                                     </Col>
                                 </Row>
                             </div>
-                            <div className="d-flex justify-content-center align-items-center">
+                            <div className="d-flex justify-content-center align-items-center mt-4">
                                 <div>
-                                    <Link to={'/education-summary'} variant="transparent" className="main-btn font-14 text-decoration">Submit</Link>
+                                    <Button variant="transparent" onClick={handleShowThanksRegister} className="main-btn font-14 text-decoration-none">Submit</Button>
                                 </div>
                             </div>
                         </div>
                     </Container>
                 </div>
             </section>
+            <ThankRegister show={showthanksregister} handleClose={handleCloseThanksRegister} />
         </>
     )
 }

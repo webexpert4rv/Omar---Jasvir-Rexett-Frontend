@@ -37,6 +37,7 @@ import { MEMBERS_FILTER_FIELDS, buildQueryFromObjects } from "./adminConstant";
 import { TiUserAdd } from "react-icons/ti";
 import AssignEmployee from "./Modals/AssignEmployee";
 import { FaRotateRight } from "react-icons/fa6";
+import { FaInfoCircle } from "react-icons/fa";
 
 let STATUS = [
   {
@@ -107,7 +108,7 @@ const Members = () => {
       isTrustedTech: checked,
     });
   };
-
+  
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
     setArrowActive(index == arrowactive ? null : index);
@@ -137,7 +138,8 @@ const Members = () => {
       let filterStatus = copied.filter(
         (item) => item.approval_status == currentStatus
       );
-      setApplication(filterStatus);
+      // setApplication(filterStatus);
+      setApplication(copied);
     } else {
       setApplication([]);
     }
@@ -257,7 +259,7 @@ const Members = () => {
     const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`;
     const toastMessage = featureModalDetails?.isFeaturedMember
       ? "Developer added to featured members successfully"
-      : "Developer removed to featured members successfully";
+      : "Developer removed from featured members successfully";
     dispatch(
       addToFeature(
         query,
@@ -288,20 +290,23 @@ const Members = () => {
   };
   const [assignemployee, showAssignEmployee] = useState(false);
   const handleShowAssignEmployee = () => {
-    showAssignEmployee(!assignemployee);
+    showAssignEmployee(!assignemployee);  
   }
   const handleCloseAssignEmployee = () => {
     showAssignEmployee(false);
   }
   const assignEmployeeText = (
-    <Tooltip>Assign Chat</Tooltip>
+    <Tooltip>Assign Member</Tooltip>
   )
   const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal);
   const handleCloseTrustedModal = () => setShowTrustedModal(!showTrustedModal);
   const reassignEmployee = (
-    <Tooltip>Reassign Chat</Tooltip>
+    <Tooltip>Reassign Member</Tooltip>
   )
 
+  const featuredMember = (
+    <Tooltip>Feature developer on website</Tooltip>
+  )
   return (
     <>
       <CommonFilterSection
@@ -417,17 +422,17 @@ const Members = () => {
                 <table className="table w-100 engagement-table table-ui-custom">
                   <thead>
                     <tr>
-                      <th>Company/Individual Name</th>
+                      <th>Name</th>
                       <th>
-                        Contact {t("email")}
+                        {t("email")}
                       </th>
-                      <th>Contact Phone Detail</th>
+                      <th>Phone Number</th>
                       <th>Company Type</th>
                       <th>Tax Id</th>
                       <th>Applied on</th>
                       <th>{t("status")}</th>
-                      <th>Action</th>
-                      <th>Assign Chat</th>
+                      <th className="text-center">Action</th>
+                      <th className="text-center">Assign Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -489,14 +494,14 @@ const Members = () => {
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block">
+                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom"
+                                        class="form-check-input toggle-switch-custom mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         checked={item?.status == "active"}
@@ -513,7 +518,7 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">Employee assigned</span>
+                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
                                           <FaRotateRight />
@@ -742,9 +747,9 @@ const Members = () => {
                 <table className="table w-100 engagement-table table-ui-custom">
                   <thead>
                     <tr>
-                      <th>{t("clientName")}</th>
+                      <th>Vendor Name</th>
                       <th>
-                        {t("email")} {t("address")}
+                        {t("email")}
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("typeOfCompany")}</th>
@@ -753,8 +758,8 @@ const Members = () => {
                         {t("engagements")} {t("last")}
                       </th>
                       <th>{t("status")}</th>
-                      <th>Action</th>
-                      <th>Assign Chat</th>
+                      <th className="text-center">Action</th>
+                      <th className="text-center">Assign Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -813,14 +818,14 @@ const Members = () => {
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block">
+                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom"
+                                        class="form-check-input toggle-switch-custom mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
@@ -837,7 +842,7 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">Employee assigned</span>
+                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
                                           <FaRotateRight />
@@ -1163,9 +1168,11 @@ const Members = () => {
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
                       <th>Action</th>
-                      <th>Featured On Website</th>
+                      <th><span className="d-flex align-items-center gap-1">Featured 
+                      <OverlayTrigger placement="bottom" overlay={featuredMember}>
+                      <span><FaInfoCircle /></span></OverlayTrigger></span> </th>
                       <th>Trusted Tech Expert</th>
-                      <th>Assign Chat</th>
+                      <th className="text-center">Assign Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1227,14 +1234,14 @@ const Members = () => {
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom"
+                                        class="form-check-input toggle-switch-custom mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
@@ -1243,7 +1250,7 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={
@@ -1252,9 +1259,9 @@ const Members = () => {
                                         : addToFeaturedMembers
                                     }
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom pointer"
+                                        class="form-check-input mx-auto toggle-switch-custom pointer"
                                         type="checkbox"
                                         role="switch"
                                         checked={item?.featured_member}
@@ -1265,7 +1272,7 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={
@@ -1274,9 +1281,9 @@ const Members = () => {
                                         : addToTrustedTech
                                     }
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom pointer"
+                                        class="form-check-input toggle-switch-custom pointer mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         checked={item?.trusted_tech_expert}
@@ -1295,8 +1302,7 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex gap-2 align-items-center">
-                                      <span className="associate white-nowrap">Employee assigned
-                                      </span>
+                                      <span className="associate white-nowrap">johndoe123gmail.com</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
                                           <FaRotateRight />

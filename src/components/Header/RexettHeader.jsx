@@ -136,8 +136,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
 
 
   const backBtn = () => {
-    let routeName = routePath(isSingleJob);
-    navigate(routeName);
+    navigate(-1)
+    // let routeName = routePath(isSingleJob);
+    // navigate(routeName);
   };
   const todoList = (
     <Tooltip>To Do List</Tooltip>
@@ -285,7 +286,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
             )}
             {role == "vendor" ? (
               <Link
-                to={"/register-developer"}
+                to={"/resume-detail"}
                 className="text-decoration-none main-btn"
               >
                 {t("registerNewDeveloper")}

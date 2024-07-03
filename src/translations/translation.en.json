@@ -436,6 +436,17 @@
         "totalInvoiceRaised":"Total invoice raised",
         "projectName":"Project name",
         "completionDate":"Completion date",
-        "responseTime" : "Response Time"
+        "responseDate" : "Response Date",
+        "invoiceMonth" :"Invoice Month",
+        "projectStatus" :"Project Status",
+        "personal":"Personal",
+        "engagementLength":"Engagement Length",
+        "startTeam":"Start Team",
+        "skillset":"Skillset",
+        "bookMeeting":"Book Meeting",
+        "clientStep1Para":"We suggest including an email and phone number",
+        "clientStep1Heading":"What's the most convenient way for us to reach out to you?",
+        "taxId":"Tax Id",
+        "surname":"Surname"
       }
 }

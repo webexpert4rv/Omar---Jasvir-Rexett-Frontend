@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { IoAddOutline, IoCheckmark } from "react-icons/io5";
 import ReactQuill from "react-quill";
 import RecomdModal from "./Modals/RecomdModal";
+import PreviewModal from "./Modals/PreviewResume";
 const DescribeWork = () => {
     const [valuedescr, setValueDescr] = useState('');
     const handleChange = (value) => {
@@ -15,6 +16,13 @@ const DescribeWork = () => {
     // setShowRecomdModal(showRecomdModal);
     const handleCloseRecomd = () => {
         setShowRecomdModal(false);
+    }
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
     }
     
     return (
@@ -205,7 +213,7 @@ const DescribeWork = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
                                     <Link to={'/work-summary'} className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
@@ -214,6 +222,7 @@ const DescribeWork = () => {
                 </div>
             </section>
             <RecomdModal show={showRecomdModal} handleClose={handleCloseRecomd} />
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

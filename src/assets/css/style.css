@@ -800,6 +800,7 @@ ul {
     padding: 12px 14px;
     border-radius: 10px;
     background-color: #f5f5f5;
+    border: 1px solid #f5f5f5;
     transition: .4s ease;
 }
 
@@ -2897,55 +2898,55 @@ input[type="radio"]:checked {
 .status-finished {
     font-size: 13px;
     border-radius: 30px;
-    padding: 5px 17px;
-    display: inline-block;
-    background-color: #d1fff8;
-    color: #037563;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #d1fff8 !important;
+    color: #037563 !important;
 }
 
 .status-info {
     font-size: 13px;
     border-radius: 30px;
-    padding: 5px 17px;
-    display: inline-block;
-    background-color: #d1e1ff;
-    color: #031275;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #d1e1ff !important;
+    color: #031275 !important;
 }
 
 .status-unpublished {
     font-size: 13px;
     border-radius: 30px;
-    padding: 5px 17px;
-    display: inline-block;
-    background-color: #a99800;
-    color: #fff;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #a99800 !important;
+    color: #fff !important;
 }
 
 .status-rejected {
     font-size: 13px;
     border-radius: 30px;
-    padding: 5px 17px;
-    display: inline-block;
-    background-color: #ffd1d1;
-    color: #750303;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #ffd1d1 !important;
+    color: #750303 !important;
 }
 
 .status-progress {
     font-size: 13px;
     border-radius: 30px;
-    padding: 5px 17px;
-    display: inline-block;
-    background-color: #fffdd1;
-    color: #756f03;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #fffdd1 !important;
+    color: #756f03 !important;
 }
 
 .status-upcoming {
     font-size: 13px;
     border-radius: 30px;
-    padding: 5px 17px;
-    display: inline-block;
-    background-color: #ffedd5;
-    color: #9a3412;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #ffedd5 !important;
+    color: #9a3412 !important;
 }
 
 .developer-table tbody tr {
@@ -8099,6 +8100,7 @@ select.apply-field
     flex: none;
     background-color: #fff;
     border-radius: 10px;
+    border: 1px solid #ccc;
 }
 .profile-img-preview img
 {
@@ -8120,6 +8122,7 @@ select.apply-field
     align-items: center;
     border-radius: 50%;
     cursor: pointer;
+    border: 1px solid #ccc;
 }
 .collapsable_btn
 {
@@ -8503,16 +8506,17 @@ select.apply-field
     height: 100vh;
     background-color: #037563;
     color: #fff;
-    padding: 20px;
+    padding: 40px 20px;
 }
 .resume-main-wrapper
 {
     width: calc(100% - 250px);
     margin-left: auto;
+    padding-bottom: 40px;
 }
 .resume-sidebar .resume-sidelogo img
 {
-    max-width: 150px;
+    max-width: 110px;
 }
 .resume-sidebar ul
 {
@@ -8589,11 +8593,22 @@ select.apply-field
 }
 .resume-progressbx
 {
+    position: relative;
     width: 80%;
     flex: none;
     height: 8px;
     background-color: #fff;
     border-radius: 30px;
+}
+.resume-progressbx > div
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 30px;
+    width: 33%;
+    background: linear-gradient(93.07deg, #00ef41 4.54%, #0dad49 95.98%);
 }
 .preview-resume-form
 {
@@ -8758,6 +8773,11 @@ select.apply-field
     font-size: 16px;
     font-weight: 600;
 }
+.position-btn:hover
+{
+    border: 2px dashed #037563;
+    color: #037563;
+}
 .search-filter
 {
     padding: 10px;
@@ -8790,6 +8810,254 @@ select.apply-field
 .skill-recomd
 {
     list-style: disc;
+}
+.client_radio
+{
+    position: relative;
+    z-index: 1;
+    padding-left: 0px;
+}
+.client_radio input
+{
+    position: absolute;
+    top: 50%;
+    left: 37px;
+    transform: translateY(-50%);
+    z-index: 1;
+    cursor: pointer;
+    margin-top: 0px;
+    border: 1px solid transparent;
+    transition: .3s ease;
+    background-color: #ccc;
+}
+.client_radio input:checked + label
+{
+    background-color: #037563;
+    color: #fff;
+    border-color: #037563;
+}
+.client_radio input:checked
+{
+    border: 1px solid #fff;
+}
+.client_radio label
+{
+    display: block;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 16px;
+    padding-left: 40px;
+    transition: .3s ease;
+    cursor: pointer;
+}
+.upload-intro-file
+{
+    width: 100%;
+    display: block;
+    padding: 16px 10px;
+    border-radius: 10px;
+    border: 2px dashed #037563;
+    color: #037563;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+}
+.playback_intro
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    width: calc(100% - 5px);
+    height: calc(100% - 5px);
+    background-color: rgba(0, 0, 0, .4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    color: #fff;
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+.preview_intro:hover .playback_intro
+{
+    display: flex;
+}
+.custom-modal.modal-90w .modal-dialog.modal-lg
+{
+    max-width: 70vw;
+}
+.mt-n7
+{
+    margin-top: -7px;
+}
+.selection-wrapper
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    justify-content: center;
+}
+.education-selection
+{
+    display: block;
+    padding: 30px 10px;
+    border: 1px solid #037563;
+    color: #037563;
+    text-align: center;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: .3s ease;
+}
+.education-selection:hover
+{
+    background-color: #037563;
+    color: #fff;
+}
+.education-action
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.font-24
+{
+    font-size: 24px !important;
+}
+.resume-section-wrapper .main-btn
+{
+    min-width: 100px;
+    text-align: center;
+}
+.resume-delivers
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background-color: #f2f2f2;
+}
+.header-register
+{
+    padding: 20px 0;
+    background-color: #037563;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+}
+.header-register img
+{
+    max-width: 110px;
+}
+.main-register
+{
+    padding-top: 100px;
+}
+.client-main-heading
+{
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.client_register_label
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s ease;
+    color: #181818;
+}
+.client-register-radio:checked + label
+{
+    border: 3px solid #037563;
+}
+.resume-field-wrapper .common-field
+{
+    padding-right: 40px;
+}
+.valid-data
+{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #00990c;
+}
+.invalid-data
+{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #cc0000;
+}
+.common-field.invalid-field
+{
+    border: 1px solid #cc0000;
+}
+.field-error
+{
+    font-size: 12px;
+    color: #cc0000;
+    margin-top: 4px;
+}
+.status-email
+{
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    background: #ffff;
+    border-radius: 50%;
+    border: 1px solid #037653;
+    color: #037563;
+}
+.already_email
+{
+    display: none;
+}
+.email_count
+{
+    display: inline-block;
+}
+.status-email.sent_email
+{
+    background-color: #037563;
+    color: #fff;
+}
+.status-email.sent_email .email_count
+{
+    display: none;
+}
+.status-email.sent_email .already_email
+{
+    display: inline-block;
+}
+.timesheet-icon,
+.invoice-icon
+{
+    width: 17px;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {

@@ -537,8 +537,8 @@ export const createToastMessage = (action, field) => {
 export const getYearFromDate = (date) => {
   return moment(date).year();
 };
-export const convertDateIntoRequiredFormat = (date) => {
-  return moment(date).format("YYYY-MM-DD");
+export const convertDateIntoRequiredFormat = (date,format="YYYY-MM-DD") => {
+  return moment(date).format(format);
 };
 
 const DEVELOPER_STEP_KEYS = {

@@ -3,13 +3,29 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { FaArrowLeft, FaCheck, FaChevronDown, FaFilter, FaPencil, FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { IoAddOutline, IoCheckmark, IoTrash } from "react-icons/io5";
+import { IoAddCircle, IoAddOutline, IoCheckmark, IoTrash } from "react-icons/io5";
 import ReactQuill from "react-quill";
+import PreviewModal from "./Modals/PreviewResume";
+import RecomdModal from "./Modals/RecomdModal";
 const AddSkills = () => {
+    
+    const [showRecomdModal , setShowRecomdModal] = useState(true);
+    // setShowRecomdModal(showRecomdModal);
+    const handleCloseRecomd = () => {
+        setShowRecomdModal(false);
+    }
+
     const [valuedescr, setValueDescr] = useState('');
     const handleChange = (value) => {
         setValueDescr(value);
     };
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
@@ -183,7 +199,18 @@ const AddSkills = () => {
                                                             <div className="w-100">
                                                                 <Form.Control type="text" placeholder="Enter Experience" className="common-field font-14" />
                                                             </div>
-                                                            <Button variant="transparent" className="text-danger font-18 p-0 shadow-none border-0">
+                                                            <div className="w-100">
+                                                                <Form.Select className="common-field font-14">
+                                                                    <option>Select Level</option>
+                                                                    <option value="beginner">Beginner</option>
+                                                                    <option value="intermediate">Intermediate</option>
+                                                                    <option value="expert">Expert</option>
+                                                                </Form.Select>
+                                                            </div>
+                                                            <Button variant="transparent" className="text-green font-24 p-0 shadow-none border-0">
+                                                                <IoAddCircle />
+                                                            </Button>
+                                                            <Button variant="transparent" className="text-danger font-24 p-0 shadow-none border-0">
                                                                 <IoTrash />
                                                             </Button>
                                                         </div>
@@ -199,14 +226,16 @@ const AddSkills = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
-                                    <Link to={'/add-summary'} variant="transparent" className="main-btn font-14 text-decoration">Next</Link>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Link to={'/good-have-skills'} variant="transparent" className="main-btn font-14 text-decoration-none">Next : Good to have skills</Link>
                                 </div>
                             </div>
                         </div>
                     </Container>
                 </div>
             </section>
+            <RecomdModal show={showRecomdModal} handleClose={handleCloseRecomd} />
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

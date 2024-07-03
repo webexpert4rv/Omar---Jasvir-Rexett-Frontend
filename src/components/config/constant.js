@@ -1,6 +1,6 @@
 
 import { MdDesignServices, MdSpaceDashboard } from "react-icons/md";
-import { FaListUl, FaUserLarge } from "react-icons/fa6";
+import { FaGear, FaListUl, FaUserLarge, FaUsers } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
 import { BsClockFill } from "react-icons/bs";
@@ -24,6 +24,7 @@ export const DEVELOPER_SIDE_BAR_ITEMS = [
     { to: "/developer/project-history", icon: <FaList />, text: "Project History" },
     { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday" },
     { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip" },
+    { to: "/developer/developer-settings", icon: <FaGear />, text: "Settings" },
 
 
 ];
@@ -55,6 +56,7 @@ export const CLIENT_SIDE_BAR_ITEMS = [
     { to: "/client/job-posted", icon: <FaListUl />, text: "jobs" },
     // { to: "/client/earned-back", icon: <PiCoinsFill />, text: "earnedBack" },
     { to: "/client/invoice", icon: <FaFileInvoice />, text: "invoice" },
+    { to: "/client/client-settings", icon: <FaGear />, text: "Settings" },
 ];
 
 export const ADMIN_SIDE_BAR_ITEMS= [
@@ -78,4 +80,5 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/vendor-documents", icon: <IoDocuments />, text: "documents" },
     { to: "/vendor-upload-invoice", icon: <FaFileInvoice />, text: "Invoice" },
     { to: "/vendor-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
+    { to: "/vendor/vendor-settings", icon: <FaGear />, text: "Settings" },
   ]; 

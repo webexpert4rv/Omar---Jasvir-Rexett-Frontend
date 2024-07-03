@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import profileImg from '../../../assets/img/demo-img.jpg';
-import { IoCameraOutline } from "react-icons/io5";
+import profileImg from '../../../assets/img/dummy-logo.jpg';
+import { IoCameraOutline, IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
+import SetupJob from "./Modal/Setupjob";
+import ThankRegister from "../ResumeSteps/Modals/ThankRegister";
 const ClientPersonal = () => {
+    const [showsetupjob, showSetupjob] = useState(false);
+    const handleShowSetupjob = () => {
+        showSetupjob(!showsetupjob);
+    }
+    const handleCloseSetupjob = () => {
+        showSetupjob(false);
+    }
+    const [showthanksregister, setShowThanksRegister] = useState(false);
+    const handleShowThanksRegister = () => {
+        setShowThanksRegister(!showthanksregister)
+    }
+    const handleCloseThanksRegister = () => {
+        setShowThanksRegister(false);
+    }
     return (
         <>
             <section className="resume-section-wrapper">
@@ -15,7 +31,7 @@ const ClientPersonal = () => {
                     </div>
                     <div>
                         <ul>
-                            <li>
+                            <li className="active-step">
                                 <span className="resume-count">
                                     <span className="resume-step">1</span>
                                     <span className="resume-check">
@@ -26,21 +42,12 @@ const ClientPersonal = () => {
                             </li>
                             <li>
                                 <span className="resume-count">
-                                    <span className="resume-step">2</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Engagment</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
                                     <span className="resume-step">3</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Engagement length</span>
+                                <span>Job Info</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -49,7 +56,7 @@ const ClientPersonal = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Start Team</span>
+                                <span>Job Description</span>
                             </li>
                             <li>
                                 <span className="resume-count">
@@ -58,29 +65,11 @@ const ClientPersonal = () => {
                                         <FaCheck />
                                     </span>
                                 </span>
-                                <span>Availability</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">6</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Skillset</span>
-                            </li>
-                            <li>
-                                <span className="resume-count">
-                                    <span className="resume-step">7</span>
-                                    <span className="resume-check">
-                                        <FaCheck />
-                                    </span>
-                                </span>
-                                <span>Book Meeting</span>
+                                <span>Screening info</span>
                             </li>
                         </ul>
                     </div>
-                    <h4 className="resume-sideheading mt-3">Completeness:</h4>
+                    <h4 className="resume-sideheading mt-3">Resume Completeness:</h4>
                     <div className="resume-progress-wrapper">
                         <div className="resume-progressbx">
                             <div></div>
@@ -116,16 +105,51 @@ const ClientPersonal = () => {
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Company Name</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
+                                                        <div className="position-relative resume-field-wrapper">
+                                                            <Form.Control type="text" className="common-field font-14" placeholder="e.g. Microsoft" />
+                                                            <span className="valid-data">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Tax ID</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
+                                                        <div className="position-relative resume-field-wrapper">
+                                                            <Form.Control type="text" className="common-field font-14 invalid-field" placeholder="Enter Tax" />
+                                                            <span className="invalid-data">
+                                                                <IoCloseCircle />
+                                                            </span>
+                                                        </div>
+                                                        <p className="field-error">This field is required</p>
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Estbl. Year *</Form.Label>
+                                                        <Form.Control type="date" className="common-field font-14" placeholder="E.g. 15,000" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Website URL *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="E.g. www.xyztechnology.com" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Yearly revenue (in USD)</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. 15,000" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Employees strength</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="E.g. 100" />
+                                                    </div>
+                                                </Col>
+                                                {/* <Col md={6}>
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">First Name</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. John" />
@@ -135,6 +159,18 @@ const ClientPersonal = () => {
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Surname</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. Doe" />
+                                                    </div>
+                                                </Col> */}
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Phone Number</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. +91 123 456 7890" />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Email *</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. johndoe123@gmail.com" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
@@ -188,18 +224,6 @@ const ClientPersonal = () => {
                                                         </Form.Select>
                                                     </div>
                                                 </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Phone Number</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. +91 123 456 7890" />
-                                                    </div>
-                                                </Col>
-                                                <Col md={6}>
-                                                    <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Email *</Form.Label>
-                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. johndoe123@gmail.com" />
-                                                    </div>
-                                                </Col>
                                             </Row>
                                         </div>
                                     </Col>
@@ -207,16 +231,18 @@ const ClientPersonal = () => {
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
-
                                 </div>
                                 <div>
-                                    <Link to={'/client-engagement'} className="main-btn font-14 text-decoration-none">Next: Engagement</Link>
+                                    <Button onClick={handleShowThanksRegister} className="outline-main-btn font-14 text-decoration-none me-3">Done</Button>
+                                    <Button onClick={handleShowSetupjob} className="main-btn font-14 text-decoration-none">Next: Setup job</Button>
                                 </div>
                             </div>
                         </div >
                     </Container >
                 </div >
             </section >
+            <SetupJob show={showsetupjob} handleClose={handleCloseSetupjob} />
+            <ThankRegister show={showthanksregister} handleClose={handleCloseThanksRegister} />
         </>
     )
 }

@@ -90,8 +90,8 @@ export const COMPLETED_PROJECT_COLUMNS = [
 ];
 
 export const PROJECT_DETAIL_SECTION_1_FIELDS = [
-  { label: "projectName", key: "job_title" },
-  { label: "companyName", key: "company_name", subkey: "company_logo" },
+  { label: "projectName", key: "job_title" }, 
+  { label: "companyName", key: "company_name", subkey: "company_logo" ,imageKey:"company_logo"},
   {
     label: "startDate",
     key: "start_date",

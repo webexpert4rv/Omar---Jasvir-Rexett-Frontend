@@ -817,10 +817,32 @@ const RegisterDeveloper = () => {
               </Accordion.Item>
               <Accordion.Item className="register-collapse-item" eventKey="1">
                 <Accordion.Header className="register-collapse-header">
-                  <h2 className="subheading-resume mb-0"><span className="resume-step">2</span> {t("enterExperience")}</h2>
+                  <h2 className="subheading-resume mb-0"><span className="resume-step">2</span>Add Bio *</h2>
                 </Accordion.Header>
                 <Accordion.Body className="register-collapse-body">
-                  <ExperienceCV data={null} role="vendor" onSubmitVendor={onSubmit} />
+                  <div className="inner-form mb-3">
+                    <Row>
+                      <Col md="12">
+                        <Form.Group className="mb-4">
+                          <Form.Label className="font-14 fw-medium">Bio</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            placeholder="Add your about"
+                            className="common-field font-14"
+                            name="bio"
+                            {...register("bio", {
+                              required: {
+                                value: true,
+                                message: `${t("AboutRequired")}`,
+                              },
+                            })}
+                          />
+                          <p className="error-message">{errors.bio?.message} </p>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </div>
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item className="register-collapse-item" eventKey="2">
@@ -1211,32 +1233,10 @@ const RegisterDeveloper = () => {
               </Accordion.Item>
               <Accordion.Item className="register-collapse-item" eventKey="4">
                 <Accordion.Header className="register-collapse-header">
-                  <h2 className="subheading-resume mb-0"><span className="resume-step">5</span>Add Bio *</h2>
+                  <h2 className="subheading-resume mb-0"><span className="resume-step">5</span> {t("enterExperience")}</h2>
                 </Accordion.Header>
                 <Accordion.Body className="register-collapse-body">
-                  <div className="inner-form mb-3">
-                    <Row>
-                      <Col md="12">
-                        <Form.Group className="mb-4">
-                          <Form.Label className="font-14 fw-medium">Bio</Form.Label>
-                          <Form.Control
-                            as="textarea"
-                            rows={3}
-                            placeholder="Add your about"
-                            className="common-field font-14"
-                            name="bio"
-                            {...register("bio", {
-                              required: {
-                                value: true,
-                                message: `${t("AboutRequired")}`,
-                              },
-                            })}
-                          />
-                          <p className="error-message">{errors.bio?.message} </p>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </div>
+                  <ExperienceCV data={null} role="vendor" onSubmitVendor={onSubmit} />
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item className="register-collapse-item" eventKey="5">

@@ -4,7 +4,7 @@ import JobPostStepContainer from '../../components/common/JobPostForm/JobPostSte
 const JobPost = () => {
   return (
     <>
-    <JobPostStepContainer/>
+    <JobPostStepContainer role="client"/>
     </>
   )
 }

@@ -10,16 +10,24 @@ import { IoAddOutline } from "react-icons/io5";
 import { GoClockFill } from "react-icons/go";
 import { FiExternalLink } from "react-icons/fi";
 import ReactQuill from "react-quill";
+import PreviewModal from "./Modals/PreviewResume";
 const AddEducation = () => {
     const [valuedescr, setValueDescr] = useState('');
     const handleChange = (value) => {
         setValueDescr(value);
     };
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
     const tipstext = (
         <Popover id="popover-basic">
             <Popover.Header as="h3">Expert Insights</Popover.Header>
             <Popover.Body>
-                <p className="font-14 mb-2">Short cut: If you don’t have time to tailor your entire resume for a specific job application, at least change this section so that it matches the opportunity.</p>
+                {/* <p className="font-14 mb-2">Short cut: If you don’t have time to tailor your entire resume for a specific job application, at least change this section so that it matches the opportunity.</p> */}
                 <ul className="ps-3 mb-0 tip-listing">
                     <li className="font-12">Write a career overview so that hiring managers can immediately see the value that you bring.</li>
                     <li className="font-12">Not sure how to write this? Choose one of our examples and edit it to match your background.</li>
@@ -167,6 +175,8 @@ const AddEducation = () => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
+                                                        <Form.Label className="font-14 fw-medium">Enter Degree</Form.Label>
+                                                        <Form.Control type="text" className="common-field font-14" placeholder="e.g. Bachelor of science" />
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
@@ -394,7 +404,7 @@ const AddEducation = () => {
                                                                             </p>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="about-info px-2 pt-2 highlight-resume-section">
+                                                                    <div className="about-info px-2 pt-2">
                                                                         <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                                                             <h3 className="subheading-resume mb-0">
                                                                                 Experience
@@ -418,7 +428,7 @@ const AddEducation = () => {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="about-info px-2 pt-2">
+                                                                    <div className="about-info px-2 pt-2 highlight-resume-section">
                                                                         <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                                                             <h3 className="subheading-resume mb-0">
                                                                                 Education
@@ -449,14 +459,15 @@ const AddEducation = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
-                                    <Link to={'/education-summary'} variant="transparent" className="main-btn font-14 text-decoration">Next</Link>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Link to={'/education-summary'} variant="transparent" className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
                         </div>
                     </Container>
                 </div>
             </section>
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

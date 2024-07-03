@@ -66,7 +66,15 @@ const ProjectDetail = () => {
               <div className="detail-view">
                 <Row className="flex-wrap gy-3">
                   {PROJECT_DETAIL_SECTION_1_FIELDS?.map(
-                    ({ label, key, isDate, format, isStatus, isHours }) => (
+                    ({
+                      label,
+                      key,
+                      isDate,
+                      format,
+                      isStatus,
+                      isHours,
+                      imageKey,
+                    }) => (
                       <Col md={3}>
                         <div className="client-info p-0 bg-transparent">
                           <h3 className="font-15 fw-bold mb-2 text-capitalize">
@@ -88,6 +96,25 @@ const ProjectDetail = () => {
                                   )}
                                 </span>
                               )}
+                            {imageKey && (
+                              <div className="client-info p-0 bg-transparent">
+                                {/* <h3 className="font-15 fw-bold mb-2">
+                                  Client Name
+                                </h3> */}
+                                <p className="client-name-heading mb-0">
+                                  <img
+                                    src={
+                                      projectDetail?.contractDetails?.[imageKey]
+                                        ? projectDetail?.contractDetails?.[
+                                            imageKey
+                                          ]
+                                        : "/demo-user.png"
+                                    }
+                                  />
+                                  {projectDetail?.contractDetails?.[key]}
+                                </p>
+                              </div>
+                            )}
                             {isStatus && (
                               <span
                                 className={`status-${
@@ -109,6 +136,7 @@ const ProjectDetail = () => {
                             )}
                             {!isDate &&
                               !isStatus &&
+                              !imageKey &&
                               projectDetail?.contractDetails?.[key]}
                             {isHours && " hrs"}
                           </p>

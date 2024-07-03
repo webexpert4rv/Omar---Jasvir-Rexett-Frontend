@@ -8,7 +8,6 @@ import { FaTimes } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
-
    
 const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) => {
     const { t } = useTranslation();

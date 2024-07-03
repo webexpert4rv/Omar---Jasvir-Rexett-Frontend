@@ -1,19 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import rexettLogo from '../../../assets/img/rexett-logo-white.png'
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCheck, FaCirclePlay, FaEnvelope, FaGithub, FaLightbulb, FaLinkedin } from "react-icons/fa6";
+import { FaArrowLeft, FaCheck, FaCircleInfo, FaCirclePlay, FaEnvelope, FaGithub, FaInfo, FaLightbulb, FaLinkedin } from "react-icons/fa6";
 import { Button, Col, Container, Form, OverlayTrigger, Popover, Row, Tooltip } from "react-bootstrap";
 import profileImg from '../../../assets/img/demo-img.jpg';
 import { IoCameraOutline } from "react-icons/io5";
 import { MdLocalPhone, MdLocationOn, MdWork } from "react-icons/md";
 import { GoClockFill } from "react-icons/go";
 import { FiExternalLink } from "react-icons/fi";
+import PreviewModal from "./Modals/PreviewResume";
 const ResumeStep2a = () => {
+    const [showpreviewmodal , setShowPreviewModal] = useState(false);
+    const handleShowPreviewModal = () => {
+        setShowPreviewModal(!showpreviewmodal);
+    }
+    const handleClosePreviewModal = () => {
+        setShowPreviewModal(false);
+    }
+    const infoRemote = (
+        <Tooltip>
+            Was this job remote? Checking this box will let the others know. This selection is optional.
+        </Tooltip>
+    )
     const tipstext = (
         <Popover id="popover-basic">
             <Popover.Header as="h3">Expert Insights</Popover.Header>
             <Popover.Body>
-                <p className="font-14 mb-2">Short cut: If you don’t have time to tailor your entire resume for a specific job application, at least change this section so that it matches the opportunity.</p>
+                {/* <p className="font-14 mb-2">Short cut: If you don’t have time to tailor your entire resume for a specific job application, at least change this section so that it matches the opportunity.</p> */}
                 <ul className="ps-3 mb-0 tip-listing">
                     <li className="font-12">Write a career overview so that hiring managers can immediately see the value that you bring.</li>
                     <li className="font-12">Not sure how to write this? Choose one of our examples and edit it to match your background.</li>
@@ -148,6 +161,19 @@ const ResumeStep2a = () => {
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. CA, USA" />
                                                     </div>
                                                 </Col>
+                                                <Col md={6}>
+                                                    <div className="mb-3 d-flex align-items-center gap-3">
+                                                        <Form.Check type="checkbox" label="Remote" className="font-14" />
+                                                        <div>
+                                                            <OverlayTrigger placement="bottom" overlay={infoRemote}>
+                                                                <span className="font-14 lh-1 mt-n7 align-middle d-inline-block">
+                                                                    <FaCircleInfo />
+                                                                </span>
+                                                            </OverlayTrigger>
+                                                        </div>
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}></Col>
                                                 <Col md={3}>
                                                     <div className="mb-3">
                                                         <Form.Label className="font-14 fw-medium">Start Date</Form.Label>
@@ -161,7 +187,7 @@ const ResumeStep2a = () => {
                                                     <div className="mb-3">
                                                         <Form.Select className="common-field font-14">
                                                             <option>Select Year</option>
-                                                            <option>January</option>
+                                                            <option>2024</option>
                                                         </Form.Select>
                                                     </div>
                                                 </Col>
@@ -178,7 +204,7 @@ const ResumeStep2a = () => {
                                                     <div className="mb-3">
                                                         <Form.Select className="common-field font-14">
                                                             <option>Select Year</option>
-                                                            <option>January</option>
+                                                            <option>2024</option>
                                                         </Form.Select>
                                                     </div>
                                                 </Col>
@@ -404,7 +430,7 @@ const ResumeStep2a = () => {
 
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="font-14 outline-main-btn me-3">Preview</Button>
+                                    <Button variant="transparent" onClick={handleShowPreviewModal} className="font-14 outline-main-btn me-3">Preview</Button>
                                     <Link to={'/describe-work'} className="main-btn font-14 text-decoration-none">Next</Link>
                                 </div>
                             </div>
@@ -412,6 +438,7 @@ const ResumeStep2a = () => {
                     </Container>
                 </div>
             </section>
+            <PreviewModal show={showpreviewmodal} handleClose={handleClosePreviewModal} />
         </>
     )
 }

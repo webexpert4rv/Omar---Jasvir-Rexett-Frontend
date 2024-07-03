@@ -37,9 +37,7 @@ export const authenticationDataSlice = createSlice({
             state.smallLoader = false;
             state.otpLoader = false;
         },
-        
-
-
+      
     }
 })
 
@@ -240,7 +238,6 @@ export function resendOtpDispatch(payload, callback) {
         }
     };
 }
-
 
 export function getAllCountries() {
     return async (dispatch) => {

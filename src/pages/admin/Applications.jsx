@@ -85,7 +85,7 @@ const Applications = () => {
   const [application, setApplication] = useState([]);
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);  
   const [loadingRow, setLoadingRow] = useState(null);
   const { t } = useTranslation();
   const [showScreening, setScreeningShow] = useState(false);
@@ -314,7 +314,7 @@ const Applications = () => {
                           </th>
                           <th>{t("phoneNumber")}</th>
                           <th>{t("action")}</th>
-                          <th>Send Email</th>
+                          <th className="text-center">Send Email</th>
                           <th>{t("status")}</th>
                         </tr>
                       </thead>
@@ -445,36 +445,44 @@ const Applications = () => {
                                       )}
                                     </td>
                                     <td>
-                                      {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
-                                        <div
-                                          onClick={() =>
-                                            !smallLoader &&
-                                            redirectToWebsiteForm(
-                                              "client",
-                                              item?.id,
-                                              item?.verification_reminder_count
-                                            )
-                                          }
-                                        >
-                                          <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                            {item.id === loadingRow
-                                              ? smallLoader && (
-                                                <RexettSpinner />
-                                              )
-                                              : "Send Email"
-                                            }
-                                            <FiExternalLink />
-                                          </span>
-
-
+                                      <div className="d-flex gap-2 align-items-center justify-content-center">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <span className="status-email sent_email"><span className="email_count">1</span> <span className="already_email"><IoCheckmark /></span> </span>
+                                          <span className="status-email">2</span>
+                                          <span className="status-email">3</span>
                                         </div>
-                                      </div> : "Maximum Limit reached"}
+                                        {item?.verification_reminder_count < 2 ?
+                                          <div className="d-flex gap-3">
+                                            <div
+                                              onClick={() =>
+                                                !smallLoader &&
+                                                redirectToWebsiteForm(
+                                                  "client",
+                                                  item?.id,
+                                                  item?.verification_reminder_count
+                                                )
+                                              }
+                                            >
+                                              <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                                {item.id === loadingRow
+                                                  ? smallLoader && (
+                                                    <RexettSpinner />
+                                                  )
+                                                  : "Send Email"
+                                                }
+                                                <FiExternalLink />
+                                              </span>
+
+
+                                            </div>
+                                          </div> : "Maximum Limit reached"}
+                                      </div>
                                     </td>
                                     <td>
                                       <span
                                         className={`white-nowrap ${item?.is_profile_completed
-                                            ? "status-finished"
-                                            : "status-progress"
+                                          ? "status-finished"
+                                          : "status-progress"
                                           }`}
                                       >
                                         {item?.is_profile_completed
@@ -692,7 +700,7 @@ const Applications = () => {
                       </th>
                       <th>{t("availability")}</th> */}
                           <th>{t("action")}</th>
-                          <th>Send Email</th>
+                          <th className="text-center">Send Email</th>
                           <th>{t("status")}</th>
                         </tr>
                       </thead>
@@ -825,36 +833,43 @@ const Applications = () => {
                                       )}
                                     </td>
                                     <td>
-                                      {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
-                                        <div
-                                          onClick={() =>
-                                            !smallLoader &&
-                                            redirectToWebsiteForm(
-                                              "vendor",
-                                              item?.id,
-                                              item?.verification_reminder_count
-                                            )
-                                          }
-                                        >
-                                          <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                            {item.id === loadingRow
-                                              ? smallLoader && (
-                                                <RexettSpinner />
-                                              )
-                                              : "Send Email"
-                                            }
-                                            <FiExternalLink />
-                                          </span>
-
-
+                                      <div className="d-flex align-items-center gap-3">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <span className="status-email sent_email"><span className="email_count">1</span> <span className="already_email"><IoCheckmark /></span> </span>
+                                          <span className="status-email">2</span>
+                                          <span className="status-email">3</span>
                                         </div>
-                                      </div> : "Maximum Limit reached"}
+                                        {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "vendor",
+                                                item?.id,
+                                                item?.verification_reminder_count
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                              {item.id === loadingRow
+                                                ? smallLoader && (
+                                                  <RexettSpinner />
+                                                )
+                                                : "Send Email"
+                                              }
+                                              <FiExternalLink />
+                                            </span>
+
+
+                                          </div>
+                                        </div> : "Maximum Limit reached"}
+                                      </div>
                                     </td>
                                     <td>
                                       <span
                                         className={`white-nowrap ${item?.is_profile_completed
-                                            ? "status-finished"
-                                            : "status-progress"
+                                          ? "status-finished"
+                                          : "status-progress"
                                           }`}
                                       >
                                         {item?.is_profile_completed
@@ -1199,7 +1214,8 @@ const Applications = () => {
                           <th>{t("phoneNumber")}</th>
 
                           <th>{t("action")}</th>
-                          <th>Send Email</th>
+                          <th className="text-center">Send Email</th>
+                          <th>Coming from</th>
                           <th>Resume</th>
 
                           <th>Status</th>
@@ -1326,7 +1342,7 @@ const Applications = () => {
                                                 )
                                               }
                                             >
-                                              <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                              <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2 white-nowrap">
 
                                                 Complete profile
                                                 <FiExternalLink />
@@ -1338,31 +1354,39 @@ const Applications = () => {
 
                                     </td>
                                     <td>
-                                      {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
-                                        <div
-                                          onClick={() =>
-                                            !smallLoader &&
-                                            redirectToWebsiteForm(
-                                              "developer",
-                                              item?.id,
-                                              item?.verification_reminder_count
-                                            )
-                                          }
-                                        >
-                                          <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                            {item.id === loadingRow
-                                              ? smallLoader && (
-                                                <RexettSpinner />
-                                              )
-                                              : "Send Email"
-                                            }
-                                            <FiExternalLink />
-                                          </span>
-
-
+                                      <div className="d-flex align-items-center gap-2 justify-content-center">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <span className="status-email sent_email"><span className="email_count">1</span> <span className="already_email"><IoCheckmark /></span> </span>
+                                          <span className="status-email">2</span>
+                                          <span className="status-email">3</span>
                                         </div>
-                                      </div> : "Maximum Limit reached"}
+                                        {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "developer",
+                                                item?.id,
+                                                item?.verification_reminder_count
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2 white-nowrap">
+                                              {item.id === loadingRow
+                                                ? smallLoader && (
+                                                  <RexettSpinner />
+                                                )
+                                                : "Send Email"
+                                              }
+                                              <FiExternalLink />
+                                            </span>
+
+
+                                          </div>
+                                        </div> : "Maximum Limit reached"}
+                                      </div>
                                     </td>
+                                    <td>Career page</td>
                                     <td>
                                       <RexettButton
                                         onClick={(e) =>
@@ -1426,8 +1450,8 @@ const Applications = () => {
                                     <td>
                                       <span
                                         className={`white-nowrap ${item?.is_profile_completed
-                                            ? "status-finished"
-                                            : "status-progress"
+                                          ? "status-finished"
+                                          : "status-progress"
                                           }`}
                                       >
                                         {item?.is_profile_completed
@@ -1441,7 +1465,7 @@ const Applications = () => {
                                       className={`collapsible-row ${expandedRow === index ? "open" : ""
                                         }`}
                                     >
-                                      <td colSpan="8">
+                                      <td colSpan="9">
                                         <div>
                                           <Row>
                                             {item?.name && (
