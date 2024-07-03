@@ -10,12 +10,10 @@ import NewRoles from "./Modals/NewRoles";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FaEye, FaRotateRight, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
-import { TiUserAdd } from "react-icons/ti";
 import NewEmployee from "./Modals/NewEmployee";
 import AssignChat from "./Modals/AssignChat";
 import RolesPermissionSection from "../../components/common/AdminRoleAndPermission/RolesPermission/RolesPermissionSection";
 import { TiUserAdd } from "react-icons/ti";
-import NewEmployee from "./Modals/NewEmployee";
 const RolesPermission = () => {
     const [newpermission, setNewPermissions] = useState(false);
     const [newRoles, setNewRoles] = useState(false);

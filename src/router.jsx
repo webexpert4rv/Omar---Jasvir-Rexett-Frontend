@@ -23,6 +23,7 @@ import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
 import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
 import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
 import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
+import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
 
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
@@ -135,7 +136,9 @@ const Otp = lazy(() => import("./pages/Authentication/Otp"));
 export const route = [
   {
     path: "/client-registration",
-    element: <ClientRegisterForm />,
+    // element: <ClientRegisterForm />,
+    element: <ClientRegistrationStepper />,
+
     public: true,
   },
   {

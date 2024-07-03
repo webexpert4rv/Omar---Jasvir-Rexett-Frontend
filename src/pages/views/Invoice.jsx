@@ -28,6 +28,7 @@ import {
 } from "../admin/adminConstant";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 import TableComponentOne from "../../components/atomic/TableComponentOne";
+import CommonInvoiceTable from "../../components/common/CommonInvoiceTable";
 const INVOICE_HEADER_DATA = [
   "developerName",
   "date",
@@ -121,13 +122,14 @@ const Invoice = () => {
             filterFields={CLIENT_INVOICE_FILTER_FIELDS}
             // isSearchFilterRequired={false}
           />
-          <TableComponentOne
+          <CommonInvoiceTable/>
+          {/* <TableComponentOne
             data={invoiceList}
             totalPages={totalInvoicePages}
             columns={DEVELOPER_INVOICE_COLUMNS}
             setPage={setPage}
             page={page}
-          />
+          /> */}
           {/* <div className="table-responsive">
             <table className="table time-table table-bordered table-ui-custom">
               <thead>
