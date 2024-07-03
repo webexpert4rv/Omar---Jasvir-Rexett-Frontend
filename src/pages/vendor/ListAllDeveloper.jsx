@@ -30,9 +30,9 @@ const AllDeveloperList = () => {
     const { t } = useTranslation()
     
 
-    useEffect(() => {
-        dispatch(getDevelopersList({ page: count }))
-    }, [count])
+    // useEffect(() => {
+    //     dispatch(getDevelopersList({ page: count }))
+    // }, [count])
 
     const handleSkill = (e) => {
         let filterData = {
@@ -40,7 +40,7 @@ const AllDeveloperList = () => {
             skill_title: e.target.value
         }
         setSelectedFilter(filterData)
-        dispatch(getDevelopersList(filterData))
+        // dispatch(getDevelopersList(filterData))
     };
 
     const handleExperience = (e) => {
@@ -49,7 +49,7 @@ const AllDeveloperList = () => {
             experience_years: +e.target.value
         }
         setSelectedFilter(filterData)
-        dispatch(getDevelopersList(filterData))
+        // dispatch(getDevelopersList(filterData))
     };
 
     const handleClear = () => {
@@ -81,7 +81,7 @@ const AllDeveloperList = () => {
         e.preventDefault()
       await  dispatch(getDeleteDeveloper(devId))
       setShowModal(!showModal)
-      dispatch(getDevelopersList({ page: count }))
+    //   dispatch(getDevelopersList({ page: count }))
     }
     const handleSearchChange = (e) => {
         clearTimeout(timerValue);
@@ -91,7 +91,7 @@ const AllDeveloperList = () => {
                 ...selectedFilter,
                 search:e.target.value
             }
-            dispatch(getDevelopersList(filterData))
+            // dispatch(getDevelopersList(filterData))
         }, 500);
         setTimerValue(timer);
 

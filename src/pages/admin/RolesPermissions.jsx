@@ -10,9 +10,7 @@ import NewRoles from "./Modals/NewRoles";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FaEye, FaRotateRight, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
-import AssignChat from "./Modals/AssignChat";
 import RolesPermissionSection from "../../components/common/AdminRoleAndPermission/RolesPermission/RolesPermissionSection";
-import { TiUserAdd } from "react-icons/ti";
 import { TiUserAdd } from "react-icons/ti";
 import AssignChat from "./Modals/AssignChat";
 import NewEmployee from "./Modals/NewEmployee";
@@ -93,7 +91,7 @@ const RolesPermission = () => {
                     </div>
                     <Tab.Content>
                         <Tab.Pane eventKey="all_users" className="py-4">
-                            <div>
+                            {/* <div>
                                 <div className="d-flex justify-content-end mb-3">
                                     <Button variant="transparent" className="main-btn font-14" onClick={handleNewUser}>+ New Employee</Button>
                                 </div>
@@ -341,7 +339,7 @@ const RolesPermission = () => {
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            </div> */}
                         </Tab.Pane>
                         <Tab.Pane eventKey="roles_permissions" className="py-4">
                             <div className="d-md-flex gap-3 mb-3 justify-content-between">
@@ -434,9 +432,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Approve/Reject
-                                                        <OverlayTrigger placement="bottom" overlay={action_application}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={action_application}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -467,9 +465,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Complete Profile
-                                                        <OverlayTrigger placement="bottom" overlay={complete_profile}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={complete_profile}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -500,9 +498,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Schedule Screening
-                                                        <OverlayTrigger placement="bottom" overlay={schedule_screening}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={schedule_screening}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -577,9 +575,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Suggest New Developers
-                                                        <OverlayTrigger placement="bottom" overlay={suggest_developers}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={suggest_developers}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -610,9 +608,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Schedule Interviews
-                                                        <OverlayTrigger placement="bottom" overlay={schedule_interview}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={schedule_interview}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -643,9 +641,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Manage Contracts
-                                                        <OverlayTrigger placement="bottom" overlay={manage_contracts}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={manage_contracts}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -720,9 +718,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Review Timesheets
-                                                        <OverlayTrigger placement="bottom" overlay={review_timesheets}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={review_timesheets}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -753,9 +751,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Review Timesheet Reconciliations
-                                                        <OverlayTrigger placement="bottom" overlay={reconciliation_timesheet}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={reconciliation_timesheet}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -786,9 +784,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Send Approval Request
-                                                        <OverlayTrigger placement="bottom" overlay={approval_request}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={approval_request}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -863,9 +861,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Raise Invoice to Clients
-                                                        <OverlayTrigger placement="bottom" overlay={raise_invoice_clients}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={raise_invoice_clients}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -896,9 +894,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Pay Invoice to Devs
-                                                        <OverlayTrigger placement="bottom" overlay={pay_invoice_devs}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={pay_invoice_devs}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -929,9 +927,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Review Invoices
-                                                        <OverlayTrigger placement="bottom" overlay={review_invoices}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={review_invoices}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>
@@ -1006,9 +1004,9 @@ const RolesPermission = () => {
                                                 <div className="d-flex align-items-center gap-3 justify-content-between">
                                                     <h3 className="mb-0 font-14 fw-normal d-flex align-items-center gap-2">
                                                         Approve/Reject
-                                                        <OverlayTrigger placement="bottom" overlay={action_profile}>
+                                                        {/* <OverlayTrigger placement="bottom" overlay={action_profile}>
                                                             <span className="info-permission"><IoIosInformationCircle /></span>
-                                                        </OverlayTrigger>
+                                                        </OverlayTrigger> */}
                                                     </h3>
                                                 </div>
                                             </td>

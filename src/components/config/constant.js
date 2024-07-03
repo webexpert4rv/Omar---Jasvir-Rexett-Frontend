@@ -73,6 +73,7 @@ export const ADMIN_SIDE_BAR_ITEMS= [
 
  export const VENDOR_SIDE_BAR_ITEMS=[
     { to: "/vendor-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
+    { to: "/list-all-developers", icon:  <FaUserLarge />, text: "List of Developers" },
     { to: "/edit-vendor-profile", icon: <IoIosSettings />, text: "editProfile" },
     { to: "/vendor-documents", icon: <IoDocuments />, text: "documents" },
     { to: "/vendor-upload-invoice", icon: <FaFileInvoice />, text: "Invoice" },
