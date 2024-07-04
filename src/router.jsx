@@ -26,6 +26,8 @@ import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegiste
 import VendorSettings from "./pages/vendor/VendorSettings";
 import DeveloperSettings from "./pages/developer/DeveloperSettings";
 import ClientSettings from "./pages/views/ClientSettings";
+import WebsitePages from "./pages/admin/WebsitePages";
+import EmployeeDashboard from "./pages/employee/Dashboard";
 
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
@@ -652,6 +654,18 @@ export const route = [
   {
     path: "/admin/website-builder",
     element: <WebsiteBuilder />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/website-pages",
+    element: <WebsitePages />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/employee-dashboard",
+    element: <EmployeeDashboard />,
     isAdmin: true,
     private: true,
   },

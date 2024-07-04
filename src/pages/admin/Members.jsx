@@ -295,12 +295,12 @@ const Members = () => {
     showAssignEmployee(false);
   }
   const assignEmployeeText = (
-    <Tooltip>Assign Member</Tooltip>
+    <Tooltip>Assign Team Member</Tooltip>
   )
   const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal);
   const handleCloseTrustedModal = () => setShowTrustedModal(!showTrustedModal);
   const reassignEmployee = (
-    <Tooltip>Reassign Member</Tooltip>
+    <Tooltip>Reassign Team Member</Tooltip>
   )
 
   const featuredMember = (
@@ -432,7 +432,7 @@ const Members = () => {
                       <th>Applied on</th>
                       <th>{t("status")}</th>
                       <th className="text-center">Action</th>
-                      <th className="text-center">Assign Member</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -759,7 +759,7 @@ const Members = () => {
                       </th>
                       <th>{t("status")}</th>
                       <th className="text-center">Action</th>
-                      <th className="text-center">Assign Member</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1172,7 +1172,7 @@ const Members = () => {
                       <OverlayTrigger placement="bottom" overlay={featuredMember}>
                       <span><FaInfoCircle /></span></OverlayTrigger></span> </th>
                       <th>Trusted Tech Expert</th>
-                      <th className="text-center">Assign Member</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>

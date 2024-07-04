@@ -625,7 +625,7 @@ const AdminDashboard = () => {
                         </Col>
                         <Col lg={6} className="mb-4">
                             <div className="card-box h-100">
-                                <h3 className="section-head pb-0 border-0 mb-4">Upcoming Events</h3>
+                                <h3 className="section-head pb-0 border-0 mb-4">Upcoming Meetings</h3>
                                 <div className="meeting-booking">
                                     <Calendar onChange={onChange} value={value} />
                                 </div>

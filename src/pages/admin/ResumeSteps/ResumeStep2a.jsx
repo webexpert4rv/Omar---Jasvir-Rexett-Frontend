@@ -17,9 +17,19 @@ const ResumeStep2a = () => {
     const handleClosePreviewModal = () => {
         setShowPreviewModal(false);
     }
+    const infoOnSite = (
+        <Tooltip>
+            Was this job onsite? Checking this box will let the others know.
+        </Tooltip>
+    )
+    const infoHybrid = (
+        <Tooltip>
+            Was this job hybrid? Checking this box will let the others know.
+        </Tooltip>
+    )
     const infoRemote = (
         <Tooltip>
-            Was this job remote? Checking this box will let the others know. This selection is optional.
+            Was this job remote? Checking this box will let the others know.
         </Tooltip>
     )
     const tipstext = (
@@ -151,7 +161,7 @@ const ResumeStep2a = () => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Employer</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Company name</Form.Label>
                                                         <Form.Control type="text" className="common-field font-14" placeholder="e.g. Microsoft" />
                                                     </div>
                                                 </Col>
@@ -162,8 +172,28 @@ const ResumeStep2a = () => {
                                                     </div>
                                                 </Col>
                                                 <Col md={6}>
-                                                    <div className="mb-3 d-flex align-items-center gap-3">
-                                                        <Form.Check type="checkbox" label="Remote" className="font-14" />
+                                                    <div className="mb-3 d-inline-flex align-items-center gap-3 me-2">
+                                                        <Form.Check type="radio" name="loc_check" label="Onsite" id="onsite_loc" className="font-14" />
+                                                        <div>
+                                                            <OverlayTrigger placement="bottom" overlay={infoOnSite}>
+                                                                <span className="font-14 lh-1 mt-n7 align-middle d-inline-block">
+                                                                    <FaCircleInfo />
+                                                                </span>
+                                                            </OverlayTrigger>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mb-3 d-inline-flex align-items-center gap-3 me-2">
+                                                        <Form.Check type="radio" name="loc_check" label="Hybrid" id="hybrid_loc" className="font-14" />
+                                                        <div>
+                                                            <OverlayTrigger placement="bottom" overlay={infoHybrid}>
+                                                                <span className="font-14 lh-1 mt-n7 align-middle d-inline-block">
+                                                                    <FaCircleInfo />
+                                                                </span>
+                                                            </OverlayTrigger>
+                                                        </div>
+                                                    </div>
+                                                    <div className="mb-3 d-inline-flex align-items-center gap-3">
+                                                        <Form.Check type="radio" name="loc_check" label="Remote" id="remote_loc" className="font-14" />
                                                         <div>
                                                             <OverlayTrigger placement="bottom" overlay={infoRemote}>
                                                                 <span className="font-14 lh-1 mt-n7 align-middle d-inline-block">
