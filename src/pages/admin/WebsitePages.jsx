@@ -4,6 +4,7 @@ import websiteImg from '../../assets/img/website-img.png';
 import { FaEye, FaPencil, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import DeletePage from "../../components/common/Modals/DeletePage";
+import CreateWebsitePage from "./Modals/CreatePage";
 const WebsitePages = () => {
     const editPage = (
         <Tooltip>Edit</Tooltip>
@@ -21,6 +22,14 @@ const WebsitePages = () => {
     const handleCloseDeletePage = () => {
         showDeletePage(false)
     }
+    const [showcreatepage, ShowCreateWebsite] = useState(false);
+    const handleShowWebsite = () => {
+        ShowCreateWebsite(!showcreatepage);
+    }
+    const handleCloseWebsite = () => {
+        ShowCreateWebsite(false);
+    }
+
     return (
         <>
             <div className="card-box h-100">
@@ -28,9 +37,9 @@ const WebsitePages = () => {
                     <h2 className="section-head border-0 mb-0 pb-0">Pages</h2>
                 </div>
                 <div className="website-wrapper">
-                    <Link to={'/admin/website-builder'} className="newpage-card">
+                    <Button variant="transparent" onClick={handleShowWebsite} className="newpage-card">
                         + Create New Page
-                    </Link>
+                    </Button>
                     <div className="website-card">
                         <div className="action-website">
                             <OverlayTrigger placement="bottom" overlay={editPage}>
@@ -117,6 +126,7 @@ const WebsitePages = () => {
                     </div>
                 </div>
             </div>
+            <CreateWebsitePage show={showcreatepage} handleClose={handleCloseWebsite} />
             <DeletePage show={showdeletepage} handleClose={handleCloseDeletePage}  />
         </>
     )

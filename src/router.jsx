@@ -28,6 +28,11 @@ import DeveloperSettings from "./pages/developer/DeveloperSettings";
 import ClientSettings from "./pages/views/ClientSettings";
 import WebsitePages from "./pages/admin/WebsitePages";
 import EmployeeDashboard from "./pages/employee/Dashboard";
+import AssignedListing from "./pages/employee/AssignedListing";
+import SuperDashboard from "./pages/SuperAdmin/Dashboard";
+import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
+import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
+import ClientListing from "./pages/SuperAdmin/ClientListing";
 
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
@@ -666,6 +671,36 @@ export const route = [
   {
     path: "/admin/employee-dashboard",
     element: <EmployeeDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/assigned-listing",
+    element: <AssignedListing />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/super-dashboard",
+    element: <SuperDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/subscription-plan",
+    element: <SubscriptionPlan />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/create-new-plan",
+    element: <CreateNewPlan />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/client-listing",
+    element: <ClientListing />,
     isAdmin: true,
     private: true,
   },

@@ -238,6 +238,14 @@ export const configurationTabText = [
     key:"five",
     value:"Notification Settings"
   },
+  {
+    key:"six",
+    value:"Connect with calendar"
+  },
+  {
+    key:"seven",
+    value:"Payment setup"
+  },
  
 ]
 

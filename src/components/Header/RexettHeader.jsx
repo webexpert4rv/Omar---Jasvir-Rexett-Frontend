@@ -221,6 +221,14 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     showDeletetodo(false);
   }
 
+  const [showschedulemeeting, ShowScheduleMeeting] = useState(false);
+  const handleShowSchedule = () => {
+    ShowScheduleMeeting(!showschedulemeeting);
+  }
+  const handleCloseSchdule = () => {
+    ShowScheduleMeeting(false);
+  }
+
   // console.log(routePath(role),"routePath(isSingleJob)")
 
   return (
@@ -315,9 +323,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
         <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
           <div className="d-flex align-items-center gap-2">
             <Offcanvas.Title>Meetings</Offcanvas.Title>
-            {/* <OverlayTrigger placement="bottom" overlay={newMeeting}>
-              <Button className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
-            </OverlayTrigger> */}
+            <OverlayTrigger placement="bottom" overlay={newMeeting}>
+              <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
+            </OverlayTrigger>
           </div>
         </Offcanvas.Header>
         <Offcanvas.Body>
@@ -1069,6 +1077,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
       <AddUserConversation show={adduserconversation} handleClose={handleCloseUserConversation} />
       <DeleteToDo show={deletetodo} handleClose={handleCloseDeleteToDo} />
+      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} />
     </>
   );
 };

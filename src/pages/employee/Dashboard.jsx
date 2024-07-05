@@ -35,8 +35,20 @@ const EmployeeDashboard = () => {
                     </div>
                     <div className="overview-card">
                         <div>
-                            <h4 className="overview-card-subhead">Chat Assigned</h4>
-                            <h3 className="overview-card-heading mb-0">11</h3>
+                            <h4 className="overview-card-subhead">Client Assigned</h4>
+                            <h3 className="overview-card-heading mb-0">04</h3>
+                        </div>
+                    </div>
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Vendor Assigned</h4>
+                            <h3 className="overview-card-heading mb-0">05</h3>
+                        </div>
+                    </div>
+                    <div className="overview-card">
+                        <div>
+                            <h4 className="overview-card-subhead">Developer Assigned</h4>
+                            <h3 className="overview-card-heading mb-0">02</h3>
                         </div>
                     </div>
                     {/* <div className="overview-card">
@@ -54,20 +66,6 @@ const EmployeeDashboard = () => {
                                 <h3 className="section-head pb-0 border-0 mb-4">Messages</h3>
                                 <div>
                                     <div className="todo-wrapper mb-2 unread-message-wrapper">
-                                        <div className="d-flex align-items-start gap-2">
-                                            <div className="d-flex align-items-center gap-1 chat-assigned-user font-14">
-                                                <img src={devImg} />
-                                            </div>
-                                            <div className="w-100">
-                                                <p className="mb-0 fw-semibold d-flex justify-content-between align-items-center">
-                                                    Andrew Smith
-                                                    <span className="font-12 fw-normal">11:30 AM</span>
-                                                </p>
-                                                <p className="mb-0 font-14">Review it and create  an appliacation</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="todo-wrapper mb-2">
                                         <div className="d-flex align-items-start gap-2">
                                             <div className="d-flex align-items-center gap-1 chat-assigned-user font-14">
                                                 <img src={devImg} />
@@ -206,27 +204,6 @@ const EmployeeDashboard = () => {
                                                     <div className="d-flex align-items-center gap-1 today-text font-14">
                                                         <span><FaCalendarDays /></span>
                                                         <span>Today</span>
-                                                    </div>
-                                                    <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                        <img src={devImg} />
-                                                        Rohit Sharma
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="todo-wrapper mb-2">
-                                        <div className="d-flex align-items-start gap-2">
-                                            <div>
-                                                <Form.Check type="checkbox" className="checkbox-custom" />
-                                            </div>
-                                            <div>
-                                                <p className="mb-0 fw-semibold">Create job ad for upcoming marketing manager position</p>
-                                                <p className="mb-0 font-14">Review it and create  an appliacation</p>
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <div className="d-flex align-items-center gap-1 tomorrow-text font-14">
-                                                        <span><FaCalendarDays /></span>
-                                                        <span>Tomorrow</span>
                                                     </div>
                                                     <div className="d-flex align-items-center gap-1 assigned-user font-14">
                                                         <img src={devImg} />
