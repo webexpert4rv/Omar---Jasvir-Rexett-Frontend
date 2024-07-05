@@ -87,7 +87,15 @@ const YES_NO_OPTIONS = [
   },
 ];
 
-const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
+const JobPostStep3 = ({
+  register,
+  errors,
+  control,
+  watch,
+  setValue,
+  isRegistrationStep = false,
+  invalidFieldRequired = false,
+}) => {
   const { t } = useTranslation();
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -102,7 +110,7 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
       ideal_answer: opt?.ideal_answer ? opt.ideal_answer : "",
       must_have: false,
       alreadyYes: opt?.alreadyYes ? opt?.alreadyYes : null,
-      optionId:opt.optionId
+      optionId: opt.optionId,
     });
     {
       opt?.responseType && append({ responseType: "yes/no" });
@@ -119,16 +127,18 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
       return false;
     }
   };
-  console.log(watch("screening_questions"), "screening question");
-  console.log(errors?.screening_questions, "these aree errors");
   return (
     <div>
       {" "}
       <section className="job-post-section">
-        <h4 className="section-head font-18 border-0 mb-1 pb-0">
-          Screening questions
-        </h4>
-        <p className="font-14">We recommend adding 3 or more questions.</p>
+        {!isRegistrationStep && (
+          <>
+            <h4 className="section-head font-18 border-0 mb-1 pb-0">
+              Screening questions
+            </h4>
+            <p className="font-14">We recommend adding 3 or more questions.</p>
+          </>
+        )}
         {fields.map((field, idx) =>
           field?.question_type === "custom" ? (
             <div className="screening-wrapper mb-4">
@@ -140,7 +150,11 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
                     })}
                     type="text"
                     // value={watch(`screening_questions.${idx}.question`)}
-                    className="common-field font-14 bg-white"
+                    className={`common-field font-14 bg-white ${
+                      invalidFieldRequired &&
+                      errors?.screening_questions?.[idx].question?.message &&
+                      "invalid-field"
+                    }`}
                     placeholder="Try asking a question"
                   />
                   <Button
@@ -152,8 +166,12 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
                   </Button>
                 </div>
                 {errors?.screening_questions?.[idx]?.question && (
-                  <p className="error-message ">
-                    {errors.screening_questions?.[idx].question?.message}
+                  <p
+                    className={`${
+                      invalidFieldRequired ? "field-error" : "error-message"
+                    }`}
+                  >
+                    {errors?.screening_questions?.[idx].question?.message}
                   </p>
                 )}
               </div>
@@ -162,7 +180,7 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
                   <Form.Group>
                     <Form.Label className="font-14">Response Type</Form.Label>
                     <Form.Select
-                      className="common-field font-14"
+                      className={`common-field font-14`}
                       {...register(`screening_questions.${idx}.responseType`)}
                       // onChange={(e) =>
                       //   setValue(
@@ -219,9 +237,13 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
                       )}
                     </div>
                     {errors?.screening_questions?.[idx]?.ideal_answer && (
-                      <p className="error-message ">
+                      <p
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
+                      >
                         {
-                          errors.screening_questions?.[idx].ideal_answer
+                          errors?.screening_questions?.[idx].ideal_answer
                             ?.message
                         }
                       </p>
@@ -276,8 +298,12 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
                         )}
                     </Form.Group>
                     {errors?.screening_questions?.[idx]?.title && (
-                      <p className="error-message ">
-                        {errors.screening_questions?.[idx].title?.message}
+                      <p
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
+                      >
+                        {errors?.screening_questions?.[idx].title?.message}
                       </p>
                     )}
                   </Col>
@@ -347,9 +373,13 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
                         /> */}
                     </Form.Group>
                     {errors?.screening_questions?.[idx]?.ideal_answer && (
-                      <p className="error-message ">
+                      <p
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
+                      >
                         {
-                          errors.screening_questions?.[idx].ideal_answer
+                          errors?.screening_questions?.[idx].ideal_answer
                             ?.message
                         }
                       </p>
@@ -368,8 +398,12 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
                       />
                     </Form.Group>
                     {errors?.screening_questions?.[idx]?.must_have && (
-                      <p className="error-message ">
-                        {errors.screening_questions?.[idx]?.must_have?.message}
+                      <p
+                        className={`${
+                          invalidFieldRequired ? "field-error" : "error-message"
+                        }`}
+                      >
+                        {errors?.screening_questions?.[idx]?.must_have?.message}
                       </p>
                     )}
                   </Col>
@@ -449,7 +483,11 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
               variant="transparent"
               className="outline-main-btn px-4 py-2 d-inline-block me-1 mb-1 rounded-full cursor-pointer"
             >
-              {isFieldAlreadyAdded(curElem?.optionId) ? <FiCheck /> : <FiPlus />}
+              {isFieldAlreadyAdded(curElem?.optionId) ? (
+                <FiCheck />
+              ) : (
+                <FiPlus />
+              )}
               {curElem.label}
             </Button>
           ))}
@@ -467,7 +505,11 @@ const JobPostStep3 = ({ register, errors, control, watch, setValue }) => {
             label="Filter out and send rejections to applicants who don't meet any must have qualifications."
           />
           {errors?.qualification_filter_out && (
-            <p className="error-message">
+            <p
+              className={`${
+                invalidFieldRequired ? "field-error" : "error-message"
+              }`}
+            >
               {errors.qualification_filter_out?.message}
             </p>
           )}

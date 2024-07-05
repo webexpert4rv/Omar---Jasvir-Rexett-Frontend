@@ -20,15 +20,17 @@ import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
-import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
+import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
+import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
 
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ResetPassword from "./pages/Authentication/ResetPassword";
+import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
+import ClientStep1 from "./pages/admin/ClientRegister/ClientStep1";
+import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
-;
-
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -129,15 +131,13 @@ const DeveloperLogin = lazy(() =>
 );
 const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp = lazy(() => import("./pages/Authentication/Otp"));
-
+const Otp = lazy(() => import("./pages/Authentication/Otp")); 
 
 export const route = [
   {
     path: "/client-registration",
-    // element: <ClientRegisterForm />,
     element: <ClientRegistrationStepper />,
-
+    // element: <ClientStep1 />,
     public: true,
   },
   {
@@ -147,7 +147,7 @@ export const route = [
   },
   {
     path: "/vendor-registration",
-    element: <VendorRegisterForm />,
+    element: <VendorRegistrationStepper />,
     public: true,
   },
   {
@@ -184,15 +184,14 @@ export const route = [
   },
   {
     path: "/forgot-password",
-    element: <ForgotPassword/>,
+    element: <ForgotPassword />,
     public: true,
   },
   {
     path: "/reset-password",
-    element: <ResetPassword/>,
+    element: <ResetPassword />,
     public: true,
   },
-
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
   {
