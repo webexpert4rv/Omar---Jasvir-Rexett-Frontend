@@ -6,9 +6,11 @@ import { SIDEBAR_ITEMS, getActiveStepFields } from "../registrationConstant";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
+import { useSelector } from "react-redux";
 
 const ClientRegistrationStepper = () => {
   const [activeStep, setActiveStep] = useState(1);
+  const {smallLoader}= useSelector(state=>state.clientData)
   const activeStepFields = getActiveStepFields(activeStep);
   const {
     handleSubmit,

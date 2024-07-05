@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import CommonInput from "../../../components/atomic/CommonInput";
 import { useForm } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPermissionSeeder, newRoleCreate } from "../../../redux/slices/adminDataSlice";
 const RolesPermissionWrapper = ({
   show,
   handleClose,
@@ -15,7 +17,26 @@ const RolesPermissionWrapper = ({
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
+  const {smallLoader}= useSelector(state=> state.adminData)
+const dispatch = useDispatch()
+const [details ,setDetails] = useState()
+console.log(modalName,"modalname")
+
+
+
+  const onSubmit=async(values)=>{
+    setDetails(values)
+    let payload={
+      name:values?.role,
+      description: "description"
+    }
+   await dispatch(newRoleCreate(payload))
+   dispatch(getAllPermissionSeeder())
+    handleClose()
+    reset()
+  }
   return (
     <Modal
       show={show}
@@ -30,6 +51,7 @@ const RolesPermissionWrapper = ({
 
       <Modal.Body>
         {/* <h3 className="popup-heading">{heading}</h3> */}
+        <Form onSubmit={handleSubmit(onSubmit)}>
         {modalName == "employee" && (
           <>
             <Form.Group className="mb-4">
@@ -64,10 +86,11 @@ const RolesPermissionWrapper = ({
               label="Role Name"
               name="role"
               type="text"
-              control={control}
+              control={control} 
+              defaultValue = {details }
               placeholder="Add new Role"
               rules={{ required: "Role is required" }}
-              error={errors.email}
+              error={errors.role}
             />
           </Form.Group>
         )}
@@ -93,10 +116,10 @@ const RolesPermissionWrapper = ({
             text={modalName=="permission"?"Submit":"Send Invite"}
             className="main-btn px-4 font-14 fw-semibold"
             variant="transparent"
-            // onClick={handleEditTime}
-            // isLoading={smallLoader}
+            isLoading={smallLoader}
           />
         </div>
+        </Form>
       </Modal.Body>
     </Modal>
   );

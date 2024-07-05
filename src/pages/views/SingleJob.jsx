@@ -195,7 +195,7 @@ const SingleJob = () => {
     if (key == "interviewing") {
       setCurrnetTabsStatus("hired");
     }
-    if (key == "application") {r
+    if (key == "application") {
       setCurrnetTabsStatus("application");
     }
   };

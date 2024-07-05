@@ -40,10 +40,7 @@ import { TbArrowBarToLeft } from "react-icons/tb";
 import AddUserConversation from "../common/Modals/AddUsers";
 import DeleteToDo from "../common/Modals/DeleteToDo";
 
-const clientName = localStorage
-  .getItem("userName")
-  ?.toString()
-  .replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
+const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
 
 const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
@@ -112,19 +109,19 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
 
 
   useEffect(() => {
-    if(solidColor){
-    document.documentElement.style.setProperty('--sidebar-bg', solidColor)
-    }else{
-     document.documentElement.style.setProperty('--sidebar-bg', `linear-gradient(to bottom,${color1},${color2})`)
+    if (solidColor) {
+      document.documentElement.style.setProperty('--sidebar-bg', solidColor)
+    } else {
+      document.documentElement.style.setProperty('--sidebar-bg', `linear-gradient(to bottom,${color1},${color2})`)
     }
-    document.documentElement.style.setProperty('--primary', primaryColor )
-    document.documentElement.style.setProperty('--sidebar-link-color', linkColor )
-    document.documentElement.style.setProperty('--sideLink_font_size',  `${sideBarFontSize}px`)
-    document.documentElement.style.setProperty('--heading_font_size',  `${headingFontSize}px`)
-    document.documentElement.style.setProperty('--body_font_size',  `${bodyFontSize}px`)
-    document.documentElement.style.setProperty('--heading_color',  headingTextColor)
-    document.documentElement.style.setProperty('--body_text_color',  bodyTextColor)
-    document.documentElement.style.setProperty('--sidebar-link-bg-color',  linkBgColor)
+    document.documentElement.style.setProperty('--primary', primaryColor)
+    document.documentElement.style.setProperty('--sidebar-link-color', linkColor)
+    document.documentElement.style.setProperty('--sideLink_font_size', `${sideBarFontSize}px`)
+    document.documentElement.style.setProperty('--heading_font_size', `${headingFontSize}px`)
+    document.documentElement.style.setProperty('--body_font_size', `${bodyFontSize}px`)
+    document.documentElement.style.setProperty('--heading_color', headingTextColor)
+    document.documentElement.style.setProperty('--body_text_color', bodyTextColor)
+    document.documentElement.style.setProperty('--sidebar-link-bg-color', linkBgColor)
     document.getElementById('favicon').href = filename;
 
   }, [configDetails])

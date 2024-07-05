@@ -30,7 +30,7 @@ const initialAdminData = {
     invoiceTotalPage : null,
     timeReportingDetailTotalPage:null,
     configDetails: {},
-    allPermissionList:[]
+    allPermissionList:[],
 }
 
 export const adminDataSlice = createSlice({
@@ -154,6 +154,7 @@ export const adminDataSlice = createSlice({
         },
         setAllPermissionList : (state,action) => {
             state.allPermissionList = action.payload
+            state.smallLoader = false;
            },
     }
 })
@@ -753,10 +754,40 @@ export function getAllPermissionSeeder(){
     return async (dispatch)=>{
         dispatch(setBtnLoader())
         try{
-            let result = await clientInstance.get(`admin/permissions`)
+            let result = await clientInstance.get(`admin/all-permissions`)
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
-                dispatch(setAllPermissionList(result.data.data))
+                dispatch(setAllPermissionList(result.data))
+            }
+        }catch(error){
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function newRoleCreate(payload){
+    return async (dispatch)=>{
+        dispatch(setBtnLoader())
+        try{
+            let result = await clientInstance.post(`admin/create-role`, {...payload})
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setSuccessAdminData())
+            }
+        }catch(error){
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getUpdateRolePermission(payload){
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.post(`admin/all-permissions` ,{...payload})
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
             }
         }catch(error){
             const message = error?.response.data.message || "Something went wrong";
