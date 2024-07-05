@@ -12,6 +12,8 @@ import { getConfigDetails } from "../../../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../../../components/atomic/ScreenLoader";
 import MessageTemplate from "../MessageTemplate/MessageTemplate";
 import NotificationSetting from "../NotificationSettings/NotificationSetting";
+import ConnectCalendar from "../ConnectCalendar/ConnectCalendar";
+import PaymentSetup from "../PaymentSetup/PaymentSetup";
 
 const Customization = () => {
     const [previewUrl, setPreviewUrl] = useState('');
@@ -57,6 +59,8 @@ const Customization = () => {
                         <CompanyDetails currentTab={currentTab} />
                         <MessageTemplate currentTab={currentTab} />
                         <NotificationSetting currentTab={currentTab} />
+                        <ConnectCalendar currentTab={currentTab} />
+                        <PaymentSetup currentTab={currentTab} />
                     </Tab.Content>
                 </Tab.Container>
             </div>

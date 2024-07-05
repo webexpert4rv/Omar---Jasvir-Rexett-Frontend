@@ -10,7 +10,7 @@ const SetupJob = ({ show, handleClose }) => {
 
                 <Modal.Body>
                     <h3 className="popup-heading">Setting Up Your First Job</h3>
-                    <p className="text-center font-14">We are really excited that you want to set up a new job with us. Our team is dedicated to providing you with the best possible experience as you embark on this new journey. We are committed to supporting you every step of the way and ensuring that your transition is smooth and successful. Welcome aboard, and we look forward to achieving great things together!</p>
+                    <p className="text-center font-14">We are really excited that you want to set up a new job with us.</p>
                     <div className="d-flex justify-content-center align-items-center mt-3 gap-3">
                         <Button variant="transparent" onClick={handleClose} className="outline-main-btn font-14 text-decoration-none rounded-3">Cancel</Button>
                         <Link to={'/job-info'} variant="transparent" onClick={handleClose} className="main-btn font-14 text-decoration-none">Proceed</Link>
