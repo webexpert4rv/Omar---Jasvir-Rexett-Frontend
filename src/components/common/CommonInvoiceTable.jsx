@@ -224,7 +224,7 @@ const CommonInvoiceTable = ({ data, columns }) => {
         </thead>
         <tbody>
           {/* {dummyProjects?.projectInfo?.map((curRow, rowIndex) => ( */}
-          {dummyProjects?.map((curRow, rowIndex) => (
+          {data?.map((curRow, rowIndex) => (
             <>
               <tr
                 className="application-row"

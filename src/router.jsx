@@ -133,13 +133,13 @@ const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
 
 export const route = [
-  {
-    path: "/client-registration",
-    // element: <ClientRegisterForm />,
-    element: <ClientRegistrationStepper />,
+  // {
+  //   path: "/client-registration",
+  //   // element: <ClientRegisterForm />,
+  //   element: <ClientRegistrationStepper />,
 
-    public: true,
-  },
+  //   public: true,
+  // },
   {
     path: "/developer-registration",
     element: <DeveloperRegisterForm />,
@@ -477,7 +477,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/vendor-time-detail",
+    path: "/vendor-time-detail/:id",
     element: <VendorTimeDetail />,
     isVendor: true,
     private: true,
