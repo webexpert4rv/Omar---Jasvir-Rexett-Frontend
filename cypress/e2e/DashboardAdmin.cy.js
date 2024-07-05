@@ -13,7 +13,7 @@ describe('Other Test File', () => {
 
   it('should navigate to the dashboard after successful login', () => {
     // Perform login using the imported function
-    login("rexett_admin@yopmail.com", "admin@123")
+    login("rexett_admin@yopmail.com", "Admin@123")
     cy.get('form').submit();
     cy.get('h2.section-head', { timeout: 10000 }).should('be.visible').and('contain', 'Overview');
     cy.get('.active > div > .overview-card-subhead')
@@ -33,5 +33,17 @@ describe('Other Test File', () => {
     //Verify List of clients section !
     cy.get('.col-md-12 > .d-flex > .section-head-sub').should("have.text", "List Of Clients")
     cy.get('.col-md-12 > .d-flex > .section-head-sub')
+    
+    //Verify the list of assigned devs head!
+    cy.get('h2.section-head-sub', { timeout: 10000 }).should('be.visible').and('contain', 'List of assigned developers')
+
+ // Verify the link text
+    cy.get('a.link-text-dark')
+    .should('contain', 'See All')
+    .should('have.attr', 'href', '/developer-list');
+
+    // Click the link
+    cy.get('a.link-text-dark').click();
+
   })
 })
