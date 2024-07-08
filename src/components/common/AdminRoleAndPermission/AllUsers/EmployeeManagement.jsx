@@ -237,9 +237,7 @@ import { EMPLOYEE_ROLE } from '../../../../helper/constant'
                                     </table>
                                 </div>
                             </div>
-                            <RolesPermissionWrapper show={newEmployee} handleClose={handleNewEmployee} heading="Add Employee" modalName="employee" options={EMPLOYEE_ROLE} />
-
-                       
+                            <RolesPermissionWrapper show={newEmployee} handleClose={handleNewEmployee} heading="Add Employee" modalName="employee" options={EMPLOYEE_ROLE} />                       
      </>
    )
  }

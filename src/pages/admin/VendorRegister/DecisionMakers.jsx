@@ -15,7 +15,7 @@ const DecisionMakers = () => {
                     </div>
                     <div>
                         <ul>
-                            <li className="active-step">
+                            <li className="activisProfileSectionRequirede-step">
                                 <span className="resume-count">
                                     <span className="resume-step">1</span>
                                     <span className="resume-check">

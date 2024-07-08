@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import clientInstance, { clientFormInstance } from "../../services/client.instance";
 import { toast } from "react-toastify";
 import { generateApiUrl } from "../../helper/utlis";
+import authInstance from "../../services/auth.instance";
 
 const initialVendorData = {
     screenLoader: false,
@@ -403,4 +404,24 @@ export const uploadFileToS3Bucket = (payload,callback) => {
       }
     };
   };
+  export function applyAsVendor(payload,callback,triggerVerificationModal) {
+    console.log(payload,'payload')
+    return async (dispatch) => {
+      dispatch(setScreenLoader());
+      try {
+        let result = await authInstance.post(`web/apply-as-vendor`,{...payload});
+        localStorage.setItem("vendorId",result?.data?.data?.id);
+        callback()
+      } catch (error) {
+        const message = error?.message;
+        // if (error?.message === VERIFY_USER_MESSAGE) {
+          if (error.response?.data?.verify_user) {
+          // triggerVerificationModal("verify"); 
+        } else {
+          toast.error(error?.response?.data?.message, { position: "top-center" });
+        }
+        dispatch(setFailVendorData());
+      }
+    };
+  }
   

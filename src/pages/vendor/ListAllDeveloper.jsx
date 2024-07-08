@@ -50,23 +50,6 @@ const AllDeveloperList = () => {
     dispatch(getDevelopersList({ page: count }));
   }, [count]);
 
-  const handleSkill = (e) => {
-    let filterData = {
-      ...selectedFilter,
-      skill_title: e.target.value,
-    };
-    setSelectedFilter(filterData);
-    dispatch(getDevelopersList(filterData));
-  };
-
-  const handleExperience = (e) => {
-    let filterData = {
-      ...selectedFilter,
-      experience_years: +e.target.value,
-    };
-    setSelectedFilter(filterData);
-    dispatch(getDevelopersList(filterData));
-  };
 
 
   const handleRowClick = (e, id) => {
@@ -75,9 +58,15 @@ const AllDeveloperList = () => {
     navigate(`/vendor-single-developer/${id}`);
   };
 
-  const handleClose = () => {
-    setShowModal(!showModal);
-  };
+    const handleClose = () => {
+        setShowModal(!showModal)
+    }
+    const handleDelete = (e, id) => {
+        e.stopPropagation()
+        setDevId(id)
+        setShowModal(!showModal)
+    }
+ 
 
   const handleAction = async (e) => {
     e.preventDefault();

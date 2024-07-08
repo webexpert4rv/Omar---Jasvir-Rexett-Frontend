@@ -283,6 +283,21 @@ export const companyType = [
   }
  
 ]
+export const permissionTabText= [
+  {
+    key:"first",
+    value:"Manage Employees"
+  },
+  { 
+    key:"second",
+    value: "Roles & Permissions"
+   },
+  
+]
+
+
+
+
 
 
 export const GOOGLE_AUTOCOMPLETE_API_KEY="AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
