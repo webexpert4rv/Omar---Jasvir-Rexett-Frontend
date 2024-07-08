@@ -192,7 +192,7 @@ const VendorRegistrationStepper = () => {
             imageFile={imageFile}
           />
         )
-      case 3:
+      case 4:
         setActiveStep(activeStep + 1)
         return <ExpertiseArea />
     }
