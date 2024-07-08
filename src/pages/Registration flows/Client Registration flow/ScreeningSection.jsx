@@ -18,7 +18,7 @@ const ScreeningSection = ({
       <div>
         <Row>
           <Col md={12}>
-            <StepperHeadingSection activeStep={activeStep} />
+            <StepperHeadingSection activeStep={activeStep} type = {'client'}/>
             <p className="font-12 fw-medium">* includes a required field</p>
             <JobPostStep3
               register={register}

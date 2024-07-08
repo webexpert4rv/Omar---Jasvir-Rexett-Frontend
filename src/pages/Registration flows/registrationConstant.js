@@ -39,14 +39,15 @@ export const VENDOR_STEPPER_HEADINGS = {
   4: { heading: "vendorStep4Heading", para: "vendorStep4Para" },
 };
 
-export const getActiveStepHeadingData = (activeStep , type) => {
+export const getActiveStepHeadingData = (activeStep ,type ) => {
   console.log(type,"type")
   if (type === 'client') {
-    return CLIENT_STEPPER_HEADINGS[activeStep] || null;
-  } else if (type === 'vendor') {
-    return VENDOR_STEPPER_HEADINGS[activeStep] || null;
+    return CLIENT_STEPPER_HEADINGS[activeStep] ||{ heading: '' }; 
+  } 
+  else if (type === 'vendor') {
+    return VENDOR_STEPPER_HEADINGS[activeStep] || { heading: '' }; 
   } else {
-    return null;
+    return { heading: '' }; 
   }
 }
 
