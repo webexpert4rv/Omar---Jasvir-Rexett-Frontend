@@ -71,9 +71,7 @@ const ClientStep1 = ({
               />
             )}
             <Row className="w-100">
-              {stepFields?.map(
-                ({
-                  label,
+              {stepFields?.map(({label,
                   fieldName,
                   type,
                   rules,
