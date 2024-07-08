@@ -62,10 +62,9 @@ const JobDesciptionStep = ({
     <Row>
       <Col md={12}>
         <StepperHeadingSection activeStep={activeStep} />
-        <p className="font-12 fw-medium">* includes a required field</p>{" "}
+        <p className="font-12 fw-medium">* includes a required field</p>
         <div className="d-flex align-items-start gap-3">
           <Row className="w-100">
-            <Col></Col>
             <Col md={12}>
               <Form.Label className="font-14 fw-medium">
                 Job Description
@@ -84,7 +83,7 @@ const JobDesciptionStep = ({
                       theme="snow"
                     />
                   )}
-                />{" "}
+                />
                 {errors?.description && (
                   <p className="field-error">{errors.description?.message}</p>
                 )}

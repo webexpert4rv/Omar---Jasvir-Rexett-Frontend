@@ -4,6 +4,8 @@ import {
   WORKPLACE_TYPES_OPTIONS,
 } from "../../components/common/JobPostForm/constant";
 
+
+
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const SIDEBAR_ITEMS = {
@@ -31,13 +33,25 @@ export const CLIENT_STEPPER_HEADINGS = {
 };
 
 export const VENDOR_STEPPER_HEADINGS = {
-  1: { heading: "vendorStep1Heading", para: "vendorStepPara" },
-  2: { heading: "vendorStep2Heading", para: "vendorStepPara" },
-  3: { heading: "vendorStep3Heading", para: "vendorStepPara" },
+  1: { heading: "vendorStep1Heading", para: "vendorStep1Para" },
+  2: { heading: "vendorStep2Heading", para: "vendorStep2Para" },
+  3: { heading: "vendorStep3Heading", para: "vendorStep3Para" },
+  4: { heading: "vendorStep4Heading", para: "vendorStep4Para" },
 };
 
-export const getActiveStepHeadingData = (activeStep) =>
-  CLIENT_STEPPER_HEADINGS[activeStep] || null;
+export const getActiveStepHeadingData = (activeStep , type) => {
+  console.log(type,"type")
+  if (type === 'client') {
+    return CLIENT_STEPPER_HEADINGS[activeStep] || null;
+  } else if (type === 'vendor') {
+    return VENDOR_STEPPER_HEADINGS[activeStep] || null;
+  } else {
+    return null;
+  }
+}
+
+// export const getActiveStepVendorHeadingData = (activeStep) =>
+//   VENDOR_STEPPER_HEADINGS[activeStep] || null;
 
 const CLIENT_STEP_1_FIELDS = {
   indivisual: [
@@ -357,7 +371,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "websiteUrl",
-    fieldName: "cin_number",
+    fieldName: "website_url",
     type: "text",
     placeholder: "e.g. www.xyztechnology.com",
     rules: { required: "Website URL is required" },
@@ -394,6 +408,21 @@ const VENDOR_STEP_1_FIELDS = [
     isPasswordSection: true,
   },
   {
+    label: "email",
+    fieldName: "email",
+    type: "email",
+    placeholder: "e.g. johndoe123@gmail.com",
+    rules: {
+      required: "Email is required",
+      pattern: {
+        value: EMAIL_REGEX,
+        message: "Invalid Email",
+      },
+    },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
     label: "address",
     fieldName: "address",
     type: "select",
@@ -407,15 +436,113 @@ const VENDOR_STEP_1_FIELDS = [
     isLocation: true,
   },
 ];
-const VENDOR_STEP_3_FIELDS = [
+const VENDOR_STEP_2_FIELDS = [
   {
-    
-  }
-
+    label: "companyName",
+    fieldName: "name_of_the_company",
+    type: "text",
+    placeholder: "e.g. Microsoft",
+    rules: { required: "Company name is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Position",
+    fieldName: "position",
+    type: "text",
+    placeholder: "e.g. Microsoft",
+    rules: { required: "Position is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "phoneNumber",
+    fieldName: "phone_number",
+    type: "phone",
+    rules: { required: "Phone number is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "email",
+    fieldName: "email",
+    type: "email",
+    placeholder: "e.g. johndoe123@gmail.com",
+    rules: {
+      required: "Email is required",
+      pattern: {
+        value: EMAIL_REGEX,
+        message: "Invalid Email",
+      },
+    },
+    columnWidth: 6,
+    isRequired: true,
+  },
 ];
+const VENDOR_STEP_4_FIELDS = [
+  {
+    label: "Your Turnaround time to close Contract Positions",
+    fieldName: "Your_Turnaround_time_to_close_Contract_Positions",
+    type: "text",
+    placeholder: "e.g. 8 hours",
+    rules: { required: "This field is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Your Turnaround time to close Permanent Positions",
+    fieldName: "Your_Turnaround_time_to_close_Permanent_Positions",
+    type: "text",
+    placeholder: "e.g. 24 hours",
+    rules: { required: "This field is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Please share your success Stories with atleast 2 of your exiting IT customers and their Contact details for reference check ",
+    fieldName: "Please_share_your_success_Stories_with_atleast_2_of_your_exiting_IT_customers_and_their_Contact_details_for_reference_check ",
+    type: "text",
+    placeholder: "e.g. Desc",
+    rules: { required: "This field is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+]
+const VENDOR_STEP_3_FIELDS=[
+  {
+    label: "Total Employees in Company",
+    fieldName: "Total_Employees_in_Company",
+    type: "text",
+    placeholder: "e.g. 8 hours",
+    rules: { required: "This field is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Total nos. of IT Recruiters ",
+    fieldName: "Total_nos._of_IT_Recruiters ",
+    type: "text",
+    placeholder: "e.g. 8 hours",
+    rules: { required: "This field is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Yearly Revenues",
+    fieldName: "Yearly_Revenues",
+    type: "text",
+    placeholder: "e.g. 8 hours",
+    rules: { required: "This field is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  
+]
 const VENDOR_STEP_FIELDS = {
   1: VENDOR_STEP_1_FIELDS,
+  2: VENDOR_STEP_2_FIELDS,
   3: VENDOR_STEP_3_FIELDS,
+  4: VENDOR_STEP_4_FIELDS,
 };
 
 export const getVendorActiveStepFields = (activeStep) =>

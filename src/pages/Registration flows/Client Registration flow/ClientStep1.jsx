@@ -17,6 +17,7 @@ const ClientStep1 = ({
   errors,
   companyTypeOptions=null,
   activeStep,
+  type,
   stepFields,
   setError,
   clearErrors,
@@ -30,11 +31,13 @@ const ClientStep1 = ({
   isProfileSectionRequired,
 }) => {
   const { t } = useTranslation();
+  // field name service offerenings  
+  console.log(activeStep,"activeStep")
   return (
     <>
       <Row>
         <Col md={12}>
-          <StepperHeadingSection activeStep={activeStep} />
+          <StepperHeadingSection activeStep={activeStep} type = {type}/>
           <p className="font-12 fw-medium">* includes a required field</p>
           <div className="d-flex align-items-start gap-3">
             {/* <div className="profile-upload-preview position-relative">
@@ -148,7 +151,7 @@ const ClientStep1 = ({
                               rules={{ ...rules }}
                               error={errors?.[fieldName]}
                               type={type}
-                              options={companyTypeOptions ? companyTypeOptions:options}
+                              options={companyTypeOptions ? companyTypeOptions:options}//get options
                               defaultOption={defaultOption}
                               placeholder={placeholder}
                             />

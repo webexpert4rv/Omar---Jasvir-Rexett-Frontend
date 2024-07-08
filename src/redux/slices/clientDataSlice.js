@@ -1072,6 +1072,7 @@ export function getWebClientLookUp(callback) {
 }
 
 export function applyAsClient(payload,callback,triggerVerificationModal) {
+  console.log(payload,'payload')
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
@@ -1082,7 +1083,7 @@ export function applyAsClient(payload,callback,triggerVerificationModal) {
       const message = error?.message;
       // if (error?.message === VERIFY_USER_MESSAGE) {
         if (error.response?.data?.verify_user) {
-        triggerVerificationModal("verify"); 
+        // triggerVerificationModal("verify"); 
       } else {
         toast.error(error?.response?.data?.message, { position: "top-center" });
       }

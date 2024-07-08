@@ -465,9 +465,13 @@
         "decisionMakersInfo":"Decision makers info",
         "areaOfExpertise":"Area of expertise",
         "vendorStep1Heading":"Join Rexett as Partner",
-        "vendorStepPara":"Rexett invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals",
+        "vendorStep1Para":"Rexe  tt invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals",
+        "vendorStep2Para":"Rexe  tt invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals",
+        "vendorStep3Para":"Rexe  tt invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals",
+        "vendorStep4Para":"Rexe  tt invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals",
         "vendorStep2Heading":"Decision Makers Details",
-        "vendorStep3Heading":"Area of Expertise",
+        "vendorStep4Heading":"Area of Expertise",
+        "vendorStep3Heading": "Company Information",
         "cinNumber":"CIN Number",
         "employeeStrength":"Employees strength" 
       }

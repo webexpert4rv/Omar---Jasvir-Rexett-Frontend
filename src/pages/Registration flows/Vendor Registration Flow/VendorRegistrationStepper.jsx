@@ -11,15 +11,19 @@ import ClientStep1 from "../Client Registration flow/ClientStep1";
 import { Container } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { getWebClientLookUp } from "../../../redux/slices/clientDataSlice";
+import { applyAsClient, getCoutriesList, getWebClientLookUp } from "../../../redux/slices/clientDataSlice";
 import { createOptionsForReactSelect } from "../../websiteRegisterForm/developer/developeStepConstant";
 import VendorDecisionMakers from "./VendorDecisionMakers";
+import SetUpJobModal from "../../../components/common/Modals/SetUpJobModal";
+import { uploadFileToS3Bucket } from "../../../redux/slices/developerDataSlice";
+import { applyAsVendor } from "../../../redux/slices/vendorDataSlice";
+import ExpertiseArea from "./ExpertiseArea";
 
 const VendorRegistrationStepper = () => {
   const dispatch = useDispatch();
-  const [companyTypeOptions,setCompanyTypeOptions] = useState([]);
+  const [companyTypeOptions, setCompanyTypeOptions] = useState([]);
   const { smallLoader } = useSelector((state) => state.developerData);
-  const {} = useSelector((state) => state.clientData);
+  const { } = useSelector((state) => state.clientData);
   const {
     handleSubmit,
     register,
@@ -34,11 +38,16 @@ const VendorRegistrationStepper = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [showSetUpModal, setShowSetUpJobModal] = useState(false);
+
 
   useEffect(() => {
     const storedStep = localStorage.getItem("vendorActiveStep");
     if (storedStep) {
       setActiveStep(Number(storedStep));
+    }
+    if (activeStep === 1) {
+      dispatch(getCoutriesList());
     }
   }, []);
   useEffect(() => {
@@ -53,9 +62,11 @@ const VendorRegistrationStepper = () => {
           setCompanyTypeOptions(newOptions);
         })
       );
+
     }
   }, [activeStep]);
   const activeStepFields = getVendorActiveStepFields(activeStep);
+  console.log(activeStepFields, "activeStepFields")
   const increaseStepCount = () => {
     if (activeStep === 3) {
       // localStorage.removeItem("clientActiveStep");
@@ -63,6 +74,10 @@ const VendorRegistrationStepper = () => {
       setActiveStep((prev) => prev + 1);
       localStorage.setItem("vendorActiveStep", activeStep + 1);
     }
+  };
+  console.log(activeStep,"activestep")
+  const handleToggleSetupModal = () => {
+    setShowSetUpJobModal((prev) => !prev);
   };
   const decreaseStepCount = () => {
     setActiveStep((prev) => prev - 1);
@@ -80,25 +95,69 @@ const VendorRegistrationStepper = () => {
       case 1:
         return "Next : Decision Makers";
       case 2:
-        return "Next : Area of Expertise";
+        return "Next : Company Info";
       case 3:
+        return "Next : Area of Expertise";
+      case 4:
         return "Submit";
     }
   };
 
+  const handleProceed = () => {
+    const stepData = watch();
+    const payload = {
+      ...stepData,
+      country_code: stepData["country_code"]?.value,
+      state_iso_code: stepData["state_iso_code"]?.value,
+      country: stepData["country_code"]?.label,
+      state: stepData["state_iso_code"]?.label,
+      // profile_picture: selectedImage,
+    };
+    const handleAfterApiSuccess = () => {
+      increaseStepCount();
+      reset();
+    };
+    console.log(stepData, "stepData")
+    const filePayload = { file: imageFile };
+    dispatch(
+      uploadFileToS3Bucket(filePayload, (url) => {
+        const payload = {
+          ...stepData,
+          country_code: stepData["country_code"]?.value,
+          state_iso_code: stepData["state_iso_code"]?.value,
+          country: stepData["country_code"]?.label,
+          state: stepData["state_iso_code"]?.label,
+          profile_picture: url,
+        };
+        console.log(payload, "payload")
+        dispatch(applyAsVendor(payload, handleAfterApiSuccess));
+      })
+    );
+
+    // replace trigger verification modal with last callback function
+    //  dispatch(applyAsClient(payload,handleAfterApiSuccess,()=>{}))
+  };
+
   const onSubmit = (values) => {
-    console.log(values);
+    console.log(values, "values--------------------------------");
+    if (activeStep === 1) {
+      setShowSetUpJobModal(true);
+    } else {
+      increaseStepCount();
+    }
   };
   const renderActiveStep = () => {
     switch (activeStep) {
       case 1:
       case 3:
         // add proper naming for Client Step 1 This step can be used everywhere when we have to map fields
+
         return (
           <ClientStep1
             control={control}
             errors={errors}
             activeStep={activeStep}
+            type={"vendor"}
             register={register}
             stepFields={activeStepFields}
             setError={setError}
@@ -114,7 +173,28 @@ const VendorRegistrationStepper = () => {
           />
         );
       case 2:
-        return <VendorDecisionMakers />;
+        return (
+          <VendorDecisionMakers
+            stepFields={activeStepFields}
+            //  skillOptions={skillOptions}
+            activeStepFields={activeStepFields}
+            activeStep={activeStep}
+            watch={watch}
+            control={control}
+            setError={setError}
+            clearErrors={clearErrors}
+            setValue={setValue}
+            previewImage={previewImage}
+            setImageFile={setImageFile}
+            getActiveStepText={getActiveStepText}
+            smallLoader={smallLoader}
+            setPreviewImage={setPreviewImage}
+            imageFile={imageFile}
+          />
+        )
+      case 3:
+        setActiveStep(activeStep + 1)
+        return <ExpertiseArea />
     }
   };
   return (
@@ -153,6 +233,12 @@ const VendorRegistrationStepper = () => {
           </form>
         </div>
       </section>
+      <SetUpJobModal
+        show={showSetUpModal}
+        handleClose={handleToggleSetupModal}
+        handleProceed={handleProceed}
+        smallLoader={smallLoader}
+      />
     </>
   );
 };

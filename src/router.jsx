@@ -28,6 +28,8 @@ import ResetPassword from "./pages/Authentication/ResetPassword";
 import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
 import ClientStep1 from "./pages/admin/ClientRegister/ClientStep1";
 import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
+import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
+import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -137,6 +139,18 @@ export const route = [
   {
     path: "/client-registration",
     element: <ClientRegistrationStepper />,
+    // element: <ClientStep1 />,
+    public: true,
+  },
+  {
+    path: "/expert-area",
+    element: <ExpertiseArea />,
+    // element: <ClientStep1 />,
+    public: true,
+  },
+  {
+    path: "/decision-makers",
+    element: <VendorDecisionMakers />,
     // element: <ClientStep1 />,
     public: true,
   },

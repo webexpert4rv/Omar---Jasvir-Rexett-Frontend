@@ -88,6 +88,7 @@ const ClientRegistrationStepper = () => {
             control={control}
             errors={errors}
             activeStep={activeStep}
+            type={"client"}
             register={register}
             stepFields={activeStepFields}
             setError={setError}
@@ -176,6 +177,7 @@ const ClientRegistrationStepper = () => {
       increaseStepCount();
       reset();
     };
+    console.log(stepData,"stepData")
     const filePayload = { file: imageFile };
     dispatch(
       uploadFileToS3Bucket(filePayload, (url) => {
@@ -187,6 +189,7 @@ const ClientRegistrationStepper = () => {
           state: stepData["state_iso_code"]?.label,
           profile_picture: url,
         };
+        console.log(payload,"payload")
         dispatch(applyAsClient(payload, handleAfterApiSuccess));
       })
     );
@@ -216,7 +219,6 @@ const ClientRegistrationStepper = () => {
                   </div>
                   {renderActiveStep()}
                   <div className="d-flex justify-content-between align-items-center ">
-                    <div></div>
                     <div>
                       <RexettButton
                         type="submit"
