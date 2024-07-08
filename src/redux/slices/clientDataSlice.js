@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import clientInstance from "../../services/client.instance";
+import clientInstance, { clientFormInstance } from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
 import axios from "axios";
 import authInstance from "../../services/auth.instance";
@@ -1156,3 +1156,22 @@ export function getJobLists(filters, callback) {
     }
   };
 }
+
+export const uploadFileToS3Bucket = (payload,callback) => {
+  return async (dispatch) => {
+    // dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientFormInstance.post(`/web/upload-file/`, payload);
+      callback && callback(result?.data?.data?.Location);
+      dispatch(setActionSuccessFully())
+      // toast.success("project added successfully", {
+      //   position: "top-center",
+      // });
+    } catch (error) {
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+};
+

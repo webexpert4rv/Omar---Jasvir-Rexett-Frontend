@@ -17,7 +17,7 @@ const ClientPersonal = () => {
     }
     const [showthanksregister, setShowThanksRegister] = useState(false);
     const handleShowThanksRegister = () => {
-        setShowThanksRegister(!showthanksregister)
+        setShowThanksRegister(!showthanksregister);
     }
     const handleCloseThanksRegister = () => {
         setShowThanksRegister(false);

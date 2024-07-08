@@ -13,6 +13,7 @@ const PasswordSection = ({
   clearErrors,
   watch,
   isColSixRequired = false,
+  invalidFieldRequired = false
 }) => {
   const { t } = useTranslation();
   const [isPassword, setPassword] = useState({
@@ -61,12 +62,13 @@ const PasswordSection = ({
                   render={({ field }) => (
                     <Form.Control
                       {...field}
+                      placeholder="Enter Password"
                       type={isPassword?.firstPass ? "text" : "password"}
                       onChange={(e) => {
                         handleChangePassword(e.target.value, "password");
                         field.onChange(e);
                       }}
-                      className={`common-field`}
+                      className={`common-field ${(invalidFieldRequired && errors?.password?.message) && "invalid-field"}`}
                       // id='developer-image'
                     />
                   )}
@@ -87,7 +89,7 @@ const PasswordSection = ({
                 </span>
               </div>
               {errors?.password && (
-                <p className="error-message">{errors?.password?.message}</p>
+                <p className={`${ (invalidFieldRequired) ? "field-error" : "error-message"}`}>{errors?.password?.message}</p>
               )}
             </div>
           </Col>
@@ -109,6 +111,7 @@ const PasswordSection = ({
                   render={({ field }) => (
                     <Form.Control
                       {...field}
+                      placeholder="Confirm password"
                       type={isPassword?.secondPass ? "text" : "password"}
                       onChange={(e) => {
                         handleChangePassword(
@@ -117,7 +120,7 @@ const PasswordSection = ({
                         );
                         field.onChange(e);
                       }}
-                      className={`common-field`}
+                      className={`common-field ${(invalidFieldRequired && errors?.confirm_password?.message) && "invalid-field"}`}
                       // id='developer-image'
                     />
                   )}
@@ -138,7 +141,7 @@ const PasswordSection = ({
                 </span>
               </div>
               {errors?.confirm_password && (
-                <p className="error-message">
+                <p className={`${ (invalidFieldRequired) ? "field-error" : "error-message"}`}>
                   {errors?.confirm_password?.message}
                 </p>
               )}
