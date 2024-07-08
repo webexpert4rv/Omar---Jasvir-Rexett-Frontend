@@ -6192,6 +6192,10 @@ input[type="radio"]:checked {
     border: none;
     height: 200px;
 }
+.todo-field .ql-container.ql-snow
+{
+    height: 80px;
+}
 
 .ratinng-wrapper {
     /* display: flex;
@@ -6647,8 +6651,7 @@ input[type="radio"]:checked {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, .6);
-    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 1);
     /* display: none; */
     width: 96%;
     /* transform: translateY(-20px); */
@@ -6924,6 +6927,7 @@ input[type="radio"]:checked {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    flex: none;
 }
 
 .sender-profile img {
@@ -6964,6 +6968,7 @@ input[type="radio"]:checked {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    flex: none;
 }
 
 .receiver-message .receiver-profile img {
@@ -7065,7 +7070,7 @@ input[type="radio"]:checked {
 }
 
 .todo-canvas-body {
-    padding-bottom: 165px;
+    padding-bottom: 269px;
 }
 
 .job-info-wrapper {
@@ -7889,7 +7894,7 @@ input[type="radio"]:checked {
 }
 .todo-canvas
 {
-    width: 450px !important;
+    width: 650px !important;
 }
 .skill-progress
 {
@@ -8512,7 +8517,7 @@ select.apply-field
 {
     width: calc(100% - 250px);
     margin-left: auto;
-    padding-bottom: 40px;
+    padding: 0 20px 40px;
 }
 .resume-sidebar .resume-sidelogo img
 {
@@ -9059,6 +9064,359 @@ select.apply-field
 {
     width: 17px;
 }
+.message-preview
+{
+    padding: 20px;
+    border: 1px solid #efefef;
+    background-color: #fff;
+    border-radius: 10px;
+}
+.receiver-profile,
+.send-profile
+{
+    width: 30px;
+    height: 30px;
+    background-color: #ccc;
+    flex: none;
+    border-radius: 50%;
+}
+.receiver-message-preview
+{
+    padding: 10px;
+    border-radius: 14px 14px 14px 0;
+    background-color: #f2f2f2;
+    max-width: 400px;
+    width: 100%;
+    flex: none;
+}
+.skeleton-msg
+{
+    width: 100%;
+    border-radius: 20px;
+    height: 8px;
+    background-color: #ccc;
+}
+.send-message-preview
+{
+    padding: 10px;
+    border-radius: 14px 14px 0px 14px;
+    background-color: #037563;
+    color: #fff;
+    font-size: 12px;
+    max-width: 400px;
+    width: 100%;
+    flex: none;
+}
+.attachment_preview
+{
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    color: #037563;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.profile-dropdown .dropdown-toggle
+{
+    padding: 0px !important;
+    outline: none !important;
+    border: none !important;
+}
+.profile-dropdown .dropdown-toggle::after
+{
+    display: none;
+}
+.profile-dropdown .sort-dropdown
+{
+    max-width: 200px;
+}
+.profile-dropdown .sort-dropdown a
+{
+    font-size: 14px;
+}
+.profile-dropdown .sort-dropdown a:focus
+{
+    background-color: #037563;
+    color: #fff;
+}
+.website-wrapper
+{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+.website-card
+{
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    z-index: 1;
+    cursor: pointer;
+}
+.website-card img
+{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 7px;
+    margin-bottom: 10px;
+}
+.website-card p
+{
+    font-size: 17px;
+    text-align: center;
+    margin-bottom: 0px;
+    font-weight: 600;
+}
+.action-website
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(3, 117, 99, 0.74);
+    gap: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+}
+.website-card:hover .action-website
+{
+    opacity: 1;
+    visibility: visible;
+}
+.website-card .website-action
+{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #037563;
+    padding: 0px;
+    font-size: 18px;
+}
+.newpage-card
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #181818;
+}
+.chat-assigned-user
+{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex: none;
+}
+.chat-assigned-user img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.todo-wrapper.unread-message-wrapper
+{
+    position: relative;
+    border: 2px solid #037563;
+}
+.todo-wrapper.unread-message-wrapper::before
+{
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #037563;
+    border: 1px solid #fff;
+}
+.admin-badge
+{
+    font-size: 12px;
+    display: inline-block;
+    padding: 3px 10px;
+    background: #037563;
+    color: #fff;
+    border-radius: 30px;
+    margin-bottom: 9px;
+}
+.assignchat-img
+{
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.feature-list
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.feature-list .features
+{
+    display: block;
+    max-width: 270px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.feature-list .feature-count
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: #037563;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+}
+.billing_radio input
+{
+    display: none;
+}
+.billing_radio
+{
+    display: inline-block;
+    margin-right: 10px;
+    padding-left: 0px;
+}
+.billing_radio label
+{
+    display: inline-block;
+    padding: 9px 10px;
+    color: #aaa;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    transition: .3s ease;
+    font-size: 14px;
+    min-width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+.billing_radio input:checked + label
+{
+    background-color: #037563;
+    color: #fff;
+}
+.dollar-field
+{
+    width: 40px;
+}
+.active-plan
+{
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+.plan-heading
+{
+    font-size: 22px;
+    font-weight: 700;
+}
+.price-plan
+{
+    font-size: 30px;
+    font-weight: 300;
+}
+.price-plan span
+{
+    font-size: 16px;
+}
+.plan-valid
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.plan-valid p
+{
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 7px;
+    font-size: 14px;
+    color: #181818;
+}
+.plan-valid p:first-child
+{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.plan-valid .active-status
+{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: #d1fff8;
+    color: #037563;
+    font-weight: 500;
+}
+.payment-card
+{
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+.card-icon
+{
+    width: 43px;
+    height: 43px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    flex: none;
+}
+.card-icon img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.paymentcard-detail
+{
+    font-size: 14px;
+}
+.default-btn
+{
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 7px 13px;
+}
+.payment-card-action
+{
+    margin-top: 7px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
@@ -9391,6 +9749,10 @@ select.apply-field
     .sidebar.collapse-active .sidebar-logo img
     {
         max-width: 60px;
+    }
+    .resume-main-wrapper .resume-heading
+    {
+        font-size: 32px;
     }
 }
 

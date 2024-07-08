@@ -104,14 +104,91 @@ export const WebsiteBuilder = () => {
             }
         });
 
-        // Add custom accordion component
+        // Add custom header component
+        editor.DomComponents.addType('header', {
+            model: {
+                defaults: {
+                    tagName: 'header',
+                    draggable: true,
+                    droppable: true,
+                    components: [
+                        {
+                            tagName: 'nav',
+                            components: [
+                                {
+                                    tagName: 'ul',
+                                    components: [
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Home' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'About' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Services' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Contact' }] },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                    attributes: { class: 'header-builder' },
+                    styles: `
+                        .header-builder {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 10px 20px;
+                            background-color: #333;
+                            color: #fff;
+                        }
+                        .header-builder nav ul {
+                            list-style: none;
+                            display: flex;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .header-builder nav ul li {
+                            margin: 0 10px;
+                        }
+                        .header-builder nav ul li a {
+                            color: #fff;
+                            text-decoration: none;
+                        }
+                        @media (max-width: 768px) {
+                            .header nav ul {
+                                flex-direction: column;
+                                display: none;
+                            }
+                            .header nav ul.active {
+                                display: flex;
+                            }
+                        }
+                    `,
+                    // script: function () {
+                    //     const header = this;
+                    //     const nav = header.querySelector('nav ul');
+                    //     const toggleButton = document.createElement('button');
+                    //     toggleButton.innerHTML = '☰';
+                    //     toggleButton.className = 'nav-toggle';
+                    //     toggleButton.onclick = () => nav.classList.toggle('active');
+                    //     header.prepend(toggleButton);
+                    // },
+                },
+            },
+        });
+
+        // Add custom block for header
+        editor.BlockManager.add('header', {
+            label: 'Header',
+            content: {
+                type: 'header',
+            },
+            category: 'Custom',
+        });
+
         editor.DomComponents.addType('accordion', {
             model: {
                 defaults: {
-                    script: function() {
+                    script: function () {
                         const headers = this.querySelectorAll('.accordion-header');
                         headers.forEach(header => {
-                            header.addEventListener('click', function() {
+                            header.addEventListener('click', function () {
                                 const content = this.nextElementSibling;
                                 content.style.display = content.style.display === 'block' ? 'none' : 'block';
                             });

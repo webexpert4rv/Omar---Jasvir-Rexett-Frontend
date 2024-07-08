@@ -4,30 +4,27 @@ import rexettLogo from "../../../assets/img/rexett-logo-white.png";
 import {
   FaArrowLeft,
   FaCheck,
-  FaChevronDown,
-  FaFilter,
-  FaPencil,
-  FaPlus,
-} from "react-icons/fa6";
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {
   IoAddCircle,
   IoAddOutline,
-  IoCheckmark,
   IoTrash,
 } from "react-icons/io5";
 import ReactQuill from "react-quill";
+
 const JobDescription = () => {
   const [valuedescr, setValueDescr] = useState("");
   const handleChange = (value) => {
     setValueDescr(value);
   };
+
   return (
     <>
       <section className="resume-section-wrapper">
         <div className="resume-sidebar">
           <div className="resume-sidelogo mb-4">
-            <img src={rexettLogo} />
+            <img src={rexettLogo} alt="Rexett Logo" />
           </div>
           <div>
             <ul>
@@ -82,7 +79,10 @@ const JobDescription = () => {
         <div className="resume-main-wrapper">
           <Container>
             <div>
-              <Link className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium">
+              <Link
+                className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium"
+                to="#"
+              >
                 <FaArrowLeft /> Go Back
               </Link>
               <div>
@@ -93,7 +93,7 @@ const JobDescription = () => {
                         Briefly tell us about your job
                       </h2>
                       <p>
-                        Choose from our pre-written skils below or write your
+                        Choose from our pre-written skills below or write your
                         own.
                       </p>
                     </div>
@@ -115,88 +115,87 @@ const JobDescription = () => {
                             </p>
                           </div>
                         </Col>
-
+                      </Row>
+                      <Row>
                         <Col md={6}>
-                          <div>
-                            <div className="recommended-desc">
-                              <div className="d-flex align-items-center gap-3">
-                                <Button
-                                  variant="transparent"
-                                  className="arrow-btn primary-arrow shadow-none"
-                                >
-                                  <IoAddOutline />
-                                </Button>
-                                <div>
-                                  <p className="font-14 fw-medium mb-1">
-                                    Expert Recommended
-                                  </p>
-                                  <p className="font-14 mb-0">HTML</p>
-                                </div>
+                          <div className="recommended-desc">
+                            <div className="d-flex align-items-center gap-3">
+                              <Button
+                                variant="transparent"
+                                className="arrow-btn primary-arrow shadow-none"
+                              >
+                                <IoAddOutline />
+                              </Button>
+                              <div>
+                                <p className="font-14 fw-medium mb-1">
+                                  Expert Recommended
+                                </p>
+                                <p className="font-14 mb-0">HTML</p>
                               </div>
-                              <div className="d-flex align-items-center gap-3">
-                                <Button
-                                  variant="transparent"
-                                  className="arrow-btn primary-arrow shadow-none"
-                                >
-                                  <IoAddOutline />
-                                </Button>
-                                <div>
-                                  <p className="font-14 fw-medium mb-1">
-                                    Expert Recommended
-                                  </p>
-                                  <p className="font-14 mb-0">CSS</p>
-                                </div>
+                            </div>
+                            <div className="d-flex align-items-center gap-3">
+                              <Button
+                                variant="transparent"
+                                className="arrow-btn primary-arrow shadow-none"
+                              >
+                                <IoAddOutline />
+                              </Button>
+                              <div>
+                                <p className="font-14 fw-medium mb-1">
+                                  Expert Recommended
+                                </p>
+                                <p className="font-14 mb-0">CSS</p>
                               </div>
-                              <div className="d-flex align-items-center gap-3">
-                                <Button
-                                  variant="transparent"
-                                  className="arrow-btn primary-arrow shadow-none"
-                                >
-                                  <IoAddOutline />
-                                </Button>
-                                <div>
-                                  <p className="font-14 fw-medium mb-1">
-                                    Expert Recommended
-                                  </p>
-                                  <p className="font-14 mb-0">JavaScript</p>
-                                </div>
+                            </div>
+                            <div className="d-flex align-items-center gap-3">
+                              <Button
+                                variant="transparent"
+                                className="arrow-btn primary-arrow shadow-none"
+                              >
+                                <IoAddOutline />
+                              </Button>
+                              <div>
+                                <p className="font-14 fw-medium mb-1">
+                                  Expert Recommended
+                                </p>
+                                <p className="font-14 mb-0">JavaScript</p>
                               </div>
-                              <div className="d-flex align-items-center gap-3">
-                                <Button
-                                  variant="transparent"
-                                  className="arrow-btn primary-arrow shadow-none"
-                                >
-                                  <IoAddOutline />
-                                </Button>
-                                <div>
-                                  <p className="font-14 mb-0">
-                                    Front End Developers
-                                  </p>
-                                </div>
+                            </div>
+                            <div className="d-flex align-items-center gap-3">
+                              <Button
+                                variant="transparent"
+                                className="arrow-btn primary-arrow shadow-none"
+                              >
+                                <IoAddOutline />
+                              </Button>
+                              <div>
+                                <p className="font-14 mb-0">
+                                  Front End Developers
+                                </p>
                               </div>
-                              <div className="d-flex align-items-center gap-3">
-                                <Button
-                                  variant="transparent"
-                                  className="arrow-btn primary-arrow shadow-none"
-                                >
-                                  <IoAddOutline />
-                                </Button>
-                                <div>
-                                  <p className="font-14 mb-0">
-                                    Website optimization
-                                  </p>
-                                </div>
+                            </div>
+                            <div className="d-flex align-items-center gap-3">
+                              <Button
+                                variant="transparent"
+                                className="arrow-btn primary-arrow shadow-none"
+                              >
+                                <IoAddOutline />
+                              </Button>
+                              <div>
+                                <p className="font-14 mb-0">
+                                  Website optimization
+                                </p>
                               </div>
-                              <div className="d-flex align-items-center gap-3">
-                                <Button
-                                  variant="transparent"
-                                  className="arrow-btn primary-arrow shadow-none"
-                                >
-                                  <IoAddOutline />
-                                </Button>
-                                <div>
-                                  <p className="font-14 mb-0">Programming</p>
-                                </div>
+                            </div>
+                            <div className="d-flex align-items-center gap-3">
+                              <Button
+                                variant="transparent"
+                                className="arrow-btn primary-arrow shadow-none"
+                              >
+                                <IoAddOutline />
+                              </Button>
+                              <div>
+                                <p className="font-14 mb-0">Programming</p>
                               </div>
                             </div>
                           </div>
@@ -238,20 +237,20 @@ const JobDescription = () => {
                         </Col>
                       </Row>
                     </div>
+                    <div className="d-flex justify-content-between align-items-center mt-4">
+                      <div></div>
+                      <div>
+                        <Link
+                          to={"/screening-info"}
+                          variant="transparent"
+                          className="main-btn font-14 text-decoration-none"
+                        >
+                          Next
+                        </Link>
+                      </div>
+                    </div>
                   </Col>
                 </Row>
-              </div>
-              <div className="d-flex justify-content-between align-items-center mt-4">
-                <div></div>
-                <div>
-                  <Link
-                    to={"/screening-info"}
-                    variant="transparent"
-                    className="main-btn font-14 text-decoration-none"
-                  >
-                    Next
-                  </Link>
-                </div>
               </div>
             </div>
           </Container>
@@ -260,4 +259,5 @@ const JobDescription = () => {
     </>
   );
 };
+
 export default JobDescription;

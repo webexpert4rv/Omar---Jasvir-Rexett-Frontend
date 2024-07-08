@@ -42,7 +42,7 @@ const ClientPersonal = () => {
                             </li>
                             <li>
                                 <span className="resume-count">
-                                    <span className="resume-step">3</span>
+                                    <span className="resume-step">2</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
@@ -51,7 +51,7 @@ const ClientPersonal = () => {
                             </li>
                             <li>
                                 <span className="resume-count">
-                                    <span className="resume-step">4</span>
+                                    <span className="resume-step">3</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
@@ -60,7 +60,7 @@ const ClientPersonal = () => {
                             </li>
                             <li>
                                 <span className="resume-count">
-                                    <span className="resume-step">5</span>
+                                    <span className="resume-step">4</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
@@ -222,6 +222,12 @@ const ClientPersonal = () => {
                                                             <option>Select Timezone</option>
                                                             <option>GMT (+5:30) Kolkata</option>
                                                         </Form.Select>
+                                                    </div>
+                                                </Col>
+                                                <Col md={12}>
+                                                    <div className="d-flex align-items-start gap-2 mt-3">
+                                                        <Form.Check type="checkbox" id="privacy-check" className="mt-0"  />
+                                                        <Form.Label htmlFor="privacy-check" className="font-14">"Please be informed that when you click the Continue button Rexett will process your personal data in accordance with our Privacy notice for the purpose of providing you with appropriate information."</Form.Label>
                                                     </div>
                                                 </Col>
                                             </Row>

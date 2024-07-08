@@ -143,7 +143,7 @@ const AddProjects = () => {
                                                 </Col>
                                                 <Col md={6}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Project URL *</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Project URL</Form.Label>
                                                         <Form.Control type="type" placeholder="E.g. https://www.dummywebsite.com" className="common-field font-14" />
                                                     </div>
                                                 </Col>

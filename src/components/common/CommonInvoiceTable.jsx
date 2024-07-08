@@ -26,128 +26,7 @@ import userImage from "../../assets/img/user-img.jpg";
 import { RxChevronRight } from "react-icons/rx";
 import { convertDateIntoRequiredFormat } from "../../pages/websiteRegisterForm/developer/developeStepConstant";
 // dummy data
-const dummyProjects = [
-  {
-    projectName: "Figma to UI",
-    totalHiredDevelopers: 3,
-    totalInvoiceRaised: 5,
-    totalHoursSpend: "3000",
-    startDate: "10-04-2024",
-    invoiceMonth: "Jun 2024",
-    developers: [
-      {
-        developerName: "John Smith",
-        totalHoursSpend: "140 ",
-        invoiceMonth: "Jun 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Emily Davis",
-        totalHoursSpend: "140 ",
-        invoiceMonth: "Jun 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "James Taylor",
-        totalHoursSpend: "140 ",
-        invoiceMonth: "Jun 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Michael Brown",
-        totalHoursSpend: "140 ",
-        invoiceMonth: "Jun 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Sarah Wilson",
-        totalHoursSpend: "140 ",
-        invoiceMonth: "Jun 2024",
-        projectStatus: "Paid",
-      },
-    ],
-  },
-  {
-    projectName: "Backend API Development",
-    totalHiredDevelopers: 4,
-    totalInvoiceRaised: 8,
-    totalHoursSpend: "5000 ",
-    startDate: "01-05-2024",
-    invoiceMonth: "Jul 2024",
-    developers: [
-      {
-        developerName: "Anna Lee",
-        totalHoursSpend: "160 ",
-        invoiceMonth: "Jul 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "David Kim",
-        totalHoursSpend: "160 ",
-        invoiceMonth: "Jul 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Sophia Martinez",
-        totalHoursSpend: "160",
-        invoiceMonth: "Jul 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Robert Johnson",
-        totalHoursSpend: "160",
-        invoiceMonth: "Jul 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Jessica White",
-        totalHoursSpend: "160",
-        invoiceMonth: "Jul 2024",
-        projectStatus: "Paid",
-      },
-    ],
-  },
-  {
-    projectName: "Mobile App Development",
-    totalHiredDevelopers: 5,
-    totalInvoiceRaised: 10,
-    totalHoursSpend: "7000",
-    startDate: "15-06-2024",
-    invoiceMonth: "Aug 2024",
-    developers: [
-      {
-        developerName: "Kevin Wang",
-        totalHoursSpend: "180",
-        invoiceMonth: "Aug 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Laura Brown",
-        totalHoursSpend: "180",
-        invoiceMonth: "Aug 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Steven Clark",
-        totalHoursSpend: "180",
-        invoiceMonth: "Aug 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Rachel Adams",
-        totalHoursSpend: "180",
-        invoiceMonth: "Aug 2024",
-        projectStatus: "Paid",
-      },
-      {
-        developerName: "Daniel Rodriguez",
-        totalHoursSpend: "180",
-        invoiceMonth: "Aug 2024",
-        projectStatus: "Paid",
-      },
-    ],
-  },
-];
+
 
 const dummyColumns = {
   projectInfo: [
@@ -224,7 +103,7 @@ const CommonInvoiceTable = ({ data, columns }) => {
         </thead>
         <tbody>
           {/* {dummyProjects?.projectInfo?.map((curRow, rowIndex) => ( */}
-          {dummyProjects?.map((curRow, rowIndex) => (
+          {data?.map((curRow, rowIndex) => (
             <>
               <tr
                 className="application-row"

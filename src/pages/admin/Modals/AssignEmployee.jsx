@@ -8,7 +8,7 @@ const AssignEmployee = ({ show, handleClose }) => {
             </Modal.Header>
 
             <Modal.Body>
-                <h3 className="popup-heading">Assign Employee</h3>
+                <h3 className="popup-heading">Assign Team Member</h3>
                 <Form>
                     <Form.Control type="text" className="common-field font-14" placeholder="Search Employee" />
                     <p className="font-12 text-muted">Who would you like to assign to this conversation? You can only assign employee with access to the candidate.</p>

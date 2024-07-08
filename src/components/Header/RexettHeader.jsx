@@ -17,7 +17,7 @@ import Calendar from 'react-calendar';
 import MeetingInfo from "../../pages/admin/Modals/MeetingInfo";
 import { RiUserAddFill } from "react-icons/ri";
 import { FaCalendarDays } from "react-icons/fa6";
-import { IoArrowForward } from "react-icons/io5";
+import { IoArrowForward, IoCloseCircleOutline } from "react-icons/io5";
 import { IoFilter } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { IoArchiveSharp } from "react-icons/io5";
@@ -39,6 +39,7 @@ import { TiWeatherSunny } from "react-icons/ti";
 import { TbArrowBarToLeft } from "react-icons/tb";
 import AddUserConversation from "../common/Modals/AddUsers";
 import DeleteToDo from "../common/Modals/DeleteToDo";
+import rexettLogo from '../../assets/img/favicon.png'
 
 const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
 
@@ -218,7 +219,15 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     showDeletetodo(false);
   }
 
-  console.log(routePath(role), "routePath(isSingleJob)")
+  const [showschedulemeeting, ShowScheduleMeeting] = useState(false);
+  const handleShowSchedule = () => {
+    ShowScheduleMeeting(!showschedulemeeting);
+  }
+  const handleCloseSchdule = () => {
+    ShowScheduleMeeting(false);
+  }
+
+  // console.log(routePath(role),"routePath(isSingleJob)")
 
   return (
     <>
@@ -292,9 +301,18 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
               ""
             )}
             <ToolTip text={clientName}>
-              <div className="profile-view">
-                <span>{clientName?.charAt(0)}</span>
-              </div>
+              <Dropdown className="profile-dropdown">
+                <Dropdown.Toggle variant="transparent" id="dropdown-basic">
+                  <div className="profile-view">
+                    <span>{clientName?.charAt(0)}</span>
+                  </div>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu className="sort-dropdown">
+                  <Dropdown.Item href="/admin/website-pages">Pages</Dropdown.Item>
+                  <Dropdown.Item href="#">Website</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </ToolTip>
           </div>
         </div>
@@ -304,7 +322,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
           <div className="d-flex align-items-center gap-2">
             <Offcanvas.Title>Meetings</Offcanvas.Title>
             <OverlayTrigger placement="bottom" overlay={newMeeting}>
-              <Button className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
+              <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
             </OverlayTrigger>
           </div>
         </Offcanvas.Header>
@@ -451,8 +469,36 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                     <img src={devImg} />
                   </div>
                   <div>
-                    <p className="message">You are invited<br /><br /> -- <br /><br /> Aviox Technologies Pvt Ltd.</p>
+                    <p className="message">I need your help in timesheet reporting. I am facing in submission.</p>
                     <p className="message-time">1 hour ago</p>
+                  </div>
+                </div>
+                <div className="receiver-message mt-3">
+                  <div className="receiver-profile">
+                    <img src={rexettLogo} />
+                  </div>
+                  <div>
+                    
+                    <p className="message"><span className="admin-badge">Admin</span> <br/> Hi, <br/> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                    <p className="message-time">1 hour ago</p>
+                  </div>
+                </div>
+                <div className="sender-message">
+                  <div>
+                    <div className="message">
+                      <p>Hi, <br /> <br />Welcome and thank you for showing an interest in Aviox technologies pvt ltd. Being connected to our company means you get the chance to let us get to know you even more. Start by introducing yourself on your personal profile. A good and informative profile will help us find a right match. We will keep you up to date with jobs that suit your profile. <br /> <br />Have a great day</p>
+                      <div className='attachment_preview'>
+                        <p className='mb-0'>Privacy Policy.pdf</p>
+                        <p className='del-attac mb-0'>
+                          <IoCloseCircleOutline />
+                        </p>
+                      </div>
+                      <p> -- <br /><br /> Aviox Technologies Pvt Ltd.</p>
+                    </div>
+                    <p className="message-time">1 hour ago</p>
+                  </div>
+                  <div className="sender-profile">
+                    <img src={devImg} />
                   </div>
                 </div>
               </div>
@@ -939,7 +985,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
           <div className="new-todo">
             <div className="">
               <Form.Control type="text" className="common-field font-14 mb-2" placeholder="Add your to-do..." />
-              <Form.Control type="text" className="common-field font-14 mb-2" placeholder="Add your to-do description..." />
+              <div className="custom-rich-editor todo-field">
+                  <ReactQuill value={valuemessga} />
+                </div>
               <div className="d-flex justify-content-between align-items-center pt-2">
                 <div className="d-flex align-items-center gap-3">
                   <Dropdown className="assign-dropdown">
@@ -1016,8 +1064,8 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                   </Dropdown>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                  <Button variant="transparent" className="font-14 border-0 p-0">Cancel</Button>
-                  <Button variant="transparent" className="font-14 main-btn pt-2"><IoArrowForward /></Button>
+                  <Button variant="transparent" className="font-14 border-0 p-0 me-3">Cancel</Button>
+                  <Button variant="transparent" className="font-14 main-btn">Create Todo</Button>
                 </div>
               </div>
             </div>
@@ -1027,6 +1075,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
       <AddUserConversation show={adduserconversation} handleClose={handleCloseUserConversation} />
       <DeleteToDo show={deletetodo} handleClose={handleCloseDeleteToDo} />
+      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} />
     </>
   );
 };

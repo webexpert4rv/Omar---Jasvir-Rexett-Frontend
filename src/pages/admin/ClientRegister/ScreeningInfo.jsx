@@ -34,7 +34,7 @@ const ScreeningInfo = () => {
                             </li>
                             <li className="active-step">
                                 <span className="resume-count">
-                                    <span className="resume-step">3</span>
+                                    <span className="resume-step">2</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
@@ -43,7 +43,7 @@ const ScreeningInfo = () => {
                             </li>
                             <li className="active-step">
                                 <span className="resume-count">
-                                    <span className="resume-step">4</span>
+                                    <span className="resume-step">3</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>
@@ -52,7 +52,7 @@ const ScreeningInfo = () => {
                             </li>
                             <li>
                                 <span className="resume-count">
-                                    <span className="resume-step">5</span>
+                                    <span className="resume-step">4</span>
                                     <span className="resume-check">
                                         <FaCheck />
                                     </span>

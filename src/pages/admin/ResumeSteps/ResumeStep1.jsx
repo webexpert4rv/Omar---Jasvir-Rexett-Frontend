@@ -84,7 +84,7 @@ const ResumeStep1 = () => {
                             <Link className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium"><FaArrowLeft /> Go Back</Link>
                             <div>
                                 <Row>
-                                    <Col md={8}>
+                                    <Col md={12}>
                                         <div>
                                             <h2 className="resume-heading">
                                                 What's the most convenient way for us to reach out to you?
@@ -173,7 +173,7 @@ const ResumeStep1 = () => {
                                                         <Form.Label htmlFor="intro-video" className="upload-intro-file">Upload Resume</Form.Label>
                                                     </div>
                                                     <div>
-                                                        <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3">
+                                                        <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
                                                             <span className="font-14 fw-medium">resume-doc1.pdf</span>
                                                             <span className="cursor-pointer text-danger"><IoClose /> </span>
                                                         </div>
@@ -185,7 +185,7 @@ const ResumeStep1 = () => {
                                                         <Form.Control type="file" className="d-none" id="intro-video" />
                                                         <Form.Label htmlFor="intro-video" className="upload-intro-file">Upload Intro Video</Form.Label>
                                                     </div>
-                                                    <div className="profile-upload-preview position-relative preview_intro">
+                                                    <div className="profile-upload-preview position-relative preview_intro mb-3">
                                                         <div className="profile-img-preview w-100 h-100">
                                                             <img src={videoImg} />
                                                         </div>
@@ -219,10 +219,16 @@ const ResumeStep1 = () => {
                                                         </div>
                                                     </div>
                                                 </Col>
+                                                <Col md={12}>
+                                                    <div className="d-flex align-items-start gap-2 mt-3">
+                                                        <Form.Check type="checkbox" id="privacy-check" className="mt-0"  />
+                                                        <Form.Label htmlFor="privacy-check" className="font-14">"Please be informed that when you click the Continue button Rexett will process your personal data in accordance with our Privacy notice for the purpose of providing you with appropriate information."</Form.Label>
+                                                    </div>
+                                                </Col>
                                             </Row>
                                         </div>
                                     </Col>
-                                    <Col md={4}>
+                                    {/* <Col md={4}>
                                         <div>
                                             <p className="font-14 resume-delivers"> <FaArrowUp /> Our Resume delivers results</p>
                                             <div className="preview-resume-form">
@@ -234,10 +240,6 @@ const ResumeStep1 = () => {
                                                                 <Col md={6} className="px-0 h-100">
                                                                     <div className="resume-basic-info text-center highlight-resume-section">
                                                                         <div className="resume-imgbx mx-auto mb-2">
-                                                                            {/* <img
-                                                                                
-                                                                                className="resume-img"
-                                                                            /> */}
                                                                         </div>
                                                                         <h3 className="resume-name">
                                                                             John Doe
@@ -293,7 +295,6 @@ const ResumeStep1 = () => {
 
                                                                             <div className="exp-wrapper expertise-card"
                                                                             >
-                                                                                {/* <img src={skill_icon?.icon_url} /> */}
                                                                                 <p className="expertise-skill">Laravel</p>
                                                                                 <p className="expertise-exp">1 year
                                                                                 </p>
@@ -428,7 +429,7 @@ const ResumeStep1 = () => {
                                                 </section>
                                             </div>
                                         </div>
-                                    </Col>
+                                    </Col> */}
                                 </Row>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
