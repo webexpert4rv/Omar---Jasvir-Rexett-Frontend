@@ -177,6 +177,7 @@ const VendorRegistrationStepper = () => {
           <VendorDecisionMakers
             stepFields={activeStepFields}
             //  skillOptions={skillOptions}
+            onSubmit={onSubmit}
             activeStepFields={activeStepFields}
             activeStep={activeStep}
             watch={watch}
@@ -190,6 +191,7 @@ const VendorRegistrationStepper = () => {
             smallLoader={smallLoader}
             setPreviewImage={setPreviewImage}
             imageFile={imageFile}
+            setActiveStep={setActiveStep}
           />
         )
       case 4:

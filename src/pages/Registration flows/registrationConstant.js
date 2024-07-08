@@ -436,7 +436,7 @@ const VENDOR_STEP_1_FIELDS = [
     isLocation: true,
   },
 ];
-const VENDOR_STEP_2_FIELDS = [
+ const VENDOR_STEP_2_FIELDS = [
   {
     label: "companyName",
     fieldName: "name_of_the_company",
