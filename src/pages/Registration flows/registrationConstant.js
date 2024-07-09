@@ -6,6 +6,17 @@ import {
 
 
 
+export const MODAL_INFORMATION={
+  1:{
+    heading:"Setting Up Your First Job post",
+    paragraph:"We are really excited that you want to set up a new job with us. Our team is dedicated to providing you with the best possible experience as you embark on this new journey. We are committed to supporting you every step of the way and ensuring that your transition is smooth and successful. Welcome aboard, and we look forward to achieving great things together!"
+  },
+  4:{
+     heading:"Thank you for applying",
+     paragraph:<span>Welcome to the Rexett Community! <br/>  A Rexett Team  Will Reach Out to You Shortly for the Next Steps!</span>
+  }
+}
+
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const SIDEBAR_ITEMS = {
@@ -18,7 +29,17 @@ export const SIDEBAR_ITEMS = {
   vendor: [
     { stepNumber: 1, label: "personal" },
     { stepNumber: 2, label: "decisionMakersInfo" },
-    { stepNumber: 3, label: "areaOfExpertise" },
+    { stepNumber: 3, label: "companyInfo" },
+    { stepNumber: 4, label: "areaOfExpertise" },
+  ],
+  developer: [
+    { stepNumber: 1, label: "heading" },
+    { stepNumber: 2, label: "workHistory" },
+    { stepNumber: 3, label: "education" },
+    { stepNumber: 4, label: "skillsInfo" },
+    { stepNumber: 5, label: "summary" },
+    { stepNumber: 6, label: "projects" },
+    { stepNumber: 7, label: "finalize" },
   ],
 };
 
@@ -39,6 +60,13 @@ export const VENDOR_STEPPER_HEADINGS = {
   4: { heading: "vendorStep4Heading", para: "vendorStep4Para" },
 };
 
+export const DEVELOPER_STEPPER_HEADINGS = {
+  1: { heading: "developerStep1Heading", para: "developerStep1Para" },
+  2: { heading: "developerStep2Heading", para: "developerStep2Para" },
+  3: { heading: "developerStep3Heading", para: "developerStep3Para" },
+  4: { heading: "developerStep4Heading", para: "developerStep4Para" },
+};
+
 export const getActiveStepHeadingData = (activeStep ,type ) => {
   console.log(type,"type")
   if (type === 'client') {
@@ -47,8 +75,11 @@ export const getActiveStepHeadingData = (activeStep ,type ) => {
   else if (type === 'vendor') {
     return VENDOR_STEPPER_HEADINGS[activeStep] || { heading: '' }; 
   } else {
-    return { heading: '' }; 
+    return DEVELOPER_STEPPER_HEADINGS[activeStep] || { heading: '' }; 
+    
   }
+
+  
 }
 
 // export const getActiveStepVendorHeadingData = (activeStep) =>
@@ -439,11 +470,11 @@ const VENDOR_STEP_1_FIELDS = [
 ];
  const VENDOR_STEP_2_FIELDS = [
   {
-    label: "companyName",
-    fieldName: "name_of_the_company",
+    label: "Name",
+    fieldName: "name",
     type: "text",
-    placeholder: "e.g. Microsoft",
-    rules: { required: "Company name is required" },
+    placeholder: "e.g. John",
+    rules: { required: "Name is required" },
     columnWidth: 6,
     isRequired: true,
   },
@@ -457,15 +488,16 @@ const VENDOR_STEP_1_FIELDS = [
     isRequired: true,
   },
   {
-    label: "phoneNumber",
+    label: "Phone Number",
     fieldName: "phone_number",
     type: "phone",
+    placeholder: "e.g. +918979003975",
     rules: { required: "Phone number is required" },
     columnWidth: 6,
     isRequired: true,
   },
   {
-    label: "email",
+    label: "Email",
     fieldName: "email",
     type: "email",
     placeholder: "e.g. johndoe123@gmail.com",
@@ -481,6 +513,28 @@ const VENDOR_STEP_1_FIELDS = [
   },
 ];
 const VENDOR_STEP_4_FIELDS = [
+  {
+    label: "areaOfSpecialization",
+    fieldName: "area_of_specialization",
+    type: "normal-select",
+    // placeholder: "",
+    rules: { required: "Type of specialization is required" },
+    columnWidth: 12,
+    isRequired: true,
+    defaultOption: "Select Specialization type",
+  },
+
+  {
+    label: "serviceOffering",
+    fieldName: "service_offering",
+    type: "normal-select",
+    // placeholder: "",
+    rules: { required: "Service offering is required" },
+    columnWidth: 12,
+    isRequired: true,
+    defaultOption: "Select",
+  },
+
   {
     label: "Your Turnaround time to close Contract Positions",
     fieldName: "Your_Turnaround_time_to_close_Contract_Positions",
@@ -510,6 +564,24 @@ const VENDOR_STEP_4_FIELDS = [
   },
 ]
 const VENDOR_STEP_3_FIELDS=[
+  {
+    label: "Estbl. Year",
+    fieldName: "estiblashment_year",
+    type: "text",
+    placeholder: "e.g. 8 hours",
+    rules: { required: "Establishment is required" },
+    columnWidth: 12,
+    isRequired: true,
+  },
+  {
+
+  label: "Type of Establishment",
+  fieldName: "type_estiblashment_year",
+    type: "normal-select",
+  rules: { required: "Type of Establishment is required" },
+  columnWidth: 12,
+  isRequired: true,
+},
   {
     label: "Total Employees in Company",
     fieldName: "Total_Employees_in_Company",
@@ -548,3 +620,192 @@ const VENDOR_STEP_FIELDS = {
 
 export const getVendorActiveStepFields = (activeStep) =>
   VENDOR_STEP_FIELDS[activeStep] || null;
+
+
+const DEVELOPER_STEP_1_FIELDS = [
+    {
+      label: "firstName",
+      fieldName: "first_name",
+      type: "text",
+      placeholder: "e.g. John",
+      rules: { required: "First name is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "surname",
+      fieldName: "last_name",
+      type: "text",
+      placeholder: "e.g. Doe",
+      rules: { required: "Surname is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "Profession",
+      fieldName: "profession",
+      type: "text",
+      placeholder: "e.g. Software Engineer",
+      rules: { required: "Profession is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "Language Proficiency",
+      fieldName: "language_proficiency",
+      type: "normal-select",
+      // rules: { required: "Profession is required" },
+      columnWidth: 6,
+      isRequired: false,
+      defaultOption: "Select",
+    },
+    {
+      label: "phoneNumber",
+      fieldName: "phone_number",
+      type: "phone",
+      placeholder: "e.g. +91 1234567890",
+      rules: { required: "Phone number is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "email",
+      fieldName: "email",
+      type: "email",
+      placeholder: "e.g. johndoe123@gmail.com",
+      rules: {
+        required: "Email is required",
+        pattern: {
+          value: EMAIL_REGEX,
+          message: "Invalid Email",
+        },
+      },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      isLocation: true,
+    },
+    {
+      label: "Resume",
+      fieldName: "upload_resume",
+      type: "upload",
+      placeholder: "Upload Resume",
+      rules: { required: "Resume Required" },
+      columnWidth: 12,
+      isRequired: true,
+    },
+    {
+      label: "Intro Video",
+      fieldName: "intro_video",
+      type: "upload",
+      placeholder: "Upload Intro Video",
+      rules: { required: "Intro Video is required" },
+      columnWidth: 12,
+      isRequired: true,
+    },
+    {
+      label: "LinkedIn",
+      fieldName: "linked_in",
+      type: "text",
+      placeholder: "e.g. www.linkedin.com/profile/12345",
+      rules: { required: "Linked in is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "Github",
+      fieldName: "git_hub", 
+      type: "text",
+      placeholder: "e.g. www.github.com/profile/12345",
+      rules: { required: "GitHub in is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "Github",
+      fieldName: "git_hub", 
+      type: "text",
+      placeholder: "e.g. www.github.com/profile/12345",
+      rules: { required: "GitHub in is required" },
+      columnWidth: 2,
+      isRequired: true,
+    },
+    {
+      label: "Github",
+      fieldName: "git_hub", 
+      type: "text",
+      placeholder: "e.g. www.github.com/profile/12345",
+      rules: { required: "GitHub in is required" },
+      columnWidth: 2,
+      isRequired: true,
+    },
+    {
+      label: "Github",
+      fieldName: "git_hub", 
+      type: "text",
+      placeholder: "e.g. www.github.com/profile/12345",
+      rules: { required: "GitHub in is required" },
+      columnWidth: 2,
+      isRequired: true,
+    },
+    
+  ]
+
+  const NESTED_DEVELOPER_STEP_1_FIELDS = [
+    {
+      label: "Job Title",
+      fieldName: "job_title",
+      type: "text",
+      placeholder: "e.g. Web Developer",
+      rules: { required: "Web developer is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "surname",
+      fieldName: "last_name",
+      type: "text",
+      placeholder: "e.g. Doe",
+      rules: { required: "Surname is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "Profession",
+      fieldName: "profession",
+      type: "text",
+      placeholder: "e.g. Software Engineer",
+      rules: { required: "Profession is required" },
+      columnWidth: 6,
+      isRequired: true,
+    }
+  ]
+
+
+
+
+  
+
+
+
+
+const DEVELOPER_STEP_FIELDS = {
+  1: DEVELOPER_STEP_1_FIELDS,
+};
+
+const NESTED_DEVELOPER_STEP_FIELDS={
+  1:NESTED_DEVELOPER_STEP_1_FIELDS
+}
+
+export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
+  if(nestedActiveStep>0){
+    return NESTED_DEVELOPER_STEP_FIELDS[activeStep] || null;
+  }else{
+   return DEVELOPER_STEP_FIELDS[activeStep] || null;
+  }
+}
+  
+  
+
+

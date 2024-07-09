@@ -1,8 +1,8 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Col, Form } from "react-bootstrap";
 import { IoIosCamera } from "react-icons/io";
 import { IMAGE_ALLOWED_EXTENSIONS } from "../../pages/websiteRegisterForm/developer/developeStepConstant";
-import { IoCameraOutline } from "react-icons/io5";
+import { IoCameraOutline, IoClose } from "react-icons/io5";
 
 const CommonProfilePictureSection = ({
   register,
@@ -41,6 +41,7 @@ const CommonProfilePictureSection = ({
           <img src={previewImage ? previewImage : "/demo-user.png"} />
         </div>
         <Form.Group>
+        <Form.Label className="font-14 fw-medium">Resume *</Form.Label>
           <Form.Control
             {...register(fieldName, {
               onChange: (e) => handleImageChange(e),
@@ -57,27 +58,8 @@ const CommonProfilePictureSection = ({
             <p className="field-error">{errors[fieldName]?.message}</p>
           )}
         </Form.Group>
-      </div>
-      {/* <Form.Group className="mb-4">
-        <Form.Control
-          {...register(fieldName, {
-            onChange: (e) => handleImageChange(e),
-          })}
-          type="file"
-          id="logo_file"
-          placeholder="Company Name"
-          className="common-field d-none"
-        />
-        <div className="file_shown">
-          <img src={previewImage ? previewImage : "/demo-user.png"} />
-          <Form.Label htmlFor="logo_file" className="camera-btn mb-0">
-            <IoIosCamera />
-          </Form.Label>
-        </div>
-        {errors?.fieldName && (
-          <p className="error-message">{errors.fieldName?.message}</p>
-        )}
-      </Form.Group> */}
+              </div>
+    
     </>
   );
 };

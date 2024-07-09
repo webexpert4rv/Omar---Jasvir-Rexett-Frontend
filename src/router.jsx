@@ -43,6 +43,7 @@ import ClientStep1 from "./pages/admin/ClientRegister/ClientStep1";
 import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
 import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
 import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
+import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -169,7 +170,7 @@ export const route = [
   },
   {
     path: "/developer-registration",
-    element: <DeveloperRegisterForm />,
+    element: <DeveloperRegistrationStepper />,
     public: true,
   },
   {

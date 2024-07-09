@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import RexettButton from "../../../components/atomic/RexettButton";
 import SidebarSection from "../SidebarSection";
 import {
+  MODAL_INFORMATION,
   SIDEBAR_ITEMS,
   getActiveStepFields,
   getVendorActiveStepFields,
@@ -18,6 +19,7 @@ import SetUpJobModal from "../../../components/common/Modals/SetUpJobModal";
 import { uploadFileToS3Bucket } from "../../../redux/slices/developerDataSlice";
 import { applyAsVendor } from "../../../redux/slices/vendorDataSlice";
 import ExpertiseArea from "./ExpertiseArea";
+import CompanyInformation from "./CompanyInformation";
 
 const VendorRegistrationStepper = () => {
   const dispatch = useDispatch();
@@ -68,7 +70,7 @@ const VendorRegistrationStepper = () => {
   const activeStepFields = getVendorActiveStepFields(activeStep);
   console.log(activeStepFields, "activeStepFields")
   const increaseStepCount = () => {
-    if (activeStep === 3) {
+    if (activeStep === 4) {
       // localStorage.removeItem("clientActiveStep");
     } else {
       setActiveStep((prev) => prev + 1);
@@ -104,6 +106,7 @@ const VendorRegistrationStepper = () => {
   };
 
   const handleProceed = () => {
+    increaseStepCount();
     const stepData = watch();
     const payload = {
       ...stepData,
@@ -150,6 +153,7 @@ const VendorRegistrationStepper = () => {
     switch (activeStep) {
       case 1:
       case 3:
+      case 4:
         // add proper naming for Client Step 1 This step can be used everywhere when we have to map fields
 
         return (
@@ -193,10 +197,7 @@ const VendorRegistrationStepper = () => {
             imageFile={imageFile}
             setActiveStep={setActiveStep}
           />
-        )
-      case 4:
-        setActiveStep(activeStep + 1)
-        return <ExpertiseArea />
+        );
     }
   };
   return (
@@ -235,12 +236,14 @@ const VendorRegistrationStepper = () => {
           </form>
         </div>
       </section>
-      <SetUpJobModal
+     {showSetUpModal ? <SetUpJobModal
         show={showSetUpModal}
         handleClose={handleToggleSetupModal}
         handleProceed={handleProceed}
         smallLoader={smallLoader}
-      />
+        modalData={MODAL_INFORMATION[1]}
+        activeStep={activeStep}
+      />:""}
     </>
   );
 };

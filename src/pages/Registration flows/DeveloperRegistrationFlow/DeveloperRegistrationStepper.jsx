@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import ClientStep1 from "./ClientStep1.jsx";
 import SidebarSection from "../SidebarSection";
 import {
   DEFAULT_SCREENING_DATA,
   MODAL_INFORMATION,
   SIDEBAR_ITEMS,
   getActiveStepFields,
+  getDeveloperActiveStepFields,
 } from "../registrationConstant";
 import { Link } from "react-router-dom";
-import { Button, Container } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,24 +17,37 @@ import {
   getCoutriesList,
   uploadFileToS3Bucket,
 } from "../../../redux/slices/clientDataSlice";
-import RegistrationType from "./RegistrationType";
 import SetUpJobModal from "../../../components/common/Modals/SetUpJobModal.jsx";
-import JobPostStep2 from "../../../components/common/JobPostForm/JobPostStep2.jsx";
-import JobPostStep3 from "../../../components/common/JobPostForm/JobPostStep3.jsx";
-import JobDesciptionStep from "./JobDesciptionStep.jsx";
 import { getSkillOptions } from "../../../redux/slices/developerDataSlice.js";
-import ScreeningSection from "./ScreeningSection.jsx";
-import { FaArrowLeft } from "react-icons/fa6";
+import {
+  FaArrowLeft,
+  FaCheck,
+  FaCirclePlay,
+  FaEnvelope,
+  FaGithub,
+  FaLinkedin,
+  FaUpload,
+} from "react-icons/fa6";
+import ClientStep1 from "../Client Registration flow/ClientStep1.jsx";
+import RegistrationType from "../Client Registration flow/RegistrationType.jsx";
+import ResumeOverView from "./ResumeOverView.jsx";
+import { GoClockFill } from "react-icons/go";
+import { MdLocalPhone, MdLocationOn, MdWork } from "react-icons/md";
+import { FiExternalLink } from "react-icons/fi";
+import { IoCameraOutline, IoClose, IoPlay } from "react-icons/io5";
+import { FaArrowUp } from "react-icons/fa";
+import StepperIntro from "./StepperIntro.jsx";
 
-const ClientRegistrationStepper = () => {
+const DeveloperRegistrationStepper = () => {
   const dispatch = useDispatch();
   const { smallLoader } = useSelector((state) => state?.clientData);
   const [activeStep, setActiveStep] = useState(0);
+  const [nestedActiveStep, setNestedActiveStep] = useState(0);
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [registrationType, setRegistrationType] = useState("indivisual"); //for register as indivisual or company
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
-  const activeStepFields = getActiveStepFields(activeStep, registrationType);
+  const activeStepFields = getDeveloperActiveStepFields(activeStep,nestedActiveStep);
   const {
     handleSubmit,
     register,
@@ -67,75 +80,74 @@ const ClientRegistrationStepper = () => {
       dispatch(getSkillOptions());
     }
   }, [activeStep]);
-  const increaseStepCount = () => {
+  const increaseStepCount = (isNested) => {
+   
+     if(isNested){
+        setNestedActiveStep((prev)=>prev+1)
+     }else{
+        setActiveStep((prev) => prev + 1);
+        
+      localStorage.setItem("clientActiveStep", activeStep + 1);
+     } 
+
     if (activeStep === 4) {
       // localStorage.removeItem("clientActiveStep");
     } else {
-      setActiveStep((prev) => prev + 1);
-      localStorage.setItem("clientActiveStep", activeStep + 1);
+    
+    //   localStorage.setItem("clientActiveStep", activeStep + 1);
     }
   };
   const decreaseStepCount = () => {
     setActiveStep((prev) => prev - 1);
     localStorage.setItem("clientActiveStep", activeStep - 1);
   };
+  console.log(nestedActiveStep,"nestedActiveStep")
   const renderActiveStep = () => {
     switch (activeStep) {
       case 1:
-      case 2:
-        return (
-          // this step will be used for both first and second
-          <ClientStep1
-            control={control}
-            errors={errors}
-            activeStep={activeStep}
-            type={"client"}
-            register={register}
-            stepFields={activeStepFields}
-            setError={setError}
-            clearErrors={clearErrors}
-            watch={watch}
-            setValue={setValue}
-            previewImage={previewImage}
-            imageFile={imageFile}
-            setPreviewImage={setPreviewImage}
-            setImageFile={setImageFile}
-            isProfileSectionRequired={activeStep === 1}
-          />
-        );
-      case 3:
-        return (
-          <JobDesciptionStep
-            register={register}
-            stepFields={activeStepFields}
-            errors={errors}
-            skillOptions={skillOptions}
-            activeStep={activeStep}
-            watch={watch}
-            setValue={setValue}
-            control={control}
-          />
-        );
-      case 4:
-        return (
-          <ScreeningSection
-            activeStep={activeStep}
-            register={register}
-            control={control}
-            errors={errors}
-            watch={watch}
-            setValue={setValue}
-          />
-        );
+        switch(nestedActiveStep){
+            case 0:
+            case 2:
+                return (
+                    // this step will be used for both first and second
+                    <ClientStep1
+                      control={control}
+                      errors={errors}
+                      activeStep={activeStep}
+                      type={"developer"}
+                      register={register}
+                      stepFields={activeStepFields}
+                      setError={setError}
+                      clearErrors={clearErrors}
+                      watch={watch}
+                      setValue={setValue}
+                      previewImage={previewImage}
+                      imageFile={imageFile}
+                      setPreviewImage={setPreviewImage}
+                      setImageFile={setImageFile}
+                      isProfileSectionRequired={activeStep === 1}
+                    />
+                  );
+
+               case 1:
+                return (
+                    <StepperIntro/>
+                )   
+        }
+       
+        
     }
   };
   const onSubmit = (values) => {
     console.log(values, "these are values");
-    if (activeStep === 1 || activeStep==4) {
-      setShowSetUpJobModal(true);
+
+    if (activeStep === 1 || activeStep == 4) {
+        increaseStepCount(true)
     } else {
-      increaseStepCount();
+      increaseStepCount(false);
     }
+
+
   };
   const handleSetActiveStep = (step) => {
     if (activeStep > step) {
@@ -201,57 +213,48 @@ const ClientRegistrationStepper = () => {
     //  dispatch(applyAsClient(payload,handleAfterApiSuccess,()=>{}))
   };
   return (
-    <>
-      <div>
-        {activeStep === 0 ? (
-          <RegistrationType handleRegistrationType={handleRegistrationType} />
-        ) : (
-          <section className="resume-section-wrapper">
-            <SidebarSection
-              activeStep={activeStep}
-              handleSetActiveStep={handleSetActiveStep}
-              stepperSideBarItems={SIDEBAR_ITEMS?.client}
-            />
-            <div className="resume-main-wrapper">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Container>
-                  <div>
-                    <span onClick={decreaseStepCount} className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer">
-                      <FaArrowLeft /> Go Back
-                    </span>
-                  </div>
-                  {renderActiveStep()}
-                  <div className="d-flex justify-content-between align-items-center ">
-                    <div>
-                      <RexettButton
-                        type="submit"
-                        text={getActiveStepText()}
-                        className="main-btn px-5 mr-2"
-                        disabled={smallLoader}
-                        isLoading={smallLoader}
-                      />
-                    </div>
-                  </div>
-                </Container>
-              </form>
-            </div>
-          </section>
-        )}
-      </div>
-     {showSetUpModal? <SetUpJobModal
-        show={showSetUpModal}
-        handleClose={handleToggleSetupModal}
-        handleProceed={handleProceed}
-        smallLoader={smallLoader}
-        modalData={MODAL_INFORMATION[activeStep]}
+    <section className="resume-section-wrapper">
+      <SidebarSection
         activeStep={activeStep}
-      />:""}
-      {/* <ThankRegister
-        show={showthanksregister}
-        handleClose={handleCloseThanksRegister}
-      /> */}
-    </>
+        handleSetActiveStep={handleSetActiveStep}
+        stepperSideBarItems={SIDEBAR_ITEMS?.developer}
+      />
+
+      <div className="resume-main-wrapper">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Container>
+            <div>
+              <span
+                onClick={decreaseStepCount}
+                className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer"
+              >
+                <FaArrowLeft /> Go Back
+              </span>
+            </div>
+            <Row>
+              <Col md={8}>{renderActiveStep()}</Col>
+              <Col md={4}>
+                <ResumeOverView />
+              </Col>
+            </Row>
+
+            <div className="d-flex justify-content-between align-items-center ">
+              <div></div>
+              <div>
+                <RexettButton
+                  type="submit"
+                  text={getActiveStepText()}
+                  className="main-btn px-5 mr-2"
+                  disabled={smallLoader}
+                  isLoading={smallLoader}
+                />
+              </div>
+            </div>
+          </Container>
+        </form>
+      </div>
+    </section>
   );
 };
 
-export default ClientRegistrationStepper;
+export default DeveloperRegistrationStepper;
