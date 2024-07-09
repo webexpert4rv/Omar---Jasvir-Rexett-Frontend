@@ -6,6 +6,8 @@ import { IoTrendingUpSharp } from "react-icons/io5";
 import { FaPencil } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 const SuperDashboard = () => {
+    let token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNTkiLCJpYXQiOjE3MjA1MTAwNTYsImV4cCI6MTcyMDUxMzY1Nn0.WbY0_vhO62u7mBYKF31n45EkFhlFmbv2y7XaqexMM60"
+     localStorage.setItem("superAdminToken",token)
     const lineData = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [

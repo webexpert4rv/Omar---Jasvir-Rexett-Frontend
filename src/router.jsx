@@ -693,13 +693,13 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/super-dashboard",
+    path: "/super-admin-dashboard",
     element: <SuperDashboard />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/subscription-plan",
+    path: "/super-admin/subscription-plan",
     element: <SubscriptionPlan />,
     isAdmin: true,
     private: true,
@@ -711,7 +711,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/client-listing",
+    path: "/super-admin/client-listing",
     element: <ClientListing />,
     isAdmin: true,
     private: true,
