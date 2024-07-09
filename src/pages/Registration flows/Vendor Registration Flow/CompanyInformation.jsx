@@ -6,14 +6,13 @@ import { useForm } from "react-hook-form";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
-import CommonProfilePictureSection from "../../../components/common/CommonProfilePictureSection";
 import {
   getActiveStepHeadingData,
   getVendorActiveStepFields,
   VENDOR_STEP_2_FIELDS,
 } from "../registrationConstant";
 
-const VendorDecisionMakers = (
+const CompanyInformation = (
   activeStepFields,
   setError,
   clearErrors,
@@ -38,12 +37,7 @@ const VendorDecisionMakers = (
 
   const type = "vendor";
   const newStepHeading = getActiveStepHeadingData(activeStep, type);
-  console.log(newStepHeading, "newStep");
   const fields = getVendorActiveStepFields(activeStep);
-  console.log(fields, "fields");
-  console.log(activeStepFields, "activeStepFields");
-
-  console.log(activeStep, "activeStep");
 
   return (
     <>
@@ -105,10 +99,22 @@ const VendorDecisionMakers = (
               </div>
             </Col>
           </Row>
+
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            <div></div>
+            <div>
+              <Link
+                to={"/area-expertise"}
+                className="main-btn font-14 text-decoration-none"
+              >
+                Next: Area of Expertise
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </>
   );
 };
 
-export default VendorDecisionMakers;
+export default CompanyInformation;

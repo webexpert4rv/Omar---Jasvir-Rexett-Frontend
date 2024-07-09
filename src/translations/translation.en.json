@@ -463,6 +463,7 @@
         "clientStep4Para":"We recommend adding 3 or more questions",
         "clientStep4Heading":"Screening Questions",
         "decisionMakersInfo":"Decision makers info",
+        "companyInfo":"Company Info",
         "areaOfExpertise":"Area of expertise",
         "vendorStep1Heading":"Join Rexett as Partner",
         "vendorStep1Para":"Rexett invites you to join our platform as a software development vendor and be part of our dynamic community of IT professionals",
@@ -473,6 +474,17 @@
         "vendorStep3Heading": "Company Information",
         "vendorStep4Heading":"Area of Expertise",
         "cinNumber":"CIN Number",
-        "employeeStrength":"Employees strength" 
+        "employeeStrength":"Employees strength",
+        "heading":"Heading",
+        "workHistory":"Work History",
+        "skillsInfo":"Skills",
+        "summary":"Summary",
+        "finalize":"Finalize",
+        "developerStep1Heading":"What's the most convenient way for us to reach out to you?",
+        "developerStep1Para":"We suggest including an email and phone number"
+
+      
+
+
       }
 }

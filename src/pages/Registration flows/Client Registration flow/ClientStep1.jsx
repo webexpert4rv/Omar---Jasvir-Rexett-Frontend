@@ -10,6 +10,7 @@ import PasswordSection from "../../websiteRegisterForm/developer/PasswordSection
 import CommonAutocomplete from "../../../components/atomic/CommonAutoComplete";
 import LocationSection from "../../websiteRegisterForm/developer/LocationSection";
 import CommonProfilePictureSection from "../../../components/common/CommonProfilePictureSection";
+import UploadFile from "../DeveloperRegistrationFlow/UploadFile";
 const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
 const ClientStep1 = ({
@@ -40,22 +41,6 @@ const ClientStep1 = ({
           <StepperHeadingSection activeStep={activeStep} type = {type}/>
           <p className="font-12 fw-medium">* includes a required field</p>
           <div className="d-flex align-items-start gap-3">
-            {/* <div className="profile-upload-preview position-relative">
-                    <div className="profile-img-preview w-100 h-100">
-                      <img src={"/demo-user.png"} />
-                    </div>
-                    <Form.Control
-                      type="file"
-                      className="d-none"
-                      id="profile-img-upload"
-                    />
-                    <Form.Label
-                      htmlFor="profile-img-upload"
-                      className="profile-img-label"
-                    >
-                      <IoCameraOutline />
-                    </Form.Label>
-                  </div> */}
             {isProfileSectionRequired && (
               <CommonProfilePictureSection
                 register={register}
@@ -140,7 +125,8 @@ const ClientStep1 = ({
                               isColSixRequired={true}
                             />
                           )}
-                          {!isPasswordSection && (
+
+                          {!isPasswordSection && type!=="upload" ? (
                             <CommonInput
                               label={t(`${label}`) + `${isRequired && " *"}`}
                               name={fieldName}
@@ -153,9 +139,14 @@ const ClientStep1 = ({
                               defaultOption={defaultOption}
                               placeholder={placeholder}
                             />
-                          )}
+                          ): <UploadFile 
+                          label={label}
+                          placeholder={placeholder}
+                          />}
+
                         </div>
                       )}
+                    
                     </Col>
                   )
               )}

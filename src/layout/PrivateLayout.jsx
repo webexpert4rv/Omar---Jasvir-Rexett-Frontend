@@ -40,8 +40,7 @@ const PrivateLayout = ({ children }) => {
   if (!token || !roleConfig[role]) {
     return <Navigate to={`${redirectPath}`} />;
   }
-  console.log(basePath, "basePath")
-
+ 
 
   return (
     <div className="dashboard-layout">
