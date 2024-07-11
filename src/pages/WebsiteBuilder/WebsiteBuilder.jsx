@@ -16,7 +16,7 @@ export const WebsiteBuilder = () => {
                     {
                         name: 'General',
                         open: false,
-                        buildProps: ['float', 'display', 'position', 'top', 'right', 'left', 'bottom'],
+                        buildProps: ['float', 'display', 'justify-content', 'align-items', 'flex-direction', 'position', 'top', 'right', 'left', 'bottom'],
                     },
                     {
                         name: 'Dimension',
@@ -134,7 +134,7 @@ export const WebsiteBuilder = () => {
                             justify-content: space-between;
                             align-items: center;
                             padding: 10px 20px;
-                            background-color: #333;
+                            background-color: #fff;
                             color: #fff;
                         }
                         .header-builder nav ul {
@@ -223,6 +223,208 @@ export const WebsiteBuilder = () => {
             label: 'Accordion',
             content: {
                 type: 'accordion',
+            },
+            category: 'Custom',
+        });
+        // Add custom footer component
+        editor.DomComponents.addType('footer', {
+            model: {
+                defaults: {
+                    tagName: 'footer',
+                    draggable: true,
+                    droppable: true,
+                    components: [
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'footer-column' },
+                            components: [
+                                {
+                                    tagName: 'h4',
+                                    content: 'About Us',
+                                },
+                                {
+                                    tagName: 'p',
+                                    content: 'Description about the company.',
+                                },
+                            ],
+                        },
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'footer-column' },
+                            components: [
+                                {
+                                    tagName: 'h4',
+                                    content: 'Quick Links',
+                                },
+                                {
+                                    tagName: 'ul',
+                                    components: [
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Home' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'About' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Services' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Contact' }] },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'footer-column' },
+                            components: [
+                                {
+                                    tagName: 'h4',
+                                    content: 'Contact Info',
+                                },
+                                {
+                                    tagName: 'p',
+                                    content: 'Phone: 123-456-7890',
+                                },
+                                {
+                                    tagName: 'p',
+                                    content: 'Email: info@company.com',
+                                },
+                            ],
+                        },
+                    ],
+                    attributes: { class: 'footer' },
+                    styles: `
+                        .footer {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 20px;
+                            background-color: #333;
+                            color: #fff;
+                        }
+                        .footer-column {
+                            flex: 1;
+                            margin: 0 10px;
+                        }
+                        .footer-column h4 {
+                            margin-bottom: 10px;
+                        }
+                        .footer-column ul {
+                            list-style: none;
+                            padding: 0;
+                        }
+                        .footer-column ul li {
+                            margin-bottom: 5px;
+                        }
+                        @media (max-width: 768px) {
+                            .footer {
+                                flex-direction: column;
+                                align-items: center;
+                            }
+                            .footer-column {
+                                margin: 10px 0;
+                                text-align: center;
+                            }
+                        }
+                    `,
+                },
+            },
+        });
+
+        // Add custom block for footer
+        editor.BlockManager.add('footer', {
+            label: 'Footer',
+            content: {
+                type: 'footer',
+            },
+            category: 'Custom',
+        });
+        // Add custom slider component
+        editor.DomComponents.addType('slider', {
+            model: {
+                defaults: {
+                    tagName: 'div',
+                    draggable: true,
+                    droppable: true,
+                    attributes: { class: 'slider' },
+                    components: [
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'slider-track' },
+                            components: [
+                                {
+                                    tagName: 'div',
+                                    attributes: { class: 'card' },
+                                    components: [
+                                        { tagName: 'img', attributes: { src: 'image1.jpg', alt: 'Image 1' } },
+                                        { tagName: 'h4', content: 'Name 1' },
+                                        { tagName: 'p', content: 'Description 1' },
+                                        { tagName: 'p', content: 'Location 1' },
+                                        {
+                                            tagName: 'div',
+                                            components: [
+                                                { tagName: 'a', attributes: { href: '#link1' }, content: 'Link 1' },
+                                                { tagName: 'a', attributes: { href: '#link2' }, content: 'Link 2' },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                {
+                                    tagName: 'div',
+                                    attributes: { class: 'card' },
+                                    components: [
+                                        { tagName: 'img', attributes: { src: 'image2.jpg', alt: 'Image 2' } },
+                                        { tagName: 'h4', content: 'Name 2' },
+                                        { tagName: 'p', content: 'Description 2' },
+                                        { tagName: 'p', content: 'Location 2' },
+                                        {
+                                            tagName: 'div',
+                                            components: [
+                                                { tagName: 'a', attributes: { href: '#link1' }, content: 'Link 1' },
+                                                { tagName: 'a', attributes: { href: '#link2' }, content: 'Link 2' },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                // Add more cards as needed
+                            ],
+                        },
+                    ],
+                    styles: `
+                        .slider {
+                            overflow: hidden;
+                            position: relative;
+                            width: 100%;
+                        }
+                        .slider-track {
+                            display: flex;
+                            transition: transform 0.5s ease;
+                        }
+                        .card {
+                            flex: 0 0 auto;
+                            width: 300px;
+                            margin: 10px;
+                            border: 1px solid #ccc;
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .card img {
+                            max-width: 100%;
+                            height: auto;
+                        }
+                    `,
+                    script: `
+                        // Add slider functionality
+                        let index = 0;
+                        const track = document.querySelector('.slider-track');
+                        const nextSlide = () => {
+                            index = (index + 1) % track.children.length;
+                            track.style.transform = \`translateX(-\${index * 100}%)\`;
+                        };
+                        setInterval(nextSlide, 3000);
+                    `,
+                },
+            },
+        });
+
+        // Add custom block for slider
+        editor.BlockManager.add('slider', {
+            label: 'Slider',
+            content: {
+                type: 'slider',
             },
             category: 'Custom',
         });
