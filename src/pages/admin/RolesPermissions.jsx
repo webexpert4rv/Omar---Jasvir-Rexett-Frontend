@@ -6,20 +6,31 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 import NewPermissions from "./Modals/NewPermissions";
 import NewRoles from "./Modals/NewRoles";
-import NewUser from "./Modals/NewUser"
+// import NewUser from "./Modals/NewUser"
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FaEye, FaRotateRight, FaTrashCan } from "react-icons/fa6";
 import EditRole from "./Modals/EditRole";
+import NewEmployee from "./Modals/NewEmployee";
 import AssignChat from "./Modals/AssignChat";
 import RolesPermissionSection from "../../components/common/AdminRoleAndPermission/RolesPermission/RolesPermissionSection";
 import { TiUserAdd } from "react-icons/ti";
+import EmployeeManagement from "../../components/common/AdminRoleAndPermission/AllUsers/EmployeeManagement";
+import Tabs from "../../components/common/LeaveRequest/Tabs";
+import { permissionTabText } from "../../components/clients/TimeReporiting/constant";
 const RolesPermission = () => {
+    const {currentTab , setCurrentTab} = useState("first")
     const [newpermission, setNewPermissions] = useState(false);
-    const [showRoleInfo, setShowRoleInfo] = useState(false);
     const [newRoles, setNewRoles] = useState(false);
     const [newUser, setNewUser] = useState(false);
     const [editRoleModal, setRoleModal] = useState(false);
-  
+
+    const handleSelect = (selectedTab) => {
+        setCurrentTab(selectedTab);
+      };
+    
+    const handleNewPermission = () => {
+        setNewPermissions(true);
+    }
     const handleNewUser = () => {
         setNewUser(true)
     }
@@ -42,6 +53,12 @@ const RolesPermission = () => {
     const handleHideEditRole = () => {
         setRoleModal(false)
     }
+
+    const [showRoleInfo, setShowRoleInfo] = useState(false);
+
+    const handleCloseRoleInfo = () => setShowRoleInfo(false);
+    const handleShowRoleInfo = () => setShowRoleInfo(true);
+
     const [assignchat, showAssignChat] = useState(false);
     const handleShowAssignChat = () => {
         showAssignChat(!assignchat);
@@ -57,11 +74,48 @@ const RolesPermission = () => {
         <Tooltip>Reassign Chat</Tooltip>
     )
 
+    const action_application = (
+        <Tooltip>Completing a user profile is essential for enhancing user experience and ensuring accurate information is available for communication and collaboration</Tooltip>
+    )
 
-  
-    const handleShowRoleInfo = () => setShowRoleInfo(true);
+    const complete_profile = (
+        <Tooltip>Completing a user profile is essential for enhancing user experience and ensuring accurate information is available for communication and collaboration</Tooltip>
+    )
+    const schedule_screening = (
+        <Tooltip>This permission allows designated roles to set up, manage, and oversee the initial screening rounds, ensuring that only qualified candidates move forward in the hiring process.</Tooltip>
+    )
+    const suggest_developers = (
+        <Tooltip>Assigning this permission allows certain roles to suggest candidates who meet the job requirements and fit the company culture.</Tooltip>
+    )
+    const schedule_interview = (
+        <Tooltip>Scheduling interviews is a key step in the recruitment process, ensuring that candidates and interviewers are available at mutually convenient times.</Tooltip>
+    )
+    const manage_contracts = (
+        <Tooltip>Assigning this permission ensures that only authorized roles can handle sensitive contractual documents, maintaining the integrity and compliance of your business operations.</Tooltip>
+    )
+    const review_timesheets = (
+        <Tooltip>Assigning this permission allows specific roles to verify, approve, and manage timesheet entries, ensuring accountability and proper record-keeping.</Tooltip>
+    )
+    const reconciliation_timesheet = (
+        <Tooltip>Assigning this permission allows specific roles to verify and reconcile discrepancies in timesheet entries, maintaining financial integrity and accountability.</Tooltip>
+    )
+    const approval_request = (
+        <Tooltip>Sending timesheet approval requests to clients is a crucial process for validating recorded work hours and ensuring transparency between your team and the client.</Tooltip>
+    )
+    const raise_invoice_clients = (
+        <Tooltip>Assigning this permission allows specific roles to create and send invoices to clients for the services rendered.</Tooltip>
+    )
+    const pay_invoice_devs = (
+        <Tooltip>Assigning this permission allows specific roles to manage and process payments for invoices raised by developers.</Tooltip>
+    )
+    const review_invoices = (
+        <Tooltip>Assigning this permission allows specific roles to thoroughly review and verify invoices submitted by clients or vendors.</Tooltip>
+    )
+    const action_profile = (
+        <Tooltip>Assigning this permission allows specific roles to review and approve or reject changes made by users to their profile</Tooltip>
+    )
 
-    
+
     return (
         <>
             <div className="card-box">
@@ -69,6 +123,11 @@ const RolesPermission = () => {
                     <h2 className="section-head border-0 mb-3 pb-0">Employees & Permissions</h2>
                     <p className="text-grey font-14 mb-0">Managing roles and permissions is essential for maintaining security and organization within your platform. By defining roles and assigning permissions, you can control access to various features and ensure that users have the appropriate level of access based on their responsibilities.</p>
                 </div>
+                {/* <Tabs 
+                 handleSelect={handleSelect}
+                 tabText={permissionTabText}
+                 currentTab={currentTab}
+                 /> */}
                 <Tab.Container
                     id="left-tabs-example"
                     defaultActiveKey="all_users"
@@ -89,265 +148,19 @@ const RolesPermission = () => {
                     </div>
                     <Tab.Content>
                         <Tab.Pane eventKey="all_users" className="py-4">
-                            <div>
-                                <div className="d-flex justify-content-end mb-3">
-                                    <Button variant="transparent" className="main-btn font-14" onClick={handleNewUser}>+ New Employee</Button>
-                                </div>
-                                <div className="table-responsive">
-                                    <table className="table table-ui-custom">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Email Address</th>
-                                                <th>Role</th>
-                                                <th>Assign chat</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td className="font-14 align-middle">John Smith</td>
-                                                <td className="font-14 align-middle">johnsmith@gmail.com</td>
-                                                <td className="align-middle">
-                                                    <div className="d-flex align-items-center gap-2">
-                                                        <span className="role-pill">Workspace Admin</span>
-                                                        <Button variant="transparent" className="edit-role" onClick={handleShowRoleInfo}>
-                                                            <FaEye />
-                                                        </Button>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow mb-1">
-                                                                <TiUserAdd />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                        <span className="associate-text d-inline-flex align-items-center gap-2">
-                                                            <span className="associate">3 chats assigned</span>
-                                                            <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                                                <span onClick={handleShowAssignChat} className="reschedule-btn flex-none">
-                                                                    <FaRotateRight />
-                                                                </span>
-                                                            </OverlayTrigger>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td className="align-middle">
-                                                    <div className="d-flex gap-3">
-                                                        <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
-                                                        <Button variant="transparent" className="arrow-btn danger-arrow"><FaTrashCan /></Button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={5}>
-                                                    <p className="font-14">A Workspace Admin, with full access, is responsible for managing user accounts, permissions, and security policies within the digital workspace. They oversee workspace configuration, data management, and ensure compliance with organizational policies. Additionally, they provide technical support, training, and monitor system performance to maintain an optimized and secure environment.</p>
-                                                    <div>
-                                                        <h5 className="mb-3">Permissions</h5>
-                                                        <Row>
-                                                            <Col md={4}>
-                                                                <div className="permission-wrapper">
-                                                                    <h4 className="permission-heading">New Applications</h4>
-                                                                    <div className="p-2">
-                                                                        <Row>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Approve/Reject</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Complete Profile</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-0">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Schedule Screening</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                        </Row>
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="permission-wrapper">
-                                                                    <h4 className="permission-heading">Jobs</h4>
-                                                                    <div className="p-2">
-                                                                        <Row>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Suggest New Developers</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Schedule Interviews</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-0">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Manage Contracts</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                        </Row>
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="permission-wrapper">
-                                                                    <h4 className="permission-heading">Time Reporting</h4>
-                                                                    <div className="p-2">
-                                                                        <Row>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Review Timesheets</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Review Timesheet Reconciliations</p>
-                                                                                    <span className="not-approved">
-                                                                                        <IoCloseOutline />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-0">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Send Approval Request</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                        </Row>
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="permission-wrapper">
-                                                                    <h4 className="permission-heading">Invoices</h4>
-                                                                    <div className="p-2">
-                                                                        <Row>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Raise Invoice to Clients</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-2">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Pay Invoice to Devs</p>
-                                                                                    <span className="full-approved">
-                                                                                        <FiCheck />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                            <Col lg={12} className="mb-0">
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Review Invoices</p>
-                                                                                    <span className="not-approved">
-                                                                                        <IoCloseOutline />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                        </Row>
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="permission-wrapper">
-                                                                    <h4 className="permission-heading">Profile Updation</h4>
-                                                                    <div className="p-2">
-                                                                        <Row>
-                                                                            <Col lg={12}>
-                                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                                    <p className="mb-0 font-14">Approve/Reject</p>
-                                                                                    <span className="not-approved">
-                                                                                        <IoCloseOutline />
-                                                                                    </span>
-                                                                                </div>
-                                                                            </Col>
-                                                                        </Row>
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="font-14 align-middle">Steve Warner</td>
-                                                <td className="font-14 align-middle">stevewarner@gmail.com</td>
-                                                <td className="align-middle">
-                                                    <div className="d-flex align-items-center gap-2">
-                                                        <span className="role-pill no-role">No role assigned</span>
-                                                        <Button variant="transparent" className="edit-role">
-                                                            <FaEye />
-                                                        </Button>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                                            <Button variant="transparent" onClick={handleShowAssignChat} className="arrow-btn primary-arrow mb-1">
-                                                                <TiUserAdd />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                        <span className="associate-text d-inline-flex align-items-center gap-2">
-                                                            <span className="associate">3 chats assigned</span>
-                                                            <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                                                <span onClick={handleShowAssignChat} className="reschedule-btn flex-none">
-                                                                    <FaRotateRight />
-                                                                </span>
-                                                            </OverlayTrigger>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td className="align-middle">
-                                                    <div className="d-flex gap-3">
-                                                        <Button variant="transparent" className="arrow-btn info-arrow" onClick={handleShowEditRole}><MdOutlineModeEditOutline /></Button>
-                                                        <Button variant="transparent" className="arrow-btn danger-arrow"><FaTrashCan /></Button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <EmployeeManagement />
                         </Tab.Pane>
                         <Tab.Pane eventKey="roles_permissions" className="py-4">
-                        <RolesPermissionSection/>
+                            <RolesPermissionSection />
                         </Tab.Pane>
                     </Tab.Content>
                 </Tab.Container>
             </div>
+            {/* <EmployeeManagement /> */}
+            {/* <RolesPermissionSection /> */}
             <NewPermissions show={newpermission} handleClose={handleCloseNewPermission} />
             <NewRoles show={newRoles} handleClose={handleCloseNewRoles} />
-            <NewUser show={newUser} handleClose={handleCloseNewUser} />
+            {/* <NewEmployee show={newUser} handleClose={handleCloseNewUser} /> */}
             <EditRole show={editRoleModal} handleClose={handleHideEditRole} />
             <AssignChat show={assignchat} handleClose={handleCloseAssignChat} />
         </>

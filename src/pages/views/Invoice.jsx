@@ -28,12 +28,128 @@ import {
 } from "../admin/adminConstant";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 import TableComponentOne from "../../components/atomic/TableComponentOne";
-const INVOICE_HEADER_DATA = [
-  "developerName",
-  "date",
-  "amount",
-  "status",
-  "action",
+import CommonInvoiceTable from "../../components/common/CommonInvoiceTable";
+const dummyProjects = [
+  {
+    projectName: "Figma to UI",
+    totalHiredDevelopers: 3,
+    totalInvoiceRaised: 5,
+    totalHoursSpend: "3000",
+    startDate: "10-04-2024",
+    invoiceMonth: "Jun 2024",
+    developers: [
+      {
+        developerName: "John Smith",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Emily Davis",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "James Taylor",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Michael Brown",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Sarah Wilson",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+    ],
+  },
+  {
+    projectName: "Backend API Development",
+    totalHiredDevelopers: 4,
+    totalInvoiceRaised: 8,
+    totalHoursSpend: "5000 ",
+    startDate: "01-05-2024",
+    invoiceMonth: "Jul 2024",
+    developers: [
+      {
+        developerName: "Anna Lee",
+        totalHoursSpend: "160 ",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "David Kim",
+        totalHoursSpend: "160 ",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Sophia Martinez",
+        totalHoursSpend: "160",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Robert Johnson",
+        totalHoursSpend: "160",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Jessica White",
+        totalHoursSpend: "160",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+    ],
+  },
+  {
+    projectName: "Mobile App Development",
+    totalHiredDevelopers: 5,
+    totalInvoiceRaised: 10,
+    totalHoursSpend: "7000",
+    startDate: "15-06-2024",
+    invoiceMonth: "Aug 2024",
+    developers: [
+      {
+        developerName: "Kevin Wang",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Laura Brown",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Steven Clark",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Rachel Adams",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Daniel Rodriguez",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+    ],
+  },
 ];
 // add these inside constant file
 const CLIENT_INVOICE_PER_PAGE = 5;
@@ -121,99 +237,9 @@ const Invoice = () => {
             filterFields={CLIENT_INVOICE_FILTER_FIELDS}
             // isSearchFilterRequired={false}
           />
-          <TableComponentOne
-            data={invoiceList}
-            totalPages={totalInvoicePages}
-            columns={DEVELOPER_INVOICE_COLUMNS}
-            setPage={setPage}
-            page={page}
+          <CommonInvoiceTable 
+          data={dummyProjects}
           />
-          {/* <div className="table-responsive">
-            <table className="table time-table table-bordered table-ui-custom">
-              <thead>
-                <th className="time-table-head text-start">Developer Name</th>
-                <th className="time-table-head text-start">Associated With</th>
-                <th className="time-table-head text-start">Project</th>
-                <th className="time-table-head text-start">Total Hours</th>
-                <th className="time-table-head text-start">Invoice Month</th>
-                <th className="time-table-head text-start">Project Status</th>
-                <th className="time-table-head text-start">Action</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="time-table-data text-start">
-                    <div className="d-flex align-items-center gap-2">
-                      <div className="user-imgbx application-imgbx mx-0 mb-0">
-                        <img src={userImage} className="user-img" />
-                      </div>
-                      Rohit Sharma
-                    </div>
-                  </td>
-                  <td className="time-table-data text-start">
-                    <span className="associate-text">
-                      <span className="associate">Individual</span>
-                    </span>
-                  </td>
-                  <td className="time-table-data text-start">AI Bot Project</td>
-                  <td className="time-table-data text-start">140 hrs</td>
-                  <td className="time-table-data text-start">Jan 2024</td>
-                  <td className="time-table-data text-start">
-                    <span className="status-progress">Progress</span>
-                  </td>
-                  <td className="time-table-data text-start">
-                    <div className="d-flex align-items-center gap-2">
-                      <OverlayTrigger
-                        placeholder="bottom"
-                        overlay={downloadtimesheet}
-                      >
-                        <img src={timeSheetIcon} className="approved_icon" />
-                      </OverlayTrigger>
-                      <OverlayTrigger
-                        placeholder="bottom"
-                        overlay={downloadinvoice}
-                      >
-                        <img src={invoiceIcon} className="approved_icon" />
-                      </OverlayTrigger>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="time-table-data text-start">
-                    <div className="d-flex align-items-center gap-2">
-                      <div className="user-imgbx application-imgbx mx-0 mb-0">
-                        <img src={userImage} className="user-img" />
-                      </div>
-                      Rohit Sharma
-                    </div>
-                  </td>
-                  <td className="time-table-data text-start">
-                    <OverlayTrigger placement="bottom" overlay={companyname}>
-                      <div className="text-start">
-                        <div className="user-imgbx d-inline-block application-imgbx associated-logo mx-0 mb-0">
-                          <img src={associateLogo} className="user-img" />
-                        </div>
-                      </div>
-                    </OverlayTrigger>
-                  </td>
-                  <td className="time-table-data text-start">Figma to UI</td>
-                  <td className="time-table-data text-start">140 hrs</td>
-                  <td className="time-table-data text-start">Jan 2024</td>
-                  <td className="time-table-data text-start">
-                    <span className="status-progress">Progress</span>
-                  </td>
-                  <td className="time-table-data text-start">
-                    <div className="d-flex align-items-center gap-2">
-                      <img
-                        src={timeSheetNotApproved}
-                        className="approved_icon"
-                      />
-                      <img src={invoiceUnpaid} className="approved_icon" />
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div> */}
         </>
       )}
     </>

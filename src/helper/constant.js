@@ -74,6 +74,15 @@ export const DUMMY_DATA=[
 
 
 
+export const EMPLOYEE_ROLE=[
+    { label: "Workspace Admin", value: "workspace_admin" },
+    { label: "Admin", value: "admin" },
+    { label: "Support Assistance", value: "support_assistance" },
+    { label: "Maintainance", value: "maintainance" },
+    { label: "Accountant", value: "accountant" },
+    { label: "HR", value: "hr" },
+    { label: "Assistance", value: "assistance" },
+  ]
 export const TIME_REPORTING=[
     {
         "contractDetails": {

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import clientInstance from "../../services/client.instance";
+import clientInstance, { clientFormInstance } from "../../services/client.instance";
 import { generateApiUrl } from "../../helper/utlis";
 import axios from "axios";
 import authInstance from "../../services/auth.instance";
@@ -40,7 +40,8 @@ const initialClientData = {
   timeZone:{},
   webClientData:{},
   clientLook:{},
-  OtpLoader:false
+  OtpLoader:false,
+  jobList:[]
 };
  
 export const clientDataSlice = createSlice({
@@ -188,6 +189,10 @@ export const clientDataSlice = createSlice({
       },
       setOTPloader:(state,action) => {
         state.OtpLoader = true;
+      },
+      setJobList:(state,action) => {
+        state.screenLoader = false;
+        state.jobList = action.payload;
       }
       
   }
@@ -197,7 +202,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const {setOTPloader,setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const {setOTPloader,setJobList,setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -968,7 +973,7 @@ export function clientDeleteHoliday(id){
 
 export function getTimeZoneForCountry(countryCode) {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    // dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`web/countries/${countryCode}/timezones`);
       dispatch(setTimeZones(result?.data?.data?.timezones));
@@ -1067,6 +1072,7 @@ export function getWebClientLookUp(callback) {
 }
 
 export function applyAsClient(payload,callback,triggerVerificationModal) {
+  console.log(payload,'payload')
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
@@ -1077,7 +1083,7 @@ export function applyAsClient(payload,callback,triggerVerificationModal) {
       const message = error?.message;
       // if (error?.message === VERIFY_USER_MESSAGE) {
         if (error.response?.data?.verify_user) {
-        triggerVerificationModal("verify"); 
+        // triggerVerificationModal("verify"); 
       } else {
         toast.error(error?.response?.data?.message, { position: "top-center" });
       }
@@ -1136,7 +1142,37 @@ export function verifyOtp(payload,callback) {
   };
 }
 
+export function getJobLists(filters, callback) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(generateApiUrl(filters,"common/job-list"));
+      if (result.status === 200) {
+        dispatch(setJobList(result?.data));
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
 
-
-
+export const uploadFileToS3Bucket = (payload,callback) => {
+  return async (dispatch) => {
+    // dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientFormInstance.post(`/web/upload-file/`, payload);
+      callback && callback(result?.data?.data?.Location);
+      dispatch(setActionSuccessFully())
+      // toast.success("project added successfully", {
+      //   position: "top-center",
+      // });
+    } catch (error) {
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+};
 

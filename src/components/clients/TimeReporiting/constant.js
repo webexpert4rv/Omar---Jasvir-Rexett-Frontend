@@ -17,7 +17,6 @@ function showMonthDates() {
 var dates = showMonthDates();
 
 export function weeklyTimeReports(data, currentPeriod) {
-  console.log(data,"data inside weekly time reports");
  if (currentPeriod === "weekly") {
      let start_date = new Date(data?.startDate);
      var dayIndex = start_date.getDay();
@@ -284,6 +283,21 @@ export const companyType = [
   }
  
 ]
+export const permissionTabText= [
+  {
+    key:"first",
+    value:"Manage Employees"
+  },
+  { 
+    key:"second",
+    value: "Roles & Permissions"
+   },
+  
+]
+
+
+
+
 
 
 export const GOOGLE_AUTOCOMPLETE_API_KEY="AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"

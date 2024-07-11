@@ -85,7 +85,7 @@ const Applications = () => {
   const [application, setApplication] = useState([]);
   const [selectedApprovedBtn, setSelectedApprovedBtn] = useState(null);
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);  
   const [loadingRow, setLoadingRow] = useState(null);
   const { t } = useTranslation();
   const [showScreening, setScreeningShow] = useState(false);

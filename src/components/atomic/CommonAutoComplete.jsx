@@ -11,6 +11,7 @@ const CommonAutocomplete = ({
     error,
     apiKey,
     onPlaceSelected,
+    invalidFieldRequired=false,
     options,
     placeholder = "",
 }) => (
@@ -27,11 +28,11 @@ const CommonAutocomplete = ({
                     onPlaceSelected={onPlaceSelected}
                     options={options}
                     placeholder={placeholder}
-                    className="common-field font-14 w-100"
+                    className={`common-field font-14 w-100 ${(invalidFieldRequired && error?.message) && "invalid-field"}`}
                 />
             )}
         />
-        {error && <p className="error-message">{error.message}</p>}
+        {error && <p className={`${ (invalidFieldRequired) ? "field-error" : "error-message"}`}>{error?.message}</p>}
     </Form.Group>
 );
 

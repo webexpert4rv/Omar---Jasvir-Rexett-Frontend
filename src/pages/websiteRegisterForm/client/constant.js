@@ -167,3 +167,8 @@ export const convertSkills = ({
     }
   }
 };
+const roleNames = [
+  "manager", "workspace admin", "admin", "maintenance",
+  "support assistance", "accountant", "hr", "interviewer"
+];
+

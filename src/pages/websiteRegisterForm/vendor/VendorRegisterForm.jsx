@@ -109,7 +109,7 @@ const VendorRegisterForm = () => {
                 label: data?.company?.specialization,
                 value: data?.company?.specialization,
               };
-              setValue("specialization",newValue);
+              setValue("specialization", newValue);
             } else if (key === "experience") {
               setValue(
                 "experience",

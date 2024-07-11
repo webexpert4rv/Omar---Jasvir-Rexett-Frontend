@@ -1,19 +1,28 @@
-import React, { useState } from "react";
-import companyLogo from "../../assets/img/amazon.png";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Nav, Row, Tab } from "react-bootstrap";
 import { FiCalendar } from "react-icons/fi";
-import { timeReportTabText } from "../../components/clients/TimeReporiting/constant";
 import { useTranslation } from "react-i18next";
 import { TIME_REPORTING } from "../../helper/constant";
 import RexettTimeReporting from "../../components/clients/TimeReporiting/RexettTimeReporting";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { getSingleTimeDetails } from "../../redux/slices/vendorDataSlice";
 
 const VendorTimeDetail = () => {
-    const [currentTab, setCurrentTab] = useState("first")
     const { t } = useTranslation()
+    const dispatch =useDispatch()
+    const {singleTimeReports,screenLoader}=useSelector(state=>state.vendorData)
+    const {pathname}=useLocation()
+    let id = pathname.split("/")[2]
 
-    const handleSelect = (selectedTab) => {
-        setCurrentTab(selectedTab)
-    }
+
+    useEffect(()=>{
+        if(id){
+            dispatch(getSingleTimeDetails(id))
+        }
+    },[])
+
+
     return (
         <>
             <div className="detail-view">
@@ -85,7 +94,7 @@ const VendorTimeDetail = () => {
                     </div>
                   
 
-                    <RexettTimeReporting  timeReportingData={TIME_REPORTING}  role="developer"/>
+                    <RexettTimeReporting  timeReportingData={TIME_REPORTING}  role="client" flag="vendor"/>
             </div>
             </div>
         </>

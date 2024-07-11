@@ -108,7 +108,7 @@ const Members = () => {
       isTrustedTech: checked,
     });
   };
-
+  
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
     setArrowActive(index == arrowactive ? null : index);
@@ -138,7 +138,8 @@ const Members = () => {
       let filterStatus = copied.filter(
         (item) => item.approval_status == currentStatus
       );
-      setApplication(filterStatus);
+      // setApplication(filterStatus);
+      setApplication(copied);
     } else {
       setApplication([]);
     }
@@ -258,7 +259,7 @@ const Members = () => {
     const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`;
     const toastMessage = featureModalDetails?.isFeaturedMember
       ? "Developer added to featured members successfully"
-      : "Developer removed to featured members successfully";
+      : "Developer removed from featured members successfully";
     dispatch(
       addToFeature(
         query,
@@ -289,7 +290,7 @@ const Members = () => {
   };
   const [assignemployee, showAssignEmployee] = useState(false);
   const handleShowAssignEmployee = () => {
-    showAssignEmployee(!assignemployee);
+    showAssignEmployee(!assignemployee);  
   }
   const handleCloseAssignEmployee = () => {
     showAssignEmployee(false);
@@ -306,7 +307,6 @@ const Members = () => {
   const featuredMember = (
     <Tooltip>Feature developer on website</Tooltip>
   )
-
   return (
     <>
       <CommonFilterSection

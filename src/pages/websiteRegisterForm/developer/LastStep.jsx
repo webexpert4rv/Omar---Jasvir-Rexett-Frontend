@@ -4,21 +4,22 @@ import { useNavigate } from "react-router-dom";
 
 const LastStep = ({ role }) => {
   const navigate = useNavigate();
-  useEffect(()=>{
+  useEffect(() => {
     // handleRedirect()
-  },[role])
+    clearStorage();
+  }, [role]);
   const handleRedirect = () => {
     switch (role) {
       case "developer":
-        clearStorage();
+        // clearStorage();
         navigate("/developer-login");
         break;
       case "client":
-        clearStorage();
+        // clearStorage();
         navigate("/");
         break;
       case "vendor":
-        clearStorage();
+        // clearStorage();
         navigate("/vendor-login");
         break;
     }
@@ -36,6 +37,8 @@ const LastStep = ({ role }) => {
 
         break;
       case "client":
+        localStorage.removeItem("clientId");
+        localStorage.removeItem("clientActiveStep");
     }
   };
   const getLastStepHeading = () => {

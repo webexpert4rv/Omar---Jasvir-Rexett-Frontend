@@ -41,10 +41,7 @@ import AddUserConversation from "../common/Modals/AddUsers";
 import DeleteToDo from "../common/Modals/DeleteToDo";
 import rexettLogo from '../../assets/img/favicon.png'
 
-const clientName = localStorage
-  .getItem("userName")
-  ?.toString()
-  .replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
+const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
 
 const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
@@ -137,8 +134,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
 
 
   const backBtn = () => {
-    let routeName = routePath(isSingleJob);
-    navigate(routeName);
+    navigate(-1)
+    // let routeName = routePath(isSingleJob);
+    // navigate(routeName);
   };
   const todoList = (
     <Tooltip>To Do List</Tooltip>

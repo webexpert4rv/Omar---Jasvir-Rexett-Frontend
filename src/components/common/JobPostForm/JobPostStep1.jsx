@@ -7,8 +7,9 @@ import companyLogo from "../../../assets/img/aviox-logo.png";
 import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../clients/TimeReporiting/constant";
+import LocationSection from "../../../pages/websiteRegisterForm/developer/LocationSection";
 
-const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
+const JobPostStep1 = ({ register, errors, control, setValue, watch ,setError,clearErrors}) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const handleScriptLoad = () => {
     setScriptLoaded(true);
@@ -57,7 +58,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               </Form.Label>
               <Form.Control
                 type="text"
-                className="common-field font-14"
+                className="common-field font-14 p-2"
                 placeholder="Enter Job Name"
                 {...register("title", {
                   required: "Job title is required",
@@ -68,15 +69,17 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">{t("companyName")}</Form.Label>
-              <p className="d-flex align-items-center gap-2">
+              <Form.Label className="d-flex gap-2 align-items-center">
+                {t("companyName")}
+              </Form.Label>
+              <p className="common-field font-14 d-flex align-items-center gap-2">
                 {/* <img src={companyLogo} className="company-imgbx" /> */}
                 <Form.Control
                   type="text"
                   {...register("company_name", {
                     required: "Company name is required",
                   })}
-                  className="common-field font-14"
+                  className="common-field font-14 p-2"
                   placeholder="Enter company name"
                 />
               </p>
@@ -87,7 +90,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
             <Form.Group className="mb-3">
               <Form.Label>{t("workplaceType")}</Form.Label>
               <Form.Select
-                className="common-field font-14"
+                className="common-field font-14 p-2"
                 {...register("job_type", {
                   required: "Workplace type is required",
                 })}
@@ -145,7 +148,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
 
               <Controller
                 name="job_location"
-                className="common-field font-14"
+                className="common-field font-14 p-2"
                 rules={{
                   required: "Job location is required",
                 }}
@@ -156,12 +159,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                     errors={fieldState?.errors}
                     apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
                     debounce={1000}
-                    className="common-field font-14 w-100"
-                    autocompletionRequest={
-                      {
-                        // componentRestrictions: { country: ["us"] }, // Uncomment to restrict to specific country
-                      }
-                    }
+                    className="common-field font-14 w-100 p-2"
                     options={{
                       types: ["establishment", "geocode"], // Allows searching for places like buildings, landmarks, etc.
                     }}
@@ -195,7 +193,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                 {...register("contract_type", {
                   required: "Job type is required",
                 })}
-                className="common-field font-14"
+                className="common-field font-14 p-2"
               >
                 <option value="" disabled selected>
                   Please select job type
@@ -209,16 +207,18 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
               )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">{t("jobPositions")}</Form.Label>
+              <Form.Label className="d-flex gap-2 align-items-center">
+                {t("jobPositions")}
+              </Form.Label>
               <Controller
                 name="job_positions"
                 control={control}
-                rules={{required:"Number of job position is required"}}
+                rules={{ required: "Number of job positions are required"}}
                 render={({ field }) => (
                   <input
-                  {...field}
+                    {...field}
                     type="text"
-                    className="common-field font-14 w-100"
+                    className="common-field font-14 p-2 w-100"
                     onChange={(e) => {
                       const numericValue = e.target.value.replace(
                         /[^0-9]/g,
@@ -229,18 +229,38 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch }) => {
                   />
                 )}
               />
-              {/* <input
-                type="number"
-                className="common-field font-14 p-2 w-100"
-                min={0}
-                {...register("job_positions", {
-                  required: "Number of job positions is required",
-                })}
-              /> */}
               {errors?.job_positions && (
                 <p className="error-message">{errors.job_positions?.message}</p>
               )}
             </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className="d-flex gap-2 align-items-center">
+                {t("responseDate")}
+              </Form.Label>
+              <p className="common-field font-14 d-flex align-items-center gap-2">
+                <Form.Control
+                  type="date"
+                  {...register("response_time", {
+                    required: "Response date is required",
+                  })}
+                  min={new Date().toISOString().split("T")[0]}
+                  className="common-field font-14 p-2"
+                  placeholder="Enter response time"
+                />
+              </p>
+              {errors?.response_time && (
+                <p className="error-message">{errors.response_time?.message}</p>
+              )}
+            </Form.Group>
+            <LocationSection
+              control={control}
+              errors={errors}
+              LocationSection={true}
+              watch={watch}
+              setValue={setValue}
+              setError={setError}
+              clearErrors={clearErrors}
+            />{" "}
           </Col>
         </Row>
       </section>

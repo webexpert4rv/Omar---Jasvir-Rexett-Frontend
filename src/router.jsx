@@ -1,6 +1,9 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
+
+import { lazy } from "react";
+
 import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
 import ProjectHistory from "./pages/developer/ProjectHistory";
@@ -16,7 +19,6 @@ import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
 import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
 import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
 
-import { lazy } from "react";
 import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
 import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
 import RolesPermission from "./pages/admin/RolesPermissions";
@@ -34,11 +36,17 @@ import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
 import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
 import ClientListing from "./pages/SuperAdmin/ClientListing";
 
+import ForgotPassword from "./pages/Authentication/ForgotPassword";
+import ResetPassword from "./pages/Authentication/ResetPassword";
+import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
+import ClientStep1 from "./pages/admin/ClientRegister/ClientStep1";
+import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
+import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
+import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
+import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
-;
-
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -139,23 +147,35 @@ const DeveloperLogin = lazy(() =>
 );
 const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp = lazy(() => import("./pages/Authentication/Otp"));
-
+const Otp = lazy(() => import("./pages/Authentication/Otp")); 
 
 export const route = [
   {
     path: "/client-registration",
-    element: <ClientRegisterForm />,
+    element: <ClientRegistrationStepper />,
+    // element: <ClientStep1 />,
+    public: true,
+  },
+  {
+    path: "/expert-area",
+    element: <ExpertiseArea />,
+    // element: <ClientStep1 />,
+    public: true,
+  },
+  {
+    path: "/decision-makers",
+    element: <VendorDecisionMakers />,
+    // element: <ClientStep1 />,
     public: true,
   },
   {
     path: "/developer-registration",
-    element: <DeveloperRegisterForm />,
+    element: <DeveloperRegistrationStepper />,
     public: true,
   },
   {
     path: "/vendor-registration",
-    element: <VendorRegisterForm />,
+    element: <VendorRegistrationStepper />,
     public: true,
   },
   {
@@ -189,6 +209,16 @@ export const route = [
     element: <Faq />,
     private: true,
     isClient: true,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+    public: true,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+    public: true,
   },
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
@@ -307,12 +337,6 @@ export const route = [
     private: true,
     isClient: true,
   },
-  {
-    path: "/client/client-settings",
-    element: <ClientSettings />,
-    private: true,
-    isClient: true,
-  },
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
 
@@ -385,7 +409,8 @@ export const route = [
     private: true,
   },
   {
-    path: "developer/project-detail",
+    // add a appropriate name instead of projectid if needed
+    path: "developer/project-detail/:projectId",
     element: <ProjectDetail />,
     isDeveloper: true,
     private: true,
@@ -399,12 +424,6 @@ export const route = [
   {
     path: "developer/developer-single-job/:id",
     element: <DeveloperSingleJob />,
-    isDeveloper: true,
-    private: true,
-  },
-  {
-    path: "/developer/developer-settings",
-    element: <DeveloperSettings />,
     isDeveloper: true,
     private: true,
   },
@@ -485,14 +504,8 @@ export const route = [
     private: true,
   },
   {
-    path: "/vendor-time-detail",
+    path: "/vendor-time-detail/:id",
     element: <VendorTimeDetail />,
-    isVendor: true,
-    private: true,
-  },
-  {
-    path: "/vendor/vendor-settings",
-    element: <VendorSettings />,
     isVendor: true,
     private: true,
   },
