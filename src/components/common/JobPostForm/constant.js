@@ -53,3 +53,60 @@ export const JOB_TYPES_OPTIONS = [
     label: "Contract",
   },
 ];
+
+export const LANGUAGE_PREFERENCES_OPTIONS = [
+  {
+    value: "english",
+    label: "English",
+  },
+  {    
+    value: "swedish",
+    label: "Swedish",
+  },
+  {
+    value: "Norwegian",
+    label: "Norwegian",
+  },
+];
+
+
+
+export const MONTH_YEAR = [
+  { label: "January", value: "January" },
+  { label: "February", value: "February" },
+  { label: "March", value: "March" },
+  { label: "April", value: "April" },
+  { label: "May", value: "May" },
+  { label: "June", value: "June" },
+  { label: "July", value: "July" },
+  { label: "August", value: "August" },
+  { label: "September", value: "September" },
+  { label: "October", value: "October" },
+  { label: "November", value: "November" },
+  { label: "December", value: "December" }
+];
+
+const currentYear = new Date().getFullYear();
+const last30Years = Array.from({ length: 31 }, (_, i) => {
+    const year = currentYear - i;
+    return { label: `${year}`, value: `${year}` };
+});
+
+export const YEAR_OPTIONS = last30Years;
+
+export const WORK_TYPE=[
+  {label:"Remote",value:"remote"},
+  {label:"OnSite",value:"onsite"},
+  {label:"OffSite",value:"offsite"}
+]
+
+
+export const EDUCATION_LEVEL= [
+  { label: 'Secondary School' },
+  { label: 'Vocational Certificate or Diploma' },
+  { label: 'Apprenticeship or Internship Training' },
+  { label: 'Associates' },
+  { label: 'Bachelors' },
+  { label: 'Masters' },
+  { label: 'Doctorate or Ph. D' }
+];

@@ -21,8 +21,8 @@ const CommonProfilePictureSection = ({
     if (file) {
       if (IMAGE_ALLOWED_EXTENSIONS.includes(file.type)) {
         const url = URL.createObjectURL(file);
-        setPreviewImage(url);
-        setImageFile(file);
+        setPreviewImage({...previewImage,profile_picture:url});
+        setImageFile({...imageFile,profile_picture:file});
         clearErrors(fieldName);
       } else {
         setValue(fieldName, null);
@@ -38,7 +38,7 @@ const CommonProfilePictureSection = ({
     <>
       <div className="profile-upload-preview position-relative">
         <div className="profile-img-preview w-100 h-100">
-          <img src={previewImage ? previewImage : "/demo-user.png"} />
+          <img src={previewImage ? previewImage?.profile_picture : "/demo-user.png"} />
         </div>
         <Form.Group>
         <Form.Label className="font-14 fw-medium">Resume *</Form.Label>

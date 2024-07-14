@@ -1,17 +1,22 @@
-import React from 'react'
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { getStepperIntroData } from '../registrationConstant';
 
-const StepperIntro = ({}) => {
+const StepperIntro = ({ activeStep, nestedActiveStep }) => {
+  const { t } = useTranslation();
+  let introData = getStepperIntroData(activeStep);
+  console.log(introData, "heading1");
+
   return (
     <div>
-    <h3 className="font-18 fw-semibold">Now, let's fill out your</h3>
-    <h2 className="resume-heading">
-        Work History
-    </h2>
-    <p className="fw-semibold">Here’s what you need to know:</p>
-    <p className="mb-1">Employers scan your resume to see if you're a match.</p>
-    <p>We'll suggest bullet points that make a great impression.</p>
-</div>
-  )
+      <h3 className="font-18 fw-semibold">{t(introData?.heading)}</h3>
+      <h2 className="resume-heading">
+        {t(introData?.mainHead)}
+      </h2>
+      <p className="fw-semibold">{t(introData?.heading1)}</p>
+      <p className="mb-1">{t(introData?.para)}</p>
+    </div>
+  );
 }
 
-export default StepperIntro
+export default StepperIntro;

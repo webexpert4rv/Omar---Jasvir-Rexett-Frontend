@@ -18,6 +18,7 @@ const ClientStep1 = ({
   errors,
   companyTypeOptions=null,
   activeStep,
+  nestedActiveStep,
   type,
   stepFields,
   setError,
@@ -38,7 +39,7 @@ const ClientStep1 = ({
     <>
       <Row>
         <Col md={12}>
-          <StepperHeadingSection activeStep={activeStep} type = {type}/>
+          <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>
           <p className="font-12 fw-medium">* includes a required field</p>
           <div className="d-flex align-items-start gap-3">
             {isProfileSectionRequired && (
@@ -142,6 +143,16 @@ const ClientStep1 = ({
                           ): <UploadFile 
                           label={label}
                           placeholder={placeholder}
+                          register={register}
+                          setValue={setValue}
+                          clearErrors={clearErrors}
+                          setImageFile={setImageFile}
+                          setPreviewImage={setPreviewImage}
+                          previewImage={previewImage}
+                          setError={setError}
+                          imageFile={imageFile}
+                          fieldName={fieldName}
+                          errors={errors}
                           />}
 
                         </div>

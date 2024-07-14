@@ -481,10 +481,30 @@
         "summary":"Summary",
         "finalize":"Finalize",
         "developerStep1Heading":"What's the most convenient way for us to reach out to you?",
-        "developerStep1Para":"We suggest including an email and phone number"
+        "developerStep1Para":"We suggest including an email and phone number",
+        "developerNestedStep1Heading":"Tell us about your most recent job",
+        "developerNestedStep1Para":"We'll start there and work backward.",
+        "developerNestedStep2Heading":"Let's describe what you did",
+        "developerNestedStep2Para":"Choose from our pre-written examples below or write your own.",
+        "developerNestedStep3Heading":"Work history summary",
+        "developerIntroData2Heading":"Now, let's fill out your",
+        "developerMain2Head":"Work History",
+        "developerHeading2":"Here’s what you need to know:",
+        "developer2Para":"Employers scan your resume to see if you're a match.We'll suggest bullet points that make a great impression.",
 
-      
+         "developerIntroData3Heading":"Great, let’s work on your",
+        "developerMain3Head":"Education",
+        "developerHeading3":"Here’s what you need to know:",
+        "developer3Para":"Employers quickly scan the education section.We'll take care of the formatting so it’s easy to find.",
 
+        "developerIntroData4Heading":"Next, let’s take care of your",
+        "developerMain4Head":"Skills",
+        "developerHeading4":"Here’s what you need to know:",
+        "developer4Para":"Employers scan skills for relevant keywords.We’ll help you choose the best ones.",
 
+        "developerIntroData5Heading":"Finally, let’s work on your",
+        "developerMain5Head":"Summary",
+        "developerHeading5":"Here’s what you need to know:",
+        "developer5Para":"Your summary shows employers you’re right for their job.We’ll help you write a great one with expert content you can customize."
       }
 }
