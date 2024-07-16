@@ -230,7 +230,7 @@ const AllRoleEditProfile = ({ role }) => {
                       </Form.Label>
                       <p className="font-14 mb-0">Two-Factor Authentication (2FA) is a security process in which users provide two different authentication factors to verify their identity. This method adds an additional layer of security, making it more difficult for unauthorized individuals to access your accounts.</p>
                     </Col>
-                    {/* <Col md={4}>
+                    <Col md={4}>
                       <div class="form-check form-switch toggle-switch-wrapper">
                         <Controller
                           name="is_2FA_enabled"
@@ -251,7 +251,7 @@ const AllRoleEditProfile = ({ role }) => {
                           )}
                         />
                       </div>
-                    </Col> */}
+                    </Col>
                   </Row>
                 </Form.Group>
               </Col>
