@@ -1005,7 +1005,7 @@ const DEVELOPER_STEP_1_FIELDS = [
   const NESTED_DEVELOPER_STEP_6_FIELDS=[
     {
       label: "Project Title",
-      fieldName: "project",
+      fieldName: "project_title",
       type: "text",
       placeholder: "e.g. AI chat bot",
       rules: { required: "Project title is required" },
@@ -1014,7 +1014,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Role",
-      fieldName: "role",
+      fieldName: "role_in_project",
       type: "text",
       placeholder: "e.g. Team Lead",
       rules: { required: "Role is required" },
@@ -1052,7 +1052,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     
     {
       label: "Project URL",
-      fieldName: "project_url",
+      fieldName: "project_link",
       type: "text",
       placeholder: "e.g. https://example.com",
       rules: { required: "Project url is required" },
@@ -1062,7 +1062,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Skill",
-      fieldName: "project_url",
+      fieldName: "tech_stacks_used",
       type: "text",
       placeholder: "e.g. HTML",
       rules: { required: "Skill is required" },
@@ -1072,7 +1072,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Start Date",
-      fieldName: "start_date",
+      fieldName: "project_start_date",
       type: "date",
       isMinRequired: true,
       isMaxRequired:false,
@@ -1085,7 +1085,7 @@ const DEVELOPER_STEP_1_FIELDS = [
 
     {
       label: "End Date",
-      fieldName: "end_date",
+      fieldName: "project_end_date",
       type: "date",
       // placeholder: "e.g. Street 1341,New area,CA,USA",
       rules: { required: "Job location is required" },

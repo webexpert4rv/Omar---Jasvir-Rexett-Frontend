@@ -1,20 +1,20 @@
 import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SingleDeveloper from "../../components/common/SingleDeveloper/SingleDeveloper";
-import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
-import { useLocation } from "react-router-dom";
+import SingleDeveloper from "../../../components/common/SingleDeveloper/SingleDeveloper";
+import { getDeveloperProfileDetails } from "../../../redux/slices/developerDataSlice";
 
 
 const DeveloperCvModal = () => {
     const dispatch = useDispatch()
     const {developerDetails} = useSelector(state => state.clientData)
-
-    const location = useLocation();
-    let devId = location.pathname.split("/")[2]
+    let developerId=localStorage.getItem("developerId")
 
     useEffect(()=>{
-        dispatch(getDeveloperDetails(devId))
-    },[])
+        if(developerId){
+            dispatch(getDeveloperProfileDetails(developerId));
+        }
+      
+    },[developerId])
 
     return(<>
     <SingleDeveloper  data={developerDetails} role={"a"}/>

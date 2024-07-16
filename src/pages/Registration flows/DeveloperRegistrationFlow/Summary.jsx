@@ -16,10 +16,10 @@ const Summary = ({
   setShowSetUpJobModal,
   showSetUpModal,
   addAnotherPosition,
-   activeStep,
-   type,
-   editSummary,
-   objectKeys
+  activeStep,
+  type,
+  editSummary,
+  objectKeys,
 }) => {
   const handleDeleteModal = (id) => {
     setShowSetUpJobModal({
@@ -50,13 +50,39 @@ const Summary = ({
       </Popover.Body>
     </Popover>
   );
+
+  const populateHeaderItem = (item) => {
+    if (item.job_title) {
+      return ` ${item.job_title} , ${item.company}`;
+    } else if (item.university_name) {
+      return ` ${item.university_name} , ${item.field_of_study}`;
+    } else if (item?.project_title) {
+      return ` ${item.project_title} , ${item.role_in_project}`;
+    }
+  };
+
+  const getAddress = (item) => {
+    if (item?.project_title) {
+      return (
+        <span>
+          {`${item?.project_type} , ${item.project_start_date} - ${item?.project_end_date}`}
+          <br />
+          <span>{item?.project_link}</span>
+        </span>
+      );
+    }
+  };
   return (
     <>
       <Row>
         <Col md={12}>
           <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <StepperHeadingSection activeStep={activeStep}  nestedActiveStep={nestedActiveStep} type={type} />
+              <StepperHeadingSection
+                activeStep={activeStep}
+                nestedActiveStep={nestedActiveStep}
+                type={type}
+              />
               <div>
                 <OverlayTrigger
                   trigger="click"
@@ -77,16 +103,16 @@ const Summary = ({
                 <div className="work-summary-wrapper mb-3 position-relative">
                   <div className="w-100">
                     <h4 className="summary-heading mb-2 fw-semibold">
-                      {item?.job_title}, {item?.company_name}
-                      
+                      {populateHeaderItem(item)}
                     </h4>
-                    <p className="font-14">
-                      New Delhi, India |February 2023 - January 2024
-                    </p>
+                    <p className="font-14">{getAddress(item)}</p>
                     <ul>
                       <li
                         className="font-14"
-                        dangerouslySetInnerHTML={{ __html: item?.description }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            item?.description || item?.project_description,
+                        }}
                       ></li>
                     </ul>
                     <div className="d-flex align-items-center justify-content-between mt-4">
@@ -100,7 +126,7 @@ const Summary = ({
                   </div>
                   <div className="education-action">
                     <Button
-                    onClick={()=>editSummary(item?.id)}
+                      onClick={() => editSummary(item?.id)}
                       variant="transparent"
                       className="arrow-btn info-arrow shadow-none"
                     >

@@ -55,6 +55,9 @@ import PreviewModal from "../../admin/ResumeSteps/Modals/PreviewResume.jsx";
 import EducationLevelSelect from "./EducationLevelSelect.jsx";
 import AddEducation from "../../admin/ResumeSteps/AddEducation.jsx";
 import SkillAdd from "./SkillAdd.jsx";
+import DeveloperCvModal from "./DeveloperCvModal.jsx";
+import SummaryPreview from "../../admin/ResumeSteps/SummaryPreview.jsx";
+import FinalizeResume from "../../admin/ResumeSteps/FinalizeResume.jsx";
 
 const DeveloperRegistrationStepper = () => {
   const dispatch = useDispatch();
@@ -191,22 +194,41 @@ const DeveloperRegistrationStepper = () => {
   console.log(activeStep);
 
   const editSummary=(id)=>{
-   console.log(stepData,id,"stp")
-   let selectedEditData=stepData?.find(it=>it.id==id)
-   setValue("job_title", selectedEditData?.job_title);
-   setValue("company_name", selectedEditData?.company_name);
-   setValue("description", selectedEditData?.description);
-   setValue("is_still_working",selectedEditData?.is_still_working);
-   setValue("start_date",selectedEditData?.start_date);
-   setValue("end_date",selectedEditData?.end_date);
-   setValue("work_type",selectedEditData?.work_type);
-   setValue("location", selectedEditData?.location);
-   localStorage.setItem("nestedActiveStep", 1);
-   setNestedActiveStep(1);
+    let selectedEditData=stepData?.find(it=>it.id==id)
+    console.log(selectedEditData,"selectedEditData")
+   if(activeStep==6 && selectedEditData){
+
+    setValue("project_title", "amitt");
+    setValue("project_description", selectedEditData?.project_description);
+    setValue("tech_stacks_used", selectedEditData?.tech_stacks_used);
+    setValue("role_in_project", selectedEditData?.role_in_project);
+    setValue("project_team_size", selectedEditData?.project_team_size);
+    setValue("project_link", selectedEditData?.project_link);
+    setValue("project_start_date", selectedEditData?.project_start_date?.slice(0,10));
+    setValue("project_end_date", selectedEditData?.project_end_date?.slice(0,10));
+    setValue("project_type", selectedEditData?.project_type);
+    localStorage.setItem("nestedActiveStep", 1);
+    setNestedActiveStep(1);
+
+
+   }else if(activeStep==5 && selectedEditData){
+   
+    setValue("job_title", selectedEditData?.job_title);
+    setValue("company_name", selectedEditData?.company_name);
+    setValue("description", selectedEditData?.description);
+    setValue("is_still_working",selectedEditData?.is_still_working);
+    setValue("start_date",selectedEditData?.start_date);
+    setValue("end_date",selectedEditData?.end_date);
+    setValue("work_type",selectedEditData?.work_type);
+    setValue("location", selectedEditData?.location);
+    localStorage.setItem("nestedActiveStep", 1);
+    setNestedActiveStep(1);
+   }
    setEditMode({
     id:id,
     isEdit:true
    })
+  
   }
   const renderActiveStep = () => {
     switch (activeStep) {
@@ -487,9 +509,14 @@ const DeveloperRegistrationStepper = () => {
                   activeStep={activeStep}
                   type="developer"
                   objectKeys={activeStpperKey}
+                  editSummary={editSummary}
                 />
                 ) 
             }
+          case 7:
+            return (
+              <FinalizeResume/>
+            )  
 
     }
   };
