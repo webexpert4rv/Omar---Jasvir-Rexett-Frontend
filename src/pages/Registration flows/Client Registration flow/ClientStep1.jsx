@@ -31,6 +31,7 @@ const ClientStep1 = ({
   setImageFile,
   imageFile,
   isProfileSectionRequired,
+  isEditMode
 }) => {
   const { t } = useTranslation();
   // field name service offerenings  
@@ -41,7 +42,7 @@ const ClientStep1 = ({
     <>
       <Row>
         <Col md={12}>
-          <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>
+         {!isEditMode && <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>}
           <p className="font-12 fw-medium">* includes a required field</p>
           <div className="d-flex align-items-start gap-3">
             {isProfileSectionRequired && (
