@@ -4,6 +4,7 @@ import basicBlockPlugin from 'grapesjs-blocks-basic';
 import formPlugin from 'grapesjs-plugin-forms';
 import { useEffect } from 'react';
 import grapesjs from 'grapesjs';
+import featuredDev from '../../assets/img/demo-img.jpg';
 
 export const WebsiteBuilder = () => {
     useEffect(() => {
@@ -53,7 +54,7 @@ export const WebsiteBuilder = () => {
                     {
                         name: 'Extra',
                         open: false,
-                        buildProps: ['transition', 'perspective', 'transform'],
+                        buildProps: ['transition', 'perspective', 'transform', 'object-fit'],
                         properties: [{
                             type: 'integer',
                             name: 'Duration',
@@ -113,62 +114,66 @@ export const WebsiteBuilder = () => {
                     droppable: true,
                     components: [
                         {
+                            tagName: 'div',
+                            attributes: { class: 'header-logo' },
+                            components: [
+                                {
+                                    tagName: 'img',
+                                    attributes: { src: 'https://via.placeholder.com/100', alt: 'Logo' }
+                                }
+                            ],
+                        },
+                        {
                             tagName: 'nav',
                             components: [
                                 {
                                     tagName: 'ul',
                                     components: [
-                                        { tagName: 'li', components: [{ type: 'text', content: 'Home' }] },
-                                        { tagName: 'li', components: [{ type: 'text', content: 'About' }] },
-                                        { tagName: 'li', components: [{ type: 'text', content: 'Services' }] },
-                                        { tagName: 'li', components: [{ type: 'text', content: 'Contact' }] },
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#home' }, content: 'Home' }] },
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#about' }, content: 'About' }] },
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#services' }, content: 'Services' }] },
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#contact' }, content: 'Contact' }] },
                                     ],
                                 },
                             ],
-                        },
+                        }
                     ],
                     attributes: { class: 'header-builder' },
                     styles: `
-                        .header-builder {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            padding: 10px 20px;
-                            background-color: #fff;
-                            color: #fff;
-                        }
-                        .header-builder nav ul {
-                            list-style: none;
-                            display: flex;
-                            margin: 0;
-                            padding: 0;
-                        }
-                        .header-builder nav ul li {
-                            margin: 0 10px;
-                        }
-                        .header-builder nav ul li a {
-                            color: #fff;
-                            text-decoration: none;
-                        }
-                        @media (max-width: 768px) {
-                            .header nav ul {
-                                flex-direction: column;
-                                display: none;
-                            }
-                            .header nav ul.active {
-                                display: flex;
-                            }
-                        }
-                    `,
-                    // script: function () {
-                    //     const header = this;
-                    //     const nav = header.querySelector('nav ul');
-                    //     const toggleButton = document.createElement('button');
-                    //     toggleButton.innerHTML = '☰';
-                    //     toggleButton.className = 'nav-toggle';
-                    //     toggleButton.onclick = () => nav.classList.toggle('active');
-                    //     header.prepend(toggleButton);
-                    // },
+              .header-builder {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                color: #fff;
+              }
+              .header-builder .header-logo img {
+                max-width: 80px;
+                height: auto;
+              }
+              .header-builder nav ul {
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding: 0;
+              }
+              .header-builder nav ul li {
+                margin: 0 10px;
+              }
+              .header-builder nav ul li a {
+                color: #000;
+                text-decoration: none;
+              }
+              @media (max-width: 768px) {
+                .header-builder nav ul {
+                  flex-direction: column;
+                  display: none;
+                }
+                .header-builder nav ul.active {
+                  display: flex;
+                }
+              }
+            `,
                 },
             },
         });
@@ -349,7 +354,7 @@ export const WebsiteBuilder = () => {
                                     tagName: 'div',
                                     attributes: { class: 'card' },
                                     components: [
-                                        { tagName: 'img', attributes: { src: 'image1.jpg', alt: 'Image 1' } },
+                                        { tagName: 'img', attributes: { src: featuredDev, alt: 'Image' } },
                                         { tagName: 'h4', content: 'Name 1' },
                                         { tagName: 'p', content: 'Description 1' },
                                         { tagName: 'p', content: 'Location 1' },
@@ -366,7 +371,7 @@ export const WebsiteBuilder = () => {
                                     tagName: 'div',
                                     attributes: { class: 'card' },
                                     components: [
-                                        { tagName: 'img', attributes: { src: 'image2.jpg', alt: 'Image 2' } },
+                                        { tagName: 'img', attributes: { src: featuredDev, alt: 'Image 2' } },
                                         { tagName: 'h4', content: 'Name 2' },
                                         { tagName: 'p', content: 'Description 2' },
                                         { tagName: 'p', content: 'Location 2' },
@@ -414,7 +419,6 @@ export const WebsiteBuilder = () => {
                             index = (index + 1) % track.children.length;
                             track.style.transform = \`translateX(-\${index * 100}%)\`;
                         };
-                        setInterval(nextSlide, 3000);
                     `,
                 },
             },

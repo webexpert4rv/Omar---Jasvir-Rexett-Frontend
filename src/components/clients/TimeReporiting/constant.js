@@ -239,7 +239,7 @@ export const configurationTabText = [
   },
   {
     key:"six",
-    value:"Connect with calendar"
+    value:"Integrations"
   },
   {
     key:"seven",

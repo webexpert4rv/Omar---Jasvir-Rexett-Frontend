@@ -183,10 +183,10 @@ const JobListing = () => {
                                 <div className="mb-3 mt-xl-0 mt-3">
                                   <h4 className="stage-heading mb-3">Stages</h4>
                                   <div className="stage-wrapper">
-                                    <OverlayTrigger placement="bottom" overlay={suggestText}>
+                                    {/* <OverlayTrigger placement="bottom" overlay={suggestText}>
                                       <div className="stage-indicator stage-suggest gap-1">
                                         <span className="stage-icon"><FaUsers /></span>4</div>
-                                    </OverlayTrigger>
+                                    </OverlayTrigger> */}
                                     <OverlayTrigger placement="bottom" overlay={shortlistText}>
                                       <div className="stage-indicator stage-shortlist gap-1">
                                         <span className="stage-icon"><FaClipboardUser /></span> 1
