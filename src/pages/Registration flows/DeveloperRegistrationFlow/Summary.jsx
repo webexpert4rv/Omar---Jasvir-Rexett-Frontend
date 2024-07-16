@@ -1,4 +1,4 @@
-import React from "react";
+import {useEffect} from "react";
 import { Button, Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import { FaChevronDown, FaLightbulb, FaPencil } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
@@ -6,6 +6,8 @@ import { TiEdit } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import StepperHeadingSection from "../StepperHeadingSection";
 import ConfirmationModal from "../../views/Modals/ConfirmationModal";
+import { useDispatch } from "react-redux";
+import { getDeveloperProfileDetails } from "../../../redux/slices/developerDataSlice";
 
 const Summary = ({
   nestedActiveStep,
@@ -21,6 +23,18 @@ const Summary = ({
   editSummary,
   objectKeys,
 }) => {
+
+  const dispatch = useDispatch();
+
+  let developerId=localStorage.getItem("developerId");
+
+  useEffect(()=>{
+    if(developerId){
+        dispatch(getDeveloperProfileDetails(developerId));
+    }
+  
+},[developerId])
+
   const handleDeleteModal = (id) => {
     setShowSetUpJobModal({
       isDelete: true,
@@ -72,6 +86,7 @@ const Summary = ({
       );
     }
   };
+
   return (
     <>
       <Row>

@@ -58,6 +58,7 @@ import SkillAdd from "./SkillAdd.jsx";
 import DeveloperCvModal from "./DeveloperCvModal.jsx";
 import SummaryPreview from "../../admin/ResumeSteps/SummaryPreview.jsx";
 import FinalizeResume from "../../admin/ResumeSteps/FinalizeResume.jsx";
+import RegistrationStepModal from "../../views/Modals/RegistrationStepModal.jsx";
 
 const DeveloperRegistrationStepper = () => {
   const dispatch = useDispatch();
@@ -89,6 +90,7 @@ const DeveloperRegistrationStepper = () => {
     introVideo: false,
     isDelete: false,
   });
+  const [isRegistrationStepModal, setIsRegistrationStepModal] = useState(false);
 
   console.log(developerRegistrationData, "developerRegistrationData");
   let developer_id = localStorage.getItem("developerId");
@@ -858,9 +860,21 @@ const DeveloperRegistrationStepper = () => {
   const profileSubmitIfDone=()=>{
     // setActiveStep(1);
     //   localStorage.setItem("clientActiveStep", activeStep + 1);
-    setDone(false)
+    if(activeStep === 1){
+      setDone(false)
+    }
+    else{
+      setIsRegistrationStepModal(true);
+    }
+    
 
   }
+
+
+const handleRegistrationModal = () => {
+  setIsRegistrationStepModal(false);
+}
+
   return (
     <section className="resume-section-wrapper">
       <SidebarSection
@@ -922,6 +936,10 @@ const DeveloperRegistrationStepper = () => {
       <PreviewModal
         show={showSetUpModal.introVideo}
         handleClose={handleClose}
+      />
+      <RegistrationStepModal
+      show={isRegistrationStepModal}
+      handleClose={handleRegistrationModal}
       />
     </section>
   );

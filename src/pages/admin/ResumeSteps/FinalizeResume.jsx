@@ -155,7 +155,7 @@ const FinalizeResume = () => {
                                 Projects
                               </h3>
                             </div>
-                            {developerRegistrationData?.step6.map((ele)=>(
+                            {developerRegistrationData?.step6?.map((ele)=>(
                             <div>
                               <div className="project-wrapper">
                                 <div>
@@ -227,7 +227,7 @@ const FinalizeResume = () => {
                             </h3>
                           </div>
                           <div className="exp-timeline">
-                            { developerRegistrationData?.step2.map((ele)=>(
+                            { developerRegistrationData?.step2?.map((ele)=>(
                             <div>
                               <h5>{ele?.company_name}</h5>
                               <p>3 years</p>
@@ -251,7 +251,7 @@ const FinalizeResume = () => {
                               Education
                             </h3>
                           </div>
-                          {developerRegistrationData?.step3.map((ele)=>(
+                          {developerRegistrationData?.step3?.map((ele)=>(
                           <div className="exp-wrapper">
                             <p>
                               {`20-06-2016 - 10-06-2020 | ${ele?.field_of_study}`}
