@@ -270,8 +270,8 @@ export const configurationTabText = [
     value: "Message Template"
   },
   {
-    key: "five",
-    value: "Notification Settings"
+    key:"five",
+    value:"Integrations"
   },
   {
     key: "six",
