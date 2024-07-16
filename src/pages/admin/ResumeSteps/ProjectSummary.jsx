@@ -114,7 +114,7 @@ const ProjectSummary = () => {
                                                 <h4 className="summary-heading mb-2 fw-semibold">
                                                     AI chat bot, Team Lead
                                                 </h4>
-                                                <p className="font-14 mb-1">Healthcare | February 2023 - January 2025</p>
+                                                <p className="font-14 mb-1">Healthcare | February 2023 - January 2024</p>
                                                 <p className="font-14">https://www.aichat.com</p>
                                                 <ul>
                                                     <li className="font-14">

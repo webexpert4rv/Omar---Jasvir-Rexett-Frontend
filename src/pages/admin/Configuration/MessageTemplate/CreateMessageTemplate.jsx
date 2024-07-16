@@ -80,41 +80,6 @@ const CreateMessageTemplate = () => {
                         </div>
                     </Col>
                 </Row>
-                <div className="mb-3">
-                    <Form.Label className="font-14">Availability</Form.Label>
-                    <div className='position-relative template-check'>
-                        <input type='radio' name='availability_radio' className="form-check-input" id='availability_everywhere' />
-                        <Form.Label htmlFor='availability_everywhere' className='mb-2'>
-                            <p>
-                                <span className='d-block font-14 fw-medium'>Available everywhere</span>
-                                <span className='d-block font-12'>Available for all departments, roles, regions and locations</span>
-                            </p>
-                        </Form.Label>
-                    </div>
-                    <div className='position-relative template-check'>
-                        <input className='form-check-input' type='radio' name='availability_radio' id='only_available' />
-                        <Form.Label htmlFor='only_available' className='mb-2'>
-                            <p>
-                                <span className='d-block font-14 fw-medium'>Only available for certain jobs or candidates</span>
-                                <span className='d-block font-12'>Limit availability to a specific department, role and/or region/location</span>
-                            </p>
-                        </Form.Label>
-                    </div>
-                    <div>
-                        <Row>
-                            <Col md={12}>
-                                <Form.Label className='font-14'>Roles</Form.Label>
-                                <Form.Select className='common-field font-14'>
-                                    <option>All Roles</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="interviewer">Interviewer</option>
-                                    <option value="hr">HR</option>
-                                    <option value="support_assistance">Support Assistance</option>
-                                </Form.Select>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
                 <div className='mb-3'>
                     <Form.Label className="font-14">Template settings</Form.Label>
                     <div className='position-relative template-check'>

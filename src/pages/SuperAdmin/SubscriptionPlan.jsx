@@ -57,13 +57,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -79,13 +79,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -101,13 +101,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -123,13 +123,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -158,13 +158,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -180,13 +180,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -202,13 +202,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -224,13 +224,13 @@ const SubscriptionPlan = () => {
                                                         <span className="status-finished">Active</span>
                                                     </td>
                                                     <td className="time-table-data text-start font-14 fw-normal white-nowrap">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <Button className="arrow-btn info-arrow">
-                                                                <FaPencil />
-                                                            </Button>
-                                                            <Button className="arrow-btn danger-arrow">
-                                                                <FaTrash />
-                                                            </Button>
+                                                        <div class="form-check form-switch toggle-switch-wrapper">
+                                                            <input
+                                                                class="form-check-input toggle-switch-custom shadow-none cursor-pointer"
+                                                                type="checkbox"
+                                                                role="switch"
+                                                                checked
+                                                            />
                                                         </div>
                                                     </td>
                                                 </tr>

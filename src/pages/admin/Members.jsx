@@ -386,7 +386,7 @@ const Members = () => {
             </Nav.Item>
             <Nav.Item className="application-item">
               <Nav.Link eventKey="vendors" className="application-link">
-                {t("vendors")}{" "}
+                Partners{" "}
                 <span className="new-app">
                   {allApplications?.vendors?.length}
                 </span>
@@ -394,7 +394,7 @@ const Members = () => {
             </Nav.Item>
             <Nav.Item className="application-item">
               <Nav.Link eventKey="developers" className="application-link">
-                {t("developers")}{" "}
+                Candidates{" "}
                 <span className="new-app">
                   {allApplications?.developers?.length}
                 </span>

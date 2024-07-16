@@ -49,9 +49,8 @@ const SimpleTableComponent = ({
                     ))}
                   </tr>
                 ))
-              ) : (
-                <NoDataFound />
-              )}
+              ) :  <td colSpan={8} ><div className="simple-no-data"><NoDataFound /></div></td>
+              }
             </tbody>
           </table>
         </div>

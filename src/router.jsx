@@ -35,6 +35,7 @@ import SuperDashboard from "./pages/SuperAdmin/Dashboard";
 import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
 import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
 import ClientListing from "./pages/SuperAdmin/ClientListing";
+import FeedbackView from "./pages/admin/FeedbackView";
 
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ResetPassword from "./pages/Authentication/ResetPassword";
@@ -722,6 +723,12 @@ export const route = [
   {
     path: "/super-admin/client-listing",
     element: <ClientListing />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/feedback-view",
+    element: <FeedbackView />,
     isAdmin: true,
     private: true,
   },

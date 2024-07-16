@@ -53,7 +53,7 @@ const Summary = ({
 
   const populateHeaderItem = (item) => {
     if (item.job_title) {
-      return ` ${item.job_title} , ${item.company}`;
+      return ` ${item.job_title} , ${item.company_name}`;
     } else if (item.university_name) {
       return ` ${item.university_name} , ${item.field_of_study}`;
     } else if (item?.project_title) {

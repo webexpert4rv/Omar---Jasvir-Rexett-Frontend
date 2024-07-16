@@ -35,7 +35,7 @@ const ClientDetailSection = ({
   return (
     <div className="detail-view">
       <Tab.Container id="left-tabs-example">
-        <div className="card-box mb-4 p-3">
+          <div className="card-box mb-4 p-3">
           <div className="detail-view">
             <Row className="flex-wrap gy-3">
               <Col md={3}>
