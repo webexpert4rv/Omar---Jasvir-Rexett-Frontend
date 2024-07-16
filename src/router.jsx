@@ -173,6 +173,7 @@ export const route = [
     element: <DeveloperRegistrationStepper />,
     public: true,
   },
+  
   {
     path: "/vendor-registration",
     element: <VendorRegistrationStepper />,
@@ -228,6 +229,7 @@ export const route = [
     private: true,
     isClient: true,
   },
+
   {
     path: "/client/hired-developers",
     element: <HiredDevelopers />,
@@ -515,6 +517,12 @@ export const route = [
   {
     path: "/admin/admin-dashboard",
     element: <AdminDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/developer-registration",
+    element: <DeveloperRegistrationStepper/>,
     isAdmin: true,
     private: true,
   },

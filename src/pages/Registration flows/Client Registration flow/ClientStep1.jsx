@@ -35,6 +35,8 @@ const ClientStep1 = ({
   const { t } = useTranslation();
   // field name service offerenings  
   console.log(activeStep,"activeStep")
+  console.log(watch("is_still_working"),"is")
+  let isStillWorking=watch("is_still_working")
   return (
     <>
       <Row>
@@ -68,7 +70,9 @@ const ClientStep1 = ({
                   isAutocomplete,
                   options,
                   isLocation,
-                  defaultOption
+                  defaultOption,
+                  isMinRequired,
+                  isMaxRequired
                 }) =>
                   isPasswordSection ? (
                     <PasswordSection
@@ -127,9 +131,9 @@ const ClientStep1 = ({
                             />
                           )}
 
-                          {!isPasswordSection && type!=="upload" ? (
+                          {!isPasswordSection && type!=="upload" ? ( 
                             <CommonInput
-                              label={t(`${label}`) + `${isRequired && " *"}`}
+                              label={t(`${label}`) + `${isRequired ? " *" :""}`}
                               name={fieldName}
                               control={control}
                               invalidFieldRequired={true}
@@ -139,6 +143,9 @@ const ClientStep1 = ({
                               options={companyTypeOptions ? companyTypeOptions:options}//get options
                               defaultOption={defaultOption}
                               placeholder={placeholder}
+                              isMaxRequired={isMaxRequired}
+                              disabled={isStillWorking}
+                              isMinRequired={isMinRequired}
                             />
                           ): <UploadFile 
                           label={label}

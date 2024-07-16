@@ -491,6 +491,25 @@
         "developerMain2Head":"Work History",
         "developerHeading2":"Here’s what you need to know:",
         "developer2Para":"Employers scan your resume to see if you're a match.We'll suggest bullet points that make a great impression.",
+        "developerNestedStep1HeadingForStep3":"Tell us about your education",
+        "developerNestedStep1ParaForStep3":"Enter your education experience so far, even if you are a current student or did not graduate.",
+        "developerNestedStep2HeadingForStep3":"Education summary",
+        "developerNestedStep1HeadingForStep4":"What skills would you like to highlight?",
+        "developerNestedStep1ParaForStep4":"Choose from our pre-written examples below or write your own",
+
+        "developerNestedStep2HeadingForStep4":"Good to have skills",
+        "developerNestedStep2ParaForStep4":"Choose from our pre-written examples below or write your own.",
+
+        "developerNestedStep1HeadingForStep5":"Briefly tell us about your background",
+        "developerNestedStep1ParaForStep5":"Choose from our pre-written examples below or write your own.",
+
+        "developerNestedStep2HeadingForStep6":"Project summary",
+
+
+        "developerNestedStep2ParaForStep3":"developerNestedStep2ParaForStep3",
+
+        "developerNestedStep1HeadingForStep6":"Tell us about your project history",
+        "developerNestedStep1ParaForStep6":"We'll start there and work backward.",
 
          "developerIntroData3Heading":"Great, let’s work on your",
         "developerMain3Head":"Education",
@@ -505,6 +524,13 @@
         "developerIntroData5Heading":"Finally, let’s work on your",
         "developerMain5Head":"Summary",
         "developerHeading5":"Here’s what you need to know:",
-        "developer5Para":"Your summary shows employers you’re right for their job.We’ll help you write a great one with expert content you can customize."
+        "developer5Para":"Your summary shows employers you’re right for their job.We’ll help you write a great one with expert content you can customize.",
+
+        "developerIntroData6Heading":"Finally, let’s work on your",
+        "developerMain6Head":"Project",
+        "developerHeading6":"Here’s what you need to know:",
+        "developer6Para":"Your summary shows employers you’re right for their job.We’ll help you write a great one with expert content you can customize."
+
+
       }
 }

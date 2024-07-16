@@ -1239,6 +1239,21 @@ export function registerDeveloperExperience(payload,id) {
   };
 }
 
+export function editDeveloperExperience(payload,id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await authInstance.put(`common/update-experience/${id}`, payload);
+      toast.success("Experience is Updated", { position: "top-center" });
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
 export function registerDeveloperEducation(payload,id) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
@@ -1258,12 +1273,42 @@ export function registerDeveloperSkills(payload,id) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`common//add-developer-skills`, payload);
+      let result = await clientInstance.post(`common/add-developer-skills`, payload);
       toast.success("skills is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function developerRegistrationBio(payload) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.post("common/add-developer-bio",{...payload});
+      toast.success("Bio is creatd", { position: "top-center" });
+      dispatch(setActionSuccessFully());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function addDeveloperRegisProject(payload) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.post("common/add-developer-project",payload);
+      toast.success("Project is Added", { position: "top-center" });
+      dispatch(setActionSuccessFully());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(error?.response?.data?.message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
   };

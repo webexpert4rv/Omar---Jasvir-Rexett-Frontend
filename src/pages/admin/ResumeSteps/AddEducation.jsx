@@ -26,6 +26,8 @@ import { FiExternalLink } from "react-icons/fi";
 import ReactQuill from "react-quill";
 import PreviewModal from "./Modals/PreviewResume";
 import ClientStep1 from "../../Registration flows/Client Registration flow/ClientStep1";
+import { Controller } from "react-hook-form";
+import RecommendationAI from "../../Registration flows/DeveloperRegistrationFlow/RecommendationAI";
 const AddEducation = ({
   control,
   errors,
@@ -43,7 +45,10 @@ const AddEducation = ({
   setPreviewImage,
   setImageFile,
   isProfileSectionRequired,
+  setSelectedRecommend,
+  selectedRecommend
 }) => {
+
   const tipstext = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">Expert Insights</Popover.Header>
@@ -93,61 +98,33 @@ const AddEducation = ({
       <Row>
         <Col md={6}>
           <div>
-            <div className="recommended-desc">
-              <div className="d-flex align-items-center gap-3">
-                <Button
-                  variant="transparent"
-                  className="arrow-btn primary-arrow shadow-none"
-                >
-                  <IoAddOutline />
-                </Button>
-                <div>
-                  <p className="font-14 fw-medium mb-1">Expert Recommended</p>
-                  <p className="font-14 mb-0">
-                    Experienced Web Developer with passion for creating
-                    attractive and interactive websites meeting customer needs
-                    and exceeding expectations.
-                  </p>
-                </div>
-              </div>
-              <div className="d-flex align-items-center gap-3">
-                <Button
-                  variant="transparent"
-                  className="arrow-btn primary-arrow shadow-none"
-                >
-                  <IoAddOutline />
-                </Button>
-                <div>
-                  <p className="font-14 fw-medium mb-1">Expert Recommended</p>
-                  <p className="font-14 mb-0">
-                    Driven Web Developer with a proven track record at Aviox,
-                    showcasing rapid adaptability and exceptional communication
-                    skills.
-                  </p>
-                </div>
-              </div>
-              <div className="d-flex align-items-center gap-3">
-                <Button
-                  variant="transparent"
-                  className="arrow-btn primary-arrow shadow-none"
-                >
-                  <IoAddOutline />
-                </Button>
-                <div>
-                  <p className="font-14 mb-0">
-                    Logical and results-driven Web Developer dedicated to
-                    building and optimizing user-focused websites for customers
-                    with various business objectives.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <RecommendationAI control={control} setSelectedRecommend={setSelectedRecommend}/>
           </div>
         </Col>
         <Col md={6}>
           <div id="custom-ck">
-            <ReactQuill />
-          </div>
+          <p className="font-14 fw-medium mb-1">Description</p>
+          <Controller
+            name="description"
+            control={control}
+            rules={{ required: "Job description is required" }}
+           
+            render={({ field }) => (
+              <ReactQuill
+                {...field}
+                // value={selectedRecommendation}
+                className={`common-field ${
+                  errors.description?.message && "invalid-field"
+                }`}
+                theme="snow"
+                onChange={(content, delta, source, editor) => field.onChange(content)}
+              />
+            )}
+          />
+          {errors?.description && (
+            <p className="field-error">{errors.description?.message}</p>
+          )}
+        </div>
         </Col>
       </Row>
     </>

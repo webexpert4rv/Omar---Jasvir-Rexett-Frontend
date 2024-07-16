@@ -6,6 +6,7 @@ import { IoAddOutline } from 'react-icons/io5';
 
 const RecommendationAI = ({
     control,
+    setSelectedRecommend
 
 }) => {
     const recommendations = [
@@ -44,11 +45,12 @@ const RecommendationAI = ({
 
       const handleRecommendation=(item)=>{
         console.log(item,"kk")
+        setSelectedRecommend(item.text)
       }
   return (
    <>
     <div>
-          <div className="search-filter mb-3">
+          {/* <div className="search-filter mb-3">
             <CommonInput
               label="Search By Job Title For Pre-Written Examples"
               name="search"
@@ -57,8 +59,8 @@ const RecommendationAI = ({
               invalidFieldRequired={true}
               placeholder="Search by job Title"
             />
-          </div>
-          <div className="showing-results-wrapper mb-3">
+          </div> */}
+          {/* <div className="showing-results-wrapper mb-3">
             <div>
               <p className="font-14 mb-0">Showing results for</p>
               <p className="font-14 mb-0 fw-semibold">Web Developer</p>
@@ -71,7 +73,7 @@ const RecommendationAI = ({
                 Filter by keyword <FaFilter />{" "}
               </Button>
             </div>
-          </div>
+          </div> */}
           <CommonInput
             label=""
             name="search"

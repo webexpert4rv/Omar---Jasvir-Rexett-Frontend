@@ -16,6 +16,10 @@ const Summary = ({
   setShowSetUpJobModal,
   showSetUpModal,
   addAnotherPosition,
+   activeStep,
+   type,
+   editSummary,
+   objectKeys
 }) => {
   const handleDeleteModal = (id) => {
     setShowSetUpJobModal({
@@ -52,7 +56,7 @@ const Summary = ({
         <Col md={12}>
           <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <StepperHeadingSection nestedActiveStep={nestedActiveStep} />
+              <StepperHeadingSection activeStep={activeStep}  nestedActiveStep={nestedActiveStep} type={type} />
               <div>
                 <OverlayTrigger
                   trigger="click"
@@ -74,6 +78,7 @@ const Summary = ({
                   <div className="w-100">
                     <h4 className="summary-heading mb-2 fw-semibold">
                       {item?.job_title}, {item?.company_name}
+                      
                     </h4>
                     <p className="font-14">
                       New Delhi, India |February 2023 - January 2024
@@ -85,9 +90,9 @@ const Summary = ({
                       ></li>
                     </ul>
                     <div className="d-flex align-items-center justify-content-between mt-4">
-                      <Link className="text-decoration-none text-green font-14">
+                      {/* <Link className="text-decoration-none text-green font-14">
                         <FaPencil /> Edit description
-                      </Link>
+                      </Link> */}
                       <Link className="text-decoration-none text-green font-14">
                         Show more detail <FaChevronDown />
                       </Link>
@@ -95,6 +100,7 @@ const Summary = ({
                   </div>
                   <div className="education-action">
                     <Button
+                    onClick={()=>editSummary(item?.id)}
                       variant="transparent"
                       className="arrow-btn info-arrow shadow-none"
                     >

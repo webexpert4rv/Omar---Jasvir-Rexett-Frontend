@@ -10,25 +10,28 @@ import RecommendationAI from "./RecommendationAI";
 import CustomSkill from "./CustomSkill";
 import ReactQuill from "react-quill";
 import { Controller } from "react-hook-form";
-const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions}) => {
+import StepperHeadingSection from "../StepperHeadingSection";
+const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions,nestedActiveStep,type}) => {
+    console.log(nestedActiveStep,"skil")
   return (
     <>
       <div>
+      <StepperHeadingSection nestedActiveStep={nestedActiveStep} activeStep={activeStep} type={type}/>
         <Row>
           <Col md={6}>
             <RecommendationAI control={control} />
           </Col>
           <Col md={6}>
            
-          <CustomSkill 
+       {activeStep==4 &&   <CustomSkill 
              activeStep={activeStep}
              errors={errors}
              control={control}
              watch={watch}
              register={register}
              skillOptions={skillOptions}
-            />
-               <div id="custom-ck">
+            />}
+            { activeStep==5 && <div id="custom-ck">
           <Controller
             name="description"
             control={control}
@@ -49,7 +52,7 @@ const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions}) => {
           {errors?.description && (
             <p className="field-error">{errors.description?.message}</p>
           )}
-        </div>
+        </div>}
 
           </Col>
         </Row>

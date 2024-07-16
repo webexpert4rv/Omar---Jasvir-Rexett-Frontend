@@ -73,10 +73,32 @@ export const DEVELOPER_STEPPER_HEADINGS = {
 
 export const DEVELOPER_NESTED_STEPPER_HEADINGS = {
   1: { heading: "developerNestedStep1Heading", para: "developerNestedStep1Para" },
-  2: { heading: "developerNestedStep2Heading", para: "developerNestedStep2Para" },
-  3:  { heading: "developerNestedStep3Heading", para: "" },
+  2: { heading: "developerNestedStep3Heading", para: "" },
   4:  { heading: "developerNestedStep4Heading", para: "developerNestedStep4Para" },
 };
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3 = {
+  2: { heading: "developerNestedStep1HeadingForStep3", para: "developerNestedStep1ParaForStep3" },
+  3: { heading: "developerNestedStep2HeadingForStep3", para: "'" },
+};
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4 = {
+  1: { heading: "developerNestedStep1HeadingForStep4", para: "developerNestedStep1ParaForStep4" },
+  2: { heading: "developerNestedStep2HeadingForStep4", para: "developerNestedStep2ParaForStep4" },
+  4:  { heading: "developerNestedStep3HeadingForStep3", para: "" },
+};
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_5 = {
+  1: { heading: "developerNestedStep1HeadingForStep5", para: "developerNestedStep1ParaForStep5" },
+
+};
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_6 = {
+  1: { heading: "developerNestedStep1HeadingForStep6", para: "developerNestedStep1ParaForStep6" },
+  2: { heading: "developerNestedStep2HeadingForStep6", para: "" },
+
+};
+
+
 
 export const DEVELOPER_INTRO_DATA = {
   2:{
@@ -103,6 +125,12 @@ export const DEVELOPER_INTRO_DATA = {
     heading1:"developerHeading5",
     para:"developer5Para"
   },
+  6:{
+    heading:"developerIntroData6Heading",
+    mainHead:"developerMain6Head",
+    heading1:"developerHeading6",
+    para:"developer6Para"
+  },
 
 
 };
@@ -115,10 +143,22 @@ export const getActiveStepHeadingData = (activeStep ,type,nestedActiveStep ) => 
   else if (type === 'vendor') {
     return VENDOR_STEPPER_HEADINGS[activeStep] || { heading: '' }; 
   } else {
-    if(nestedActiveStep>0){
+    if(nestedActiveStep>0 && activeStep==2){
       return DEVELOPER_NESTED_STEPPER_HEADINGS[nestedActiveStep] || { heading: '' }; 
-    }else{
-      return DEVELOPER_STEPPER_HEADINGS[activeStep] || { heading: '' }; 
+    }else if(nestedActiveStep>0 && activeStep==3){
+      console.log("hello33")
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3[nestedActiveStep] || { heading: '' }; 
+    }else if(nestedActiveStep>0 && activeStep==4){
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4[nestedActiveStep] || { heading: '' }; 
+
+    }else if(nestedActiveStep>0 && activeStep==5){
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_5[nestedActiveStep] || { heading: '' }; 
+     
+    }else if(nestedActiveStep>0 && activeStep==6){
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_6[nestedActiveStep] || { heading: '' };
+    }
+    else{
+      return DEVELOPER_STEPPER_HEADINGS[activeStep] || { heading: '' };
     }
    
     
@@ -239,7 +279,8 @@ const CLIENT_STEP_1_FIELDS = {
       label: "establishmentYear",
       fieldName: "establishment_year",
       type: "date",
-      isMaxRequired: true,
+      isMinRequired: true,
+      isMaxRequired:false,
       // placeholder: "Enter Tax ID",
       rules: { required: "Tax ID is required" },
       columnWidth: 6,
@@ -448,7 +489,8 @@ const VENDOR_STEP_1_FIELDS = [
     label: "establishmentYear",
     fieldName: "establishment_year",
     type: "date",
-    isMaxRequired: true,
+    isMinRequired: true,
+      isMaxRequired:false,
     rules: { required: "Establishment year is required" },
     columnWidth: 6,
     isRequired: true,
@@ -826,7 +868,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "job_title",
       type: "text",
       placeholder: "e.g. Web Developer",
-      rules: { required: "Web developer is required" },
+      rules: { required: "Job Title is required" },
       columnWidth: 6,
       isRequired: true,
     },
@@ -835,7 +877,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "company_name",
       type: "text",
       placeholder: "e.g. Microsoft",
-      rules: { required: "MicroSoft is required" },
+      rules: { required: "Employer is required" },
       columnWidth: 6,
       isRequired: true,
     },
@@ -844,7 +886,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "job_location",
       type: "select",
       placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Job location is required" },
+      rules: { required: "Location is required" },
       columnWidth: 6,
       isRequired: true,
       isAutocomplete: true,
@@ -855,7 +897,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       type: "normal-select",
       options:WORK_TYPE,
       // placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Job location is required" },
+      rules: { required: "Work type is required" },
       columnWidth: 6,
       isRequired: true,
       defaultOption: "Select Type",
@@ -864,7 +906,9 @@ const DEVELOPER_STEP_1_FIELDS = [
       label: "Start Date",
       fieldName: "start_date",
       type: "date",
-      rules: { required: "Job location is required" },
+      isMinRequired: true,
+      isMaxRequired:false,
+      rules: { required: "Start date is required" },
       columnWidth: 6,
       isRequired: true,
       defaultOption: "Select Month",
@@ -876,9 +920,11 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "end_date",
       type: "date",
       // placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Job location is required" },
+      isMinRequired: true,
+      isMaxRequired:false,
+      // rules: { required: "End date is required" },
       columnWidth: 6,
-      isRequired: true,
+      // isRequired: false,
       defaultOption: "Select Month",
     },
     
@@ -889,7 +935,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       options:["pankaj"],
       rules: { required: "Job location is required" },
       columnWidth: 12,
-      isRequired: true,
+      isRequired: false,
     },
   ]
 
@@ -944,6 +990,8 @@ const DEVELOPER_STEP_1_FIELDS = [
       label: "Graduation Date",
       fieldName: "graduate_date",
       type: "date",
+      isMinRequired: true,
+      isMaxRequired:false,
       // placeholder: "e.g. Street 1341,New area,CA,USA",
       rules: { required: "Job location is required" },
       columnWidth: 6,
@@ -954,7 +1002,7 @@ const DEVELOPER_STEP_1_FIELDS = [
   ]
 
 
-  const NESTED_DEVELOPER_STEP_3_FIELDS=[
+  const NESTED_DEVELOPER_STEP_6_FIELDS=[
     {
       label: "Project Title",
       fieldName: "project",
@@ -994,42 +1042,90 @@ const DEVELOPER_STEP_1_FIELDS = [
     {
       label: "Project Type",
       fieldName: "project_type",
-      type: "text",
+      type: "normal-select",
       placeholder: "e.g. Delhi,India",
       rules: { required: "Project is required" },
       columnWidth: 12,
       isRequired: true,
+      options: WORKPLACE_TYPES_OPTIONS,
     },
     
     {
       label: "Project URL",
       fieldName: "project_url",
-      type: "date",
+      type: "text",
       placeholder: "e.g. https://example.com",
       rules: { required: "Project url is required" },
       columnWidth: 6,
       isRequired: true,
       defaultOption: "",
     },
+    {
+      label: "Skill",
+      fieldName: "project_url",
+      type: "text",
+      placeholder: "e.g. HTML",
+      rules: { required: "Skill is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "",
+    },
+    {
+      label: "Start Date",
+      fieldName: "start_date",
+      type: "date",
+      isMinRequired: true,
+      isMaxRequired:false,
+      rules: { required: "Job location is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "Select Month",
+    },
+  
+
+    {
+      label: "End Date",
+      fieldName: "end_date",
+      type: "date",
+      // placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Job location is required" },
+      columnWidth: 6,
+      isMinRequired: true,
+      isMaxRequired:false,
+      isRequired: true,
+      defaultOption: "Select Month",
+    },
 
   ]
+
+
+
 const DEVELOPER_STEP_FIELDS = {
   1: DEVELOPER_STEP_1_FIELDS,
 };
 
 const NESTED_DEVELOPER_STEP_FIELDS={
-  2:NESTED_DEVELOPER_STEP_1_FIELDS,
+  1:NESTED_DEVELOPER_STEP_1_FIELDS,
+}
+const DEVELOPER_STEP_FIELDS_FOR_STEP_3={
   3:NESTED_DEVELOPER_STEP_2_FIELDS,
-  4:NESTED_DEVELOPER_STEP_3_FIELDS
+}
+const DEVELOPER_STEP_FIELDS_FOR_STEP_6={
+  1:NESTED_DEVELOPER_STEP_6_FIELDS,
 }
 
 export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
   console.log(activeStep,nestedActiveStep,"cosn")
-  if(nestedActiveStep>0){
-    return NESTED_DEVELOPER_STEP_FIELDS[3] || null;
-  }else{
-   return DEVELOPER_STEP_FIELDS[activeStep] || null;
+  if(nestedActiveStep>0  &&activeStep==2){
+    return NESTED_DEVELOPER_STEP_FIELDS[1] || null;
+  }else if(nestedActiveStep>0  &&activeStep==3){
+   return DEVELOPER_STEP_FIELDS_FOR_STEP_3[3] || null;
+  }else if(nestedActiveStep>0  &&activeStep==6){
+   return DEVELOPER_STEP_FIELDS_FOR_STEP_6[1] || null
   }
+  else{
+    return DEVELOPER_STEP_FIELDS[activeStep] || null
+   }
 }
   
   
@@ -1039,6 +1135,43 @@ export const getStepDataFromAPI=(data,activeStep)=>{
   }else{
     return {}
   }
+}
+
+
+const EDUCATION_KEYS= {
+  university_name: "",
+  address: "",
+  degree_id: "",
+  field_of_study: "",
+  start_year: "",
+  end_month: "",
+  end_year: 0,
+  currently_attending: "",
+  description: "",
+}
+
+
+const PROJECT_KEYS={
+    "project_title": "",
+    "project_description": "",
+    "tech_stacks_used": "",
+    "role_in_project": "",
+    "project_team_size": "",
+    "project_link": "",
+    "project_start_date": "",
+    "project_end_date": "",
+    "project_type":  "" 
+}
+
+
+const KEYS={
+  5:EDUCATION_KEYS,
+  6:PROJECT_KEYS
+}
+
+export const stepperFormKeys=(activeStep)=>{
+ return KEYS[activeStep]
+
 }
 
 

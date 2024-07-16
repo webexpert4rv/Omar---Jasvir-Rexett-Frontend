@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { FaUpload } from "react-icons/fa6";
 import { IoClose, IoPlay } from "react-icons/io5";
-import videoImg from "../../../assets/img/user-img.jpg";
+import videoImg from "../../../assets/img/demo-video.png";
+import IntroVideo from "../../../components/common/Modals/IntroVideo";
 
 const UploadFile = ({ label, placeholder,
     register,
@@ -16,6 +17,7 @@ const UploadFile = ({ label, placeholder,
     errors,
     setError,
  }) => {
+  const [showVideo,setShowVideo]=useState(false)
  const DOC_ALLOWED_EXTENSIONS = [
         "application/pdf",
         "application/msword"
@@ -48,7 +50,7 @@ const UploadFile = ({ label, placeholder,
         setValue(fieldName, null);
         setError(fieldName, {
           type: "manual",
-          message: `Please enter a valid file type: ${name === "resume" ? "png, jpeg, jpg, svg" : "mp4, webm, ogg"}`,
+          message: `Please enter a valid file type: ${name === "upload_resume" ? "pdf,msword" : "mp4, webm, ogg"}`,
         });
         setPreviewImage(null);
       }
@@ -58,6 +60,13 @@ const UploadFile = ({ label, placeholder,
 console.log(imageFile,"imageFile")
 console.log(previewImage,"previewImage")
 console.log(fieldName,"fieldName")
+console.log(errors,"err")
+console.log(showVideo,"showe")
+
+const handleIntroVideo=()=>{
+  console.log("int")
+  setShowVideo(!showVideo)
+}
 
   return (
     <>
@@ -76,29 +85,41 @@ console.log(fieldName,"fieldName")
         <Form.Label htmlFor={fieldName} className="upload-intro-file">
           {placeholder}
         </Form.Label>
+       
       </div>
       <div>
+      {errors[fieldName] && (
+            <p className="field-error">{errors[fieldName]?.message}</p>
+          )}
         {label!=="Resume" ? (
           <div className="profile-upload-preview position-relative preview_intro mb-3">
             <div className="profile-img-preview w-100 h-100">
-              <img src={previewImage?previewImage.introVideo:videoImg} />
+              {/* <video src={previewImage?.introVideo? previewImage?.introVideo:videoImg} /> */}
+            
             </div>
-            <div className="playback_intro">
+            <div className="playback_intro" onClick={handleIntroVideo}>
               <IoPlay />
             </div>
             <Form.Label htmlFor="intro-video" className="profile-img-label">
               <FaUpload />
             </Form.Label>
+  
           </div>
         ) : (
           <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
             <span className="font-14 fw-medium">{imageFile?.resume?.name}</span>
             <span className="cursor-pointer text-danger">
-              <IoClose />
+              {/* <IoClose /> */}
+                {/* {errors[fieldName] && (
+            <p className="field-error">{errors[fieldName]?.message}</p>
+          )} */}
             </span>
+        
           </div>
+          
         )}
       </div>
+      <IntroVideo show={showVideo} handleClose={handleIntroVideo} previewImage={previewImage?.introVideo}/>
     </>
   );
 };
