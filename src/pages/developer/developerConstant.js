@@ -100,7 +100,7 @@ export const PROJECT_DETAIL_SECTION_1_FIELDS = [
   },
   {
     label: "completionDate",
-    key: "end_date",
+    key: "endDate",
     isDate: true,
     format: "DD MMMM YYYY",
   },
