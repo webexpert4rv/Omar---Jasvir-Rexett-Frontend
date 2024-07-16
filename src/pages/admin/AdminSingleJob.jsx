@@ -4,7 +4,7 @@ import SingleJobDetails from '../../components/common/SingleJob/SingleJobDetails
 const AdminSingleJob = () => {
   return (
     <>
-    <SingleJobDetails/>
+    <SingleJobDetails />
     </>
   )
 }

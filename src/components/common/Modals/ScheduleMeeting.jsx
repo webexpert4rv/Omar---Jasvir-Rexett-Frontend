@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BiFont } from "react-icons/bi";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FaArrowRightLong, FaUsers } from "react-icons/fa6";
 import { RiUser3Fill } from "react-icons/ri";
 import { FaClock } from "react-icons/fa6";
 import { IoAlarm } from "react-icons/io5";
@@ -14,6 +14,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { toast } from 'react-toastify'
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select'
 const Schedulemeeting = ({ show, handleClose }) => {
     const [value, onChange] = useState(new Date());
     const [firstSlot, setFirstSlot] = useState("");
@@ -136,20 +137,19 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <Form.Control type="text" className="common-field font-14" placeholder="Add title" value="Interview for Figma to UI Project" readOnly />
+                                        <Form.Control type="text" className="common-field font-14" placeholder="Add title" />
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Developer Name</p>
+                                    <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Select Candidate</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
-                                    <div className="d-flex align-items-center gap-3 client-imgbx">
-                                        <img src={devImg} />
-                                        <p className="font-14 mb-0">Rohit Sharma</p>
+                                    <div>
+                                        <Select isMulti />
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><FaVideo /></span>Interviewer's list</p>
+                                    <p className="font-14 schedule-heading"><span><FaUsers /></span>Interviewer's list</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
@@ -169,10 +169,11 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                     <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
-                                    <div className="d-flex align-items-center gap-3 video-meetbx">
-                                        <img src={rexettLogo} />
-                                        <p className="font-14 mb-0">Video Meeting (Rexett)</p>
-                                    </div>
+                                    <Form.Select className="common-field font-14">
+                                        <option>Rexett video meeting</option>
+                                        <option>Google meet</option>
+                                        <option>Microsoft team</option>
+                                    </Form.Select>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>

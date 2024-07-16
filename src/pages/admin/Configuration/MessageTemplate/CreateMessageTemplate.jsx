@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 import ReactQuill, { Quill } from 'react-quill';
 
 const CreateMessageTemplate = () => {
@@ -24,57 +25,61 @@ const CreateMessageTemplate = () => {
                     <Form.Label className="font-14">Subject *</Form.Label>
                     <Form.Control type='text' className='common-field font-14' required />
                 </div>
-                <div className="mb-3">
-                    <Form.Label className="font-14">Message *</Form.Label>
-                    <div className="custom-rich-editor">
-                        <ReactQuill value={valuemessga} onChange={handleChange} />
-                        <div className="signature-wrapper">
-                            <p className="mb-4">--</p>
-                            <p className="mb-0">Aviox technologies pvt ltd</p>
+                <Row>
+                    <Col md={7}>
+                        <div className="mb-3">
+                            <Form.Label className="font-14">Message *</Form.Label>
+                            <div className="custom-rich-editor">
+                                <ReactQuill value={valuemessga} onChange={handleChange} />
+                                <div className="signature-wrapper">
+                                    <p className="mb-4">--</p>
+                                    <p className="mb-0">Aviox technologies pvt ltd</p>
+                                </div>
+                                <p className="font-12 mt-1 text-muted">The email signature will be automatically inserted from the recruiters profile.</p>
+                            </div>
                         </div>
-                        <p className="font-12 mt-1 text-muted">The email signature will be automatically inserted from the recruiters profile.</p>
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <Form.Label className="font-14">Attach file</Form.Label>
-                    <Form.Control type='file' className='common-field font-14 d-none' id='attach-message-file' />
-                    <Form.Label htmlFor='attach-message-file' className='attachedmessage'> Attach file </Form.Label>
-                </div>
-                <div className="mb-3">
-                    <Form.Label className="font-14">Availability</Form.Label>
-                    <div className='position-relative template-check'>
-                        <input type='radio' name='availability_radio' className="form-check-input" id='availability_everywhere' />
-                        <Form.Label htmlFor='availability_everywhere' className='mb-2'>
-                            <p>
-                                <span className='d-block font-14 fw-medium'>Available everywhere</span>
-                                <span className='d-block font-12'>Available for all departments, roles, regions and locations</span>
-                            </p>
-                        </Form.Label>
-                    </div>
-                    <div className='position-relative template-check'>
-                        <input className='form-check-input' type='radio' name='availability_radio' id='only_available' />
-                        <Form.Label htmlFor='only_available' className='mb-2'>
-                            <p>
-                                <span className='d-block font-14 fw-medium'>Only available for certain jobs or candidates</span>
-                                <span className='d-block font-12'>Limit availability to a specific department, role and/or region/location</span>
-                            </p>
-                        </Form.Label>
-                    </div>
-                    <div>
-                        <Row>
-                            <Col md={12}>
-                                <Form.Label className='font-14'>Roles</Form.Label>
-                                <Form.Select className='common-field font-14'>
-                                    <option>All Roles</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="interviewer">Interviewer</option>
-                                    <option value="hr">HR</option>
-                                    <option value="support_assistance">Support Assistance</option>
-                                </Form.Select>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
+                        <div className="mb-3">
+                            <Form.Label className="font-14">Attach file</Form.Label>
+                            <Form.Control type='file' className='common-field font-14 d-none' id='attach-message-file' />
+                            <Form.Label htmlFor='attach-message-file' className='attachedmessage'> Attach file </Form.Label>
+                        </div>
+                    </Col>
+                    <Col md={5}>
+                        <div className="mb-3">
+                            <Form.Label className="font-14">Preview</Form.Label>
+                        <div className="message-preview">
+                                <div className='d-flex align-items-end gap-2 mb-3'>
+                                    <div className='receiver-profile'></div>
+                                    <div className='w-100'>
+                                        <div className='receiver-message-preview'>
+                                            <p className='skeleton-msg mb-2'></p>
+                                            <p className='skeleton-msg mb-2'></p>
+                                            <p className='skeleton-msg mb-0'></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='d-flex align-items-end justify-content-end gap-2 mb-2'>
+                                    <div>
+                                        <div className='send-message-preview'>
+                                            <p className='send_msg'>Hi,</p>
+                                            <p className='send_msg'>Welcome and thank you for showing an interest in Aviox technologies pvt ltd. Being connected to our company means you get the chance to let us get to know you even more. Start by introducing yourself on your <b>personal profile</b>. A good and informative profile will help us find a right match. We will keep you up to date with jobs that suit your profile.</p>
+                                            <p>Have a great day</p>
+                                            <div className='attachment_preview'>
+                                                <p className='mb-0'>Privacy Policy.pdf</p>
+                                                <p className='del-attac mb-0'>
+                                                    <IoCloseCircleOutline />
+                                                </p>
+                                            </div>
+                                            <p>--</p>
+                                            <p>Aviox technologies pvt. ltd.</p>
+                                        </div>
+                                    </div>
+                                    <div className='send-profile'></div>
+                                </div>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
                 <div className='mb-3'>
                     <Form.Label className="font-14">Template settings</Form.Label>
                     <div className='position-relative template-check'>

@@ -4,6 +4,7 @@ import basicBlockPlugin from 'grapesjs-blocks-basic';
 import formPlugin from 'grapesjs-plugin-forms';
 import { useEffect } from 'react';
 import grapesjs from 'grapesjs';
+import featuredDev from '../../assets/img/demo-img.jpg';
 
 export const WebsiteBuilder = () => {
     useEffect(() => {
@@ -16,7 +17,7 @@ export const WebsiteBuilder = () => {
                     {
                         name: 'General',
                         open: false,
-                        buildProps: ['float', 'display', 'position', 'top', 'right', 'left', 'bottom'],
+                        buildProps: ['float', 'display', 'justify-content', 'align-items', 'flex-direction', 'position', 'top', 'right', 'left', 'bottom'],
                     },
                     {
                         name: 'Dimension',
@@ -53,7 +54,7 @@ export const WebsiteBuilder = () => {
                     {
                         name: 'Extra',
                         open: false,
-                        buildProps: ['transition', 'perspective', 'transform'],
+                        buildProps: ['transition', 'perspective', 'transform', 'object-fit'],
                         properties: [{
                             type: 'integer',
                             name: 'Duration',
@@ -104,14 +105,95 @@ export const WebsiteBuilder = () => {
             }
         });
 
-        // Add custom accordion component
+        // Add custom header component
+        editor.DomComponents.addType('header', {
+            model: {
+                defaults: {
+                    tagName: 'header',
+                    draggable: true,
+                    droppable: true,
+                    components: [
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'header-logo' },
+                            components: [
+                                {
+                                    tagName: 'img',
+                                    attributes: { src: 'https://via.placeholder.com/100', alt: 'Logo' }
+                                }
+                            ],
+                        },
+                        {
+                            tagName: 'nav',
+                            components: [
+                                {
+                                    tagName: 'ul',
+                                    components: [
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#home' }, content: 'Home' }] },
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#about' }, content: 'About' }] },
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#services' }, content: 'Services' }] },
+                                        { tagName: 'li', components: [{ tagName: 'a', attributes: { href: '#contact' }, content: 'Contact' }] },
+                                    ],
+                                },
+                            ],
+                        }
+                    ],
+                    attributes: { class: 'header-builder' },
+                    styles: `
+              .header-builder {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                color: #fff;
+              }
+              .header-builder .header-logo img {
+                max-width: 80px;
+                height: auto;
+              }
+              .header-builder nav ul {
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding: 0;
+              }
+              .header-builder nav ul li {
+                margin: 0 10px;
+              }
+              .header-builder nav ul li a {
+                color: #000;
+                text-decoration: none;
+              }
+              @media (max-width: 768px) {
+                .header-builder nav ul {
+                  flex-direction: column;
+                  display: none;
+                }
+                .header-builder nav ul.active {
+                  display: flex;
+                }
+              }
+            `,
+                },
+            },
+        });
+
+        // Add custom block for header
+        editor.BlockManager.add('header', {
+            label: 'Header',
+            content: {
+                type: 'header',
+            },
+            category: 'Custom',
+        });
+
         editor.DomComponents.addType('accordion', {
             model: {
                 defaults: {
-                    script: function() {
+                    script: function () {
                         const headers = this.querySelectorAll('.accordion-header');
                         headers.forEach(header => {
-                            header.addEventListener('click', function() {
+                            header.addEventListener('click', function () {
                                 const content = this.nextElementSibling;
                                 content.style.display = content.style.display === 'block' ? 'none' : 'block';
                             });
@@ -146,6 +228,207 @@ export const WebsiteBuilder = () => {
             label: 'Accordion',
             content: {
                 type: 'accordion',
+            },
+            category: 'Custom',
+        });
+        // Add custom footer component
+        editor.DomComponents.addType('footer', {
+            model: {
+                defaults: {
+                    tagName: 'footer',
+                    draggable: true,
+                    droppable: true,
+                    components: [
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'footer-column' },
+                            components: [
+                                {
+                                    tagName: 'h4',
+                                    content: 'About Us',
+                                },
+                                {
+                                    tagName: 'p',
+                                    content: 'Description about the company.',
+                                },
+                            ],
+                        },
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'footer-column' },
+                            components: [
+                                {
+                                    tagName: 'h4',
+                                    content: 'Quick Links',
+                                },
+                                {
+                                    tagName: 'ul',
+                                    components: [
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Home' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'About' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Services' }] },
+                                        { tagName: 'li', components: [{ type: 'text', content: 'Contact' }] },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'footer-column' },
+                            components: [
+                                {
+                                    tagName: 'h4',
+                                    content: 'Contact Info',
+                                },
+                                {
+                                    tagName: 'p',
+                                    content: 'Phone: 123-456-7890',
+                                },
+                                {
+                                    tagName: 'p',
+                                    content: 'Email: info@company.com',
+                                },
+                            ],
+                        },
+                    ],
+                    attributes: { class: 'footer' },
+                    styles: `
+                        .footer {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 20px;
+                            background-color: #333;
+                            color: #fff;
+                        }
+                        .footer-column {
+                            flex: 1;
+                            margin: 0 10px;
+                        }
+                        .footer-column h4 {
+                            margin-bottom: 10px;
+                        }
+                        .footer-column ul {
+                            list-style: none;
+                            padding: 0;
+                        }
+                        .footer-column ul li {
+                            margin-bottom: 5px;
+                        }
+                        @media (max-width: 768px) {
+                            .footer {
+                                flex-direction: column;
+                                align-items: center;
+                            }
+                            .footer-column {
+                                margin: 10px 0;
+                                text-align: center;
+                            }
+                        }
+                    `,
+                },
+            },
+        });
+
+        // Add custom block for footer
+        editor.BlockManager.add('footer', {
+            label: 'Footer',
+            content: {
+                type: 'footer',
+            },
+            category: 'Custom',
+        });
+        // Add custom slider component
+        editor.DomComponents.addType('slider', {
+            model: {
+                defaults: {
+                    tagName: 'div',
+                    draggable: true,
+                    droppable: true,
+                    attributes: { class: 'slider' },
+                    components: [
+                        {
+                            tagName: 'div',
+                            attributes: { class: 'slider-track' },
+                            components: [
+                                {
+                                    tagName: 'div',
+                                    attributes: { class: 'card' },
+                                    components: [
+                                        { tagName: 'img', attributes: { src: featuredDev, alt: 'Image' } },
+                                        { tagName: 'h4', content: 'Name 1' },
+                                        { tagName: 'p', content: 'Description 1' },
+                                        { tagName: 'p', content: 'Location 1' },
+                                        {
+                                            tagName: 'div',
+                                            components: [
+                                                { tagName: 'a', attributes: { href: '#link1' }, content: 'Link 1' },
+                                                { tagName: 'a', attributes: { href: '#link2' }, content: 'Link 2' },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                {
+                                    tagName: 'div',
+                                    attributes: { class: 'card' },
+                                    components: [
+                                        { tagName: 'img', attributes: { src: featuredDev, alt: 'Image 2' } },
+                                        { tagName: 'h4', content: 'Name 2' },
+                                        { tagName: 'p', content: 'Description 2' },
+                                        { tagName: 'p', content: 'Location 2' },
+                                        {
+                                            tagName: 'div',
+                                            components: [
+                                                { tagName: 'a', attributes: { href: '#link1' }, content: 'Link 1' },
+                                                { tagName: 'a', attributes: { href: '#link2' }, content: 'Link 2' },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                // Add more cards as needed
+                            ],
+                        },
+                    ],
+                    styles: `
+                        .slider {
+                            overflow: hidden;
+                            position: relative;
+                            width: 100%;
+                        }
+                        .slider-track {
+                            display: flex;
+                            transition: transform 0.5s ease;
+                        }
+                        .card {
+                            flex: 0 0 auto;
+                            width: 300px;
+                            margin: 10px;
+                            border: 1px solid #ccc;
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .card img {
+                            max-width: 100%;
+                            height: auto;
+                        }
+                    `,
+                    script: `
+                        // Add slider functionality
+                        let index = 0;
+                        const track = document.querySelector('.slider-track');
+                        const nextSlide = () => {
+                            index = (index + 1) % track.children.length;
+                            track.style.transform = \`translateX(-\${index * 100}%)\`;
+                        };
+                    `,
+                },
+            },
+        });
+
+        // Add custom block for slider
+        editor.BlockManager.add('slider', {
+            label: 'Slider',
+            content: {
+                type: 'slider',
             },
             category: 'Custom',
         });

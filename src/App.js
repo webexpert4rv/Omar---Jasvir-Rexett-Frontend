@@ -9,7 +9,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Fragment, Suspense, lazy } from "react"; 
 import { route } from './router';
 import { ToastContainer } from 'react-toastify';
-
 import "react-toastify/dist/ReactToastify.css";
 import ScreenLoader from './components/atomic/ScreenLoader';
 import PrivateLayout from './layout/PrivateLayout';

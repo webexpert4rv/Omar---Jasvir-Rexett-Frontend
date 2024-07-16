@@ -31,12 +31,19 @@ import { HiDownload } from "react-icons/hi";
 import generatePDF from "react-to-pdf";
 import moment from "moment";
 import { FiExternalLink } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiRotateCw } from "react-icons/fi";
 import CryptoJS from "crypto-js";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 import { APPLICANT_FILTER_FIELDS } from "./adminConstant";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
+import { FaEnvelope, FaEye, FaRotateRight, FaStar } from "react-icons/fa6";
+import Schedulemeeting from "../../components/common/Modals/ScheduleMeeting";
+import MeetingInfo from "./Modals/MeetingInfo";
+import { FaRegEye } from "react-icons/fa";
+import { HiDocumentReport } from "react-icons/hi";
+import { PiUserCircle, PiUserCircleCheck, PiUserCircleCheckThin } from "react-icons/pi";
+import { MdLaptopMac } from "react-icons/md";
 
 const SECRET_KEY = "abcfuipqw222";
 
@@ -232,6 +239,33 @@ const Applications = () => {
       }
     }
   };
+  const sendEmail = (
+    <Tooltip>Send Email</Tooltip>
+  )
+  const alreadysendEmail = (
+    <Tooltip>Already sent</Tooltip>
+  )
+  const [schedulescreeening, showScheduleScreening] = useState(false);
+  const handleShowScheduleScreening = () => {
+    showScheduleScreening(!schedulescreeening);
+  }
+  const handleCloseScheduleScreening = () => {
+    showScheduleScreening(false);
+  }
+
+  const [screeninginfo, showScreeningInfo] = useState(false);
+  const handleShowScreeningInfo = () => {
+    showScreeningInfo(!screeninginfo);
+  }
+  const handleCloseScreeningInfo = () => {
+    showScreeningInfo(false);
+  }
+  const viewReport = (
+    <Tooltip>View report</Tooltip>
+  )
+  const rescheduleBtn = (
+    <Tooltip>Reschedule</Tooltip>
+  )
 
   return (
     <>
@@ -279,7 +313,7 @@ const Applications = () => {
                 </Nav.Item>
                 <Nav.Item className="application-item">
                   <Nav.Link eventKey="vendors" className="application-link">
-                    {t("vendors")}{" "}
+                    Partners
                     <span className="new-app">
                       {allApplications?.vendors?.length}
                     </span>
@@ -287,7 +321,7 @@ const Applications = () => {
                 </Nav.Item>
                 <Nav.Item className="application-item">
                   <Nav.Link eventKey="developers" className="application-link">
-                    {t("developers")}{" "}
+                    Candidates
                     <span className="new-app">
                       {allApplications?.developers?.length}
                     </span>
@@ -308,14 +342,15 @@ const Applications = () => {
                     <table className="table w-100 engagement-table table-ui-custom">
                       <thead>
                         <tr>
-                          <th>{t("individual/comapanyname")}</th>
+                          <th>Name</th>
                           <th>
                             {t("email")} {t("address")}
                           </th>
                           <th>{t("phoneNumber")}</th>
-                          <th>{t("action")}</th>
+                          <th>Type</th>
                           <th className="text-center">Send Email</th>
                           <th>{t("status")}</th>
+                          <th>{t("action")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -364,7 +399,28 @@ const Applications = () => {
                                       </span>
                                     </td>
                                     <td>{item?.phone_number}</td>
-
+                                    <td>{item.client_type}</td>
+                                    <td className="text-center">
+                                      <div className="d-inline-flex gap-1 align-items-center">
+                                        <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                          <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
+                                            <span className="email_shot">1</span>
+                                          </span>
+                                        </OverlayTrigger>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <span
+                                        className={`white-nowrap ${item?.is_profile_completed
+                                          ? "status-finished"
+                                          : "status-progress"
+                                          }`}
+                                      >
+                                        {item?.is_profile_completed
+                                          ? "Completed"
+                                          : "Incomplete"}
+                                      </span>
+                                    </td>
                                     <td>
                                       {item?.is_profile_completed ? (
                                         <div className="d-flex gap-3">
@@ -443,52 +499,6 @@ const Applications = () => {
                                           </div>
                                         </div>
                                       )}
-                                    </td>
-                                    <td>
-                                      <div className="d-flex gap-2 align-items-center justify-content-center">
-                                        <div className="d-inline-flex gap-1 align-items-center">
-                                          <span className="status-email sent_email"><span className="email_count">1</span> <span className="already_email"><IoCheckmark /></span> </span>
-                                          <span className="status-email">2</span>
-                                          <span className="status-email">3</span>
-                                        </div>
-                                        {item?.verification_reminder_count < 2 ?
-                                          <div className="d-flex gap-3">
-                                            <div
-                                              onClick={() =>
-                                                !smallLoader &&
-                                                redirectToWebsiteForm(
-                                                  "client",
-                                                  item?.id,
-                                                  item?.verification_reminder_count
-                                                )
-                                              }
-                                            >
-                                              <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                                {item.id === loadingRow
-                                                  ? smallLoader && (
-                                                    <RexettSpinner />
-                                                  )
-                                                  : "Send Email"
-                                                }
-                                                <FiExternalLink />
-                                              </span>
-
-
-                                            </div>
-                                          </div> : "Maximum Limit reached"}
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <span
-                                        className={`white-nowrap ${item?.is_profile_completed
-                                          ? "status-finished"
-                                          : "status-progress"
-                                          }`}
-                                      >
-                                        {item?.is_profile_completed
-                                          ? "Completed"
-                                          : "Incomplete"}
-                                      </span>
                                     </td>
                                   </tr>
                                   {expandedRow === index && (
@@ -688,7 +698,7 @@ const Applications = () => {
                     <table className="table w-100 engagement-table table-ui-custom">
                       <thead>
                         <tr>
-                          <th>{t("clientName")}</th>
+                          <th>Name</th>
                           <th>
                             {t("email")} {t("address")}
                           </th>
@@ -699,9 +709,9 @@ const Applications = () => {
                         {t("engagements")} {t("last")}
                       </th>
                       <th>{t("availability")}</th> */}
-                          <th>{t("action")}</th>
-                          <th className="text-center">Send Email</th>
                           <th>{t("status")}</th>
+                          <th className="text-center">Send Email</th>
+                          <th>{t("action")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -752,6 +762,53 @@ const Applications = () => {
                                     {/* <td>{item?.company?.total_employees}</td>
                                 <td>{item?.company?.website}</td>
                                 <td>{item?.company?.yearly_revenue}</td> */}
+                                    <td>
+                                      <span
+                                        className={`white-nowrap ${item?.is_profile_completed
+                                          ? "status-finished"
+                                          : "status-progress"
+                                          }`}
+                                      >
+                                        {item?.is_profile_completed
+                                          ? "Completed"
+                                          : "Incomplete"}
+                                      </span>
+                                    </td>{" "}
+                                    <td>
+                                      <div className="d-flex align-items-center justify-content-center gap-3">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                            <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
+                                              <span className="email_shot">1</span>
+                                            </span>
+                                          </OverlayTrigger>
+                                        </div>
+                                        {/* {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "vendor",
+                                                item?.id,
+                                                item?.verification_reminder_count
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                              {item.id === loadingRow
+                                                ? smallLoader && (
+                                                  <RexettSpinner />
+                                                )
+                                                : "Send Email"
+                                              }
+                                              <FiExternalLink />
+                                            </span>
+
+
+                                          </div>
+                                        </div> : "Maximum Limit reached"} */}
+                                      </div>
+                                    </td>
 
                                     <td>
                                       {item?.is_profile_completed ? (
@@ -832,51 +889,6 @@ const Applications = () => {
                                         </div>
                                       )}
                                     </td>
-                                    <td>
-                                      <div className="d-flex align-items-center gap-3">
-                                        <div className="d-inline-flex gap-1 align-items-center">
-                                          <span className="status-email sent_email"><span className="email_count">1</span> <span className="already_email"><IoCheckmark /></span> </span>
-                                          <span className="status-email">2</span>
-                                          <span className="status-email">3</span>
-                                        </div>
-                                        {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
-                                          <div
-                                            onClick={() =>
-                                              !smallLoader &&
-                                              redirectToWebsiteForm(
-                                                "vendor",
-                                                item?.id,
-                                                item?.verification_reminder_count
-                                              )
-                                            }
-                                          >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
-                                              {item.id === loadingRow
-                                                ? smallLoader && (
-                                                  <RexettSpinner />
-                                                )
-                                                : "Send Email"
-                                              }
-                                              <FiExternalLink />
-                                            </span>
-
-
-                                          </div>
-                                        </div> : "Maximum Limit reached"}
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <span
-                                        className={`white-nowrap ${item?.is_profile_completed
-                                          ? "status-finished"
-                                          : "status-progress"
-                                          }`}
-                                      >
-                                        {item?.is_profile_completed
-                                          ? "Completed"
-                                          : "Incomplete"}
-                                      </span>
-                                    </td>{" "}
                                   </tr>
                                   {expandedRow === index && (
                                     <tr
@@ -1207,18 +1219,18 @@ const Applications = () => {
                       <thead>
                         <tr>
                           <th>Job Id</th>
-                          <th>{t("developerName")}</th>
+                          <th>Name</th>
                           <th>
                             {t("email")} {t("address")}
                           </th>
                           <th>{t("phoneNumber")}</th>
 
-                          <th>{t("action")}</th>
-                          <th className="text-center">Send Email</th>
                           <th>Coming from</th>
                           <th>Resume</th>
-
                           <th>Status</th>
+                          <th className="text-center">Send Email</th>
+                          <th>Screening Round</th>
+                          <th>{t("action")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1270,122 +1282,6 @@ const Applications = () => {
                                       </span>
                                     </td>
                                     <td>{item?.phone_number}</td>
-                                    <td>
-
-                                      <td>
-                                        {item?.is_profile_completed ? (
-                                          <div className="d-flex gap-3">
-                                            <RexettButton
-                                              icon={
-                                                selectedApprovedBtn === index ? (
-                                                  approvedLoader
-                                                ) : (
-                                                  <IoCheckmark />
-                                                )
-                                              }
-                                              className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
-                                                "not-allowed"
-                                                }`}
-                                              variant="transparent"
-                                              // disabled={!item?.is_profile_completed}
-                                              onClick={(e) =>
-                                                handleClick(
-                                                  e,
-                                                  item?.id,
-                                                  "approved",
-                                                  index
-                                                )
-                                              }
-                                              isLoading={
-                                                selectedApprovedBtn === index
-                                                  ? approvedLoader
-                                                  : false
-                                              }
-                                            />
-                                            <RexettButton
-                                              icon={
-                                                selectedRejectedBtn === index ? (
-                                                  approvedLoader
-                                                ) : (
-                                                  <IoCloseOutline />
-                                                )
-                                              }
-                                              // disabled={!item?.is_profile_completed}
-                                              className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
-                                                "not-allowed"
-                                                }`}
-                                              variant={"transparent"}
-                                              onClick={(e) =>
-                                                handleClick(
-                                                  e,
-                                                  item?.id,
-                                                  "rejected",
-                                                  index
-                                                )
-                                              }
-                                              isLoading={
-                                                selectedRejectedBtn === index
-                                                  ? approvedLoader
-                                                  : false
-                                              }
-                                            />
-                                          </div>
-                                        ) : (
-                                          <div className="d-flex gap-3">
-                                            <div
-                                              onClick={() =>
-                                                !smallLoader &&
-                                                redirectToWebsiteForm(
-                                                  "client",
-                                                  item?.id,
-                                                  3
-                                                )
-                                              }
-                                            >
-                                              <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2 white-nowrap">
-
-                                                Complete profile
-                                                <FiExternalLink />
-                                              </span>
-                                            </div>
-                                          </div>
-                                        )}
-                                      </td>
-
-                                    </td>
-                                    <td>
-                                      <div className="d-flex align-items-center gap-2 justify-content-center">
-                                        <div className="d-inline-flex gap-1 align-items-center">
-                                          <span className="status-email sent_email"><span className="email_count">1</span> <span className="already_email"><IoCheckmark /></span> </span>
-                                          <span className="status-email">2</span>
-                                          <span className="status-email">3</span>
-                                        </div>
-                                        {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
-                                          <div
-                                            onClick={() =>
-                                              !smallLoader &&
-                                              redirectToWebsiteForm(
-                                                "developer",
-                                                item?.id,
-                                                item?.verification_reminder_count
-                                              )
-                                            }
-                                          >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2 white-nowrap">
-                                              {item.id === loadingRow
-                                                ? smallLoader && (
-                                                  <RexettSpinner />
-                                                )
-                                                : "Send Email"
-                                              }
-                                              <FiExternalLink />
-                                            </span>
-
-
-                                          </div>
-                                        </div> : "Maximum Limit reached"}
-                                      </div>
-                                    </td>
                                     <td>Career page</td>
                                     <td>
                                       <RexettButton
@@ -1448,7 +1344,7 @@ const Applications = () => {
                                       </div>
                                     </td> */}
                                     <td>
-                                      <span
+                                      {/* <span
                                         className={`white-nowrap ${item?.is_profile_completed
                                           ? "status-finished"
                                           : "status-progress"
@@ -1457,7 +1353,158 @@ const Applications = () => {
                                         {item?.is_profile_completed
                                           ? "Completed"
                                           : "Incomplete"}
-                                      </span>
+                                      </span> */}
+                                      <div className="d-flex gap-2 align-items-center justify-content-center">
+                                        <span className="d-inline-flex align-items-center status-ind complete-status">
+                                          <PiUserCircle />
+                                        </span>
+                                        <span className="d-inline-flex align-items-center status-ind">
+                                          <MdLaptopMac />
+                                        </span>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div className="d-flex align-items-center gap-2 justify-content-center">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                            <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
+                                              <span className="email_shot">1</span>
+                                            </span>
+                                          </OverlayTrigger>
+                                        </div>
+                                        {/* {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "developer",
+                                                item?.id,
+                                                item?.verification_reminder_count
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2 white-nowrap">
+                                              {item.id === loadingRow
+                                                ? smallLoader && (
+                                                  <RexettSpinner />
+                                                )
+                                                : "Send Email"
+                                              }
+                                              <FiExternalLink />
+                                            </span>
+
+
+                                          </div>
+                                        </div> : "Maximum Limit reached"} */}
+                                      </div>
+                                    </td>
+                                    <td className="text-center">
+                                      <Button variant="transparent" onClick={handleShowScheduleScreening} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Schedule Screening</Button>
+                                      <div className="d-inline-flex align-items-center gap-2">
+                                        <span className="status-upcoming lh-1">
+                                          <span className="d-inline-flex align-items-center gap-1">
+                                            <FaStar />
+                                            8.9
+                                          </span>
+                                        </span>
+                                        <OverlayTrigger placement="bottom" overlay={viewReport}>
+                                          <Link to={'/admin/interview-detail'} className="main-btn view-time-btn text-decoration-none">
+                                            <HiDocumentReport />
+                                          </Link>
+                                        </OverlayTrigger>
+                                      </div>
+                                      <div>
+                                        <span className="status-finished">Invite accepted</span>
+                                      </div>
+                                      <div className="d-inline-flex align-items-center gap-2">
+                                        <span className="status-rejected">Invite declined</span>
+                                        <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
+                                          <Button onClick={handleShowScheduleScreening} variant="transparent" className="reschedule-btn">
+                                            <FaRotateRight />
+                                          </Button>
+                                        </OverlayTrigger>
+                                      </div>
+                                      <Button variant="transparent" onClick={handleShowScreeningInfo} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Reschedule</Button>
+                                      <Link to={'/admin/interview-feedback'} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Share feedback</Link>
+                                    </td>
+                                    <td>
+                                      {item?.is_profile_completed ? (
+                                        <div className="d-flex gap-3">
+                                          <RexettButton
+                                            icon={
+                                              selectedApprovedBtn === index ? (
+                                                approvedLoader
+                                              ) : (
+                                                <IoCheckmark />
+                                              )
+                                            }
+                                            className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                              "not-allowed"
+                                              }`}
+                                            variant="transparent"
+                                            // disabled={!item?.is_profile_completed}
+                                            onClick={(e) =>
+                                              handleClick(
+                                                e,
+                                                item?.id,
+                                                "approved",
+                                                index
+                                              )
+                                            }
+                                            isLoading={
+                                              selectedApprovedBtn === index
+                                                ? approvedLoader
+                                                : false
+                                            }
+                                          />
+                                          <RexettButton
+                                            icon={
+                                              selectedRejectedBtn === index ? (
+                                                approvedLoader
+                                              ) : (
+                                                <IoCloseOutline />
+                                              )
+                                            }
+                                            // disabled={!item?.is_profile_completed}
+                                            className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                              "not-allowed"
+                                              }`}
+                                            variant={"transparent"}
+                                            onClick={(e) =>
+                                              handleClick(
+                                                e,
+                                                item?.id,
+                                                "rejected",
+                                                index
+                                              )
+                                            }
+                                            isLoading={
+                                              selectedRejectedBtn === index
+                                                ? approvedLoader
+                                                : false
+                                            }
+                                          />
+                                        </div>
+                                      ) : (
+                                        <div className="d-flex gap-3">
+                                          <div
+                                            onClick={() =>
+                                              !smallLoader &&
+                                              redirectToWebsiteForm(
+                                                "client",
+                                                item?.id,
+                                                3
+                                              )
+                                            }
+                                          >
+                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none d-inline-flex align-items-center gap-2 white-nowrap">
+
+                                              Complete profile
+                                              <FiExternalLink />
+                                            </span>
+                                          </div>
+                                        </div>
+                                      )}
                                     </td>
                                   </tr>
                                   {expandedRow === index && (
@@ -1465,7 +1512,7 @@ const Applications = () => {
                                       className={`collapsible-row ${expandedRow === index ? "open" : ""
                                         }`}
                                     >
-                                      <td colSpan="9">
+                                      <td colSpan="10">
                                         <div>
                                           <Row>
                                             {item?.name && (
@@ -1547,7 +1594,7 @@ const Applications = () => {
                                                   <h3 className="application-heading">
                                                     {t("email")}
                                                   </h3>
-                                                  <p>{item?.email}</p>
+                                                  <p className="application-text">{item?.email}</p>
                                                 </div>
                                               </Col>
                                             )}
@@ -1558,7 +1605,7 @@ const Applications = () => {
                                                   <h3 className="application-heading">
                                                     Work Preference
                                                   </h3>
-                                                  <p>{item?.work_preference}</p>
+                                                  <p className="application-text">{item?.work_preference}</p>
                                                 </div>
                                               </Col>
                                             )}
@@ -1569,7 +1616,7 @@ const Applications = () => {
                                                   <h3 className="application-heading">
                                                     Ready to relocate
                                                   </h3>
-                                                  <p>
+                                                  <p className="application-text">
                                                     {item?.ready_to_relocate}
                                                   </p>
                                                 </div>
@@ -1582,7 +1629,7 @@ const Applications = () => {
                                                   <h3 className="application-heading">
                                                     Time Zone
                                                   </h3>
-                                                  <p>{item?.time_zone}</p>
+                                                  <p className="application-text">{item?.time_zone}</p>
                                                 </div>
                                               </Col>
                                             )}
@@ -1593,7 +1640,7 @@ const Applications = () => {
                                                   <h3 className="application-heading">
                                                     Language
                                                   </h3>
-                                                  <p>
+                                                  <p className="application-text">
                                                     {
                                                       item?.developer_language
                                                         ?.language
@@ -1610,7 +1657,7 @@ const Applications = () => {
                                                     <h3 className="application-heading">
                                                       Github Url
                                                     </h3>
-                                                    <p>
+                                                    <p className="application-text">
                                                       {
                                                         item?.developer_detail
                                                           ?.github_url
@@ -1707,6 +1754,36 @@ const Applications = () => {
                                                   </div>
                                                 </Col>
                                               )}
+                                            {item?.developer_detail && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Screening Round
+                                                  </h3>
+                                                  <div className="d-inline-flex align-items-center gap-2">
+                                                    <span className="status-upcoming lh-1">
+                                                      <span className="d-inline-flex align-items-center gap-1">
+                                                        <FaStar />
+                                                        8.9
+                                                      </span>
+                                                    </span>
+                                                    <Link to={'/admin/interview-detail'} className="text-green font-14">
+                                                      View Report
+                                                    </Link>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            )}
+                                            {item?.developer_detail && (
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Certifications
+                                                  </h3>
+                                                  <Link to={'#'} className="text-green text-decoration-none">AI certificate <FaEye /> </Link>
+                                                </div>
+                                              </Col>
+                                            )}
                                           </Row>
                                         </div>
                                       </td>
@@ -1879,6 +1956,8 @@ const Applications = () => {
               </div>
             </Offcanvas.Body>
           </Offcanvas>
+          <Schedulemeeting show={schedulescreeening} handleClose={handleCloseScheduleScreening} />
+          <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
         </>
       )}
     </>

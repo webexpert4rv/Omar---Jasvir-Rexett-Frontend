@@ -34,6 +34,8 @@ const initialDeveloperData = {
   projectHistoryDetail: [],
   projectHistoryPagination: {},
   projectDetail: {},
+  developerRegistrationData:{}
+
 };
 
 export const developerDataSlice = createSlice({
@@ -154,6 +156,10 @@ export const developerDataSlice = createSlice({
       state.projectDetail = action.payload;
       state.screenLoader = false;
     },
+    setDeveloperRegistrationDetails: (state, action) => {
+      state.developerRegistrationData = action.payload;
+      state.screenLoader = false;
+    },
   },
 });
 
@@ -184,6 +190,7 @@ export const {
   setLeaveHistory,
   setUpdateLeave,
   setAllCountries,
+  setDeveloperRegistrationDetails
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -1197,3 +1204,132 @@ export function getProjectDetail(filters, id, callback) {
     }
   };
 }
+
+
+//all registration
+
+export function developerRegistration(payload) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.post("common/developer-registration",{...payload});
+      toast.success("Your profile has been created", { position: "top-center" });
+      localStorage.setItem("developerId",result?.data?.data?.id)
+      dispatch(setActionSuccessFully());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function registerDeveloperExperience(payload,id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`common/add-developer-experience?developer_id=${id}`, payload);
+      toast.success("Experience is Added", { position: "top-center" });
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function editDeveloperExperience(payload,id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await authInstance.put(`common/update-experience/${id}`, payload);
+      toast.success("Experience is Updated", { position: "top-center" });
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function registerDeveloperEducation(payload,id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`common/add-developer-education?developer_id=${id}`, payload);
+      toast.success("Education is Added", { position: "top-center" });
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function registerDeveloperSkills(payload,id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`common/add-developer-skills`, payload);
+      toast.success("skills is Added", { position: "top-center" });
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function developerRegistrationBio(payload) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.post("common/add-developer-bio",{...payload});
+      toast.success("Bio is creatd", { position: "top-center" });
+      dispatch(setActionSuccessFully());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function addDeveloperRegisProject(payload) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.post("common/add-developer-project",payload);
+      toast.success("Project is Added", { position: "top-center" });
+      dispatch(setActionSuccessFully());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+
+
+
+export function getDeveloperProfileDetails(id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`common/developer-profile?developer_id=${id}`);
+      dispatch(setDeveloperRegistrationDetails(result?.data?.data))
+      dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Nav, Row, Tab, Tabs } from "react-bootstrap";
+import { Button, Col, Form, Nav, OverlayTrigger, Row, Tab, Tabs, Tooltip } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { adminSingleJob, getDeveloperSuggestList, suggestDeveloper } from "../../../redux/slices/adminDataSlice";
@@ -7,13 +7,13 @@ import JobCard from "../../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import { useTranslation } from "react-i18next";
 import ScreenLoader from "../../../components/atomic/ScreenLoader";
-import { FaCheck, FaRegHandshake } from "react-icons/fa6";
+import { FaCheck, FaGithub, FaLinkedin, FaRegHandshake, FaStar } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import MeetingInfo from "../../../pages/admin/Modals/MeetingInfo";
 import { FaClipboardUser } from "react-icons/fa6";
-import { FaUsers } from "react-icons/fa";
+import { FaListUl, FaTimes, FaUsers } from "react-icons/fa";
 import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
@@ -22,6 +22,8 @@ import { FaLink } from "react-icons/fa6";
 import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
+import { IoGrid } from "react-icons/io5";
+import { LuMessagesSquare } from "react-icons/lu";
 
 const AdminSingleJob = () => {
     const role = localStorage.getItem("role")
@@ -148,6 +150,16 @@ const AdminSingleJob = () => {
     const handleCloseScheduleMeeting = () => {
         setShowScheduleMeet(false);
     }
+
+    const scheduleInterview = (
+        <Tooltip>Move to Interview</Tooltip>
+    )
+    const approvedApply = (
+        <Tooltip>Approve</Tooltip>
+    )
+    const rejectedApply = (
+        <Tooltip>Reject</Tooltip>
+    )
 
     return (
         <>
@@ -317,70 +329,342 @@ const AdminSingleJob = () => {
                             <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Manual Suggestion</Button>
                             <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
-                        <h5 className="font-22 mb-4 fw-bold">Applied Candidates</h5>
-                        <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
-                        <h5 className="font-22 mb-4 fw-bold">Suggested Candidates</h5>
-                        <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                        <Tab.Container defaultActiveKey={'list-view'}>
+                            <div className="mb-4 d-flex justify-content-between align-items-center">
+                                <h5 className="font-22 mb-0 fw-bold">Applied Candidates</h5>
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-view">
+                                    <div>
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Experience</th>
+                                                    <th className="document-th location-th">Expertise</th>
+                                                    <th className="document-th location-th">Good to have skills</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Screening Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">5 years</td>
+                                                        <td className="document-data white-nowrap">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 8.9
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={approvedApply}>
+                                                                    <Button className="main-btn py-2 text-black font-15">
+                                                                        <FaCheck />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-view">
+                                    <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
+                        <Tab.Container defaultActiveKey={'list-suggest-view'}>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h5 className="font-22 mb-4 fw-bold">Suggested Candidates</h5>
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-suggest-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-suggest-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-suggest-view">
+                                    <div>
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Experience</th>
+                                                    <th className="document-th location-th">Expertise</th>
+                                                    <th className="document-th location-th">Good to have skills</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Screening Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">5 years</td>
+                                                        <td className="document-data white-nowrap">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 8.9
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={approvedApply}>
+                                                                    <Button className="main-btn py-2 text-black font-15">
+                                                                        <FaCheck />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-suggest-view">
+                                    <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
                     </Tab>}
                     <Tab eventKey="shortlisted" title={shortlist}>
-                        <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
-                        <div className="interview-scheduled pt-2 mb-3">
-                            <Row>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
-                                                </div>
-                                                Pankaj Pundir
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-upcoming">Upcoming in 1hr</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button>
-                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>View Details</Button>
+                        <Tab.Container defaultActiveKey={'list-view'}>
+                            <div className="mb-4 d-flex justify-content-between align-items-center">
+                                <h5 className="font-22 mb-0 fw-bold">Shortlisted Candidate</h5>
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-view">
+                                    <div className="">
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Experience</th>
+                                                    <th className="document-th location-th">Expertise</th>
+                                                    <th className="document-th location-th">Good to have skills</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Screening Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">5 years</td>
+                                                        <td className="document-data white-nowrap">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 8.9
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                                    <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                        <LuMessagesSquare />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                </Col>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-view">
+                                    <div className="developers-list mb-4">
+                                        <div className="developer-card p-0">
+                                            <div className="overflow-hidden inner-dev-card">
+                                                <div className="user-imgbx">
+                                                    <img src={devImg} className="user-img" />
                                                 </div>
-                                                Rohit Sharma
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                                                </span>
+                                                <div className="text-center">
+                                                    <h3 className="user-name">John Doe</h3>
+                                                    <div className="text-center mt-2">
+                                                        <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="status-upcoming d-inline-flex align-items-center gap-1">
+                                                            <FaStar /> 4.4
+                                                        </span>
+                                                    </div>
+                                                    <p className="designation-user">Software Developer</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-rejected">Declined</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                            </div>
-                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowScheduleMeeting}>Reschedule</Button>
                                         </div>
                                     </div>
-                                </Col>
-                            </Row>
-                        </div>
-                        {role !== "developer" && <h5 className="font-22 mb-4 fw-bold">Need to schedule</h5>}
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
                         <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>
@@ -439,8 +723,9 @@ const AdminSingleJob = () => {
                                             <div>
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
-                                            <div className="d-flex align-items-center gap-2">
+                                            <div className="d-flex align-items-center gap-2 mt-2">
                                                 <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                                <Button variant="transparent" className="outline-main-btn font-14">Move to offer</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -476,6 +761,199 @@ const AdminSingleJob = () => {
                                 </Col>
                             </Row>
                         </div>
+                        <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
+                        <div className="interview-scheduled pt-2 mb-3">
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Pankaj Pundir
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-upcoming">Upcoming in 1hr</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>View Details</Button>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-rejected">Declined</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowScheduleMeeting}>Reschedule</Button>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <Tab.Container defaultActiveKey={'list-view'}>
+                            <div className="mb-4 d-flex justify-content-between align-items-center">
+                                {role !== "developer" && <h5 className="font-22 mb-0 fw-bold">Need to schedule</h5>}
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-view">
+                                    <div>
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th owner-th">Email</th>
+                                                    <th className="document-th location-th">Phone Number</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Social media</th>
+                                                    <th className="document-th action-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            janedoe123@gmail.com
+                                                        </td>
+                                                        <td className="document-data"> 555 123-4567</td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="social-icons justify-content-start">
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaGithub />
+                                                                    </Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaLinkedin />
+                                                                    </Link>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                                    <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                        <LuMessagesSquare />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-view">
+                                    <div className="developers-list mb-4">
+                                        <div className="developer-card p-0">
+                                            <div className="overflow-hidden inner-dev-card">
+                                                <div className="user-imgbx">
+                                                    <img src={devImg} className="user-img" />
+                                                </div>
+                                                <div className="text-center">
+                                                    <h3 className="user-name">John Doe</h3>
+                                                    <div className="text-center mt-2">
+                                                        <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="status-upcoming d-inline-flex align-items-center gap-1">
+                                                            <FaStar /> 4.4
+                                                        </span>
+                                                    </div>
+                                                    <p className="designation-user">Software Developer</p>
+                                                    <p className="email-user">johndoe123@gmail.com</p>
+                                                    <ul className="social-icons">
+                                                        <li>
+                                                            <Link to="#">
+                                                                <FaGithub />
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link to="#">
+                                                                <FaLinkedin />
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                    <div className="job-card-btns">
+                                                        <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                            <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                <LuMessagesSquare />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
                         {/* <JobCard type="Interviewing" data={selectedTabsData} role="admin" /> */}
                     </Tab>
                     <Tab eventKey="documentation" title={offered}>

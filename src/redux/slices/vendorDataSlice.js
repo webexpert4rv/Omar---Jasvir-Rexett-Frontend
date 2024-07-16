@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import clientInstance, { clientFormInstance } from "../../services/client.instance";
 import { toast } from "react-toastify";
 import { generateApiUrl } from "../../helper/utlis";
+import authInstance from "../../services/auth.instance";
 
 const initialVendorData = {
     screenLoader: false,
@@ -14,7 +15,9 @@ const initialVendorData = {
     developerList:[],
     allDevelopersList:{},
     revenueData:{},
-    rentedDevelopers:{}
+    rentedDevelopers:{},
+    invoiceData:[],
+    singleTimeReports:{}
 }
 
 export const vendorDataSlice = createSlice({
@@ -73,10 +76,18 @@ export const vendorDataSlice = createSlice({
         setRentedDevelopers:(state,action) =>{
             state.screenLoader = false;
             state.rentedDevelopers = action.payload
+        },
+        setInvoiceData:(state,action) =>{
+            state.screenLoader = false;
+            state.invoiceData = action.payload
+        },
+        setSingleVendorTimeReport:(state,action) =>{
+            state.screenLoader = false;
+            state.singleTimeReports = action.payload
         }
     }
 })
-export const { setScreenLoader,setClientList,setRentedDevelopers,setDevelopersList ,setVendorSuccess,setRevenueData, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
+export const { setScreenLoader,setClientList,setRentedDevelopers,setSingleVendorTimeReport, setDevelopersList, setInvoiceData,setVendorSuccess,setRevenueData, setSmallLoader,setAddDeveloper,setDeveloperList, setVendorDashboard, setVendorProfile, setVendorTimeReport, setFailVendorData } = vendorDataSlice.actions
 
 export default vendorDataSlice.reducer
 
@@ -103,7 +114,7 @@ export function getDevelopersList(payload ,page) {
             delete payload.skill_title
         }
         if(payload?.experience_years=="Select Experience"){
-            delete payload?.experience_years
+           delete payload?.experience_years
         }
 
         dispatch(setScreenLoader())
@@ -114,7 +125,9 @@ export function getDevelopersList(payload ,page) {
             }
 
         } catch (error) {
-            console.log(error, "error")
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
         }
     }
 }
@@ -153,6 +166,22 @@ export function getVendorTimeReporting() {
             let result = await clientInstance.get("/vendor/time-reports")
             if (result.status == 200) {
                 dispatch(setVendorTimeReport(result?.data?.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+        }
+    }
+}
+
+export function getSingleTimeDetails(id) {
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`/vendor/time-report-details/${id}`)
+            if (result.status == 200) {
+                dispatch(setSingleVendorTimeReport(result?.data?.data))
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -277,6 +306,24 @@ export function getRevenue(payload) {
 
 }
 
+export function getVendorDetails(payload) {
+    return async (dispatch) => {
+        dispatch(setSmallLoader())
+        try {
+            let result = await clientInstance.get(generateApiUrl(payload, `vendor/vendor-invoices`))
+            if (result?.status == 200) {
+                dispatch(setInvoiceData(result.data))
+            }
+        } catch (error) {
+            const message = error.message
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailVendorData())
+
+        }
+    }
+
+}
+
 export function getDeleteDeveloper(id) {
     return async (dispatch) => {
         dispatch(setSmallLoader())
@@ -357,4 +404,24 @@ export const uploadFileToS3Bucket = (payload,callback) => {
       }
     };
   };
+  export function applyAsVendor(payload,callback,triggerVerificationModal) {
+    console.log(payload,'payload')
+    return async (dispatch) => {
+      dispatch(setScreenLoader());
+      try {
+        let result = await authInstance.post(`web/apply-as-vendor`,{...payload});
+        localStorage.setItem("vendorId",result?.data?.data?.id);
+        callback()
+      } catch (error) {
+        const message = error?.message;
+        // if (error?.message === VERIFY_USER_MESSAGE) {
+          if (error.response?.data?.verify_user) {
+          // triggerVerificationModal("verify"); 
+        } else {
+          toast.error(error?.response?.data?.message, { position: "top-center" });
+        }
+        dispatch(setFailVendorData());
+      }
+    };
+  }
   

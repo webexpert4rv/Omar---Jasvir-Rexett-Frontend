@@ -3,12 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
 
 import { lazy } from "react";
-import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
-import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
-import RolesPermission from "./pages/admin/RolesPermissions";
-import InterviewListing from "./pages/admin/InterviewListing";
-import InterviewDetail from "./pages/admin/InterviewDetail";
-import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
+
 import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
 import ProjectHistory from "./pages/developer/ProjectHistory";
@@ -20,15 +15,39 @@ import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
-import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
+import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
+import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
+import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
+
+import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
+import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
+import RolesPermission from "./pages/admin/RolesPermissions";
+import InterviewListing from "./pages/admin/InterviewListing";
+import InterviewDetail from "./pages/admin/InterviewDetail";
+import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
+import VendorSettings from "./pages/vendor/VendorSettings";
+import DeveloperSettings from "./pages/developer/DeveloperSettings";
+import ClientSettings from "./pages/views/ClientSettings";
+import WebsitePages from "./pages/admin/WebsitePages";
+import EmployeeDashboard from "./pages/employee/Dashboard";
+import AssignedListing from "./pages/employee/AssignedListing";
+import SuperDashboard from "./pages/SuperAdmin/Dashboard";
+import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
+import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
+import ClientListing from "./pages/SuperAdmin/ClientListing";
+import FeedbackView from "./pages/admin/FeedbackView";
 
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ResetPassword from "./pages/Authentication/ResetPassword";
+import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
+import ClientStep1 from "./pages/admin/ClientRegister/ClientStep1";
+import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
+import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
+import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
+import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
-;
-
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -129,23 +148,36 @@ const DeveloperLogin = lazy(() =>
 );
 const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp = lazy(() => import("./pages/Authentication/Otp"));
-
+const Otp = lazy(() => import("./pages/Authentication/Otp")); 
 
 export const route = [
   {
     path: "/client-registration",
-    element: <ClientRegisterForm />,
+    element: <ClientRegistrationStepper />,
+    // element: <ClientStep1 />,
+    public: true,
+  },
+  {
+    path: "/expert-area",
+    element: <ExpertiseArea />,
+    // element: <ClientStep1 />,
+    public: true,
+  },
+  {
+    path: "/decision-makers",
+    element: <VendorDecisionMakers />,
+    // element: <ClientStep1 />,
     public: true,
   },
   {
     path: "/developer-registration",
-    element: <DeveloperRegisterForm />,
+    element: <DeveloperRegistrationStepper />,
     public: true,
   },
+  
   {
     path: "/vendor-registration",
-    element: <VendorRegisterForm />,
+    element: <VendorRegistrationStepper />,
     public: true,
   },
   {
@@ -182,15 +214,14 @@ export const route = [
   },
   {
     path: "/forgot-password",
-    element: <ForgotPassword/>,
+    element: <ForgotPassword />,
     public: true,
   },
   {
     path: "/reset-password",
-    element: <ResetPassword/>,
+    element: <ResetPassword />,
     public: true,
   },
-
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
   {
@@ -199,6 +230,7 @@ export const route = [
     private: true,
     isClient: true,
   },
+
   {
     path: "/client/hired-developers",
     element: <HiredDevelopers />,
@@ -475,7 +507,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/vendor-time-detail",
+    path: "/vendor-time-detail/:id",
     element: <VendorTimeDetail />,
     isVendor: true,
     private: true,
@@ -486,6 +518,12 @@ export const route = [
   {
     path: "/admin/admin-dashboard",
     element: <AdminDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/developer-registration",
+    element: <DeveloperRegistrationStepper/>,
     isAdmin: true,
     private: true,
   },
@@ -637,6 +675,60 @@ export const route = [
   {
     path: "/admin/create-message-template",
     element: <CreateMessageTemplate />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/website-builder",
+    element: <WebsiteBuilder />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/website-pages",
+    element: <WebsitePages />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/employee-dashboard",
+    element: <EmployeeDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/assigned-listing",
+    element: <AssignedListing />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin-dashboard",
+    element: <SuperDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/subscription-plan",
+    element: <SubscriptionPlan />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/create-new-plan",
+    element: <CreateNewPlan />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/client-listing",
+    element: <ClientListing />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/feedback-view",
+    element: <FeedbackView />,
     isAdmin: true,
     private: true,
   },

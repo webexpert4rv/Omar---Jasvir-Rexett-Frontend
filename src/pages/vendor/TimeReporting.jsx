@@ -14,8 +14,7 @@ import EditTimeReport from "../admin/Modals/EditTimeReportModal";
 
 const TimeReporting = () => {
     const dispatch = useDispatch()
-    const { adminTimeReportingList, screenLoader, adminClientList } = useSelector(state => state.adminData)
-    const { clientList } = useSelector(state => state.vendorData);
+    const { vendorTimeReport,screenLoader } = useSelector(state => state.vendorData);
     const [contractId, setContractID] = useState(null);
     const [showEditTimeModal, setShowEditTimeModal] = useState(false);
     const [developerData, setDeveloperData] = useState([])
@@ -35,6 +34,8 @@ const TimeReporting = () => {
     const handleRowClick = ()=>{
         navigate("/vendor-time-detail")
     }
+
+    console.log(vendorTimeReport,"vendorTimeReport")
 
 
     const [showUploadInvoice, setShowUploadInvoice] = useState(false);
@@ -66,8 +67,8 @@ const TimeReporting = () => {
         dispatch(adminTimeReporting(e))
     }
     
-    const redirectToTimeReporting = (clientId) => {
-        navigate(`/admin-time-reporting-detail/${clientId}`)
+    const redirectToTimeReporting = (id) => {
+        navigate(`/vendor-time-detail/${id}`)
     }
     return (
         <>
@@ -126,38 +127,24 @@ const TimeReporting = () => {
                                 </th> */}
                             </thead>
                             <tbody>
-                                <tr className="application-row" onClick={handleRowClick}>
-                                    <td className="align-middle font-14">
-                                        Figma to ui
-                                    </td>
-                                    <td className="align-middle font-14">
-                                        14-05-2024
-                                    </td>
-                                    <td className="align-middle font-14">
-                                        3
-                                    </td>
-                                    <td className="align-middle font-14">
-                                        3000 hrs
-                                    </td>
-                                </tr>
-                                {/* {screenLoader ? <ScreenLoader /> : <>
-                                    {adminTimeReportingList?.length > 0 ?
-                                        adminTimeReportingList?.map(({client_name,client_id,total_hired_developers,total_individual_dev,total_projects,total_vendors_dev,contracts}, index) => {
+                
+                                {screenLoader ? <ScreenLoader /> : <>
+                                    {vendorTimeReport?.length > 0 ?
+                                        vendorTimeReport?.map(({id,developers_count,project_name,start_date,total_hours}, index) => {
                                             return (
                                                 <Fragment key={index}>
-                                                    <tr key={index} className="row-hover" onClick={()=>{redirectToTimeReporting(client_id)}}>
-                                                        <td className="time-table-data">{client_name}</td>
-                                                        <td className="time-table-data">{total_hired_developers}</td>
-                                                        <td className="time-table-data">{total_projects}</td>
-                                                        <td className="time-table-data">{total_vendors_dev}</td>
-                                                        <td className="time-table-data">{total_individual_dev}</td>
+                                                    <tr key={id} className="row-hover" onClick={()=>{redirectToTimeReporting(id)}}>
+                                                        <td className="time-table-data">{project_name}</td>
+                                                        <td className="time-table-data">{start_date?.slice(0,10)}</td>
+                                                        <td className="time-table-data">{developers_count}</td>
+                                                        <td className="time-table-data">{total_hours}</td>
                                                     </tr>
                                                 </Fragment>
                                             )
                                         })
                                         : <td colSpan={10}> <div className="simple-no-data">  <NoDataFound/></div>  </td>
                                         }
-                                </>} */}
+                                </>}
                             </tbody>
                         </table>
                     </div>
@@ -167,7 +154,6 @@ const TimeReporting = () => {
                     </div>
                 </div>
             </section>
-            <EditTimeReport show={showEditTimeModal} handleClose={handleCloseEditTimeModal} adminTimeReportingList={adminTimeReportingList} />
         </>
     )
 }

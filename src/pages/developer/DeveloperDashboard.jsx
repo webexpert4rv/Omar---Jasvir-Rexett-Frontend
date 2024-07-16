@@ -447,7 +447,7 @@ const DeveloperDashboard = () => {
                                         <table className="table table-ui-custom">
                                             <thead>
                                                 <tr>
-                                                    <th className="white-nowrap">Developer Name</th>
+                                                    <th className="white-nowrap">Candidate Name</th>
                                                     <th className="white-nowrap">Project</th>
                                                     <th className="white-nowrap">Associated with</th>
                                                     <th className="white-nowrap">Status</th>

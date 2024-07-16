@@ -11,6 +11,7 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { PiCoinsFill, PiUsersFourFill, PiUsersThreeFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
 import { IoIosLaptop } from "react-icons/io";
+import { TbReportMoney } from "react-icons/tb";
 import { FaList } from "react-icons/fa6";
 
 
@@ -71,14 +72,22 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice" },
     { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions" },
     { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration" },
+    // { to: "/admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
+    // { to: "/admin/client-listing", icon: <FaUsers />, text: "Clients" },
   ]
 
  export const VENDOR_SIDE_BAR_ITEMS=[
     { to: "/vendor-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
-    { to: "/list-all-developers", icon: <FaUsers />, text: "All Developers" },
+    { to: "/list-all-developers", icon:  <FaUserLarge />, text: "List of Developers" },
     { to: "/edit-vendor-profile", icon: <IoIosSettings />, text: "editProfile" },
     { to: "/vendor-documents", icon: <IoDocuments />, text: "documents" },
     { to: "/vendor-upload-invoice", icon: <FaFileInvoice />, text: "Invoice" },
     { to: "/vendor-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
     { to: "/vendor/vendor-settings", icon: <FaGear />, text: "Settings" },
+  ];
+  
+  export const SUPERADMIN_SIDE_BAR_ITEMS=[
+    { to: "/super-admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
+    { to: "/super-admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
+    { to: "/super-admin/client-listing", icon: <FaUsers />, text: "Clients" },
   ]; 

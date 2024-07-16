@@ -78,7 +78,7 @@ const AreaExpertise = () => {
                                             <Row>
                                                 <Col md={12}>
                                                     <div className="mb-3">
-                                                        <Form.Label className="font-14 fw-medium">Area of Specialization *</Form.Label>
+                                                        <Form.Label className="font-14 fw-medium">Area of Industries *</Form.Label>
                                                         <Form.Select className="common-field font-14">
                                                             <option>Select</option>
                                                             <option>Healthcare</option>
@@ -98,6 +98,11 @@ const AreaExpertise = () => {
                                                             <option>Mobile Development</option>
                                                             <option>IoT</option>
                                                             <option>Digital Marketing</option>
+                                                            <option>Python</option>
+                                                            <option>ReactJs</option>
+                                                            <option>VueJs</option>
+                                                            <option>AngularJs</option>
+                                                            <option>NodeJs</option>
                                                         </Form.Select>
                                                     </div>
                                                 </Col>

@@ -7,17 +7,26 @@ import roleConfig from "../components/config/roleConfig";
 
 const PrivateLayout = ({ children }) => {
   const token = getToken("token");
-  const role = localStorage.getItem("role");
-
+  
   const { pathname } = useLocation();
 
   const basePath = pathname.split("-")[0];
   const derivedRole = basePath.split("/")[1];
-
+  console.log(derivedRole,"derivedrole")
   const [collapseLayout , showCollapseLayout] = useState(false);
   const handleShowCollpaseLayout = () => {
     showCollapseLayout(!collapseLayout);
   }
+
+  let role;
+  if (derivedRole == "super"){
+     role = "superAdmin"
+  }else{
+     role = localStorage.getItem("role");
+  }
+  console.log(role,"role")
+
+  
   
   const {
     sidebarItems,
@@ -31,8 +40,7 @@ const PrivateLayout = ({ children }) => {
   if (!token || !roleConfig[role]) {
     return <Navigate to={`${redirectPath}`} />;
   }
-  console.log(basePath, "basePath")
-
+ 
 
   return (
     <div className="dashboard-layout">

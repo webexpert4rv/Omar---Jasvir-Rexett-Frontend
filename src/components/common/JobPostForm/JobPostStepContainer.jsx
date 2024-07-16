@@ -12,6 +12,7 @@ import { getActiveStepKeys, step1keys, step2keys, step3keys } from "./constant";
 import {
   clientJobPost,
   clientUpdatePost,
+  getCoutriesList,
   getJobPostData,
   getSkillList,
   postJob,
@@ -39,6 +40,7 @@ export const STEP_LABELS = [
 ];
 const DEFAULT_SCREENING_DATA = [
   {
+    optionId: 1,
     label: "Work Experience",
     title: "",
     question_type: "",
@@ -46,6 +48,7 @@ const DEFAULT_SCREENING_DATA = [
     isRecommended: true,
   },
   {
+    optionId: 2,
     label: "Education",
     question_type: "Degree",
     title: "",
@@ -54,6 +57,7 @@ const DEFAULT_SCREENING_DATA = [
     isRecommended: true,
   },
   {
+    optionId: 3,
     label: "Language",
     title: "",
     question_type: "language",
@@ -62,7 +66,7 @@ const DEFAULT_SCREENING_DATA = [
   },
 ];
 
-const JobPostStepContainer = () => {
+const JobPostStepContainer = ({ role }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -74,7 +78,7 @@ const JobPostStepContainer = () => {
   // });
   const userId = localStorage.getItem("userId");
   const [skillCate, setSkillsCate] = useState([]);
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(3);
   const ACTIVE_STEP_API_KEYS = ["", "step1", "step2", "step3"];
   const { jobPostedData, screenLoader } = useSelector(
     (state) => state.clientData
@@ -85,20 +89,35 @@ const JobPostStepContainer = () => {
     register,
     control,
     reset,
+    setError,
+    clearErrors,
     watch,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      screening_questions: DEFAULT_SCREENING_DATA,
+    },
+  });
+  const getActiveStepLocalStorageKey = () => {
+    const activeStepKey =
+      role === "admin" ? "adminJobPostActiveStep" : "clientJobPostActiveStep";
+    return activeStepKey;
+  };
+
   // order of the useEffects must be same
   useEffect(() => {
-    const savedStep = localStorage.getItem("activeStep");
+    const savedStep = localStorage.getItem(getActiveStepLocalStorageKey());
     if (savedStep) {
       setActiveStep(Number(savedStep));
     }
   }, []);
   useEffect(() => {
     let tempSkills = [];
+    if (activeStep === 1) {
+      dispatch(getCoutriesList());
+    }
     if (activeStep === 2) {
       dispatch(
         getSkillList((sklls) => {
@@ -150,7 +169,22 @@ const JobPostStepContainer = () => {
           ) {
             Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]).map(
               (key) => {
-                if (activeStep === 2) {
+                if (activeStep === 1) {
+                  const data = jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]];
+                  if (key === "country_code") {
+                    const newValue = {
+                      label: data["country"],
+                      value: data[key],
+                    };
+                    setValue(key, newValue);
+                  } else if (key === "state_iso_code") {
+                    const newValue = { label: data["state"], value: data[key] };
+                    setValue(key, newValue);
+                  } else if (key === "time_zone") {
+                    const newValue = { label: data[key], value: data[key] };
+                    setValue(key, newValue);
+                  }
+                } else if (activeStep === 2) {
                   if (key === "skills" || key === "optional_skills") {
                     if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]) {
                       const convertedArray =
@@ -172,6 +206,9 @@ const JobPostStepContainer = () => {
                   }
                 } else if (activeStep === 3) {
                   if (key === "screening_questions") {
+                    const data =
+                      jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key];
+                    console.log(data, "screening question data inside data");
                     if (
                       jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]?.length
                     ) {
@@ -207,6 +244,8 @@ const JobPostStepContainer = () => {
             control={control}
             watch={watch}
             setValue={setValue}
+            setError={setError}
+            clearErrors={clearErrors}
           />
         );
       case 2:
@@ -234,15 +273,19 @@ const JobPostStepContainer = () => {
   const increaseStep = () => {
     if (activeStep < 3) {
       setActiveStep((prev) => prev + 1);
+      localStorage.setItem(getActiveStepLocalStorageKey(), activeStep + 1);
     } else {
-      navigate("/client/job-posted");
+      const navigationUrl =
+        role === "admin" ? "/admin/admin-job-listing" : "/client/job-posted";
+      localStorage.setItem(getActiveStepLocalStorageKey(), 1);
+
+      navigate(navigationUrl);
     }
-    localStorage.setItem("activeStep", activeStep + 1);
   };
 
   const decreaseStep = () => {
     setActiveStep((prev) => prev - 1);
-    localStorage.setItem("activeStep", activeStep - 1);
+    localStorage.setItem(getActiveStepLocalStorageKey(), activeStep - 1);
   };
   const onSubmit = (stepData) => {
     let payload = {};
@@ -263,6 +306,16 @@ const JobPostStepContainer = () => {
       step: activeStep,
       job_id: jobID,
     };
+    if (activeStep === 1) {
+      payload = {
+        ...payload,
+        country: payload?.country_code?.label,
+        country_code: payload?.country_code?.value,
+        state: payload?.state_iso_code?.label,
+        state_iso_code: payload?.state_iso_code?.value,
+        time_zone: payload?.time_zone?.label,
+      };
+    }
     if (activeStep === 2) {
       // converting skills fields array of objects into string
       const skills = payload["skills"];
@@ -276,70 +329,12 @@ const JobPostStepContainer = () => {
       payload["optional_skills"] = formattedOptionSkills;
     }
     if (isEdit) {
-      dispatch(clientUpdatePost(payload, isEdit, activeStep, jobID, increaseStep));
+      dispatch(
+        clientUpdatePost(payload, isEdit, activeStep, jobID, increaseStep)
+      );
     } else {
       dispatch(clientJobPost(payload, activeStep, increaseStep));
     }
-
-    // if (jobID) {
-    //   dispatch(clientUpdatePost(payload, activeStep, jobID, () => {}));
-    // } else {
-    //   dispatch(clientJobPost(payload, activeStep, () => {}));
-    // }
-    // dispatch(clientUpdatePost(payload, activeStep, jobID, () => {}));
-    // if (activeStep < 3) {
-    //   setActiveStep((prev) => prev + 1);
-    // } else {
-    //   navigate("/client/job-posted");
-    // }
-
-    // if (jobId) {
-    //   dispatch(clientUpdatePost(payload, jobId, () => {}));
-    // } else {
-    //   dispatch(clientJobPost(payload, activeStep, () => {}));
-    // }
-    // if (activeStep < 3) {
-    //   setActiveStep((prev) => prev + 1);
-    // } else {
-    //   navigate("/job-posted");
-    // }
-
-    // if (activeStep < 3) {
-    //   setActiveStep((prev) => prev + 1);
-    // } else {
-    //   let data = {
-    //     ...stepData,
-    //   };
-    //   // converting skills fields array of objects into string
-    //   const skills = data["skills"];
-    //   const arrayOfSkills = skills?.map((curElem) => curElem.label);
-    //   const formattedSkills = arrayOfSkills.toString();
-    //   data["skills"] = formattedSkills;
-
-    //   // converting option_skills fields array of objects into string
-    //   const optionSkills = data["optional_skills"];
-    //   const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
-    //   const formattedOptionSkills = arrayOfOptionSkills.toString();
-    //   data["optional_skills"] = formattedOptionSkills;
-    //   console.log(data, "data");
-    //   data = {
-    //     ...data,
-    //     step: 1,
-    //   };
-    //   if (id) {
-    //     clientUpdatePost(data, id, (res) => {
-    //       setJobId(res?.job?.id);
-    //       navigate("/job-posted");
-    //     });
-    //   } else {
-    //     dispatch(
-    //       postJob(data, () => {
-    //         navigate("/job-posted");
-    //       })
-    //     );
-    //   }
-    // }
-    // reset();
   };
 
   return (

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
    
 const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) => {
+    console.log(role,"role")
     const { t } = useTranslation();
     const {configDetails} = useSelector(state=>state.adminData)
     let currentRoute= role=="client"?"/":`/${role}-login`
@@ -62,7 +63,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) =>
                     {floatingShow ? <FaTimes /> : <FaQuestion />}
                 </Button>
                 <div className="floating-options">
-                    {floatingOptions.map((option, index) => (
+                    {floatingOptions?.map((option, index) => (
                         <div className="mb-3" key={index}>
                             <NavLink
                                 to={option.to}

@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { Controller } from "react-hook-form";
 import Select from "react-select";
 import { convertCountriesForSelect } from "../utils";
+import CloseIcon from "./CloseIcon";
 
 const CommonReactSelect = ({
   control,
@@ -11,6 +12,7 @@ const CommonReactSelect = ({
   options,
   watch,
   required,
+  invalidFieldRequired = false,
   label,
   type,
   handleChange = null,
@@ -22,7 +24,11 @@ const CommonReactSelect = ({
     const formattedOptions = convertCountriesForSelect(options, type);
     setFormattedOptions(formattedOptions);
   }, [options]);
-
+  const showCloseIcon = () => {
+    if(invalidFieldRequired && errors?.[name]?.message){
+      return <CloseIcon/>
+    }
+  }
   return (
     <Form.Group className="mb-3">
       <Form.Label className="common-label font-14 fw-medium">
@@ -40,23 +46,47 @@ const CommonReactSelect = ({
         }}
         render={({ field }) =>
           handleChange ? (
-            <Select
-              className="common-field font-14"
-              {...field}
-              value={watch(name)}
-              onChange={(selectedOption) => {handleChange(selectedOption,name)}}
-              options={formattedOptions}
-            />
+            <>
+              <Select
+                className={`common-field font-14 ${
+                  invalidFieldRequired &&
+                  errors[name]?.message &&
+                  "invalid-field"
+                }`}
+                {...field}
+                value={watch(name)}
+                onChange={(selectedOption) => {
+                  handleChange(selectedOption, name);
+                }}
+                options={formattedOptions}
+              />
+              {showCloseIcon()}
+            </>
           ) : (
-            <Select
-              className="common-field 14"
-              {...field}
-              options={formattedOptions}
-            />
+            <>
+              <Select
+                className={`common-field 14 ${
+                  invalidFieldRequired &&
+                  errors[name]?.message &&
+                  "invalid-field"
+                }`}
+                {...field}
+                options={formattedOptions}
+              />
+              {showCloseIcon()}
+            </>
           )
         }
       />
-      {errors[name] && <p className="error-message">{errors[name]?.message}</p>}
+      {errors[name] && (
+        <p
+          className={`${
+            invalidFieldRequired ? "field-error" : "error-message"
+          }`}
+        >
+          {errors[name]?.message}
+        </p>
+      )}
     </Form.Group>
   );
 };

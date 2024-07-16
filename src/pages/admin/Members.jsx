@@ -108,7 +108,7 @@ const Members = () => {
       isTrustedTech: checked,
     });
   };
-
+  
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
     setArrowActive(index == arrowactive ? null : index);
@@ -138,7 +138,8 @@ const Members = () => {
       let filterStatus = copied.filter(
         (item) => item.approval_status == currentStatus
       );
-      setApplication(filterStatus);
+      // setApplication(filterStatus);
+      setApplication(copied);
     } else {
       setApplication([]);
     }
@@ -258,7 +259,7 @@ const Members = () => {
     const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`;
     const toastMessage = featureModalDetails?.isFeaturedMember
       ? "Developer added to featured members successfully"
-      : "Developer removed to featured members successfully";
+      : "Developer removed from featured members successfully";
     dispatch(
       addToFeature(
         query,
@@ -289,24 +290,23 @@ const Members = () => {
   };
   const [assignemployee, showAssignEmployee] = useState(false);
   const handleShowAssignEmployee = () => {
-    showAssignEmployee(!assignemployee);
+    showAssignEmployee(!assignemployee);  
   }
   const handleCloseAssignEmployee = () => {
     showAssignEmployee(false);
   }
   const assignEmployeeText = (
-    <Tooltip>Assign Member</Tooltip>
+    <Tooltip>Assign Team Member</Tooltip>
   )
   const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal);
   const handleCloseTrustedModal = () => setShowTrustedModal(!showTrustedModal);
   const reassignEmployee = (
-    <Tooltip>Reassign Member</Tooltip>
+    <Tooltip>Reassign Team Member</Tooltip>
   )
 
   const featuredMember = (
     <Tooltip>Feature developer on website</Tooltip>
   )
-
   return (
     <>
       <CommonFilterSection
@@ -386,7 +386,7 @@ const Members = () => {
             </Nav.Item>
             <Nav.Item className="application-item">
               <Nav.Link eventKey="vendors" className="application-link">
-                {t("vendors")}{" "}
+                Partners{" "}
                 <span className="new-app">
                   {allApplications?.vendors?.length}
                 </span>
@@ -394,7 +394,7 @@ const Members = () => {
             </Nav.Item>
             <Nav.Item className="application-item">
               <Nav.Link eventKey="developers" className="application-link">
-                {t("developers")}{" "}
+                Candidates{" "}
                 <span className="new-app">
                   {allApplications?.developers?.length}
                 </span>
@@ -432,7 +432,7 @@ const Members = () => {
                       <th>Applied on</th>
                       <th>{t("status")}</th>
                       <th className="text-center">Action</th>
-                      <th className="text-center">Assign Member</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -759,7 +759,7 @@ const Members = () => {
                       </th>
                       <th>{t("status")}</th>
                       <th className="text-center">Action</th>
-                      <th className="text-center">Assign Member</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1172,7 +1172,7 @@ const Members = () => {
                       <OverlayTrigger placement="bottom" overlay={featuredMember}>
                       <span><FaInfoCircle /></span></OverlayTrigger></span> </th>
                       <th>Trusted Tech Expert</th>
-                      <th className="text-center">Assign Member</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
