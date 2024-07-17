@@ -39,7 +39,7 @@ const EditProfile = () => {
               </Tab.Pane>
 
               <Tab.Pane eventKey="company_details">
-              {/* <AllRoleEditProfile role="client" name = {"company"} /> */}
+              <AllRoleEditProfile role="client" name = {"company"} />
               </Tab.Pane>
            
             </Tab.Content> 

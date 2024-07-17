@@ -900,8 +900,10 @@ const handleRegistrationModal = () => {
   setIsRegistrationStepModal(false);
 }
 
+let token = localStorage.getItem('token')
+
   return (
-    <section className="resume-section-wrapper">
+    <section className={`${token ? "edit-developer-wrapper":"resume-section-wrapper"}`}>
       <SidebarSection
         activeStep={activeStep}
         handleSetActiveStep={handleSetActiveStep}
