@@ -213,16 +213,16 @@ const DeveloperRegistrationStepper = () => {
     setNestedActiveStep(1);
 
 
-   }else if(activeStep==5 && selectedEditData){
+   }else if(activeStep==2 && selectedEditData){
    
     setValue("job_title", selectedEditData?.job_title);
     setValue("company_name", selectedEditData?.company_name);
     setValue("description", selectedEditData?.description);
     setValue("is_still_working",selectedEditData?.is_still_working);
-    setValue("start_date",selectedEditData?.start_date);
-    setValue("end_date",selectedEditData?.end_date);
+    setValue("start_date",selectedEditData?.start_date.slice(0,10));
+    setValue("end_date",selectedEditData?.end_date.slice(0,10));
     setValue("work_type",selectedEditData?.work_type);
-    setValue("location", selectedEditData?.location);
+    setValue("job_location", selectedEditData?.job_location);
     localStorage.setItem("nestedActiveStep", 1);
     setNestedActiveStep(1);
    }
@@ -581,7 +581,28 @@ const DeveloperRegistrationStepper = () => {
       let developer_experience = [];
       if(nestedActiveStep==1){
         if(isEditMode?.isEdit){
+          let index = stepData.findIndex((it) => it.id === isEditMode.id);
+          let copyObj=[...stepData]
+
+          if (index !== -1) {
+            copyObj[index] = {
+              job_title: values?.job_title,
+              company_name: values?.company_name,
+              start_date: values?.start_date,
+              end_date: values?.is_still_working ? null : values?.end_date,
+              work_type: values?.work_type,
+              is_still_working: values?.is_still_working,
+              description: values?.description,
+              job_location: values?.job_location
+            };
+          }
+          
+          dispatch(registerDeveloperExperience(copyObj, developer_id));
+          increaseStepCount(true);
+
+        }else{
           developer_experience = [
+            ...stepData,
             {
               job_title: values?.job_title,
               company_name: values?.company_name,
@@ -590,27 +611,13 @@ const DeveloperRegistrationStepper = () => {
               work_type: values?.work_type,
               is_still_working: values?.is_still_working,
               description: values?.description,
+              job_location:values?.job_location
             },
           ];
-          dispatch(editDeveloperExperience(developer_experience,isEditMode?.id ));
+          dispatch(registerDeveloperExperience(developer_experience, developer_id));
           increaseStepCount(true);
-
-        }else{
-
         }
-         developer_experience = [
-          {
-            job_title: values?.job_title,
-            company_name: values?.company_name,
-            start_date:  values?.start_date,
-            end_date: values?.is_still_working?null: values?.end_date,
-            work_type: values?.work_type,
-            is_still_working: values?.is_still_working,
-            description: values?.description,
-          },
-        ];
-        dispatch(registerDeveloperExperience(developer_experience, developer_id));
-        increaseStepCount(true);
+         
 
       }else if(nestedActiveStep==0) {
         

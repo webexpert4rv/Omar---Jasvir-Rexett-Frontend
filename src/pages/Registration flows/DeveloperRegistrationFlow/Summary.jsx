@@ -84,6 +84,8 @@ const Summary = ({
           <span>{item?.project_link}</span>
         </span>
       );
+    }else if(item?.job_title){
+      return <span>{`${item?.job_location} | ${item.start_date.slice(0,10)} - ${item?.end_date.slice(0,10)}`}</span> 
     }
   };
 

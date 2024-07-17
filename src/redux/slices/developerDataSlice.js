@@ -1047,6 +1047,26 @@ export const addDeveloperExperience = (
   };
 };
 
+
+export function developerGetJobListing(payload) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(
+        generateApiUrl(payload, `developer/matching-jobs`)
+      );
+      if (result.status === 200) {
+        // dispatch(setDeveloperTimeReports(result.data.data));
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+
 export const addDeveloperEducation = (
   developerId,
   payload,
