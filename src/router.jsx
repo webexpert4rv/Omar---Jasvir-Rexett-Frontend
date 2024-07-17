@@ -107,7 +107,6 @@ const SingleClient = lazy(() =>
   import("./components/common/SingleClient/SingleClient")
 );
 const Applications = lazy(() => import("./pages/admin/Applications"));
-
 const Login = lazy(() => import("./pages/Authentication/Login"));
 const Dashboard = lazy(() => import("./pages/views/Dashboard"));
 const HiredDevelopers = lazy(() => import("./pages/views/HiredDevelopers"));
@@ -122,9 +121,7 @@ const DeveloperList = lazy(() => import("./pages/admin/DeveloperList"));
 const ListClient = lazy(() => import("./pages/admin/ListClient"));
 const EditAdminProfile = lazy(() => import("./pages/admin/EditAdminProfile"));
 const AdminDocuments = lazy(() => import("./pages/admin/AdminDocuments"));
-const AdminTimeReporting = lazy(() =>
-  import("./pages/admin/AdminTimeReporting")
-);
+const AdminTimeReporting = lazy(() =>import("./pages/admin/AdminTimeReporting"));
 const AdminInvoice = lazy(() => import("./pages/admin/AdminInvoice"));
 const Revenue = lazy(() => import("./pages/admin/Revenue"));
 const DeveloperDashboard = lazy(() =>
@@ -467,9 +464,15 @@ export const route = [
     isVendor: true,
     private: true,
   },
+  // {
+  //   path: "/edit-vendor-profile",
+  //   element: <EditVendorProfile />,
+  //   isVendor: true,
+  //   private: true,
+  // },
   {
     path: "/edit-vendor-profile",
-    element: <EditVendorProfile />,
+    element: <vendorEditProfile />,
     isVendor: true,
     private: true,
   },

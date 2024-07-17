@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CommonInput from "../../../components/atomic/CommonInput";
 import { validatePassword } from "../../../components/utils";
 import { useTranslation } from "react-i18next";
 import { FaEye, FaEyeSlash } from "react-icons/fa";

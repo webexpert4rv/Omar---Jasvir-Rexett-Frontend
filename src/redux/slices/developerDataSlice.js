@@ -27,7 +27,7 @@ const initialDeveloperData = {
   holidayList: [],
   paySlips: {},
   languageOptions: [],
-  skilloptions: [],
+  skillOptions: [],
   totalPaySlipPages: null,
   countries: [],
   degreeOptions: [],
@@ -545,7 +545,7 @@ export function updateDeveloperCvEducation(payload, role, callback) {
   };
 }
 
-export function getDegreeList(payload, callback) {
+export function getDegreeList() {
   return async (dispatch) => {
     // dispatch(setSmallLoader())
     try {

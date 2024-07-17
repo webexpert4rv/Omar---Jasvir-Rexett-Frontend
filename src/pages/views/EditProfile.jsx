@@ -35,11 +35,11 @@ const EditProfile = () => {
             </Nav>
             <Tab.Content>
               <Tab.Pane eventKey="personal_details">
-              <AllRoleEditProfile role="client" />
+              <AllRoleEditProfile role="client" name ={"indivisual"} />
               </Tab.Pane>
 
               <Tab.Pane eventKey="company_details">
-              <CompanyProfile role="client"/>
+              <AllRoleEditProfile role="client" name = {"company"} />
               </Tab.Pane>
            
             </Tab.Content> 

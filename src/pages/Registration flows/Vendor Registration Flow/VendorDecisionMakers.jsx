@@ -1,19 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import StepperHeadingSection from "../StepperHeadingSection";
-import ClientStep1 from "../Client Registration flow/ClientStep1";
 import { useForm } from "react-hook-form";
-import RexettButton from "../../../components/atomic/RexettButton";
-import { Link } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa6";
-import CommonProfilePictureSection from "../../../components/common/CommonProfilePictureSection";
-import {
-  getActiveStepHeadingData,
-  getVendorActiveStepFields,
-  VENDOR_STEP_2_FIELDS,
-} from "../registrationConstant";
+import { getActiveStepHeadingData, getVendorActiveStepFields } from "../registrationConstant";
 
-const VendorDecisionMakers = (
+const VendorDecisionMakers = ({
   activeStepFields,
   setError,
   clearErrors,
@@ -22,13 +13,11 @@ const VendorDecisionMakers = (
   setImageFile,
   errors,
   control,
-  // watch,
-  // register,
   getActiveStepText,
   smallLoader,
   setPreviewImage,
   imageFile
-) => {
+}) => {
   const { register, handleSubmit, reset, watch } = useForm({});
   const [activeStep, setActiveStep] = useState(2);
 
@@ -36,13 +25,12 @@ const VendorDecisionMakers = (
     console.log(values, "values");
   };
 
-  const type = "vendor";
-  const newStepHeading = getActiveStepHeadingData(activeStep, type);
-  console.log(newStepHeading, "newStep");
+  const newStepHeading = getActiveStepHeadingData(activeStep);
   const fields = getVendorActiveStepFields(activeStep);
+
+  console.log(newStepHeading, "newStep");
   console.log(fields, "fields");
   console.log(activeStepFields, "activeStepFields");
-
   console.log(activeStep, "activeStep");
 
   return (
@@ -51,52 +39,42 @@ const VendorDecisionMakers = (
         <div>
           <Row>
             <Col md={12}>
-              <StepperHeadingSection activeStep={activeStep} type={type} />
+              <StepperHeadingSection activeStep={activeStep} />
               <p className="font-12 fw-medium">* includes a required field</p>
               <div>
-              <Row className="w-100">
-                {fields?.map(
-                  (
-                    {
-                      label,
-                      fieldName,
-                      type,
-                      rules,
-                      placeholder,
-                      columnWidth,
-                      isRequired,
-                      isPasswordSection,
-                      isAutocomplete,
-                      options,
-                      isLocation,
-                      defaultOption,
-                    },
-                    index
-                  ) => (
-                   
-                      <Col md={columnWidth}>
+                <Row className="w-100">
+                  {fields?.map(
+                    (
+                      {
+                        label,
+                        fieldName,
+                        rules,
+                        placeholder,
+                        columnWidth,
+                        isRequired,
+                        isPasswordSection,
+                        isAutocomplete,
+                        options,
+                        isLocation,
+                        defaultOption,
+                      },
+                      index
+                    ) => (
+                      <Col md={columnWidth} key={index}>
                         <Form.Group className="mb-3">
                           <Form.Label className="font-14 fw-medium">
-                            {label}{" "}
-                            {isRequired && (
-                              <span className="text-danger">*</span>
-                            )}
+                            {label}
                           </Form.Label>
                           <Form.Control
-                            type={type}
                             placeholder={placeholder}
                             name={fieldName}
                             className="common-field font-14"
                           />
-                          {/* {errors[field?.fieldName] && (
-                                  <span className="text-danger">{errors[field?.fieldName]?.message}</span>
-                                )} */}
                         </Form.Group>
                       </Col>
-                
-                  )
-                )}
-                    </Row>
+                    )
+                  )}
+                </Row>
                 <div className="">
                   <Button variant="transparent" className="position-btn">
                     + Add another member

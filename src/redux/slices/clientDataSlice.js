@@ -8,7 +8,6 @@ import { VERIFY_USER_MESSAGE } from "../../pages/websiteRegisterForm/client/cons
 import { setSuccessActionData } from "./developerDataSlice";
 
 const initialClientData = {
-
   jobId: null,
   screenLoader: false,
   approvedLoader: false,
@@ -1061,6 +1060,7 @@ export function getWebClientLookUp(callback) {
     dispatch(setScreenLoader());
     try {
       let result = await authInstance.get(`web/get-lookups`);
+      console.log(result.data,"clientLookupdata")
       dispatch(setClientLook(result?.data?.data));
       callback && callback(result?.data?.data)
     } catch (error) {

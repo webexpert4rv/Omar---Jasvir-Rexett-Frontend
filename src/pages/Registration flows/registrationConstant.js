@@ -17,7 +17,7 @@ export const MODAL_INFORMATION={
   }
 }
 
-export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const SIDEBAR_ITEMS = {
   client: [
@@ -82,8 +82,8 @@ export const getActiveStepHeadingData = (activeStep ,type ) => {
   
 }
 
-// export const getActiveStepVendorHeadingData = (activeStep) =>
-//   VENDOR_STEPPER_HEADINGS[activeStep] || null;
+export const getActiveStepVendorHeadingData = (activeStep) =>
+  VENDOR_STEPPER_HEADINGS[activeStep] || null;
 
 const CLIENT_STEP_1_FIELDS = {
   indivisual: [

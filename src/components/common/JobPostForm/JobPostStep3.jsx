@@ -129,7 +129,6 @@ const JobPostStep3 = ({
   };
   return (
     <div>
-      {" "}
       <section className="job-post-section">
         {!isRegistrationStep && (
           <>
