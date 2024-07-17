@@ -9603,6 +9603,60 @@ select.apply-field
 {
     background-color: #00cb49;
 }
+.edit-developer-wrapper .resume-sidebar
+{
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    padding: 30px 20px;
+}
+.edit-developer-wrapper .resume-sidebar .resume-sidelogo
+{
+    display: none;
+}
+.edit-developer-wrapper .resume-sidebar ul li
+{
+    margin-bottom: 0px;
+    flex-direction: column;
+    min-width: 70px;
+}
+.edit-developer-wrapper .resume-sidebar ul::before
+{
+    top: 13px;
+    left: 21px;
+    width: 94%;
+    height: 2px;
+}
+.edit-developer-wrapper .resume-sidebar ul
+{
+    display: inline-flex;
+    justify-content: center;
+    gap: 30px;
+}
+.edit-developer-wrapper
+{
+    padding-top: 0px;
+}
+.edit-developer-wrapper .resume-main-wrapper
+{
+    width: 100%;
+}
+.edit-developer-wrapper .comp-wrapper
+{
+    max-width: 250px;
+    width: 100%;
+}
+.edit-developer-wrapper .comp-wrapper .resume-sideheading
+{
+    margin-top: 0px !important;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;

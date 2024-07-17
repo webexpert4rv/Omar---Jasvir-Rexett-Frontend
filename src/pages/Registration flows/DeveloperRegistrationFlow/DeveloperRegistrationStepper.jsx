@@ -904,7 +904,7 @@ const handleRegistrationModal = () => {
 let token = localStorage.getItem('token')
 
   return (
-    <section className={`${token ? "edit-developer-wrapper":"resume-section-wrapper"}`}>
+    <section className={`${token ? "edit-developer-wrapper resume-section-wrapper":"resume-section-wrapper"}`}>
       <SidebarSection
         activeStep={activeStep}
         handleSetActiveStep={handleSetActiveStep}

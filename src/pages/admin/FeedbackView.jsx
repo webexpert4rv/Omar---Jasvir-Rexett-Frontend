@@ -8,9 +8,9 @@ const FeedbackView = () => {
             <div className="filter-section">
                 <Form.Select className="common-field font-14">
                     <option>Select Client</option>
-                    <option>Santi Carloza</option>
-                    <option>Fast Respone</option>
-                    <option>Arlene McCoy</option>
+                    <option value="Santi Carloza">Santi Carloza</option>
+                    <option value="Fast Respone">Fast Respone</option>
+                    <option value="Arlene McCoy">Arlene McCoy</option>
                 </Form.Select>
             </div>
             <div className="card-box">
