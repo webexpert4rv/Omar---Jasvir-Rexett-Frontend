@@ -737,6 +737,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       rules: { required: "Last name is required" },
       columnWidth: 6,
       isRequired: true,
+      
     },
     {
       label: "Profession",
