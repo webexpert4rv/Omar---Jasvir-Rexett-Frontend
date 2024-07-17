@@ -74,7 +74,8 @@ const ClientStep1 = ({
                   isLocation,
                   defaultOption,
                   isMinRequired,
-                  isMaxRequired
+                  isMaxRequired,
+                  readOnly,
                 }) =>
                   isPasswordSection ? (
                     <PasswordSection
@@ -148,6 +149,8 @@ const ClientStep1 = ({
                               isMaxRequired={isMaxRequired}
                               disabled={isStillWorking}
                               isMinRequired={isMinRequired}
+                              readOnly={readOnly ? true : false}
+
                             />
                           ): <UploadFile 
                           label={label}
