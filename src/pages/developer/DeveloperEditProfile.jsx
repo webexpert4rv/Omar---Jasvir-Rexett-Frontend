@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import ClientStep1 from "../Registration flows/Client Registration flow/ClientStep1";
 import { useForm, Controller } from "react-hook-form";
 import { Row, Col, Form } from "react-bootstrap";
@@ -7,6 +7,10 @@ import { getDeveloperActiveStepFields, getStepDataFromAPI } from "../Registratio
 import ProfileWrapper from "../../components/common/EditProfile/ProfileWrapper";
 import { getDeveloperProfileDetails } from "../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import RexettButton from "../../components/atomic/RexettButton";
+import { fileUploadForWeb, getCoutriesList,getCitiesList,getStatesList, getTimeZoneForCountry} from "../../redux/slices/clientDataSlice";
+import { developerRegistration } from "../../redux/slices/developerDataSlice";
+
 
 
 const DeveloperEditProfile = () => {
@@ -25,10 +29,82 @@ const DeveloperEditProfile = () => {
   const { smallLoader, developerRegistrationData } = useSelector(
     (state) => state?.developerData
   );
+  const [previewImage, setPreviewImage] = useState({
+    profile_picture: "",
+    resume: "",
+    introVideo: "",
+  });
+  const [imageFile, setImageFile] = useState({
+    resume: "",
+    introVideo: "",
+  });
 
-  const onSubmit = (data) => {
+  console.log(imageFile,'imageFileeeeeee')
 
-  };
+  // const onSubmit = (data) => {
+
+  // };
+
+
+  const onSubmit = (values) => {
+    console.log(values, "va");
+
+    const uploadFiles = (files) => {
+      let uploadedUrls = {};
+
+      const uploadPromises = Object.keys(files).map((key) => {
+        if (files[key]) {
+          let fileData = new FormData();
+          fileData.append("file", files[key]);
+
+          return new Promise((resolve) => {
+            dispatch(
+              fileUploadForWeb(fileData, (url) => {
+                console.log(url, `${key} url`);
+                uploadedUrls[key] = url;
+                resolve();
+              })
+            );
+          });
+        } else {
+          return Promise.resolve(); // Resolve immediately if no file to upload
+        }
+      });
+
+      Promise.all(uploadPromises).then(() => {
+        let payload = {
+          first_name: values?.first_name,
+          last_name: values?.last_name,
+          profile_picture: uploadedUrls?.profile_picture,
+          profession: values?.profession,
+          email: values?.email,
+          country: values?.country_code?.label,
+          address: values?.address,
+          password: values?.password,
+          city: values?.city,
+          state: values?.state_iso_code?.label,
+          country_iso_code: "string",
+          state_iso_code: values?.state_iso_code?.value,
+          passcode: values?.passcode,
+          country_code: values?.country_code.value,
+          phone_number: values?.phone_number,
+          language_proficiency: values?.language_proficiency,
+          time_zone: values?.time_zone?.label,
+          resume: uploadedUrls?.resume,
+          linkedin_url: "https://www.linkedin.com/",
+          github_url: "https://github.com/",
+          intro_video_url: uploadedUrls?.introVideo,
+        };
+
+        dispatch(developerRegistration(payload));
+      });
+    };
+    uploadFiles({
+      resume: imageFile.resume,
+      introVideo: imageFile.introVideo,
+      profile_picture: imageFile.profile_picture,
+    });
+  }
 
   const toggleConfirmationModal = (e) => {
     // Handle toggle confirmation modal
@@ -43,25 +119,43 @@ const DeveloperEditProfile = () => {
     nestedActiveStep
   );
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
-  const previewImage = ""; // Assuming previewImage is defined somewhere
-  const imageFile = null; // Assuming imageFile is defined somewhere
-  const setPreviewImage = () => {}; // Assuming setPreviewImage is defined somewhere
-  const setImageFile = () => {}; // Assuming setImageFile is defined somewhere
+  console.log(stepData,'stepdatttttaaaa');
 
-  console.log(stepData,"stepData")
 
+  let developerId=localStorage.getItem("developerId")
 
   useEffect(() => {
 
-    if(true){
-    dispatch(getDeveloperProfileDetails(657));
+    if(developerId){
+    dispatch(getDeveloperProfileDetails(developerId));
+    dispatch(getCoutriesList());
     }
   }, []);
 
-  // useEffect(()=>{
-  //   setValue()
+  useEffect(() => {
+    if (watch("country")?.value) {
+      dispatch(getStatesList(watch("country")?.value));
+      dispatch(getTimeZoneForCountry(watch("country")?.value));
+    }
+  }, [watch("country")]);
 
-  // },[stepData])
+  useEffect(() => {
+    if (watch("state")?.value) {
+      dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
+      setValue("city", null);
+    }
+  }, [watch("state")]);
+
+  useEffect(()=>{
+    setValue("phone_number",stepData?.phone_number);
+    setValue("email",stepData?.email);
+    setValue("country",stepData?.country);
+    setValue("state",stepData?.state);
+    setValue("city",stepData?.city);
+    setValue("passcode",stepData?.passcode);
+    setValue("time_zone",stepData?.time_zone);
+    setValue("address",stepData?.address);
+  },[stepData])
 
 
   return (
@@ -134,6 +228,15 @@ const DeveloperEditProfile = () => {
                 />
               </Col>
             </Row>
+            <div className="d-flex justify-content-center">
+            <RexettButton
+                  type="submit"
+                  text={'Update'}
+                  className="main-btn px-5 mr-2"
+                  disabled={smallLoader}
+                  isLoading={smallLoader}
+                />
+            </div>
           </form>
         )}
       </div>
