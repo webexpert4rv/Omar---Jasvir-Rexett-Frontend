@@ -18,7 +18,9 @@ const ClientStep1 = ({
   errors,
   companyTypeOptions=null,
   activeStep,
+  nestedActiveStep,
   type,
+  name,
   stepFields,
   setError,
   clearErrors,
@@ -30,17 +32,20 @@ const ClientStep1 = ({
   setImageFile,
   imageFile,
   isProfileSectionRequired,
+  isEditMode
 }) => {
   const { t } = useTranslation();
   // field name service offerenings  
   console.log(activeStep,"activeStep")
+  console.log(watch("is_still_working"),"is")
+  let isStillWorking=watch("is_still_working")
   return (
     <>
       <Row>
         <Col md={12}>
-          <StepperHeadingSection activeStep={activeStep} type = {type}/>
+         {!isEditMode && <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>}
           <p className="font-12 fw-medium">* includes a required field</p>
-          <div className="d-flex align-items-start gap-3">
+          {/* <div className="d-flex align-items-start gap-3"> */}
             {isProfileSectionRequired && (
               <CommonProfilePictureSection
                 register={register}
@@ -67,7 +72,9 @@ const ClientStep1 = ({
                   isAutocomplete,
                   options,
                   isLocation,
-                  defaultOption
+                  defaultOption,
+                  isMinRequired,
+                  isMaxRequired
                 }) =>
                   isPasswordSection ? (
                     <PasswordSection
@@ -126,9 +133,9 @@ const ClientStep1 = ({
                             />
                           )}
 
-                          {!isPasswordSection && type!=="upload" ? (
+                          {!isPasswordSection && type!=="upload" ? ( 
                             <CommonInput
-                              label={t(`${label}`) + `${isRequired && " *"}`}
+                              label={t(`${label}`) + `${isRequired ? " *" :""}`}
                               name={fieldName}
                               control={control}
                               invalidFieldRequired={true}
@@ -138,10 +145,23 @@ const ClientStep1 = ({
                               options={companyTypeOptions ? companyTypeOptions:options}//get options
                               defaultOption={defaultOption}
                               placeholder={placeholder}
+                              isMaxRequired={isMaxRequired}
+                              disabled={isStillWorking}
+                              isMinRequired={isMinRequired}
                             />
                           ): <UploadFile 
                           label={label}
                           placeholder={placeholder}
+                          register={register}
+                          setValue={setValue}
+                          clearErrors={clearErrors}
+                          setImageFile={setImageFile}
+                          setPreviewImage={setPreviewImage}
+                          previewImage={previewImage}
+                          setError={setError}
+                          imageFile={imageFile}
+                          fieldName={fieldName}
+                          errors={errors}
                           />}
 
                         </div>
@@ -151,7 +171,7 @@ const ClientStep1 = ({
                   )
               )}
             </Row>
-          </div>
+          {/* </div> */}
         </Col>
       </Row>
     </>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 import introVideo from '../../../assets/img/interview-video.mp4'
-const IntroVideo = ({ show, handleClose }) => {
+const IntroVideo = ({ show, handleClose,previewImage }) => {
     return (
         <>
             <Modal show={show} onHide={handleClose} centered size="lg" dialogClassName="zoom-modal" className="custom-modal" animation>
@@ -10,7 +10,7 @@ const IntroVideo = ({ show, handleClose }) => {
 
                 <Modal.Body className="p-0 bg-transparent">
                     <video className="w-100" controls>
-                        <source src={introVideo} />
+                        <source src={previewImage? previewImage: introVideo} />
                     </video>
                 </Modal.Body>
             </Modal>

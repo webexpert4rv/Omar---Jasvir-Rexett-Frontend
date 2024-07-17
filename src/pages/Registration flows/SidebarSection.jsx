@@ -5,14 +5,11 @@ import { FaCheck } from "react-icons/fa6";
 
 const SidebarSection = ({activeStep,stepperSideBarItems,handleSetActiveStep}) => {
     const {t} = useTranslation();
-    let arrPercentage=[0,40,20,20,20]
+    let arrPercentage=[0,0,30,40,50,70,80,100]
     
-const getPercentage = (currentStep) => {
-  let result = 0;
-  for (let i = 0; i < currentStep-1; i++) {
-      result = arrPercentage[i] + arrPercentage[i + 1];
-  }
-  return result;
+const getPercentage = () => {
+  return arrPercentage[activeStep]
+
 };
 
   return (
@@ -38,9 +35,9 @@ const getPercentage = (currentStep) => {
       <h4 className="resume-sideheading mt-3">Completeness:</h4>
       <div className="resume-progress-wrapper">
         <div className="resume-progressbx">
-          <div></div>
+          <div style={{width: `${getPercentage()}%`}}></div>
         </div>
-        <span className="resume-progress-status font-12 fw-medium">{getPercentage(activeStep)}%</span>
+        <span className="resume-progress-status font-12 fw-medium">{getPercentage()}%</span>
       </div>
     </div>
   );

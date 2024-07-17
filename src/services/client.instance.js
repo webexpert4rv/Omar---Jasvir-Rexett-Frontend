@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
+import { getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
 
 const clientInstance = axios.create({

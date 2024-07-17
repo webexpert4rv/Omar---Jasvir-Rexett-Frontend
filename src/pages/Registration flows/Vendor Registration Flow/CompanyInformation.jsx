@@ -36,7 +36,6 @@ const CompanyInformation = (
   };
 
   const type = "vendor";
-  const newStepHeading = getActiveStepHeadingData(activeStep, type);
   const fields = getVendorActiveStepFields(activeStep);
 
   return (

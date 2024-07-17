@@ -108,7 +108,6 @@ const SingleClient = lazy(() =>
   import("./components/common/SingleClient/SingleClient")
 );
 const Applications = lazy(() => import("./pages/admin/Applications"));
-
 const Login = lazy(() => import("./pages/Authentication/Login"));
 const Dashboard = lazy(() => import("./pages/views/Dashboard"));
 const HiredDevelopers = lazy(() => import("./pages/views/HiredDevelopers"));
@@ -123,9 +122,7 @@ const DeveloperList = lazy(() => import("./pages/admin/DeveloperList"));
 const ListClient = lazy(() => import("./pages/admin/ListClient"));
 const EditAdminProfile = lazy(() => import("./pages/admin/EditAdminProfile"));
 const AdminDocuments = lazy(() => import("./pages/admin/AdminDocuments"));
-const AdminTimeReporting = lazy(() =>
-  import("./pages/admin/AdminTimeReporting")
-);
+const AdminTimeReporting = lazy(() =>import("./pages/admin/AdminTimeReporting"));
 const AdminInvoice = lazy(() => import("./pages/admin/AdminInvoice"));
 const Revenue = lazy(() => import("./pages/admin/Revenue"));
 const DeveloperDashboard = lazy(() =>
@@ -174,11 +171,14 @@ export const route = [
     element: <DeveloperRegistrationStepper />,
     public: true,
   },
+  
   {
     path: "/vendor-registration",
     element: <VendorRegistrationStepper />,
     public: true,
   },
+
+  
   {
     path: "/otp",
     element: <Otp />,
@@ -229,6 +229,7 @@ export const route = [
     private: true,
     isClient: true,
   },
+
   {
     path: "/client/hired-developers",
     element: <HiredDevelopers />,
@@ -461,16 +462,30 @@ export const route = [
     element: <VendorUploadInvoice />,
     isVendor: true,
     private: true,
+  },{
+
+    path: "/vendor/developer-registration",
+    element: <DeveloperRegistrationStepper/>,
+    isVendor: true,
+    private: true,
+    
   },
+
   {
     path: "/vendor-time-reporting",
     element: <VendorTimeReporting />,
     isVendor: true,
     private: true,
   },
+  // {
+  //   path: "/edit-vendor-profile",
+  //   element: <EditVendorProfile />,
+  //   isVendor: true,
+  //   private: true,
+  // },
   {
     path: "/edit-vendor-profile",
-    element: <EditVendorProfile />,
+    element: <vendorEditProfile />,
     isVendor: true,
     private: true,
   },
@@ -516,6 +531,12 @@ export const route = [
   {
     path: "/admin/admin-dashboard",
     element: <AdminDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/developer-registration",
+    element: <DeveloperRegistrationStepper/>,
     isAdmin: true,
     private: true,
   },
@@ -695,13 +716,13 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/super-dashboard",
+    path: "/super-admin-dashboard",
     element: <SuperDashboard />,
     isAdmin: true,
     private: true,
   },
   {
-    path: "/admin/subscription-plan",
+    path: "/super-admin/subscription-plan",
     element: <SubscriptionPlan />,
     isAdmin: true,
     private: true,
@@ -713,7 +734,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/client-listing",
+    path: "/super-admin/client-listing",
     element: <ClientListing />,
     isAdmin: true,
     private: true,

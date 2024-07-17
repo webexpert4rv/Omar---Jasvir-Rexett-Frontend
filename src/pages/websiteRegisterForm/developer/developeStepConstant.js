@@ -4,6 +4,20 @@ const RELOCATE_OPTIONS = [
   { label: "Yes", value: "Yes" },
   { label: "No", value: "No" },
 ];
+export const LEVEL_OPTIONS = [
+  {
+    label: "Beginner",
+    value: "beginner",
+  },
+  {
+    label: "Intemediate",
+    value: "intemediate",
+  },
+  {
+    label: "Expert",
+    value: "expert",
+  },
+];
 export const EXPERTISE_LEVEL_OPTIONS = [
   { label: "Starter", value: "starter" },
   { label: "Intermediate", value: "intermediate" },
@@ -590,3 +604,12 @@ export const IMAGE_ALLOWED_EXTENSIONS = [
   "image/jpg",
   "image/svg+xml",
 ];
+
+
+export const experienceLevels = [];
+for (let i = 1; i <= 15; i++) {
+  experienceLevels.push({
+    label: `${i} year${i > 1 ? 's' : ''}`,
+    value: i,
+  });
+}
