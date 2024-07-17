@@ -98,6 +98,7 @@ console.log(isMaxRequired,"ismax")
                     placeholder={placeholder}
                     value={field.value ? String(field.value) : ""}
                     onChange={field.onChange}
+                    className="common-field"
                     inputProps={{
                       name: name,
                       readOnly: readOnly,
