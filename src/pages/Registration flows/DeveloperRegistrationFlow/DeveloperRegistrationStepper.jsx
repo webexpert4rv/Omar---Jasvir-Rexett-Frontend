@@ -601,21 +601,39 @@ const DeveloperRegistrationStepper = () => {
           increaseStepCount(true);
 
         }else{
-          developer_experience = [
-            ...stepData,
-            {
-              job_title: values?.job_title,
-              company_name: values?.company_name,
-              start_date:  values?.start_date,
-              end_date: values?.is_still_working?null: values?.end_date,
-              work_type: values?.work_type,
-              is_still_working: values?.is_still_working,
-              description: values?.description,
-              job_location:values?.job_location
-            },
-          ];
-          dispatch(registerDeveloperExperience(developer_experience, developer_id));
-          increaseStepCount(true);
+          if(stepData){
+            developer_experience = [
+              ...stepData,
+              {
+                job_title: values?.job_title,
+                company_name: values?.company_name,
+                start_date:  values?.start_date,
+                end_date: values?.is_still_working?null: values?.end_date,
+                work_type: values?.work_type,
+                is_still_working: values?.is_still_working,
+                description: values?.description,
+                job_location:values?.job_location
+              },
+            ];
+            dispatch(registerDeveloperExperience(developer_experience, developer_id));
+            increaseStepCount(true);
+          }else{
+            developer_experience = [
+              {
+                job_title: values?.job_title,
+                company_name: values?.company_name,
+                start_date:  values?.start_date,
+                end_date: values?.is_still_working?null: values?.end_date,
+                work_type: values?.work_type,
+                is_still_working: values?.is_still_working,
+                description: values?.description,
+                job_location:values?.job_location
+              },
+            ];
+            dispatch(registerDeveloperExperience(developer_experience, developer_id));
+            increaseStepCount(true);
+          }
+          
         }
          
 
