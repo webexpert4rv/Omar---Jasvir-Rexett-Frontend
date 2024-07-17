@@ -21,7 +21,7 @@ export const MODAL_INFORMATION={
   }
 }
 
-export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const SIDEBAR_ITEMS = {
   client: [
@@ -167,6 +167,8 @@ export const getActiveStepHeadingData = (activeStep ,type,nestedActiveStep ) => 
   
 }
 
+export const getActiveStepVendorHeadingData = (activeStep) =>
+  VENDOR_STEPPER_HEADINGS[activeStep] || null;
 
 export const getStepperIntroData=(activeStep)=>{
    return DEVELOPER_INTRO_DATA[activeStep]
@@ -933,7 +935,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "is_still_working",
       type: "checkbox",
       options:["pankaj"],
-      rules: { required: "Job location is required" },
+      // rules: { required: "Job location is required" },
       columnWidth: 12,
       isRequired: false,
     },

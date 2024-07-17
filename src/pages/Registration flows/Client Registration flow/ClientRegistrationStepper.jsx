@@ -176,26 +176,25 @@ const ClientRegistrationStepper = () => {
     };
     setShowSetUpJobModal(false);
     increaseStepCount();
-    // const handleAfterApiSuccess = () => {
-    //   increaseStepCount();
-    //   reset();
-    // };
-    // console.log(stepData,"stepData")
-    // const filePayload = { file: imageFile };
-    // dispatch(
-    //   uploadFileToS3Bucket(filePayload, (url) => {
-    //     const payload = {
-    //       ...stepData,
-    //       country_code: stepData["country_code"]?.value,
-    //       state_iso_code: stepData["state_iso_code"]?.value,
-    //       country: stepData["country_code"]?.label,
-    //       state: stepData["state_iso_code"]?.label,
-    //       profile_picture: url,
-    //     };
-    //     console.log(payload,"payload")
-    //     dispatch(applyAsClient(payload, handleAfterApiSuccess));
-    //   })
-    // );
+    const handleAfterApiSuccess = () => {
+      increaseStepCount();
+      reset();
+    };
+    console.log(stepData,"stepData")
+    const filePayload = { file: imageFile };
+    dispatch(
+      uploadFileToS3Bucket(filePayload, (url) => {
+        const payload = {
+          ...stepData,
+          country_code: stepData["country_code"]?.value,
+          state_iso_code: stepData["state_iso_code"]?.value,
+          country: stepData["country_code"]?.label,
+          state: stepData["state_iso_code"]?.label,
+          profile_picture: url,
+        };
+        dispatch(applyAsClient(payload, handleAfterApiSuccess));
+      })
+    );
 
     // replace trigger verification modal with last callback function
     //  dispatch(applyAsClient(payload,handleAfterApiSuccess,()=>{}))

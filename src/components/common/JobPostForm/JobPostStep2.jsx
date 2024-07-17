@@ -54,11 +54,12 @@ console.log(skillListMapped,"skillListMapped")
   }
 
   const handleSkillLevel=(event  )=>{
-    // setNewId(id)
-    console.log((event.target.id),"idddddddd")
+    let ID = (event.target.id).split("-")[1]
+    console.log(ID,"idddddddd")
+    setNewId(ID)
      setSelectedLevel(event.target.value)
    }
-  const newSkill = skillListMapped.find((itm)=>itm.value===newId)
+  // const newSkill = skillListMapped.find((itm)=>itm.value===newId)
  
   const handleChange = (html, field) => {
     console.log(html,'html')
@@ -194,7 +195,7 @@ console.log(skillListMapped,"skillListMapped")
                    <span className="skill-progress-name fw-semibold">
                      {skill?.label}
                    </span>
-                  {newSkill===skill?.value ?  <span className="skill-percent">{selectedLevel }</span>:
+                  {newId===skill?.value ?  <span className="skill-percent">{selectedLevel }</span>:
                    <span className="skill-percent">{"25% "}</span>
                   }
                  </div>
@@ -203,7 +204,7 @@ console.log(skillListMapped,"skillListMapped")
               <Col md={4} className="align-self-center mb-3">
               <div className="d-flex justify-content-center gap-3">
                 <div className="low-wrapper">
-                  <Form.Check type="radio"  name="react-skill-weight" id ={`beginner-${skill?.value}`}value={"25%"} onChange = {(e)=>handleSkillLevel(e ,skill?.value)}  className="weight-radio" defaultChecked  />
+                  <Form.Check type="radio"  name="react-skill-weight" id ={`beginner-${skill?.value}`}value={"25%"} onChange = {(e)=>handleSkillLevel(e ,skill?.value)}  className="weight-radio" checked  />
                 </div>
                 <div className="medium-wrapper">
                   <Form.Check type="radio" name="react-skill-weight" id ={`intermediate-${skill?.value}` }value={"50%"}  onChange = {(e)=>handleSkillLevel(e,skill?.value )} className="weight-radio" />

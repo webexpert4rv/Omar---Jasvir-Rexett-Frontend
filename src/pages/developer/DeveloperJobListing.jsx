@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import JobListing from '../../components/common/JobListing/JobListing'
 import JobTabs from '../../components/atomic/JobTabs'
 import { Nav, Tab } from 'react-bootstrap'
+import { developerGetJobListing, developerJobListing } from '../../redux/slices/developerDataSlice'
+import { useDispatch } from 'react-redux'
 
 const DeveloperJobListing = () => {
+ let userId= localStorage.getItem("userId");
+ const dispatch=useDispatch()
+
+  useEffect(() => {
+    let payload={
+      current_page:1,
+      active_tab:"new_jobs",
+      developer_id:userId
+    }
+    dispatch(developerGetJobListing(payload))
+}, [])
+
   return (
     <>
       <Tab.Container defaultActiveKey="new-jobs">

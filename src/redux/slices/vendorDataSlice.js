@@ -392,7 +392,7 @@ export const uploadFileToS3Bucket = (payload,callback) => {
     return async (dispatch) => {
       dispatch(setScreenLoader());
       try {
-        let result = await clientFormInstance.post(`/web/upload-file/`, payload);
+        let result = await clientFormInstance.post(`/web/upload-file/`,{...payload});
         callback && callback(result?.data?.data?.Location);
         dispatch(setVendorSuccess())
         // toast.success("project added successfully", {
@@ -404,7 +404,7 @@ export const uploadFileToS3Bucket = (payload,callback) => {
       }
     };
   };
-  export function applyAsVendor(payload,callback,triggerVerificationModal) {
+  export function applyAsVendor(payload,callback) {
     console.log(payload,'payload')
     return async (dispatch) => {
       dispatch(setScreenLoader());

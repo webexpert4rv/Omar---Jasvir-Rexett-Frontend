@@ -20,6 +20,7 @@ const ClientStep1 = ({
   activeStep,
   nestedActiveStep,
   type,
+  name,
   stepFields,
   setError,
   clearErrors,
@@ -44,7 +45,7 @@ const ClientStep1 = ({
         <Col md={12}>
          {!isEditMode && <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>}
           <p className="font-12 fw-medium">* includes a required field</p>
-          <div className="d-flex align-items-start gap-3">
+          {/* <div className="d-flex align-items-start gap-3"> */}
             {isProfileSectionRequired && (
               <CommonProfilePictureSection
                 register={register}
@@ -170,7 +171,7 @@ const ClientStep1 = ({
                   )
               )}
             </Row>
-          </div>
+          {/* </div> */}
         </Col>
       </Row>
     </>

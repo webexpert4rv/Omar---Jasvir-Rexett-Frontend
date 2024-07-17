@@ -67,8 +67,6 @@ const VendorRegistrationStepper = () => {
 
     }
   }, [activeStep]);
-  const activeStepFields = getVendorActiveStepFields(activeStep);
-  console.log(activeStepFields, "activeStepFields")
   const increaseStepCount = () => {
     if (activeStep === 4) {
       // localStorage.removeItem("clientActiveStep");
@@ -163,7 +161,7 @@ const VendorRegistrationStepper = () => {
             activeStep={activeStep}
             type={"vendor"}
             register={register}
-            stepFields={activeStepFields}
+            // stepFields={activeStepFields}
             setError={setError}
             clearErrors={clearErrors}
             companyTypeOptions={companyTypeOptions}
@@ -179,10 +177,10 @@ const VendorRegistrationStepper = () => {
       case 2:
         return (
           <VendorDecisionMakers
-            stepFields={activeStepFields}
+            // stepFields={activeStepFields}
             //  skillOptions={skillOptions}
             onSubmit={onSubmit}
-            activeStepFields={activeStepFields}
+            // activeStepFields={activeStepFields}
             activeStep={activeStep}
             watch={watch}
             control={control}

@@ -27,7 +27,7 @@ const initialDeveloperData = {
   holidayList: [],
   paySlips: {},
   languageOptions: [],
-  skilloptions: [],
+  skillOptions: [],
   totalPaySlipPages: null,
   countries: [],
   degreeOptions: [],
@@ -552,7 +552,7 @@ export function updateDeveloperCvEducation(payload, role, callback) {
   };
 }
 
-export function getDegreeList(payload, callback) {
+export function getDegreeList() {
   return async (dispatch) => {
     // dispatch(setSmallLoader())
     try {
@@ -1046,6 +1046,26 @@ export const addDeveloperExperience = (
     }
   };
 };
+
+
+export function developerGetJobListing(payload) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(
+        generateApiUrl(payload, `developer/matching-jobs`)
+      );
+      if (result.status === 200) {
+        // dispatch(setDeveloperTimeReports(result.data.data));
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
 
 export const addDeveloperEducation = (
   developerId,
