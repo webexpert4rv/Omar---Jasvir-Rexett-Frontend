@@ -149,11 +149,15 @@ const DeveloperEditProfile = () => {
   useEffect(()=>{
     setValue("phone_number",stepData?.phone_number);
     setValue("email",stepData?.email);
-    setValue("country",stepData?.country);
-    setValue("state",stepData?.state);
-    setValue("city",stepData?.city);
+    // setValue("country",stepData?.country);
+     setValue("country",{ label: stepData?.country, value: null });
+    // setValue("state",stepData?.state);
+    setValue("state",{ label: stepData?.state, value: null });
+    // setValue("city",stepData?.city);
+   setValue("city",{ label: stepData?.city, value: null });
     setValue("passcode",stepData?.passcode);
     setValue("time_zone",stepData?.time_zone);
+    setValue("time_zone",{ label: stepData?.time_zone, value: null });
     setValue("address",stepData?.address);
   },[stepData])
 

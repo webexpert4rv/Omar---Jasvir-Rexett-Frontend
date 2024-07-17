@@ -120,6 +120,7 @@ const AllRoleEditProfile = ({ role , name }) => {
   }, [watch("state")]);
 
 
+  console.log(userProfileDetails,'userProfileDetailsuserProfileDetails')
 
   useEffect(() => {
     if (userProfileDetails?.data) {
@@ -130,10 +131,13 @@ const AllRoleEditProfile = ({ role , name }) => {
       setValue("address_2", userProfileDetails?.data?.address_2);
       setValue("tax_id", userProfileDetails?.data?.tax_id);
       setValue("cin", userProfileDetails?.data?.cin);
+      setValue("company_address", userProfileDetails?.data?.company_address);
+      setValue("company_name", userProfileDetails?.data?.company_name);
       setValue("city", { label: userProfileDetails?.data?.city, value: null });
       setValue("country", { label: userProfileDetails?.data?.country, value: null });
       setValue("passcode", userProfileDetails?.data?.passcode);
       setValue("time_zone", { label: userProfileDetails?.data?.time_zone, value: userProfileDetails?.data?.time_zone });
+      setValue('company_tax_id',userProfileDetails?.data?.company_tax_id);
       setValue("state", { label: userProfileDetails?.data?.state, value: null });
       if (userProfileDetails?.data?.is_2FA_enabled) {
         setValue("is_2FA_enabled", userProfileDetails?.data?.is_2FA_enabled);
@@ -607,7 +611,7 @@ const AllRoleEditProfile = ({ role , name }) => {
                 <div>
                   <RexettButton
                     type="submit"
-                    text={"Submit"}
+                    text={"Update"}
                     className="main-btn px-5 mr-2"
                     disabled={smallLoader}
                     isLoading={smallLoader}
