@@ -44,7 +44,7 @@ const PasswordSection = ({
         <>
           <Col md={6}>
             <div className="mb-3">
-              <Form.Label className="common-label">{t("Password")} *</Form.Label>
+              <Form.Label className="font-14 fw-medium form-label">{t("Password")} *</Form.Label>
               <div className="position-relative">
                 <Controller
                   name="password"
@@ -94,7 +94,7 @@ const PasswordSection = ({
           </Col>
           <Col md={6}>
             <div className="mb-3">
-              <Form.Label className="common-label">
+              <Form.Label className="font-14 fw-medium form-label">
                 {t("Confirm Password")} *
               </Form.Label>
               <div className="position-relative">

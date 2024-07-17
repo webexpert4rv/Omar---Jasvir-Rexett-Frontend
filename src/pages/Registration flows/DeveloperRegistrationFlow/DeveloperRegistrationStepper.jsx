@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   applyAsClient,
   filePreassignedUrlGenerate,
-  fileUploadForWeb,
   getCoutriesList,
   getWebsiteSkills,
   uploadFileToS3Bucket,
@@ -29,6 +28,7 @@ import {
   developerRegistration,
   developerRegistrationBio,
   editDeveloperExperience,
+  fileUploadForWeb,
   getDeveloperProfileDetails,
   getSkillOptions,
   registerDeveloperEducation,
@@ -157,6 +157,9 @@ const DeveloperRegistrationStepper = () => {
   }, [activeStep]);
 
   const increaseStepCount = (isNested) => {
+    if(!smallLoader){
+      return 
+    }
     if (isNested) {
       setNestedActiveStep((prev) => prev + 1);
       localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
@@ -560,20 +563,24 @@ const DeveloperRegistrationStepper = () => {
           password: values?.password,
           city: values?.city,
           state: values?.state_iso_code?.label,
-          country_iso_code: "string",
+          country_iso_code:values?.country_iso_code?.value,
           state_iso_code: values?.state_iso_code?.value,
           passcode: values?.passcode,
           country_code: values?.country_code.value,
           phone_number: values?.phone_number,
-          language_proficiency: values?.language_proficiency,
+          language_preference: values?.language_preference,
+          total_experience:values?.total_experience,
           time_zone: values?.time_zone?.label,
           resume: uploadedUrls?.resume,
-          linkedin_url: "https://www.linkedin.com/",
-          github_url: "https://github.com/",
+          linkedin_url: values?.linked_in,
+          github_url: values?.git_hub,
           intro_video_url: uploadedUrls?.introVideo,
         };
 
-        dispatch(developerRegistration(payload));
+        dispatch(developerRegistration(payload,()=>{
+       setIsRegistrationStepModal(true);
+
+        }));
       });
     };
 
@@ -883,16 +890,7 @@ const DeveloperRegistrationStepper = () => {
     //  dispatch(applyAsClient(payload,handleAfterApiSuccess,()=>{}))
   };
   const profileSubmitIfDone=()=>{
-    // setActiveStep(1);
-    //   localStorage.setItem("clientActiveStep", activeStep + 1);
-    if(activeStep === 1){
-      setDone(false)
-    }
-    else{
-      setIsRegistrationStepModal(true);
-    }
-    
-
+    setDone(false)
   }
 
 
@@ -903,7 +901,7 @@ const handleRegistrationModal = () => {
 let token = localStorage.getItem('token')
 
   return (
-    <section className={`${token ? "edit-developer-wrapper":"resume-section-wrapper"}`}>
+    <section className={`${token ? "edit-developer-wrapper resume-section-wrapper":"resume-section-wrapper"}`}>
       <SidebarSection
         activeStep={activeStep}
         handleSetActiveStep={handleSetActiveStep}
@@ -913,19 +911,19 @@ let token = localStorage.getItem('token')
       <div className="resume-main-wrapper">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Container>
-            <div>
+            {activeStep!==1 &&<div>
               <span
                 onClick={decreaseStepCount}
                 className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer"
               >
                 <FaArrowLeft /> Go Back
               </span>
-            </div>
+            </div>}
             <Row>
-              <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 ? 12 : 8}>
+              <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 || activeStep==1 ? 12 : 8}>
                 {renderActiveStep()}
               </Col>
-              {nestedActiveStep !== 3 && (
+              {nestedActiveStep !== 3 || activeStep!==1 && (
                 <Col md={4}>
                   <ResumeOverView activeStep={activeStep} />
                 </Col>
@@ -939,8 +937,8 @@ let token = localStorage.getItem('token')
                   text={getActiveDecreaseStepText()}
                   className="main-btn px-5 mr-2"
                   onClick={profileSubmitIfDone}
-                  disabled={smallLoader}
-                  isLoading={smallLoader}
+                  disabled={!ifDone && smallLoader}
+                  isLoading={!ifDone && smallLoader}
                 />
               </div>
               <div>
