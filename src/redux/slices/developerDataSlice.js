@@ -1174,6 +1174,21 @@ export function getDeveloperProjects(developerId, callback, closeLoader) {
   };
 }
 
+//this is for website upload file
+export function fileUploadForWeb(fileData, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`web/upload-file`, fileData);
+      // dispatch(setActionSuccessFully());
+      return callback(result?.data?.data.Location);
+    } catch (error) {
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
 export const uploadFileToS3Bucket = (payload, callback) => {
   return async (dispatch) => {
     dispatch(setScreenLoader());
@@ -1228,14 +1243,15 @@ export function getProjectDetail(filters, id, callback) {
 
 //all registration
 
-export function developerRegistration(payload) {
+export function developerRegistration(payload,callback) {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
     try {
       let result = await authInstance.post("common/developer-registration",{...payload});
       toast.success("Your profile has been created", { position: "top-center" });
       localStorage.setItem("developerId",result?.data?.data?.id)
       dispatch(setActionSuccessFully());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1273,6 +1289,7 @@ export function editDeveloperExperience(payload,id) {
     }
   };
 }
+
 
 export function registerDeveloperEducation(payload,id) {
   return async (dispatch) => {

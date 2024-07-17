@@ -5,10 +5,10 @@ import { Row, Col, Form } from "react-bootstrap";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { getDeveloperActiveStepFields, getStepDataFromAPI } from "../Registration flows/registrationConstant";
 import ProfileWrapper from "../../components/common/EditProfile/ProfileWrapper";
-import { getDeveloperProfileDetails } from "../../redux/slices/developerDataSlice";
+import { fileUploadForWeb, getDeveloperProfileDetails } from "../../redux/slices/developerDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "../../components/atomic/RexettButton";
-import { fileUploadForWeb, getCoutriesList,getCitiesList,getStatesList, getTimeZoneForCountry} from "../../redux/slices/clientDataSlice";
+import { getCoutriesList,getCitiesList,getStatesList, getTimeZoneForCountry} from "../../redux/slices/clientDataSlice";
 import { developerRegistration } from "../../redux/slices/developerDataSlice";
 
 
@@ -118,7 +118,7 @@ const DeveloperEditProfile = () => {
     nestedActiveStep
   );
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
-  console.log(stepData,'stepdatttttaaaa');
+  
 
   useEffect(() => {
 

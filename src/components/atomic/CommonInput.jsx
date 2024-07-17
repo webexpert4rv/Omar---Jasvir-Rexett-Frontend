@@ -51,7 +51,7 @@ console.log(isMaxRequired,"ismax")
   };
   return (
     <Form.Group className="mb-3">
-      <Form.Label className="common-label">{label}</Form.Label>
+      <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>
       <div className="position-relative">
         <Controller
           name={name}
