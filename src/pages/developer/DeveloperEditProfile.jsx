@@ -41,9 +41,7 @@ const DeveloperEditProfile = () => {
 
   console.log(imageFile,'imageFileeeeeee')
 
-  // const onSubmit = (data) => {
-
-  // };
+  let userId=localStorage.getItem("userId")
 
 
   const onSubmit = (values) => {
@@ -94,6 +92,7 @@ const DeveloperEditProfile = () => {
           linkedin_url: "https://www.linkedin.com/",
           github_url: "https://github.com/",
           intro_video_url: uploadedUrls?.introVideo,
+          userId: userId
         };
 
         dispatch(developerRegistration(payload));
@@ -121,13 +120,10 @@ const DeveloperEditProfile = () => {
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
   console.log(stepData,'stepdatttttaaaa');
 
-
-  let developerId=localStorage.getItem("developerId")
-
   useEffect(() => {
 
-    if(developerId){
-    dispatch(getDeveloperProfileDetails(developerId));
+    if(userId){
+    dispatch(getDeveloperProfileDetails(userId));
     dispatch(getCoutriesList());
     }
   }, []);
@@ -150,11 +146,14 @@ const DeveloperEditProfile = () => {
     setValue("phone_number",stepData?.phone_number);
     setValue("email",stepData?.email);
     // setValue("country",stepData?.country);
+     setValue("professional_title",stepData?.professional_title);
      setValue("country",{ label: stepData?.country, value: null });
     // setValue("state",stepData?.state);
     setValue("state",{ label: stepData?.state, value: null });
     // setValue("city",stepData?.city);
    setValue("city",{ label: stepData?.city, value: null });
+   setValue('language_preference',{ label: stepData?.language_preference, value: null });
+   setValue('total_experience',{ label: stepData?.total_experience, value: null });
     setValue("passcode",stepData?.passcode);
     setValue("time_zone",stepData?.time_zone);
     setValue("time_zone",{ label: stepData?.time_zone, value: null });
