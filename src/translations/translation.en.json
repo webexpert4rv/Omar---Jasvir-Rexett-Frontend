@@ -81,7 +81,7 @@
         "yearContract": "year contract",
         "yearAndAbove": "year and above",
         "permanent": "Permanent",
-        "skills": "Select or create new Skills",
+        "skills": "Skills",
         "jobDescription": "Job Description",
         "contract": "Contract",
         "endJob": "End Job",
@@ -481,9 +481,55 @@
         "summary":"Summary",
         "finalize":"Finalize",
         "developerStep1Heading":"What's the most convenient way for us to reach out to you?",
-        "developerStep1Para":"We suggest including an email and phone number"
+        "developerStep1Para":"We suggest including an email and phone number",
+        "developerNestedStep1Heading":"Tell us about your most recent job",
+        "developerNestedStep1Para":"We'll start there and work backward.",
+        "developerNestedStep2Heading":"Let's describe what you did",
+        "developerNestedStep2Para":"Choose from our pre-written examples below or write your own.",
+        "developerNestedStep3Heading":"Work history summary",
+        "developerIntroData2Heading":"Now, let's fill out your",
+        "developerMain2Head":"Work History",
+        "developerHeading2":"Here’s what you need to know:",
+        "developer2Para":"Employers scan your resume to see if you're a match.We'll suggest bullet points that make a great impression.",
+        "developerNestedStep1HeadingForStep3":"Tell us about your education",
+        "developerNestedStep1ParaForStep3":"Enter your education experience so far, even if you are a current student or did not graduate.",
+        "developerNestedStep2HeadingForStep3":"Education summary",
+        "developerNestedStep1HeadingForStep4":"What skills would you like to highlight?",
+        "developerNestedStep1ParaForStep4":"Choose from our pre-written examples below or write your own",
 
-      
+        "developerNestedStep2HeadingForStep4":"Good to have skills",
+        "developerNestedStep2ParaForStep4":"Choose from our pre-written examples below or write your own.",
+
+        "developerNestedStep1HeadingForStep5":"Briefly tell us about your background",
+        "developerNestedStep1ParaForStep5":"Choose from our pre-written examples below or write your own.",
+
+        "developerNestedStep2HeadingForStep6":"Project summary",
+
+
+        "developerNestedStep2ParaForStep3":"developerNestedStep2ParaForStep3",
+
+        "developerNestedStep1HeadingForStep6":"Tell us about your project history",
+        "developerNestedStep1ParaForStep6":"We'll start there and work backward.",
+
+         "developerIntroData3Heading":"Great, let’s work on your",
+        "developerMain3Head":"Education",
+        "developerHeading3":"Here’s what you need to know:",
+        "developer3Para":"Employers quickly scan the education section.We'll take care of the formatting so it’s easy to find.",
+
+        "developerIntroData4Heading":"Next, let’s take care of your",
+        "developerMain4Head":"Skills",
+        "developerHeading4":"Here’s what you need to know:",
+        "developer4Para":"Employers scan skills for relevant keywords.We’ll help you choose the best ones.",
+
+        "developerIntroData5Heading":"Finally, let’s work on your",
+        "developerMain5Head":"Summary",
+        "developerHeading5":"Here’s what you need to know:",
+        "developer5Para":"Your summary shows employers you’re right for their job.We’ll help you write a great one with expert content you can customize.",
+
+        "developerIntroData6Heading":"Finally, let’s work on your",
+        "developerMain6Head":"Project",
+        "developerHeading6":"Here’s what you need to know:",
+        "developer6Para":"Your summary shows employers you’re right for their job.We’ll help you write a great one with expert content you can customize."
 
 
       }

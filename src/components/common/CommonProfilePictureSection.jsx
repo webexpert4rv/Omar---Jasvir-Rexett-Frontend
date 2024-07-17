@@ -3,6 +3,7 @@ import { Col, Form } from "react-bootstrap";
 import { IoIosCamera } from "react-icons/io";
 import { IMAGE_ALLOWED_EXTENSIONS } from "../../pages/websiteRegisterForm/developer/developeStepConstant";
 import { IoCameraOutline, IoClose } from "react-icons/io5";
+import demoProfile from "../../assets/img/profile-demo.png"
 
 const CommonProfilePictureSection = ({
   register,
@@ -21,8 +22,8 @@ const CommonProfilePictureSection = ({
     if (file) {
       if (IMAGE_ALLOWED_EXTENSIONS.includes(file.type)) {
         const url = URL.createObjectURL(file);
-        setPreviewImage(url);
-        setImageFile(file);
+        setPreviewImage({...previewImage,profile_picture:url});
+        setImageFile({...imageFile,profile_picture:file});
         clearErrors(fieldName);
       } else {
         setValue(fieldName, null);
@@ -34,14 +35,15 @@ const CommonProfilePictureSection = ({
       }
     }
   };
+
   return (
     <>
       <div className="profile-upload-preview position-relative">
         <div className="profile-img-preview w-100 h-100">
-          <img src={previewImage ? previewImage : "/demo-user.png"} />
+          <img src={previewImage?.profile_picture ? previewImage?.profile_picture : demoProfile} />
         </div>
         <Form.Group>
-        <Form.Label className="font-14 fw-medium">Resume *</Form.Label>
+        <Form.Label className="font-14 fw-medium"></Form.Label>
           <Form.Control
             {...register(fieldName, {
               onChange: (e) => handleImageChange(e),

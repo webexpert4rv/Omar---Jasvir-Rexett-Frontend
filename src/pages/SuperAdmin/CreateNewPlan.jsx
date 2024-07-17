@@ -22,15 +22,25 @@ const CreateNewPlan = () => {
                             <div className="mb-3">
                                 <Form.Label className="font-14 fw-medium">Billing Period *</Form.Label>
                                 <div>
-                                    <Form.Check type="radio" name="billing_radio" className="billing_radio" label="Monthly" id="monthly_bill" checked />
+                                    <Form.Check type="radio" name="billing_radio" className="billing_radio" label="Monthly" id="monthly_bill" />
                                     <Form.Check type="radio" name="billing_radio" className="billing_radio" label="Annual" id="annual_bill" />
                                     <Form.Check type="radio" name="billing_radio" className="billing_radio" label="Trail" id="trail_bill" />
+                                    <Form.Check type="radio" name="billing_radio" className="billing_radio" label="Offer" id="offer_bill" />
                                 </div>
                             </div>
                         </Col>
                         <Col md={6}>
                             <div className="mb-3">
                                 <Form.Label className="font-14 fw-medium">Price *</Form.Label>
+                                <div className="d-flex gap-2 align-items-center">
+                                    <Form.Control type="text" className="common-field font-14 dollar-field" value="$" readOnly />
+                                    <Form.Control type="text" placeholder="E.g. $12.99" className="common-field font-14 w-100" />
+                                </div>
+                            </div>
+                        </Col>
+                        <Col md={6}>
+                            <div className="mb-3">
+                                <Form.Label className="font-14 fw-medium">Offer Price *</Form.Label>
                                 <div className="d-flex gap-2 align-items-center">
                                     <Form.Control type="text" className="common-field font-14 dollar-field" value="$" readOnly />
                                     <Form.Control type="text" placeholder="E.g. $12.99" className="common-field font-14 w-100" />

@@ -24,17 +24,20 @@ const CommonInput = ({
   icon,
   onChange,
   accept,
-  options = [], // For radio inputs or select options
+  options, // For radio inputs or select options
   selectOptions, // For react-select options
   isMulti = false,
-  isMinRequired = false,
-  isMaxRequired = false,
+  isMinRequired ,
+  isMaxRequired,
   invalidFieldRequired = false,
   defaultOption = "",
+  disabled,
   rows = null,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
+console.log(type,"ty")
+console.log(isMinRequired,"isMinRequired")
+console.log(isMaxRequired,"ismax")
   const handleTogglePassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
     if (onTogglePassword) {
@@ -68,7 +71,27 @@ const CommonInput = ({
                   onChange={(e) => field.onChange(e.target.value)}
                 />
               ));
-            } else if (type === "phone") {
+            }
+            if (type === "checkbox") {
+              return options.map((option, index) => (
+                <Form.Check
+                  {...field}
+                  key={index}
+                  type="checkbox"
+                  id={`${name}-${index}`}
+                  label={option.label}
+                  value={option.value}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      field.onChange(true);
+                    }else{
+                      field.onChange(false);
+                    }
+                  }}
+                />
+              ));
+            } 
+            else if (type === "phone") {
               return (
                 <>
                   <PhoneInput
@@ -178,13 +201,14 @@ const CommonInput = ({
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     // if date should not be less than current date
-                    min={
-                      isMinRequired && new Date().toISOString().split("T")[0]
+                    max={
+                       new Date().toISOString().split("T")[0]
                     }
                     // if date should not be less than current date
-                    max={
-                      isMaxRequired && new Date().toISOString().split("T")[0]
-                    }
+                    // max={
+                    //   isMaxRequired && new Date().toISOString().split("T")[0]
+                    // }
+                    disabled={disabled && name=="end_date"}
                   />
                   {showCloseIcon()}
                 </>

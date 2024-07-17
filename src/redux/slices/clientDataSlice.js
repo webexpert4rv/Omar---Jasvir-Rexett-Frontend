@@ -625,6 +625,22 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   };
 }
 
+//this is for website upload file
+export function fileUploadForWeb(fileData, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post(`web/upload-file`, fileData);
+      // dispatch(setActionSuccessFully());
+      return callback(result?.data?.data.Location);
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
 export function callPreSignedUrlResponse(payload, file, callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());

@@ -1,77 +1,247 @@
 import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Nav, Row, Tab } from "react-bootstrap";
 import masterCard from '../../../../assets/img/master-card.png'
 import visaCard from '../../../../assets/img/visa-card.png'
 import AeCard from '../../../../assets/img/ae-card.png'
 import { FaCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-const PaymentSetup = ({  currentTab }) => {
-    return(
+import { IoCheckmarkCircle } from "react-icons/io5";
+const PaymentSetup = ({ currentTab }) => {
+    return (
         <>
             <div>
                 {currentTab === "seven" &&
                     <div>
-                        <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey">
-                            <h2 className="section-head-sub mb-0 border-0">
-                                Payment Setup
-                            </h2>
-                        </div>
-                        <Row>
-                            <Col md={4}>
-                                <div className="active-plan">
-                                    <h3 className="plan-heading text-center">Basic Plan</h3>
-                                    <h2 className="price-plan text-center">$9.99<span>/month</span></h2>
-                                    <p className="fw-medium font-18 text-center mb-2">Features</p>
-                                    <ul className="ms-0 font-14 text-center">
-                                        <li>Timesheet management</li>
-                                        <li>Invoice management</li>
-                                        <li>User management</li>
-                                        <li>Message intergration</li>
-                                        <li>Booking meetings</li>
-                                    </ul>
-                                    <div className="text-center mt-3">
-                                        <div className="plan-valid">
-                                            <p className="mb-0">Plan valid till 22-07-2024</p>
-                                            <p className="mb-0 active-status">Active</p>
-                                        </div>
-                                    </div>
+                        <Tab.Container
+                            id="left-tabs-example"
+                            defaultActiveKey="plan_monthly"
+                        >
+                            <div className="d-flex gap-3 align-items-center pb-2 mb-3 border-bottom-grey justify-content-between">
+                                <h2 className="section-head-sub mb-0 border-0">
+                                    Payment Setup
+                                </h2><div className="d-flex justify-content-center">
+                                    <Nav variant="pills" className="application-pills">
+                                        <Nav.Item className="application-item">
+                                            <Nav.Link eventKey="plan_monthly" className="application-link">
+                                                Monthly
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item className="application-item">
+                                            <Nav.Link eventKey="plan_annual" className="application-link">
+                                                Annual
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                    </Nav>
                                 </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="active-plan">
-                                    <h3 className="plan-heading text-center">Standard Plan</h3>
-                                    <h2 className="price-plan text-center">$19.99<span>/month</span></h2>
-                                    <p className="fw-medium font-18 text-center mb-2">Features</p>
-                                    <ul className="ms-0 font-14 text-center">
-                                        <li>Timesheet management</li>
-                                        <li>Invoice management</li>
-                                        <li>User management</li>
-                                        <li>Message intergration</li>
-                                        <li>Booking meetings</li>
-                                    </ul>
-                                    <div className="text-center mt-3">
-                                        <Button variant="transparent" className="main-btn font-14">Upgrade now</Button>
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="active-plan">
-                                    <h3 className="plan-heading text-center">Enterprise Plan</h3>
-                                    <h2 className="price-plan text-center">$29.99<span>/month</span></h2>
-                                    <p className="fw-medium font-18 text-center mb-2">Features</p>
-                                    <ul className="ms-0 font-14 text-center">
-                                        <li>Timesheet management</li>
-                                        <li>Invoice management</li>
-                                        <li>User management</li>
-                                        <li>Message intergration</li>
-                                        <li>Booking meetings</li>
-                                    </ul>
-                                    <div className="text-center mt-3">
-                                        <Button variant="transparent" className="main-btn font-14">Upgrade now</Button>
-                                    </div>
-                                </div>
-                            </Col>
-                        </Row>
+                            </div>
+                            <div>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="plan_monthly">
+                                        <Row>
+                                            <Col md={4}>
+                                                <div className="active-plan h-100">
+                                                    <span className="current-plan-ribbon">Current Plan</span>
+                                                    <h3 className="plan-heading">Basic</h3>
+                                                    <h2 className="price-plan"><sup>$</sup>9.99<span>/Month</span></h2>
+                                                    <div className="text-center my-3">
+                                                        <Button variant="transparent" className="main-btn font-14 w-100">Reactivate</Button>
+                                                    </div>
+                                                    <ul className="ms-0 font-14 features-list">
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Timesheet management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Invoice management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            User management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Message intergration
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Booking meetings
+                                                        </li>
+                                                    </ul>
+                                                    <div className="text-center mt-3">
+                                                        <div className="plan-valid">
+                                                            <p className="mb-0">Plan valid till 22-07-2024</p>
+                                                            <p className="mb-0 active-status">Active</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="active-plan h-100">
+                                                    <h3 className="plan-heading">Standard</h3>
+                                                    <h2 className="price-plan"><sup>$</sup>19.99<span>/Month</span></h2>
+                                                    <div className="text-center my-3">
+                                                        <Button variant="transparent" className="main-btn font-14 w-100">Upgrade now</Button>
+                                                    </div>
+                                                    <ul className="ms-0 font-14 features-list">
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Timesheet management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Invoice management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            User management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Message intergration
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Booking meetings
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="active-plan h-100">
+                                                    <h3 className="plan-heading">Enterprise</h3>
+                                                    <h2 className="price-plan"><sup>$</sup>29.99<span>/Month</span></h2>
+                                                    <div className="text-center my-3">
+                                                        <Button variant="transparent" className="main-btn font-14 w-100">Upgrade now</Button>
+                                                    </div>
+                                                    <ul className="ms-0 font-14 features-list">
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Timesheet management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Invoice management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            User management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Message intergration
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Booking meetings
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="plan_annual">
+                                        <Row>
+                                            <Col md={4}>
+                                                <div className="active-plan h-100">
+                                                    <h3 className="plan-heading">Basic</h3>
+                                                    <h2 className="price-plan"><sup>$</sup>108.99<span>/Year</span></h2>
+                                                    <div className="text-center my-3">
+                                                        <Button variant="transparent" className="main-btn font-14 w-100">Upgrade</Button>
+                                                    </div>
+                                                    <ul className="ms-0 font-14 features-list">
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Timesheet management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Invoice management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            User management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Message intergration
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Booking meetings
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="active-plan h-100">
+                                                    <h3 className="plan-heading">Standard</h3>
+                                                    <h2 className="price-plan"><sup>$</sup>227.99<span>/Year</span></h2>
+                                                    <div className="text-center my-3">
+                                                        <Button variant="transparent" className="main-btn font-14 w-100">Upgrade now</Button>
+                                                    </div>
+                                                    <ul className="ms-0 font-14 features-list">
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Timesheet management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Invoice management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            User management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Message intergration
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Booking meetings
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="active-plan h-100">
+                                                    <h3 className="plan-heading">Enterprise</h3>
+                                                    <h2 className="price-plan"><sup>$</sup>347.99<span>/Year</span></h2>
+                                                    <div className="text-center my-3">
+                                                        <Button variant="transparent" className="main-btn font-14 w-100">Upgrade now</Button>
+                                                    </div>
+                                                    <ul className="ms-0 font-14 features-list">
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Timesheet management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Invoice management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            User management
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Message intergration
+                                                        </li>
+                                                        <li>
+                                                            <span><IoCheckmarkCircle /></span>
+                                                            Booking meetings
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </div>
+                        </Tab.Container>
                         <div className="mt-4">
                             <h5 className="fw-semibold mb-3">Added payment method</h5>
                             <p className="fw-medium mb-1">Linked Card *</p>

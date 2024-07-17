@@ -4,8 +4,9 @@ import { FaArrowUp, FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from 'react
 import { FiExternalLink } from 'react-icons/fi'
 import { GoClockFill } from 'react-icons/go'
 import { MdLocalPhone, MdLocationOn, MdWork } from 'react-icons/md'
+import demoImg from "../../../assets/img/profile-demo.png"
 
-const ResumeOverView = () => {
+const ResumeOverView = ({activeStep}) => {
   return (
     <>
    <div>
@@ -22,8 +23,10 @@ const ResumeOverView = () => {
                           </h2>
                           <Row>
                             <Col md={6} className="px-0 h-100">
-                              <div className="resume-basic-info text-center highlight-resume-section">
-                                <div className="resume-imgbx mx-auto mb-2"></div>
+                              <div className={`resume-basic-info text-center ${activeStep==1 ? "highlight-resume-section":""} `}>
+                                <div className="resume-imgbx mx-auto mb-2">
+                                  <img src={demoImg}/>
+                                </div>
                                 <h3 className="resume-name">
                                   John Doe
                                   <span className="text-green ms-2 cursor-pointer">
@@ -92,7 +95,7 @@ const ResumeOverView = () => {
                                   </ul>
                                 </div>
                               </div>
-                              <div className="connect-social-media px-2">
+                              <div className={`connect-social-media px-2 ${activeStep==6 ? "highlight-resume-section":""}`}>
                                 <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                   <h3 className="subheading-resume mb-0">
                                     Expertise
@@ -105,7 +108,7 @@ const ResumeOverView = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="connect-social-media px-2">
+                              <div className={`connect-social-media px-2 ${activeStep==3 ? "highlight-resume-section":""}`}>
                                 <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                   <h3 className="subheading-resume text-center mb-0">
                                     Skills
@@ -117,7 +120,7 @@ const ResumeOverView = () => {
                                   </li>
                                 </ul>
                               </div>
-                              <div className="connect-social-media px-2">
+                              <div className={`connect-social-media px-2 ${activeStep==4 ? "highlight-resume-section":""}`}>
                                 <div>
                                   <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                     <h3 className="subheading-resume mb-0">
@@ -175,7 +178,7 @@ const ResumeOverView = () => {
                               </div>
                             </Col>
                             <Col md={6} className="px-0 h-100">
-                              <div className="about-info px-2">
+                              <div className={`about-info px-2 ${activeStep==5 ? "highlight-resume-section":""}`}>
                                 <div className="">
                                   <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                     <h3 className="subheading-resume mb-0">
@@ -190,7 +193,7 @@ const ResumeOverView = () => {
                                   </p>
                                 </div>
                               </div>
-                              <div className="about-info px-2 pt-2">
+                              <div  className={`about-info px-2 pt-2 ${activeStep==2 ? "highlight-resume-section":""}`}>
                                 <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                   <h3 className="subheading-resume mb-0">
                                     Experience
@@ -220,7 +223,7 @@ const ResumeOverView = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="about-info px-2 pt-2">
+                              <div className={`about-info px-2 pt-2 ${activeStep==7 ? "highlight-resume-section":""}`}>
                                 <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-2">
                                   <h3 className="subheading-resume mb-0">
                                     Education

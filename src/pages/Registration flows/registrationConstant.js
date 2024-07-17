@@ -2,6 +2,10 @@ import { TbRulerOff } from "react-icons/tb";
 import {
   JOB_TYPES_OPTIONS,
   WORKPLACE_TYPES_OPTIONS,
+  LANGUAGE_PREFERENCES_OPTIONS,
+  MONTH_YEAR,
+  YEAR_OPTIONS,
+  WORK_TYPE
 } from "../../components/common/JobPostForm/constant";
 
 
@@ -67,15 +71,96 @@ export const DEVELOPER_STEPPER_HEADINGS = {
   4: { heading: "developerStep4Heading", para: "developerStep4Para" },
 };
 
-export const getActiveStepHeadingData = (activeStep ,type ) => {
-  console.log(type,"type")
+export const DEVELOPER_NESTED_STEPPER_HEADINGS = {
+  1: { heading: "developerNestedStep1Heading", para: "developerNestedStep1Para" },
+  2: { heading: "developerNestedStep3Heading", para: "" },
+  4:  { heading: "developerNestedStep4Heading", para: "developerNestedStep4Para" },
+};
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3 = {
+  2: { heading: "developerNestedStep1HeadingForStep3", para: "developerNestedStep1ParaForStep3" },
+  3: { heading: "developerNestedStep2HeadingForStep3", para: "'" },
+};
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4 = {
+  1: { heading: "developerNestedStep1HeadingForStep4", para: "developerNestedStep1ParaForStep4" },
+  2: { heading: "developerNestedStep2HeadingForStep4", para: "developerNestedStep2ParaForStep4" },
+  4:  { heading: "developerNestedStep3HeadingForStep3", para: "" },
+};
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_5 = {
+  1: { heading: "developerNestedStep1HeadingForStep5", para: "developerNestedStep1ParaForStep5" },
+
+};
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_6 = {
+  1: { heading: "developerNestedStep1HeadingForStep6", para: "developerNestedStep1ParaForStep6" },
+  2: { heading: "developerNestedStep2HeadingForStep6", para: "" },
+
+};
+
+
+
+export const DEVELOPER_INTRO_DATA = {
+  2:{
+    heading:"developerIntroData2Heading",
+    mainHead:"developerMain2Head",
+    heading1:"developerHeading2",
+    para:"developer2Para"
+  },
+  3:{
+    heading:"developerIntroData3Heading",
+    mainHead:"developerMain3Head",
+    heading1:"developerHeading3",
+    para:"developer3Para"
+  },
+  4:{
+    heading:"developerIntroData4Heading",
+    mainHead:"developerMain4Head",
+    heading1:"developerHeading4",
+    para:"developer4Para"
+  },
+  5:{
+    heading:"developerIntroData5Heading",
+    mainHead:"developerMain5Head",
+    heading1:"developerHeading5",
+    para:"developer5Para"
+  },
+  6:{
+    heading:"developerIntroData6Heading",
+    mainHead:"developerMain6Head",
+    heading1:"developerHeading6",
+    para:"developer6Para"
+  },
+
+
+};
+
+
+export const getActiveStepHeadingData = (activeStep ,type,nestedActiveStep ) => {
   if (type === 'client') {
     return CLIENT_STEPPER_HEADINGS[activeStep] ||{ heading: '' }; 
   } 
   else if (type === 'vendor') {
     return VENDOR_STEPPER_HEADINGS[activeStep] || { heading: '' }; 
   } else {
-    return DEVELOPER_STEPPER_HEADINGS[activeStep] || { heading: '' }; 
+    if(nestedActiveStep>0 && activeStep==2){
+      return DEVELOPER_NESTED_STEPPER_HEADINGS[nestedActiveStep] || { heading: '' }; 
+    }else if(nestedActiveStep>0 && activeStep==3){
+      console.log("hello33")
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3[nestedActiveStep] || { heading: '' }; 
+    }else if(nestedActiveStep>0 && activeStep==4){
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4[nestedActiveStep] || { heading: '' }; 
+
+    }else if(nestedActiveStep>0 && activeStep==5){
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_5[nestedActiveStep] || { heading: '' }; 
+     
+    }else if(nestedActiveStep>0 && activeStep==6){
+      return DEVELOPER_STEPPER_HEADINGS_FOR_STEP_6[nestedActiveStep] || { heading: '' };
+    }
+    else{
+      return DEVELOPER_STEPPER_HEADINGS[activeStep] || { heading: '' };
+    }
+   
     
   }
 
@@ -84,6 +169,15 @@ export const getActiveStepHeadingData = (activeStep ,type ) => {
 
 export const getActiveStepVendorHeadingData = (activeStep) =>
   VENDOR_STEPPER_HEADINGS[activeStep] || null;
+
+export const getStepperIntroData=(activeStep)=>{
+   return DEVELOPER_INTRO_DATA[activeStep]
+
+  
+}
+
+// export const getActiveStepVendorHeadingData = (activeStep) =>
+//   VENDOR_STEPPER_HEADINGS[activeStep] || null;
 
 const CLIENT_STEP_1_FIELDS = {
   indivisual: [
@@ -187,7 +281,8 @@ const CLIENT_STEP_1_FIELDS = {
       label: "establishmentYear",
       fieldName: "establishment_year",
       type: "date",
-      isMaxRequired: true,
+      isMinRequired: true,
+      isMaxRequired:false,
       // placeholder: "Enter Tax ID",
       rules: { required: "Tax ID is required" },
       columnWidth: 6,
@@ -396,7 +491,8 @@ const VENDOR_STEP_1_FIELDS = [
     label: "establishmentYear",
     fieldName: "establishment_year",
     type: "date",
-    isMaxRequired: true,
+    isMinRequired: true,
+      isMaxRequired:false,
     rules: { required: "Establishment year is required" },
     columnWidth: 6,
     isRequired: true,
@@ -633,11 +729,11 @@ const DEVELOPER_STEP_1_FIELDS = [
       isRequired: true,
     },
     {
-      label: "surname",
+      label: "Last Name",
       fieldName: "last_name",
       type: "text",
       placeholder: "e.g. Doe",
-      rules: { required: "Surname is required" },
+      rules: { required: "Last name is required" },
       columnWidth: 6,
       isRequired: true,
     },
@@ -651,12 +747,13 @@ const DEVELOPER_STEP_1_FIELDS = [
       isRequired: true,
     },
     {
-      label: "Language Proficiency",
-      fieldName: "language_proficiency",
+      label: "Language Preferences",
+      fieldName: "language_preferences",
       type: "normal-select",
-      // rules: { required: "Profession is required" },
+      rules: { required: "Preferences is required" },
       columnWidth: 6,
-      isRequired: false,
+      isRequired: true,
+      options:LANGUAGE_PREFERENCES_OPTIONS,
       defaultOption: "Select",
     },
     {
@@ -684,7 +781,22 @@ const DEVELOPER_STEP_1_FIELDS = [
       isRequired: true,
     },
     {
+      isPasswordSection: true,
+    },
+    {
       isLocation: true,
+    },
+    
+    {
+      label: "address",
+      fieldName: "address",
+      type: "select",
+      placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Address is required" },
+      columnWidth: 12,
+      isRequired: true,
+      isAutocomplete: true,
+      defaultOption: "Select",
     },
     {
       label: "Resume",
@@ -722,33 +834,33 @@ const DEVELOPER_STEP_1_FIELDS = [
       columnWidth: 6,
       isRequired: true,
     },
-    {
-      label: "Github",
-      fieldName: "git_hub", 
-      type: "text",
-      placeholder: "e.g. www.github.com/profile/12345",
-      rules: { required: "GitHub in is required" },
-      columnWidth: 2,
-      isRequired: true,
-    },
-    {
-      label: "Github",
-      fieldName: "git_hub", 
-      type: "text",
-      placeholder: "e.g. www.github.com/profile/12345",
-      rules: { required: "GitHub in is required" },
-      columnWidth: 2,
-      isRequired: true,
-    },
-    {
-      label: "Github",
-      fieldName: "git_hub", 
-      type: "text",
-      placeholder: "e.g. www.github.com/profile/12345",
-      rules: { required: "GitHub in is required" },
-      columnWidth: 2,
-      isRequired: true,
-    },
+    // {
+    //   label: "Github",
+    //   fieldName: "git_hub", 
+    //   type: "text",
+    //   placeholder: "e.g. www.github.com/profile/12345",
+    //   rules: { required: "GitHub in is required" },
+    //   columnWidth: 2,
+    //   isRequired: true,
+    // },
+    // {
+    //   label: "Github",
+    //   fieldName: "git_hub", 
+    //   type: "text",
+    //   placeholder: "e.g. www.github.com/profile/12345",
+    //   rules: { required: "GitHub in is required" },
+    //   columnWidth: 2,
+    //   isRequired: true,
+    // },
+    // {
+    //   label: "Github",
+    //   fieldName: "git_hub", 
+    //   type: "text",
+    //   placeholder: "e.g. www.github.com/profile/12345",
+    //   rules: { required: "GitHub in is required" },
+    //   columnWidth: 2,
+    //   isRequired: true,
+    // },
     
   ]
 
@@ -758,35 +870,235 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "job_title",
       type: "text",
       placeholder: "e.g. Web Developer",
-      rules: { required: "Web developer is required" },
+      rules: { required: "Job Title is required" },
       columnWidth: 6,
       isRequired: true,
     },
     {
-      label: "surname",
-      fieldName: "last_name",
+      label: "Employer",
+      fieldName: "company_name",
       type: "text",
-      placeholder: "e.g. Doe",
-      rules: { required: "Surname is required" },
+      placeholder: "e.g. Microsoft",
+      rules: { required: "Employer is required" },
       columnWidth: 6,
       isRequired: true,
     },
     {
-      label: "Profession",
-      fieldName: "profession",
-      type: "text",
-      placeholder: "e.g. Software Engineer",
-      rules: { required: "Profession is required" },
+      label: "Location",
+      fieldName: "job_location",
+      type: "select",
+      placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Location is required" },
       columnWidth: 6,
       isRequired: true,
-    }
+      isAutocomplete: true,
+    },
+    {
+      label: "Work Type",
+      fieldName: "work_type",
+      type: "normal-select",
+      options:WORK_TYPE,
+      // placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Work type is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "Select Type",
+    },
+    {
+      label: "Start Date",
+      fieldName: "start_date",
+      type: "date",
+      isMinRequired: true,
+      isMaxRequired:false,
+      rules: { required: "Start date is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "Select Month",
+    },
+  
+
+    {
+      label: "End Date",
+      fieldName: "end_date",
+      type: "date",
+      // placeholder: "e.g. Street 1341,New area,CA,USA",
+      isMinRequired: true,
+      isMaxRequired:false,
+      // rules: { required: "End date is required" },
+      columnWidth: 6,
+      // isRequired: false,
+      defaultOption: "Select Month",
+    },
+    
+    {
+      label: "Are you currently Working in this job?",
+      fieldName: "is_still_working",
+      type: "checkbox",
+      options:["pankaj"],
+      // rules: { required: "Job location is required" },
+      columnWidth: 12,
+      isRequired: false,
+    },
+  ]
+
+  const NESTED_DEVELOPER_STEP_2_FIELDS=[
+    {
+      label: "University Name",
+      fieldName: "name",
+      type: "text",
+      placeholder: "e.g. Delhi University",
+      rules: { required: "University name is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "University Location",
+      fieldName: "location",
+      type: "text",
+      placeholder: "e.g. Delhi,India",
+      rules: { required: "University location is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    // {
+    //   label: "Degree",
+    //   fieldName: "degree",
+    //   type: "normal-select",
+    //   placeholder: "e.g. Delhi,India",
+    //   rules: { required: "University location is required" },
+    //   columnWidth: 6,
+    //   isRequired: true,
+    // },
+    // {
+    //   label: "Enter Degree",
+    //   fieldName: "degree",
+    //   type: "text",
+    //   placeholder: "e.g. Delhi,India",
+    //   rules: { required: "University location is required" },
+    //   columnWidth: 6,
+    //   isRequired: true,
+    // },
+    {
+      label: "Field of Study",
+      fieldName: "study",
+      type: "text",
+      placeholder: "e.g. Delhi,India",
+      rules: { required: "University location is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    
+    {
+      label: "Graduation Date",
+      fieldName: "graduate_date",
+      type: "date",
+      isMinRequired: true,
+      isMaxRequired:false,
+      // placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Job location is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "Select Month",
+    },
+
   ]
 
 
-
-
+  const NESTED_DEVELOPER_STEP_6_FIELDS=[
+    {
+      label: "Project Title",
+      fieldName: "project_title",
+      type: "text",
+      placeholder: "e.g. AI chat bot",
+      rules: { required: "Project title is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "Role",
+      fieldName: "role_in_project",
+      type: "text",
+      placeholder: "e.g. Team Lead",
+      rules: { required: "Role is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    // {
+    //   label: "Degree",
+    //   fieldName: "degree",
+    //   type: "normal-select",
+    //   placeholder: "e.g. Delhi,India",
+    //   rules: { required: "University location is required" },
+    //   columnWidth: 6,
+    //   isRequired: true,
+    // },
+    // {
+    //   label: "Enter Degree",
+    //   fieldName: "degree",
+    //   type: "text",
+    //   placeholder: "e.g. Delhi,India",
+    //   rules: { required: "University location is required" },
+    //   columnWidth: 6,
+    //   isRequired: true,
+    // },
+    {
+      label: "Project Type",
+      fieldName: "project_type",
+      type: "normal-select",
+      placeholder: "e.g. Delhi,India",
+      rules: { required: "Project is required" },
+      columnWidth: 12,
+      isRequired: true,
+      options: WORKPLACE_TYPES_OPTIONS,
+    },
+    
+    {
+      label: "Project URL",
+      fieldName: "project_link",
+      type: "text",
+      placeholder: "e.g. https://example.com",
+      rules: { required: "Project url is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "",
+    },
+    {
+      label: "Skill",
+      fieldName: "tech_stacks_used",
+      type: "text",
+      placeholder: "e.g. HTML",
+      rules: { required: "Skill is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "",
+    },
+    {
+      label: "Start Date",
+      fieldName: "project_start_date",
+      type: "date",
+      isMinRequired: true,
+      isMaxRequired:false,
+      rules: { required: "Job location is required" },
+      columnWidth: 6,
+      isRequired: true,
+      defaultOption: "Select Month",
+    },
   
 
+    {
+      label: "End Date",
+      fieldName: "project_end_date",
+      type: "date",
+      // placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Job location is required" },
+      columnWidth: 6,
+      isMinRequired: true,
+      isMaxRequired:false,
+      isRequired: true,
+      defaultOption: "Select Month",
+    },
+
+  ]
 
 
 
@@ -795,17 +1107,74 @@ const DEVELOPER_STEP_FIELDS = {
 };
 
 const NESTED_DEVELOPER_STEP_FIELDS={
-  1:NESTED_DEVELOPER_STEP_1_FIELDS
+  1:NESTED_DEVELOPER_STEP_1_FIELDS,
+}
+const DEVELOPER_STEP_FIELDS_FOR_STEP_3={
+  3:NESTED_DEVELOPER_STEP_2_FIELDS,
+}
+const DEVELOPER_STEP_FIELDS_FOR_STEP_6={
+  1:NESTED_DEVELOPER_STEP_6_FIELDS,
 }
 
 export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
-  if(nestedActiveStep>0){
-    return NESTED_DEVELOPER_STEP_FIELDS[activeStep] || null;
-  }else{
-   return DEVELOPER_STEP_FIELDS[activeStep] || null;
+  console.log(activeStep,nestedActiveStep,"cosn")
+  if(nestedActiveStep>0  &&activeStep==2){
+    return NESTED_DEVELOPER_STEP_FIELDS[1] || null;
+  }else if(nestedActiveStep>0  &&activeStep==3){
+   return DEVELOPER_STEP_FIELDS_FOR_STEP_3[3] || null;
+  }else if(nestedActiveStep>0  &&activeStep==6){
+   return DEVELOPER_STEP_FIELDS_FOR_STEP_6[1] || null
   }
+  else{
+    return DEVELOPER_STEP_FIELDS[activeStep] || null
+   }
 }
   
   
+export const getStepDataFromAPI=(data,activeStep)=>{
+  if(data){
+    return data[`step${activeStep}`]
+  }else{
+    return {}
+  }
+}
+
+
+const EDUCATION_KEYS= {
+  university_name: "",
+  address: "",
+  degree_id: "",
+  field_of_study: "",
+  start_year: "",
+  end_month: "",
+  end_year: 0,
+  currently_attending: "",
+  description: "",
+}
+
+
+const PROJECT_KEYS={
+    "project_title": "",
+    "project_description": "",
+    "tech_stacks_used": "",
+    "role_in_project": "",
+    "project_team_size": "",
+    "project_link": "",
+    "project_start_date": "",
+    "project_end_date": "",
+    "project_type":  "" 
+}
+
+
+const KEYS={
+  5:EDUCATION_KEYS,
+  6:PROJECT_KEYS
+}
+
+export const stepperFormKeys=(activeStep)=>{
+ return KEYS[activeStep]
+
+}
+
 
 

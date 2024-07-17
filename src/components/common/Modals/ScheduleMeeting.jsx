@@ -137,7 +137,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <Form.Control type="text" className="common-field font-14" placeholder="Add title" value="" readOnly />
+                                        <Form.Control type="text" className="common-field font-14" placeholder="Add title" />
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">

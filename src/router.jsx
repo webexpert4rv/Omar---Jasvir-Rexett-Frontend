@@ -35,6 +35,7 @@ import SuperDashboard from "./pages/SuperAdmin/Dashboard";
 import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
 import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
 import ClientListing from "./pages/SuperAdmin/ClientListing";
+import FeedbackView from "./pages/admin/FeedbackView";
 
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ResetPassword from "./pages/Authentication/ResetPassword";
@@ -170,6 +171,7 @@ export const route = [
     element: <DeveloperRegistrationStepper />,
     public: true,
   },
+  
   {
     path: "/vendor-registration",
     element: <VendorRegistrationStepper />,
@@ -225,6 +227,7 @@ export const route = [
     private: true,
     isClient: true,
   },
+
   {
     path: "/client/hired-developers",
     element: <HiredDevelopers />,
@@ -522,6 +525,12 @@ export const route = [
     private: true,
   },
   {
+    path: "/admin/developer-registration",
+    element: <DeveloperRegistrationStepper/>,
+    isAdmin: true,
+    private: true,
+  },
+  {
     path: "/admin/developer-list",
     element: <DeveloperList />,
     isAdmin: true,
@@ -717,6 +726,12 @@ export const route = [
   {
     path: "/super-admin/client-listing",
     element: <ClientListing />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/feedback-view",
+    element: <FeedbackView />,
     isAdmin: true,
     private: true,
   },
