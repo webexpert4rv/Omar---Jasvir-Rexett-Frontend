@@ -222,7 +222,7 @@ const CLIENT_STEP_1_FIELDS = {
         },
       },
       columnWidth: 6,
-      isRequired: true,
+      isRequired: false,
     },
     {
       isPasswordSection: true,
@@ -750,7 +750,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Language Preferences",
-      fieldName: "language_preferences",
+      fieldName: "language_preference",
       type: "normal-select",
       rules: { required: "Preferences is required" },
       columnWidth: 6,
@@ -760,7 +760,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Experience",
-      fieldName: "experience",
+      fieldName: "total_experience",
       type: "normal-select",
       rules: { required: "Experience is required" },
       columnWidth: 6,
