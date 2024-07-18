@@ -526,7 +526,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "Total nos. of IT Recruiters ",
-    fieldName: "Total_nos._of_IT_Recruiters",
+    fieldName: "total_it_recruiter",
     type: "text",
     placeholder: "e.g. 8 ",
     rules: { required: "This field is required" },
@@ -576,7 +576,7 @@ const VENDOR_STEP_1_FIELDS = [
  const VENDOR_STEP_2_FIELDS = [
   {
     label: "Name",
-    fieldName: "name",
+    fieldName: "proprietor_name",
     type: "text",
     placeholder: "e.g. John",
     rules: { required: "Name is required" },
@@ -585,7 +585,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "Position",
-    fieldName: "position",
+    fieldName: "proprietor_position",
     type: "text",
     placeholder: "e.g. Microsoft",
     rules: { required: "Position is required" },
@@ -594,7 +594,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "Phone Number",
-    fieldName: "phone_number",
+    fieldName: "proprietor_contact_number",
     type: "phone",
     placeholder: "e.g. +918979003975",
     rules: { required: "Phone number is required" },
@@ -603,7 +603,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "Email",
-    fieldName: "email",
+    fieldName: "proprietor_email",
     type: "email",
     placeholder: "e.g. johndoe123@gmail.com",
     rules: {
@@ -620,7 +620,7 @@ const VENDOR_STEP_1_FIELDS = [
 const VENDOR_STEP_4_FIELDS = [
   {
     label: "areaOfSpecialization",
-    fieldName: "area_of_specialization",
+    fieldName: "specialization",
     type: "normal-select",
     // placeholder: "",
     rules: { required: "Type of specialization is required" },
@@ -642,7 +642,7 @@ const VENDOR_STEP_4_FIELDS = [
 
   {
     label: "Your Turnaround time to close Contract Positions",
-    fieldName: "Your_Turnaround_time_to_close_Contract_Positions",
+    fieldName: "turn_around_time_to_close_contract_position",
     type: "text",
     placeholder: "e.g. 8 hours",
     rules: { required: "This field is required" },
@@ -660,7 +660,7 @@ const VENDOR_STEP_4_FIELDS = [
   },
   {
     label: "Please share your success Stories with atleast 2 of your exiting IT customers and their Contact details for reference check ",
-    fieldName: "Please_share_your_success_Stories_with_atleast_2_of_your_exiting_IT_customers_and_their_Contact_details_for_reference_check ",
+    fieldName: "success_story",
     type: "text",
     placeholder: "e.g. Desc",
     rules: { required: "This field is required" },

@@ -27,32 +27,14 @@ const VendorDecisionMakers = ({
     console.log(values, "values");
   };
 
-  // const newStepHeading = getActiveStepHeadingData(activeStep);
   const fields = getVendorActiveStepFields(activeStep);
-  // console.log(type,"decsionmakertype")
-
-  // console.log(newStepHeading, "newStep");
-  // console.log(fields, "fields");
-  // console.log(activeStepFields, "activeStepFields");
-  // console.log(activeStep, "activeStep");
-
-  const decreaseStepCount = () => {
-    setActiveStep((prev) => prev - 1);
-    localStorage.setItem("clientActiveStep", activeStep - 1);
-  };
+  
 
   return (
     <>
       <section>
         <div>
-        <div>
-                <span
-                  onClick={decreaseStepCount}
-                  className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer"
-                >
-                  <FaArrowLeft /> Go Back
-                </span>
-              </div>
+      
           <Row>
             <Col md={12}>
               <StepperHeadingSection activeStep={activeStep} type={"vendor"}/>

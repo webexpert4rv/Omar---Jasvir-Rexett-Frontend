@@ -69,7 +69,7 @@ const ClientRegistrationStepper = () => {
   }, [activeStep]);
   const increaseStepCount = () => {
     if (activeStep === 4) {
-      // localStorage.removeItem("clientActiveStep");
+      localStorage.removeItem("clientActiveStep");
     } else {
       setActiveStep((prev) => prev + 1);
       localStorage.setItem("clientActiveStep", activeStep + 1);
