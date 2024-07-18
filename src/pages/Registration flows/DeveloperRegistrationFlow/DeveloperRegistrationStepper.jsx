@@ -157,9 +157,7 @@ const DeveloperRegistrationStepper = () => {
   }, [activeStep]);
 
   const increaseStepCount = (isNested) => {
-    if(!smallLoader){
-      return 
-    }
+
     if (isNested) {
       setNestedActiveStep((prev) => prev + 1);
       localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
@@ -575,10 +573,19 @@ const DeveloperRegistrationStepper = () => {
           linkedin_url: values?.linked_in,
           github_url: values?.git_hub,
           intro_video_url: uploadedUrls?.introVideo,
+          userId: developer_id?developer_id:null
         };
 
         dispatch(developerRegistration(payload,()=>{
-       setIsRegistrationStepModal(true);
+          if(!ifDone){
+            setIsRegistrationStepModal(true);
+        
+          }else{
+            increaseStepCount(false)
+          }
+          setDone(true)
+        
+       
 
         }));
       });
@@ -787,12 +794,6 @@ const DeveloperRegistrationStepper = () => {
         introVideo: imageFile.introVideo,
         profile_picture: imageFile.profile_picture,
       });
-      if(ifDone){
-        increaseStepCount(false);
-        setDone(true)
-      }
-
-   
     }
   };
   const handleSetActiveStep = (step) => {
@@ -838,7 +839,7 @@ const DeveloperRegistrationStepper = () => {
           case 4:
             case 5:
               case 6: 
-       return "Preview"
+       return "Done"
     }
   };
 
