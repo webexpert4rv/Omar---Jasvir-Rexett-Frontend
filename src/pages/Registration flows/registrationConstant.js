@@ -222,7 +222,7 @@ const CLIENT_STEP_1_FIELDS = {
         },
       },
       columnWidth: 6,
-      isRequired: false,
+      isRequired: true,
     },
     {
       isPasswordSection: true,
@@ -791,6 +791,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       },
       columnWidth: 6,
       isRequired: true,
+      readOnly:true
     },
     {
       isPasswordSection: true,
