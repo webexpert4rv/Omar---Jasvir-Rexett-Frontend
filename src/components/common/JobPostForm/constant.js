@@ -94,6 +94,13 @@ const last30Years = Array.from({ length: 31 }, (_, i) => {
 
 export const YEAR_OPTIONS = last30Years;
 
+const range = Array.from({ length: 15 }, (_, i) => ({
+  value: i + 1,
+  label: `${i + 1} year`
+}));
+
+export const EXPERIENCE_YEAR=range
+
 export const WORK_TYPE=[
   {label:"Remote",value:"remote"},
   {label:"OnSite",value:"onsite"},

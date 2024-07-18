@@ -8,6 +8,7 @@ import { VERIFY_USER_MESSAGE } from "../../pages/websiteRegisterForm/client/cons
 import { setSuccessActionData } from "./developerDataSlice";
 
 const initialClientData = {
+
   jobId: null,
   screenLoader: false,
   approvedLoader: false,
@@ -625,21 +626,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   };
 }
 
-//this is for website upload file
-export function fileUploadForWeb(fileData, callback) {
-  return async (dispatch) => {
-    dispatch(setSmallLoader());
-    try {
-      let result = await clientInstance.post(`web/upload-file`, fileData);
-      // dispatch(setActionSuccessFully());
-      return callback(result?.data?.data.Location);
-    } catch (error) {
-      const message = error.message || "Something went wrong";
-      toast.error(message, { position: "top-center" });
-      dispatch(setFailClientData());
-    }
-  };
-}
+
 
 export function callPreSignedUrlResponse(payload, file, callback) {
   return async (dispatch) => {
@@ -1076,7 +1063,6 @@ export function getWebClientLookUp(callback) {
     dispatch(setScreenLoader());
     try {
       let result = await authInstance.get(`web/get-lookups`);
-      console.log(result.data,"clientLookupdata")
       dispatch(setClientLook(result?.data?.data));
       callback && callback(result?.data?.data)
     } catch (error) {

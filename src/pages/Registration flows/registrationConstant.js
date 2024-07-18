@@ -5,7 +5,8 @@ import {
   LANGUAGE_PREFERENCES_OPTIONS,
   MONTH_YEAR,
   YEAR_OPTIONS,
-  WORK_TYPE
+  WORK_TYPE,
+  EXPERIENCE_YEAR
 } from "../../components/common/JobPostForm/constant";
 
 
@@ -220,7 +221,7 @@ const CLIENT_STEP_1_FIELDS = {
         },
       },
       columnWidth: 6,
-      isRequired: true,
+      isRequired: false,
     },
     {
       isPasswordSection: true,
@@ -697,6 +698,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       rules: { required: "Last name is required" },
       columnWidth: 6,
       isRequired: true,
+      
     },
     {
       label: "Profession",
@@ -704,17 +706,27 @@ const DEVELOPER_STEP_1_FIELDS = [
       type: "text",
       placeholder: "e.g. Software Engineer",
       rules: { required: "Profession is required" },
-      columnWidth: 6,
+      columnWidth: 12,
       isRequired: true,
     },
     {
       label: "Language Preferences",
-      fieldName: "language_preferences",
+      fieldName: "language_preference",
       type: "normal-select",
       rules: { required: "Preferences is required" },
       columnWidth: 6,
       isRequired: true,
       options:LANGUAGE_PREFERENCES_OPTIONS,
+      defaultOption: "Select",
+    },
+    {
+      label: "Experience",
+      fieldName: "total_experience",
+      type: "normal-select",
+      rules: { required: "Experience is required" },
+      columnWidth: 6,
+      isRequired: true,
+      options:EXPERIENCE_YEAR,
       defaultOption: "Select",
     },
     {

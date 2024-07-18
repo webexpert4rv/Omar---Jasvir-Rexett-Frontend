@@ -32,12 +32,14 @@ const getPercentage = () => {
           ))}
         </ul>
       </div>
-      <h4 className="resume-sideheading mt-3">Completeness:</h4>
-      <div className="resume-progress-wrapper">
-        <div className="resume-progressbx">
-          <div style={{width: `${getPercentage()}%`}}></div>
+      <div className="flex-none comp-wrapper">
+        <h4 className="resume-sideheading mt-3">Completeness:</h4>
+        <div className="resume-progress-wrapper">
+          <div className="resume-progressbx">
+            <div style={{width: `${getPercentage()}%`}}></div>
+          </div>
+          <span className="resume-progress-status font-12 fw-medium">{getPercentage()}%</span>
         </div>
-        <span className="resume-progress-status font-12 fw-medium">{getPercentage()}%</span>
       </div>
     </div>
   );

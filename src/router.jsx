@@ -175,6 +175,8 @@ export const route = [
     element: <VendorRegistrationStepper />,
     public: true,
   },
+
+  
   {
     path: "/otp",
     element: <Otp />,
@@ -458,7 +460,15 @@ export const route = [
     element: <VendorUploadInvoice />,
     isVendor: true,
     private: true,
+  },{
+
+    path: "/vendor/developer-registration",
+    element: <DeveloperRegistrationStepper/>,
+    isVendor: true,
+    private: true,
+    
   },
+
   {
     path: "/vendor-time-reporting",
     element: <VendorTimeReporting />,
