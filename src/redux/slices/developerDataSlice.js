@@ -1175,10 +1175,11 @@ export function getDeveloperProjects(developerId, callback, closeLoader) {
 }
 
 export const uploadFileToS3Bucket = (payload, callback) => {
+  console.log(payload,"payload")
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    // dispatch(setScreenLoader());
     try {
-      let result = await clientFormInstance.post(`/web/upload-file/`, payload);
+      let result = await clientInstance.post(`/web/upload-file/`, payload);
       callback && callback(result?.data?.data?.Location);
       dispatch(setActionSuccessFully());
       // toast.success("project added successfully", {

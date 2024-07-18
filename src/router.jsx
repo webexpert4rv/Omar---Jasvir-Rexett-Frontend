@@ -36,15 +36,14 @@ import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
 import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
 import ClientListing from "./pages/SuperAdmin/ClientListing";
 import FeedbackView from "./pages/admin/FeedbackView";
-
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ResetPassword from "./pages/Authentication/ResetPassword";
 import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
-import ClientStep1 from "./pages/admin/ClientRegister/ClientStep1";
 import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
 import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
 import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
 import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
+import VendorEditProfile from "./pages/vendor/VendorEditProfile";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
@@ -82,7 +81,6 @@ const VendorDocuments = lazy(() => import("./pages/vendor/VendorDocuments"));
 const VendorRevenue = lazy(() => import("./pages/vendor/VendorRevenue"));
 const VendorUploadInvoice = lazy(() => import("./pages/vendor/VendorInvoice"));
 const VendorTimeReporting = lazy(() => import("./pages/vendor/TimeReporting"));
-const EditVendorProfile = lazy(() => import("./pages/vendor/EditProfile"));
 const RentedDevelopers = lazy(() => import("./pages/vendor/RentedDevelopers"));
 const AllDeveloperList = lazy(() => import("./pages/vendor/ListAllDeveloper"));
 const RegisterDeveloper = lazy(() =>
@@ -475,7 +473,7 @@ export const route = [
   // },
   {
     path: "/edit-vendor-profile",
-    element: <vendorEditProfile />,
+    element: <VendorEditProfile />,
     isVendor: true,
     private: true,
   },

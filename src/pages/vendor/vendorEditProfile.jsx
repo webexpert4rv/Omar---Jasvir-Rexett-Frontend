@@ -3,17 +3,19 @@ import { useForm } from "react-hook-form";
 import { Container } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import SidebarSection from "../SidebarSection";
-import { getVendorActiveStepFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../../helper/RegisterConstant";
-import ClientStep1 from "../ClientRegistrationFlow/ClientStep1";
-import { createOptionsForReactSelect } from "../../constant/developerStepConstant";
-// import { getCoutriesList, getWebClientLookUp, uploadFileToS3Bucket } from "../../Redux/Slices/ClientDataSlice";
-import SetUpJobModal from "../../common/Modals/SetUpJobModal";
-// import { applyAsVendor } from "../../Redux/Slices/VendorDataSlice";
-import VendorDecisionMakers from "./VendorDecisionMakers";
-import RexettButton from "../../atomic/RexettButton";
+import { getCoutriesList, getWebClientLookUp } from "../../redux/slices/clientDataSlice";
+import { applyAsVendor, getAreaExpertise, getEditDecision, getVendorUpdatedDetails } from "../../redux/slices/vendorDataSlice";
+import { getVendorActiveStepFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../Registration flows/registrationConstant";
+// import ClientStep1 from "../admin/ClientRegister/ClientStep1";
+import { createOptionsForReactSelect } from "../websiteRegisterForm/developer/developeStepConstant";
+import SetUpJobModal from "../../components/common/Modals/SetUpJobModal";
+import RexettButton from "../../components/atomic/RexettButton";
+import VendorDecisionMakers from "../Registration flows/Vendor Registration Flow/VendorDecisionMakers";
+import { uploadFileToS3Bucket } from "../../redux/slices/developerDataSlice";
+import ClientStep1 from "../Registration flows/Client Registration flow/ClientStep1";
+import SidebarSection from "../Registration flows/SidebarSection";
 
-const VendorRegistrationStepper = () => {
+const VendorEditProfile = () => {
   const dispatch = useDispatch();
   const [companyTypeOptions, setCompanyTypeOptions] = useState([]);
   const { smallLoader } = useSelector((state) => state.developerData);
@@ -33,6 +35,9 @@ const VendorRegistrationStepper = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
+  const userId = localStorage.getItem("userId")
+  console.log(userId, "userId")
+  console.log(activeStep, "activestep2222")
 
 
   useEffect(() => {
@@ -59,10 +64,22 @@ const VendorRegistrationStepper = () => {
 
     }
   }, [activeStep]);
+  // useEffect(()=>{
+  //   if(userId){
+  //     dispatch(getVendorUpdatedDetails(userId , (response)=>{
+  //       console.log(response,"reponseofvendor")
+  //       for (let key in data){
+  //         setValue()
+  //       }
 
-  
+  //     }))
+  //   }
+   
+  // },[userId])
+
+
   const activeStepFields = getVendorActiveStepFields(activeStep);
-  console.log(activeStepFields,"activeStepFields")
+  console.log(activeStepFields, "activeStepFields")
   const increaseStepCount = () => {
     if (activeStep === 4) {
       // localStorage.removeItem("clientActiveStep");
@@ -74,69 +91,138 @@ const VendorRegistrationStepper = () => {
   const handleToggleSetupModal = () => {
     setShowSetUpJobModal((prev) => !prev);
   };
-  const decreaseStepCount = () => {
-    setActiveStep((prev) => prev - 1);
-    localStorage.setItem("vendorActiveStep", activeStep - 1);
-  };
-  const handleSetActiveStep = (step) => {
-    if (activeStep > step) {
-      setActiveStep(step);
-      localStorage.setItem("vendorActiveStep", step);
-    }
-  };
-  //   add this inside constant file
   const getActiveStepText = () => {
     switch (activeStep) {
       case 1:
         return "Next : Decision Makers";
       case 2:
-        return "Next : Company Info";
-      case 3:
         return "Next : Area of Expertise";
       case 4:
         return "Submit";
     }
   };
-  const handleAfterApiSuccess = () => {
-    increaseStepCount();
-    reset();
-  };
-  const handleProceed = () => {
-    // increaseStepCount();
-    const stepData = watch();
-    let formData = new FormData();
-        formData.append("file", imageFile);
-       dispatch(uploadFileToS3Bucket(formData, (url) => {
-        const payload = {
-          ...stepData,
-          country_code: stepData["country_code"]?.value,
-          state_iso_code: stepData["state_iso_code"]?.value,
-          country: stepData["country_code"]?.label,
-          state: stepData["state_iso_code"]?.label,
-          company_logo: url,
-          time_zone:stepData?.time_zone?.label
-        };
-        delete payload["timezone"]
-        delete payload["confirm_password"]
-        dispatch(applyAsVendor(payload, handleAfterApiSuccess));
-      })
-    )
+  const onSubmit = () => {
+    const buttonText = getActiveStepText();
+
+    switch (buttonText) {
+      case "Next : Decision Makers":
+        callDecisionMakersAPI();
+        break;
+      case "Next : Area of Expertise":
+        callAreaOfExpertiseAPI();
+        break;
+      case "Submit":
+        break;
+      
+    }
   };
 
-  const onSubmit = (values) => {
+  const callDecisionMakersAPI = () => {
     if (activeStep === 1) {
       setShowSetUpJobModal(true);
     } else {
       increaseStepCount();
     }
+    const stepData = watch();
+    let formData = new FormData()
+    formData.append('file', imageFile?.profile_picture)
+    dispatch(uploadFileToS3Bucket(formData, (url) => {
+      const payload = {
+        ...stepData,
+        user_id: userId,
+        country_code: stepData["country_code"]?.value,
+        state_iso_code: stepData["state_iso_code"]?.value,
+        country: stepData["country_code"]?.label,
+        state: stepData["state_iso_code"]?.label,
+        company_logo: url,
+        time_zone: stepData?.time_zone?.label,
+        establishment_year: stepData?.establishment_year?.split("-")[0],
+        total_it_recruiter: stepData?.Total_nos._of_IT_Recruiters
+      };
+      delete payload["profile_picture"]
+      delete payload["timezone"]
+      delete payload["confirm_password"]
+      dispatch(applyAsVendor(payload, handleAfterApiSuccess));
+    }))
   };
+
+
+  const callCompanyInfoAPI = () => {
+    const stepData = watch();
+    let data = {
+      user_id: userId,
+      decision_makers: [
+        {
+          proprietor_name: stepData?.name,
+          proprietor_email: stepData?.email,
+          proprietor_contact_number: stepData?.phone_number,
+          proprietor_position: stepData?.position
+        }
+      ]
+    }
+    console.log(data,"data")
+    dispatch(getEditDecision(data,handleAfterApiSuccess))
+
+  };
+
+  const callAreaOfExpertiseAPI = () => {
+    const stepData = watch();
+    let payload={
+      user_id: userId,
+      specialization: stepData?.area_of_specialization,
+      service_offering: stepData?.service_offering,
+      turn_around_time_to_close_contract_position: stepData?.Your_Turnaround_time_to_close_Contract_Positions,
+      turn_around_time_to_close_permanent_position: stepData?.Your_Turnaround_time_to_close_Permanent_Positions,
+      success_story: stepData?.Please_share_your_success_Stories_with_atleast_2_of_your_exiting_IT_customers_and_their_Contact_details_for_reference_check
+    }
+    dispatch(getAreaExpertise(payload))
+  };
+
+  const handleSetActiveStep=(step)=>{
+    if(activeStep > step){
+      setActiveStep(step);
+      localStorage.setItem("vendorActiveStep",step)
+    }
+  }
+ 
+
+  const handleAfterApiSuccess = () => {
+    increaseStepCount();
+    reset();
+  };
+ 
+  //   if (activeStep === 1) {
+  //     setShowSetUpJobModal(true);
+  //   } else {
+  //     increaseStepCount();
+  //   }
+  //   const stepData = watch();
+  //   let formData = new FormData()
+  //   formData.append('file', imageFile?.profile_picture)
+  //   dispatch(uploadFileToS3Bucket(formData, (url) => {
+  //     console.log(url, "url")
+  //     const payload = {
+  //       ...stepData,
+  //       user_id: userId,
+  //       country_code: stepData["country_code"]?.value,
+  //       state_iso_code: stepData["state_iso_code"]?.value,
+  //       country: stepData["country_code"]?.label,
+  //       state: stepData["state_iso_code"]?.label,
+  //       company_logo: url,
+  //       time_zone: stepData?.time_zone?.label
+  //     };
+  //     delete payload["profile_picture"]
+  //     delete payload["timezone"]
+  //     delete payload["confirm_password"]
+  //     dispatch(applyAsVendor(payload, handleAfterApiSuccess));
+  //   })
+  //   )
+  // };
   const renderActiveStep = () => {
     switch (activeStep) {
       case 1:
       case 3:
-      case 4:
         // add proper naming for Client Step 1 This step can be used everywhere when we have to map fields
-
         return (
           <ClientStep1
             control={control}
@@ -183,12 +269,10 @@ const VendorRegistrationStepper = () => {
         );
     }
   };
+  let token = localStorage.getItem("token")
   return (
     <>
-      {activeStep === 0 ? (
-          <RegistrationType handleRegistrationType={handleRegistrationType} />
-        ) : (
-      <section className="resume-section-wrapper">
+     <section className={`${token ? "edit-developer-wrapper resume-section-wrapper":"resume-section-wrapper"}`}>
         <SidebarSection
           activeStep={activeStep}
           handleSetActiveStep={handleSetActiveStep}
@@ -197,14 +281,6 @@ const VendorRegistrationStepper = () => {
         <div className="resume-main-wrapper">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Container>
-              <div>
-                <span
-                  onClick={decreaseStepCount}
-                  className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer"
-                >
-                  <FaArrowLeft /> Go Back
-                </span>
-              </div>
               {renderActiveStep()}
               <div className="d-flex justify-content-between align-items-center ">
                 <div></div>
@@ -222,17 +298,8 @@ const VendorRegistrationStepper = () => {
           </form>
         </div>
       </section>
-    )}
-     {showSetUpModal ? <SetUpJobModal
-        show={showSetUpModal}
-        handleClose={handleToggleSetupModal}
-        handleProceed={handleProceed}
-        smallLoader={smallLoader}
-        modalData={MODAL_INFORMATION[1]}
-        activeStep={activeStep}
-      />:""}
     </>
   );
 };
 
-export default VendorRegistrationStepper;
+export default VendorEditProfile;

@@ -60,8 +60,7 @@ export const CLIENT_STEPPER_HEADINGS = {
 export const VENDOR_STEPPER_HEADINGS = {
   1: { heading: "vendorStep1Heading", para: "vendorStep1Para" },
   2: { heading: "vendorStep2Heading", para: "vendorStep2Para" },
-  3: { heading: "vendorStep3Heading", para: "vendorStep3Para" },
-  4: { heading: "vendorStep4Heading", para: "vendorStep4Para" },
+  3: { heading: "vendorStep4Heading", para: "vendorStep4Para" },
 };
 
 export const DEVELOPER_STEPPER_HEADINGS = {
@@ -452,7 +451,7 @@ export const DEFAULT_SCREENING_DATA = [
 const VENDOR_STEP_1_FIELDS = [
   {
     label: "companyName",
-    fieldName: "name_of_the_company",
+    fieldName: "company_name",
     type: "text",
     placeholder: "e.g. Microsoft",
     rules: { required: "Company name is required" },
@@ -480,7 +479,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "cinNumber",
-    fieldName: "cin_number",
+    fieldName: "cin",
     type: "text",
     placeholder: "Enter CIN Number",
     rules: { required: "CIN number is required" },
@@ -490,7 +489,7 @@ const VENDOR_STEP_1_FIELDS = [
   {
     label: "establishmentYear",
     fieldName: "establishment_year",
-    type: "date",
+    type: "year-picker",
     isMinRequired: true,
       isMaxRequired:false,
     rules: { required: "Establishment year is required" },
@@ -499,7 +498,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "websiteUrl",
-    fieldName: "website_url",
+    fieldName: "website",
     type: "text",
     placeholder: "e.g. www.xyztechnology.com",
     rules: { required: "Website URL is required" },
@@ -517,10 +516,19 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "employeeStrength",
-    fieldName: "total_employee", // need to change this field according to the API
+    fieldName: "total_employees", // need to change this field according to the API
     type: "text",
     placeholder: "e.g. 100",
     rules: { required: "Employees strength is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Total nos. of IT Recruiters ",
+    fieldName: "Total_nos._of_IT_Recruiters",
+    type: "text",
+    placeholder: "e.g. 8 ",
+    rules: { required: "This field is required" },
     columnWidth: 6,
     isRequired: true,
   },
@@ -552,7 +560,7 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "address",
-    fieldName: "address",
+    fieldName: "company_address",
     type: "select",
     placeholder: "e.g. Street 1341,New area,CA,USA",
     rules: { required: "Address is required" },
@@ -659,64 +667,17 @@ const VENDOR_STEP_4_FIELDS = [
     isRequired: true,
   },
 ]
-const VENDOR_STEP_3_FIELDS=[
-  {
-    label: "Estbl. Year",
-    fieldName: "estiblashment_year",
-    type: "text",
-    placeholder: "e.g. 8 hours",
-    rules: { required: "Establishment is required" },
-    columnWidth: 12,
-    isRequired: true,
-  },
-  {
 
-  label: "Type of Establishment",
-  fieldName: "type_estiblashment_year",
-    type: "normal-select",
-  rules: { required: "Type of Establishment is required" },
-  columnWidth: 12,
-  isRequired: true,
-},
-  {
-    label: "Total Employees in Company",
-    fieldName: "Total_Employees_in_Company",
-    type: "text",
-    placeholder: "e.g. 8 hours",
-    rules: { required: "This field is required" },
-    columnWidth: 6,
-    isRequired: true,
-  },
-  {
-    label: "Total nos. of IT Recruiters ",
-    fieldName: "Total_nos._of_IT_Recruiters ",
-    type: "text",
-    placeholder: "e.g. 8 hours",
-    rules: { required: "This field is required" },
-    columnWidth: 6,
-    isRequired: true,
-  },
-  {
-    label: "Yearly Revenues",
-    fieldName: "Yearly_Revenues",
-    type: "text",
-    placeholder: "e.g. 8 hours",
-    rules: { required: "This field is required" },
-    columnWidth: 6,
-    isRequired: true,
-  },
-  
-]
 const VENDOR_STEP_FIELDS = {
   1: VENDOR_STEP_1_FIELDS,
   2: VENDOR_STEP_2_FIELDS,
-  3: VENDOR_STEP_3_FIELDS,
-  4: VENDOR_STEP_4_FIELDS,
+  3: VENDOR_STEP_4_FIELDS,
 };
 
-export const getVendorActiveStepFields = (activeStep) =>
-  VENDOR_STEP_FIELDS[activeStep] || null;
-
+export const getVendorActiveStepFields = (activeStep) =>{
+  return  VENDOR_STEP_FIELDS[activeStep] || null;
+}
+ 
 
 const DEVELOPER_STEP_1_FIELDS = [
     {

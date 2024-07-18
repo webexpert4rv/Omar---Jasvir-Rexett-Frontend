@@ -180,7 +180,6 @@ const ClientRegistrationStepper = () => {
       increaseStepCount();
       reset();
     };
-    console.log(stepData,"stepData")
     const filePayload = { file: imageFile };
     dispatch(
       uploadFileToS3Bucket(filePayload, (url) => {

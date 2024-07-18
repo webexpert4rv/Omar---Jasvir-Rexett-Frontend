@@ -321,8 +321,7 @@ export const getActiveVendorStepKeys = (activeStep) =>
   ACTIVE_STEP_KEYS[activeStep] ||null;
 
 const VENDOR_HEADINGS = {
-2:"Enter Company Information",
-3:"Area of Expertise",
-4:"Proprietor Details"
+2:"Area of Expertise",
+3:"Proprietor Details"
 }
 export const getActiveStepHeading = (activeStep) =>VENDOR_HEADINGS[activeStep] || null

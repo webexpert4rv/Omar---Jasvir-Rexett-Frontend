@@ -19,7 +19,6 @@ import SetUpJobModal from "../../../components/common/Modals/SetUpJobModal";
 import { uploadFileToS3Bucket } from "../../../redux/slices/developerDataSlice";
 import { applyAsVendor } from "../../../redux/slices/vendorDataSlice";
 import ExpertiseArea from "./ExpertiseArea";
-import CompanyInformation from "./CompanyInformation";
 
 const VendorRegistrationStepper = () => {
   const dispatch = useDispatch();
@@ -177,6 +176,7 @@ const VendorRegistrationStepper = () => {
       case 2:
         return (
           <VendorDecisionMakers
+          type={"vendor"}
             // stepFields={activeStepFields}
             //  skillOptions={skillOptions}
             onSubmit={onSubmit}
