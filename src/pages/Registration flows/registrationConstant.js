@@ -34,8 +34,7 @@ export const SIDEBAR_ITEMS = {
   vendor: [
     { stepNumber: 1, label: "personal" },
     { stepNumber: 2, label: "decisionMakersInfo" },
-    { stepNumber: 3, label: "companyInfo" },
-    { stepNumber: 4, label: "areaOfExpertise" },
+    { stepNumber: 3, label: "areaOfExpertise" },
   ],
   developer: [
     { stepNumber: 1, label: "heading" },
@@ -651,7 +650,7 @@ const VENDOR_STEP_4_FIELDS = [
   },
   {
     label: "Your Turnaround time to close Permanent Positions",
-    fieldName: "Your_Turnaround_time_to_close_Permanent_Positions",
+    fieldName: "turn_around_time_to_close_permanent_position",
     type: "text",
     placeholder: "e.g. 24 hours",
     rules: { required: "This field is required" },

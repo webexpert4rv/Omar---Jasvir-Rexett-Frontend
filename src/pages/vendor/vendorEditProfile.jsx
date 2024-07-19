@@ -67,7 +67,6 @@ const VendorEditProfile = () => {
       2: "step2",
       3: "step3"
     }
-    console.log(activeStep,"activestepVendor")
     if (userId && [activeStepKeys[activeStep]]) {
       dispatch(getVendorUpdatedDetails(userId, (response) => {
         const data = response[activeStepKeys[activeStep]];
@@ -100,7 +99,7 @@ const VendorEditProfile = () => {
         }
       }))
     }
-  }, [userId])
+  }, [activeStep,userId])
 
 
   const activeStepFields = getVendorActiveStepFields(activeStep);
@@ -139,7 +138,7 @@ const VendorEditProfile = () => {
   };
 
   const callCompanyInfoAPI = () => {
-    increaseStepCount()
+    // increaseStepCount()
       const stepData = watch();
       let formData = new FormData()
       formData.append('file', imageFile?.profile_picture)
@@ -165,8 +164,9 @@ const VendorEditProfile = () => {
 
 
   const callDecisionMakersAPI = () => {
-    increaseStepCount()
+    // increaseStepCount()
       const stepData = watch();
+      console.log(stepData,"stepdata")
       let data = {
         user_id: userId,
         decision_makers: [
@@ -178,18 +178,19 @@ const VendorEditProfile = () => {
           }
         ]
       }
+      console.log(data,"data")
       dispatch(getEditDecision(data, handleAfterApiSuccess))
   };
 
   const callAreaOfExpertiseAPI = () => {
-    increaseStepCount()
+    // increaseStepCount()
       const stepData = watch();
       let payload = {
         user_id: userId,
         specialization: stepData?.specialization,
         service_offering: stepData?.service_offering,
         turn_around_time_to_close_contract_position: stepData?.turn_around_time_to_close_contract_position,
-        turn_around_time_to_close_permanent_position: stepData?.Your_Turnaround_time_to_close_Permanent_Positions,
+        turn_around_time_to_close_permanent_position: stepData?.turn_around_time_to_close_permanent_position,
         success_story: stepData?.success_story
       }
       dispatch(getAreaExpertise(payload))

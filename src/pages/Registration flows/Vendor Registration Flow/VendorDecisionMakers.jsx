@@ -4,6 +4,8 @@ import StepperHeadingSection from "../StepperHeadingSection";
 import { useForm } from "react-hook-form";
 import { getActiveStepHeadingData, getVendorActiveStepFields } from "../registrationConstant";
 import { FaArrowLeft } from "react-icons/fa";
+import CommonInput from "../../../components/atomic/CommonInput";
+import { useTranslation } from "react-i18next";
 
 const VendorDecisionMakers = ({
   activeStepFields,
@@ -15,29 +17,35 @@ const VendorDecisionMakers = ({
   setImageFile,
   errors,
   control,
+  activeStep,
   getActiveStepText,
   smallLoader,
   setPreviewImage,
-  imageFile
+  imageFile,
+  // register
+  watch
 }) => {
-  const { register, handleSubmit, reset, watch } = useForm({});
-  const [activeStep, setActiveStep] = useState(2);
+  // const { register, handleSubmit, reset, watch } = useForm({});
 
-  const onSubmit = (values) => {
-    console.log(values, "values");
-  };
+  // const onSubmit = (values) => {
+  //   console.log(values, "values");
+  // };
+  // console.log(activeStepFields,"activeStepFields")
 
   const fields = getVendorActiveStepFields(activeStep);
-  
+  console.log(fields, "fields")
+  console.log(watch("proprietor_name"),"wertyuiNAME")
+  const {t } = useTranslation()
+
 
   return (
     <>
       <section>
         <div>
-      
+
           <Row>
             <Col md={12}>
-              <StepperHeadingSection activeStep={activeStep} type={"vendor"}/>
+              <StepperHeadingSection activeStep={activeStep} type={type} />
               <p className="font-12 fw-medium">* includes a required field</p>
               <div>
                 <Row className="w-100">
@@ -57,20 +65,22 @@ const VendorDecisionMakers = ({
                         defaultOption,
                       },
                       index
-                    ) => (
-                      <Col md={columnWidth} key={index}>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="font-14 fw-medium">
-                            {label}
-                          </Form.Label>
-                          <Form.Control
-                            placeholder={placeholder}
-                            name={fieldName}
-                            className="common-field font-14"
-                          />
-                        </Form.Group>
-                      </Col>
-                    )
+                    ) =>
+                        (
+                          <Col md={columnWidth} key={index}>
+                               <CommonInput
+                              label={t(`${label}`) + `${isRequired ? " *" :""}`}
+                              name={fieldName}
+                              control={control}
+                              invalidFieldRequired={true}
+                              rules={{ ...rules }}
+                              error={errors?.[fieldName]}
+                              type={type}
+                              placeholder={placeholder}
+                            />
+                          </Col>
+                        )
+                      
                   )}
                 </Row>
                 {/* <div className="">
