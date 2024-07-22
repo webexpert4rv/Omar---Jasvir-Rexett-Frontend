@@ -389,15 +389,14 @@ export function getVendorStepData(user_id ,callback) {
     }
 }
 export const uploadFileToS3Bucket = (payload,callback) => {
+    console.log(payload,"payload")
     return async (dispatch) => {
-      dispatch(setScreenLoader());
+    //   dispatch(setScreenLoader());
       try {
-        let result = await clientFormInstance.post(`/web/upload-file/`,{...payload});
+        let result = await clientFormInstance.post(`web/upload-file`,payload);
+        console.log(result?.data?.data?.Location,"location")
         callback && callback(result?.data?.data?.Location);
         dispatch(setVendorSuccess())
-        // toast.success("project added successfully", {
-        //   position: "top-center",
-        // });
       } catch (error) {
         toast.error(error?.response?.data?.message, { position: "top-center" });
         dispatch(setFailVendorData());
@@ -407,11 +406,70 @@ export const uploadFileToS3Bucket = (payload,callback) => {
   export function applyAsVendor(payload,callback) {
     console.log(payload,'payload')
     return async (dispatch) => {
-      dispatch(setScreenLoader());
+    //   dispatch(setScreenLoader());
       try {
-        let result = await authInstance.post(`web/apply-as-vendor`,{...payload});
+        let result = await clientInstance.post(`/common/vendor-registration`,{...payload});
+        callback()
+      } catch (error) {
+        const message = error?.message;
+        // if (error?.message === VERIFY_USER_MESSAGE) {
+          if (error.response?.data?.verify_user) {
+          // triggerVerificationModal("verify"); 
+        } else {
+          toast.error(error?.response?.data?.message, { position: "top-center" });
+        }
+        dispatch(setFailVendorData());
+      }
+    };
+  }
+  export function getEditDecision(payload,callback) {
+    console.log(payload,'payload')
+    return async (dispatch) => {
+    //   dispatch(setScreenLoader());
+      try {
+        let result = await clientInstance.post(`/common/vendor-decision-makers-details`,{...payload});
         localStorage.setItem("vendorId",result?.data?.data?.id);
         callback()
+      } catch (error) {
+        const message = error?.message;
+        // if (error?.message === VERIFY_USER_MESSAGE) {
+          if (error.response?.data?.verify_user) {
+          // triggerVerificationModal("verify"); 
+        } else {
+          toast.error(error?.response?.data?.message, { position: "top-center" });
+        }
+        dispatch(setFailVendorData());
+      }
+    };
+  }
+  export function getAreaExpertise(payload,callback) {
+    console.log(payload,'payload')
+    return async (dispatch) => {
+    //   dispatch(setScreenLoader());
+      try {
+        let result = await clientInstance.post(`/common/vendor-area-expertise`,{...payload});
+        localStorage.setItem("vendorId",result?.data?.data?.id);
+        callback()
+      } catch (error) {
+        const message = error?.message;
+        // if (error?.message === VERIFY_USER_MESSAGE) {
+          if (error.response?.data?.verify_user) {
+          // triggerVerificationModal("verify"); 
+        } else {
+          toast.error(error?.response?.data?.message, { position: "top-center" });
+        }
+        dispatch(setFailVendorData());
+      }
+    };
+  }
+  export function getVendorUpdatedDetails(id,callback) {
+    console.log(id,'id')
+    return async (dispatch) => {
+    //   dispatch(setScreenLoader());
+      try {
+        let result = await clientInstance.get(`/common/vendor-registration-details/${id}`);
+        callback(result?.data?.data)
+        localStorage.setItem("vendorId",result?.data?.data?.id);
       } catch (error) {
         const message = error?.message;
         // if (error?.message === VERIFY_USER_MESSAGE) {

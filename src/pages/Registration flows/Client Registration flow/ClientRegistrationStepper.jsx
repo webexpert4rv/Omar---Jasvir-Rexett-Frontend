@@ -69,7 +69,7 @@ const ClientRegistrationStepper = () => {
   }, [activeStep]);
   const increaseStepCount = () => {
     if (activeStep === 4) {
-      // localStorage.removeItem("clientActiveStep");
+      localStorage.removeItem("clientActiveStep");
     } else {
       setActiveStep((prev) => prev + 1);
       localStorage.setItem("clientActiveStep", activeStep + 1);
@@ -180,7 +180,6 @@ const ClientRegistrationStepper = () => {
       increaseStepCount();
       reset();
     };
-    console.log(stepData,"stepData")
     const filePayload = { file: imageFile };
     dispatch(
       uploadFileToS3Bucket(filePayload, (url) => {

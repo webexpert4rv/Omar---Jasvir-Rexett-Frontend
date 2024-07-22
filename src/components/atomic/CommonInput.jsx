@@ -246,19 +246,19 @@ console.log(isMaxRequired,"ismax")
               );
             } else if (type === "year-picker") {
               console.log(field.value, "this is field.value");
-              // return (
-              //   <DatePicker
-              //     {...field}
-              //     selected={field.value && field.value}
-              //     maxDate={new Date().toISOString().split("T")[0]}
-              //     maxDetail="decade"
-              //     onChange={(date) => field.onChange(date)}
-              //     showYearPicker
-              //     dateFormat="yyyy"
-              //     placeholderText="Select year"
-              //     className="common-field"
-              //   />
-              // )
+              return (
+                <DatePicker
+                  {...field}
+                  selected={field.value && field.value}
+                  maxDate={new Date().toISOString().split("T")[0]}
+                  maxDetail="decade"
+                  onChange={(date) => field.onChange(date)}
+                  showYearPicker
+                  dateFormat="yyyy"
+                  placeholderText="Select year"
+                  className="common-field"
+                />
+              )
             } else {
               return (
                 <>
