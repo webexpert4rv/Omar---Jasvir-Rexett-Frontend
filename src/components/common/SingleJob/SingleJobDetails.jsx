@@ -24,6 +24,7 @@ import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
 import { IoGrid } from "react-icons/io5";
 import { LuMessagesSquare } from "react-icons/lu";
+import CreateOffer from "../Modals/CreateOffer";
 
 const AdminSingleJob = () => {
     const role = localStorage.getItem("role")
@@ -40,6 +41,7 @@ const AdminSingleJob = () => {
     const [page, setPage] = useState(1);
     const [value, setValue] = useState('');
     const [showMeetingInfo, setShowMeetingInfo] = useState(false);
+    const [makeOffer,setMakeOffer]=useState(false)
     const handleShowMeetingInfo = () => {
         setShowMeetingInfo(!showMeetingInfo)
     }
@@ -160,6 +162,10 @@ const AdminSingleJob = () => {
     const rejectedApply = (
         <Tooltip>Reject</Tooltip>
     )
+
+    const handleMakeOffer=()=>{
+        setMakeOffer(!makeOffer)
+    }
 
     return (
         <>
@@ -987,7 +993,7 @@ const AdminSingleJob = () => {
                                             </div>
                                             <div className="d-flex align-items-center gap-2 mt-2">
                                                 <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
-                                                <Button variant="transparent" className="outline-main-btn font-14">Make offer</Button>
+                                                <Button variant="transparent" className="outline-main-btn font-14" onClick={handleMakeOffer}>Make offer</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -1007,6 +1013,7 @@ const AdminSingleJob = () => {
             <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
             <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
             <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} />
+            <CreateOffer show={makeOffer} handleClose={handleMakeOffer}/>
         </>
     )
 }
