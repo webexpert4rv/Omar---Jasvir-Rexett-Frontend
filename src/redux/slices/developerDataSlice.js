@@ -1248,7 +1248,7 @@ export function developerRegistration(payload,callback) {
     dispatch(setSmallLoader());
     try {
       let result = await authInstance.post("common/developer-registration",{...payload});
-      toast.success("Your profile has been created", { position: "top-center" });
+      toast.success(result?.data?.message, { position: "top-center" });
       localStorage.setItem("developerId",result?.data?.data?.id)
       dispatch(setActionSuccessFully());
       return callback()
@@ -1260,13 +1260,14 @@ export function developerRegistration(payload,callback) {
   };
 }
 
-export function registerDeveloperExperience(payload,id) {
+export function registerDeveloperExperience(payload,id,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/add-developer-experience?developer_id=${id}`, payload);
       toast.success("Experience is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -1291,13 +1292,14 @@ export function editDeveloperExperience(payload,id) {
 }
 
 
-export function registerDeveloperEducation(payload,id) {
+export function registerDeveloperEducation(payload,id,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/add-developer-education?developer_id=${id}`, payload);
       toast.success("Education is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });

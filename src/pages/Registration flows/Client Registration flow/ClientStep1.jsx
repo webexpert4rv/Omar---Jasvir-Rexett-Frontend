@@ -35,9 +35,7 @@ const ClientStep1 = ({
   isEditMode
 }) => {
   const { t } = useTranslation();
-  // field name service offerenings  
-  console.log(activeStep,"activeStep")
-  console.log(watch("is_still_working"),"is")
+  
   let isStillWorking=watch("is_still_working")
   return (
     <>

@@ -73,23 +73,15 @@ console.log(isMaxRequired,"ismax")
               ));
             }
             if (type === "checkbox") {
-              return options.map((option, index) => (
-                <Form.Check
-                  {...field}
-                  key={index}
-                  type="checkbox"
-                  id={`${name}-${index}`}
-                  label={option.label}
-                  value={option.value}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      field.onChange(true);
-                    }else{
-                      field.onChange(false);
-                    }
-                  }}
-                />
-              ));
+              return   <Form.Check
+              {...field}
+              type="checkbox"
+              id="radio1"
+              checked={field.value}
+              onChange={(e) =>{
+                field.onChange(e.target.checked)
+              } }
+            />
             } 
             else if (type === "phone") {
               return (

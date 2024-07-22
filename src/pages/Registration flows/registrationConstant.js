@@ -791,7 +791,7 @@ const DEVELOPER_STEP_1_FIELDS = [
       },
       columnWidth: 6,
       isRequired: true,
-      readOnly:true
+      readOnly:false
     },
     {
       isPasswordSection: true,
@@ -947,7 +947,6 @@ const DEVELOPER_STEP_1_FIELDS = [
       label: "Are you currently Working in this job?",
       fieldName: "is_still_working",
       type: "checkbox",
-      options:["pankaj"],
       // rules: { required: "Job location is required" },
       columnWidth: 12,
       isRequired: false,

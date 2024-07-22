@@ -132,6 +132,11 @@ const DeveloperRegistrationStepper = () => {
     }
   }, []);
 
+
+  let name = stepData?.name ? stepData?.name?.split(' ') : '';
+  let [firstName, ...rest] = name;
+  let lastName = rest.join(' ');
+
   useEffect(() => {
     if (stepData) {
       setValue("job_title", stepData[0]?.job_title);
@@ -142,6 +147,30 @@ const DeveloperRegistrationStepper = () => {
       setValue("end_date", stepData[0]?.end_date?.slice(0, 10));
       setValue("work_type", stepData[0]?.work_type);
       setValue("location", stepData[0]?.location);
+
+
+      
+  setValue('first_name',firstName);
+  setValue('last_name',lastName);
+  setValue("phone_number",stepData?.phone_number);
+  setValue("email",stepData?.email);
+  setValue("profession",stepData?.professional_title);
+  setValue("country",{ label: stepData?.country, value: null });
+  setValue("state",{ label: stepData?.state, value: null });
+  setValue("city",{ label: stepData?.city, value: null });
+  setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
+  setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
+  setValue("passcode",stepData?.passcode);
+  setValue("time_zone",stepData?.time_zone);
+  setValue("time_zone",{ label: stepData?.time_zone, value: null });
+  setValue("address",stepData?.address);
+  setValue('git_hub',stepData?.github_url);
+  setValue('linked_in',stepData?.linkedin_url)
+
+  setPreviewImage({
+    ...previewImage,
+    profile_picture: stepData?.profile_picture
+  });
     }
   }, [stepData,selectedRecommend]);
 
@@ -167,10 +196,164 @@ const DeveloperRegistrationStepper = () => {
     }
   };
 
+  // const decreaseStepCount = () => {
+
+  //   switch(activeStep){
+  //     case 2:
+  //       switch(nestedActiveStep){
+  //         case 0:
+  //           setActiveStep((prev) => prev - 1);
+  //           localStorage.setItem("clientActiveStep", activeStep - 1);
+  //          break;
+  //          case 1:
+  //           case 2:
+  //           setNestedActiveStep((prev)=>prev-1);
+  //           localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+  //           break;
+  //       }
+  //      case 3:
+  //       switch(nestedActiveStep){
+  //         case 0:
+  //           setActiveStep((prev) => prev - 1);
+  //           localStorage.setItem("clientActiveStep", activeStep - 1);
+  //           setNestedActiveStep(2);
+  //           localStorage.setItem("nestedActiveStep", 2);
+  //          break;
+  //          case 1:
+  //           case 2:
+  //           case 3:
+  //             setNestedActiveStep((prev)=>prev-1);
+  //             localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+  //           break;
+  //       }
+  //       case 4:
+  //         switch(nestedActiveStep){
+  //           case 0:
+  //             setActiveStep((prev) => prev - 1);
+  //             localStorage.setItem("clientActiveStep", activeStep - 1);
+  //             setNestedActiveStep(3);
+  //             localStorage.setItem("nestedActiveStep", 3);
+  //            break;
+  //            case 1:
+  //             case 2:
+  //               setNestedActiveStep((prev)=>prev-1);
+  //               localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+  //             break;
+  //         }
+  //         case 5:
+  //           switch(nestedActiveStep){
+  //             case 0:
+  //               setActiveStep((prev) => prev - 1);
+  //               localStorage.setItem("clientActiveStep", activeStep - 1);
+  //               setNestedActiveStep(2);
+  //               localStorage.setItem("nestedActiveStep", 2);
+  //              break;
+  //              case 1:
+  //                 setNestedActiveStep((prev)=>prev-1);
+  //                 localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+  //               break;
+  //           }
+
+  //           case 6:
+  //           switch(nestedActiveStep){
+  //             case 0:
+  //               setActiveStep((prev) => prev - 1);
+  //               localStorage.setItem("clientActiveStep", activeStep - 1);
+  //               setNestedActiveStep(1);
+  //               localStorage.setItem("nestedActiveStep", 1);
+  //              break;
+  //              case 1:
+  //               case 2:
+  //                 setNestedActiveStep((prev)=>prev-1);
+  //                 localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+  //               break;
+  //           }
+  //           case 7: 
+  //           setActiveStep((prev) => prev - 1);
+  //           localStorage.setItem("clientActiveStep", activeStep - 1);
+  //           setNestedActiveStep(2);
+  //           localStorage.setItem("nestedActiveStep", 2);
+
+
+  //   }
+   
+  // };
+
   const decreaseStepCount = () => {
-    setActiveStep((prev) => prev - 1);
-    localStorage.setItem("clientActiveStep", activeStep - 1);
+    setIsRegistrationStepModal(false);
+    const updateSteps = (mainStep, nestedStep) => {
+      setActiveStep(mainStep);
+      localStorage.setItem("clientActiveStep", mainStep);
+      setNestedActiveStep(nestedStep);
+      localStorage.setItem("nestedActiveStep", nestedStep);
+    };
+  
+    switch (activeStep) {
+
+      case 1:
+        setActiveStep(prev=>prev+1);
+        localStorage.setItem("clientActiveStep", activeStep+1);
+        break;
+      case 2:
+        switch (nestedActiveStep) {
+          case 0:
+            updateSteps(activeStep - 1, nestedActiveStep);
+            break;
+          case 1:
+          case 2:
+            setNestedActiveStep((prev) => prev - 1);
+            localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+            break;
+        }
+        break;
+        
+      case 3:
+      case 5:
+        switch (nestedActiveStep) {
+          case 0:
+            updateSteps(activeStep - 1, 2);
+            break;
+          case 1:
+          case 2:
+          case 3:
+            setNestedActiveStep((prev) => prev - 1);
+            localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+            break;
+        }
+        break;
+  
+      case 4:
+        switch (nestedActiveStep) {
+          case 0:
+            updateSteps(activeStep - 1, 3);
+            break;
+          case 1:
+          case 2:
+            setNestedActiveStep((prev) => prev - 1);
+            localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+            break;
+        }
+        break;
+  
+      case 6:
+        switch (nestedActiveStep) {
+          case 0:
+            updateSteps(activeStep - 1, 1);
+            break;
+          case 1:
+          case 2:
+            setNestedActiveStep((prev) => prev - 1);
+            localStorage.setItem("nestedActiveStep", nestedActiveStep - 1);
+            break;
+        }
+        break;
+  
+      case 7:
+        updateSteps(activeStep - 1, 2);
+        break;
+    }
   };
+  
 
   const handleDelete = () => {};
 
@@ -220,8 +403,8 @@ const DeveloperRegistrationStepper = () => {
     setValue("company_name", selectedEditData?.company_name);
     setValue("description", selectedEditData?.description);
     setValue("is_still_working",selectedEditData?.is_still_working);
-    setValue("start_date",selectedEditData?.start_date.slice(0,10));
-    setValue("end_date",selectedEditData?.end_date.slice(0,10));
+    setValue("start_date",selectedEditData?.start_date?.slice(0,10));
+    setValue("end_date",selectedEditData?.end_date?.slice(0,10));
     setValue("work_type",selectedEditData?.work_type);
     setValue("job_location", selectedEditData?.job_location);
     localStorage.setItem("nestedActiveStep", 1);
@@ -559,21 +742,21 @@ const DeveloperRegistrationStepper = () => {
           country: values?.country_code?.label,
           address: values?.address,
           password: values?.password,
-          city: values?.city,
+          city: values?.city?.value,
           state: values?.state_iso_code?.label,
           country_iso_code:values?.country_iso_code?.value,
           state_iso_code: values?.state_iso_code?.value,
           passcode: values?.passcode,
           country_code: values?.country_code.value,
           phone_number: values?.phone_number,
-          language_preference: values?.language_preference,
-          total_experience:values?.total_experience,
+          language_preference: values?.language_preference?.value,
+          total_experience:values?.total_experience?.value,
           time_zone: values?.time_zone?.label,
           resume: uploadedUrls?.resume,
           linkedin_url: values?.linked_in,
           github_url: values?.git_hub,
           intro_video_url: uploadedUrls?.introVideo,
-          userId: developer_id?developer_id:null
+          user_id: developer_id?developer_id:null
         };
 
         dispatch(developerRegistration(payload,()=>{
@@ -611,8 +794,10 @@ const DeveloperRegistrationStepper = () => {
             };
           }
           
-          dispatch(registerDeveloperExperience(copyObj, developer_id));
-          increaseStepCount(true);
+          dispatch(registerDeveloperExperience(copyObj, developer_id,()=>{
+            increaseStepCount(true);
+          }));
+        
 
         }else{
           if(stepData){
@@ -629,8 +814,9 @@ const DeveloperRegistrationStepper = () => {
                 job_location:values?.job_location
               },
             ];
-            dispatch(registerDeveloperExperience(developer_experience, developer_id));
-            increaseStepCount(true);
+            dispatch(registerDeveloperExperience(developer_experience, developer_id,()=>{
+              increaseStepCount(true);
+            }));
           }else{
             developer_experience = [
               {
@@ -644,8 +830,9 @@ const DeveloperRegistrationStepper = () => {
                 job_location:values?.job_location
               },
             ];
-            dispatch(registerDeveloperExperience(developer_experience, developer_id));
-            increaseStepCount(true);
+            dispatch(registerDeveloperExperience(developer_experience, developer_id,()=>{
+              increaseStepCount(true);
+            }));
           }
           
         }
@@ -682,9 +869,11 @@ const DeveloperRegistrationStepper = () => {
             },
           ];
           dispatch(
-            registerDeveloperEducation(developer_education, developer_id)
+            registerDeveloperEducation(developer_education, developer_id,()=>{
+              increaseStepCount(true);
+            })
           );
-          increaseStepCount(true);
+         
           
         }else{
           increaseStepCount(true);
@@ -866,32 +1055,11 @@ const DeveloperRegistrationStepper = () => {
       recommendation: false,
     });
     increaseStepCount();
-    // const handleAfterApiSuccess = () => {
-    //   increaseStepCount();
-    //   reset();
-    // };
-    // console.log(stepData,"stepData")
-    // const filePayload = { file: imageFile };
-    // dispatch(
-    //   uploadFileToS3Bucket(filePayload, (url) => {
-    //     const payload = {
-    //       ...stepData,
-    //       country_code: stepData["country_code"]?.value,
-    //       state_iso_code: stepData["state_iso_code"]?.value,
-    //       country: stepData["country_code"]?.label,
-    //       state: stepData["state_iso_code"]?.label,
-    //       profile_picture: url,
-    //     };
-    //     console.log(payload,"payload")
-    //     dispatch(applyAsClient(payload, handleAfterApiSuccess));
-    //   })
-    // );
 
-    // replace trigger verification modal with last callback function
-    //  dispatch(applyAsClient(payload,handleAfterApiSuccess,()=>{}))
   };
   const profileSubmitIfDone=()=>{
     setDone(false)
+  
   }
 
 
@@ -899,7 +1067,11 @@ const handleRegistrationModal = () => {
   setIsRegistrationStepModal(false);
 }
 
+
+
 let token = localStorage.getItem('token')
+console.log(activeStep,"activeStep")
+console.log(nestedActiveStep,"nes")
 
   return (
     <section className={`${token ? "edit-developer-wrapper resume-section-wrapper":"resume-section-wrapper"}`}>
@@ -931,7 +1103,7 @@ let token = localStorage.getItem('token')
               )}
             </Row>
 
-            <div className="d-flex justify-content-end align-items-center ">
+            { true ? <div className="d-flex justify-content-end align-items-center ">
               <div className="me-3">
                 <RexettButton
                   type="submit"
@@ -951,7 +1123,7 @@ let token = localStorage.getItem('token')
                   isLoading={smallLoader}
                 />
               </div>
-            </div>
+            </div>:""}
           </Container>
         </form>
       </div>
@@ -966,6 +1138,7 @@ let token = localStorage.getItem('token')
       <RegistrationStepModal
       show={isRegistrationStepModal}
       handleClose={handleRegistrationModal}
+      nextStep={decreaseStepCount}
       />
     </section>
   );
