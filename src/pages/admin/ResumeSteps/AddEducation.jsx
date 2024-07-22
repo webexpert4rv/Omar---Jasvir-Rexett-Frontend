@@ -20,9 +20,6 @@ import {
   Row,
 } from "react-bootstrap";
 
-import { IoAddOutline } from "react-icons/io5";
-import { GoClockFill } from "react-icons/go";
-import { FiExternalLink } from "react-icons/fi";
 import ReactQuill from "react-quill";
 import PreviewModal from "./Modals/PreviewResume";
 import ClientStep1 from "../../Registration flows/Client Registration flow/ClientStep1";
