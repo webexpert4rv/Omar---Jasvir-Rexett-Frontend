@@ -408,7 +408,7 @@ const AdminSingleJob = () => {
                                                                 <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
                                                             </div>
                                                         </td>
-                                                        
+
                                                         <td className="document-data">
                                                             <div className="d-flex align-items-center gap-2 job-action-btns">
                                                                 <OverlayTrigger placement="top" overlay={approvedApply}>
@@ -619,7 +619,7 @@ const AdminSingleJob = () => {
                                                                 <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
                                                             </div>
                                                         </td>
-                                                        
+
                                                         <td className="document-data">
                                                             <div className="d-flex align-items-center gap-2 job-action-btns">
                                                                 <OverlayTrigger placement="top" overlay={scheduleInterview}>
@@ -957,385 +957,42 @@ const AdminSingleJob = () => {
                         {/* <JobCard type="Interviewing" data={selectedTabsData} role="admin" /> */}
                     </Tab>
                     <Tab eventKey="documentation" title={offered}>
-                        <div className="card-box">
-                            <div className="mb-4">
-                                <h3 className="mb-3 doc-heading">Client's Documentation</h3>
-                                <Row>
-                                    <Tab.Container
-                                        id="left-tabs-example"
-                                        defaultActiveKey="create_client_sow"
-                                        onSelect={handleSelect}
-                                    >
-                                        <Nav variant="pills" className="application-pills">
-                                            <Nav.Item className="application-item">
-                                                <Nav.Link eventKey="create_client_sow" className="application-link">
-                                                    Create SOW
-                                                </Nav.Link>
-                                            </Nav.Item>
-                                            <Nav.Item className="application-item">
-                                                <Nav.Link eventKey="create-client_noc" className="application-link">
-                                                    Create NOC
-                                                </Nav.Link>
-                                            </Nav.Item>
-                                        </Nav>
-                                        <Tab.Content>
-                                            <Tab.Pane eventKey="create_client_sow" className="py-4">
-                                                <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
-                                                <div>
-                                                    <div>
-                                                        <Row>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Project Title</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Client Name</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Client Address</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Client Contact Information</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Project Budget</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={12}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Project Objective</Form.Label>
-                                                                    <div className="custom-rich-editor">
-                                                                        <ReactQuill value={value} onChange={handleChange} />
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={12}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Scope of work</Form.Label>
-                                                                    <div className="custom-rich-editor">
-                                                                        <ReactQuill value={value} onChange={handleChange} />
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={12}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Responsibilities</Form.Label>
-                                                                    <div className="custom-rich-editor">
-                                                                        <ReactQuill value={value} onChange={handleChange} />
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <div className="text-center mt-3">
-                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Tab.Pane>
-                                            <Tab.Pane eventKey="create-client_noc" className="py-4">
-                                                <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
-                                                <div>
-                                                    <div>
-                                                        <Row>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Client Name</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Client Address</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Client Contact Information</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <div className="text-center mt-3">
-                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Tab.Pane>
-
-                                        </Tab.Content>
-                                    </Tab.Container>
-                                    {/* <Col md={4}>
+                        <div>
+                            <h5 className="font-22 mb-4 fw-bold">Selected Candidates</h5>
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
                                         <div>
-                                            <Form.Label>Statement of work(SOW)</Form.Label>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                <div>
+                                                    Rohit Sharma<br />
+                                                    <span className="associate-text">
+                                                        <span className="associate mt-1">Web developer</span>
+                                                    </span>
+                                                </div>
+                                            </p>
+                                            {/* <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Web developer</span>
+                                                </span>
+                                            </div> */}
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <Button className="main-btn font-14">Sign Document</Button>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 mt-2">
+                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                                <Button variant="transparent" className="outline-main-btn font-14">Make offer</Button>
                                             </div>
                                         </div>
-                                    </Col>
-                                    <Col md={4}>
-                                        <div>
-                                            <Form.Label>Non disclosure Agreement(NDA)</Form.Label>
-                                            <div>
-                                                <Button className="main-btn font-14">Sign Document</Button>
-                                            </div>
-                                        </div>
-                                    </Col> */}
-                                </Row>
-                            </div>
-                            <div className="mb-3">
-                                <h3 className="mb-3 doc-heading">Vendor's Documentation</h3>
-                                <Tab.Container
-                                    id="left-tabs-example"
-                                    defaultActiveKey="create_sow"
-                                    onSelect={handleSelect}
-                                >
-                                    <Nav variant="pills" className="application-pills">
-                                        <Nav.Item className="application-item">
-                                            <Nav.Link eventKey="create_sow" className="application-link">
-                                                Create SOW
-                                            </Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item className="application-item">
-                                            <Nav.Link eventKey="create_noc" className="application-link">
-                                                Create NOC
-                                            </Nav.Link>
-                                        </Nav.Item>
-                                    </Nav>
-                                    <Tab.Content>
-                                        <Tab.Pane eventKey="create_sow" className="py-4">
-                                            <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
-                                            <div>
-                                                <div>
-                                                    <Row>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Project Title</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Vendor Name</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Vendor Address</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Vendor Contact Information</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Project Budget</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={12}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Project Objective</Form.Label>
-                                                                <div className="custom-rich-editor">
-                                                                    <ReactQuill value={value} onChange={handleChange} />
-                                                                </div>
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={12}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Scope of work</Form.Label>
-                                                                <div className="custom-rich-editor">
-                                                                    <ReactQuill value={value} onChange={handleChange} />
-                                                                </div>
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={12}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Responsibilities</Form.Label>
-                                                                <div className="custom-rich-editor">
-                                                                    <ReactQuill value={value} onChange={handleChange} />
-                                                                </div>
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                    <div className="text-center mt-3">
-                                                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="create_noc" className="py-4">
-                                            <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
-                                            <div>
-                                                <div>
-                                                    <Row>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Vendor Name</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Vendor Address</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                        <Col md={4}>
-                                                            <div className="mb-3">
-                                                                <Form.Label>Vendor Contact Information</Form.Label>
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                    <div className="text-center mt-3">
-                                                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Tab.Pane>
-
-                                    </Tab.Content>
-                                </Tab.Container>
-                                <div className="mb-3">
-                                    <h3 className="mb-3 doc-heading">Developer's Documentation</h3>
-                                    <Tab.Container
-                                        id="left-tabs-example"
-                                        defaultActiveKey="create_sow"
-                                        onSelect={handleSelect}
-                                    >
-                                        <Nav variant="pills" className="application-pills">
-                                            <Nav.Item className="application-item">
-                                                <Nav.Link eventKey="create_sow" className="application-link">
-                                                    Create SOW
-                                                </Nav.Link>
-                                            </Nav.Item>
-                                            <Nav.Item className="application-item">
-                                                <Nav.Link eventKey="create_noc" className="application-link">
-                                                    Create NOC
-                                                </Nav.Link>
-                                            </Nav.Item>
-                                        </Nav>
-                                        <Tab.Content>
-                                            <Tab.Pane eventKey="create_sow" className="py-4">
-                                                <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
-                                                <div>
-                                                    <div>
-                                                        <Row>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Project Title</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Developer Name</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Developer Address</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Developer Contact Information</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Project Budget</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={12}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Project Objective</Form.Label>
-                                                                    <div className="custom-rich-editor">
-                                                                        <ReactQuill value={value} onChange={handleChange} />
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={12}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Scope of work</Form.Label>
-                                                                    <div className="custom-rich-editor">
-                                                                        <ReactQuill value={value} onChange={handleChange} />
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={12}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Responsibilities</Form.Label>
-                                                                    <div className="custom-rich-editor">
-                                                                        <ReactQuill value={value} onChange={handleChange} />
-                                                                    </div>
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <div className="text-center mt-3">
-                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Tab.Pane>
-                                            <Tab.Pane eventKey="create_noc" className="py-4">
-                                                <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
-                                                <div>
-                                                    <div>
-                                                        <Row>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Developer Name</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Developer Address</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={4}>
-                                                                <div className="mb-3">
-                                                                    <Form.Label>Developer Contact Information</Form.Label>
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <div className="text-center mt-3">
-                                                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Tab.Pane>
-
-                                        </Tab.Content>
-                                    </Tab.Container>
-                                </div>
-                            </div>
+                                    </div>
+                                </Col>
+                            </Row>
                         </div>
                     </Tab>
                     <Tab eventKey="hired" title={hired}>
