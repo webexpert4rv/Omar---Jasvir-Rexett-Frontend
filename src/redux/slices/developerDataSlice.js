@@ -34,8 +34,7 @@ const initialDeveloperData = {
   projectHistoryDetail: [],
   projectHistoryPagination: {},
   projectDetail: {},
-  developerRegistrationData:{}
-
+  developerRegistrationData:{},
 };
 
 export const developerDataSlice = createSlice({
@@ -190,7 +189,7 @@ export const {
   setLeaveHistory,
   setUpdateLeave,
   setAllCountries,
-  setDeveloperRegistrationDetails
+  setDeveloperRegistrationDetails,
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -1371,5 +1370,3 @@ export function getDeveloperProfileDetails(id) {
     }
   };
 }
-
-

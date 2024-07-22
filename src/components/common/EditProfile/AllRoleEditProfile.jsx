@@ -42,19 +42,20 @@ import SetUpJobModal from "../Modals/SetUpJobModal";
 import ClientStep1 from "../../../pages/Registration flows/Client Registration flow/ClientStep1";
 import RegistrationType from "../../../pages/Registration flows/Client Registration flow/RegistrationType";
 
-const AllRoleEditProfile = ({ role , name }) => {
-  const userId = localStorage.getItem("userId");
-  const [activeStep, setActiveStep] = useState(1)
-  const [selectedImage, setSelectedImage] = useState(null);
+const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, imageFile, setImageFile, setPreviewImage, stepData, activeStepFields}) => {
+  // const userId = localStorage.getItem("userId");
+  // const [activeStep, setActiveStep] = useState(1)
+  // const [selectedImage, setSelectedImage] = useState(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [twoFactorStatus, setTwoFactorStatus] = useState(false);
-  const activeStepFields = getActiveStepFields(activeStep, name);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
+  const ComponentActiveStepFields = getActiveStepFields(activeStep, name);
+  console.log(ComponentActiveStepFields, 'active field check allRoleComponent')
+  // const [previewImage, setPreviewImage] = useState(null);
+  // const [imageFile, setImageFile] = useState(null);
 
-  const { allTimeZones, countriesList, statesList, citiesList, timeZones } =
-    useSelector((state) => state.clientData);
-  const { t } = useTranslation();
+  // const { allTimeZones, countriesList, statesList, citiesList, timeZones } =
+  //   useSelector((state) => state.clientData);
+  // const { t } = useTranslation();
 
   const {
     register,
@@ -66,150 +67,189 @@ const AllRoleEditProfile = ({ role , name }) => {
     handleSubmit,
     formState: { errors, isDirty, isValid, isSubmitting },
   } = useForm({});
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState("inactive");
-  const [isPassword, setPassword] = useState({
-    firstPass: false,
-    secondPass: false,
-  });
+  // const [showModal, setShowModal] = useState(false);
+  // const [status, setStatus] = useState("inactive");
+  // const [isPassword, setPassword] = useState({
+  //   firstPass: false,
+  //   secondPass: false,
+  // });
   const [file, setFile] = useState(null);
   const { smallLoader, userProfileDetails, screenLoader } = useSelector(
     (state) => state.developerData
   );
-  const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
+  // const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
-  const handleJobStatusModal = () => {
-    setStatus(!status);
-    setShowModal(false);
-  };
-  const handleToggle = () => {
-    setStatus("active");
-    setShowModal(true);
-  };
-  const handleAction = () => {
-    let data = {
-      user_id: +userId,
-      status: status,
-    };
-    dispatch(getEnableDisableAccount(data));
-  };
+  // const handleJobStatusModal = () => {
+  //   setStatus(!status);
+  //   setShowModal(false);
+  // };
+  // const handleToggle = () => {
+  //   setStatus("active");
+  //   setShowModal(true);
+  // };
+  // const handleAction = () => {
+  //   let data = {
+  //     user_id: +userId,
+  //     status: status,
+  //   };
+  //   dispatch(getEnableDisableAccount(data));
+  // };
 
-  useEffect(() => {
-    let subEndPoint = getCurrentRoleEndPoint(role);
-    dispatch(getProfileDetails(subEndPoint));
-    dispatch(getCoutriesList());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   let subEndPoint = getCurrentRoleEndPoint(role);
+  //   dispatch(getProfileDetails(subEndPoint));
+  //   dispatch(getCoutriesList());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    if (watch("country")?.value) {
-      dispatch(getStatesList(watch("country")?.value));
-      dispatch(getTimeZoneForCountry(watch("country")?.value));
-      setValue("time_zone", null);
-      setValue("state", null);
-      setValue("city", null);
-    }
-  }, [watch("country")]);
+  // useEffect(() => {
+  //   if (watch("country")?.value) {
+  //     dispatch(getStatesList(watch("country")?.value));
+  //     dispatch(getTimeZoneForCountry(watch("country")?.value));
+  //     setValue("time_zone", null);
+  //     setValue("state", null);
+  //     setValue("city", null);
+  //   }
+  // }, [watch("country")]);
 
-  useEffect(() => {
-    if (watch("state")?.value) {
-      dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
-      setValue("city", null);
-    }
-  }, [watch("state")]);
+  // useEffect(() => {
+  //   if (watch("state")?.value) {
+  //     dispatch(getCitiesList(watch("country")?.value, watch("state")?.value));
+  //     setValue("city", null);
+  //   }
+  // }, [watch("state")]);
 
+  
+  useEffect(()=>{
+    if(stepData){
+    let name = stepData?.name ? stepData?.name?.split(' ') : '';
+    let [firstName, ...rest] = name;
+    let lastName = rest.join(' ');
 
-  console.log(userProfileDetails,'userProfileDetailsuserProfileDetails')
-
-  useEffect(() => {
-    if (userProfileDetails?.data) {
-      setValue("name", userProfileDetails?.data?.name);
-      setValue("email", userProfileDetails?.data?.email);
-      setValue("phone_number", userProfileDetails?.data?.phone_number);
-      setValue("address", userProfileDetails?.data?.address);
-      setValue("address_2", userProfileDetails?.data?.address_2);
-      setValue("tax_id", userProfileDetails?.data?.tax_id);
-      setValue("cin", userProfileDetails?.data?.cin);
-      setValue("company_address", userProfileDetails?.data?.company_address);
-      setValue("company_name", userProfileDetails?.data?.company_name);
-      setValue("city", { label: userProfileDetails?.data?.city, value: null });
-      setValue("country", { label: userProfileDetails?.data?.country, value: null });
-      setValue("passcode", userProfileDetails?.data?.passcode);
-      setValue("time_zone", { label: userProfileDetails?.data?.time_zone, value: userProfileDetails?.data?.time_zone });
-      setValue('company_tax_id',userProfileDetails?.data?.company_tax_id);
-      setValue("state", { label: userProfileDetails?.data?.state, value: null });
-      if (userProfileDetails?.data?.is_2FA_enabled) {
-        setValue("is_2FA_enabled", userProfileDetails?.data?.is_2FA_enabled);
-      } else {
-        setValue("is_2FA_enabled", false);
+    setValue('first_name',firstName);
+    setValue('last_name',lastName);
+    // setValue("phone_number",stepData?.phone_number);
+    // setValue("email",stepData?.email);
+    // setValue("profession",stepData?.professional_title);
+    // setValue("country",{ label: stepData?.country, value: null });
+    // setValue("state",{ label: stepData?.state, value: null });
+    // setValue("city",{ label: stepData?.city, value: null });
+    // setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
+    // setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
+    // setValue("passcode",stepData?.passcode);
+    // setValue("time_zone",stepData?.time_zone);
+    // setValue("time_zone",{ label: stepData?.time_zone, value: null });
+    // setValue("address",stepData?.address);
+    // setValue('git_hub',stepData?.github_url);
+    // setValue('linked_in',stepData?.linkedin_url)
+    Object.entries(stepData).forEach(([key, value]) => {
+      if(typeof(value) === 'object' && value !== null){
+        setValue(key,{ label: stepData[key]?.label, value: stepData[key]?.value})
       }
-    }
-  }, [userProfileDetails]);
-
-
-
-  const onSubmit = async (values) => {
-    let currentRoleUpdateProfile = updateCurrentRoleEndPoint(role)
-    let fileData = new FormData();
-    fileData.append("file", imageFile);
-    if (fileData == null) {
-      let data = {
-        ...values,
-        user_id: userId,
-        country: values?.country?.label,
-        country_iso_code: values?.country.value,
-        state: values?.state?.label,
-        state_iso_code: values?.state?.value,
-        time_zone: values?.time_zone?.label,
-        city: values?.city?.label,
-        tax_id: values?.tax_id,
-        cin: values?.cin,
-      };
-      dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
-    } else {
-      dispatch(filePreassignedUrlGenerate(fileData, (url) => {
-        let data = {
-          ...values,
-          profile_picture: url,
-          user_id: userId,
-          country: values?.country?.label,
-          country_iso_code: values?.country.value,
-          state: values?.state?.label,
-          state_iso_code: values?.state?.value,
-          time_zone: values?.time_zone?.label,
-          city: values?.city?.label,
-          tax_id: values?.tax_id,
-          cin: values?.cin,
-        }
-        dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
-      })
-      );
-    }
-  };
-  const validatePassword = (value) => {
-    if (value === "") {
-      return true;
-    } else {
-      const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-      if (!pattern.test(value)) {
-        return "Password must contain at least a symbol, upper and lower case letters and a number";
+      else{
+      setValue(key, (value === null || value === undefined ? '' : value));
       }
-    }
-    return true;
-  };
+    });
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFile(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+    setPreviewImage({
+      ...previewImage,
+      profile_picture: stepData?.profile_picture
+    });
+  }
+  },[stepData])
+
+
+  // console.log(userProfileDetails,'userProfileDetailsuserProfileDetails')
+
+  // useEffect(() => {
+  //   if (userProfileDetails?.data) {
+  //     setValue("name", userProfileDetails?.data?.name);
+  //     setValue("email", userProfileDetails?.data?.email);
+  //     setValue("phone_number", userProfileDetails?.data?.phone_number);
+  //     setValue("address", userProfileDetails?.data?.address);
+  //     setValue("address_2", userProfileDetails?.data?.address_2);
+  //     setValue("tax_id", userProfileDetails?.data?.tax_id);
+  //     setValue("cin", userProfileDetails?.data?.cin);
+  //     setValue("company_address", userProfileDetails?.data?.company_address);
+  //     setValue("company_name", userProfileDetails?.data?.company_name);
+  //     setValue("city", { label: userProfileDetails?.data?.city, value: null });
+  //     setValue("country", { label: userProfileDetails?.data?.country, value: null });
+  //     setValue("passcode", userProfileDetails?.data?.passcode);
+  //     setValue("time_zone", { label: userProfileDetails?.data?.time_zone, value: userProfileDetails?.data?.time_zone });
+  //     setValue('company_tax_id',userProfileDetails?.data?.company_tax_id);
+  //     setValue("state", { label: userProfileDetails?.data?.state, value: null });
+  //     if (userProfileDetails?.data?.is_2FA_enabled) {
+  //       setValue("is_2FA_enabled", userProfileDetails?.data?.is_2FA_enabled);
+  //     } else {
+  //       setValue("is_2FA_enabled", false);
+  //     }
+  //   }
+  // }, [userProfileDetails]);
+
+
+
+  // const onSubmit = async (values) => {
+  //   let currentRoleUpdateProfile = updateCurrentRoleEndPoint(role)
+  //   let fileData = new FormData();
+  //   fileData.append("file", imageFile);
+  //   if (fileData == null) {
+  //     let data = {
+  //       ...values,
+  //       user_id: userId,
+  //       country: values?.country?.label,
+  //       country_iso_code: values?.country.value,
+  //       state: values?.state?.label,
+  //       state_iso_code: values?.state?.value,
+  //       time_zone: values?.time_zone?.label,
+  //       city: values?.city?.label,
+  //       tax_id: values?.tax_id,
+  //       cin: values?.cin,
+  //     };
+  //     dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
+  //   } else {
+  //     dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+  //       let data = {
+  //         ...values,
+  //         profile_picture: url,
+  //         user_id: userId,
+  //         country: values?.country?.label,
+  //         country_iso_code: values?.country.value,
+  //         state: values?.state?.label,
+  //         state_iso_code: values?.state?.value,
+  //         time_zone: values?.time_zone?.label,
+  //         city: values?.city?.label,
+  //         tax_id: values?.tax_id,
+  //         cin: values?.cin,
+  //       }
+  //       dispatch(updateProfileDetails(data, currentRoleUpdateProfile))
+  //     })
+  //     );
+  //   }
+  // };
+  // const validatePassword = (value) => {
+  //   if (value === "") {
+  //     return true;
+  //   } else {
+  //     const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  //     if (!pattern.test(value)) {
+  //       return "Password must contain at least a symbol, upper and lower case letters and a number";
+  //     }
+  //   }
+  //   return true;
+  // };
+
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setFile(file);
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setSelectedImage(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
   const toggleConfirmationModal = (e) => {
     const { checked } = e?.target;
     setShowConfirmationModal(!showConfirmationModal);
@@ -227,9 +267,9 @@ const AllRoleEditProfile = ({ role , name }) => {
         control={control}
         errors={errors}
         activeStep={activeStep}
-        type={"client"}
+        type={role}
         register={register}
-        stepFields={activeStepFields}
+        stepFields={activeStepFields ? activeStepFields : ComponentActiveStepFields}
         setError={setError}
         clearErrors={clearErrors}
         watch={watch}
@@ -239,6 +279,7 @@ const AllRoleEditProfile = ({ role , name }) => {
         setPreviewImage={setPreviewImage}
         setImageFile={setImageFile}
         isProfileSectionRequired={activeStep === 1}
+        isEditMode={true}
       />)
   }
   return (

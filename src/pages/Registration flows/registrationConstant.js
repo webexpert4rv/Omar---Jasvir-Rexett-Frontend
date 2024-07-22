@@ -181,7 +181,7 @@ export const getStepperIntroData=(activeStep)=>{
 //   VENDOR_STEPPER_HEADINGS[activeStep] || null;
 
 const CLIENT_STEP_1_FIELDS = {
-  indivisual: [
+  individual: [
     {
       label: "firstName",
       fieldName: "first_name",
@@ -259,7 +259,7 @@ const CLIENT_STEP_1_FIELDS = {
       isLocation: true,
     },
   ],
-  company: [
+  partnership: [
     {
       label: "companyName",
       fieldName: "company_name",
@@ -703,7 +703,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Profession",
-      fieldName: "profession",
+      fieldName: "professional_title",
       type: "text",
       placeholder: "e.g. Software Engineer",
       rules: { required: "Profession is required" },
@@ -775,7 +775,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Resume",
-      fieldName: "upload_resume",
+      fieldName: "resume",
       type: "upload",
       placeholder: "Upload Resume",
       rules: { required: "Resume Required" },
@@ -784,7 +784,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Intro Video",
-      fieldName: "intro_video",
+      fieldName: "intro_video_url",
       type: "upload",
       placeholder: "Upload Intro Video",
       rules: { required: "Intro Video is required" },
@@ -793,7 +793,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "LinkedIn",
-      fieldName: "linked_in",
+      fieldName: "linkedin_url",
       type: "text",
       placeholder: "e.g. www.linkedin.com/profile/12345",
       rules: { required: "Linked in is required" },
@@ -802,7 +802,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Github",
-      fieldName: "git_hub", 
+      fieldName: "github_url", 
       type: "text",
       placeholder: "e.g. www.github.com/profile/12345",
       rules: { required: "GitHub in is required" },
@@ -1084,7 +1084,94 @@ const DEVELOPER_STEP_1_FIELDS = [
 
   ]
 
-
+  const adminStepData = [
+    {
+      label: "firstName",
+      fieldName: "first_name",
+      type: "text",
+      placeholder: "e.g. John",
+      rules: { required: "First name is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "surname",
+      fieldName: "last_name",
+      type: "text",
+      placeholder: "e.g. Doe",
+      rules: { required: "Surname is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "phoneNumber",
+      fieldName: "phone_number",
+      type: "phone",
+      placeholder: "e.g. +91 1234567890",
+      rules: { required: "Phone number is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "email",
+      fieldName: "email",
+      type: "email",
+      placeholder: "e.g. johndoe123@gmail.com",
+      rules: {
+        required: "Email is required",
+        pattern: {
+          value: EMAIL_REGEX,
+          message: "Invalid Email",
+        },
+      },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      isPasswordSection: true,
+    },
+    {
+      label: "taxId",
+      fieldName: "tax_id",
+      type: "text",
+      placeholder: "Enter Tax ID",
+      rules: { required: "Phone number is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "cin",
+      fieldName: "cin",
+      type: "text",
+      placeholder: "CIN",
+      rules: { required: "CIN is required" },
+      columnWidth: 6,
+      isRequired: true,
+    },
+    {
+      label: "address",
+      fieldName: "address",
+      type: "select",
+      placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Address is required" },
+      columnWidth: 12,
+      isRequired: true,
+      isAutocomplete: true,
+    },
+    {
+      label: "address 2",
+      fieldName: "address_2",
+      type: "select",
+      placeholder: "e.g. Street 1341,New area,CA,USA",
+      rules: { required: "Address is required" },
+      columnWidth: 12,
+      isRequired: true,
+      isAutocomplete: true,
+    },
+    {
+      isLocation: true,
+    },
+  ]
 
 const DEVELOPER_STEP_FIELDS = {
   1: DEVELOPER_STEP_1_FIELDS,
@@ -1112,6 +1199,10 @@ export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
   else{
     return DEVELOPER_STEP_FIELDS[activeStep] || null
    }
+}
+
+export const getAdminActiveFields = () => {
+  return adminStepData;
 }
   
   
