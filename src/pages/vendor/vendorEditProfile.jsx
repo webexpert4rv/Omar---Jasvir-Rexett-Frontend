@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Container } from "react-bootstrap";
+import { Controller,useForm } from "react-hook-form";
+import { Container,Row,
+  Col,
+  Form } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { getCoutriesList, getWebClientLookUp } from "../../redux/slices/clientDataSlice";
@@ -13,6 +15,7 @@ import RexettButton from "../../components/atomic/RexettButton";
 import VendorDecisionMakers from "../Registration flows/Vendor Registration Flow/VendorDecisionMakers";
 import ClientStep1 from "../Registration flows/Client Registration flow/ClientStep1";
 import SidebarSection from "../Registration flows/SidebarSection";
+import ConfirmationModal from "../views/Modals/ConfirmationModal";
 
 const VendorEditProfile = () => {
   const dispatch = useDispatch();
@@ -33,6 +36,9 @@ const VendorEditProfile = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [twoFactorStatus, setTwoFactorStatus] = useState(false);
+
   const userId = localStorage.getItem("userId")
 
 
@@ -111,6 +117,12 @@ const VendorEditProfile = () => {
       localStorage.setItem("vendorActiveStep", activeStep + 1);
     }
   };
+
+  const toggleConfirmationModal = (e) => {
+    const { checked } = e?.target;
+    setShowConfirmationModal(!showConfirmationModal);
+    setTwoFactorStatus(checked);
+  };
  
   const getActiveStepText = () => {
     switch (activeStep) {
@@ -142,6 +154,8 @@ const VendorEditProfile = () => {
       const stepData = watch();
       let formData = new FormData()
       formData.append('file', imageFile?.profile_picture)
+      console.log(twoFactorStatus,'twoFactorStatus helloooooo')
+      console.log(stepData,'helloooooo');
       dispatch(uploadFileToS3Bucket(formData, (url) => {
         const payload = {
           ...stepData,
@@ -150,8 +164,9 @@ const VendorEditProfile = () => {
           state_iso_code: stepData["state_iso_code"]?.value,
           country: stepData["country_code"]?.label,
           state: stepData["state_iso_code"]?.label,
-          company_logo: url,
+          company_logo: url ? url : stepData?.company_logo,
           time_zone: stepData?.time_zone?.label,
+          is_2FA_enabled: twoFactorStatus || stepData?.is_2FA_enabled,
           // total_it_recruiter: stepData?.Total_nos._of_IT_Recruiters
         };
         delete payload["profile_picture"]
@@ -180,6 +195,13 @@ const VendorEditProfile = () => {
       }
       console.log(data,"data")
       dispatch(getEditDecision(data, handleAfterApiSuccess))
+  };
+
+  const closeConfirmationModal = () => setShowConfirmationModal(false);
+
+  const handleTwoFaAction = () => {
+    setValue("is_2FA_enabled", twoFactorStatus);
+    closeConfirmationModal();
   };
 
   const callAreaOfExpertiseAPI = () => {
@@ -212,6 +234,66 @@ const VendorEditProfile = () => {
   const renderActiveStep = () => {
     switch (activeStep) {
       case 1:
+        return(
+          <div>
+          <Row className="mb-4">
+            <Col md="12" className="mb-3">
+              <h5 className="fw-semibold mb-3">Security</h5>
+              <Form.Group className="mb-3">
+                <Row className="gx-4">
+                  <Col md={8}>
+                    <Form.Label className="common-label font-16 fw-semibold mb-0">
+                      Enable Two Factor Authentication
+                    </Form.Label>
+                    <p className="font-14 mb-0">Two-Factor Authentication (2FA) is a security process in which users provide two different authentication factors to verify their identity. This method adds an additional layer of security, making it more difficult for unauthorized individuals to access your accounts.</p>
+                  </Col>
+                  <Col md={4}>
+                    <div class="form-check form-switch toggle-switch-wrapper">
+                      <Controller
+                        name="is_2FA_enabled"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            onChange={(e) => {
+                              toggleConfirmationModal(e);
+                            }}
+                            checked={
+                              watch("is_2FA_enabled") === true ? true : false
+                            }
+                            class="form-check-input toggle-switch-custom"
+                            type="checkbox"
+                            role="switch"
+                          />
+                        )}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Col>
+          </Row>
+          <ClientStep1
+            control={control}
+            errors={errors}
+            activeStep={activeStep}
+            type={"vendor"}
+            register={register}
+            stepFields={activeStepFields}
+            setError={setError}
+            clearErrors={clearErrors}
+            companyTypeOptions={companyTypeOptions}
+            watch={watch}
+            setValue={setValue}
+            previewImage={previewImage}
+            imageFile={imageFile}
+            setPreviewImage={setPreviewImage}
+            setImageFile={setImageFile}
+            isProfileSectionRequired={activeStep === 1}
+            isVendorStep1={true}
+          />
+        </div>
+        )
       case 3:
         // add proper naming for Client Step 1 This step can be used everywhere when we have to map fields
         return (
@@ -286,7 +368,7 @@ const VendorEditProfile = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Container>
               {renderActiveStep()}
-              <div className="d-flex justify-content-between align-items-center ">
+              <div className="d-flex justify-content-between align-items-center">
                 <div></div>
                 <div>
                   <RexettButton
@@ -302,6 +384,16 @@ const VendorEditProfile = () => {
           </form>
         </div>
       </section>
+      {showConfirmationModal && (
+        <ConfirmationModal
+          show={showConfirmationModal}
+          handleClose={closeConfirmationModal}
+          handleAction={handleTwoFaAction}
+          smallLoader={smallLoader}
+          text={`Are you sure, you want to ${twoFactorStatus ? "enable" : "disable"
+            } two factor authentication`}
+        />
+      )}
     </>
   );
 };
