@@ -32,11 +32,13 @@ const ClientStep1 = ({
   setImageFile,
   imageFile,
   isProfileSectionRequired,
-  isEditMode
+  isEditMode,
+  skillOptions
 }) => {
   const { t } = useTranslation();
   
-  let isStillWorking=watch("is_still_working")
+  // let isStillWorking=watch("is_still_working")
+  let isStillWorking=true
   return (
     <>
       <Row>
@@ -141,7 +143,7 @@ const ClientStep1 = ({
                               rules={{ ...rules }}
                               error={errors?.[fieldName]}
                               type={type}
-                              options={companyTypeOptions ? companyTypeOptions:options}//get options
+                              options={companyTypeOptions ? companyTypeOptions:skillOptions && label=="Skill" ?skillOptions:options}//get options
                               defaultOption={defaultOption}
                               placeholder={placeholder}
                               isMaxRequired={isMaxRequired}

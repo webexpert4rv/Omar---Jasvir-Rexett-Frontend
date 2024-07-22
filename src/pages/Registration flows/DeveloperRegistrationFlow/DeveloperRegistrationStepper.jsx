@@ -384,7 +384,7 @@ const DeveloperRegistrationStepper = () => {
     console.log(selectedEditData,"selectedEditData")
    if(activeStep==6 && selectedEditData){
 
-    setValue("project_title", "amitt");
+    setValue("project_title", selectedEditData?.project_title);
     setValue("project_description", selectedEditData?.project_description);
     setValue("tech_stacks_used", selectedEditData?.tech_stacks_used);
     setValue("role_in_project", selectedEditData?.role_in_project);
@@ -401,7 +401,7 @@ const DeveloperRegistrationStepper = () => {
    
     setValue("job_title", selectedEditData?.job_title);
     setValue("company_name", selectedEditData?.company_name);
-    setValue("description", selectedEditData?.description);
+    setValue("project_description", selectedEditData?.description);
     setValue("is_still_working",selectedEditData?.is_still_working);
     setValue("start_date",selectedEditData?.start_date?.slice(0,10));
     setValue("end_date",selectedEditData?.end_date?.slice(0,10));
@@ -409,6 +409,19 @@ const DeveloperRegistrationStepper = () => {
     setValue("job_location", selectedEditData?.job_location);
     localStorage.setItem("nestedActiveStep", 1);
     setNestedActiveStep(1);
+   }
+   else if(activeStep==3 && selectedEditData){
+    setValue("university_name", selectedEditData?.university_name);
+    setValue("location", selectedEditData?.address);
+    setValue("degree_id",0);
+    setValue("field_of_study", selectedEditData?.field_of_study);
+    setValue("start_year",0);
+    setValue("end_month", "string");
+    setValue("end_year",0);
+    setValue("currently_attending",true);
+    setValue("description", selectedEditData?.description)
+    localStorage.setItem("nestedActiveStep", 2);
+    setNestedActiveStep(2);
    }
    setEditMode({
     id:id,
@@ -567,6 +580,7 @@ const DeveloperRegistrationStepper = () => {
                 addAnotherPosition={addAnotherPosition}
                 activeStep={activeStep}
                 type="developer"
+                editSummary={editSummary}
               />
             );
         }
@@ -642,6 +656,7 @@ const DeveloperRegistrationStepper = () => {
                 isProfileSectionRequired={
                   activeStep === 1 && nestedActiveStep == 0
                 }
+                skillsOption={skillOptions}
               />
               )  
 
@@ -678,6 +693,7 @@ const DeveloperRegistrationStepper = () => {
                   isProfileSectionRequired={
                     activeStep === 1 && nestedActiveStep == 0
                   }
+                  skillOptions={skillOptions}
                   />
                 )
 
@@ -950,7 +966,7 @@ const DeveloperRegistrationStepper = () => {
           let developer_project=[
             {
               "project_title": values?.project_title,
-              "project_description": values?.project_description,
+              "project_description": values?.description,
               "tech_stacks_used": values?.tech_stacks_used,
               "role_in_project": values?.role_in_project,
               "project_team_size": values?.project_team_size,

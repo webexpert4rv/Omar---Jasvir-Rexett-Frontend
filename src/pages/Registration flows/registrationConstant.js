@@ -6,7 +6,9 @@ import {
   MONTH_YEAR,
   YEAR_OPTIONS,
   WORK_TYPE,
-  EXPERIENCE_YEAR
+  EXPERIENCE_YEAR,
+  PROJECT_TYPE,
+  TEAM_SIZE
 } from "../../components/common/JobPostForm/constant";
 
 
@@ -1059,9 +1061,19 @@ const DEVELOPER_STEP_1_FIELDS = [
       type: "normal-select",
       placeholder: "e.g. Delhi,India",
       rules: { required: "Project is required" },
-      columnWidth: 12,
+      columnWidth: 6,
       isRequired: true,
-      options: WORKPLACE_TYPES_OPTIONS,
+      options: PROJECT_TYPE,
+    },
+    {
+      label: "Team Size",
+      fieldName: "project_team_size",
+      type: "normal-select",
+      placeholder: "e.g. HTML",
+      rules: { required: "Skill is required" },
+      columnWidth: 6,
+      isRequired: true,
+      options: TEAM_SIZE,
     },
     
     {
@@ -1077,7 +1089,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     {
       label: "Skill",
       fieldName: "tech_stacks_used",
-      type: "text",
+      type: "normal-select",
       placeholder: "e.g. HTML",
       rules: { required: "Skill is required" },
       columnWidth: 6,
