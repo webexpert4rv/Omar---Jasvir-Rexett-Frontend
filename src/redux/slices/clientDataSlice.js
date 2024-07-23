@@ -41,9 +41,9 @@ const initialClientData = {
   webClientData:{},
   clientLook:{},
   OtpLoader:false,
-  jobList:[]
+  jobList:[],
+  clientProfileData:{}
 };
- 
 export const clientDataSlice = createSlice({
   name: 'clientData',
   initialState: initialClientData,
@@ -193,6 +193,10 @@ export const clientDataSlice = createSlice({
       setJobList:(state,action) => {
         state.screenLoader = false;
         state.jobList = action.payload;
+      },
+      setClientProfileData: (state, action) => {
+        state.clientProfileData = action.payload;
+        state.screenLoader = false;
       }
       
   }
@@ -202,7 +206,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const {setOTPloader,setJobList,setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId} = clientDataSlice.actions
+export const {setOTPloader,setJobList,setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId,setClientProfileData} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -422,7 +426,7 @@ export function clientJobPost(payload, activeStep, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.post(`common/post-job`, { ...payload });
+      let result = await clientInstance.post(`common/post-job?user_id=${payload?.user_id}`, { ...payload });
       if (result?.data?.[activeStepKey[activeStep]]?.id) {
         localStorage.setItem(
           "jobId",
@@ -1178,4 +1182,38 @@ export const uploadFileToS3Bucket = (payload,callback) => {
     }
   };
 };
+
+export function getClientProfileDetails(id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`common/client-details/${id}`);
+      dispatch(setClientProfileData(result?.data?.data))
+      dispatch(setActionSuccessFully());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function clientRegistration(payload, callback) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("common/client-registration/", {
+        ...payload,
+      });
+      if (result.status === 200) {
+        dispatch(setActionSuccessFully());
+        toast.success("Client Registered successfully", { position: "top-center" });
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
 

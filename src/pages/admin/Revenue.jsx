@@ -40,6 +40,130 @@ import InvoiceTable from "./InvoiceTable";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
+import CommonInvoiceTable from "../../components/common/CommonInvoiceTable";
+
+const dummyProjects = [
+  {
+    projectName: "Figma to UI",
+    totalHiredDevelopers: 3,
+    totalInvoiceRaised: 5,
+    totalHoursSpend: "3000",
+    startDate: "10-04-2024",
+    invoiceMonth: "Jun 2024",
+    developers: [
+      {
+        developerName: "John Smith",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Emily Davis",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "James Taylor",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Michael Brown",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Sarah Wilson",
+        totalHoursSpend: "140 ",
+        invoiceMonth: "Jun 2024",
+        projectStatus: "Paid",
+      },
+    ],
+  },
+  {
+    projectName: "Backend API Development",
+    totalHiredDevelopers: 4,
+    totalInvoiceRaised: 8,
+    totalHoursSpend: "5000 ",
+    startDate: "01-05-2024",
+    invoiceMonth: "Jul 2024",
+    developers: [
+      {
+        developerName: "Anna Lee",
+        totalHoursSpend: "160 ",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "David Kim",
+        totalHoursSpend: "160 ",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Sophia Martinez",
+        totalHoursSpend: "160",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Robert Johnson",
+        totalHoursSpend: "160",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Jessica White",
+        totalHoursSpend: "160",
+        invoiceMonth: "Jul 2024",
+        projectStatus: "Paid",
+      },
+    ],
+  },
+  {
+    projectName: "Mobile App Development",
+    totalHiredDevelopers: 5,
+    totalInvoiceRaised: 10,
+    totalHoursSpend: "7000",
+    startDate: "15-06-2024",
+    invoiceMonth: "Aug 2024",
+    developers: [
+      {
+        developerName: "Kevin Wang",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Laura Brown",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Steven Clark",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Rachel Adams",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+      {
+        developerName: "Daniel Rodriguez",
+        totalHoursSpend: "180",
+        invoiceMonth: "Aug 2024",
+        projectStatus: "Paid",
+      },
+    ],
+  },
+];
 
 const Revenue = () => {
   const minOffset = 0;
@@ -53,6 +177,9 @@ const Revenue = () => {
   const thisYear = new Date().getFullYear();
   const { t } = useTranslation();
   const [showInvoicePaidModal, setShowInvoicePaidModal] = useState(false);
+
+    console.log(invoiceDetails,'detailsssss');
+
   const handleInvoicePaid = () => {
     setShowInvoicePaidModal(true);
   };
@@ -156,21 +283,22 @@ const Revenue = () => {
                     filters={filters1}
                     setFilters={setFilters1}
                   /> */}
-                  <InvoiceTable
+                  {/* <InvoiceTable
                     columns={RAISED_BY_DEV_INVOICE_COLUMNS}
                     data={invoiceDetails?.invoices}
                     isRaisedByDev={true}
-                  />
+                  /> */}
+                  <CommonInvoiceTable data={dummyProjects}/>
                   {invoiceTotalPage > 1 ? (
                     <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                       <p className="showing-result">
                         {/* {t("showing")} {timeReportDetails?.length} {t("results")} */}
                       </p>
-                      <RexettPagination
+                      {/* <RexettPagination
                         number={invoiceTotalPage}
                         setPage={setPage1}
                         page={page1}
-                      />
+                      /> */}
                     </div>
                   ) : (
                     ""

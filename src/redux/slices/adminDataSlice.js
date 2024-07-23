@@ -41,6 +41,9 @@ export const adminDataSlice = createSlice({
         setScreenLoader: (state, action) => {
             state.screenLoader = true;
         },
+        setSmallLoader: (state, action) => {
+            state.smallLoader = true;
+        },
         setBtnLoader: (state, action) => {
             state.smallLoader = true;
         },
@@ -259,12 +262,13 @@ export function adminListAssignedDeveloper(payload, callback) {
 
 export function getAdminProfile(payload, callback) {
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get('admin/profile')
-            if (result.status === 200) {
+            // if (result.status === 200) {
                 dispatch(setSuccessProfileData(result.data))
-            }
+                dispatch(setSuccessAdminData())
+            // }
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })

@@ -34,8 +34,7 @@ const initialDeveloperData = {
   projectHistoryDetail: [],
   projectHistoryPagination: {},
   projectDetail: {},
-  developerRegistrationData:{}
-
+  developerRegistrationData:{},
 };
 
 export const developerDataSlice = createSlice({
@@ -190,7 +189,7 @@ export const {
   setLeaveHistory,
   setUpdateLeave,
   setAllCountries,
-  setDeveloperRegistrationDetails
+  setDeveloperRegistrationDetails,
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -1339,13 +1338,14 @@ export function developerRegistrationBio(payload) {
   };
 }
 
-export function addDeveloperRegisProject(payload) {
+export function addDeveloperRegisProject(payload,callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.post("common/add-developer-project",payload);
       toast.success("Project is Added", { position: "top-center" });
       dispatch(setActionSuccessFully());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1371,5 +1371,3 @@ export function getDeveloperProfileDetails(id) {
     }
   };
 }
-
-
