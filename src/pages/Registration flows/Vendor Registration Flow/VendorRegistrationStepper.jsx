@@ -74,7 +74,6 @@ const VendorRegistrationStepper = () => {
       localStorage.setItem("vendorActiveStep", activeStep + 1);
     }
   };
-  console.log(activeStep,"activestep")
   const handleToggleSetupModal = () => {
     setShowSetUpJobModal((prev) => !prev);
   };
@@ -101,6 +100,10 @@ const VendorRegistrationStepper = () => {
         return "Submit";
     }
   };
+  const handleAfterApiSuccess = () => {
+      increaseStepCount();
+      reset();
+    };
 
   const handleProceed = () => {
     increaseStepCount();
@@ -113,11 +116,7 @@ const VendorRegistrationStepper = () => {
       state: stepData["state_iso_code"]?.label,
       // profile_picture: selectedImage,
     };
-    const handleAfterApiSuccess = () => {
-      increaseStepCount();
-      reset();
-    };
-    console.log(stepData, "stepData")
+    
     const filePayload = { file: imageFile };
     dispatch(
       uploadFileToS3Bucket(filePayload, (url) => {
@@ -128,18 +127,15 @@ const VendorRegistrationStepper = () => {
           country: stepData["country_code"]?.label,
           state: stepData["state_iso_code"]?.label,
           profile_picture: url,
+          
         };
         console.log(payload, "payload")
         dispatch(applyAsVendor(payload, handleAfterApiSuccess));
       })
     );
-
-    // replace trigger verification modal with last callback function
-    //  dispatch(applyAsClient(payload,handleAfterApiSuccess,()=>{}))
   };
 
   const onSubmit = (values) => {
-    console.log(values, "values--------------------------------");
     if (activeStep === 1) {
       setShowSetUpJobModal(true);
     } else {

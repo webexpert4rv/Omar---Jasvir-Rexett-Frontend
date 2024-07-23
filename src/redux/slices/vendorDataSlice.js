@@ -463,13 +463,12 @@ export const uploadFileToS3Bucket = (payload,callback) => {
     };
   }
   export function getVendorUpdatedDetails(id,callback) {
-    console.log(id,'id')
     return async (dispatch) => {
     //   dispatch(setScreenLoader());
       try {
         let result = await clientInstance.get(`/common/vendor-registration-details/${id}`);
         callback(result?.data?.data)
-        localStorage.setItem("vendorId",result?.data?.data?.id);
+        // localStorage.setItem("vendorId",result?.data?.data?.id);
       } catch (error) {
         const message = error?.message;
         // if (error?.message === VERIFY_USER_MESSAGE) {
