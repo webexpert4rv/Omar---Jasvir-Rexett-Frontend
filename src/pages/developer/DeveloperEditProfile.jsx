@@ -39,10 +39,7 @@ const DeveloperEditProfile = () => {
     introVideo: "",
   });
 
-  console.log(imageFile,'imageFileeeeeee')
-
   let userId=localStorage.getItem("userId")
-
 
   const onSubmit = (values) => {
     console.log(values, "va");
@@ -79,9 +76,12 @@ const DeveloperEditProfile = () => {
           country: values?.country_code?.label,
           address: values?.address,
           password: values?.password,
-          city: values?.city,
+          language_preference: values?.language_preference,
+          total_experience: values?.total_experience,
+          // city: values?.city,
+          city: null,
           state: values?.state_iso_code?.label,
-          country_iso_code: "string",
+          country_iso_code: values?.country_iso_code,
           state_iso_code: values?.state_iso_code?.value,
           passcode: values?.passcode,
           country_code: values?.country_code.value,
@@ -89,10 +89,10 @@ const DeveloperEditProfile = () => {
           language_proficiency: values?.language_proficiency,
           time_zone: values?.time_zone?.label,
           resume: uploadedUrls?.resume,
-          linkedin_url: "https://www.linkedin.com/",
-          github_url: "https://github.com/",
+          linkedin_url: values?.linked_in,
+          github_url: values?.git_hub,
           intro_video_url: uploadedUrls?.introVideo,
-          userId: userId
+          user_id: userId
         };
 
         dispatch(developerRegistration(payload));
@@ -142,22 +142,34 @@ const DeveloperEditProfile = () => {
     }
   }, [watch("state")]);
 
+
+
+  let name = stepData?.name ? stepData?.name?.split(' ') : '';
+  let [firstName, ...rest] = name;
+  let lastName = rest.join(' ');
+
   useEffect(()=>{
+    setValue('first_name',firstName);
+    setValue('last_name',lastName);
     setValue("phone_number",stepData?.phone_number);
     setValue("email",stepData?.email);
-    // setValue("country",stepData?.country);
-     setValue("professional_title",stepData?.professional_title);
-     setValue("country",{ label: stepData?.country, value: null });
-    // setValue("state",stepData?.state);
+    setValue("profession",stepData?.professional_title);
+    setValue("country",{ label: stepData?.country, value: null });
     setValue("state",{ label: stepData?.state, value: null });
-    // setValue("city",stepData?.city);
-   setValue("city",{ label: stepData?.city, value: null });
-   setValue('language_preference',{ label: stepData?.language_preference, value: null });
-   setValue('total_experience',{ label: stepData?.total_experience, value: null });
+    setValue("city",{ label: stepData?.city, value: null });
+    setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
+    setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
     setValue("passcode",stepData?.passcode);
     setValue("time_zone",stepData?.time_zone);
     setValue("time_zone",{ label: stepData?.time_zone, value: null });
     setValue("address",stepData?.address);
+    setValue('git_hub',stepData?.github_url);
+    setValue('linked_in',stepData?.linkedin_url)
+
+    setPreviewImage({
+      ...previewImage,
+      profile_picture: stepData?.profile_picture
+    });
   },[stepData])
 
 

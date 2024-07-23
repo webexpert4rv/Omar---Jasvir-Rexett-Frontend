@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import rexettLogo from "../../../assets/img/rexett-logo-white.png";
 import { Link } from "react-router-dom";
 import {
@@ -20,14 +20,12 @@ import {
   Row,
 } from "react-bootstrap";
 
-import { IoAddOutline } from "react-icons/io5";
-import { GoClockFill } from "react-icons/go";
-import { FiExternalLink } from "react-icons/fi";
 import ReactQuill from "react-quill";
 import PreviewModal from "./Modals/PreviewResume";
 import ClientStep1 from "../../Registration flows/Client Registration flow/ClientStep1";
 import { Controller } from "react-hook-form";
 import RecommendationAI from "../../Registration flows/DeveloperRegistrationFlow/RecommendationAI";
+import { createOptionsForReactSelect } from "../../websiteRegisterForm/developer/developeStepConstant";
 const AddEducation = ({
   control,
   errors,
@@ -46,8 +44,21 @@ const AddEducation = ({
   setImageFile,
   isProfileSectionRequired,
   setSelectedRecommend,
-  selectedRecommend
+  selectedRecommend,
+  skillOptions
 }) => {
+
+  const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
+  useEffect(() => {
+    if (skillOptions?.length) {
+      const formattedSkillOptions = createOptionsForReactSelect(
+        skillOptions,
+        "id",
+        "title"
+      );
+      setFormattedSkillOptions(formattedSkillOptions);
+    }
+  }, [skillOptions]);
 
   const tipstext = (
     <Popover id="popover-basic">
@@ -92,6 +103,7 @@ const AddEducation = ({
           setPreviewImage={setPreviewImage}
           setImageFile={setImageFile}
           isProfileSectionRequired={activeStep === 1 && nestedActiveStep == 0}
+          skillOptions={formattedSkillOptions}
         />
       </div>
 

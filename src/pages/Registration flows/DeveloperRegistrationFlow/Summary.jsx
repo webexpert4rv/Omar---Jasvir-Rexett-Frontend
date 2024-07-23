@@ -79,13 +79,13 @@ const Summary = ({
     if (item?.project_title) {
       return (
         <span>
-          {`${item?.project_type} , ${item.project_start_date} - ${item?.project_end_date}`}
+          {`${item?.project_type} , ${item?.project_start_date} - ${item?.project_end_date}`}
           <br />
           <span>{item?.project_link}</span>
         </span>
       );
     }else if(item?.job_title){
-      return <span>{`${item?.job_location} | ${item.start_date.slice(0,10)} - ${item?.end_date.slice(0,10)}`}</span> 
+      return <span>{`${item?.job_location} | ${item?.start_date?.slice(0,10)} - ${item?.end_date?.slice(0,10)}`}</span> 
     }
   };
 
