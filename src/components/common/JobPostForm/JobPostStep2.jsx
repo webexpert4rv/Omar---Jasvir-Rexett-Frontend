@@ -21,6 +21,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   const [newId , setNewId] = useState()
   const [descriptionText, setDescriptionText] = useState("");
   const [selectedSkill  , setSelectedSkill] = useState()
+  const [traitSkill,setTraitSkill]=useState([])
   const [skills, setSkills] = useState([]);
   const [text, setText] = useState("");
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
@@ -41,7 +42,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   
 console.log(skillListMapped,"skillListMapped")
   console.log(selectedSkill,"selectedSkill")
-  console.log(selectedLevel,"selectedLevel")
+  console.log(traitSkill,"traitSkill")
 
   
   const getPlainText = (string) => {
@@ -53,7 +54,19 @@ console.log(skillListMapped,"skillListMapped")
     }
   }
 
-  const handleSkillLevel=(event  )=>{
+  const handleSkillLevel=(event,skill,index,name,inx)=>{
+ 
+   let copySkill=[...traitSkill];
+  
+   copySkill[index].level = copySkill[index].level.map((level, idx) => ({
+    ...level,
+    isTrue: idx === inx,
+  }));
+
+  setTraitSkill(copySkill);
+
+
+
     let ID = (event.target.id).split("-")[1]
     console.log(ID,"idddddddd")
     setNewId(ID)
@@ -124,8 +137,22 @@ console.log(skillListMapped,"skillListMapped")
                     options={skills}
                     onChange={(newValue) => {
                       field.onChange(newValue);
-                      console.log(newValue,"newskill")
+                      
+                        const updatedValue = newValue.map(skill => ({
+                          ...skill,
+                          level: [
+                            { name: "Beginner",isTrue:false },
+                            { name: "Intermediate",isTrue:false },
+                            { name: "Expert",isTrue:false }
+                          ]
+                        }));
+                        
                       setSelectedSkill(newValue)
+                      setTraitSkill(updatedValue)
+                      
+
+                
+                  
                     }}
                   />
                 )}
@@ -187,7 +214,7 @@ console.log(skillListMapped,"skillListMapped")
                 </div>
               </div>
             </Col>
-            {selectedSkill ?.map((skill,idx)=>(
+            {traitSkill?.map((skill,index)=>(
               <Row key = {skill?.value}>
                <Col md={8} className="mb-3">
                <div>
@@ -203,15 +230,26 @@ console.log(skillListMapped,"skillListMapped")
              </Col>
               <Col md={4} className="align-self-center mb-3">
               <div className="d-flex justify-content-center gap-3">
-                <div className="low-wrapper">
-                  <Form.Check type="radio"  name="react-skill-weight" id ={`beginner-${skill?.value}`}value={"25%"} onChange = {(e)=>handleSkillLevel(e ,skill?.value)}  className="weight-radio" checked  />
+                {
+                  skill?.level?.map(((lvl,inx)=>{
+               
+                    return (
+                      <>
+                          <div className="low-wrapper" key={inx}>
+                            {lvl?.name}
+                  <Form.Check type="radio"  id ={`${inx}-${skill?.value}`} onChange = {(e)=>handleSkillLevel(e ,skill,index,lvl,inx)}  className="weight-radio" checked={lvl?.isTrue} />
                 </div>
-                <div className="medium-wrapper">
-                  <Form.Check type="radio" name="react-skill-weight" id ={`intermediate-${skill?.value}` }value={"50%"}  onChange = {(e)=>handleSkillLevel(e,skill?.value )} className="weight-radio" />
+                      </>
+                    )
+                  }))                
+                    }
+            
+                {/* <div className="medium-wrapper">
+                  <Form.Check type="radio" name="react-skill-weight" id ={`intermediate-${skill?.value}` }value={"50%"}  onChange = {(e)=>handleSkillLevel(e,skill,index,"intermediate" )} className="weight-radio" checked={skill?.weight=="intermediate"} />
                 </div>
                 <div className="high-wrapper">
-                  <Form.Check type="radio" name="react-skill-weight" id={`expert-${skill?.value}` } value={"100%" }  onChange = {(e )=>handleSkillLevel(e,skill?.value)} className="weight-radio" />
-                </div>
+                  <Form.Check type="radio" name="react-skill-weight" id={`expert-${skill?.value}` } value={"100%" }  onChange = {(e )=>handleSkillLevel(e,skill,index,"expert")} className="weight-radio" checked={skill?.weight=="expert"} />
+                </div> */}
               </div>
             </Col>
             </Row>
