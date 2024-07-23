@@ -739,6 +739,7 @@ export function earnedBackOfDeveloper(paylaod) {
   };
 }
 export function getDeveloperDetails(id) {
+  console.log(id,"id")
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {

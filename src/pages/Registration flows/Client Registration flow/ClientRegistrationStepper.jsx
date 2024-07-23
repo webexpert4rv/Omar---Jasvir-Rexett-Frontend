@@ -157,6 +157,22 @@ const ClientRegistrationStepper = () => {
     }
   };
 
+  // const handleJobSteps = () => {
+  //   const buttonText = getActiveStepText();
+  //   switch (buttonText) {
+  //     case "Next : Job Description":
+  //       callJobStep1API();
+  //       break;
+  //     case "Screening Info":
+  //       callJobStep2API();
+  //       break;
+  //     case "Submit":
+  //       callJobStep3API();
+  //   }
+  // };
+
+
+
   const handleRegistrationType = (registrationType) => {
     setRegistrationType(registrationType);
     increaseStepCount();
