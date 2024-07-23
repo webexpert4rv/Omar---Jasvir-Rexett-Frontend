@@ -22,7 +22,7 @@ import { FaLink } from "react-icons/fa6";
 import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
-import { IoGrid } from "react-icons/io5";
+import { IoCheckboxOutline, IoCheckmarkCircleOutline, IoCheckmarkOutline, IoCloseOutline, IoGrid } from "react-icons/io5";
 import { LuMessagesSquare } from "react-icons/lu";
 import CreateOffer from "../Modals/CreateOffer";
 
@@ -981,11 +981,15 @@ const AdminSingleJob = () => {
                                                     </span>
                                                 </div>
                                             </p>
-                                            {/* <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Web developer</span>
+                                            <div>
+                                                <h5 className="font-16 mt-3 mb-1">Documents</h5>
+                                                <span className="associate-text me-1">
+                                                    <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
                                                 </span>
-                                            </div> */}
+                                                <span className="associate-text">
+                                                    <span className="associate d-inline-flex align-items-center">NDA <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div>

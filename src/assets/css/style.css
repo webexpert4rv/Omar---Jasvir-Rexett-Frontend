@@ -9657,6 +9657,101 @@ select.apply-field
 {
     margin-top: 0px !important;
 }
+.document-card .document_label
+{
+    position: relative;
+    display: block;
+    padding: 10px;
+    border: 1px solid #037563;
+    border-radius: 10px;
+    text-align: center;
+    color: #037563;
+    filter: grayscale(1);
+    transition: .3s ease;
+    cursor: pointer;
+}
+.document-card .document_label img
+{
+    max-width: 60px;
+}
+.document-card .document_label span
+{
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 14px;
+}
+.document-card .document_label .doccheck-icon
+{
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    font-size: 19px;
+    color: #037563;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s ease;
+}
+.document-card input:checked + .document_label
+{
+    filter: grayscale(0);
+}
+.document-card input:checked + .document_label .doccheck-icon
+{
+    opacity: 1;
+    visibility: visible;
+}
+.sow-doc
+{
+    height: 400px;
+}
+.shift_label
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #037563;
+    color: #037563;
+    border-radius: 50%;
+    font-size: 17px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+.shift-input-radio
+{
+    display: none;
+}
+.shift-input-radio:checked + .shift_label
+{
+    background-color: #037563;
+    color: #fff;
+}
+.holiday_label
+{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #037563;
+    color: #037563;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+.holiday-input-radio
+{
+    display: none;
+}
+.holiday-input-radio:checked + .holiday_label
+{
+    background-color: #037563;
+    color: #fff;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
