@@ -426,7 +426,7 @@ export function clientJobPost(payload, activeStep, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.post(`common/post-job`, { ...payload });
+      let result = await clientInstance.post(`common/post-job?user_id=${payload?.user_id}`, { ...payload });
       if (result?.data?.[activeStepKey[activeStep]]?.id) {
         localStorage.setItem(
           "jobId",

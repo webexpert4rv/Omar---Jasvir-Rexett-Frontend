@@ -1338,13 +1338,14 @@ export function developerRegistrationBio(payload) {
   };
 }
 
-export function addDeveloperRegisProject(payload) {
+export function addDeveloperRegisProject(payload,callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.post("common/add-developer-project",payload);
       toast.success("Project is Added", { position: "top-center" });
       dispatch(setActionSuccessFully());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(error?.response?.data?.message, { position: "top-center" });

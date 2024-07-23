@@ -78,7 +78,7 @@ const JobPostStepContainer = ({ role }) => {
   // });
   const userId = localStorage.getItem("userId");
   const [skillCate, setSkillsCate] = useState([]);
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(1);
   const ACTIVE_STEP_API_KEYS = ["", "step1", "step2", "step3"];
   const { jobPostedData, screenLoader } = useSelector(
     (state) => state.clientData

@@ -45,7 +45,8 @@ const AddEducation = ({
   isProfileSectionRequired,
   setSelectedRecommend,
   selectedRecommend,
-  skillOptions
+  skillOptions,
+  name
 }) => {
 
   const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
@@ -117,14 +118,14 @@ const AddEducation = ({
           <div id="custom-ck">
           <p className="font-14 fw-medium mb-1">Description</p>
           <Controller
-            name="description"
+            name={name}
             control={control}
             rules={{ required: "Job description is required" }}
            
             render={({ field }) => (
               <ReactQuill
                 {...field}
-                // value={selectedRecommendation}
+                value={field.value}
                 className={`common-field ${
                   errors.description?.message && "invalid-field"
                 }`}
