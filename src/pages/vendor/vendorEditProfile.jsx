@@ -66,7 +66,6 @@ const VendorEditProfile = () => {
 
     }
   }, [activeStep]);
-  const stepNum = localStorage.getItem("vendorActiveStep")
   useEffect(() => {
     const activeStepKeys = {
       1: "step1",
@@ -179,7 +178,6 @@ const VendorEditProfile = () => {
 
 
   const callDecisionMakersAPI = () => {
-    // increaseStepCount()
       const stepData = watch();
       console.log(stepData,"stepdata")
       let data = {
@@ -193,7 +191,6 @@ const VendorEditProfile = () => {
           }
         ]
       }
-      console.log(data,"data")
       dispatch(getEditDecision(data, handleAfterApiSuccess))
   };
 
@@ -205,7 +202,6 @@ const VendorEditProfile = () => {
   };
 
   const callAreaOfExpertiseAPI = () => {
-    // increaseStepCount()
       const stepData = watch();
       let payload = {
         user_id: userId,

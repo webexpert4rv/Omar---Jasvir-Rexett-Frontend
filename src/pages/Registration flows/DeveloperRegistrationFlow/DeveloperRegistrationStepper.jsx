@@ -119,6 +119,7 @@ const DeveloperRegistrationStepper = () => {
   const { skillOptions } = useSelector((state) => state.developerData);
 
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
+  console.log(stepData,"stepData")
 
   useEffect(() => {
     const storedStep = localStorage.getItem("clientActiveStep");
@@ -166,6 +167,18 @@ const DeveloperRegistrationStepper = () => {
   setValue("address",stepData?.address);
   setValue('git_hub',stepData?.github_url);
   setValue('linked_in',stepData?.linkedin_url)
+
+
+  
+  setValue("project_title", stepData[0]?.project_title);
+  setValue("project_description", stepData[0]?.project_description);
+  setValue("tech_stacks_used", stepData[0]?.tech_stacks_used);
+  setValue("role_in_project", stepData[0]?.role_in_project);
+  setValue("project_team_size", stepData[0]?.project_team_size);
+  setValue("project_link", stepData[0]?.project_link);
+  setValue("project_start_date", stepData[0]?.project_start_date?.slice(0,10));
+  setValue("project_end_date", stepData[0]?.project_end_date?.slice(0,10));
+  setValue("project_type", stepData[0]?.project_type);
 
   setPreviewImage({
     ...previewImage,
@@ -694,6 +707,7 @@ const DeveloperRegistrationStepper = () => {
                     activeStep === 1 && nestedActiveStep == 0
                   }
                   skillOptions={skillOptions}
+                  name="project_description"
                   />
                 )
 
@@ -966,7 +980,7 @@ const DeveloperRegistrationStepper = () => {
           let developer_project=[
             {
               "project_title": values?.project_title,
-              "project_description": values?.description,
+              "project_description": values?.project_description,
               "tech_stacks_used": values?.tech_stacks_used,
               "role_in_project": values?.role_in_project,
               "project_team_size": values?.project_team_size,
@@ -980,8 +994,10 @@ const DeveloperRegistrationStepper = () => {
             user_id:localStorage.getItem("developerId"),
             projects:developer_project
           }
-          dispatch(addDeveloperRegisProject(payalod))
-          increaseStepCount(true)
+          dispatch(addDeveloperRegisProject(payalod,()=>{
+            increaseStepCount(true)
+          }))
+    
         }else if(nestedActiveStep==0){
           setNestedActiveStep((prev) => prev + 1);
           localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);

@@ -43,12 +43,9 @@ import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registr
 import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
 import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
 import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
+// import VendorEditProfile from "./pages/vendor/vendorEditProfile";
 import VendorEditProfile from "./pages/vendor/vendorEditProfile";
-// import VendorEditProfile from "./pages/vendor/VendorEditProfile";
-const ClientRegisterForm = lazy(() =>
-  import("./pages/websiteRegisterForm/client/ClientRegisterForm")
-);
-// const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
+
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
 );
