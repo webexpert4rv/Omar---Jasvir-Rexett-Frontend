@@ -1,6 +1,6 @@
 
 import { MdDesignServices, MdSpaceDashboard } from "react-icons/md";
-import { FaGear, FaListUl, FaUserLarge, FaUsers } from "react-icons/fa6";
+import { FaGear, FaListUl, FaUserClock, FaUserLarge, FaUsers } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
 import { BsClockFill } from "react-icons/bs";
@@ -90,4 +90,6 @@ export const ADMIN_SIDE_BAR_ITEMS= [
     { to: "/super-admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
     { to: "/super-admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
     { to: "/super-admin/client-listing", icon: <FaUsers />, text: "Clients" },
+    { to: "/super-admin/support-agents", icon: <FaUsers />, text: "Support Agents" },
+    { to: "/super-admin/manage-shift", icon: <FaUserClock />, text: "Manage Agent Shift" },
   ]; 
