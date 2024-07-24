@@ -37,8 +37,8 @@ const ClientStep1 = ({
 }) => {
   const { t } = useTranslation();
   
-  // let isStillWorking=watch("is_still_working")
-  let isStillWorking=true
+  let isStillWorking=watch("is_still_working")
+  // let isStillWorking=true
   return (
     <>
       <Row>

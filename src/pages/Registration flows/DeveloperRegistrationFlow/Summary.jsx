@@ -13,7 +13,7 @@ const Summary = ({
   nestedActiveStep,
   stepData,
   handleDelete,
-  handleCloseUploadFileModal,
+  handleClose,
   smallLoader,
   setShowSetUpJobModal,
   showSetUpModal,
@@ -79,7 +79,7 @@ const Summary = ({
     if (item?.project_title) {
       return (
         <span>
-          {`${item?.project_type} , ${item?.project_start_date} - ${item?.project_end_date}`}
+          {`${item?.project_type} , ${item?.project_start_date?.slice(0,10)} - ${item?.project_end_date?.slice(0,10)}`}
           <br />
           <span>{item?.project_link}</span>
         </span>
@@ -175,10 +175,12 @@ const Summary = ({
       </Row>
       <ConfirmationModal
         text={"Are you sure to delete this job?"}
-        show={showSetUpModal?.isDelete}
-        handleClose={handleCloseUploadFileModal}
+        show={showSetUpModal}
+        handleClose={handleClose}
         onClick={handleDelete}
         smallLoader={smallLoader}
+        handleAction={handleDelete}
+        type={type}
       />
     </>
   );
