@@ -28,6 +28,8 @@ const CommonFilterSection = ({
     setValue: setSearchValue,
   } = useForm();
 
+  console.log(filters,"filters")
+
   useEffect(() => {
     for (let key in filters) {
         setValue(key, filters[key]);
@@ -46,6 +48,7 @@ const CommonFilterSection = ({
   };
   const isAnyFieldFilled = () => {
     const fields = watch();
+    console.log(fields,"fields")
     return Object.values(fields).some((value) => value !== "");
   };
 
