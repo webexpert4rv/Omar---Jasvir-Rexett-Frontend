@@ -23,7 +23,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
   const [selectedSkill  , setSelectedSkill] = useState()
   const [traitSkill,setTraitSkill]=useState([])
   const [skills, setSkills] = useState([]);
-  const [text, setText] = useState("");
+  const [goodToSkills, setGoodToSkills] = useState([]);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
   const MAX_LENGTH = 10000;
 
@@ -38,11 +38,10 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
 
   useEffect(() => {
     setSkills(skillListMapped);
+    setGoodToSkills(skillListMapped)
   }, [skillList]);
   
-console.log(skillListMapped,"skillListMapped")
-  console.log(selectedSkill,"selectedSkill")
-  console.log(traitSkill,"traitSkill")
+
 
   
   const getPlainText = (string) => {
@@ -65,12 +64,19 @@ console.log(skillListMapped,"skillListMapped")
 
   setTraitSkill(copySkill);
 
+  console.log(copySkill,"copySkill")
 
+//  let finlValue= copySkill?.map((item)=>{
+//     return  {
+//       "skill_id": item?.value,
+//       "skill_name": item?.label,
+//       "weight": item?.level.map((i,in)=>i.)
+//     }
+//   })
+//   console.log(finlValue,"finlValue")
 
-    let ID = (event.target.id).split("-")[1]
-    console.log(ID,"idddddddd")
-    setNewId(ID)
-     setSelectedLevel(event.target.value)
+  
+
    }
   // const newSkill = skillListMapped.find((itm)=>itm.value===newId)
  
@@ -136,8 +142,39 @@ console.log(skillListMapped,"skillListMapped")
                     isMulti
                     options={skills}
                     onChange={(newValue) => {
-                      field.onChange(newValue);
-                      
+                      field.onChange(newValue);        
+                      if(traitSkill?.length>0){
+                        let lastValue=newValue[newValue.length-1]
+                        if(lastValue){
+                          lastValue.level = [
+                            { name: "Beginner", isTrue: false },
+                            { name: "Intermediate", isTrue: false },
+                            { name: "Expert", isTrue: false }
+                          ];
+                        }
+                       
+
+                        const deletedItems = newValue.filter(
+                          oldItem => !traitSkill.some(newItem => newItem.value === oldItem.value)
+                        );
+               
+                       if(deletedItems.length==0){
+                        const updatedValue = newValue.map(skill => ({
+                          ...skill,
+                          level: [
+                            { name: "Beginner",isTrue:false },
+                            { name: "Intermediate",isTrue:false },
+                            { name: "Expert",isTrue:false }
+                          ]
+                        }));
+                        setTraitSkill(updatedValue)
+                       }else{
+                        let cpyTraits=[...traitSkill,lastValue]
+                        setTraitSkill(cpyTraits)
+                       }
+
+                     
+                      }else{
                         const updatedValue = newValue.map(skill => ({
                           ...skill,
                           level: [
@@ -147,24 +184,18 @@ console.log(skillListMapped,"skillListMapped")
                           ]
                         }));
                         
-                      setSelectedSkill(newValue)
                       setTraitSkill(updatedValue)
-                      
+                      }
+                      setSelectedSkill(newValue)
+                      let valuesToRemove = newValue.map(item => item.value);
 
-                
-                  
+                      let updatedArr = goodToSkills.filter(item => !valuesToRemove.includes(item.value));
+                      setGoodToSkills(updatedArr)
                     }}
                   />
                 )}
               />
-              {/* <Form.Control
-                type="text"
-                className="common-field"
-                placeholder="Enter Job Name"
-                {...register("skill", {
-                  required: "Skill field is required",
-                })}
-              /> */}
+ 
             </Form.Group>
             {errors?.skills && (
               <p className="error-message ">{errors.skills?.message}</p>
@@ -182,10 +213,59 @@ console.log(skillListMapped,"skillListMapped")
                     {...field}
                     isClearable
                     isMulti
-                    options={skills}
+                    options={goodToSkills}
                     onChange={(newValue) => {
-                      field.onChange(newValue);
+                      field.onChange(newValue); 
+
+                      if(traitSkill?.length>0){
+                        let lastValue=newValue[newValue.length-1]
+                        if(lastValue){
+                          lastValue.level = [
+                            { name: "Beginner", isTrue: false },
+                            { name: "Intermediate", isTrue: false },
+                            { name: "Expert", isTrue: false }
+                          ];
+                        }
+                        const deletedItems = newValue.filter(
+                          oldItem => !traitSkill.some(newItem => newItem.value === oldItem.value)
+                        );
+               
+                       if(deletedItems.length==0){
+                        const updatedValue = newValue.map(skill => ({
+                          ...skill,
+                          level: [
+                            { name: "Beginner",isTrue:false },
+                            { name: "Intermediate",isTrue:false },
+                            { name: "Expert",isTrue:false }
+                          ]
+                        }));
+                        setTraitSkill(updatedValue)
+                       }else{
+                        let cpyTraits=[...traitSkill,lastValue]
+                        setTraitSkill(cpyTraits)
+                       }
+
+                     
+                      }else{
+                        const updatedValue = newValue.map(skill => ({
+                          ...skill,
+                          level: [
+                            { name: "Beginner",isTrue:false },
+                            { name: "Intermediate",isTrue:false },
+                            { name: "Expert",isTrue:false }
+                          ]
+                        }));
+                        
+                      setTraitSkill(updatedValue)
+                      }
+                      setSelectedSkill(newValue)
+                      let valuesToRemove = newValue.map(item => item.value);
+
+                      let updatedArr = skills.filter(item => !valuesToRemove.includes(item.value));
+                      setSkills(updatedArr)
                     }}
+            
+                 
                   />
                 )}
               />
@@ -222,9 +302,9 @@ console.log(skillListMapped,"skillListMapped")
                    <span className="skill-progress-name fw-semibold">
                      {skill?.label}
                    </span>
-                  {newId===skill?.value ?  <span className="skill-percent">{selectedLevel }</span>:
+                  {/* <span className="skill-percent">{selectedLevel }</span> */}
                    <span className="skill-percent">{"25% "}</span>
-                  }
+                  
                  </div>
                </div>
              </Col>
@@ -232,11 +312,9 @@ console.log(skillListMapped,"skillListMapped")
               <div className="d-flex justify-content-center gap-3">
                 {
                   skill?.level?.map(((lvl,inx)=>{
-               
                     return (
                       <>
                           <div className="low-wrapper" key={inx}>
-                            {lvl?.name}
                   <Form.Check type="radio"  id ={`${inx}-${skill?.value}`} onChange = {(e)=>handleSkillLevel(e ,skill,index,lvl,inx)}  className="weight-radio" checked={lvl?.isTrue} />
                 </div>
                       </>
@@ -257,77 +335,10 @@ console.log(skillListMapped,"skillListMapped")
 
 
             ))}
-            {/* <Col md={8} className="mb-3">
-              <div>
-                <div className="skill-progress low-skill">
-                  <span className="skill-progress-name fw-semibold">
-                    {}
-                  </span>
-                  <span className="skill-percent">5%</span> 
-                </div>
-              </div>
-            </Col> */}
-            {/* <Col md={4} className="align-self-center mb-3">
-              <div className="d-flex justify-content-center gap-3">
-                <div className="low-wrapper">
-                  <Form.Check type="radio" name="react-skill-weight" className="weight-radio" checked />
-                </div>
-                <div className="medium-wrapper">
-                  <Form.Check type="radio" name="react-skill-weight" className="weight-radio" />
-                </div>
-                <div className="high-wrapper">
-                  <Form.Check type="radio" name="react-skill-weight" className="weight-radio" />
-                </div>
-              </div> */}
-            {/* </Col> */}
+            
 
 
-            {/* <Col md={8} className="mb-3">
-              <div>
-                <div className="skill-progress medium-skill">
-                  <span className="skill-progress-name fw-semibold">
-                    Vue Js
-                  </span>
-                  <span className="skill-percent">16%</span>
-                </div>
-              </div>
-            </Col> */}
-            {/* <Col md={4} className="align-self-center mb-3">
-              <div className="d-flex justify-content-center gap-3">
-                <div className="low-wrapper">
-                  <Form.Check type="radio" name="vue-skill-weight" className="weight-radio" />
-                </div>
-                <div className="medium-wrapper">
-                  <Form.Check type="radio" name="vue-skill-weight" className="weight-radio" checked />
-                </div>
-                <div className="high-wrapper">
-                  <Form.Check type="radio" name="vue-skill-weight" className="weight-radio" />
-                </div>
-              </div>
-            </Col> */}
-            {/* <Col md={8} className="mb-3">
-              <div>
-                <div className="skill-progress high-skill">
-                  <span className="skill-progress-name fw-semibold">
-                    Angular Js
-                  </span>
-                  <span className="skill-percent">21%</span>
-                </div>
-              </div>
-            </Col> */}
-            {/* <Col md={4} className="align-self-center mb-3">
-              <div className="d-flex justify-content-center gap-3">
-                <div className="low-wrapper">
-                  <Form.Check type="radio" name="angular-skill-weight" className="weight-radio" />
-                </div>
-                <div className="medium-wrapper">
-                  <Form.Check type="radio" name="angular-skill-weight" className="weight-radio" />
-                </div>
-                <div className="high-wrapper">
-                  <Form.Check type="radio" name="angular-skill-weight" className="weight-radio" checked />
-                </div>
-              </div>
-            </Col> */}
+            
           </Row>
         </div>
       </section>
