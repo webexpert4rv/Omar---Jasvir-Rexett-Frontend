@@ -156,15 +156,6 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                         <CreatableSelect isMulti />
                                     </div>
                                 </Col>
-                                {/* <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Client</p>
-                                </Col>
-                                <Col lg={8} className="mb-3">
-                                    <div className="d-flex align-items-center gap-3 client-imgbx">
-                                        <img src={clientImg} />
-                                        <p className="font-14 mb-0">Amazon</p>
-                                    </div>
-                                </Col> */}
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
                                 </Col>

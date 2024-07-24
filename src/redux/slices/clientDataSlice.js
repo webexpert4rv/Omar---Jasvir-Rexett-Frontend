@@ -504,6 +504,24 @@ export function singleJobPostData(payload, callback) {
   };
 }
 
+export function getShortListInterview(payload) {
+
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`common/interview/${payload}`);
+      // toast.success("Job successfully Posted", { position: "top-center" })
+      // dispatch(setJobPostedData(result.data));
+      dispatch(setActionSuccessFully());
+      // return callback();
+    } catch (error) {
+      const message = error?.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
 export function getSkillList(callback) {
   return async (dispatch) => {
     // dispatch(setScreenLoader());

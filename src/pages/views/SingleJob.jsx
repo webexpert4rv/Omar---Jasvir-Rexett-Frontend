@@ -22,6 +22,7 @@ import {
   getAllJobPostedList,
   getDeleteJob,
   getJobCategoryList,
+  getShortListInterview,
   getSuggestedDeveloper,
   publishedPost,
   singleJobPostData,
@@ -80,6 +81,7 @@ const SingleJob = () => {
   useEffect(() => {
     if (id) {
       dispatch(singleJobPostData(id, () => { }));
+      dispatch(getShortListInterview(id))
     }
     dispatch(getJobCategoryList());
   }, []);
