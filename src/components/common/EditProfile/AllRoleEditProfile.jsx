@@ -144,8 +144,22 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
     // setValue('git_hub',stepData?.github_url);
     // setValue('linked_in',stepData?.linkedin_url)
     Object.entries(stepData).forEach(([key, value]) => {
-      if(typeof(value) === 'object' && value !== null){
-        setValue(key,{ label: stepData[key]?.label, value: stepData[key]?.value})
+      if (key === "country_code") {
+        const newValue = {
+          label: stepData["country"],
+          value: stepData[key],
+        };
+        setValue(key, newValue);
+      }
+      else if (key === "state_iso_code") {
+        const newValue = {
+          label: stepData["state"],
+          value: stepData[key],
+        };
+        setValue(key, newValue);
+      } else if (key === "time_zone") {
+        const newValue = { label: stepData[key], value: stepData["time_zone"] };
+        setValue(key, newValue);
       }
       else{
       setValue(key, (value === null || value === undefined ? '' : value));

@@ -66,14 +66,14 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
 
   console.log(copySkill,"copySkill")
 
-//  let finlValue= copySkill?.map((item)=>{
-//     return  {
-//       "skill_id": item?.value,
-//       "skill_name": item?.label,
-//       "weight": item?.level.map((i,in)=>i.)
-//     }
-//   })
-//   console.log(finlValue,"finlValue")
+ let finlValue= copySkill?.map((item)=>{
+    return  {
+      "skill_id": item?.value,
+      "skill_name": item?.label,
+      "weight": item?.level.find((it,inb)=>inb==inx).name
+    }
+  })
+  console.log(finlValue,"finlValue")
 
   
 
