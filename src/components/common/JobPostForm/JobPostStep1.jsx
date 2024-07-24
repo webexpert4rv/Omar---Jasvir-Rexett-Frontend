@@ -9,7 +9,7 @@ import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../clients/TimeReporiting/constant";
 import LocationSection from "../../../pages/websiteRegisterForm/developer/LocationSection";
 
-const JobPostStep1 = ({ register, errors, control, setValue, watch ,setError,clearErrors}) => {
+const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, clearErrors }) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const handleScriptLoad = () => {
     setScriptLoaded(true);
@@ -47,211 +47,226 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch ,setError,cle
       <section className="job-post-section">
         <Row>
           <Col md="12" className="mb-4">
-            <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">
-                {t("jobTitle")}
-                <OverlayTrigger placement="bottom" overlay={jobTitleTooltip}>
-                  <span>
-                    <BsQuestionCircleFill />
-                  </span>
-                </OverlayTrigger>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                className="common-field font-14 p-2"
-                placeholder="Enter Job Name"
-                {...register("title", {
-                  required: "Job title is required",
-                })}
-              />
-              {errors?.title && (
-                <p className="error-message">{errors.title?.message}</p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">
-                {t("companyName")}
-              </Form.Label>
-              <p className="common-field font-14 d-flex align-items-center gap-2">
-                {/* <img src={companyLogo} className="company-imgbx" /> */}
-                <Form.Control
-                  type="text"
-                  {...register("company_name", {
-                    required: "Company name is required",
-                  })}
-                  className="common-field font-14 p-2"
-                  placeholder="Enter company name"
-                />
-              </p>
-              {errors?.company_name && (
-                <p className="error-message">{errors.company_name?.message}</p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("workplaceType")}</Form.Label>
-              <Form.Select
-                className="common-field font-14 p-2"
-                {...register("job_type", {
-                  required: "Workplace type is required",
-                })}
-              >
-                <option value="" disabled selected>
-                  Please select workplace options
-                </option>
-                {WORKPLACE_TYPES_OPTIONS?.map(({ value, label }, idx) => (
-                  <option key={idx} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </Form.Select>
-              {errors?.job_type && (
-                <p className="error-message">{errors.job_type?.message}</p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">
-                {t("jobLocation")}
-                <OverlayTrigger placement="bottom" overlay={jobLocationTooltip}>
-                  <span>
-                    <BsQuestionCircleFill />
-                  </span>
-                </OverlayTrigger>
-              </Form.Label>
-              {/* <Controller
-                name="jobLocation"
-                control={control}
-                render={({ field }) => (
-                  <Autocomplete
-                    {...field}
-                    apiKey = {MAP_API_KEY}
-                    className ="common-field font-14"
-                    onPlaceSelected={(place) => {
-                      // handlePlaceSelect(place);
-                      field.onChange(place?.formatted_address);
-                    }}
-                    onChange={(event) => {
-                      field.onChange(event.target.value);
-                      // if (event.target.value === "") {
-                      //   setLocation(null);
-                      // }
-                    }}
-                    // onBlur={handleOnBlur}
-                    // types={["(regions)"]}
-                    placeholder={"Select job location"}
-                    onKeyDown={(e) => {
-                      // handleKeyPress(e);
-                    }}
-                    // componentRestrictions={{ country: "us" }} // Restrict results to a specific country if needed
-                  />
-                )}
-              /> */}
-
-              <Controller
-                name="job_location"
-                className="common-field font-14 p-2"
-                rules={{
-                  required: "Job location is required",
-                }}
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Autocomplete
-                    {...field}
-                    errors={fieldState?.errors}
-                    apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
-                    debounce={1000}
-                    className="common-field font-14 w-100 p-2"
-                    options={{
-                      types: ["establishment", "geocode"], // Allows searching for places like buildings, landmarks, etc.
-                    }}
-                    onPlaceSelected={(place) => {
-                      field.onChange(place?.formatted_address);
-                    }}
-                    onChange={(event) => {
-                      field.onChange(event.target.value);
-                    }}
-                    onBlur={handleOnBlur}
-                    onKeyDown={(e) => {
-                      handleKeyPress(e);
-                    }}
-                    onLoadFailed={(error) => {
-                      console.error(
-                        "Google Places Autocomplete failed to load",
-                        error
-                      );
-                    }}
-                  />
-                )}
-              />
-              {/* {errors && <div style={{ color: "red" }}>{errors.message}</div>} */}
-              {errors?.job_location && (
-                <p className="error-message"> {errors.job_location?.message}</p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("jobType")}</Form.Label>
-              <Form.Select
-                {...register("contract_type", {
-                  required: "Job type is required",
-                })}
-                className="common-field font-14 p-2"
-              >
-                <option value="" disabled selected>
-                  Please select job type
-                </option>
-                {JOB_TYPES_OPTIONS?.map(({ value, label }) => (
-                  <option value={value}>{label}</option>
-                ))}
-              </Form.Select>
-              {errors?.contract_type && (
-                <p className="error-message">{errors.contract_type?.message}</p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">
-                {t("jobPositions")}
-              </Form.Label>
-              <Controller
-                name="job_positions"
-                control={control}
-                rules={{ required: "Number of job positions are required"}}
-                render={({ field }) => (
-                  <input
-                    {...field}
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="d-flex font-14 fw-medium gap-2 align-items-center">
+                    {t("jobTitle")}
+                    <OverlayTrigger placement="bottom" overlay={jobTitleTooltip}>
+                      <span>
+                        <BsQuestionCircleFill />
+                      </span>
+                    </OverlayTrigger>
+                  </Form.Label>
+                  <Form.Control
                     type="text"
-                    className="common-field font-14 p-2 w-100"
-                    onChange={(e) => {
-                      const numericValue = e.target.value.replace(
-                        /[^0-9]/g,
-                        ""
-                      );
-                      field.onChange(numericValue);
-                    }}
+                    className="common-field font-14"
+                    placeholder="Enter Job Name"
+                    {...register("title", {
+                      required: "Job title is required",
+                    })}
                   />
-                )}
-              />
-              {errors?.job_positions && (
-                <p className="error-message">{errors.job_positions?.message}</p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label className="d-flex gap-2 align-items-center">
-                {t("responseDate")}
-              </Form.Label>
-              <p className="common-field font-14 d-flex align-items-center gap-2">
-                <Form.Control
-                  type="date"
-                  {...register("response_time", {
-                    required: "Response date is required",
-                  })}
-                  min={new Date().toISOString().split("T")[0]}
-                  className="common-field font-14 p-2"
-                  placeholder="Enter response time"
-                />
-              </p>
-              {errors?.response_time && (
-                <p className="error-message">{errors.response_time?.message}</p>
-              )}
-            </Form.Group>
+                  {errors?.title && (
+                    <p className="error-message">{errors.title?.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="d-flex font-14 fw-medium gap-2 align-items-center">
+                    {t("companyName")}
+                  </Form.Label>
+                  <p className="d-flex align-items-center gap-2">
+                    {/* <img src={companyLogo} className="company-imgbx" /> */}
+                    <Form.Control
+                      type="text"
+                      {...register("company_name", {
+                        required: "Company name is required",
+                      })}
+                      className="common-field font-14"
+                      placeholder="Enter company name"
+                    />
+                  </p>
+                  {errors?.company_name && (
+                    <p className="error-message">{errors.company_name?.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="font-14 fw-medium">{t("workplaceType")}</Form.Label>
+                  <Form.Select
+                    className="common-field font-14"
+                    {...register("job_type", {
+                      required: "Workplace type is required",
+                    })}
+                  >
+                    <option value="" disabled selected>
+                      Please select workplace options
+                    </option>
+                    {WORKPLACE_TYPES_OPTIONS?.map(({ value, label }, idx) => (
+                      <option key={idx} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  {errors?.job_type && (
+                    <p className="error-message">{errors.job_type?.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="d-flex gap-2 align-items-center font-14 fw-medium">
+                    {t("jobLocation")}
+                    <OverlayTrigger placement="bottom" overlay={jobLocationTooltip}>
+                      <span>
+                        <BsQuestionCircleFill />
+                      </span>
+                    </OverlayTrigger>
+                  </Form.Label>
+                  {/* <Controller
+                  name="jobLocation"
+                  control={control}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...field}
+                      apiKey = {MAP_API_KEY}
+                      className ="common-field font-14"
+                      onPlaceSelected={(place) => {
+                        // handlePlaceSelect(place);
+                        field.onChange(place?.formatted_address);
+                      }}
+                      onChange={(event) => {
+                        field.onChange(event.target.value);
+                        // if (event.target.value === "") {
+                        //   setLocation(null);
+                        // }
+                      }}
+                      // onBlur={handleOnBlur}
+                      // types={["(regions)"]}
+                      placeholder={"Select job location"}
+                      onKeyDown={(e) => {
+                        // handleKeyPress(e);
+                      }}
+                      // componentRestrictions={{ country: "us" }} // Restrict results to a specific country if needed
+                    />
+                  )}
+                /> */}
+
+                  <Controller
+                    name="job_location"
+                    rules={{
+                      required: "Job location is required",
+                    }}
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Autocomplete
+                        {...field}
+                        errors={fieldState?.errors}
+                        apiKey={GOOGLE_AUTOCOMPLETE_API_KEY}
+                        debounce={1000}
+                        className="common-field font-14 w-100"
+                        options={{
+                          types: ["establishment", "geocode"], // Allows searching for places like buildings, landmarks, etc.
+                        }}
+                        onPlaceSelected={(place) => {
+                          field.onChange(place?.formatted_address);
+                        }}
+                        onChange={(event) => {
+                          field.onChange(event.target.value);
+                        }}
+                        onBlur={handleOnBlur}
+                        onKeyDown={(e) => {
+                          handleKeyPress(e);
+                        }}
+                        onLoadFailed={(error) => {
+                          console.error(
+                            "Google Places Autocomplete failed to load",
+                            error
+                          );
+                        }}
+                      />
+                    )}
+                  />
+                  {/* {errors && <div style={{ color: "red" }}>{errors.message}</div>} */}
+                  {errors?.job_location && (
+                    <p className="error-message"> {errors.job_location?.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="font-14 fw-medium">{t("jobType")}</Form.Label>
+                  <Form.Select
+                    {...register("contract_type", {
+                      required: "Job type is required",
+                    })}
+                    className="common-field font-14"
+                  >
+                    <option value="" disabled selected>
+                      Please select job type
+                    </option>
+                    {JOB_TYPES_OPTIONS?.map(({ value, label }) => (
+                      <option value={value}>{label}</option>
+                    ))}
+                  </Form.Select>
+                  {errors?.contract_type && (
+                    <p className="error-message">{errors.contract_type?.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="d-flex gap-2 align-items-center font-14 fw-medium">
+                    {t("jobPositions")}
+                  </Form.Label>
+                  <Controller
+                    name="job_positions"
+                    control={control}
+                    rules={{ required: "Number of job positions are required" }}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type="text"
+                        className="common-field font-14 w-100"
+                        onChange={(e) => {
+                          const numericValue = e.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                          field.onChange(numericValue);
+                        }}
+                      />
+                    )}
+                  />
+                  {errors?.job_positions && (
+                    <p className="error-message">{errors.job_positions?.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={12}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="d-flex gap-2 align-items-center font-14 fw-medium">
+                    {t("responseDate")}
+                  </Form.Label>
+                  <p className="d-flex align-items-center gap-2">
+                    <Form.Control
+                      type="date"
+                      {...register("response_time", {
+                        required: "Response date is required",
+                      })}
+                      min={new Date().toISOString().split("T")[0]}
+                      className="common-field font-14"
+                      placeholder="Enter response time"
+                    />
+                  </p>
+                  {errors?.response_time && (
+                    <p className="error-message">{errors.response_time?.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
+            </Row>
             <LocationSection
               control={control}
               errors={errors}
