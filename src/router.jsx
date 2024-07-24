@@ -35,6 +35,8 @@ import SuperDashboard from "./pages/SuperAdmin/Dashboard";
 import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
 import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
 import ClientListing from "./pages/SuperAdmin/ClientListing";
+import SupportAgents from "./pages/SuperAdmin/SupportAgent";
+import ManageShift from "./pages/SuperAdmin/ManageShift";
 import FeedbackView from "./pages/admin/FeedbackView";
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ResetPassword from "./pages/Authentication/ResetPassword";
@@ -43,8 +45,11 @@ import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registr
 import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
 import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
 import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
-// import VendorEditProfile from "./pages/vendor/vendorEditProfile";
-import VendorEditProfile from "./pages/vendor/vendorEditProfile";
+import VendorEditProfile from "./pages/vendor/vendorEditProfile.jsx";
+const ClientRegisterForm = lazy(() =>
+  import("./pages/websiteRegisterForm/client/ClientRegisterForm")
+);
+// const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
 
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
@@ -736,8 +741,26 @@ export const route = [
     private: true,
   },
   {
+    path: "/super-admin/support-agents",
+    element: <SupportAgents />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/manage-shift",
+    element: <ManageShift />,
+    isAdmin: true,
+    private: true,
+  },
+  {
     path: "/admin/feedback-view",
     element: <FeedbackView />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "admin/register-developer",
+    element: <DeveloperRegistrationStepper />,
     isAdmin: true,
     private: true,
   },

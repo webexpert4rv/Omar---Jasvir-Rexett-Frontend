@@ -635,7 +635,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
 
 export function callPreSignedUrlResponse(payload, file, callback) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
       let result = await clientInstance.put(payload, file, {
         headers: {

@@ -22,7 +22,7 @@ import { FaLink } from "react-icons/fa6";
 import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
-import { IoGrid } from "react-icons/io5";
+import { IoCheckboxOutline, IoCheckmarkCircleOutline, IoCheckmarkOutline, IoCloseOutline, IoGrid } from "react-icons/io5";
 import { LuMessagesSquare } from "react-icons/lu";
 import CreateOffer from "../Modals/CreateOffer";
 
@@ -165,6 +165,10 @@ const AdminSingleJob = () => {
 
     const handleMakeOffer=()=>{
         setMakeOffer(!makeOffer)
+    }
+
+    const redirectToDeveloper=()=>{
+        navigate("/admin/register-developer")
     }
 
     return (
@@ -333,7 +337,7 @@ const AdminSingleJob = () => {
                     {role !== "developer" && <Tab eventKey="suggested" title={suggest}>
                         <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
                             <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Manual Suggestion</Button>
-                            <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
+                            <Button variant="transparent" onClick={redirectToDeveloper} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
                         <Tab.Container defaultActiveKey={'list-view'}>
                             <div className="mb-4 d-flex justify-content-between align-items-center">
@@ -981,11 +985,15 @@ const AdminSingleJob = () => {
                                                     </span>
                                                 </div>
                                             </p>
-                                            {/* <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Web developer</span>
+                                            <div>
+                                                <h5 className="font-16 mt-3 mb-1">Documents</h5>
+                                                <span className="associate-text me-1">
+                                                    <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
                                                 </span>
-                                            </div> */}
+                                                <span className="associate-text">
+                                                    <span className="associate d-inline-flex align-items-center">NDA <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div>
@@ -1011,7 +1019,6 @@ const AdminSingleJob = () => {
             } show={showEndJobModal} handleClose={handleCloseEndJobModal} onClick={handleJobStatusAction} smallLoader={smallLoader} />
             <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
             <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
-            <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
             <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} />
             <CreateOffer show={makeOffer} handleClose={handleMakeOffer}/>
         </>

@@ -14,8 +14,10 @@ import MessageTemplate from "../MessageTemplate/MessageTemplate";
 import NotificationSetting from "../NotificationSettings/NotificationSetting";
 import ConnectCalendar from "../ConnectCalendar/ConnectCalendar";
 import PaymentSetup from "../PaymentSetup/PaymentSetup";
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 const Customization = () => {
+    
     const [previewUrl, setPreviewUrl] = useState('');
     const [currentTab, setCurrentTab] = useState("first")
     const dispatch =  useDispatch()

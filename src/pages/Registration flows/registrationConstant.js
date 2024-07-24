@@ -99,8 +99,6 @@ export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_6 = {
 
 };
 
-
-
 export const DEVELOPER_INTRO_DATA = {
   2:{
     heading:"developerIntroData2Heading",
@@ -168,8 +166,8 @@ export const getActiveStepHeadingData = (activeStep ,type,nestedActiveStep ) => 
   
 }
 
-export const getActiveStepVendorHeadingData = (activeStep) =>
-  VENDOR_STEPPER_HEADINGS[activeStep] || null;
+// export const getActiveStepVendorHeadingData = (activeStep) =>
+//   VENDOR_STEPPER_HEADINGS[activeStep] || null;
 
 export const getStepperIntroData=(activeStep)=>{
    return DEVELOPER_INTRO_DATA[activeStep]
@@ -809,34 +807,6 @@ const DEVELOPER_STEP_1_FIELDS = [
       columnWidth: 6,
       isRequired: true,
     },
-    // {
-    //   label: "Github",
-    //   fieldName: "git_hub", 
-    //   type: "text",
-    //   placeholder: "e.g. www.github.com/profile/12345",
-    //   rules: { required: "GitHub in is required" },
-    //   columnWidth: 2,
-    //   isRequired: true,
-    // },
-    // {
-    //   label: "Github",
-    //   fieldName: "git_hub", 
-    //   type: "text",
-    //   placeholder: "e.g. www.github.com/profile/12345",
-    //   rules: { required: "GitHub in is required" },
-    //   columnWidth: 2,
-    //   isRequired: true,
-    // },
-    // {
-    //   label: "Github",
-    //   fieldName: "git_hub", 
-    //   type: "text",
-    //   placeholder: "e.g. www.github.com/profile/12345",
-    //   rules: { required: "GitHub in is required" },
-    //   columnWidth: 2,
-    //   isRequired: true,
-    // },
-    
   ]
 
   const NESTED_DEVELOPER_STEP_1_FIELDS = [
@@ -1188,7 +1158,6 @@ const DEVELOPER_STEP_FIELDS_FOR_STEP_6={
 }
 
 export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
-  console.log(activeStep,nestedActiveStep,"cosn")
   if(nestedActiveStep>0  &&activeStep==2){
     return NESTED_DEVELOPER_STEP_FIELDS[1] || null;
   }else if(nestedActiveStep>0  &&activeStep==3){
