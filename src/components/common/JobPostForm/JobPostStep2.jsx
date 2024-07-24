@@ -14,14 +14,13 @@ import "react-quill/dist/quill.snow.css";
 
 const MAX_CHARACTER_LIMIT = 10000;
 
-const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
+const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,setTraitSkill}) => {
   const dispatch = useDispatch();
   const quillRef = useRef(null);
   const [selectedLevel , setSelectedLevel] = useState()
   const [newId , setNewId] = useState()
   const [descriptionText, setDescriptionText] = useState("");
   const [selectedSkill  , setSelectedSkill] = useState()
-  const [traitSkill,setTraitSkill]=useState([])
   const [skills, setSkills] = useState([]);
   const [goodToSkills, setGoodToSkills] = useState([]);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
@@ -53,36 +52,26 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control }) => {
     }
   }
 
-  const handleSkillLevel=(event,skill,index,name,inx)=>{
- 
-   let copySkill=[...traitSkill];
   
+  const handleSkillLevel=(event,skill,index,name,inx)=>{
+   let copySkill=[...traitSkill];
    copySkill[index].level = copySkill[index].level.map((level, idx) => ({
     ...level,
     isTrue: idx === inx,
-  }));
-
-  setTraitSkill(copySkill);
-
-  console.log(copySkill,"copySkill")
-
- let finlValue= copySkill?.map((item)=>{
-    return  {
-      "skill_id": item?.value,
-      "skill_name": item?.label,
-      "weight": item?.level.find((it,inb)=>inb==inx).name
-    }
-  })
-  console.log(finlValue,"finlValue")
-
-  
-
-   }
-  // const newSkill = skillListMapped.find((itm)=>itm.value===newId)
+  }))
+ setTraitSkill(copySkill);
+//  let finlValue= copySkill?.map((item)=>{
+//     return  {
+//       "skill_id": item?.value,
+//       "skill_name": item?.label,
+//       "weight": item?.level?.find((itm, idx)=>(itm?.isTrue==true))?.name
+//     }
+//   })
+//   console.log(finlValue,"weightvalue")
+//    }
+  }
  
   const handleChange = (html, field) => {
-    console.log(html,'html')
-    console.log(field,'field')
     const editor = quillRef?.current?.getEditor();
     const plainText = getPlainText(html);
     if (plainText.length <= MAX_LENGTH) {
