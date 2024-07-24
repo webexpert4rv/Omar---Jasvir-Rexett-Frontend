@@ -8,13 +8,13 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
         let data={
             status: type,
         }
-        onClick(e,data)
+        onClick(e,data,show?.deletedId)
     }
     // const handle = () => {
     //     handleAction();
     // }
     return(
-        <Modal show={show} onHide={handleClose} centered animation className="custom-modal" noValidate> 
+        <Modal show={show?.isDelete} onHide={handleClose} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">
             {/* <Modal.Title>End Job</Modal.Title> */}
             </Modal.Header>
@@ -26,7 +26,7 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
                     </Form.Group>
                     <div className="text-center">
                         <RexettButton
-                            type="submit"
+                            // type="submit"
                             text={submitText ? submitText : "Yes"}
                             onClick={type ? callBackBtn : handleAction}
                             // onClick={callBackBtn}
