@@ -49,6 +49,7 @@ const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
+
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
 );

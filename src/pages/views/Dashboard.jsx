@@ -396,18 +396,18 @@ const Dashboard = (cardDetails) => {
                                                         <tr onClick={() => handleRowClick(item?.developer?.id)}>
                                                             <td>
                                                                 <span className="d-flex align-items-center gap-3">
-                                                                    <img src={item?.developer?.profile_picture ? item?.developer?.profile_picture : userImg} />
-                                                                    <h3 className="user-name color-121212 mb-0">{item?.developer?.name}</h3>
+                                                                    <img src={item?.profile_picture ? item?.profile_picture : userImg} />
+                                                                    <h3 className="user-name color-121212 mb-0">{item?.name}</h3>
                                                                 </span>
                                                             </td>
                                                             <td>
                                                                 <span>
-                                                                    <p className="designation-user color-121212 mb-0">{item?.developer?.developer_detail?.professional_title}</p>
+                                                                    <p className="designation-user color-121212 mb-0">{item?.developer_detail?.professional_title}</p>
                                                                 </span>
                                                             </td>
                                                             <td>
                                                                 <span>
-                                                                    <p className="designation-user color-121212 mb-0">{item?.developer?.email}</p>
+                                                                    <p className="designation-user color-121212 mb-0">{item?.email}</p>
                                                                 </span>
                                                             </td>
                                                         </tr>

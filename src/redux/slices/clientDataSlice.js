@@ -213,9 +213,10 @@ export function developerAssignList(payload) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(
-        `client/assigned-developers?page=${payload}`
+      let result =   await clientInstance.get(
+        generateApiUrl(payload, `client/assigned-developers`)
       );
+  
       if (result.status === 200) {
         dispatch(setAssignDeveloperList(result?.data?.data));
       }
@@ -763,6 +764,7 @@ export function getEnableDisableAccount(payload,callback) {
       let result = await clientInstance.post(`/common/enable-disable-user`, {
         ...payload,
       });
+      toast.success(result.data.message)
         dispatch(closeApprovedLoader());
         callback();
     } catch (error) {

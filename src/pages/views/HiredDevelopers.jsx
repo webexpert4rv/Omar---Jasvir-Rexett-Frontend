@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { useTranslation } from "react-i18next";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
+import { ASSIGNED_FILTER_FIELDS } from "../admin/adminConstant";
 
 
 const HiredDevelopers = () => {
@@ -24,14 +25,21 @@ const HiredDevelopers = () => {
   const navigate = useNavigate()
   const { t } = useTranslation();
   const [approveIndex , setApproveIndex] =  useState(null)
+  const [filters, setFilters] = useState({
+    search: "",
+    order_alphabetically: "asc",
+    order_created_at: "",
+    approval_status: "",
+    created_at: "",
+  });
 
   const { assignedDeveloperList, screenLoader } = useSelector(
     (state) => state.clientData
   );
 
   useEffect(() => {
-    dispatch(developerAssignList(count));
-  }, [dispatch, count]);
+    dispatch(developerAssignList(filters));
+  }, [dispatch, filters]);
 
 
   const handleCardClick = (devId) => {
@@ -51,16 +59,13 @@ const HiredDevelopers = () => {
   console.log(approveIndex,"approveindex")
 
   const handleToggle = (e,id,index) => {
-    console.log(index,"index")
     e.stopPropagation()
     setApproveIndex(index);
     setShowStatus(!showStatus)
-    console.log(id,"id")
     let payload = {
       user_id: id,
       status: showStatus  ? "inactive" : "active",
     }
-    console.log(payload,"payload")
     dispatch(getEnableDisableAccount(payload))
 
   }
@@ -70,8 +75,8 @@ const HiredDevelopers = () => {
     <>
       <Tab.Container className="w-100" defaultActiveKey="list-view">
         <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom-grey">
-          <h3 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h3>
-          {/* <CommonFilterSection/> */}
+          {/* <h3 className="section-head-sub mb-0">{t("listOfAssignedDevelopers")}</h3> */}
+          <CommonFilterSection filters={filters} setFilters={setFilters} filterFields={ASSIGNED_FILTER_FIELDS} text="Assigned Developers"/ >
           <Nav variant="pills" className="document-view-pill">
             <Nav.Item className="document-view-item">
               <Nav.Link className="document-view-link" eventKey="list-view">
@@ -170,7 +175,7 @@ const HiredDevelopers = () => {
                                       type="checkbox"
                                       role="switch"
                                       onChange={(e) => handleToggle(e , item?.id ,index)}
-                                      checked={approveIndex == index }
+                                      checked={false}
                                     />
                                   </div>
                                 </OverlayTrigger>
