@@ -422,11 +422,11 @@ const DeveloperRegistrationStepper = () => {
       console.log(watch(),'watch stepthree')
     setValue("university_name", '');
     setValue("location", '');
-    // setValue("degree_id",0);
+    setValue("degree_id",0);
     setValue("field_of_study", '');
-    // setValue("start_year",0);
+    setValue("start_year",0);
     setValue("end_month", '');
-    // setValue("end_year",0);
+    setValue("end_year",0);
     setValue("currently_attending",true);
     setValue("project_description", '');
     setValue('graduate_date','')
@@ -815,7 +815,7 @@ const DeveloperRegistrationStepper = () => {
 
       Promise.all(uploadPromises).then(() => {
         let payload = {
-          first_name: values?.first_name,
+          first_name: values?.firost_name,
           last_name: values?.last_name,
           profile_picture: uploadedUrls?.profile_picture,
           profession: values?.profession,
@@ -936,8 +936,21 @@ const DeveloperRegistrationStepper = () => {
         increaseStepCount(false);
       } else {
         if (nestedActiveStep == 2) {
+          let newData = stepData?.map((val) => {
+            let updatedVal = { ...val };
+            
+            if (updatedVal.end_year === null) {
+              updatedVal.end_year = 0;
+              updatedVal.degree_id = 0;
+              delete updatedVal.id;
+              updatedVal.start_year = 0;
+            }
+            
+            return updatedVal;
+          });
+          console.log(newData,'hibye',stepData)
           let developer_education = [
-            ...stepData,
+            ...newData,
             {
               university_name: values?.name,
               address: values?.location,
@@ -968,7 +981,7 @@ const DeveloperRegistrationStepper = () => {
       const transformData = (data) => {
         return data?.map(item => ({
           skill: item.title.label,
-          experience: `${item.experience.value} years`,
+          experience: item.experience.value,
           skill_weight: item.level.value
         }));
       };
@@ -1181,11 +1194,11 @@ console.log(nestedActiveStep,"nes")
               <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 || activeStep==1  || activeStep==6 || activeStep==2 ? 12 : 8}>
                 {renderActiveStep()}
               </Col>
-              {nestedActiveStep !== 3 || activeStep!==1 && (
+              {/* {nestedActiveStep !== 3 || activeStep!==1 && (
                 <Col md={4}>
                   <ResumeOverView activeStep={activeStep} />
                 </Col>
-              )}
+              )} */}
             </Row>
 
             { true ? <div className="d-flex justify-content-end align-items-center ">
