@@ -758,5 +758,11 @@ export const route = [
     isAdmin: true,
     private: true,
   },
+  {
+    path: "admin/register-developer",
+    element: <DeveloperRegistrationStepper />,
+    isAdmin: true,
+    private: true,
+  },
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
 ];
