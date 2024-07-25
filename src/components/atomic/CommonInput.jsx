@@ -33,6 +33,7 @@ const CommonInput = ({
   defaultOption = "",
   disabled,
   rows = null,
+  selectedRecommend
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 console.log(type,"ty")
@@ -117,6 +118,7 @@ console.log(isMaxRequired,"ismax")
                     // value={selectOptions?.find(
                     //   (option) => option.value === field.value
                     // )}
+                    value={selectedRecommend}
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />

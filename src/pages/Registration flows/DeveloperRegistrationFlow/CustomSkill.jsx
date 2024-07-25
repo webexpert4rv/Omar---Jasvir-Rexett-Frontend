@@ -11,6 +11,7 @@ const CustomSkill = ({
   watch,
   register,
   skillOptions,
+  selectedRecommend
 }) => {
     const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
   useEffect(() => {
@@ -55,6 +56,7 @@ const CustomSkill = ({
               selectOptions={formattedSkillOptions}
               invalidFieldRequired={true}
               placeholder="Select Skill"
+              selectedRecommend={selectedRecommend}
             />{" "}
           </div>
           <div className="w-100">

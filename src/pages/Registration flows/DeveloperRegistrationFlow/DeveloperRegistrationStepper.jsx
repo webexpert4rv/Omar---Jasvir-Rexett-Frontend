@@ -628,6 +628,8 @@ const DeveloperRegistrationStepper = () => {
                   activeStep === 1 && nestedActiveStep == 0
                 }
                 name="project_description"
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={setSelectedRecommend}
               />
             );
 
@@ -672,6 +674,8 @@ const DeveloperRegistrationStepper = () => {
                 control={control}
                   nestedActiveStep={nestedActiveStep}
                 type="developer"
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={setSelectedRecommend}
               />
             );
         }
@@ -697,6 +701,8 @@ const DeveloperRegistrationStepper = () => {
                 control={control}
                 nestedActiveStep={nestedActiveStep}
                 type="developer"
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={setSelectedRecommend}
               />
               )
             case 2:
@@ -759,6 +765,8 @@ const DeveloperRegistrationStepper = () => {
                   }
                   skillOptions={skillOptions}
                   name="project_description"
+                  selectedRecommend={selectedRecommend}
+                  setSelectedRecommend={setSelectedRecommend}
                   />
                 )
 
@@ -783,7 +791,7 @@ const DeveloperRegistrationStepper = () => {
           case 7:
             return (
               <FinalizeResume/>
-            )  
+            )
 
     }
   };
@@ -1073,6 +1081,9 @@ const DeveloperRegistrationStepper = () => {
         }
 
       }
+      else if(activeStep==7){
+        setIsRegistrationStepModal(true);
+      }
       else{
       console.log(values, "these are values");
       uploadFiles({
@@ -1099,20 +1110,36 @@ const DeveloperRegistrationStepper = () => {
         switch (nestedActiveStep){
           case 0:
           case 1:
+            return "Next"
             case 2:
-            return "Next";
+            return "Next: Education";
             }
-            case 2: 
-            return "Next : Job Description";
+            // case 2: 
+            // return "Next : Job Description";
       
       case 3:
-        return "Next:Screening Info";
+
+      switch (nestedActiveStep){
+        case 0:
+        case 1:
+        case 2:
+          return "Next"
+        case 3: 
+        return "Next: Skills"
+      }
       case 4:
-        return "Submit";
+        switch (nestedActiveStep){
+          case 0:
+            return "Next"
+          case 1:
+            return "Submit"
+        }
         case 5:
-          return "Submit";
+          return "Submit"
         case 6:
           return "Next"  
+        case 7:
+          return 'Finalize'
     }
   };
 
@@ -1125,6 +1152,7 @@ const DeveloperRegistrationStepper = () => {
           case 4:
             case 5:
               case 6: 
+              case 7:
        return "Done"
     }
   };
