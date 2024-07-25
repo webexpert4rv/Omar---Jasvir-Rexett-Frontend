@@ -91,6 +91,7 @@ const DeveloperRegistrationStepper = () => {
     isDelete: false,
   });
   const [isRegistrationStepModal, setIsRegistrationStepModal] = useState(false);
+  const [filteredStepData, setFilteredStepData] = useState([]);
 
   console.log(developerRegistrationData, "developerRegistrationData");
   let developer_id = localStorage.getItem("developerId");
@@ -121,6 +122,10 @@ const DeveloperRegistrationStepper = () => {
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
   console.log(stepData,"stepData")
 
+  useEffect(()=>{
+    setFilteredStepData(stepData);
+  },[stepData])
+
   useEffect(() => {
     const storedStep = localStorage.getItem("clientActiveStep");
     const storedNestedStep = localStorage.getItem("nestedActiveStep");
@@ -133,6 +138,7 @@ const DeveloperRegistrationStepper = () => {
     }
   }, []);
 
+  console.log(watch(),'fffff');
 
   let name = stepData?.name ? stepData?.name?.split(' ') : '';
   let [firstName, ...rest] = name;
@@ -300,7 +306,6 @@ const DeveloperRegistrationStepper = () => {
       setNestedActiveStep(nestedStep);
       localStorage.setItem("nestedActiveStep", nestedStep);
     };
-  
     switch (activeStep) {
 
       case 1:
@@ -368,7 +373,14 @@ const DeveloperRegistrationStepper = () => {
   };
   
 
-  const handleDelete = () => {};
+  const handleDelete = (e,data,id) => {
+    console.log(e,data,'delete func',id)
+    console.log(stepData,'stepdata delete func')
+    const filterData = stepData?.filter((val,ind)=>{
+     return val?.id !== id;
+    })
+    setFilteredStepData(filterData);
+  };
 
   const handleEducationLevel = (item) => {
     setEducationLevel(item);
@@ -377,16 +389,52 @@ const DeveloperRegistrationStepper = () => {
   };
 
   const addAnotherPosition = () => {
-    localStorage.setItem("nestedActiveStep", 1);
-    setNestedActiveStep(1);
+    console.log(watch(),'watch');
+    if(activeStep==2){
     setValue("job_title", "");
     setValue("company_name", "");
     setValue("description", "");
-    setValue("is_still_working", "");
+    setValue("is_still_working", false);
     setValue("start_date", "");
     setValue("end_date", "");
     setValue("work_type", "");
     setValue("location", "");
+    setValue("job_location", "");
+    localStorage.setItem("nestedActiveStep", 1);
+    setNestedActiveStep(1);
+    }
+
+    else if(activeStep==6){
+    setValue("project_title", '');
+    setValue("project_description", '');
+    setValue("tech_stacks_used", '');
+    setValue("role_in_project", '');
+    setValue("project_team_size", '');
+    setValue("project_link", '');
+    setValue("project_start_date", '');
+    setValue("project_end_date", '');
+    setValue("project_type", '');
+    localStorage.setItem("nestedActiveStep", 1);
+    setNestedActiveStep(1);
+    }
+
+    else if(activeStep==3){
+      console.log(watch(),'watch stepthree')
+    setValue("university_name", '');
+    setValue("location", '');
+    // setValue("degree_id",0);
+    setValue("field_of_study", '');
+    // setValue("start_year",0);
+    setValue("end_month", '');
+    // setValue("end_year",0);
+    setValue("currently_attending",true);
+    setValue("project_description", '');
+    setValue('graduate_date','')
+    setValue('name','');
+    setValue('study','')
+    localStorage.setItem("nestedActiveStep", 2);
+    setNestedActiveStep(2);
+    }
   };
 
   console.log(nestedActiveStep, "nestedActiveStep");
@@ -411,6 +459,7 @@ const DeveloperRegistrationStepper = () => {
 
 
    }else if(activeStep==2 && selectedEditData){
+    console.log(watch(),'watch steptwo');
    
     setValue("job_title", selectedEditData?.job_title);
     setValue("company_name", selectedEditData?.company_name);
@@ -522,20 +571,21 @@ const DeveloperRegistrationStepper = () => {
                 }
                 selectedRecommend={selectedRecommend}
                 setSelectedRecommend={setSelectedRecommend}
+                name="project_description"
               />
             );
           case 2:
             return (
               <Summary
                 nestedActiveStep={nestedActiveStep}
-                stepData={stepData}
+                stepData={filteredStepData}
                 handleDelete={handleDelete}
                 handleClose={handleClose}
                 smallLoader={smallLoader}
                 showSetUpModal={showSetUpModal}
                 setShowSetUpJobModal={setShowSetUpJobModal}
                 addAnotherPosition={addAnotherPosition}
-                 activeStep={activeStep}
+                activeStep={activeStep}
                 type="developer"
                 editSummary={editSummary}
               />
@@ -577,6 +627,7 @@ const DeveloperRegistrationStepper = () => {
                 isProfileSectionRequired={
                   activeStep === 1 && nestedActiveStep == 0
                 }
+                name="project_description"
               />
             );
 
@@ -816,7 +867,7 @@ const DeveloperRegistrationStepper = () => {
               job_title: values?.job_title,
               company_name: values?.company_name,
               start_date: values?.start_date,
-              end_date: values?.is_still_working ? null : values?.end_date,
+              end_date: values?.is_still_working ? '' : values?.end_date,
               work_type: values?.work_type,
               is_still_working: values?.is_still_working,
               description: values?.description,
@@ -837,7 +888,7 @@ const DeveloperRegistrationStepper = () => {
                 job_title: values?.job_title,
                 company_name: values?.company_name,
                 start_date:  values?.start_date,
-                end_date: values?.is_still_working?null: values?.end_date,
+                end_date: values?.is_still_working?'': values?.end_date,
                 work_type: values?.work_type,
                 is_still_working: values?.is_still_working,
                 description: values?.description,
@@ -853,7 +904,7 @@ const DeveloperRegistrationStepper = () => {
                 job_title: values?.job_title,
                 company_name: values?.company_name,
                 start_date:  values?.start_date,
-                end_date: values?.is_still_working?null: values?.end_date,
+                end_date: values?.is_still_working?'': values?.end_date,
                 work_type: values?.work_type,
                 is_still_working: values?.is_still_working,
                 description: values?.description,
@@ -886,16 +937,17 @@ const DeveloperRegistrationStepper = () => {
       } else {
         if (nestedActiveStep == 2) {
           let developer_education = [
+            ...stepData,
             {
               university_name: values?.name,
               address: values?.location,
               degree_id: 0,
               field_of_study: values?.study,
               start_year: 0,
-              end_month: "string",
+              end_month: values?.graduate_date,
               end_year: 0,
               currently_attending: true,
-              description: values?.description,
+              description: values?.project_description,
             },
           ];
           dispatch(
@@ -975,9 +1027,9 @@ const DeveloperRegistrationStepper = () => {
     }
 
       else if(activeStep==6){
-        
         if(nestedActiveStep==1){
           let developer_project=[
+            ...stepData,
             {
               "project_title": values?.project_title,
               "project_description": values?.project_description,
@@ -1071,6 +1123,7 @@ const DeveloperRegistrationStepper = () => {
   const handleClose = () => {
     setShowSetUpJobModal({
       recommendation: false,
+      isDelete:false,
     });
   };
   const handleProceed = () => {
@@ -1125,7 +1178,7 @@ console.log(nestedActiveStep,"nes")
               </span>
             </div>}
             <Row>
-              <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 || activeStep==1 ? 12 : 8}>
+              <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 || activeStep==1  || activeStep==6 || activeStep==2 ? 12 : 8}>
                 {renderActiveStep()}
               </Col>
               {nestedActiveStep !== 3 || activeStep!==1 && (

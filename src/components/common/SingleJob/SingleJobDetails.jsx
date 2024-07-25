@@ -167,6 +167,10 @@ const AdminSingleJob = () => {
         setMakeOffer(!makeOffer)
     }
 
+    const redirectToDeveloper=()=>{
+        navigate("/admin/register-developer")
+    }
+
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -333,7 +337,7 @@ const AdminSingleJob = () => {
                     {role !== "developer" && <Tab eventKey="suggested" title={suggest}>
                         <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
                             <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Manual Suggestion</Button>
-                            <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
+                            <Button variant="transparent" onClick={redirectToDeveloper} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
                         <Tab.Container defaultActiveKey={'list-view'}>
                             <div className="mb-4 d-flex justify-content-between align-items-center">
@@ -1015,7 +1019,6 @@ const AdminSingleJob = () => {
             } show={showEndJobModal} handleClose={handleCloseEndJobModal} onClick={handleJobStatusAction} smallLoader={smallLoader} />
             <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
             <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
-            <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
             <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} />
             <CreateOffer show={makeOffer} handleClose={handleMakeOffer}/>
         </>
