@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BiFont } from "react-icons/bi";
 import { FaArrowRightLong, FaUsers } from "react-icons/fa6";
@@ -19,6 +19,8 @@ import CommonInput from "../../atomic/CommonInput";
 import { useForm } from "react-hook-form";
 import RexettButton from "../../atomic/RexettButton";
 import { VIDEO_MEETING } from "../../../helper/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { getTimeZoneList } from "../../../redux/slices/clientDataSlice";
 const Schedulemeeting = ({ show, handleClose }) => {
     const {
         handleSubmit,
@@ -28,10 +30,36 @@ const Schedulemeeting = ({ show, handleClose }) => {
         watch,
         formState: { errors },
     } = useForm({});
+    const dispatch =useDispatch()
 
-    const [value, onChange] = useState(new Date());
     const [firstSlot, setFirstSlot] = useState("");
     const [secondSlot, setSecondSlot] = useState("");
+    const [groupedTime,setGroupedTime]=useState([])
+    const {timeZoneList}=useSelector((state)=>state.clientData)
+
+    useEffect(()=>{
+      dispatch(getTimeZoneList())
+    },[])
+
+    useEffect(()=>{
+        if(timeZoneList.length>0){
+            let groupedTimeZones=timeZoneList?.map((item)=>{
+                return {
+                    label:item?.country_name,
+                    options: item?.timezones.map((it)=>{
+                        return {label:it,value:it}
+                    }),
+                }
+            })
+            console.log(groupedTimeZones,"op")
+            setGroupedTime(groupedTimeZones)
+        }
+     
+     
+
+    },[timeZoneList])
+
+    console.log(timeZoneList,"timeZoneList")
 
     const generateTimeSlots = () => {
         const slots = [];
@@ -48,7 +76,6 @@ const Schedulemeeting = ({ show, handleClose }) => {
 
     const handleFirstSlotChange = (event) => {
         const selectedTime = event.target.value;
-        console.log(selectedTime,"selectedTime")
         setFirstSlot(selectedTime);
 
         // Automatically set second slot to 1 hour after the first slot if not already set
@@ -96,52 +123,13 @@ const Schedulemeeting = ({ show, handleClose }) => {
     // Filter second select options to be only after the first select value
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
-    const timeZones = [
-        { value: "UTC-12:00", label: "UTC-12:00" },
-        { value: "UTC-11:00", label: "UTC-11:00" },
-        { value: "UTC-10:00", label: "UTC-10:00" },
-        { value: "UTC-09:00", label: "UTC-09:00" },
-        { value: "UTC-08:00", label: "UTC-08:00" },
-        { value: "UTC-07:00", label: "UTC-07:00" },
-        { value: "UTC-06:00", label: "UTC-06:00" },
-        { value: "UTC-05:00", label: "UTC-05:00" },
-        { value: "UTC-04:00", label: "UTC-04:00" },
-        { value: "UTC-03:00", label: "UTC-03:00" },
-        { value: "UTC-02:00", label: "UTC-02:00" },
-        { value: "UTC-01:00", label: "UTC-01:00" },
-        { value: "UTC+00:00", label: "UTC+00:00" },
-        { value: "UTC+01:00", label: "UTC+01:00" },
-        { value: "UTC+02:00", label: "UTC+02:00" },
-        { value: "UTC+03:00", label: "UTC+03:00" },
-        { value: "UTC+04:00", label: "UTC+04:00" },
-        { value: "UTC+05:00", label: "UTC+05:00" },
-        { value: "UTC+06:00", label: "UTC+06:00" },
-        { value: "UTC+07:00", label: "UTC+07:00" },
-        { value: "UTC+08:00", label: "UTC+08:00" },
-        { value: "UTC+09:00", label: "UTC+09:00" },
-        { value: "UTC+10:00", label: "UTC+10:00" },
-        { value: "UTC+11:00", label: "UTC+11:00" },
-        { value: "UTC+12:00", label: "UTC+12:00" },
-        { value: "UTC+13:00", label: "UTC+13:00" },
-        { value: "UTC+14:00", label: "UTC+14:00" },
-    ];
-    const meetingToast = () => {
-        toast("Meeting Scheduled");
-    }
-
-    const [meetingType, setMeetingType] = useState('instant'); // initial state set to 'instant'
-
-    const handleMeetingTypeChange = (e) => {
-        setMeetingType(e.target.id);
-    };
     const meetingTypeValue = watch('meeting_type')
-    console.log(meetingTypeValue, "meetingTypeValue")
+
 
     const onSubmit = data => {
         console.log(data);
     };
 
-    console.log(timeSlots, "timeSlots")
 
     return (
         <>
@@ -238,7 +226,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                 className="d-inline-block meeting-radio ps-0 me-2"
                                                 value="instant_meeting"
                                                 {...register("meeting_type")}
-                                                defaultChecked
+                                                
                                             />
 
                                             <Form.Check
@@ -293,18 +281,20 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                         control={control}
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
-                                                        placeholder="Time zone"
+                                                   
                                                     />{" "}
                                                 </div>
                                                 <div>
 
                                                     <CommonInput
-                                                        name={"candidate"}
+                                                        name={"time_zone"}
                                                         type={"select"}
                                                         control={control}
+                                                        selectOptions={groupedTime}
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
-                                                        placeholder="Time zone"
+                                                       defaultOption = "Time zone"
+                                                      
                                                     />{" "}
 
                                                 </div>
