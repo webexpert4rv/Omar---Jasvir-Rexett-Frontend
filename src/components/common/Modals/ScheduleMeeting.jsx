@@ -5,22 +5,16 @@ import { FaArrowRightLong, FaUsers } from "react-icons/fa6";
 import { RiUser3Fill } from "react-icons/ri";
 import { FaClock } from "react-icons/fa6";
 import { IoAlarm } from "react-icons/io5";
-import clientImg from '../../../assets/img/amazon.png';
-import rexettLogo from '../../../assets/img/favicon.png';
-import devImg from '../../../assets/img/demo-img.jpg'
-import DatePicker from 'react-date-picker';
 import { FaVideo } from "react-icons/fa6";
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
-import { toast } from 'react-toastify'
-import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select'
 import CommonInput from "../../atomic/CommonInput";
 import { useForm } from "react-hook-form";
 import RexettButton from "../../atomic/RexettButton";
 import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
-import { getTimeZoneList } from "../../../redux/slices/clientDataSlice";
+import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
+import { useLocation } from "react-router-dom";
 const Schedulemeeting = ({ show, handleClose }) => {
     const {
         handleSubmit,
@@ -28,38 +22,42 @@ const Schedulemeeting = ({ show, handleClose }) => {
         control,
         reset,
         watch,
+        setValue,
         formState: { errors },
     } = useForm({});
-    const dispatch =useDispatch()
+    const dispatch = useDispatch()
+    const location = useLocation()
+    let id = location.pathname.split("/")[3];
+
 
     const [firstSlot, setFirstSlot] = useState("");
     const [secondSlot, setSecondSlot] = useState("");
-    const [groupedTime,setGroupedTime]=useState([])
-    const {timeZoneList}=useSelector((state)=>state.clientData)
+    const [groupedTime, setGroupedTime] = useState([])
+    const { timeZoneList } = useSelector((state) => state.clientData)
 
-    useEffect(()=>{
-      dispatch(getTimeZoneList())
-    },[])
+    useEffect(() => {
+        dispatch(getTimeZoneList())
+    }, [])
 
-    useEffect(()=>{
-        if(timeZoneList.length>0){
-            let groupedTimeZones=timeZoneList?.map((item)=>{
+    useEffect(() => {
+        if (timeZoneList.length > 0) {
+            let groupedTimeZones = timeZoneList?.map((item) => {
                 return {
-                    label:item?.country_name,
-                    options: item?.timezones.map((it)=>{
-                        return {label:it,value:it}
+                    label: item?.country_name,
+                    options: item?.timezones.map((it) => {
+                        return { label: it, value: it }
                     }),
                 }
             })
-            console.log(groupedTimeZones,"op")
+            console.log(groupedTimeZones, "op")
             setGroupedTime(groupedTimeZones)
         }
-     
-     
 
-    },[timeZoneList])
 
-    console.log(timeZoneList,"timeZoneList")
+
+    }, [timeZoneList])
+
+    console.log(timeZoneList, "timeZoneList")
 
     const generateTimeSlots = () => {
         const slots = [];
@@ -117,6 +115,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
         if (minutes > 0) {
             duration += `${minutes}m`;
         }
+        setValue("meeting_time", duration.trim())
         return duration.trim();
     };
 
@@ -127,7 +126,24 @@ const Schedulemeeting = ({ show, handleClose }) => {
 
 
     const onSubmit = data => {
-        console.log(data);
+        console.log(data, "dat")
+        let payload = {
+            "job_id": id,
+            "developer_id": 658,
+            "meeting_type": data?.meeting_type,
+            "meeting_date": data?.meeting_date,
+            "meeting_time": "01:00:00",
+            "title": data?.title,
+            "meeting_platform": data?.meeting_platform?.value,
+            "meeting_link": "https://example.com/meeting-link",
+            "status": "pending",
+            "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
+            "candidate_reminder": data?.candidate_reminder,
+            "interviewer_reminder": data?.interviewer_reminder,
+            "time_zone": data?.time_zone?.label
+        }
+
+        dispatch(postCandidateInterview(payload))
     };
 
 
@@ -157,6 +173,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                             placeholder="Add title"
                                         />{" "}
                                     </div>
+                                    <p>{errors?.title?.message}</p>
 
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -174,6 +191,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                             invalidFieldRequired={true}
                                             placeholder="Select Candidate"
                                         />{" "}
+                                        <p>{errors?.interviewers_list?.message}</p>
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -191,6 +209,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                             invalidFieldRequired={true}
                                             placeholder="Select Interviewer"
                                         />{" "}
+                                        <p>{errors?.select_candidate?.message}</p>
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -203,7 +222,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                         <option>Microsoft team</option>
                                     </Form.Select> */}
                                     <CommonInput
-                                        name={"candidate"}
+                                        name={"meeting_platform"}
                                         type={"select"}
                                         control={control}
                                         selectOptions={VIDEO_MEETING}
@@ -220,30 +239,30 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                         <div className="mb-2">
                                             <Form.Check
                                                 type="radio"
-                                                name="instant_meeting"
+                                                name="instant"
                                                 label="Instant Meeting"
                                                 id="instant_meeting"
                                                 className="d-inline-block meeting-radio ps-0 me-2"
-                                                value="instant_meeting"
+                                                value="instant"
                                                 {...register("meeting_type")}
-                                                
+
                                             />
 
                                             <Form.Check
                                                 type="radio"
-                                                name="specific_meeting"
-                                                label="Specific Date & Time"
-                                                id="specific_meeting"
+                                                name="scheduled"
+                                                label="Scheduled Date & Time"
+                                                id="scheduled"
                                                 className="d-inline-block meeting-radio ps-0"
-                                                value="specific_meeting"
+                                                value="scheduled"
                                                 {...register("meeting_type")}
                                             />
 
                                         </div>
-                                        {meetingTypeValue === 'specific_meeting' && (
+                                        {meetingTypeValue === 'scheduled' && (
                                             <div className="specific-datetime">
                                                 <div className="d-flex align-items-center gap-3 mb-2">
-                                        
+
                                                     <CommonInput
                                                         name={"meeting_time"}
                                                         type={"normal-select"}
@@ -252,7 +271,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                         options={timeSlots}
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
-                                                        defaultOption = "Select Time"
+                                                        defaultOption="Select Time"
                                                         onChange={handleFirstSlotChange}
                                                     />{" "}
 
@@ -261,14 +280,14 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                     </span>
 
                                                     <CommonInput
-                                                        name={"candidate"}
+                                                        name={"meeting_time"}
                                                         type={"normal-select"}
                                                         control={control}
                                                         value={secondSlot}
                                                         options={filteredTimeSlots}
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
-                                                       defaultOption = "Select Time"
+                                                        defaultOption="Select Time"
                                                         onChange={handleSecondSlotChange}
                                                     />{" "}
                                                     <span className="font-14">{calculateDuration(firstSlot, secondSlot)}</span>
@@ -276,12 +295,12 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                 <div className="mb-2 datefield-wrapper">
                                                     {/* <DatePicker onChange={onChange} value={value} /> */}
                                                     <CommonInput
-                                                        name={"candidate"}
+                                                        name={"meeting_date"}
                                                         type={"date"}
                                                         control={control}
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
-                                                   
+
                                                     />{" "}
                                                 </div>
                                                 <div>
@@ -293,8 +312,8 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                         selectOptions={groupedTime}
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
-                                                       defaultOption = "Time zone"
-                                                      
+                                                        defaultOption="Time zone"
+
                                                     />{" "}
 
                                                 </div>

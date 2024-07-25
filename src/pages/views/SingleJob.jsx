@@ -52,6 +52,8 @@ import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import { LuMessagesSquare } from "react-icons/lu";
 import { IoGrid } from "react-icons/io5";
+import InterviewCard from "../../components/atomic/InterviewCard";
+import TableView from "../../components/atomic/TableView";
 
 const SingleJob = () => {
   const role = localStorage.getItem("role")
@@ -670,7 +672,7 @@ const SingleJob = () => {
               <Tab.Content>
                 <Tab.Pane eventKey="list-view">
                   <div className="">
-                    <div className="table-responsive">
+                    {/* <div className="table-responsive">
                       <table className="table document-table table-ui-custom">
                         <thead>
                           <th className="document-th filename-th px-3">Name</th>
@@ -742,7 +744,8 @@ const SingleJob = () => {
                           </tr>
                         </tbody>
                       </table>
-                    </div>
+                    </div> */}
+                    <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply}/>
                   </div>
                 </Tab.Pane>
                 <Tab.Pane eventKey="grid-view">
@@ -902,29 +905,7 @@ const SingleJob = () => {
             <div className="interview-scheduled pt-2 mb-3">
               <Row>
                 <Col lg={4}>
-                  <div className="interview-wrapper position-relative mb-3 pt-4">
-                    <div>
-                      <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                      <p className="dev-name mb-2 font-14">
-                        <div className="me-1">
-                          <img src={devImg} />
-                        </div>
-                        Pankaj Pundir
-                      </p>
-                      <div>
-                        <span className="associate-text">
-                          <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="mb-2 status-interview">
-                      <span className="status-upcoming">Upcoming in 1hr</span>
-                    </div>
-                    <div className="d-flex align-items-center justify-content-between">
-                      <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button>
-                      <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>View Details</Button>
-                    </div>
-                  </div>
+               <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo}/>
                 </Col>
                 <Col lg={4}>
                   <div className="interview-wrapper position-relative mb-3 pt-4">

@@ -563,6 +563,21 @@ export function getJobCategoryList(payload, callback) {
   };
 }
 
+export function postCandidateInterview(payload, callback) {
+  return async (dispatch) => {
+    try {
+      let result = await clientInstance.post(`common/interview`,{...payload});
+      if (result.status === 200) {
+       toast.success(result.data.message)
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
 export function getSuggestedDeveloper(payload, callback) {
   return async (dispatch) => {
     dispatch(setApprovedLoader())
