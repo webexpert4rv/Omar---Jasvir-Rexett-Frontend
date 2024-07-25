@@ -125,7 +125,7 @@ const AddEducation = ({
             render={({ field }) => (
               <ReactQuill
                 {...field}
-                value={field.value}
+                value={field.value ? field.value : selectedRecommend}
                 className={`common-field ${
                   errors.description?.message && "invalid-field"
                 }`}

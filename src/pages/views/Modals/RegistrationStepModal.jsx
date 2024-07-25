@@ -15,17 +15,31 @@ const RegistrationStepModal = ({ show, handleClose,nextStep }) => {
         navigate("/developer-login")
 
     }
+
+    let currentStep = localStorage.getItem('clientActiveStep');
+    
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} className="pb-3">
                 <Modal.Header closeButton className="border-0 pb-3">
                 </Modal.Header>
                 <Modal.Body>
+                {currentStep === '7' ? 
+                <>
+                <h5>Welcome to the Rexett Community!</h5>
+                <p>
+                  A Rexett Family Team Member Will Reach Out to You Shortly for the Next
+                  Steps!
+                </p>
+                </> :
+                <>
                 <h3>Your Registration has been completed</h3>
-                <h3>Do you want to continue your registration process?</h3>  
+                <h3>Do you want to continue your registration process?</h3>
+                </> 
+                }
                  
                 </Modal.Body>
-                <div className="d-flex justify-content-end align-items-center ">
+                <div className="d-flex justify-content-end align-items-center p-3">
               <div className="me-3">
                 <RexettButton
                 onClick={redirectToLogin}
@@ -33,6 +47,7 @@ const RegistrationStepModal = ({ show, handleClose,nextStep }) => {
                   className="main-btn px-5 mr-2"
                 />
               </div>
+              {currentStep !== '7' &&
               <div>
                 <RexettButton
                   text="Continue"
@@ -40,6 +55,7 @@ const RegistrationStepModal = ({ show, handleClose,nextStep }) => {
                   className="main-btn px-5 mr-2"
                 />
               </div>
+              }
             </div>
             </Modal>
         </>

@@ -11,15 +11,15 @@ import CustomSkill from "./CustomSkill";
 import ReactQuill from "react-quill";
 import { Controller } from "react-hook-form";
 import StepperHeadingSection from "../StepperHeadingSection";
-const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions,nestedActiveStep,type}) => {
-    console.log(nestedActiveStep,"skil")
+const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions,nestedActiveStep,type,selectedRecommend,setSelectedRecommend}) => {
+
   return (
     <>
       <div>
       <StepperHeadingSection nestedActiveStep={nestedActiveStep} activeStep={activeStep} type={type}/>
         <Row>
           <Col md={6}>
-            <RecommendationAI control={control} />
+            <RecommendationAI control={control} setSelectedRecommend={setSelectedRecommend}/>
           </Col>
           <Col md={6}>
            
@@ -30,6 +30,7 @@ const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions,nestedA
              watch={watch}
              register={register}
              skillOptions={skillOptions}
+             selectedRecommend={selectedRecommend}
             />}
             { activeStep==5 && <div id="custom-ck">
           <Controller
@@ -40,7 +41,7 @@ const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions,nestedA
             render={({ field }) => (
               <ReactQuill
                 {...field}
-                // value={selectedRecommendation}
+                value={field.value ? field.value : selectedRecommend}
                 className={`common-field ${
                   errors.description?.message && "invalid-field"
                 }`}
