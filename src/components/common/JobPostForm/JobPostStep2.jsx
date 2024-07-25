@@ -54,21 +54,16 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
 
   
   const handleSkillLevel=(event,skill,index,name,inx)=>{
+    console.log(skill,"skill")
+    console.log(event,"event")
+    console.log(index,"index")
+    console.log(name,"name")
    let copySkill=[...traitSkill];
    copySkill[index].level = copySkill[index].level.map((level, idx) => ({
     ...level,
     isTrue: idx === inx,
   }))
  setTraitSkill(copySkill);
-//  let finlValue= copySkill?.map((item)=>{
-//     return  {
-//       "skill_id": item?.value,
-//       "skill_name": item?.label,
-//       "weight": item?.level?.find((itm, idx)=>(itm?.isTrue==true))?.name
-//     }
-//   })
-//   console.log(finlValue,"weightvalue")
-//    }
   }
  
   const handleChange = (html, field) => {

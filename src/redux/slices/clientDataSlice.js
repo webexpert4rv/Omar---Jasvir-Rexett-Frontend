@@ -42,7 +42,8 @@ const initialClientData = {
   clientLook:{},
   OtpLoader:false,
   jobList:[],
-  clientProfileData:{}
+  clientProfileData:{},
+  timeZoneList:[]
 };
 export const clientDataSlice = createSlice({
   name: 'clientData',
@@ -175,6 +176,11 @@ export const clientDataSlice = createSlice({
        state.timeZones = action.payload;
        state.screenLoader = false;
       },
+      setListTimeZone:(state,action)=>{
+        state.timeZoneList = action.payload;
+        console.log(action.payload,"----------------------------")
+        state.screenLoader = false;
+      },
       setCountriesList:(state,action)=>{
         state.countriesList = action.payload;
         state.screenLoader = false;
@@ -206,7 +212,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
       
-export const {setOTPloader,setJobList,setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId,setClientProfileData} = clientDataSlice.actions
+export const {setOTPloader,setJobList,setListTimeZone,setStatesList,setCountriesList, setCitiesList,setClientLook,setWebClientData, setTimeZones,setInvoiceList,setAllJobPostedList,setClientHolidayList,closeApprovedLoader,setSuggstedDeveloper ,setAddHoliday,setApproveDisapprove, setReconciliationsData, setFaqs ,setLeaveClientHistory ,setScreenLoader, setDeveloperDetails ,setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails,setJobId,setClientProfileData} = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -986,6 +992,19 @@ export function getTimeZoneForCountry(countryCode) {
     try {
       let result = await clientInstance.get(`web/countries/${countryCode}/timezones`);
       dispatch(setTimeZones(result?.data?.data?.timezones));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+export function getTimeZoneList() {
+  return async (dispatch) => {
+    // dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`web/countries/timezones`);
+      dispatch(setListTimeZone(result?.data.data));
     } catch (error) {
       const message = error?.message;
       toast.error(error?.response?.data?.message, { position: "top-center" });

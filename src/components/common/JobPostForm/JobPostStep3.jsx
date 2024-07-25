@@ -107,7 +107,6 @@ const JobPostStep3 = ({
   });
 
 
-  console.log(degree, "degreeeeee")
 
   const handleOnChange = (item) => {
     console.log(item, "event")

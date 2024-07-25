@@ -24,7 +24,6 @@ const LocationSection = ({
   const { countriesList, statesList, citiesList, timeZones } = useSelector(
     (state) => state.clientData
   );
-console.log(countriesList,"contrylist")
   useEffect(() => {
     if (watch("country_code")) {
       dispatch(getStatesList(watch("country_code")?.value));

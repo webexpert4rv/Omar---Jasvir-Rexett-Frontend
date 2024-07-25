@@ -19,11 +19,21 @@ const CommonReactSelect = ({
 }) => {
   // in required prop a  message should be given eg. Country name is required
   const [formattedOptions, setFormattedOptions] = useState([]);
+  console.log(options,"options")
 
-  useEffect(() => {
-    const formattedOptions = convertCountriesForSelect(options, type);
-    setFormattedOptions(formattedOptions);
-  }, [options]);
+  // useEffect(() => {
+  //   const formattedOptions = convertCountriesForSelect(options, type);
+  //   setFormattedOptions(formattedOptions);
+  // }, [options]);
+useEffect(()=>{
+ const formatOptions = (options)?.map((item,idx)=>{
+  if (item.timezones) {
+    return item.timezones.map((timezone) => timezone);
+  }
+ })
+ setFormattedOptions(formatOptions)
+},[options])
+console.log(formattedOptions,"formattedOptions")
   const showCloseIcon = () => {
     if(invalidFieldRequired && errors?.[name]?.message){
       return <CloseIcon/>
