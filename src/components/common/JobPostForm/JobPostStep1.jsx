@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { t } from "i18next";
 import { Col, Form, OverlayTrigger, Tooltip, Row } from "react-bootstrap";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
@@ -8,6 +8,10 @@ import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../clients/TimeReporiting/constant";
 import LocationSection from "../../../pages/websiteRegisterForm/developer/LocationSection";
+import CommonReactSelect from "../../atomic/CommonReactSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import {  getTimeZoneList } from "../../../redux/slices/clientDataSlice";
 
 const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, clearErrors }) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -42,6 +46,25 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
       discoverable by job seekers in those area.
     </Tooltip>
   );
+
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { countriesList, statesList, citiesList, timeZoneList } = useSelector(
+    (state) => state.clientData
+  );
+
+  useEffect(() => {
+      dispatch(getTimeZoneList());
+  }, []);
+
+  const handleDropDownChange = (value, name) => {
+      dispatch(getTimeZoneList());
+      // timezone logic
+      // setValue("timezone", value);
+      setValue("timezone", value);
+      setValue("time_zone", value);
+      clearErrors("time_zone");
+  };
   return (
     <div>
       <section className="job-post-section">
@@ -125,35 +148,6 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                       </span>
                     </OverlayTrigger>
                   </Form.Label>
-                  {/* <Controller
-                  name="jobLocation"
-                  control={control}
-                  render={({ field }) => (
-                    <Autocomplete
-                      {...field}
-                      apiKey = {MAP_API_KEY}
-                      className ="common-field font-14"
-                      onPlaceSelected={(place) => {
-                        // handlePlaceSelect(place);
-                        field.onChange(place?.formatted_address);
-                      }}
-                      onChange={(event) => {
-                        field.onChange(event.target.value);
-                        // if (event.target.value === "") {
-                        //   setLocation(null);
-                        // }
-                      }}
-                      // onBlur={handleOnBlur}
-                      // types={["(regions)"]}
-                      placeholder={"Select job location"}
-                      onKeyDown={(e) => {
-                        // handleKeyPress(e);
-                      }}
-                      // componentRestrictions={{ country: "us" }} // Restrict results to a specific country if needed
-                    />
-                  )}
-                /> */}
-
                   <Controller
                     name="job_location"
                     rules={{
@@ -267,7 +261,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                 </Form.Group>
               </Col>
             </Row>
-            <LocationSection
+            {/* <LocationSection
               control={control}
               errors={errors}
               LocationSection={true}
@@ -275,7 +269,23 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
               setValue={setValue}
               setError={setError}
               clearErrors={clearErrors}
-            />{" "}
+              isTimeZoneRequired={true}
+            />{" "} */}
+              {/* {isTimeZoneRequired && ( */}
+            <CommonReactSelect
+              name="time_zone"
+              errors={errors}
+              handleChange={handleDropDownChange}
+              control={control}
+              // required="City is required"
+              label="Timezone"
+              type="timezones"
+              required="Timezone is required"
+              invalidFieldRequired={true}
+              watch={watch}
+              options={timeZoneList}
+            />
+          {/* )} */}
           </Col>
         </Row>
       </section>

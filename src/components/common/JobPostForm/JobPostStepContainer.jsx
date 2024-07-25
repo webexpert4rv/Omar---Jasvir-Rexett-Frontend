@@ -26,6 +26,9 @@ import { getDegreeList } from "../../../redux/slices/developerDataSlice";
 
 // add this inside constant file later
 const hasNullOrUndefinedProperties = (obj, activeStep) => {
+  console.log(obj,"object")
+  console.log(activeStep,"activeStep")
+
   if (activeStep === 3) {
     return !obj?.screening_questions?.length;
   } else {
@@ -122,6 +125,7 @@ const JobPostStepContainer = ({ role }) => {
   }, [])
 
   const {degreeList} = useSelector(state => state.developerData)
+  console.log(degreeList, "degreeList")
 
   useEffect(() => {
     let tempSkills = [];
@@ -150,21 +154,26 @@ const JobPostStepContainer = ({ role }) => {
     } else if (jobId) {
       setJobID(Number(jobId));
     }
-    
+    console.log(jobId,"jobId")
     if (jobId) {
       dispatch(
         getJobPostData(jobId, (jobpost) => {
+          console.log(jobpost,"jobpost")
           // managing is edit or not
           if (
             jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
             Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length
           ) {
+            console.log("insideapicall")
             const IsNull = hasNullOrUndefinedProperties(
               jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]],
               activeStep
             );
             console.log(isEdit, "isEditinseide")
-            // setIsEdit(true);
+            console.log(IsNull,"IsNull")
+            console.log(!IsNull,"IsEdit")
+
+            setIsEdit(!IsNull);
           }
           if (
             jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
@@ -173,7 +182,9 @@ const JobPostStepContainer = ({ role }) => {
             Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]).map(
               (key) => {
                 if (activeStep === 1) {
+                  console.log("insideSettingvalues")
                   const data = jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]];
+                  console.log(data,"data")
                   if (key === "country_code") {
                     const newValue = {
                       label: data["country"],
@@ -187,6 +198,7 @@ const JobPostStepContainer = ({ role }) => {
                     const newValue = { label: data[key], value: data[key] };
                     setValue(key, newValue);
                   }
+                  setValue(key,data[key])
                 } else if (activeStep === 2) {
                   if (key === "skills" || key === "optional_skills") {
                     if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]?.[key]) {
@@ -301,6 +313,7 @@ const JobPostStepContainer = ({ role }) => {
     }
   })
   console.log(finalValue,"weightvalue")
+  console.log(getActiveStepKeys[1],"step1keys")
  
   const onSubmit = (stepData) => {
     console.log(stepData,"stepdata")
