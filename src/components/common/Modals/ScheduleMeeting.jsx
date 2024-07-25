@@ -15,7 +15,20 @@ import 'react-calendar/dist/Calendar.css';
 import { toast } from 'react-toastify'
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select'
+import CommonInput from "../../atomic/CommonInput";
+import { useForm } from "react-hook-form";
+import RexettButton from "../../atomic/RexettButton";
+import { VIDEO_MEETING } from "../../../helper/constant";
 const Schedulemeeting = ({ show, handleClose }) => {
+    const {
+        handleSubmit,
+        register,
+        control,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm({});
+
     const [value, onChange] = useState(new Date());
     const [firstSlot, setFirstSlot] = useState("");
     const [secondSlot, setSecondSlot] = useState("");
@@ -25,7 +38,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
         for (let hour = 0; hour < 24; hour++) {
             for (let minute = 0; minute < 60; minute += 15) {
                 const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-                slots.push(time);
+                slots.push({ label: time, value: time });
             }
         }
         return slots;
@@ -35,6 +48,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
 
     const handleFirstSlotChange = (event) => {
         const selectedTime = event.target.value;
+        console.log(selectedTime,"selectedTime")
         setFirstSlot(selectedTime);
 
         // Automatically set second slot to 1 hour after the first slot if not already set
@@ -80,7 +94,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
     };
 
     // Filter second select options to be only after the first select value
-    const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot > firstSlot);
+    const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const timeZones = [
         { value: "UTC-12:00", label: "UTC-12:00" },
@@ -120,6 +134,14 @@ const Schedulemeeting = ({ show, handleClose }) => {
     const handleMeetingTypeChange = (e) => {
         setMeetingType(e.target.id);
     };
+    const meetingTypeValue = watch('meeting_type')
+    console.log(meetingTypeValue, "meetingTypeValue")
+
+    const onSubmit = data => {
+        console.log(data);
+    };
+
+    console.log(timeSlots, "timeSlots")
 
     return (
         <>
@@ -128,8 +150,8 @@ const Schedulemeeting = ({ show, handleClose }) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <h3 className="popup-heading">Schedule Meeting</h3>
-                    <Form>
+                    <h3 className="popup-heading">Schedule Meetings</h3>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <Row>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -137,15 +159,33 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <Form.Control type="text" className="common-field font-14" placeholder="Add title" />
+                                        {/* <Form.Control type="text" className="common-field font-14" placeholder="Add title" /> */}
+                                        <CommonInput
+                                            name={"title"}
+                                            type="text"
+                                            control={control}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                            placeholder="Add title"
+                                        />{" "}
                                     </div>
+
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Select Candidate</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <Select isMulti />
+                                        {/* <Select isMulti /> */}
+                                        <CommonInput
+                                            name={"select_candidate"}
+                                            type={"select2"}
+                                            control={control}
+                                            selectOptions={[{ label: "John Doe", value: "658" }]}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                            placeholder="Select Candidate"
+                                        />{" "}
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -153,18 +193,36 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <CreatableSelect isMulti />
+                                        {/* <CreatableSelect isMulti /> */}
+                                        <CommonInput
+                                            name={"interviewers_list"}
+                                            type={"multi-select"}
+                                            control={control}
+                                            selectOptions={[{ label: "JohnDoe@gmail.com", value: "JohnDoe@gmail.com" }, { label: "exapme@gmail.com", value: "example@gmail.com" }]}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                            placeholder="Select Interviewer"
+                                        />{" "}
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
-                                    <Form.Select className="common-field font-14">
+                                    {/* <Form.Select className="common-field font-14">
                                         <option>Rexett video meeting</option>
                                         <option>Google meet</option>
                                         <option>Microsoft team</option>
-                                    </Form.Select>
+                                    </Form.Select> */}
+                                    <CommonInput
+                                        name={"candidate"}
+                                        type={"select"}
+                                        control={control}
+                                        selectOptions={VIDEO_MEETING}
+                                        rules={{ required: "This field is required" }}
+                                        invalidFieldRequired={true}
+                                        placeholder="Video Meeting"
+                                    />{" "}
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
@@ -174,66 +232,81 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                         <div className="mb-2">
                                             <Form.Check
                                                 type="radio"
-                                                name="meeting-time"
+                                                name="instant_meeting"
                                                 label="Instant Meeting"
                                                 id="instant_meeting"
                                                 className="d-inline-block meeting-radio ps-0 me-2"
-                                                checked={meetingType === 'instant_meeting'}
-                                                onChange={handleMeetingTypeChange}
+                                                value="instant_meeting"
+                                                {...register("meeting_type")}
+                                                defaultChecked
                                             />
+
                                             <Form.Check
                                                 type="radio"
-                                                name="meeting-time"
+                                                name="specific_meeting"
                                                 label="Specific Date & Time"
                                                 id="specific_meeting"
                                                 className="d-inline-block meeting-radio ps-0"
-                                                checked={meetingType === 'specific_meeting'}
-                                                onChange={handleMeetingTypeChange}
+                                                value="specific_meeting"
+                                                {...register("meeting_type")}
                                             />
+
                                         </div>
-                                        {meetingType === 'specific_meeting' && (
+                                        {meetingTypeValue === 'specific_meeting' && (
                                             <div className="specific-datetime">
                                                 <div className="d-flex align-items-center gap-3 mb-2">
-                                                    <Form.Select
-                                                        className="common-field font-14 w-auto"
+                                        
+                                                    <CommonInput
+                                                        name={"meeting_time"}
+                                                        type={"normal-select"}
+                                                        control={control}
                                                         value={firstSlot}
+                                                        options={timeSlots}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+                                                        defaultOption = "Select Time"
                                                         onChange={handleFirstSlotChange}
-                                                    >
-                                                        <option value="">Select Time</option>
-                                                        {timeSlots.map((slot, index) => (
-                                                            <option key={index} value={slot}>
-                                                                {slot}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
+                                                    />{" "}
+
                                                     <span className="arrow-icon">
                                                         <FaArrowRightLong />
                                                     </span>
-                                                    <Form.Select
-                                                        className="common-field font-14 w-auto"
+
+                                                    <CommonInput
+                                                        name={"candidate"}
+                                                        type={"normal-select"}
+                                                        control={control}
                                                         value={secondSlot}
+                                                        options={filteredTimeSlots}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+                                                       defaultOption = "Select Time"
                                                         onChange={handleSecondSlotChange}
-                                                    >
-                                                        <option value="">Select Time</option>
-                                                        {filteredTimeSlots.map((slot, index) => (
-                                                            <option key={index} value={slot} disabled={slot === firstSlot}>
-                                                                {slot}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
+                                                    />{" "}
                                                     <span className="font-14">{calculateDuration(firstSlot, secondSlot)}</span>
                                                 </div>
                                                 <div className="mb-2 datefield-wrapper">
-                                                    <DatePicker onChange={onChange} value={value} />
+                                                    {/* <DatePicker onChange={onChange} value={value} /> */}
+                                                    <CommonInput
+                                                        name={"candidate"}
+                                                        type={"date"}
+                                                        control={control}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+                                                        placeholder="Time zone"
+                                                    />{" "}
                                                 </div>
                                                 <div>
-                                                    <Form.Select className="common-field font-14">
-                                                        {timeZones.map((zone, index) => (
-                                                            <option key={index} value={zone.value}>
-                                                                {zone.label}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
+
+                                                    <CommonInput
+                                                        name={"candidate"}
+                                                        type={"select"}
+                                                        control={control}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+                                                        placeholder="Time zone"
+                                                    />{" "}
+
                                                 </div>
                                             </div>
                                         )}
@@ -253,6 +326,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                     type="checkbox"
                                                     role="switch"
                                                     id="candidate-reminder"
+                                                    {...register("candidate_reminder")}
                                                 />
                                             </div>
                                         </div>
@@ -268,6 +342,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                     type="checkbox"
                                                     role="switch"
                                                     id="client-reminder"
+                                                    {...register("interviewer_reminder")}
                                                 />
                                             </div>
                                         </div>
@@ -277,9 +352,14 @@ const Schedulemeeting = ({ show, handleClose }) => {
                             </Row>
                         </div>
                         <div className="text-center">
-                            <Button variant="transparent" onClick={() => { handleClose(); meetingToast(); }} className="main-btn px-4 font-14 fw-semibold">Send Invite</Button>
+                            {/* <Button variant="transparent" onClick={() => { handleClose(); meetingToast(); }} className="main-btn px-4 font-14 fw-semibold">Send Invite</Button> */}
+                            <RexettButton
+                                type="submit"
+                                text={"Send Invite"}
+                                className="main-btn px-4 font-14 fw-semibold"
+                            />
                         </div>
-                    </Form>
+                    </form>
                 </Modal.Body>
             </Modal>
         </>
