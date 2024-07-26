@@ -13,6 +13,8 @@ import { TbMessage } from 'react-icons/tb';
 import { GrAttachment } from 'react-icons/gr';
 import rexettLogo from '../../assets/img/favicon.png'
 import AddUserConversation from '../common/Modals/AddUsers';
+import MoreChatOptions from '../common/MessageBox/MoreChatOptions';
+import MessageInboxCard from '../common/MessageBox/MessageInboxCard';
 
 
 
@@ -37,7 +39,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     };
     const handleCloseUserConversation = () => {
         showAddUserConversation(false);
-      }
+    }
 
 
     const handleChatProfileClick = () => {
@@ -277,6 +279,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     </div>
 
 
+
                     <div className="inner-message-area">
                         <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
                             <div className="d-flex align-items-center gap-2">
@@ -297,48 +300,9 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                                                     tabText={MESSAGE_TAB_TEXT}
                                                     currentTab={currentTab}
                                                 />
-
                                                 <Tab.Content>
                                                     <Tab.Pane eventKey="all-in-message" className="mt-2">
-                                                        <div className={messageWrapperVisible ? "chat-profile-wrapper position-relative active-chat py-2 px-3" : "chat-profile-wrapper position-relative py-2 px-3"} onClick={handleChatProfileClick}>
-                                                            <span className="more-chat-options">
-                                                                <Dropdown className="assign-dropdown">
-                                                                    <Dropdown.Toggle variant="transparent" className="asssign-dropdown-toggle" id="dropdown-basic">
-                                                                        <span className="assign-user cursor-pointer">
-                                                                            <HiOutlineDotsVertical />
-                                                                        </span>
-                                                                    </Dropdown.Toggle>
-                                                                    <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
-                                                                        <div className="employee-listing">
-                                                                            <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                                                                <span className="font-14">Mark as unread</span>
-                                                                            </div>
-                                                                            <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                                                                <span className="font-14">Reassign user</span>
-                                                                            </div>
-                                                                            {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                                                              <span className="font-14 d-inline-block cursor-pointer" onClick={handleShowUserConversation}>Add users</span>
-                                                                              </div> */}
-                                                                            <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                                                                <span className="font-14">Archieve</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </Dropdown.Menu>
-                                                                </Dropdown>
-                                                            </span>
-                                                            <div className="chat-profile-img">
-                                                                <img src={devImg} />
-                                                            </div>
-                                                            <div className="chat-profile-info">
-                                                                <div className="d-flex align-items-center justify-content-between">
-                                                                    <h3 className="chat-name">Pankaj Pundir</h3>
-                                                                    <p className="chat-time">8 hours</p>
-                                                                </div>
-                                                                <p className="chat-message mb-0">
-                                                                    Hi,Welcome and thank you for showing an interest in Aviox technologies pvt ltd. Being connected to our company means you get the chance to let us get to know you even more. Start by introducing yourself on your personal profile. A good and informative profile will help us find a right match. We will keep you up to date with jobs that suit your profile.
-                                                                </p>
-                                                            </div>
-                                                        </div>
+                                                        <MessageInboxCard messageWrapperVisible={messageWrapperVisible} handleChatProfileClick={handleChatProfileClick} />
                                                     </Tab.Pane>
                                                 </Tab.Content>
                                             </Tab.Container>
@@ -352,7 +316,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
             </Offcanvas>
             <AddUserConversation show={adduserconversation} handleClose={handleCloseUserConversation} />
         </div>
-        
+
     )
 }
 
