@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { BiFont } from "react-icons/bi";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -9,9 +9,27 @@ import rexettLogo from '../assets/img/favicon.png';
 import devImg from '../assets/img/demo-img.jpg'
 import { FaRegCopy } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logoRexett from '../assets/img/rexett-logo.png';
+import axios from "axios";
 const MeetingDetail = () => {
+ const [meetingDetails,setMeetingDetails]=useState()
+  const {search}=useLocation()
+  let id=search.split("=")[2];
+  let token=search.split("=")[1]
+
+
+
+    useEffect(()=>{
+
+      axios.get(`${process.env.REACT_APP_BASE_URL}/common/interview/${id}`).then((dat)=>{
+        console.log(dat?.data,"dat")
+      });
+
+
+
+    },[])
+
     return (
         <>
             <div className="header-single">

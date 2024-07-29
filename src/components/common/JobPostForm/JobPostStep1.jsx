@@ -11,13 +11,39 @@ import LocationSection from "../../../pages/websiteRegisterForm/developer/Locati
 import CommonReactSelect from "../../atomic/CommonReactSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import {  getTimeZoneList } from "../../../redux/slices/clientDataSlice";
+import { getTimeZoneList } from "../../../redux/slices/clientDataSlice";
+import Select from "react-select";
 
 const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, clearErrors }) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [groupedTime, setGroupedTime] = useState([])
   const handleScriptLoad = () => {
     setScriptLoaded(true);
   };
+
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { countriesList, statesList, citiesList, timeZoneList } = useSelector(
+    (state) => state.clientData
+  );
+
+  useEffect(() => {
+    dispatch(getTimeZoneList());
+  }, []);
+  useEffect(() => {
+    if (timeZoneList.length > 0) {
+      let groupedTimeZones = timeZoneList?.map((item) => {
+        return {
+          label: item?.country_name,
+          options: item?.timezones?.map((it) => {
+            return { label: it, value: it }
+          }),
+        }
+      })
+      setGroupedTime(groupedTimeZones)
+    }
+  }, [timeZoneList])
+
   const handleOnBlur = () => {
     // this does not work
     // setValue("job_location", null);
@@ -47,24 +73,16 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
     </Tooltip>
   );
 
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const { countriesList, statesList, citiesList, timeZoneList } = useSelector(
-    (state) => state.clientData
-  );
 
-  useEffect(() => {
-      dispatch(getTimeZoneList());
-  }, []);
 
-  const handleDropDownChange = (value, name) => {
-      dispatch(getTimeZoneList());
-      // timezone logic
-      // setValue("timezone", value);
-      setValue("timezone", value);
-      setValue("time_zone", value);
-      clearErrors("time_zone");
-  };
+  // const handleDropDownChange = (value, name) => {
+  //   dispatch(getTimeZoneList());
+  //   // timezone logic
+  //   // setValue("timezone", value);
+  //   setValue("time_zone", value);
+  //   clearErrors("time_zone");
+  // };
+  console.log(watch("time_zone"),"time zone inside child");
   return (
     <div>
       <section className="job-post-section">
@@ -261,31 +279,26 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                 </Form.Group>
               </Col>
             </Row>
-            {/* <LocationSection
-              control={control}
-              errors={errors}
-              LocationSection={true}
-              watch={watch}
-              setValue={setValue}
-              setError={setError}
-              clearErrors={clearErrors}
-              isTimeZoneRequired={true}
-            />{" "} */}
-              {/* {isTimeZoneRequired && ( */}
-            <CommonReactSelect
-              name="time_zone"
-              errors={errors}
-              handleChange={handleDropDownChange}
-              control={control}
-              // required="City is required"
-              label="Timezone"
-              type="timezones"
-              required="Timezone is required"
-              invalidFieldRequired={true}
-              watch={watch}
-              options={timeZoneList}
-            />
-          {/* )} */}
+            <Form.Group className="mb-3">
+              <Form.Label className="common-label font-14 fw-medium">
+                {"Time Zone"}
+              </Form.Label>
+              <Controller
+                name="time_zone"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={groupedTime}
+                    placeholder={"Select Timezone"}
+                    // handleChange={handleDropDownChange}
+                  />
+                )}
+              />
+              {/* {error && <p className={`${ (invalidFieldRequired) ? "field-error" : "error-message"}`}>{error?.message}</p>} */}
+            </Form.Group>
+
+
           </Col>
         </Row>
       </section>

@@ -40,6 +40,8 @@ const VendorRegistrationStepper = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
+  console.log(errors,"errors")
+
 
 
   useEffect(() => {
@@ -63,7 +65,6 @@ const VendorRegistrationStepper = () => {
           setCompanyTypeOptions(newOptions);
         })
       );
-
     }
   }, [activeStep]);
   const increaseStepCount = () => {

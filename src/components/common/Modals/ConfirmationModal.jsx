@@ -3,7 +3,9 @@ import { Modal, Button, Form } from "react-bootstrap";
 import RexettButton from "../../atomic/RexettButton";
 import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices/clientDataSlice";
 import { useDispatch } from "react-redux";
-const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
+const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate ,role}) => {
+    console.log(show)
+    
     const callBackBtn=(e )=>{
         let data={
             status: type,
@@ -14,7 +16,7 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
     //     handleAction();
     // }
     return(
-        <Modal show={show?.isDelete} onHide={handleClose} centered animation className="custom-modal" noValidate> 
+        <Modal show={role === "client-edit-profile" ? show :show?.isDelete} onHide={handleClose} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">
             {/* <Modal.Title>End Job</Modal.Title> */}
             </Modal.Header>
