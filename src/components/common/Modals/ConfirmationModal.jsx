@@ -14,7 +14,7 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
     //     handleAction();
     // }
     return(
-        <Modal show={show} onHide={handleClose} centered animation className="custom-modal" noValidate> 
+        <Modal show={show?.isDelete} onHide={handleClose} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">
             {/* <Modal.Title>End Job</Modal.Title> */}
             </Modal.Header>

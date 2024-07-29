@@ -138,7 +138,8 @@ const DeveloperRegistrationStepper = () => {
     }
   }, []);
 
-  console.log(watch(),'watchhhhh');
+  let fields = watch();
+  console.log(fields,'watchwatchkk');
 
   let name = stepData?.name ? stepData?.name?.split(' ') : '';
   let [firstName, ...rest] = name;
@@ -148,7 +149,7 @@ const DeveloperRegistrationStepper = () => {
     if (stepData) {
       setValue("job_title", stepData[0]?.job_title);
       setValue("company_name", stepData[0]?.company_name);
-      setValue("description",selectedRecommend? selectedRecommend: stepData[0]?.description );
+      // setValue("description",selectedRecommend? selectedRecommend: stepData[0]?.description );
       setValue("is_still_working", stepData[0]?.is_still_working);
       setValue("start_date", stepData[0]?.start_date?.slice(0, 10));
       setValue("end_date", stepData[0]?.end_date?.slice(0, 10));
@@ -193,7 +194,15 @@ const DeveloperRegistrationStepper = () => {
     profile_picture: stepData?.profile_picture
   });
     }
-  }, [stepData,selectedRecommend]);
+  }, [stepData]);
+
+  useEffect(()=>{
+    // setValue("description",selectedRecommend? selectedRecommend: stepData ? stepData[0]?.description : null );
+    setValue("skills", fields?.skills?.map(skill => ({
+      ...skill,
+      title: selectedRecommend ?  selectedRecommend: stepData ? stepData[0]?.description : null
+    })));
+  },[selectedRecommend])
 
   useEffect(() => {
   
@@ -216,6 +225,10 @@ const DeveloperRegistrationStepper = () => {
       localStorage.setItem("clientActiveStep", activeStep + 1);
     }
   };
+
+  const handleSetSelectedRecommended = (itemToSet) => {
+    setSelectedRecommend(itemToSet);
+  }
 
   // const decreaseStepCount = () => {
 
@@ -589,7 +602,7 @@ const DeveloperRegistrationStepper = () => {
                   activeStep === 1 && nestedActiveStep == 0
                 }
                 selectedRecommend={selectedRecommend}
-                setSelectedRecommend={setSelectedRecommend}
+                setSelectedRecommend={handleSetSelectedRecommended}
                 name="project_description"
               />
             );
@@ -646,9 +659,9 @@ const DeveloperRegistrationStepper = () => {
                 isProfileSectionRequired={
                   activeStep === 1 && nestedActiveStep == 0
                 }
-                name="project_description"
+                name="education_description"
                 selectedRecommend={selectedRecommend}
-                setSelectedRecommend={setSelectedRecommend}
+                setSelectedRecommend={handleSetSelectedRecommended}
               />
             );
 
@@ -694,7 +707,7 @@ const DeveloperRegistrationStepper = () => {
                   nestedActiveStep={nestedActiveStep}
                 type="developer"
                 selectedRecommend={selectedRecommend}
-                setSelectedRecommend={setSelectedRecommend}
+                setSelectedRecommend={handleSetSelectedRecommended}
               />
             );
         }
@@ -721,7 +734,7 @@ const DeveloperRegistrationStepper = () => {
                 nestedActiveStep={nestedActiveStep}
                 type="developer"
                 selectedRecommend={selectedRecommend}
-                setSelectedRecommend={setSelectedRecommend}
+                setSelectedRecommend={handleSetSelectedRecommended}
               />
               )
             case 2:
@@ -745,6 +758,7 @@ const DeveloperRegistrationStepper = () => {
                 isProfileSectionRequired={
                   activeStep === 1 && nestedActiveStep == 0
                 }
+                name="summary_description"
                 skillsOption={skillOptions}
               />
               )  
@@ -785,7 +799,7 @@ const DeveloperRegistrationStepper = () => {
                   skillOptions={skillOptions}
                   name="project_description"
                   selectedRecommend={selectedRecommend}
-                  setSelectedRecommend={setSelectedRecommend}
+                  setSelectedRecommend={handleSetSelectedRecommended}
                   />
                 )
 
@@ -1008,7 +1022,7 @@ const DeveloperRegistrationStepper = () => {
       const transformData = (data) => {
         return data?.map(item => ({
           skill: item.title.label,
-          experience: item.experience.value,
+          experience: item.experience.value.toString(),
           skill_weight: item.level.value
         }));
       };
@@ -1111,6 +1125,7 @@ const DeveloperRegistrationStepper = () => {
         profile_picture: imageFile.profile_picture,
       });
     }
+    setSelectedRecommend(null);
   };
   const handleSetActiveStep = (step) => {
     if (activeStep > step) {
@@ -1241,7 +1256,7 @@ console.log(nestedActiveStep,"nes")
               </span>
             </div>}
             <Row>
-              <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 || activeStep==1  || activeStep==6 || activeStep==2 ? 12 : 8}>
+              <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 || activeStep==1  || activeStep==6 || activeStep==2 || activeStep==3 || activeStep ==7 ? 12 : 8}>
                 {renderActiveStep()}
               </Col>
               {/* {nestedActiveStep !== 3 || activeStep!==1 && (

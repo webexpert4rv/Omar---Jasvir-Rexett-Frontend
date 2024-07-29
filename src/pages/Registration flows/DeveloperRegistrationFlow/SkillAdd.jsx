@@ -41,7 +41,7 @@ const SkillAdd = ({control,activeStep,watch,errors,register,skillOptions,nestedA
             render={({ field }) => (
               <ReactQuill
                 {...field}
-                value={field.value ? field.value : selectedRecommend}
+                value={field.value ? field.value : selectedRecommend ? selectedRecommend : ''}
                 className={`common-field ${
                   errors.description?.message && "invalid-field"
                 }`}
