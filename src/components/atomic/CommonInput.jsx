@@ -157,8 +157,8 @@ console.log(isMaxRequired,"ismax")
                     className={`common-field ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
-                    value={value}
-                    onChange={onChange}
+                    // value={value}
+                    // onChange={onChange}
                   >
                     <option disabled selected value="">
                       {defaultOption}
