@@ -128,13 +128,12 @@ console.log(watchAllFields,'allfieldsssssss hihi');
   const activeStep = 1; // Assuming activeStep is defined somewhere
   const nestedActiveStep = 0; // Assuming nestedActiveStep is defined somewhere
   
-//  const activeStepFields = getActiveStepFields(
-//     activeStep,
-//     clientProfileData?.company_type
-//   );
+ const activeStepFields = getActiveStepFields(
+    activeStep,
+  );
   // console.log(activeStepFields,'activeStepFields hihi');
   // let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
-  console.log(clientProfileData,'hihi clientdata')
+  console.log(activeStepFields,'hihi clientdata')
 
   // let stepData = getStepDataFromAPI(clientProfileData, activeStep);
 
@@ -199,7 +198,7 @@ console.log(watchAllFields,'allfieldsssssss hihi');
             </Tab.Content> 
           </Tab.Container>
         </section> */}
-         <AllRoleEditProfile role="client" name={clientProfileData?.company_type && clientProfileData?.company_type} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={clientProfileData}/>
+         <AllRoleEditProfile role="client" name={"individual"} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={clientProfileData} activeStepFields={activeStepFields?.individual}/>
       </ProfileWrapper>
     </>
   );

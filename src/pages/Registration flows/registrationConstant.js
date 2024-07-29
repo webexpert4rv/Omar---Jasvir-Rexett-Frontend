@@ -413,7 +413,7 @@ const CLIENT_ACTIVE_STEP_FIELDS = {
   2: CLIENT_STEP_2_FIELDS,
 };
 
-export const getActiveStepFields = (activeStep, registrationType) => {
+export const getActiveStepFields = (activeStep) => {
   console.log(activeStep,"activeStep")
   // if (activeStep === 1) {
     // return CLIENT_ACTIVE_STEP_FIELDS[activeStep][registrationType] || null;

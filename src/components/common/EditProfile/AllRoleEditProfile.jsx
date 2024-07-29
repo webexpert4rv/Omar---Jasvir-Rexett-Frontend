@@ -42,7 +42,7 @@ import SetUpJobModal from "../Modals/SetUpJobModal";
 import ClientStep1 from "../../../pages/Registration flows/Client Registration flow/ClientStep1";
 import RegistrationType from "../../../pages/Registration flows/Client Registration flow/RegistrationType";
 
-const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, imageFile, setImageFile, setPreviewImage, stepData, activeStepFields}) => {
+const AllRoleEditProfile = ({ role, name, onSubmit, activeStep, previewImage, imageFile, setImageFile, setPreviewImage, stepData, activeStepFields }) => {
   // const userId = localStorage.getItem("userId");
   // const [activeStep, setActiveStep] = useState(1)
   // const [selectedImage, setSelectedImage] = useState(null);
@@ -55,6 +55,10 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
   // const { allTimeZones, countriesList, statesList, citiesList, timeZones } =
   //   useSelector((state) => state.clientData);
   // const { t } = useTranslation();
+  console.log(role, "role")
+  if (role === "client") {
+
+  }
 
   const {
     register,
@@ -119,58 +123,65 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
   //   }
   // }, [watch("state")]);
 
-  
-  useEffect(()=>{
-    if(stepData){
-    let name = stepData?.name ? stepData?.name?.split(' ') : '';
-    let [firstName, ...rest] = name;
-    let lastName = rest.join(' ');
 
-    setValue('first_name',firstName);
-    setValue('last_name',lastName);
-    // setValue("phone_number",stepData?.phone_number);
-    // setValue("email",stepData?.email);
-    // setValue("profession",stepData?.professional_title);
-    // setValue("country",{ label: stepData?.country, value: null });
-    // setValue("state",{ label: stepData?.state, value: null });
-    // setValue("city",{ label: stepData?.city, value: null });
-    // setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
-    // setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
-    // setValue("passcode",stepData?.passcode);
-    // setValue("time_zone",stepData?.time_zone);
-    // setValue("time_zone",{ label: stepData?.time_zone, value: null });
-    // setValue("address",stepData?.address);
-    // setValue('git_hub',stepData?.github_url);
-    // setValue('linked_in',stepData?.linkedin_url)
-    Object.entries(stepData).forEach(([key, value]) => {
-      if (key === "country_code") {
-        const newValue = {
-          label: stepData["country"],
-          value: stepData[key],
-        };
-        setValue(key, newValue);
-      }
-      else if (key === "state_iso_code") {
-        const newValue = {
-          label: stepData["state"],
-          value: stepData[key],
-        };
-        setValue(key, newValue);
-      } else if (key === "time_zone") {
-        const newValue = { label: stepData[key], value: stepData["time_zone"] };
-        setValue(key, newValue);
-      }
-      else{
-      setValue(key, (value === null || value === undefined ? '' : value));
-      }
-    });
+  useEffect(() => {
+    if (stepData) {
+      console.log(stepData, 'stappDatttta')
+      let name = stepData?.name ? stepData?.name?.split(' ') : '';
+      let [firstName, ...rest] = name;
+      let lastName = rest.join(' ');
 
-    setPreviewImage({
-      ...previewImage,
-      profile_picture: stepData?.profile_picture
-    });
-  }
-  },[stepData])
+      setValue('first_name', firstName);
+      setValue('last_name', lastName);
+      // setValue("phone_number",stepData?.phone_number);
+      // setValue("email",stepData?.email);
+      // setValue("profession",stepData?.professional_title);
+      // setValue("country",{ label: stepData?.country, value: null });
+      // setValue("state",{ label: stepData?.state, value: null });
+      // setValue("city",{ label: stepData?.city, value: null });
+      // setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
+      // setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
+      // setValue("passcode",stepData?.passcode);
+      // setValue("time_zone",stepData?.time_zone);
+      // setValue("time_zone",{ label: stepData?.time_zone, value: null });
+      // setValue("address",stepData?.address);
+      // setValue('git_hub',stepData?.github_url);
+      // setValue('linked_in',stepData?.linkedin_url)
+      Object.entries(stepData).forEach(([key, value]) => {
+        if (key === "country_code") {
+          const newValue = {
+            label: stepData["country"],
+            value: stepData[key],
+          };
+          setValue(key, newValue);
+        }
+        else if (key === "state_iso_code") {
+          const newValue = {
+            label: stepData["state"],
+            value: stepData[key],
+          };
+          setValue(key, newValue);
+        } else if (key === "time_zone") {
+          const newValue = { label: stepData[key], value: stepData["time_zone"] };
+          setValue(key, newValue);
+        } else if (key === "professional_title") {
+          const newValue = stepData[key]
+          setValue("profession", newValue)
+        }else {
+          setValue(key, (value === null || value === undefined ? '' : value));
+          // setValue(key, stepData[key])
+
+        }
+      });
+
+      setPreviewImage({
+        ...previewImage,
+        profile_picture: stepData?.profile_picture
+      });
+    }
+  }, [stepData])
+
+  console.log(activeStepFields, "activeStepFields")
 
 
   // console.log(userProfileDetails,'userProfileDetailsuserProfileDetails')
@@ -282,7 +293,7 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
         activeStep={activeStep}
         type={role}
         register={register}
-        stepFields={activeStepFields ? activeStepFields?.individual : ComponentActiveStepFields?.individual}
+        stepFields={activeStepFields ? activeStepFields : ComponentActiveStepFields}
         setError={setError}
         clearErrors={clearErrors}
         watch={watch}
@@ -452,7 +463,7 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
     //                   />
     //                 </div>
     //               </>
-    //             }
+    //             } v 
     //           </Col>
     //           <Col md="6">
     //             <div>

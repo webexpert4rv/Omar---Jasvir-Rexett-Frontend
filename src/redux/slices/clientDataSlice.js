@@ -1265,7 +1265,7 @@ export function clientRegistration(payload, callback) {
       });
       if (result.status === 200) {
         dispatch(setActionSuccessFully());
-        toast.success("Client Registered successfully", { position: "top-center" });
+        toast.success(result.data.message, { position: "top-center" });
       }
     } catch (error) {
       const message = error.message || "Something went wrong";
