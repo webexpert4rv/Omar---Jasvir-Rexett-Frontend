@@ -156,6 +156,11 @@ export const route = [
     public: true,
   },
   {
+    path: "/meeting-detail",
+    element: <MeetingDetail />,
+    public: true,
+  },
+  {
     path: "/expert-area",
     element: <ExpertiseArea />,
     // element: <ClientStep1 />,
@@ -674,12 +679,7 @@ export const route = [
     isAdmin: true,
     private: true,
   },
-  {
-    path: "/admin/meeting-detail",
-    element: <MeetingDetail />,
-    isAdmin: true,
-    private: true,
-  },
+  
   {
     path: "/admin/interview-feedback",
     element: <InterviewFeedback />,
