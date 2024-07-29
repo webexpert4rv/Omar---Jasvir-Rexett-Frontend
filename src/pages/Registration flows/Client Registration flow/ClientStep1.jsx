@@ -33,9 +33,12 @@ const ClientStep1 = ({
   imageFile,
   isProfileSectionRequired,
   isEditMode,
-  skillOptions
+  skillOptions,
+  stepData
 }) => {
   const { t } = useTranslation();
+  
+  console.log(stepFields,'stepFields watchhhhh')
   
   let isStillWorking=watch("is_still_working")
   // let isStillWorking=true
@@ -165,6 +168,7 @@ const ClientStep1 = ({
                           imageFile={imageFile}
                           fieldName={fieldName}
                           errors={errors}
+                          stepData={stepData}
                           />}
 
                         </div>

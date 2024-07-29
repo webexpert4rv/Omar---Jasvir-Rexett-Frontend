@@ -100,7 +100,7 @@ const DeveloperRegistrationStepper = () => {
     nestedActiveStep
   );
   const activeStpperKey=stepperFormKeys(activeStep)
-  console.log(activeStepFields, "activeStepFields");
+  console.log(activeStepFields, "activeStepFields hghg");
   const {
     handleSubmit,
     register,
@@ -120,7 +120,7 @@ const DeveloperRegistrationStepper = () => {
   const { skillOptions } = useSelector((state) => state.developerData);
 
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
-  console.log(stepData,"stepData")
+  console.log(stepData,"stepData hghg")
 
   useEffect(()=>{
     setFilteredStepData(stepData);
@@ -138,7 +138,7 @@ const DeveloperRegistrationStepper = () => {
     }
   }, []);
 
-  console.log(watch(),'fffff');
+  console.log(watch(),'watchhhhh');
 
   let name = stepData?.name ? stepData?.name?.split(' ') : '';
   let [firstName, ...rest] = name;
@@ -165,14 +165,16 @@ const DeveloperRegistrationStepper = () => {
   setValue("country",{ label: stepData?.country, value: null });
   setValue("state",{ label: stepData?.state, value: null });
   setValue("city",{ label: stepData?.city, value: null });
-  setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
-  setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
+  setValue('language_preference',stepData?.language_preference);
+  setValue('total_experience',stepData?.total_experience);
   setValue("passcode",stepData?.passcode);
   setValue("time_zone",stepData?.time_zone);
   setValue("time_zone",{ label: stepData?.time_zone, value: null });
   setValue("address",stepData?.address);
-  setValue('git_hub',stepData?.github_url);
-  setValue('linked_in',stepData?.linkedin_url)
+  setValue('github_url',stepData?.github_url);
+  setValue('linkedin_url',stepData?.linkedin_url)
+  setValue('country_code',{label:stepData?.country, value: stepData?.country_code})
+  setValue('state_iso_code',{label:stepData?.state, value: stepData?.state_iso_code})
 
 
   
@@ -297,6 +299,22 @@ const DeveloperRegistrationStepper = () => {
   //   }
    
   // };
+
+  const resetAllFields = () => {
+    // Define blank values for all fields here
+    const blankValues = {
+      job_title: "",
+      company_name: "",
+      description: "",
+      start_date: "",
+      end_date: "",
+      work_type: "",
+      location: "",
+    };
+  
+    reset(blankValues);
+  };
+  
 
   const decreaseStepCount = () => {
     setIsRegistrationStepModal(false);
@@ -512,6 +530,7 @@ const DeveloperRegistrationStepper = () => {
             setPreviewImage={setPreviewImage}
             setImageFile={setImageFile}
             isProfileSectionRequired={activeStep === 1 && nestedActiveStep == 0}
+            stepData={stepData}
           />
         );
 
@@ -823,7 +842,7 @@ const DeveloperRegistrationStepper = () => {
 
       Promise.all(uploadPromises).then(() => {
         let payload = {
-          first_name: values?.firost_name,
+          first_name: values?.first_name,
           last_name: values?.last_name,
           profile_picture: uploadedUrls?.profile_picture,
           profession: values?.profession,
@@ -838,12 +857,12 @@ const DeveloperRegistrationStepper = () => {
           passcode: values?.passcode,
           country_code: values?.country_code.value,
           phone_number: values?.phone_number,
-          language_preference: values?.language_preference?.value,
-          total_experience:values?.total_experience?.value,
+          language_preference: values?.language_preference,
+          total_experience:values?.total_experience,
           time_zone: values?.time_zone?.label,
           resume: uploadedUrls?.resume,
-          linkedin_url: values?.linked_in,
-          github_url: values?.git_hub,
+          linkedin_url: values?.linkedin_url,
+          github_url: values?.github_url,
           intro_video_url: uploadedUrls?.introVideo,
           user_id: developer_id?developer_id:null
         };
@@ -1212,7 +1231,10 @@ console.log(nestedActiveStep,"nes")
           <Container>
             {activeStep!==1 &&<div>
               <span
-                onClick={decreaseStepCount}
+               onClick={() => {
+                decreaseStepCount();
+                resetAllFields();
+            }}
                 className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer"
               >
                 <FaArrowLeft /> Go Back
