@@ -49,7 +49,6 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [twoFactorStatus, setTwoFactorStatus] = useState(false);
   const ComponentActiveStepFields = getActiveStepFields(activeStep, name);
-  console.log(ComponentActiveStepFields, 'active field check allRoleComponent')
   // const [previewImage, setPreviewImage] = useState(null);
   // const [imageFile, setImageFile] = useState(null);
 
@@ -283,7 +282,7 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
         activeStep={activeStep}
         type={role}
         register={register}
-        stepFields={activeStepFields ? activeStepFields : ComponentActiveStepFields}
+        stepFields={activeStepFields ? activeStepFields?.individual : ComponentActiveStepFields?.individual}
         setError={setError}
         clearErrors={clearErrors}
         watch={watch}
@@ -683,6 +682,7 @@ const AllRoleEditProfile = ({ role , name, onSubmit, activeStep, previewImage, i
           handleClose={closeConfirmationModal}
           handleAction={handleTwoFaAction}
           smallLoader={smallLoader}
+          role={"client-edit-profile"}
           text={`Are you sure, you want to ${twoFactorStatus ? "enable" : "disable"
             } two factor authentication`}
         />

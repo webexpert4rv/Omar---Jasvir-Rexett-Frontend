@@ -52,6 +52,8 @@ console.log(isMaxRequired,"ismax")
       return <CloseIcon />;
     }
   };
+  console.log(name,"name")
+  // console.log(watch("total_it_recruiter"),"total recruiters")
   return (
     <Form.Group className="mb-3">
       <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>

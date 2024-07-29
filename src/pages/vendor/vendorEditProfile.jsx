@@ -93,8 +93,6 @@ const VendorEditProfile = () => {
             } else if (key === "time_zone") {
               const newValue = { label: data[key], value: data["time_zone"] };
               setValue(key, newValue);
-            } else if (key === "total_it_recruiter") {
-              setValue("Total_nos._of_IT_Recruiters", data[key])
             } else if (key === "company_logo") {
               setPreviewImage({ profile_picture: data?.company_logo })
             } else if (key === "post_code") {
@@ -153,8 +151,7 @@ const VendorEditProfile = () => {
       const stepData = watch();
       let formData = new FormData()
       formData.append('file', imageFile?.profile_picture)
-      console.log(twoFactorStatus,'twoFactorStatus helloooooo')
-      console.log(stepData,'helloooooo');
+      let year = new Date(stepData?.establishment_year).getFullYear()
       dispatch(uploadFileToS3Bucket(formData, (url) => {
         const payload = {
           ...stepData,
@@ -166,12 +163,11 @@ const VendorEditProfile = () => {
           company_logo: url ? url : stepData?.company_logo,
           time_zone: stepData?.time_zone?.label,
           is_2FA_enabled: twoFactorStatus || stepData?.is_2FA_enabled,
-          // total_it_recruiter: stepData?.Total_nos._of_IT_Recruiters
+          establishment_year:year
         };
         delete payload["profile_picture"]
         delete payload["timezone"]
         delete payload["confirm_password"]
-        console.log(payload, "payload")
         dispatch(applyAsVendor(payload, handleAfterApiSuccess));
       }))
   };
@@ -179,7 +175,6 @@ const VendorEditProfile = () => {
 
   const callDecisionMakersAPI = () => {
       const stepData = watch();
-      console.log(stepData,"stepdata")
       let data = {
         user_id: userId,
         decision_makers: [
@@ -200,6 +195,7 @@ const VendorEditProfile = () => {
     setValue("is_2FA_enabled", twoFactorStatus);
     closeConfirmationModal();
   };
+
 
   const callAreaOfExpertiseAPI = () => {
       const stepData = watch();
@@ -318,6 +314,7 @@ const VendorEditProfile = () => {
           <VendorDecisionMakers
             stepFields={activeStepFields}
             //  skillOptions={skillOptions}
+            errors={errors}
             onSubmit={onSubmit}
             type={"vendor"}
             activeStepFields={activeStepFields}

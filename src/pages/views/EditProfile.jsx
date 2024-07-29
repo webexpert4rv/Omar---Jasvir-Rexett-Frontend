@@ -44,7 +44,7 @@ const EditProfile = () => {
   let userId=localStorage.getItem("userId")
 
   const onSubmit = (values) => {
-    console.log(values, "va");
+    console.log(values, "vaues");
 
     const uploadFiles = (files) => {
       let uploadedUrls = {};
@@ -100,7 +100,9 @@ const EditProfile = () => {
           website_url: values?.website_url,
           yearly_revenue: values?.yearly_revenue,
           employee_strength: values?.employee_strength,
+          is_2FA_enabled: values?.is_2FA_enabled,
         };
+        console.log(payload,"payload")
 
         dispatch(clientRegistration(payload));
       });

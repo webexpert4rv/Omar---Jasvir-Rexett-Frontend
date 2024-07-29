@@ -265,7 +265,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                   <p className="d-flex align-items-center gap-2">
                     <Form.Control
                       type="date"
-                      {...register("response_time", {
+                      {...register("response_date", {
                         required: "Response date is required",
                       })}
                       min={new Date().toISOString().split("T")[0]}
@@ -273,8 +273,8 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                       placeholder="Enter response time"
                     />
                   </p>
-                  {errors?.response_time && (
-                    <p className="error-message">{errors.response_time?.message}</p>
+                  {errors?.response_date && (
+                    <p className="error-message">{errors?.response_date?.message}</p>
                   )}
                 </Form.Group>
               </Col>
