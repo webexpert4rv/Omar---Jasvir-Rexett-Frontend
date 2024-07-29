@@ -17,7 +17,9 @@ const UploadFile = ({ label, placeholder,
     errors,
     setError,
  }) => {
+  console.log(imageFile,"imagefile")
   const [showVideo,setShowVideo]=useState(false)
+  console.log(fieldName,"fieldName")
  const DOC_ALLOWED_EXTENSIONS = [
         "application/pdf",
         "application/msword"
@@ -28,20 +30,21 @@ const UploadFile = ({ label, placeholder,
     "video/webm",
     "video/ogg"
  ]     
+ console.log(imageFile,"imageFile")
 
   
  const handleFileChange = async (e, name) => {
     const file = e.target.files[0];
-    const isImage = DOC_ALLOWED_EXTENSIONS.includes(file.type);
-    const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file.type);
+    const isImage = DOC_ALLOWED_EXTENSIONS.includes(file?.type);
+    const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file?.type);
 
     if (file) {
-      if (name === "upload_resume" && isImage) {
+      if (name ===  "resume" && isImage) {
         const url = URL.createObjectURL(file);
         setPreviewImage((prev) => ({ ...prev, resume: url }));
         setImageFile((prev) => ({ ...prev, resume: file }));
         clearErrors(fieldName);
-      } else if (name=="intro_video" && isVideo) {
+      } else if (name=="intro_video_url" && isVideo) {
         const url = URL.createObjectURL(file);
         setPreviewImage((prev) => ({ ...prev, introVideo: url }));
         setImageFile((prev) => ({ ...prev, introVideo: file }));
@@ -50,7 +53,7 @@ const UploadFile = ({ label, placeholder,
         setValue(fieldName, null);
         setError(fieldName, {
           type: "manual",
-          message: `Please enter a valid file type: ${name === "upload_resume" ? "pdf,msword" : "mp4, webm, ogg"}`,
+          message: `Please enter a valid file type: ${name === "resume" ? "pdf,msword" : "mp4, webm, ogg"}`,
         });
         setPreviewImage(null);
       }

@@ -45,7 +45,7 @@ const RecommendationAI = ({
 
       const handleRecommendation=(item)=>{
         console.log(item,"kk")
-        setSelectedRecommend(item.text)
+        setSelectedRecommend(item?.text)
       }
   return (
    <>
