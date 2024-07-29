@@ -28,7 +28,7 @@ import {
 } from "../../../redux/slices/developerDataSlice";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import RexettButton from "../../atomic/RexettButton";
-import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 import CommonInput from "../../atomic/CommonInput";
 import CommonAutocomplete from "../../atomic/CommonAutoComplete";
 import { getCurrentRoleEndPoint, updateCurrentRoleEndPoint } from "./helper";

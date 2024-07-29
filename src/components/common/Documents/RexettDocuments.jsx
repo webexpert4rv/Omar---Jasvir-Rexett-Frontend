@@ -30,7 +30,7 @@ import {
 } from "../../../redux/slices/clientDataSlice";
 import CreateFolder from "../../atomic/CreateFolder";
 import RexettUploadFile from "../../atomic/RexettUploadFile";
-import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import NoDataFound from "../../atomic/NoDataFound";
 import { IoGrid } from "react-icons/io5";

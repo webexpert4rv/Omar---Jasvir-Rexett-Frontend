@@ -501,7 +501,7 @@ export function singleJobPostData(payload, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(`client/job-detail/${payload}`);
+      let result = await clientInstance.get(`common/job-detail/${payload}`);
       // toast.success("Job successfully Posted", { position: "top-center" })
       dispatch(setJobPostedData(result.data));
       dispatch(setActionSuccessFully());
@@ -558,6 +558,21 @@ export function getJobCategoryList(payload, callback) {
       let result = await clientInstance.get(`common/job-category-list`);
       if (result.status === 200) {
         dispatch(setJobCategory(result.data.data));
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
+export function postCandidateInterview(payload, callback) {
+  return async (dispatch) => {
+    try {
+      let result = await clientInstance.post(`common/interview`,{...payload});
+      if (result.status === 200) {
+       toast.success(result.data.message)
       }
     } catch (error) {
       const message = error.message || "Something went wrong";

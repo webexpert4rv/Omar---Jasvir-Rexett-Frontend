@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import RexettSpinner from "../../../components/atomic/RexettSpinner";
+import RexettSpinner from "../../atomic/RexettSpinner";
 import { useStateManager } from "react-select";
 const RejectModal = ({
   show,

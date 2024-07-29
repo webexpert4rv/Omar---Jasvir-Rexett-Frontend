@@ -5,9 +5,10 @@ import { IoCloseOutline } from "react-icons/io5";
 import { TiEdit } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import StepperHeadingSection from "../StepperHeadingSection";
-import ConfirmationModal from "../../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../../components/common/Modals/ConfirmationModal";
 import { useDispatch } from "react-redux";
 import { getDeveloperProfileDetails } from "../../../redux/slices/developerDataSlice";
+import ResumeOverView from "./ResumeOverView";
 
 const Summary = ({
   nestedActiveStep,
@@ -92,7 +93,7 @@ const Summary = ({
   return (
     <>
       <Row>
-        <Col md={12}>
+        <Col md={8}>
           <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <StepperHeadingSection
@@ -172,6 +173,9 @@ const Summary = ({
             </Button>
           </div>
         </Col>
+        <Col md={4}>
+                  <ResumeOverView activeStep={activeStep} />
+                </Col>
       </Row>
       <ConfirmationModal
         text={"Are you sure to delete this job?"}

@@ -16,6 +16,7 @@ const UploadFile = ({ label, placeholder,
     clearErrors,
     errors,
     setError,
+    stepData
  }) => {
   console.log(imageFile,"imagefile")
   const [showVideo,setShowVideo]=useState(false)
@@ -32,6 +33,8 @@ const UploadFile = ({ label, placeholder,
  ]     
  console.log(imageFile,"imageFile")
 
+ console.log(previewImage,'previewImage hghg');
+
   
  const handleFileChange = async (e, name) => {
     const file = e.target.files[0];
@@ -39,7 +42,7 @@ const UploadFile = ({ label, placeholder,
     const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file?.type);
 
     if (file) {
-      if (name ===  "resume" && isImage) {
+      if (name === "resume" && isImage) {
         const url = URL.createObjectURL(file);
         setPreviewImage((prev) => ({ ...prev, resume: url }));
         setImageFile((prev) => ({ ...prev, resume: file }));
@@ -97,7 +100,7 @@ const handleIntroVideo=()=>{
         {label!=="Resume" ? (
           <div className="profile-upload-preview position-relative preview_intro mb-3">
             <div className="profile-img-preview w-100 h-100">
-              {/* <video src={previewImage?.introVideo? previewImage?.introVideo:videoImg} /> */}
+              <video src={previewImage?.introVideo ? previewImage?.introVideo : stepData?.intro_video_url ? stepData?.intro_video_url : videoImg} className="w-100 h-100"/>
             
             </div>
             <div className="playback_intro" onClick={handleIntroVideo}>
@@ -110,7 +113,7 @@ const handleIntroVideo=()=>{
           </div>
         ) : (
           <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
-            <span className="font-14 fw-medium">{imageFile?.resume?.name}</span>
+            <span className="font-14 fw-medium">{imageFile?.resume?.name ? imageFile?.resume?.name : stepData?.resume}</span>
             <span className="cursor-pointer text-danger">
               {/* <IoClose /> */}
                 {/* {errors[fieldName] && (
@@ -122,7 +125,7 @@ const handleIntroVideo=()=>{
           
         )}
       </div>
-      <IntroVideo show={showVideo} handleClose={handleIntroVideo} previewImage={previewImage?.introVideo}/>
+      <IntroVideo show={showVideo} handleClose={handleIntroVideo} previewImage={previewImage?.introVideo ? previewImage?.introVideo : stepData?.intro_video_url}/>
     </>
   );
 };

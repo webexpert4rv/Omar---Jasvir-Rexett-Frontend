@@ -29,7 +29,7 @@ import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
-import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";

@@ -6,7 +6,7 @@ import { IoAddOutline } from 'react-icons/io5';
 
 const RecommendationAI = ({
     control,
-    setSelectedRecommend
+    setSelectedRecommend,
 
 }) => {
     const recommendations = [
@@ -42,11 +42,47 @@ const RecommendationAI = ({
         },
       ];
 
+      const skillRecommendations = [
+        {
+          id: 1,
+          text: 'JavaScript',
+          isExpertRecommended: true,
+        },
+        {
+          id: 2,
+          text: 'Django',
+          isExpertRecommended: true,
+        },
+        {
+          id: 3,
+          text: 'Ruby on Rails',
+          isExpertRecommended: true,
+        },
+        {
+          id: 4,
+          text: 'Laravel',
+          isExpertRecommended: false,
+        },
+        {
+          id: 5,
+          text: 'Nest.js',
+          isExpertRecommended: false,
+        },
+        {
+          id: 6,
+          text: 'TypeScript',
+          isExpertRecommended: false,
+        },
+      ];
+
+      let currentStep = localStorage.getItem('clientActiveStep');
 
       const handleRecommendation=(item)=>{
         console.log(item,"kk")
-        setSelectedRecommend(item?.text)
+        const itemToSet = currentStep === '4' ? {label: item.text, value: item.text} : item.text
+        setSelectedRecommend(itemToSet);
       }
+
   return (
    <>
     <div>
@@ -83,7 +119,7 @@ const RecommendationAI = ({
             placeholder="Search keywords"
           />
           <div className="recommended-desc">
-            {recommendations.map((item) => (
+            {(currentStep === '4' ? skillRecommendations: recommendations).map((item) => (
               <div key={item.id} className="d-flex align-items-center gap-3" onClick={()=>handleRecommendation(item)}>
                 <Button
                   variant="transparent"

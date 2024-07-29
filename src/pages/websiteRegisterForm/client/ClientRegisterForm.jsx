@@ -41,7 +41,7 @@ import {
   verifyOtp,
 } from "../../../redux/slices/clientDataSlice";
 import RemainingSteps from "./RemainingSteps";
-import ConfirmationModal from "../../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../../components/common/Modals/ConfirmationModal";
 import Otp from "../../Authentication/Otp";
 import LastStep from "../developer/LastStep";
 

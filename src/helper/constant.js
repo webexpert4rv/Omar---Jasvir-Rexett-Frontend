@@ -588,3 +588,6 @@ export const TIME_REPORTING=[
         "isApproved": false
     }
 ]
+
+
+export const VIDEO_MEETING=[{label:"Rexett video meeting",value:"rexet_video_meeting"},{label:"Google meet",value:"google_meet"},{label:"Microsoft team",value:"microsoft_team"}]

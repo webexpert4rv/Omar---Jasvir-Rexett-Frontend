@@ -331,7 +331,7 @@ export function adminSingleJob(payload, callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`admin/job-detail/${payload}`)
+            let result = await clientInstance.get(`common/job-detail/${payload}`)
             if (result.status === 200) {
                 dispatch(setSingleJobListing(result.data))
             }

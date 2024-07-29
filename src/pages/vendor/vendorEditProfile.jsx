@@ -15,7 +15,7 @@ import RexettButton from "../../components/atomic/RexettButton";
 import VendorDecisionMakers from "../Registration flows/Vendor Registration Flow/VendorDecisionMakers";
 import ClientStep1 from "../Registration flows/Client Registration flow/ClientStep1";
 import SidebarSection from "../Registration flows/SidebarSection";
-import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 
 const VendorEditProfile = () => {
   const dispatch = useDispatch();

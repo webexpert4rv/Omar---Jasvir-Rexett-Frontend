@@ -703,7 +703,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     },
     {
       label: "Profession",
-      fieldName: "professional_title",
+      fieldName: "profession",
       type: "text",
       placeholder: "e.g. Software Engineer",
       rules: { required: "Profession is required" },
@@ -796,7 +796,13 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "linkedin_url",
       type: "text",
       placeholder: "e.g. www.linkedin.com/profile/12345",
-      rules: { required: "Linked in is required" },
+      rules: { 
+        required: "LinkedIn URL is required",
+        pattern: {
+          value: /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}\/.*$/,
+          message: "Please enter a valid LinkedIn URL"
+        }
+      },
       columnWidth: 6,
       isRequired: true,
     },
@@ -805,7 +811,13 @@ const DEVELOPER_STEP_1_FIELDS = [
       fieldName: "github_url", 
       type: "text",
       placeholder: "e.g. www.github.com/profile/12345",
-      rules: { required: "GitHub in is required" },
+      rules: { 
+        required: "GitHub URL is required",
+        pattern: {
+          value: /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}\/.*$/,
+          message: "Please enter a valid GitHub URL"
+        }
+      },
       columnWidth: 6,
       isRequired: true,
     },

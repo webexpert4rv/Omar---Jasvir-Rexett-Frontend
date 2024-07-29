@@ -13,6 +13,7 @@ const CommonInput = ({
   label,
   name,
   type = "text",
+  value,
   control,
   rules,
   readOnly = false,
@@ -33,6 +34,8 @@ const CommonInput = ({
   defaultOption = "",
   disabled,
   rows = null,
+  className,
+  selectedRecommend
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 console.log(type,"ty")
@@ -59,18 +62,18 @@ console.log(isMaxRequired,"ismax")
           rules={rules}
           render={({ field }) => {
             if (type === "radio") {
-              return options.map((option, index) => (
-                <Form.Check
+                  <Form.Check
                   {...field}
-                  key={index}
+                  label={label}
                   type="radio"
-                  id={`${name}-${index}`}
-                  label={option.label}
-                  value={option.value}
-                  checked={field.value === option.value}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  id="radio1"
+                  className={className}
+                  checked={field.value}
+                  onChange={(e) =>{
+                    field.onChange(e.target.checked)
+                  } }
                 />
-              ));
+              
             }
             if (type === "checkbox") {
               return   <Form.Check
@@ -117,6 +120,7 @@ console.log(isMaxRequired,"ismax")
                     // value={selectOptions?.find(
                     //   (option) => option.value === field.value
                     // )}
+                    value={selectedRecommend}
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />
@@ -153,6 +157,8 @@ console.log(isMaxRequired,"ismax")
                     className={`common-field ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
+                    // value={value}
+                    // onChange={onChange}
                   >
                     <option disabled selected value="">
                       {defaultOption}

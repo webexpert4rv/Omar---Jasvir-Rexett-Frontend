@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import RexettButton from "../../../components/atomic/RexettButton";
+import RexettButton from "../../atomic/RexettButton";
 import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices/clientDataSlice";
 import { useDispatch } from "react-redux";
 const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate ,role}) => {

@@ -100,7 +100,7 @@ const DeveloperRegistrationStepper = () => {
     nestedActiveStep
   );
   const activeStpperKey=stepperFormKeys(activeStep)
-  console.log(activeStepFields, "activeStepFields");
+  console.log(activeStepFields, "activeStepFields hghg");
   const {
     handleSubmit,
     register,
@@ -120,7 +120,7 @@ const DeveloperRegistrationStepper = () => {
   const { skillOptions } = useSelector((state) => state.developerData);
 
   let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
-  console.log(stepData,"stepData")
+  console.log(stepData,"stepData hghg")
 
   useEffect(()=>{
     setFilteredStepData(stepData);
@@ -138,7 +138,7 @@ const DeveloperRegistrationStepper = () => {
     }
   }, []);
 
-  console.log(watch(),'fffff');
+  console.log(watch(),'watchhhhh');
 
   let name = stepData?.name ? stepData?.name?.split(' ') : '';
   let [firstName, ...rest] = name;
@@ -165,14 +165,16 @@ const DeveloperRegistrationStepper = () => {
   setValue("country",{ label: stepData?.country, value: null });
   setValue("state",{ label: stepData?.state, value: null });
   setValue("city",{ label: stepData?.city, value: null });
-  setValue('language_preference',{ label: stepData?.language_preference, value: stepData?.language_preference });
-  setValue('total_experience',{ label: stepData?.total_experience, value: stepData?.total_experience });
+  setValue('language_preference',stepData?.language_preference);
+  setValue('total_experience',stepData?.total_experience);
   setValue("passcode",stepData?.passcode);
   setValue("time_zone",stepData?.time_zone);
   setValue("time_zone",{ label: stepData?.time_zone, value: null });
   setValue("address",stepData?.address);
-  setValue('git_hub',stepData?.github_url);
-  setValue('linked_in',stepData?.linkedin_url)
+  setValue('github_url',stepData?.github_url);
+  setValue('linkedin_url',stepData?.linkedin_url)
+  setValue('country_code',{label:stepData?.country, value: stepData?.country_code})
+  setValue('state_iso_code',{label:stepData?.state, value: stepData?.state_iso_code})
 
 
   
@@ -298,6 +300,22 @@ const DeveloperRegistrationStepper = () => {
    
   // };
 
+  const resetAllFields = () => {
+    // Define blank values for all fields here
+    const blankValues = {
+      job_title: "",
+      company_name: "",
+      description: "",
+      start_date: "",
+      end_date: "",
+      work_type: "",
+      location: "",
+    };
+  
+    reset(blankValues);
+  };
+  
+
   const decreaseStepCount = () => {
     setIsRegistrationStepModal(false);
     const updateSteps = (mainStep, nestedStep) => {
@@ -422,11 +440,11 @@ const DeveloperRegistrationStepper = () => {
       console.log(watch(),'watch stepthree')
     setValue("university_name", '');
     setValue("location", '');
-    // setValue("degree_id",0);
+    setValue("degree_id",0);
     setValue("field_of_study", '');
-    // setValue("start_year",0);
+    setValue("start_year",0);
     setValue("end_month", '');
-    // setValue("end_year",0);
+    setValue("end_year",0);
     setValue("currently_attending",true);
     setValue("project_description", '');
     setValue('graduate_date','')
@@ -512,6 +530,7 @@ const DeveloperRegistrationStepper = () => {
             setPreviewImage={setPreviewImage}
             setImageFile={setImageFile}
             isProfileSectionRequired={activeStep === 1 && nestedActiveStep == 0}
+            stepData={stepData}
           />
         );
 
@@ -628,6 +647,8 @@ const DeveloperRegistrationStepper = () => {
                   activeStep === 1 && nestedActiveStep == 0
                 }
                 name="project_description"
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={setSelectedRecommend}
               />
             );
 
@@ -672,6 +693,8 @@ const DeveloperRegistrationStepper = () => {
                 control={control}
                   nestedActiveStep={nestedActiveStep}
                 type="developer"
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={setSelectedRecommend}
               />
             );
         }
@@ -697,6 +720,8 @@ const DeveloperRegistrationStepper = () => {
                 control={control}
                 nestedActiveStep={nestedActiveStep}
                 type="developer"
+                selectedRecommend={selectedRecommend}
+                setSelectedRecommend={setSelectedRecommend}
               />
               )
             case 2:
@@ -759,6 +784,8 @@ const DeveloperRegistrationStepper = () => {
                   }
                   skillOptions={skillOptions}
                   name="project_description"
+                  selectedRecommend={selectedRecommend}
+                  setSelectedRecommend={setSelectedRecommend}
                   />
                 )
 
@@ -783,7 +810,7 @@ const DeveloperRegistrationStepper = () => {
           case 7:
             return (
               <FinalizeResume/>
-            )  
+            )
 
     }
   };
@@ -830,12 +857,12 @@ const DeveloperRegistrationStepper = () => {
           passcode: values?.passcode,
           country_code: values?.country_code.value,
           phone_number: values?.phone_number,
-          language_preference: values?.language_preference?.value,
-          total_experience:values?.total_experience?.value,
+          language_preference: values?.language_preference,
+          total_experience:values?.total_experience,
           time_zone: values?.time_zone?.label,
           resume: uploadedUrls?.resume,
-          linkedin_url: values?.linked_in,
-          github_url: values?.git_hub,
+          linkedin_url: values?.linkedin_url,
+          github_url: values?.github_url,
           intro_video_url: uploadedUrls?.introVideo,
           user_id: developer_id?developer_id:null
         };
@@ -936,8 +963,21 @@ const DeveloperRegistrationStepper = () => {
         increaseStepCount(false);
       } else {
         if (nestedActiveStep == 2) {
+          let newData = stepData?.map((val) => {
+            let updatedVal = { ...val };
+            
+            if (updatedVal.end_year === null) {
+              updatedVal.end_year = 0;
+              updatedVal.degree_id = 0;
+              delete updatedVal.id;
+              updatedVal.start_year = 0;
+            }
+            
+            return updatedVal;
+          });
+          console.log(newData,'hibye',stepData)
           let developer_education = [
-            ...stepData,
+            ...newData,
             {
               university_name: values?.name,
               address: values?.location,
@@ -968,7 +1008,7 @@ const DeveloperRegistrationStepper = () => {
       const transformData = (data) => {
         return data?.map(item => ({
           skill: item.title.label,
-          experience: `${item.experience.value} years`,
+          experience: item.experience.value,
           skill_weight: item.level.value
         }));
       };
@@ -1060,6 +1100,9 @@ const DeveloperRegistrationStepper = () => {
         }
 
       }
+      else if(activeStep==7){
+        setIsRegistrationStepModal(true);
+      }
       else{
       console.log(values, "these are values");
       uploadFiles({
@@ -1086,22 +1129,36 @@ const DeveloperRegistrationStepper = () => {
         switch (nestedActiveStep){
           case 0:
           case 1:
+            return "Next"
             case 2:
-            return "Next";
+            return "Next: Education";
             }
-            case 2: 
-            return "Next : Job Description";
+            // case 2: 
+            // return "Next : Job Description";
       
       case 3:
-        return "Next:Screening Info";
-      case 4:
-        return "Submit";
-        case 5:
-          return "Submit";
-        case 6:
-          return "Submit"  
-           case 7:
+
+      switch (nestedActiveStep){
+        case 0:
+        case 1:
+        case 2:
           return "Next"
+        case 3: 
+        return "Next: Skills"
+      }
+      case 4:
+        switch (nestedActiveStep){
+          case 0:
+            return "Next"
+          case 1:
+            return "Submit"
+        }
+        case 5:
+          return "Submit"
+        case 6:
+          return "Next"  
+        case 7:
+          return 'Finalize'
     }
   };
 
@@ -1174,7 +1231,10 @@ console.log(nestedActiveStep,"nes")
           <Container>
             {activeStep!==1 &&<div>
               <span
-                onClick={decreaseStepCount}
+               onClick={() => {
+                decreaseStepCount();
+                resetAllFields();
+            }}
                 className="go-back-link text-decoration-none text-green d-inline-block mb-3 fw-medium cursor-pointer"
               >
                 <FaArrowLeft /> Go Back
@@ -1184,11 +1244,11 @@ console.log(nestedActiveStep,"nes")
               <Col md={nestedActiveStep == 3 || nestedActiveStep == 4 || activeStep==1  || activeStep==6 || activeStep==2 ? 12 : 8}>
                 {renderActiveStep()}
               </Col>
-              {nestedActiveStep !== 3 || activeStep!==1 && (
+              {/* {nestedActiveStep !== 3 || activeStep!==1 && (
                 <Col md={4}>
                   <ResumeOverView activeStep={activeStep} />
                 </Col>
-              )}
+              )} */}
             </Row>
 
             { true ? <div className="d-flex justify-content-end align-items-center ">
