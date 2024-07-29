@@ -13,7 +13,7 @@ import { FiCalendar } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa6";
 import moment from "moment";
 import SingleTimeReporting from "./SingleTimeReporting";
-import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../common/Modals/ConfirmationModal";
 import {
   getReconciliationData,
   timeReporting,

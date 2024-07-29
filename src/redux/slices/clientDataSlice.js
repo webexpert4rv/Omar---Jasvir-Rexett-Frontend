@@ -497,7 +497,7 @@ export function singleJobPostData(payload, callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(`client/job-detail/${payload}`);
+      let result = await clientInstance.get(`common/job-detail/${payload}`);
       // toast.success("Job successfully Posted", { position: "top-center" })
       dispatch(setJobPostedData(result.data));
       dispatch(setActionSuccessFully());

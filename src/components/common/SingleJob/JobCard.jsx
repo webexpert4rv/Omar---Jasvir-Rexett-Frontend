@@ -32,7 +32,7 @@ const JobCard = ({
     (state) => state.adminData
   );
   const scheduleInterview = (
-    <Tooltip>Schedule Interview</Tooltip>
+    <Tooltip>Move to Interview</Tooltip>
   )
   const approvedApply = (
     <Tooltip>Approve</Tooltip>
@@ -46,7 +46,7 @@ const JobCard = ({
       {type === "Interviewing"
         ? "Hire"
         : type === "Shortlisted"
-          ? "Interview"
+          ? " Move to Interview"
           : "Shortlist"}
     </Tooltip>
   );
@@ -143,7 +143,7 @@ const JobCard = ({
                           </ul>
                           <div className="job-card-btns">
                             {role !== "admin" &&
-                              (type === "Shortlisted" ||
+                              (type == "Shortlisted" ||
                                 type === "Suggested" ||
                                 type === "Interviewing") &&
                               type !== "Hired" ? (
@@ -225,11 +225,6 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            <OverlayTrigger placement="top" overlay={scheduleInterview}>
-                              <Button onClick={handleShowScheduleMeeting} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
-                                <LuMessagesSquare />
-                              </Button>
-                            </OverlayTrigger>
                             {role === "admin" && (
                             <OverlayTrigger placement="top" overlay={approvedApply}>
                               <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">

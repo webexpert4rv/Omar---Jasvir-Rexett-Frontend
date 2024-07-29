@@ -23,7 +23,7 @@ import {
 } from "../../../redux/slices/vendorDataSlice";
 import ScreenLoader from "../../../components/atomic/ScreenLoader";
 import { VERIFY_USER_MESSAGE } from "../client/constant";
-import ConfirmationModal from "../../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../../components/common/Modals/ConfirmationModal";
 import Otp from "../../Authentication/Otp";
 import LastStep from "../developer/LastStep";
 import { useTranslation } from "react-i18next";

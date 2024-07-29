@@ -15,7 +15,7 @@ import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
 import { useLocation } from "react-router-dom";
-const Schedulemeeting = ({ show, handleClose }) => {
+const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
     const {
         handleSubmit,
         register,
@@ -56,6 +56,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
 
 
     }, [timeZoneList])
+  
 
     console.log(timeZoneList, "timeZoneList")
 
@@ -128,8 +129,8 @@ const Schedulemeeting = ({ show, handleClose }) => {
     const onSubmit = data => {
         console.log(data, "dat")
         let payload = {
-            "job_id": id,
-            "developer_id": 658,
+            "job_id": +id,
+            "developer_id": +selectedDeveloper?.id,
             "meeting_type": data?.meeting_type,
             "meeting_date": data?.meeting_date,
             "meeting_time": "01:00:00",
@@ -186,7 +187,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                             name={"select_candidate"}
                                             type={"select2"}
                                             control={control}
-                                            selectOptions={[{ label: "John Doe", value: "658" }]}
+                                            selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
                                             rules={{ required: "This field is required" }}
                                             invalidFieldRequired={true}
                                             placeholder="Select Candidate"

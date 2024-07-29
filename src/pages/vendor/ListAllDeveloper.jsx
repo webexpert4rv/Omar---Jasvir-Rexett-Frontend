@@ -24,7 +24,7 @@ import ScreenLoader from "../../components/atomic/ScreenLoader";
 import { SeeMore } from "../../components/atomic/SeeMore";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
-import ConfirmationModal from ".././views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 import { getAccountDisableEnable } from "../../redux/slices/adminDataSlice";
 
 const AllDeveloperList = () => {

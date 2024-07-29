@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import RexettButton from "../../../components/atomic/RexettButton";
+import RexettButton from "../../atomic/RexettButton";
 import { clientDeleteHoliday, getClientHolidayList } from "../../../redux/slices/clientDataSlice";
 import { useDispatch } from "react-redux";
 const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,handleAction,smallLoader,type,startDate,endDate}) => {
@@ -14,7 +14,7 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
     //     handleAction();
     // }
     return(
-        <Modal show={show?.isDelete} onHide={handleClose} centered animation className="custom-modal" noValidate> 
+        <Modal show={show} onHide={handleClose} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">
             {/* <Modal.Title>End Job</Modal.Title> */}
             </Modal.Header>

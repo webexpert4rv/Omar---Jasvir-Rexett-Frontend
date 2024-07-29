@@ -15,7 +15,7 @@ import { SeeMore } from "../../components/atomic/SeeMore";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import { getDeveloperDetails } from "../../redux/slices/clientDataSlice";
 import { useTranslation } from "react-i18next";
-import ConfirmationModal from ".././views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 
 const RentedDevelopers = () => {
     const { allDevelopersList, rentedDevelopers, screenLoader } = useSelector(state => state.vendorData)
