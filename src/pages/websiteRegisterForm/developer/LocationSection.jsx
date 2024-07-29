@@ -38,8 +38,8 @@ const LocationSection = ({
       dispatch(getStatesList(watch("country_code")?.value));
       dispatch(getTimeZoneForCountry(watch("country_code")?.value));
       setValue("time_zone", null);
-      // setValue("state_iso_code", null);
-      // setValue("city", null);
+      setValue("state_iso_code", null);
+      setValue("city", null);
     } else if (name === "state_iso_code") {
       setValue("state_iso_code", value);
       clearErrors("state_iso_code");

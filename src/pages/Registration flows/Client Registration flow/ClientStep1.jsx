@@ -38,10 +38,8 @@ const ClientStep1 = ({
 }) => {
   const { t } = useTranslation();
   
-  console.log(stepFields,'stepFields watchhhhh')
   
   let isStillWorking=watch("is_still_working")
-  console.log(errors,"errors")
   console.log(stepFields,"stepFields")
   // let isStillWorking=true
   return (
