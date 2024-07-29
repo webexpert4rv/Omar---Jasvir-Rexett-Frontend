@@ -18,7 +18,9 @@ const UploadFile = ({ label, placeholder,
     setError,
     stepData
  }) => {
+  console.log(imageFile,"imagefile")
   const [showVideo,setShowVideo]=useState(false)
+  console.log(fieldName,"fieldName")
  const DOC_ALLOWED_EXTENSIONS = [
         "application/pdf",
         "application/msword"
@@ -29,14 +31,15 @@ const UploadFile = ({ label, placeholder,
     "video/webm",
     "video/ogg"
  ]     
+ console.log(imageFile,"imageFile")
 
  console.log(previewImage,'previewImage hghg');
 
   
  const handleFileChange = async (e, name) => {
     const file = e.target.files[0];
-    const isImage = DOC_ALLOWED_EXTENSIONS.includes(file.type);
-    const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file.type);
+    const isImage = DOC_ALLOWED_EXTENSIONS.includes(file?.type);
+    const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file?.type);
 
     if (file) {
       if (name === "resume" && isImage) {
@@ -53,7 +56,7 @@ const UploadFile = ({ label, placeholder,
         setValue(fieldName, null);
         setError(fieldName, {
           type: "manual",
-          message: `Please enter a valid file type: ${name === "upload_resume" ? "pdf,msword" : "mp4, webm, ogg"}`,
+          message: `Please enter a valid file type: ${name === "resume" ? "pdf,msword" : "mp4, webm, ogg"}`,
         });
         setPreviewImage(null);
       }

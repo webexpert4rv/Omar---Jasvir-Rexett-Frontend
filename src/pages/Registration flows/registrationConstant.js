@@ -283,7 +283,7 @@ const CLIENT_STEP_1_FIELDS = {
       isMinRequired: true,
       isMaxRequired:false,
       // placeholder: "Enter Tax ID",
-      rules: { required: "Tax ID is required" },
+      rules: { required: "Establishment Year is required" },
       columnWidth: 6,
       isRequired: true,
     },
@@ -292,7 +292,7 @@ const CLIENT_STEP_1_FIELDS = {
       fieldName: "website_url",
       type: "text",
       placeholder: "e.g. www.xyztechnology.com",
-      rules: { required: "Tax ID is required" },
+      rules: { required: "Website Url is required" },
       columnWidth: 6,
       isRequired: true,
     },
@@ -414,11 +414,13 @@ const CLIENT_ACTIVE_STEP_FIELDS = {
 };
 
 export const getActiveStepFields = (activeStep, registrationType) => {
-  if (activeStep === 1) {
-    return CLIENT_ACTIVE_STEP_FIELDS[activeStep][registrationType] || null;
-  } else {
+  console.log(activeStep,"activeStep")
+  // if (activeStep === 1) {
+    // return CLIENT_ACTIVE_STEP_FIELDS[activeStep][registrationType] || null;
+  // } 
+  // else {
     return CLIENT_ACTIVE_STEP_FIELDS[activeStep] || null;
-  }
+  // }
 };
 
 export const DEFAULT_SCREENING_DATA = [

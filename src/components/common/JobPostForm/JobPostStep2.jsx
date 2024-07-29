@@ -14,16 +14,18 @@ import "react-quill/dist/quill.snow.css";
 
 const MAX_CHARACTER_LIMIT = 10000;
 
-const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,setTraitSkill}) => {
+const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, setTraitSkill }) => {
   const dispatch = useDispatch();
   const quillRef = useRef(null);
-  const [selectedLevel , setSelectedLevel] = useState()
-  const [newId , setNewId] = useState()
+  const [selectedLevel, setSelectedLevel] = useState()
+  const [newId, setNewId] = useState()
   const [descriptionText, setDescriptionText] = useState("");
-  const [selectedSkill  , setSelectedSkill] = useState()
+  const [selectedSkill, setSelectedSkill] = useState()
   const [skills, setSkills] = useState([]);
   const [goodToSkills, setGoodToSkills] = useState([]);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
+  const [skillLvl, setSkillLvl] = useState()
+  const [skillId, setSkillId] = useState()
   const MAX_LENGTH = 10000;
 
   const skillListMapped = skillList.map((item) => {
@@ -39,10 +41,6 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
     setSkills(skillListMapped);
     setGoodToSkills(skillListMapped)
   }, [skillList]);
-  
-
-
-  
   const getPlainText = (string) => {
     if (string) {
       const plainText = string.replace(/(<([^>]+)>)/ig, '');
@@ -51,33 +49,40 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
       return "";
     }
   }
-
-  
-  const handleSkillLevel=(event,skill,index,name,inx)=>{
-    console.log(skill,"skill")
-    console.log(event,"event")
-    console.log(index,"index")
-    console.log(name,"name")
-   let copySkill=[...traitSkill];
-   copySkill[index].level = copySkill[index].level.map((level, idx) => ({
-    ...level,
-    isTrue: idx === inx,
-  }))
- setTraitSkill(copySkill);
-  }
- 
+  const handleSkillLevel = (event, skill, index, name, inx) => {
+    // const skillId = (event.target.id)?.split("-")[1];
+    let updatedSkills = traitSkill.map((s, idx) => {
+      if (idx === index) {
+        return {
+          ...s,
+          level: s.level.map((level, lIdx) => ({
+            ...level,
+            isTrue: lIdx === inx,
+          })),
+          currentLevel: name, 
+          percentage: name === "Beginner" ? "25%" : name === "Intermediate" ? "50%" : "100%",
+        };
+      } else {
+        return {
+          ...s,
+          percentage: s.currentLevel ? (s.currentLevel === "Beginner" ? "25%" : s.currentLevel === "Intermediate" ? "50%" : "100%") : "0%",
+        };
+      }
+    });
+    setTraitSkill(updatedSkills);
+  };
   const handleChange = (html, field) => {
     const editor = quillRef?.current?.getEditor();
     const plainText = getPlainText(html);
     if (plainText.length <= MAX_LENGTH) {
-      field.onChange(html); 
+      field.onChange(html);
     } else {
       // Prevent further input
       const currentLength = editor?.getLength();
-      if (currentLength > MAX_LENGTH + 1) { 
+      if (currentLength > MAX_LENGTH + 1) {
         editor.deleteText(MAX_LENGTH, currentLength);
       }
-    } 
+    }
   };
 
   return (
@@ -126,49 +131,47 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
                     isMulti
                     options={skills}
                     onChange={(newValue) => {
-                      field.onChange(newValue);        
-                      if(traitSkill?.length>0){
-                        let lastValue=newValue[newValue.length-1]
-                        if(lastValue){
+                      field.onChange(newValue);
+                      if (traitSkill?.length > 0) {
+                        let lastValue = newValue[newValue.length - 1]
+                        if (lastValue) {
                           lastValue.level = [
                             { name: "Beginner", isTrue: false },
                             { name: "Intermediate", isTrue: false },
                             { name: "Expert", isTrue: false }
                           ];
                         }
-                       
+
 
                         const deletedItems = newValue.filter(
                           oldItem => !traitSkill.some(newItem => newItem.value === oldItem.value)
                         );
-               
-                       if(deletedItems.length==0){
-                        const updatedValue = newValue.map(skill => ({
-                          ...skill,
-                          level: [
-                            { name: "Beginner",isTrue:false },
-                            { name: "Intermediate",isTrue:false },
-                            { name: "Expert",isTrue:false }
-                          ]
-                        }));
-                        setTraitSkill(updatedValue)
-                       }else{
-                        let cpyTraits=[...traitSkill,lastValue]
-                        setTraitSkill(cpyTraits)
-                       }
 
-                     
-                      }else{
+                        if (deletedItems.length == 0) {
+                          const updatedValue = newValue.map(skill => ({
+                            ...skill,
+                            level: [
+                              { name: "Beginner", isTrue: false },
+                              { name: "Intermediate", isTrue: false },
+                              { name: "Expert", isTrue: false }
+                            ]
+                          }));
+                          setTraitSkill(updatedValue)
+                        } else {
+                          let cpyTraits = [...traitSkill, lastValue]
+                          setTraitSkill(cpyTraits)
+                        }
+                      } else {
                         const updatedValue = newValue.map(skill => ({
                           ...skill,
                           level: [
-                            { name: "Beginner",isTrue:false },
-                            { name: "Intermediate",isTrue:false },
-                            { name: "Expert",isTrue:false }
+                            { name: "Beginner", isTrue: false },
+                            { name: "Intermediate", isTrue: false },
+                            { name: "Expert", isTrue: false }
                           ]
                         }));
-                        
-                      setTraitSkill(updatedValue)
+
+                        setTraitSkill(updatedValue)
                       }
                       setSelectedSkill(newValue)
                       let valuesToRemove = newValue.map(item => item.value);
@@ -179,7 +182,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
                   />
                 )}
               />
- 
+
             </Form.Group>
             {errors?.skills && (
               <p className="error-message ">{errors.skills?.message}</p>
@@ -187,9 +190,9 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
           </Col>
           <Col md="6" className="mb-4">
             <Form.Group>
-              <Form.Label>Good to have skills *</Form.Label>  
+              <Form.Label>Good to have skills *</Form.Label>
               <Controller
-                name="optional_skills"  
+                name="optional_skills"
                 control={control}
                 rules={{ required: "Good to have skills are required" }}
                 render={({ field }) => (
@@ -199,11 +202,11 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
                     isMulti
                     options={goodToSkills}
                     onChange={(newValue) => {
-                      field.onChange(newValue); 
+                      field.onChange(newValue);
 
-                      if(traitSkill?.length>0){
-                        let lastValue=newValue[newValue.length-1]
-                        if(lastValue){
+                      if (traitSkill?.length > 0) {
+                        let lastValue = newValue[newValue.length - 1]
+                        if (lastValue) {
                           lastValue.level = [
                             { name: "Beginner", isTrue: false },
                             { name: "Intermediate", isTrue: false },
@@ -213,34 +216,34 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
                         const deletedItems = newValue.filter(
                           oldItem => !traitSkill.some(newItem => newItem.value === oldItem.value)
                         );
-               
-                       if(deletedItems.length==0){
-                        const updatedValue = newValue.map(skill => ({
-                          ...skill,
-                          level: [
-                            { name: "Beginner",isTrue:false },
-                            { name: "Intermediate",isTrue:false },
-                            { name: "Expert",isTrue:false }
-                          ]
-                        }));
-                        setTraitSkill(updatedValue)
-                       }else{
-                        let cpyTraits=[...traitSkill,lastValue]
-                        setTraitSkill(cpyTraits)
-                       }
 
-                     
-                      }else{
+                        if (deletedItems.length == 0) {
+                          const updatedValue = newValue.map(skill => ({
+                            ...skill,
+                            level: [
+                              { name: "Beginner", isTrue: false },
+                              { name: "Intermediate", isTrue: false },
+                              { name: "Expert", isTrue: false }
+                            ]
+                          }));
+                          setTraitSkill(updatedValue)
+                        } else {
+                          let cpyTraits = [...traitSkill, lastValue]
+                          setTraitSkill(cpyTraits)
+                        }
+
+
+                      } else {
                         const updatedValue = newValue.map(skill => ({
                           ...skill,
                           level: [
-                            { name: "Beginner",isTrue:false },
-                            { name: "Intermediate",isTrue:false },
-                            { name: "Expert",isTrue:false }
+                            { name: "Beginner", isTrue: false },
+                            { name: "Intermediate", isTrue: false },
+                            { name: "Expert", isTrue: false }
                           ]
                         }));
-                        
-                      setTraitSkill(updatedValue)
+
+                        setTraitSkill(updatedValue)
                       }
                       setSelectedSkill(newValue)
                       let valuesToRemove = newValue.map(item => item.value);
@@ -248,8 +251,8 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
                       let updatedArr = skills.filter(item => !valuesToRemove.includes(item.value));
                       setSkills(updatedArr)
                     }}
-            
-                 
+
+
                   />
                 )}
               />
@@ -278,51 +281,46 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control,traitSkill,se
                 </div>
               </div>
             </Col>
-            {traitSkill?.map((skill,index)=>(
-              <Row key = {skill?.value}>
-               <Col md={8} className="mb-3">
-               <div>
-                 <div className="skill-progress low-skill">
-                   <span className="skill-progress-name fw-semibold">
-                     {skill?.label}
-                   </span>
-                  {/* <span className="skill-percent">{selectedLevel }</span> */}
-                   <span className="skill-percent">{"25% "}</span>
-                  
-                 </div>
-               </div>
-             </Col>
-              <Col md={4} className="align-self-center mb-3">
-              <div className="d-flex justify-content-center gap-3">
-                {
-                  skill?.level?.map(((lvl,inx)=>{
-                    return (
-                      <>
-                          <div className="low-wrapper" key={inx}>
-                  <Form.Check type="radio"  id ={`${inx}-${skill?.value}`} onChange = {(e)=>handleSkillLevel(e ,skill,index,lvl,inx)}  className="weight-radio" checked={lvl?.isTrue} />
-                </div>
-                      </>
-                    )
-                  }))                
+            {traitSkill?.map((skill, index) => (
+              <Row key={skill?.value} >
+                <Col md={8} className="mb-3">
+                  <div>
+                    <div className={`skill-progress low-skill${skill?.currentLevel}`}>
+                      <span className="skill-progress-name fw-semibold">
+                        {skill?.label}
+                      </span>
+                      {/* <span className="skill-percent">{selectedLevel }</span> */}
+                      {/* <span className="skill-percent">{skillId === skill?.value ?  skillLvl?.name === "Beginner" ? "25%" : skillLvl?.name === "Intermediate" ? "50%" : "100%"  : "0%" }</span> */}
+                      <span className="skill-percent">
+                        {skill?.percentage || "0%"}
+                      </span>
+                    </div>
+                  </div>
+                </Col>
+                <Col md={4} className="align-self-center mb-3">
+                  <div className="d-flex justify-content-center gap-3">
+                    {
+                      skill?.level?.map(((lvl, inx) => {
+                        return (
+                          <>
+                            <div className="low-wrapper" key={inx}>
+                                <Form.Check type="radio" id={`${inx}-${skill?.value}`} onChange={(e) => handleSkillLevel(e, skill, index, lvl?.name, inx)} className="weight-radio" checked={lvl?.isTrue   } />
+                            </div>
+                          </>
+                        )
+                      }))
                     }
-            
-                {/* <div className="medium-wrapper">
+
+                    {/* <div className="medium-wrapper">
                   <Form.Check type="radio" name="react-skill-weight" id ={`intermediate-${skill?.value}` }value={"50%"}  onChange = {(e)=>handleSkillLevel(e,skill,index,"intermediate" )} className="weight-radio" checked={skill?.weight=="intermediate"} />
                 </div>
                 <div className="high-wrapper">
                   <Form.Check type="radio" name="react-skill-weight" id={`expert-${skill?.value}` } value={"100%" }  onChange = {(e )=>handleSkillLevel(e,skill,index,"expert")} className="weight-radio" checked={skill?.weight=="expert"} />
                 </div> */}
-              </div>
-            </Col>
-            </Row>
-
-
-
+                  </div>
+                </Col>
+              </Row>
             ))}
-            
-
-
-            
           </Row>
         </div>
       </section>

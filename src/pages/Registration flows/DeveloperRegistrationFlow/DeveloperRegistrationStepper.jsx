@@ -94,7 +94,7 @@ const DeveloperRegistrationStepper = () => {
   const [filteredStepData, setFilteredStepData] = useState([]);
 
   console.log(developerRegistrationData, "developerRegistrationData");
-  let developer_id = localStorage.getItem("developerId");
+  let developer_id = localStorage.getItem("userId");
   const activeStepFields = getDeveloperActiveStepFields(
     activeStep,
     nestedActiveStep
@@ -894,7 +894,7 @@ const DeveloperRegistrationStepper = () => {
               job_title: values?.job_title,
               company_name: values?.company_name,
               start_date: values?.start_date,
-              end_date: values?.is_still_working ? '' : values?.end_date,
+              end_date: values?.is_still_working ? null : values?.end_date,
               work_type: values?.work_type,
               is_still_working: values?.is_still_working,
               description: values?.description,
@@ -915,7 +915,7 @@ const DeveloperRegistrationStepper = () => {
                 job_title: values?.job_title,
                 company_name: values?.company_name,
                 start_date:  values?.start_date,
-                end_date: values?.is_still_working?'': values?.end_date,
+                end_date: values?.is_still_working? null: values?.end_date,
                 work_type: values?.work_type,
                 is_still_working: values?.is_still_working,
                 description: values?.description,
@@ -931,7 +931,7 @@ const DeveloperRegistrationStepper = () => {
                 job_title: values?.job_title,
                 company_name: values?.company_name,
                 start_date:  values?.start_date,
-                end_date: values?.is_still_working?'': values?.end_date,
+                end_date: values?.is_still_working?null: values?.end_date,
                 work_type: values?.work_type,
                 is_still_working: values?.is_still_working,
                 description: values?.description,
