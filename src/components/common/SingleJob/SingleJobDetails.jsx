@@ -74,7 +74,7 @@ const SingleJobDetails = () => {
   const location = useLocation();
   let id = location.pathname.split("/")[3];
   const clientId = localStorage.getItem("userId")
-  console.log(clientId, "clientid")
+
   const {
     allJobPostedList,
     jobCategoryList,
@@ -808,9 +808,17 @@ const SingleJobDetails = () => {
             <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
             <div className="interview-scheduled pt-2 mb-3">
               <Row>
-                <Col lg={4}>
-                  <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} />
+                {/* {singleJobDescription?.job_applications?.scheduled_interviews?.map((item)=>{
+                  return (
+                    <>
+                    <Col lg={4}>
+                  <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} item={item} />
                 </Col>
+                    </>
+                  )
+                })} */}
+                      <Col lg={4}><InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} /></Col>
+              
                 <Col lg={4}>
                   <div className="interview-wrapper position-relative mb-3 pt-4">
                     <div>

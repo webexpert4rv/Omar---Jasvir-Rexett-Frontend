@@ -3,6 +3,7 @@ import { Button, OverlayTrigger } from 'react-bootstrap'
 import devImg from '../../assets/img/user-img.jpg'
 import { FaStar, FaTimes } from 'react-icons/fa'
 import { LuMessagesSquare } from 'react-icons/lu'
+import NoDataFound from './NoDataFound'
 
 const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,listing}) => {
   console.log(listing,"listing")
@@ -24,7 +25,7 @@ const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,li
                         </thead>
                         <tbody>
                           {
-                            listing?.map((item,index)=>{
+                           listing?.length>0? listing?.map((item,index)=>{
                               return (
                                 <>
                                  <tr>
@@ -101,7 +102,7 @@ const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,li
                               )
                             })
                              
-
+                          :  <td colSpan={10} ><div className="simple-no-data"><NoDataFound /></div></td>
                           }
                         
                         </tbody>
