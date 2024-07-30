@@ -61,6 +61,8 @@ const AddEducation = ({
     }
   }, [skillOptions]);
 
+  console.log(watch(),'watchwatchkk')
+
   const tipstext = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">Expert Insights</Popover.Header>

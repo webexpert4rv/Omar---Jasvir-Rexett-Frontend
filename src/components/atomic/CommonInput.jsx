@@ -122,7 +122,7 @@ console.log(isMaxRequired,"ismax")
                     // value={selectOptions?.find(
                     //   (option) => option.value === field.value
                     // )}
-                    value={selectedRecommend}
+                    value={field.value ? field.value : selectedRecommend ? selectedRecommend : ''}
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />
