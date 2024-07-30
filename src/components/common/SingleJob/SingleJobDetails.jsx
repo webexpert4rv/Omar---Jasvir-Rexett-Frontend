@@ -68,6 +68,10 @@ const SingleJobDetails = () => {
     isTrue: false,
     id: null,
   });
+  const [showMeetingInfo, setShowMeetingInfo] = useState({
+    isMeeting:false,
+    meetingDetails:{}
+  });
   const [singleJobDescription, setSingleJobDescription] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -319,9 +323,12 @@ const SingleJobDetails = () => {
 
   }
 
-  const [showMeetingInfo, setShowMeetingInfo] = useState(false);
-  const handleShowMeetingInfo = () => {
-    setShowMeetingInfo(!showMeetingInfo)
+
+  const handleShowMeetingInfo = (item) => {
+    setShowMeetingInfo({
+      isMeeting:true,
+      meetingDetails:item
+    })
   }
   const handleCloseMeetingInfo = () => {
     setShowMeetingInfo(false)
@@ -808,7 +815,7 @@ const SingleJobDetails = () => {
             <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
             <div className="interview-scheduled pt-2 mb-3">
               <Row>
-                {/* {singleJobDescription?.job_applications?.scheduled_interviews?.map((item)=>{
+                {singleJobDescription?.job_applications?.interviews?.scheduled_interviews?.map((item)=>{
                   return (
                     <>
                     <Col lg={4}>
@@ -816,36 +823,10 @@ const SingleJobDetails = () => {
                 </Col>
                     </>
                   )
-                })} */}
-                      <Col lg={4}><InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} /></Col>
+                })}
+                      {/* <Col lg={4}><InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} /></Col> */}
               
-                <Col lg={4}>
-                  <div className="interview-wrapper position-relative mb-3 pt-4">
-                    <div>
-                      <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                      <p className="dev-name mb-2 font-14">
-                        <div className="me-1">
-                          <img src={devImg} />
-                        </div>
-                        Rohit Sharma
-                      </p>
-                      <div>
-                        <span className="associate-text">
-                          <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="mb-2 status-interview">
-                      <span className="status-rejected">Declined</span>
-                    </div>
-                    <div className="d-flex align-items-center justify-content-between">
-                      <div>
-                        {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                      </div>
-                      <Button variant="transparent" className="main-btn font-14" onClick={handleShowScheduleMeeting}>Reschedule</Button>
-                    </div>
-                  </div>
-                </Col>
+            
               </Row>
             </div>
 
@@ -1429,7 +1410,7 @@ const SingleJobDetails = () => {
         smallLoader={smallLoader}
         type={currentTabsStatus}
       />
-      <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
+      {showMeetingInfo?.isMeeting ?<MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails}  />:""}
       <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
     </>
   );

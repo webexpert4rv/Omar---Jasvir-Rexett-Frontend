@@ -532,6 +532,24 @@ export function getShortListInterview(payload) {
   };
 }
 
+export function meetingCancel(id,payload) {
+
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.put(`common/interview/${id}`,{...payload});
+      // toast.success("Job successfully Posted", { position: "top-center" })
+      // dispatch(setJobPostedData(result.data));
+      dispatch(setActionSuccessFully());
+      // return callback();
+    } catch (error) {
+      const message = error?.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailClientData());
+    }
+  };
+}
+
 export function getSkillList(callback) {
   return async (dispatch) => {
     // dispatch(setScreenLoader());
