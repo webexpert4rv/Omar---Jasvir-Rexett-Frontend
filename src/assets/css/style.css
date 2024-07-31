@@ -9680,6 +9680,10 @@ select.apply-field
 {
     max-width: 60px;
 }
+.document_label
+{
+    font-size: 50px;
+}
 .document-card .document_label span
 {
     display: block;
@@ -9757,6 +9761,62 @@ select.apply-field
 {
     background-color: #037563;
     color: #fff;
+}
+.selection-cards
+{
+    max-width: 800px;
+    margin: 0 auto;
+}
+.candidate_checkbox
+{
+    display: none;
+}
+.select_candidate_label
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 9px 5px 5px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    color: #ccc;
+    font-size: 14px;
+    opacity: 1;
+    cursor: pointer;
+}
+.checkmark-icon
+{
+    background-color: #037563;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    color: #fff;
+    transition: .3s;
+    visibility: hidden;
+    opacity: 0;
+}
+.candidate_checkbox:checked + .select_candidate_label
+{
+    border: 1px solid #037563;
+    color: #037563;
+}
+.candidate_checkbox:checked + .select_candidate_label .checkmark-icon
+{
+    visibility: visible;
+    opacity: 1;
+}
+.select_candidate_label img
+{
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
