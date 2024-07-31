@@ -7,7 +7,7 @@ import JobCard from "../../../components/common/SingleJob/JobCard";
 import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
 import { useTranslation } from "react-i18next";
 import ScreenLoader from "../../../components/atomic/ScreenLoader";
-import { FaCheck, FaGithub, FaLinkedin, FaRegHandshake, FaStar } from "react-icons/fa6";
+import { FaCheck, FaGithub, FaLinkedin, FaRegHandshake, FaStar, FaUsersLine, FaUsersViewfinder } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -18,6 +18,7 @@ import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import devImg from '../../../assets/img/demo-img.jpg';
+import companyImg from '../../../assets/img/aviox-logo.png';
 import { FaLink } from "react-icons/fa6";
 import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
@@ -25,6 +26,9 @@ import Schedulemeeting from "../Modals/ScheduleMeeting";
 import { IoCheckboxOutline, IoCheckmarkCircleOutline, IoCheckmarkOutline, IoCloseOutline, IoGrid } from "react-icons/io5";
 import { LuMessagesSquare } from "react-icons/lu";
 import CreateOffer from "../Modals/CreateOffer";
+import sowIcon from '../../../assets/img/sow-icon.png';
+import ndaIcon from '../../../assets/img/nda-icon.png';
+import { IoCheckmarkCircle } from "react-icons/io5";
 
 const AdminSingleJob = () => {
     const role = localStorage.getItem("role")
@@ -41,7 +45,7 @@ const AdminSingleJob = () => {
     const [page, setPage] = useState(1);
     const [value, setValue] = useState('');
     const [showMeetingInfo, setShowMeetingInfo] = useState(false);
-    const [makeOffer,setMakeOffer]=useState(false)
+    const [makeOffer, setMakeOffer] = useState(false)
     const handleShowMeetingInfo = () => {
         setShowMeetingInfo(!showMeetingInfo)
     }
@@ -163,7 +167,7 @@ const AdminSingleJob = () => {
         <Tooltip>Reject</Tooltip>
     )
 
-    const handleMakeOffer=()=>{
+    const handleMakeOffer = () => {
         setMakeOffer(!makeOffer)
     }
 
@@ -964,25 +968,233 @@ const AdminSingleJob = () => {
                     </Tab>
                     <Tab eventKey="documentation" title={offered}>
                         <div>
-                            <h5 className="font-22 mb-4 fw-bold">Selected Candidates</h5>
+                            <div className="text-end mb-4">
+                                <Button variant="transparent" className="font-14 main-btn">Create Document</Button>
+                            </div>
+                            <div className="card-box">
+                                <div>
+                                    <h4 className="text-center">Select Document</h4>
+                                    <p className="text-center mb-4">select document you want to create</p>
+                                    <div className="selection-cards">
+                                        <Row className="justify-content-center">
+                                            <Col md={4}>
+                                                <div className="document-card">
+                                                    <input type="radio" className="document_select d-none" id="sow-document" name="document_select" />
+                                                    <Form.Label htmlFor="sow-document" className="document_label">
+                                                        <span className="doccheck-icon">
+                                                            <IoCheckmarkCircle />
+                                                        </span>
+                                                        <img src={sowIcon} />
+                                                        <span>Statement of work</span>
+                                                    </Form.Label>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="document-card">
+                                                    <input type="radio" className="document_select d-none" id="nda-document" name="document_select" />
+                                                    <Form.Label htmlFor="nda-document" className="document_label">
+                                                        <span className="doccheck-icon">
+                                                            <IoCheckmarkCircle />
+                                                        </span>
+                                                        <img src={ndaIcon} />
+                                                        <span>Non Discolure Agreement</span>
+                                                    </Form.Label>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 className="text-center">Document Ownership: Client or Candidate?</h4>
+                                    <p className="text-center mb-4">Is this document intended for the Client or the Candidate?</p>
+                                    <div className="selection-cards">
+                                        <Row className="justify-content-center">
+                                            <Col md={4}>
+                                                <div className="document-card">
+                                                    <input type="radio" className="document_select d-none" id="client-document" name="document_owner" />
+                                                    <Form.Label htmlFor="client-document" className="document_label">
+                                                        <span className="doccheck-icon">
+                                                            <IoCheckmarkCircle />
+                                                        </span>
+                                                        <FaUsersLine />
+                                                        <span>Client</span>
+                                                    </Form.Label>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div className="document-card">
+                                                    <input type="radio" className="document_select d-none" id="candidate-document" name="document_owner" />
+                                                    <Form.Label htmlFor="candidate-document" className="document_label">
+                                                        <span className="doccheck-icon">
+                                                            <IoCheckmarkCircle />
+                                                        </span>
+                                                        <FaUsersViewfinder />
+                                                        <span>Candidate</span>
+                                                    </Form.Label>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 className="text-center">Fill Details</h4>
+                                    <p className="text-center mb-4">Fill all the details</p>
+                                    <div>
+                                        <Row className="justify-content-center">
+                                            <Col md={8}>
+                                                <div>
+                                                    <Row>
+                                                        <Col lg={12}>
+                                                            <div>
+                                                                <Form.Label className="font-14 fw-medium">Select Candidate</Form.Label>
+                                                                <div>
+                                                                    <div className="d-inline-block me-3">
+                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short1" />
+                                                                        <Form.Label htmlFor="candidate_short1" className="select_candidate_label">
+                                                                            <div className="position-relative">
+                                                                                <img src={devImg} />
+                                                                                <span className="checkmark-icon">
+                                                                                <IoCheckmarkOutline /></span>
+                                                                            </div>
+                                                                            johndoe@gmail.com
+                                                                        </Form.Label>
+                                                                    </div>
+                                                                    <div className="d-inline-block me-3">
+                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short2" />
+                                                                        <Form.Label htmlFor="candidate_short2" className="select_candidate_label">
+                                                                            <div className="position-relative">
+                                                                                <img src={devImg} />
+                                                                                <span className="checkmark-icon">
+                                                                                <IoCheckmarkOutline /></span>
+                                                                            </div>
+                                                                            johndoe@gmail.com
+                                                                        </Form.Label>
+                                                                    </div>
+                                                                    <div className="d-inline-block me-3">
+                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short3" />
+                                                                        <Form.Label htmlFor="candidate_short3" className="select_candidate_label">
+                                                                            <div className="position-relative">
+                                                                                <img src={devImg} />
+                                                                                <span className="checkmark-icon">
+                                                                                <IoCheckmarkOutline /></span>
+                                                                            </div>
+                                                                            johndoe@gmail.com
+                                                                        </Form.Label>
+                                                                    </div>
+                                                                    <div className="d-inline-block me-3">
+                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short4" />
+                                                                        <Form.Label htmlFor="candidate_short4" className="select_candidate_label">
+                                                                            <div className="position-relative">
+                                                                                <img src={devImg} />
+                                                                                <span className="checkmark-icon">
+                                                                                <IoCheckmarkOutline /></span>
+                                                                            </div>
+                                                                            johndoe@gmail.com
+                                                                        </Form.Label>
+                                                                    </div>
+                                                                    <div className="d-inline-block me-3">
+                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short5" />
+                                                                        <Form.Label htmlFor="candidate_short5" className="select_candidate_label">
+                                                                            <div className="position-relative">
+                                                                                <img src={devImg} />
+                                                                                <span className="checkmark-icon">
+                                                                                <IoCheckmarkOutline /></span>
+                                                                            </div>
+                                                                            johndoe@gmail.com
+                                                                        </Form.Label>
+                                                                    </div>
+                                                                    <div className="d-inline-block me-3">
+                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short6" />
+                                                                        <Form.Label htmlFor="candidate_short6" className="select_candidate_label">
+                                                                            <div className="position-relative">
+                                                                                <img src={devImg} />
+                                                                                <span className="checkmark-icon">
+                                                                                <IoCheckmarkOutline /></span>
+                                                                            </div>
+                                                                            johndoe@gmail.com
+                                                                        </Form.Label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={6} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">Name</Form.Label>
+                                                            <Form.Control type="text" value="Aviox Technologies" className="common-field font-14" readOnly />
+                                                        </Col>
+                                                        <Col md={6} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">Address</Form.Label>
+                                                            <Form.Control type="text" value="Mohali, Punjab" className="common-field font-14" readOnly />
+                                                        </Col>
+                                                        <Col md={6} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">Start Date</Form.Label>
+                                                            <Form.Control type="date" className="common-field font-14" />
+                                                        </Col>
+                                                        <Col md={6} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">Work Location</Form.Label>
+                                                            <Form.Control type="text" value="Remotely" readOnly className="common-field font-14" />
+                                                        </Col>
+                                                        <Col md={12} className="mb-0">
+                                                            <Form.Label>Working Hours</Form.Label>
+                                                        </Col>
+                                                        <Col md={6} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">Start Time</Form.Label>
+                                                            <Form.Control type="time" className="common-field font-14" />
+                                                        </Col>
+                                                        <Col md={6} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">End Time</Form.Label>
+                                                            <Form.Control type="time" className="common-field font-14" />
+                                                        </Col>
+                                                        <Col md={8} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">Price (in dollars)</Form.Label>
+                                                            <div className="d-flex align-items-center gap-3">
+                                                                <Form.Control type="text" className="common-field font-14" />
+                                                                <Form.Check type="checkbox" label="Inc. GST" className="font-14 flex-none" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col md={12} className="mb-3">
+                                                            <Form.Label className="font-14 fw-medium">Scope of work</Form.Label>
+                                                            <Form.Control type="text" as="textarea" rows={3} className="common-field font-14" />
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+
+                                                <div className="text-center">
+                                                    <Button variant="transparent" className="font-14 main-btn px-5">Save</Button>
+                                                </div>
+                                            </Col>
+                                            <Col md={4}>
+                                                <div>
+                                                    <h5>Preview Document</h5>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 className="text-center mb-4">Preview Document</h4>
+                                    <div className="text-center">
+                                        <Button variant="transparent" className="font-14 main-btn px-5">Submit</Button>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Clients</h5>
                             <Row>
                                 <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                    <div className="interview-wrapper position-relative mb-3">
                                         <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
+                                            <p className="dev-name mb-2 font-16">
                                                 <div className="me-1">
-                                                    <img src={devImg} />
+                                                    <img src={companyImg} />
                                                 </div>
                                                 <div>
-                                                    Rohit Sharma<br />
-                                                    <span className="associate-text">
-                                                        <span className="associate mt-1">Web developer</span>
-                                                    </span>
+                                                    Aviox Technologies Pvt Ltd<br />
+                                                    {/* <span className="associate-text">
+                                                        <span className="associate mt-1">Mohali, India</span>
+                                                    </span> */}
                                                 </div>
                                             </p>
                                             <div>
-                                                <h5 className="font-16 mt-3 mb-1">Documents</h5>
+                                                <h5 className="font-14 mt-3 mb-1">E-sign status</h5>
                                                 <span className="associate-text me-1">
                                                     <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
                                                 </span>
@@ -996,8 +1208,48 @@ const AdminSingleJob = () => {
                                                 {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
                                             </div>
                                             <div className="d-flex align-items-center gap-2 mt-2">
-                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
-                                                <Button variant="transparent" className="outline-main-btn font-14" onClick={handleMakeOffer}>Make offer</Button>
+                                                <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
+                                                <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
+                                                <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Candidate</h5>
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3">
+                                        <div>
+                                            <p className="dev-name mb-2 font-16">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                <div>
+                                                    Rohit Sharma<br />
+                                                    <span className="associate-text">
+                                                        <span className="associate mt-1">Web developer</span>
+                                                    </span>
+                                                </div>
+                                            </p>
+                                            <div>
+                                                <h5 className="font-14 mt-3 mb-1">E-sign status</h5>
+                                                <span className="associate-text me-1">
+                                                    <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
+                                                </span>
+                                                <span className="associate-text">
+                                                    <span className="associate d-inline-flex align-items-center">NDA <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 mt-2">
+                                                <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
+                                                <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
+                                                <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -1017,7 +1269,7 @@ const AdminSingleJob = () => {
             <ManualSuggestions show={manualSuggestion} handleClose={handleCloseManualSuggestion} />
             <AddCandidate show={addCandidateModal} handleClose={handleCloseaddCandidate} />
             <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} />
-            <CreateOffer show={makeOffer} handleClose={handleMakeOffer}/>
+            <CreateOffer show={makeOffer} handleClose={handleMakeOffer} />
         </>
     )
 }
