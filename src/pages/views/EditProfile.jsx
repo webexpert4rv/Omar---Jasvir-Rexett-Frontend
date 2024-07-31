@@ -40,9 +40,7 @@ const EditProfile = () => {
   });
 
   const { t } = useTranslation();
-
   let userId=localStorage.getItem("userId")
-
   const onSubmit = (values) => {
     console.log(values, "vaues");
 
@@ -113,16 +111,7 @@ const EditProfile = () => {
       profile_picture: imageFile.profile_picture,
     });
   }
-
   const watchAllFields = watch();
-
-
-console.log(watchAllFields,'allfieldsssssss hihi');
-
-  const toggleConfirmationModal = (e) => {
-    // Handle toggle confirmation modal
-  };
-
   const [screenLoader, setScreenLoader] = React.useState(false); // Assuming screenLoader is a state
 
   const activeStep = 1; // Assuming activeStep is defined somewhere
@@ -131,12 +120,7 @@ console.log(watchAllFields,'allfieldsssssss hihi');
  const activeStepFields = getActiveStepFields(
     activeStep,
   );
-  // console.log(activeStepFields,'activeStepFields hihi');
-  // let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
   console.log(activeStepFields,'hihi clientdata')
-
-  // let stepData = getStepDataFromAPI(clientProfileData, activeStep);
-
   useEffect(() => {
 
     if(userId){
@@ -159,45 +143,9 @@ console.log(watchAllFields,'allfieldsssssss hihi');
     }
   }, [watch("state")]);
 
-  // console.log(stepData,'stepstep hihi');
   return (
     <>
       <ProfileWrapper>
-        {/* <section>
-          <Tab.Container
-            id="left-tabs-example"
-            defaultActiveKey="personal_details"
-          >
-            <Nav variant="pills" className="mb-4 application-pills">
-              <Nav.Item className="application-item">
-                <Nav.Link
-                  className="application-link"
-                  eventKey="personal_details"
-                >
-                  Personal Details
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item className="application-item">
-                <Nav.Link
-                  className="application-link"
-                  eventKey="company_details"
-                >
-                  Company Details
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
-            <Tab.Content>
-              <Tab.Pane eventKey="personal_details">
-              <AllRoleEditProfile role="client" name ={"indivisual"} />
-              </Tab.Pane>
-
-              <Tab.Pane eventKey="company_details">
-              <AllRoleEditProfile role="client" name = {"company"} />
-              </Tab.Pane>
-           
-            </Tab.Content> 
-          </Tab.Container>
-        </section> */}
          <AllRoleEditProfile role="client" name={"individual"} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={clientProfileData} activeStepFields={activeStepFields?.individual}/>
       </ProfileWrapper>
     </>
