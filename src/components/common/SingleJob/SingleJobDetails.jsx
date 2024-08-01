@@ -171,6 +171,51 @@ const AdminSingleJob = () => {
         setMakeOffer(!makeOffer)
     }
 
+    const [selectedDocument, setSelectedDocument] = useState('');
+    const [documentOwner, setDocumentOwner] = useState('');
+    const [detailsFilled, setDetailsFilled] = useState(false);
+    const [documentSaved, setDocumentSaved] = useState(false);
+
+    const handleDocumentSelect = (e) => {
+        setSelectedDocument(e.target.value);
+        setDocumentOwner('');
+        setDetailsFilled(false);
+        setDocumentSaved(false);
+    };
+
+    const handleOwnerSelect = (e) => {
+        setDocumentOwner(e.target.value);
+        setDetailsFilled(false);
+        setDocumentSaved(false);
+    };
+
+    const handleSave = () => {
+        setDetailsFilled(true);
+        setDocumentSaved(true);
+    };
+
+    const handleSubmit = () => {
+        setSelectedDocument('');
+        setDocumentOwner('');
+        setDetailsFilled(false);
+        setDocumentSaved(false);
+    };
+
+    const handleBack = () => {
+        if (documentSaved) {
+            setDetailsFilled(false);
+            setDocumentSaved(false);
+        } else if (detailsFilled) {
+            setDocumentOwner('');
+            setDetailsFilled(false);
+        } else if (documentOwner) {
+            setSelectedDocument('');
+            setDocumentOwner('');
+        } else {
+            setSelectedDocument('');
+        }
+    };
+
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -971,211 +1016,256 @@ const AdminSingleJob = () => {
                             <div className="text-end mb-4">
                                 <Button variant="transparent" className="font-14 main-btn">Create Document</Button>
                             </div>
-                            <div className="card-box">
-                                <div>
-                                    <h4 className="text-center">Select Document</h4>
-                                    <p className="text-center mb-4">select document you want to create</p>
-                                    <div className="selection-cards">
-                                        <Row className="justify-content-center">
-                                            <Col md={4}>
-                                                <div className="document-card">
-                                                    <input type="radio" className="document_select d-none" id="sow-document" name="document_select" />
-                                                    <Form.Label htmlFor="sow-document" className="document_label">
-                                                        <span className="doccheck-icon">
-                                                            <IoCheckmarkCircle />
-                                                        </span>
-                                                        <img src={sowIcon} />
-                                                        <span>Statement of work</span>
-                                                    </Form.Label>
-                                                </div>
-                                            </Col>
-                                            <Col md={4}>
-                                                <div className="document-card">
-                                                    <input type="radio" className="document_select d-none" id="nda-document" name="document_select" />
-                                                    <Form.Label htmlFor="nda-document" className="document_label">
-                                                        <span className="doccheck-icon">
-                                                            <IoCheckmarkCircle />
-                                                        </span>
-                                                        <img src={ndaIcon} />
-                                                        <span>Non Discolure Agreement</span>
-                                                    </Form.Label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 className="text-center">Document Ownership: Client or Candidate?</h4>
-                                    <p className="text-center mb-4">Is this document intended for the Client or the Candidate?</p>
-                                    <div className="selection-cards">
-                                        <Row className="justify-content-center">
-                                            <Col md={4}>
-                                                <div className="document-card">
-                                                    <input type="radio" className="document_select d-none" id="client-document" name="document_owner" />
-                                                    <Form.Label htmlFor="client-document" className="document_label">
-                                                        <span className="doccheck-icon">
-                                                            <IoCheckmarkCircle />
-                                                        </span>
-                                                        <FaUsersLine />
-                                                        <span>Client</span>
-                                                    </Form.Label>
-                                                </div>
-                                            </Col>
-                                            <Col md={4}>
-                                                <div className="document-card">
-                                                    <input type="radio" className="document_select d-none" id="candidate-document" name="document_owner" />
-                                                    <Form.Label htmlFor="candidate-document" className="document_label">
-                                                        <span className="doccheck-icon">
-                                                            <IoCheckmarkCircle />
-                                                        </span>
-                                                        <FaUsersViewfinder />
-                                                        <span>Candidate</span>
-                                                    </Form.Label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 className="text-center">Fill Details</h4>
-                                    <p className="text-center mb-4">Fill all the details</p>
+                            <div className="card-box mb-4">
+                                {/* {!selectedDocument && (
                                     <div>
-                                        <Row className="justify-content-center">
-                                            <Col md={8}>
+                                        <h4 className="text-center">Select Document</h4>
+                                        <p className="text-center mb-4">Select document you want to create</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="sow-document" name="document_select" value="SOW" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="sow-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={sowIcon} alt="SOW Icon" />
+                                                            <span>Statement of work</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="nda-document" name="document_select" value="NDA" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="nda-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={ndaIcon} alt="NDA Icon" />
+                                                            <span>Non Disclosure Agreement</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                )} */}
+                                {!selectedDocument && (
+                                    <div>
+                                        <h4 className="text-center">Select Document</h4>
+                                        <p className="text-center mb-4">Select document you want to create</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="sow-document" name="document_select" value="SOW" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="sow-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={sowIcon} alt="SOW Icon" />
+                                                            <span>Statement of work</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="nda-document" name="document_select" value="NDA" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="nda-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={ndaIcon} alt="NDA Icon" />
+                                                            <span>Non Disclosure Agreement</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedDocument && !documentOwner && (
+                                    <div id="document-ownership">
+                                        <h4 className="text-center">Document Ownership: Client or Candidate?</h4>
+                                        <p className="text-center mb-4">Is this document intended for the Client or the Candidate?</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="client-document" name="document_owner" value="Client" onChange={handleOwnerSelect} />
+                                                        <Form.Label htmlFor="client-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <FaUsersLine />
+                                                            <span>Client</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="candidate-document" name="document_owner" value="Candidate" onChange={handleOwnerSelect} />
+                                                        <Form.Label htmlFor="candidate-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <FaUsersViewfinder />
+                                                            <span>Candidate</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                        <div className="text-center">
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedDocument === 'NDA' && documentOwner && (
+                                    <>
+                                        {documentOwner === 'Client' && documentSaved && (
+                                            <div id="preview-document">
+                                                <h4 className="text-center mb-4">Preview Document</h4>
+                                                <div className="text-center">
+                                                    <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>Submit</Button>
+                                                    <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {documentOwner === 'Candidate' && !documentSaved && (
+                                            <div id="select-candidates">
+                                                <h4 className="text-center">Select Candidates</h4>
+                                                <p className="text-center mb-4">Please select candidate for non disclosure agreement. You can select multiple candidates</p>
                                                 <div>
-                                                    <Row>
-                                                        <Col lg={12}>
+                                                    <Row className="justify-content-center">
+                                                        <Col md={12}>
                                                             <div>
-                                                                <Form.Label className="font-14 fw-medium">Select Candidate</Form.Label>
                                                                 <div>
-                                                                    <div className="d-inline-block me-3">
-                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short1" />
-                                                                        <Form.Label htmlFor="candidate_short1" className="select_candidate_label">
-                                                                            <div className="position-relative">
-                                                                                <img src={devImg} />
-                                                                                <span className="checkmark-icon">
-                                                                                <IoCheckmarkOutline /></span>
-                                                                            </div>
-                                                                            johndoe@gmail.com
-                                                                        </Form.Label>
-                                                                    </div>
-                                                                    <div className="d-inline-block me-3">
-                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short2" />
-                                                                        <Form.Label htmlFor="candidate_short2" className="select_candidate_label">
-                                                                            <div className="position-relative">
-                                                                                <img src={devImg} />
-                                                                                <span className="checkmark-icon">
-                                                                                <IoCheckmarkOutline /></span>
-                                                                            </div>
-                                                                            johndoe@gmail.com
-                                                                        </Form.Label>
-                                                                    </div>
-                                                                    <div className="d-inline-block me-3">
-                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short3" />
-                                                                        <Form.Label htmlFor="candidate_short3" className="select_candidate_label">
-                                                                            <div className="position-relative">
-                                                                                <img src={devImg} />
-                                                                                <span className="checkmark-icon">
-                                                                                <IoCheckmarkOutline /></span>
-                                                                            </div>
-                                                                            johndoe@gmail.com
-                                                                        </Form.Label>
-                                                                    </div>
-                                                                    <div className="d-inline-block me-3">
-                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short4" />
-                                                                        <Form.Label htmlFor="candidate_short4" className="select_candidate_label">
-                                                                            <div className="position-relative">
-                                                                                <img src={devImg} />
-                                                                                <span className="checkmark-icon">
-                                                                                <IoCheckmarkOutline /></span>
-                                                                            </div>
-                                                                            johndoe@gmail.com
-                                                                        </Form.Label>
-                                                                    </div>
-                                                                    <div className="d-inline-block me-3">
-                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short5" />
-                                                                        <Form.Label htmlFor="candidate_short5" className="select_candidate_label">
-                                                                            <div className="position-relative">
-                                                                                <img src={devImg} />
-                                                                                <span className="checkmark-icon">
-                                                                                <IoCheckmarkOutline /></span>
-                                                                            </div>
-                                                                            johndoe@gmail.com
-                                                                        </Form.Label>
-                                                                    </div>
-                                                                    <div className="d-inline-block me-3">
-                                                                        <input type="checkbox" name="candidate_check" className="candidate_checkbox" id="candidate_short6" />
-                                                                        <Form.Label htmlFor="candidate_short6" className="select_candidate_label">
-                                                                            <div className="position-relative">
-                                                                                <img src={devImg} />
-                                                                                <span className="checkmark-icon">
-                                                                                <IoCheckmarkOutline /></span>
-                                                                            </div>
-                                                                            johndoe@gmail.com
-                                                                        </Form.Label>
-                                                                    </div>
+                                                                    {/* Example candidates */}
+                                                                    {[...Array(6)].map((_, i) => (
+                                                                        <div className="d-inline-block me-3" key={i}>
+                                                                            <input type="checkbox" name="candidate_check" className="candidate_checkbox" id={`candidate_short${i + 1}`} />
+                                                                            <Form.Label htmlFor={`candidate_short${i + 1}`} className="select_candidate_label">
+                                                                                <div className="position-relative">
+                                                                                    <img src={devImg} alt="Candidate" />
+                                                                                    <span className="checkmark-icon">
+                                                                                        <IoCheckmarkOutline />
+                                                                                    </span>
+                                                                                </div>
+                                                                                johndoe@gmail.com
+                                                                            </Form.Label>
+                                                                        </div>
+                                                                    ))}
                                                                 </div>
                                                             </div>
-                                                        </Col>
-                                                        <Col md={6} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">Name</Form.Label>
-                                                            <Form.Control type="text" value="Aviox Technologies" className="common-field font-14" readOnly />
-                                                        </Col>
-                                                        <Col md={6} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">Address</Form.Label>
-                                                            <Form.Control type="text" value="Mohali, Punjab" className="common-field font-14" readOnly />
-                                                        </Col>
-                                                        <Col md={6} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">Start Date</Form.Label>
-                                                            <Form.Control type="date" className="common-field font-14" />
-                                                        </Col>
-                                                        <Col md={6} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">Work Location</Form.Label>
-                                                            <Form.Control type="text" value="Remotely" readOnly className="common-field font-14" />
-                                                        </Col>
-                                                        <Col md={12} className="mb-0">
-                                                            <Form.Label>Working Hours</Form.Label>
-                                                        </Col>
-                                                        <Col md={6} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">Start Time</Form.Label>
-                                                            <Form.Control type="time" className="common-field font-14" />
-                                                        </Col>
-                                                        <Col md={6} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">End Time</Form.Label>
-                                                            <Form.Control type="time" className="common-field font-14" />
-                                                        </Col>
-                                                        <Col md={8} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">Price (in dollars)</Form.Label>
-                                                            <div className="d-flex align-items-center gap-3">
-                                                                <Form.Control type="text" className="common-field font-14" />
-                                                                <Form.Check type="checkbox" label="Inc. GST" className="font-14 flex-none" />
+
+                                                            <div className="text-center">
+                                                                <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSave}>Save</Button>
+                                                                <Button variant="transparent" className="font-14 outline-main-btn  px-5" onClick={handleBack}>Back</Button>
                                                             </div>
-                                                        </Col>
-                                                        <Col md={12} className="mb-3">
-                                                            <Form.Label className="font-14 fw-medium">Scope of work</Form.Label>
-                                                            <Form.Control type="text" as="textarea" rows={3} className="common-field font-14" />
                                                         </Col>
                                                     </Row>
                                                 </div>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                                {documentOwner && selectedDocument !== 'NDA' && !documentSaved && (
+                                    <div id="fill-details">
+                                        <h4 className="text-center">Fill Details</h4>
+                                        <p className="text-center mb-4">Fill all the details</p>
+                                        <div>
+                                            <Row className="justify-content-center">
+                                                <Col md={8}>
+                                                    <div>
+                                                        <Row>
+                                                            <Col lg={12}>
+                                                                <div>
+                                                                    <Form.Label className="font-14 fw-medium">Select Candidate</Form.Label>
+                                                                    <div>
+                                                                        {[...Array(6)].map((_, i) => (
+                                                                            <div className="d-inline-block me-3" key={i}>
+                                                                                <input type="checkbox" name="candidate_check" className="candidate_checkbox" id={`candidate_short${i + 1}`} />
+                                                                                <Form.Label htmlFor={`candidate_short${i + 1}`} className="select_candidate_label">
+                                                                                    <div className="position-relative">
+                                                                                        <img src={devImg} alt="Candidate" />
+                                                                                        <span className="checkmark-icon">
+                                                                                            <IoCheckmarkOutline />
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    johndoe@gmail.com
+                                                                                </Form.Label>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Name</Form.Label>
+                                                                <Form.Control type="text" value="Aviox Technologies" className="common-field font-14" readOnly />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Address</Form.Label>
+                                                                <Form.Control type="text" value="Mohali, Punjab" className="common-field font-14" readOnly />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Start Date</Form.Label>
+                                                                <Form.Control type="date" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Work Location</Form.Label>
+                                                                <Form.Control type="text" value="Remotely" readOnly className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={12} className="mb-0">
+                                                                <Form.Label>Working Hours</Form.Label>
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Start Time</Form.Label>
+                                                                <Form.Control type="time" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">End Time</Form.Label>
+                                                                <Form.Control type="time" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={8} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Price (in dollars)</Form.Label>
+                                                                <div className="d-flex align-items-center gap-3">
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                    <Form.Check type="checkbox" label="Inc. GST" className="font-14 flex-none" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Scope of work</Form.Label>
+                                                                <Form.Control type="text" as="textarea" rows={3} className="common-field font-14" />
+                                                            </Col>
+                                                        </Row>
+                                                    </div>
 
-                                                <div className="text-center">
-                                                    <Button variant="transparent" className="font-14 main-btn px-5">Save</Button>
-                                                </div>
-                                            </Col>
-                                            <Col md={4}>
-                                                <div>
-                                                    <h5>Preview Document</h5>
-                                                </div>
-                                            </Col>
-                                        </Row>
+                                                    <div className="text-center">
+                                                        <Button variant="transparent" className="font-14 outline-main-btn main-btn px-5 me-2" onClick={handleBack}>Back</Button>
+                                                        <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSave}>Save</Button>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div>
+                                                        <h5>Preview Document</h5>
+                                                        {/* Preview content goes here */}
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <h4 className="text-center mb-4">Preview Document</h4>
-                                    <div className="text-center">
-                                        <Button variant="transparent" className="font-14 main-btn px-5">Submit</Button>
+                                )}
+                                {documentSaved && (
+                                    <div id="preview-document">
+                                        <h4 className="text-center mb-4">Preview Document</h4>
+                                        <div className="text-center">
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>Submit</Button>
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                             <h5 className="font-22 mb-4 fw-bold">Created Documents for Clients</h5>
                             <Row>

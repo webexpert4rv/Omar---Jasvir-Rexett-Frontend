@@ -9697,11 +9697,13 @@ select.apply-field
     visibility: hidden;
     transition: .2s ease;
 }
-.document-card input:checked + .document_label
+.document-card input:checked + .document_label,
+.document_label:hover
 {
     filter: grayscale(0);
 }
-.document-card input:checked + .document_label .doccheck-icon
+.document-card input:checked + .document_label .doccheck-icon,
+.document_label:hover .doccheck-icon
 {
     opacity: 1;
     visibility: visible;
