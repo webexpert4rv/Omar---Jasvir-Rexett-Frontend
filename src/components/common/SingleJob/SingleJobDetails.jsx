@@ -91,7 +91,7 @@ const SingleJobDetails = () => {
   useEffect(() => {
     if (id) {
       dispatch(singleJobPostData(id, () => { }));
-      dispatch(getShortListInterview(id))
+      // dispatch(getShortListInterview(id))
     }
     dispatch(getJobCategoryList());
   }, []);
