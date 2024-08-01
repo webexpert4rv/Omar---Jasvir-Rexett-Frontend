@@ -312,14 +312,62 @@ const SingleJobDetails = () => {
     }
   };
 
-  const handleSuggestions = () => {
-    let payload = {
-      clientId: clientId,
-      jobId: id,
-      message: "Suggest Developer"
-    }
-    console.log(payload, "payload")
-    dispatch(getSuggestedDeveloper(payload))
+    const [selectedDocument, setSelectedDocument] = useState('');
+    const [documentOwner, setDocumentOwner] = useState('');
+    const [detailsFilled, setDetailsFilled] = useState(false);
+    const [documentSaved, setDocumentSaved] = useState(false);
+
+    const handleDocumentSelect = (e) => {
+        setSelectedDocument(e.target.value);
+        setDocumentOwner('');
+        setDetailsFilled(false);
+        setDocumentSaved(false);
+    };
+
+    const handleOwnerSelect = (e) => {
+        setDocumentOwner(e.target.value);
+        setDetailsFilled(false);
+        setDocumentSaved(false);
+    };
+
+    const handleSave = () => {
+        setDetailsFilled(true);
+        setDocumentSaved(true);
+    };
+
+    const handleSubmit = () => {
+        setSelectedDocument('');
+        setDocumentOwner('');
+        setDetailsFilled(false);
+        setDocumentSaved(false);
+    };
+
+    const handleBack = () => {
+        if (documentSaved) {
+            setDetailsFilled(false);
+            setDocumentSaved(false);
+        } else if (detailsFilled) {
+            setDocumentOwner('');
+            setDetailsFilled(false);
+        } else if (documentOwner) {
+            setSelectedDocument('');
+            setDocumentOwner('');
+        } else {
+            setSelectedDocument('');
+        }
+    };
+
+    return (
+        <>
+            {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
+                <div className="single-job-card job-information-wrapper mb-0">
+                    {/* <h2 className="jobclient-name"><img src={amazonImg} /> Amazon</h2> */}
+                    <div className="d-flex justify-content-between align-items-start flex-md-row flex-column-reverse">
+                        <div>
+                            <h2 className="single-job-title mb-0">{singleJobDescription?.title ? singleJobDescription?.title : "Need to work on new changes on admin panel"}</h2>
+                            <p className="req-text fw-normal mt-2">by {singleJobDescription?.client?.name}</p>
+                        </div>
+                        <div className="d-flex gap-3 align-items-center mb-md-0 mb-3">
 
   }
 
@@ -378,17 +426,988 @@ const SingleJobDetails = () => {
                     singleJobDescription?.status
                   )}`}
                 >
-                  <span>
-                    {singleJobDescription?.status?.charAt(0)?.toUpperCase() +
-                      singleJobDescription?.status?.slice(1)}
-                  </span>
-                </p>
-              </div>
-              <div>
-                <p className="req-text mt-2">
-                  by {singleJobDescription?.client?.name}
-                </p>
-              </div>
+                    <Tab eventKey="job-details" title="Job Details">
+                        <div className="single-job-card shadow-none">
+                            <h3 className="req-heading">About this job</h3>
+                            <p className="single-job-description mb-0"
+                                dangerouslySetInnerHTML={{
+                                    __html: singleJobDescription?.description,
+                                }}
+                            ></p>
+                        </div>
+                    </Tab>
+                    {role !== "developer" && <Tab eventKey="suggested" title={suggest}>
+                        <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
+                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14">Manual Suggestion</Button>
+                            <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
+                        </div>
+                        <Tab.Container defaultActiveKey={'list-view'}>
+                            <div className="mb-4 d-flex justify-content-between align-items-center">
+                                <h5 className="font-22 mb-0 fw-bold">Applied Candidates</h5>
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-view">
+                                    <div>
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Experience</th>
+                                                    <th className="document-th location-th">Expertise</th>
+                                                    <th className="document-th location-th">Good to have skills</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Screening Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">5 years</td>
+                                                        <td className="document-data white-nowrap">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 8.9
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={approvedApply}>
+                                                                    <Button className="main-btn py-2 text-black font-15">
+                                                                        <FaCheck />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-view">
+                                    <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
+                        <Tab.Container defaultActiveKey={'list-suggest-view'}>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h5 className="font-22 mb-4 fw-bold">Suggested Candidates</h5>
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-suggest-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-suggest-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-suggest-view">
+                                    <div>
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Experience</th>
+                                                    <th className="document-th location-th">Expertise</th>
+                                                    <th className="document-th location-th">Good to have skills</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Screening Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">5 years</td>
+                                                        <td className="document-data white-nowrap">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 8.9
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={approvedApply}>
+                                                                    <Button className="main-btn py-2 text-black font-15">
+                                                                        <FaCheck />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-suggest-view">
+                                    <JobCard type="Suggested" data={suggestedDeveloper} setPage={setPage} page={page} role="admin" handleJobStatusModal={handleShowEndJobModal} />
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
+                    </Tab>}
+                    <Tab eventKey="shortlisted" title={shortlist}>
+                        <Tab.Container defaultActiveKey={'list-view'}>
+                            <div className="mb-4 d-flex justify-content-between align-items-center">
+                                <h5 className="font-22 mb-0 fw-bold">Shortlisted Candidate</h5>
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-view">
+                                    <div className="">
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Experience</th>
+                                                    <th className="document-th location-th">Expertise</th>
+                                                    <th className="document-th location-th">Good to have skills</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Screening Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">5 years</td>
+                                                        <td className="document-data white-nowrap">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="skills-listing mb-0">
+                                                                <li>Laravel</li>
+                                                                <li>PHP</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 8.9
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                                    <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                        <LuMessagesSquare />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-view">
+                                    <div className="developers-list mb-4">
+                                        <div className="developer-card p-0">
+                                            <div className="overflow-hidden inner-dev-card">
+                                                <div className="user-imgbx">
+                                                    <img src={devImg} className="user-img" />
+                                                </div>
+                                                <div className="text-center">
+                                                    <h3 className="user-name">John Doe</h3>
+                                                    <div className="text-center mt-2">
+                                                        <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="status-upcoming d-inline-flex align-items-center gap-1">
+                                                            <FaStar /> 4.4
+                                                        </span>
+                                                    </div>
+                                                    <p className="designation-user">Software Developer</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
+                        <JobCard type="Shortlisted" data={selectedTabsData} role="admin" />
+                    </Tab>
+                    <Tab eventKey="interviewing" title={interview}>
+                        <div>
+                            <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
+                            <Row>
+                                {role !== "developer" && <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-finished">Completed</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2">
+                                                <Link to={'/admin/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>}
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-finished">Selected</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 mt-2">
+                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                                <Button variant="transparent" className="outline-main-btn font-14">Move to offer</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-rejected">Rejected</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2">
+                                                <Link to={'/admin/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
+                        <div className="interview-scheduled pt-2 mb-3">
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Pankaj Pundir
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-upcoming">Upcoming in 1hr</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowMeetingInfo}>View Details</Button>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3 pt-4">
+                                        <div>
+                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
+                                            <p className="dev-name mb-2 font-14">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                Rohit Sharma
+                                            </p>
+                                            <div>
+                                                <span className="associate-text">
+                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="mb-2 status-interview">
+                                            <span className="status-rejected">Declined</span>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <Button variant="transparent" className="main-btn font-14" onClick={handleShowScheduleMeeting}>Reschedule</Button>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <Tab.Container defaultActiveKey={'list-view'}>
+                            <div className="mb-4 d-flex justify-content-between align-items-center">
+                                {role !== "developer" && <h5 className="font-22 mb-0 fw-bold">Need to schedule</h5>}
+                                <Nav variant="pills" className="document-view-pill">
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="list-view"
+                                        >
+                                            <FaListUl />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="document-view-item">
+                                        <Nav.Link
+                                            className="document-view-link"
+                                            eventKey="grid-view"
+                                        >
+                                            <IoGrid />
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="list-view">
+                                    <div>
+                                        <div className="table-responsive">
+                                            <table className="table document-table table-ui-custom">
+                                                <thead>
+                                                    <th className="document-th filename-th px-3">Name</th>
+                                                    <th className="document-th owner-th">Email</th>
+                                                    <th className="document-th location-th">Phone Number</th>
+                                                    <th className="document-th location-th">Designation</th>
+                                                    <th className="document-th location-th">Rating</th>
+                                                    <th className="document-th location-th">Profile match</th>
+                                                    <th className="document-th location-th">Social media</th>
+                                                    <th className="document-th action-th">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="document-data px-3">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <img src={devImg} className="developer-img" />
+                                                                Jane Doe
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            janedoe123@gmail.com
+                                                        </td>
+                                                        <td className="document-data"> 555 123-4567</td>
+                                                        <td className="document-data">Web Developer</td>
+                                                        <td className="document-data">
+                                                            <span className="status-upcoming">
+                                                                <span className="d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="">
+                                                                <span className="status-finished w-auto d-inline-block"><strong>95%</strong></span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <ul className="social-icons justify-content-start">
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaGithub />
+                                                                    </Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaLinkedin />
+                                                                    </Link>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                        <td className="document-data">
+                                                            <div className="d-flex align-items-center gap-2 job-action-btns">
+                                                                <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                                    <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                        <LuMessagesSquare />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="grid-view">
+                                    <div className="developers-list mb-4">
+                                        <div className="developer-card p-0">
+                                            <div className="overflow-hidden inner-dev-card">
+                                                <div className="user-imgbx">
+                                                    <img src={devImg} className="user-img" />
+                                                </div>
+                                                <div className="text-center">
+                                                    <h3 className="user-name">John Doe</h3>
+                                                    <div className="text-center mt-2">
+                                                        <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="status-upcoming d-inline-flex align-items-center gap-1">
+                                                            <FaStar /> 4.4
+                                                        </span>
+                                                    </div>
+                                                    <p className="designation-user">Software Developer</p>
+                                                    <p className="email-user">johndoe123@gmail.com</p>
+                                                    <ul className="social-icons">
+                                                        <li>
+                                                            <Link to="#">
+                                                                <FaGithub />
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link to="#">
+                                                                <FaLinkedin />
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                    <div className="job-card-btns">
+                                                        <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                            <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                <LuMessagesSquare />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
+                        {/* <JobCard type="Interviewing" data={selectedTabsData} role="admin" /> */}
+                    </Tab>
+                    <Tab eventKey="documentation" title={offered}>
+                        <div>
+                            <div className="text-end mb-4">
+                                <Button variant="transparent" className="font-14 main-btn">Create Document</Button>
+                            </div>
+                            <div className="card-box mb-4">
+                                {/* {!selectedDocument && (
+                                    <div>
+                                        <h4 className="text-center">Select Document</h4>
+                                        <p className="text-center mb-4">Select document you want to create</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="sow-document" name="document_select" value="SOW" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="sow-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={sowIcon} alt="SOW Icon" />
+                                                            <span>Statement of work</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="nda-document" name="document_select" value="NDA" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="nda-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={ndaIcon} alt="NDA Icon" />
+                                                            <span>Non Disclosure Agreement</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                )} */}
+                                {!selectedDocument && (
+                                    <div>
+                                        <h4 className="text-center">Select Document</h4>
+                                        <p className="text-center mb-4">Select document you want to create</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="sow-document" name="document_select" value="SOW" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="sow-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={sowIcon} alt="SOW Icon" />
+                                                            <span>Statement of work</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="nda-document" name="document_select" value="NDA" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="nda-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={ndaIcon} alt="NDA Icon" />
+                                                            <span>Non Disclosure Agreement</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedDocument && !documentOwner && (
+                                    <div id="document-ownership">
+                                        <h4 className="text-center">Document Ownership: Client or Candidate?</h4>
+                                        <p className="text-center mb-4">Is this document intended for the Client or the Candidate?</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="client-document" name="document_owner" value="Client" onChange={handleOwnerSelect} />
+                                                        <Form.Label htmlFor="client-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <FaUsersLine />
+                                                            <span>Client</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="candidate-document" name="document_owner" value="Candidate" onChange={handleOwnerSelect} />
+                                                        <Form.Label htmlFor="candidate-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <FaUsersViewfinder />
+                                                            <span>Candidate</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                        <div className="text-center">
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedDocument === 'NDA' && documentOwner && (
+                                    <>
+                                        {documentOwner === 'Client' && documentSaved && (
+                                            <div id="preview-document">
+                                                <h4 className="text-center mb-4">Preview Document</h4>
+                                                <div className="text-center">
+                                                    <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>Submit</Button>
+                                                    <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {documentOwner === 'Candidate' && !documentSaved && (
+                                            <div id="select-candidates">
+                                                <h4 className="text-center">Select Candidates</h4>
+                                                <p className="text-center mb-4">Please select candidate for non disclosure agreement. You can select multiple candidates</p>
+                                                <div>
+                                                    <Row className="justify-content-center">
+                                                        <Col md={12}>
+                                                            <div>
+                                                                <div>
+                                                                    {/* Example candidates */}
+                                                                    {[...Array(6)].map((_, i) => (
+                                                                        <div className="d-inline-block me-3" key={i}>
+                                                                            <input type="checkbox" name="candidate_check" className="candidate_checkbox" id={`candidate_short${i + 1}`} />
+                                                                            <Form.Label htmlFor={`candidate_short${i + 1}`} className="select_candidate_label">
+                                                                                <div className="position-relative">
+                                                                                    <img src={devImg} alt="Candidate" />
+                                                                                    <span className="checkmark-icon">
+                                                                                        <IoCheckmarkOutline />
+                                                                                    </span>
+                                                                                </div>
+                                                                                johndoe@gmail.com
+                                                                            </Form.Label>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="text-center">
+                                                                <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSave}>Save</Button>
+                                                                <Button variant="transparent" className="font-14 outline-main-btn  px-5" onClick={handleBack}>Back</Button>
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                                {documentOwner && selectedDocument !== 'NDA' && !documentSaved && (
+                                    <div id="fill-details">
+                                        <h4 className="text-center">Fill Details</h4>
+                                        <p className="text-center mb-4">Fill all the details</p>
+                                        <div>
+                                            <Row className="justify-content-center">
+                                                <Col md={8}>
+                                                    <div>
+                                                        <Row>
+                                                            <Col lg={12}>
+                                                                <div>
+                                                                    <Form.Label className="font-14 fw-medium">Select Candidate</Form.Label>
+                                                                    <div>
+                                                                        {[...Array(6)].map((_, i) => (
+                                                                            <div className="d-inline-block me-3" key={i}>
+                                                                                <input type="checkbox" name="candidate_check" className="candidate_checkbox" id={`candidate_short${i + 1}`} />
+                                                                                <Form.Label htmlFor={`candidate_short${i + 1}`} className="select_candidate_label">
+                                                                                    <div className="position-relative">
+                                                                                        <img src={devImg} alt="Candidate" />
+                                                                                        <span className="checkmark-icon">
+                                                                                            <IoCheckmarkOutline />
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    johndoe@gmail.com
+                                                                                </Form.Label>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Name</Form.Label>
+                                                                <Form.Control type="text" value="Aviox Technologies" className="common-field font-14" readOnly />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Address</Form.Label>
+                                                                <Form.Control type="text" value="Mohali, Punjab" className="common-field font-14" readOnly />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Start Date</Form.Label>
+                                                                <Form.Control type="date" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Work Location</Form.Label>
+                                                                <Form.Control type="text" value="Remotely" readOnly className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={12} className="mb-0">
+                                                                <Form.Label>Working Hours</Form.Label>
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Start Time</Form.Label>
+                                                                <Form.Control type="time" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">End Time</Form.Label>
+                                                                <Form.Control type="time" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={8} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Price (in dollars)</Form.Label>
+                                                                <div className="d-flex align-items-center gap-3">
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                    <Form.Check type="checkbox" label="Inc. GST" className="font-14 flex-none" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Scope of work</Form.Label>
+                                                                <Form.Control type="text" as="textarea" rows={3} className="common-field font-14" />
+                                                            </Col>
+                                                        </Row>
+                                                    </div>
+
+                                                    <div className="text-center">
+                                                        <Button variant="transparent" className="font-14 outline-main-btn main-btn px-5 me-2" onClick={handleBack}>Back</Button>
+                                                        <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSave}>Save</Button>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div>
+                                                        <h5>Preview Document</h5>
+                                                        {/* Preview content goes here */}
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                )}
+                                {documentSaved && (
+                                    <div id="preview-document">
+                                        <h4 className="text-center mb-4">Preview Document</h4>
+                                        <div className="text-center">
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>Submit</Button>
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Clients</h5>
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3">
+                                        <div>
+                                            <p className="dev-name mb-2 font-16">
+                                                <div className="me-1">
+                                                    <img src={companyImg} />
+                                                </div>
+                                                <div>
+                                                    Aviox Technologies Pvt Ltd<br />
+                                                    {/* <span className="associate-text">
+                                                        <span className="associate mt-1">Mohali, India</span>
+                                                    </span> */}
+                                                </div>
+                                            </p>
+                                            <div>
+                                                <h5 className="font-14 mt-3 mb-1">E-sign status</h5>
+                                                <span className="associate-text me-1">
+                                                    <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
+                                                </span>
+                                                <span className="associate-text">
+                                                    <span className="associate d-inline-flex align-items-center">NDA <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 mt-2">
+                                                <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
+                                                <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
+                                                <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Candidate</h5>
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3">
+                                        <div>
+                                            <p className="dev-name mb-2 font-16">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                <div>
+                                                    Rohit Sharma<br />
+                                                    <span className="associate-text">
+                                                        <span className="associate mt-1">Web developer</span>
+                                                    </span>
+                                                </div>
+                                            </p>
+                                            <div>
+                                                <h5 className="font-14 mt-3 mb-1">E-sign status</h5>
+                                                <span className="associate-text me-1">
+                                                    <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
+                                                </span>
+                                                <span className="associate-text">
+                                                    <span className="associate d-inline-flex align-items-center">NDA <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 mt-2">
+                                                <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
+                                                <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
+                                                <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Tab>
+                    <Tab eventKey="hired" title={hired}>
+                        <JobCard type="Hired" data={selectedTabsData} role="admin" />
+                    </Tab>
+                </Tabs >
             </div>
             <div className="d-flex gap-3 flex-wrap mb-md-0 mb-4 align-items-center">
               {singleJobDescription?.status !== "ended" ? (
