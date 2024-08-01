@@ -41,6 +41,9 @@ export const adminDataSlice = createSlice({
         setScreenLoader: (state, action) => {
             state.screenLoader = true;
         },
+        setSmallLoader: (state, action) => {
+            state.smallLoader = true;
+        },
         setBtnLoader: (state, action) => {
             state.smallLoader = true;
         },
@@ -259,12 +262,13 @@ export function adminListAssignedDeveloper(payload, callback) {
 
 export function getAdminProfile(payload, callback) {
     return async (dispatch) => {
-        dispatch(setScreenLoader())
+        dispatch(setSmallLoader())
         try {
             let result = await clientInstance.get('admin/profile')
-            if (result.status === 200) {
+            // if (result.status === 200) {
                 dispatch(setSuccessProfileData(result.data))
-            }
+                dispatch(setSuccessAdminData())
+            // }
         } catch (error) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
@@ -327,7 +331,7 @@ export function adminSingleJob(payload, callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(`admin/job-detail/${payload}`)
+            let result = await clientInstance.get(`common/job-detail/${payload}`)
             if (result.status === 200) {
                 dispatch(setSingleJobListing(result.data))
             }
@@ -785,7 +789,7 @@ export function newRoleCreate(payload){
 export function getUpdateRolePermission(payload){
     return async (dispatch)=>{
         try{
-            let result = await clientInstance.post(`admin/all-permissions` ,{...payload})
+            let result = await clientInstance.post(`admin/create-update-role-permissions` ,{...payload})
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }

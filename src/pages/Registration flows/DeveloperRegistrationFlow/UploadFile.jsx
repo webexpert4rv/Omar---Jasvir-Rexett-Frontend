@@ -16,8 +16,11 @@ const UploadFile = ({ label, placeholder,
     clearErrors,
     errors,
     setError,
+    stepData
  }) => {
+  console.log(imageFile,"imagefile")
   const [showVideo,setShowVideo]=useState(false)
+  console.log(fieldName,"fieldName")
  const DOC_ALLOWED_EXTENSIONS = [
         "application/pdf",
         "application/msword"
@@ -28,20 +31,23 @@ const UploadFile = ({ label, placeholder,
     "video/webm",
     "video/ogg"
  ]     
+ console.log(imageFile,"imageFile")
+
+ console.log(previewImage,'previewImage hghg');
 
   
  const handleFileChange = async (e, name) => {
     const file = e.target.files[0];
-    const isImage = DOC_ALLOWED_EXTENSIONS.includes(file.type);
-    const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file.type);
+    const isImage = DOC_ALLOWED_EXTENSIONS.includes(file?.type);
+    const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file?.type);
 
     if (file) {
-      if (name === "upload_resume" && isImage) {
+      if (name === "resume" && isImage) {
         const url = URL.createObjectURL(file);
         setPreviewImage((prev) => ({ ...prev, resume: url }));
         setImageFile((prev) => ({ ...prev, resume: file }));
         clearErrors(fieldName);
-      } else if (name=="intro_video" && isVideo) {
+      } else if (name=="intro_video_url" && isVideo) {
         const url = URL.createObjectURL(file);
         setPreviewImage((prev) => ({ ...prev, introVideo: url }));
         setImageFile((prev) => ({ ...prev, introVideo: file }));
@@ -50,7 +56,7 @@ const UploadFile = ({ label, placeholder,
         setValue(fieldName, null);
         setError(fieldName, {
           type: "manual",
-          message: `Please enter a valid file type: ${name === "upload_resume" ? "pdf,msword" : "mp4, webm, ogg"}`,
+          message: `Please enter a valid file type: ${name === "resume" ? "pdf,msword" : "mp4, webm, ogg"}`,
         });
         setPreviewImage(null);
       }
@@ -94,7 +100,7 @@ const handleIntroVideo=()=>{
         {label!=="Resume" ? (
           <div className="profile-upload-preview position-relative preview_intro mb-3">
             <div className="profile-img-preview w-100 h-100">
-              {/* <video src={previewImage?.introVideo? previewImage?.introVideo:videoImg} /> */}
+              <video src={previewImage?.introVideo ? previewImage?.introVideo : stepData?.intro_video_url ? stepData?.intro_video_url : videoImg} className="w-100 h-100"/>
             
             </div>
             <div className="playback_intro" onClick={handleIntroVideo}>
@@ -107,7 +113,7 @@ const handleIntroVideo=()=>{
           </div>
         ) : (
           <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
-            <span className="font-14 fw-medium">{imageFile?.resume?.name}</span>
+            <span className="font-14 fw-medium">{imageFile?.resume?.name ? imageFile?.resume?.name : stepData?.resume}</span>
             <span className="cursor-pointer text-danger">
               {/* <IoClose /> */}
                 {/* {errors[fieldName] && (
@@ -119,7 +125,7 @@ const handleIntroVideo=()=>{
           
         )}
       </div>
-      <IntroVideo show={showVideo} handleClose={handleIntroVideo} previewImage={previewImage?.introVideo}/>
+      <IntroVideo show={showVideo} handleClose={handleIntroVideo} previewImage={previewImage?.introVideo ? previewImage?.introVideo : stepData?.intro_video_url}/>
     </>
   );
 };

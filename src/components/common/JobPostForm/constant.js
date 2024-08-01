@@ -117,3 +117,27 @@ export const EDUCATION_LEVEL= [
   { label: 'Masters' },
   { label: 'Doctorate or Ph. D' }
 ];
+
+
+export const PROJECT_TYPE= [
+  { label: 'Health Care' },
+  { label: 'Artificial Intelligence' },
+  { label: 'Social Media' },
+  { label: 'E-commerce' },
+  { label: 'Gaming' },
+  { label: 'Stocks' },
+  { label: 'Real State' },
+  {label:'Booking'}
+];
+
+export const TEAM_SIZE=[
+  {label:2},
+  {label:5},
+  {label:10},
+  {label:15},
+  {label:20},
+  {label:30},
+  {label:50},
+  {label:"100+"}
+
+]

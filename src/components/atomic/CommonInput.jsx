@@ -13,6 +13,7 @@ const CommonInput = ({
   label,
   name,
   type = "text",
+  value,
   control,
   rules,
   readOnly = false,
@@ -33,6 +34,8 @@ const CommonInput = ({
   defaultOption = "",
   disabled,
   rows = null,
+  className,
+  selectedRecommend
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 console.log(type,"ty")
@@ -49,6 +52,8 @@ console.log(isMaxRequired,"ismax")
       return <CloseIcon />;
     }
   };
+  console.log(name,"name")
+  // console.log(watch("total_it_recruiter"),"total recruiters")
   return (
     <Form.Group className="mb-3">
       <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>
@@ -59,18 +64,18 @@ console.log(isMaxRequired,"ismax")
           rules={rules}
           render={({ field }) => {
             if (type === "radio") {
-              return options.map((option, index) => (
-                <Form.Check
+                  <Form.Check
                   {...field}
-                  key={index}
+                  label={label}
                   type="radio"
-                  id={`${name}-${index}`}
-                  label={option.label}
-                  value={option.value}
-                  checked={field.value === option.value}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  id="radio1"
+                  className={className}
+                  checked={field.value}
+                  onChange={(e) =>{
+                    field.onChange(e.target.checked)
+                  } }
                 />
-              ));
+              
             }
             if (type === "checkbox") {
               return   <Form.Check
@@ -117,6 +122,7 @@ console.log(isMaxRequired,"ismax")
                     // value={selectOptions?.find(
                     //   (option) => option.value === field.value
                     // )}
+                    value={field.value ? field.value : selectedRecommend ? selectedRecommend : ''}
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />
@@ -153,6 +159,8 @@ console.log(isMaxRequired,"ismax")
                     className={`common-field ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
+                    // value={value}
+                    // onChange={onChange}
                   >
                     <option disabled selected value="">
                       {defaultOption}
@@ -246,19 +254,19 @@ console.log(isMaxRequired,"ismax")
               );
             } else if (type === "year-picker") {
               console.log(field.value, "this is field.value");
-              // return (
-              //   <DatePicker
-              //     {...field}
-              //     selected={field.value && field.value}
-              //     maxDate={new Date().toISOString().split("T")[0]}
-              //     maxDetail="decade"
-              //     onChange={(date) => field.onChange(date)}
-              //     showYearPicker
-              //     dateFormat="yyyy"
-              //     placeholderText="Select year"
-              //     className="common-field"
-              //   />
-              // )
+              return (
+                <DatePicker
+                  {...field}
+                  selected={field.value && field.value}
+                  maxDate={new Date().toISOString().split("T")[0]}
+                  maxDetail="decade"
+                  onChange={(date) => field.onChange(date)}
+                  showYearPicker
+                  dateFormat="yyyy"
+                  placeholderText="Select year"
+                  className="common-field"
+                />
+              )
             } else {
               return (
                 <>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { t } from "i18next";
 import { Col, Form, OverlayTrigger, Tooltip, Row } from "react-bootstrap";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
@@ -8,12 +8,42 @@ import { Controller } from "react-hook-form";
 import { JOB_TYPES_OPTIONS, WORKPLACE_TYPES_OPTIONS } from "./constant";
 import { GOOGLE_AUTOCOMPLETE_API_KEY } from "../../clients/TimeReporiting/constant";
 import LocationSection from "../../../pages/websiteRegisterForm/developer/LocationSection";
+import CommonReactSelect from "../../atomic/CommonReactSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { getTimeZoneList } from "../../../redux/slices/clientDataSlice";
+import Select from "react-select";
 
 const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, clearErrors }) => {
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [groupedTime, setGroupedTime] = useState([])
   const handleScriptLoad = () => {
     setScriptLoaded(true);
   };
+
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { countriesList, statesList, citiesList, timeZoneList } = useSelector(
+    (state) => state.clientData
+  );
+
+  useEffect(() => {
+    dispatch(getTimeZoneList());
+  }, []);
+  useEffect(() => {
+    if (timeZoneList.length > 0) {
+      let groupedTimeZones = timeZoneList?.map((item) => {
+        return {
+          label: item?.country_name,
+          options: item?.timezones?.map((it) => {
+            return { label: it, value: it }
+          }),
+        }
+      })
+      setGroupedTime(groupedTimeZones)
+    }
+  }, [timeZoneList])
+
   const handleOnBlur = () => {
     // this does not work
     // setValue("job_location", null);
@@ -42,6 +72,17 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
       discoverable by job seekers in those area.
     </Tooltip>
   );
+
+
+
+  // const handleDropDownChange = (value, name) => {
+  //   dispatch(getTimeZoneList());
+  //   // timezone logic
+  //   // setValue("timezone", value);
+  //   setValue("time_zone", value);
+  //   clearErrors("time_zone");
+  // };
+  console.log(watch("time_zone"),"time zone inside child");
   return (
     <div>
       <section className="job-post-section">
@@ -125,35 +166,6 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                       </span>
                     </OverlayTrigger>
                   </Form.Label>
-                  {/* <Controller
-                  name="jobLocation"
-                  control={control}
-                  render={({ field }) => (
-                    <Autocomplete
-                      {...field}
-                      apiKey = {MAP_API_KEY}
-                      className ="common-field font-14"
-                      onPlaceSelected={(place) => {
-                        // handlePlaceSelect(place);
-                        field.onChange(place?.formatted_address);
-                      }}
-                      onChange={(event) => {
-                        field.onChange(event.target.value);
-                        // if (event.target.value === "") {
-                        //   setLocation(null);
-                        // }
-                      }}
-                      // onBlur={handleOnBlur}
-                      // types={["(regions)"]}
-                      placeholder={"Select job location"}
-                      onKeyDown={(e) => {
-                        // handleKeyPress(e);
-                      }}
-                      // componentRestrictions={{ country: "us" }} // Restrict results to a specific country if needed
-                    />
-                  )}
-                /> */}
-
                   <Controller
                     name="job_location"
                     rules={{
@@ -253,7 +265,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                   <p className="d-flex align-items-center gap-2">
                     <Form.Control
                       type="date"
-                      {...register("response_time", {
+                      {...register("response_date", {
                         required: "Response date is required",
                       })}
                       min={new Date().toISOString().split("T")[0]}
@@ -261,21 +273,32 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                       placeholder="Enter response time"
                     />
                   </p>
-                  {errors?.response_time && (
-                    <p className="error-message">{errors.response_time?.message}</p>
+                  {errors?.response_date && (
+                    <p className="error-message">{errors?.response_date?.message}</p>
                   )}
                 </Form.Group>
               </Col>
             </Row>
-            <LocationSection
-              control={control}
-              errors={errors}
-              LocationSection={true}
-              watch={watch}
-              setValue={setValue}
-              setError={setError}
-              clearErrors={clearErrors}
-            />{" "}
+            <Form.Group className="mb-3">
+              <Form.Label className="common-label font-14 fw-medium">
+                {"Time Zone"}
+              </Form.Label>
+              <Controller
+                name="time_zone"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={groupedTime}
+                    placeholder={"Select Timezone"}
+                    // handleChange={handleDropDownChange}
+                  />
+                )}
+              />
+              {/* {error && <p className={`${ (invalidFieldRequired) ? "field-error" : "error-message"}`}>{error?.message}</p>} */}
+            </Form.Group>
+
+
           </Col>
         </Row>
       </section>

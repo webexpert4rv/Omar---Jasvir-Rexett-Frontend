@@ -135,8 +135,6 @@ function App() {
         </Routes>
         </Router>
       </Suspense>
-     
-    
     </>
   );
 }

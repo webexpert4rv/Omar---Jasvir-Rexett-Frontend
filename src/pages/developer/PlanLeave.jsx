@@ -20,7 +20,7 @@ import moment from "moment";
 import RexettButton from "../../components/atomic/RexettButton";
 import { HOLIDAY_GUIDE_LINES, generateLeave } from "../../components/clients/TimeReporiting/constant";
 import { LEAVE_TYPE } from "../../components/clients/TimeReporiting/constant";
-import RejectModal from "../views/Modals/EndJob";
+import RejectModal from "../../components/common/Modals/EndJob";
 import ToolTip from "../../components/common/Tooltip/ToolTip";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";

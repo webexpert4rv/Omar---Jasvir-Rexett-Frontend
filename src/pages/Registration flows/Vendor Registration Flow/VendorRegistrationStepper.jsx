@@ -19,7 +19,6 @@ import SetUpJobModal from "../../../components/common/Modals/SetUpJobModal";
 import { uploadFileToS3Bucket } from "../../../redux/slices/developerDataSlice";
 import { applyAsVendor } from "../../../redux/slices/vendorDataSlice";
 import ExpertiseArea from "./ExpertiseArea";
-import CompanyInformation from "./CompanyInformation";
 
 const VendorRegistrationStepper = () => {
   const dispatch = useDispatch();
@@ -41,6 +40,8 @@ const VendorRegistrationStepper = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
+  console.log(errors,"errors")
+
 
 
   useEffect(() => {
@@ -64,7 +65,6 @@ const VendorRegistrationStepper = () => {
           setCompanyTypeOptions(newOptions);
         })
       );
-
     }
   }, [activeStep]);
   const increaseStepCount = () => {
@@ -75,7 +75,6 @@ const VendorRegistrationStepper = () => {
       localStorage.setItem("vendorActiveStep", activeStep + 1);
     }
   };
-  console.log(activeStep,"activestep")
   const handleToggleSetupModal = () => {
     setShowSetUpJobModal((prev) => !prev);
   };
@@ -102,6 +101,10 @@ const VendorRegistrationStepper = () => {
         return "Submit";
     }
   };
+  const handleAfterApiSuccess = () => {
+      increaseStepCount();
+      reset();
+    };
 
   const handleProceed = () => {
     increaseStepCount();
@@ -114,11 +117,7 @@ const VendorRegistrationStepper = () => {
       state: stepData["state_iso_code"]?.label,
       // profile_picture: selectedImage,
     };
-    const handleAfterApiSuccess = () => {
-      increaseStepCount();
-      reset();
-    };
-    console.log(stepData, "stepData")
+    
     const filePayload = { file: imageFile };
     dispatch(
       uploadFileToS3Bucket(filePayload, (url) => {
@@ -129,18 +128,15 @@ const VendorRegistrationStepper = () => {
           country: stepData["country_code"]?.label,
           state: stepData["state_iso_code"]?.label,
           profile_picture: url,
+          
         };
         console.log(payload, "payload")
         dispatch(applyAsVendor(payload, handleAfterApiSuccess));
       })
     );
-
-    // replace trigger verification modal with last callback function
-    //  dispatch(applyAsClient(payload,handleAfterApiSuccess,()=>{}))
   };
 
   const onSubmit = (values) => {
-    console.log(values, "values--------------------------------");
     if (activeStep === 1) {
       setShowSetUpJobModal(true);
     } else {
@@ -177,6 +173,7 @@ const VendorRegistrationStepper = () => {
       case 2:
         return (
           <VendorDecisionMakers
+          type={"vendor"}
             // stepFields={activeStepFields}
             //  skillOptions={skillOptions}
             onSubmit={onSubmit}
