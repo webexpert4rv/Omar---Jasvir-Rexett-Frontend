@@ -1267,7 +1267,7 @@ const AdminSingleJob = () => {
                                     </div>
                                 )}
                             </div>
-                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Clients</h5>
+                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Client</h5>
                             <Row>
                                 <Col lg={4}>
                                     <div className="interview-wrapper position-relative mb-3">
