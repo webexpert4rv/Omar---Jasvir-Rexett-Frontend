@@ -32,11 +32,12 @@ import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
-import { FaBriefcase, FaCheck, FaGithub, FaLinkedin, FaStar, FaTrashCan } from "react-icons/fa6";
+import { FaBriefcase, FaCheck, FaGithub, FaLinkedin, FaStar, FaTrashCan, FaUsersLine, FaUsersViewfinder } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
 import { FaRegHandshake } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
 import devImg from '../../../assets/img/demo-img.jpg';
+import companyImg from '../../../assets/img/aviox-logo.png';
 import { FaLink } from "react-icons/fa6";
 import ReactQuill from "react-quill";
 import { FaClipboardUser } from "react-icons/fa6";
@@ -45,7 +46,7 @@ import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import { LuMessagesSquare } from "react-icons/lu";
-import { IoGrid } from "react-icons/io5";
+import { IoCheckmarkCircle, IoCheckmarkOutline, IoCloseOutline, IoGrid } from "react-icons/io5";
 import TableView from "../../atomic/TableView";
 import InterviewCard from "../../atomic/InterviewCard";
 import ScreenLoader from "../../atomic/ScreenLoader";
@@ -56,7 +57,8 @@ import JobCard from "./JobCard";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import RexettButton from "../../atomic/RexettButton";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
-
+import sowIcon from '../../../assets/img/sow-icon.png';
+import ndaIcon from '../../../assets/img/nda-icon.png';
 
 const SingleJobDetails = () => {
   const role = localStorage.getItem("role")
@@ -78,6 +80,10 @@ const SingleJobDetails = () => {
   const location = useLocation();
   let id = location.pathname.split("/")[3];
   const clientId = localStorage.getItem("userId")
+  const [selectedDocument, setSelectedDocument] = useState('');
+  const [documentOwner, setDocumentOwner] = useState('');
+  const [detailsFilled, setDetailsFilled] = useState(false);
+  const [documentSaved, setDocumentSaved] = useState(false);
 
   const {
     allJobPostedList,
@@ -236,6 +242,47 @@ const SingleJobDetails = () => {
       );
     }
   };
+
+  const handleDocumentSelect = (e) => {
+    setSelectedDocument(e.target.value);
+    setDocumentOwner('');
+    setDetailsFilled(false);
+    setDocumentSaved(false);
+};
+
+const handleOwnerSelect = (e) => {
+    setDocumentOwner(e.target.value);
+    setDetailsFilled(false);
+    setDocumentSaved(false);
+};
+
+const handleSave = () => {
+    setDetailsFilled(true);
+    setDocumentSaved(true);
+};
+
+const handleSubmit = () => {
+    setSelectedDocument('');
+    setDocumentOwner('');
+    setDetailsFilled(false);
+    setDocumentSaved(false);
+};
+
+const handleBack = () => {
+    if (documentSaved) {
+        setDetailsFilled(false);
+        setDocumentSaved(false);
+    } else if (detailsFilled) {
+        setDocumentOwner('');
+        setDetailsFilled(false);
+    } else if (documentOwner) {
+        setSelectedDocument('');
+        setDocumentOwner('');
+    } else {
+        setSelectedDocument('');
+    }
+};
+
 
   const handleEdit = () => {
     if (singleJobDescription?.status == "Unpublished") {
@@ -943,387 +990,308 @@ const SingleJobDetails = () => {
                     </div> */}
           </Tab>
           <Tab eventKey="documentation" title={offered}>
-            <div className="card-box">
-              <div className="mb-4">
-                <h3 className="mb-3 doc-heading">Client's Documentation</h3>
-                <Row>
-                  <Tab.Container
-                    id="left-tabs-example"
-                    defaultActiveKey="create_client_sow"
-                    onSelect={handleSelect}
-                  >
-                    <Nav variant="pills" className="application-pills">
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="create_client_sow" className="application-link">
-                          Create SOW
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="create-client_noc" className="application-link">
-                          Create NOC
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                    <Tab.Content>
-                      <Tab.Pane eventKey="create_client_sow" className="py-4">
-                        <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
                         <div>
-                          <div>
-                            <Row>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Project Title</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Client Name</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Client Address</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Client Contact Information</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Project Budget</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={12}>
-                                <div className="mb-3">
-                                  <Form.Label>Project Objective</Form.Label>
-                                  <div className="custom-rich-editor">
-                                    <ReactQuill value={value} onChange={handleChange} />
-                                  </div>
-                                </div>
-                              </Col>
-                              <Col md={12}>
-                                <div className="mb-3">
-                                  <Form.Label>Scope of work</Form.Label>
-                                  <div className="custom-rich-editor">
-                                    <ReactQuill value={value} onChange={handleChange} />
-                                  </div>
-                                </div>
-                              </Col>
-                              <Col md={12}>
-                                <div className="mb-3">
-                                  <Form.Label>Responsibilities</Form.Label>
-                                  <div className="custom-rich-editor">
-                                    <ReactQuill value={value} onChange={handleChange} />
-                                  </div>
-                                </div>
-                              </Col>
-                            </Row>
-                            <div className="text-center mt-3">
-                              <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                            <div className="text-end mb-4">
+                                <Button variant="transparent" className="font-14 main-btn">Create Document</Button>
                             </div>
-                          </div>
-                        </div>
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="create-client_noc" className="py-4">
-                        <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
-                        <div>
-                          <div>
-                            <Row>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Client Name</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Client Address</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Client Contact Information</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                            </Row>
-                            <div className="text-center mt-3">
-                              <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                            </div>
-                          </div>
-                        </div>
-                      </Tab.Pane>
+                            <div className="card-box mb-4">
+                                
+                                {!selectedDocument && (
+                                    <div>
+                                        <h4 className="text-center">Select Document</h4>
+                                        <p className="text-center mb-4">Select document you want to create</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="sow-document" name="document_select" value="SOW" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="sow-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={sowIcon} alt="SOW Icon" />
+                                                            <span>Statement of work</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="nda-document" name="document_select" value="NDA" onChange={handleDocumentSelect} />
+                                                        <Form.Label htmlFor="nda-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <img src={ndaIcon} alt="NDA Icon" />
+                                                            <span>Non Disclosure Agreement</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedDocument && !documentOwner && (
+                                    <div id="document-ownership">
+                                        <h4 className="text-center">Document Ownership: Client or Candidate?</h4>
+                                        <p className="text-center mb-4">Is this document intended for the Client or the Candidate?</p>
+                                        <div className="selection-cards">
+                                            <Row className="justify-content-center">
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="client-document" name="document_owner" value="Client" onChange={handleOwnerSelect} />
+                                                        <Form.Label htmlFor="client-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <FaUsersLine />
+                                                            <span>Client</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div className="document-card">
+                                                        <input type="radio" className="document_select d-none" id="candidate-document" name="document_owner" value="Candidate" onChange={handleOwnerSelect} />
+                                                        <Form.Label htmlFor="candidate-document" className="document_label">
+                                                            <span className="doccheck-icon">
+                                                                <IoCheckmarkCircle />
+                                                            </span>
+                                                            <FaUsersViewfinder />
+                                                            <span>Candidate</span>
+                                                        </Form.Label>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                        <div className="text-center">
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedDocument === 'NDA' && documentOwner && (
+                                    <>
+                                        {documentOwner === 'Client' && documentSaved && (
+                                            <div id="preview-document">
+                                                <h4 className="text-center mb-4">Preview Document</h4>
+                                                <div className="text-center">
+                                                    <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>Submit</Button>
+                                                    <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {documentOwner === 'Candidate' && !documentSaved && (
+                                            <div id="select-candidates">
+                                                <h4 className="text-center">Select Candidates</h4>
+                                                <p className="text-center mb-4">Please select candidate for non disclosure agreement. You can select multiple candidates</p>
+                                                <div>
+                                                    <Row className="justify-content-center">
+                                                        <Col md={12}>
+                                                            <div>
+                                                                <div>
+                                                                    {/* Example candidates */}
+                                                                    {[...Array(6)].map((_, i) => (
+                                                                        <div className="d-inline-block me-3" key={i}>
+                                                                            <input type="checkbox" name="candidate_check" className="candidate_checkbox" id={`candidate_short${i + 1}`} />
+                                                                            <Form.Label htmlFor={`candidate_short${i + 1}`} className="select_candidate_label">
+                                                                                <div className="position-relative">
+                                                                                    <img src={devImg} alt="Candidate" />
+                                                                                    <span className="checkmark-icon">
+                                                                                        <IoCheckmarkOutline />
+                                                                                    </span>
+                                                                                </div>
+                                                                                johndoe@gmail.com
+                                                                            </Form.Label>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
 
-                    </Tab.Content>
-                  </Tab.Container>
-                  {/* <Col md={4}>
+                                                            <div className="text-center">
+                                                                <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSave}>Save</Button>
+                                                                <Button variant="transparent" className="font-14 outline-main-btn  px-5" onClick={handleBack}>Back</Button>
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                                {documentOwner && selectedDocument !== 'NDA' && !documentSaved && (
+                                    <div id="fill-details">
+                                        <h4 className="text-center">Fill Details</h4>
+                                        <p className="text-center mb-4">Fill all the details</p>
                                         <div>
-                                            <Form.Label>Statement of work(SOW)</Form.Label>
+                                            <Row className="justify-content-center">
+                                                <Col md={8}>
+                                                    <div>
+                                                        <Row>
+                                                            <Col lg={12}>
+                                                                <div>
+                                                                    <Form.Label className="font-14 fw-medium">Select Candidate</Form.Label>
+                                                                    <div>
+                                                                        {[...Array(6)].map((_, i) => (
+                                                                            <div className="d-inline-block me-3" key={i}>
+                                                                                <input type="checkbox" name="candidate_check" className="candidate_checkbox" id={`candidate_short${i + 1}`} />
+                                                                                <Form.Label htmlFor={`candidate_short${i + 1}`} className="select_candidate_label">
+                                                                                    <div className="position-relative">
+                                                                                        <img src={devImg} alt="Candidate" />
+                                                                                        <span className="checkmark-icon">
+                                                                                            <IoCheckmarkOutline />
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    johndoe@gmail.com
+                                                                                </Form.Label>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Name</Form.Label>
+                                                                <Form.Control type="text" value="Aviox Technologies" className="common-field font-14" readOnly />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Address</Form.Label>
+                                                                <Form.Control type="text" value="Mohali, Punjab" className="common-field font-14" readOnly />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Start Date</Form.Label>
+                                                                <Form.Control type="date" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Work Location</Form.Label>
+                                                                <Form.Control type="text" value="Remotely" readOnly className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={12} className="mb-0">
+                                                                <Form.Label>Working Hours</Form.Label>
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Start Time</Form.Label>
+                                                                <Form.Control type="time" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={6} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">End Time</Form.Label>
+                                                                <Form.Control type="time" className="common-field font-14" />
+                                                            </Col>
+                                                            <Col md={8} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Price (in dollars)</Form.Label>
+                                                                <div className="d-flex align-items-center gap-3">
+                                                                    <Form.Control type="text" className="common-field font-14" />
+                                                                    <Form.Check type="checkbox" label="Inc. GST" className="font-14 flex-none" />
+                                                                </div>
+                                                            </Col>
+                                                            <Col md={12} className="mb-3">
+                                                                <Form.Label className="font-14 fw-medium">Scope of work</Form.Label>
+                                                                <Form.Control type="text" as="textarea" rows={3} className="common-field font-14" />
+                                                            </Col>
+                                                        </Row>
+                                                    </div>
+
+                                                    <div className="text-center">
+                                                        <Button variant="transparent" className="font-14 outline-main-btn main-btn px-5 me-2" onClick={handleBack}>Back</Button>
+                                                        <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSave}>Save</Button>
+                                                    </div>
+                                                </Col>
+                                                <Col md={4}>
+                                                    <div>
+                                                        <h5>Preview Document</h5>
+                                                        {/* Preview content goes here */}
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                )}
+                                {documentSaved && (
+                                    <div id="preview-document">
+                                        <h4 className="text-center mb-4">Preview Document</h4>
+                                        <div className="text-center">
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleSubmit}>Submit</Button>
+                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleBack}>Back</Button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Clients</h5>
+                            <Row>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3">
+                                        <div>
+                                            <p className="dev-name mb-2 font-16">
+                                                <div className="me-1">
+                                                    <img src={companyImg} />
+                                                </div>
+                                                <div>
+                                                    Aviox Technologies Pvt Ltd<br />
+                                                    {/* <span className="associate-text">
+                                                        <span className="associate mt-1">Mohali, India</span>
+                                                    </span> */}
+                                                </div>
+                                            </p>
                                             <div>
-                                                <Button className="main-btn font-14">Sign Document</Button>
+                                                <h5 className="font-14 mt-3 mb-1">E-sign status</h5>
+                                                <span className="associate-text me-1">
+                                                    <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
+                                                </span>
+                                                <span className="associate-text">
+                                                    <span className="associate d-inline-flex align-items-center">NDA <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
+                                                </span>
                                             </div>
                                         </div>
-                                    </Col>
-                                    <Col md={4}>
-                                        <div>
-                                            <Form.Label>Non disclosure Agreement(NDA)</Form.Label>
+                                        <div className="d-flex align-items-center justify-content-between">
                                             <div>
-                                                <Button className="main-btn font-14">Sign Document</Button>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 mt-2">
+                                                <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
+                                                <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
+                                                <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
                                             </div>
                                         </div>
-                                    </Col> */}
-                </Row>
-              </div>
-              <div className="mb-3">
-                <h3 className="mb-3 doc-heading">Vendor's Documentation</h3>
-                <Tab.Container
-                  id="left-tabs-example"
-                  defaultActiveKey="create_sow"
-                  onSelect={handleSelect}
-                >
-                  <Nav variant="pills" className="application-pills">
-                    <Nav.Item className="application-item">
-                      <Nav.Link eventKey="create_sow" className="application-link">
-                        Create SOW
-                      </Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item className="application-item">
-                      <Nav.Link eventKey="create_noc" className="application-link">
-                        Create NOC
-                      </Nav.Link>
-                    </Nav.Item>
-                  </Nav>
-                  <Tab.Content>
-                    <Tab.Pane eventKey="create_sow" className="py-4">
-                      <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
-                      <div>
-                        <div>
-                          <Row>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Project Title</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Vendor Name</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Vendor Address</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Vendor Contact Information</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Project Budget</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                            <Col md={12}>
-                              <div className="mb-3">
-                                <Form.Label>Project Objective</Form.Label>
-                                <div className="custom-rich-editor">
-                                  <ReactQuill value={value} onChange={handleChange} />
-                                </div>
-                              </div>
-                            </Col>
-                            <Col md={12}>
-                              <div className="mb-3">
-                                <Form.Label>Scope of work</Form.Label>
-                                <div className="custom-rich-editor">
-                                  <ReactQuill value={value} onChange={handleChange} />
-                                </div>
-                              </div>
-                            </Col>
-                            <Col md={12}>
-                              <div className="mb-3">
-                                <Form.Label>Responsibilities</Form.Label>
-                                <div className="custom-rich-editor">
-                                  <ReactQuill value={value} onChange={handleChange} />
-                                </div>
-                              </div>
-                            </Col>
-                          </Row>
-                          <div className="text-center mt-3">
-                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                          </div>
-                        </div>
-                      </div>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="create_noc" className="py-4">
-                      <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
-                      <div>
-                        <div>
-                          <Row>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Vendor Name</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Vendor Address</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                            <Col md={4}>
-                              <div className="mb-3">
-                                <Form.Label>Vendor Contact Information</Form.Label>
-                                <Form.Control type="text" className="common-field font-14" />
-                              </div>
-                            </Col>
-                          </Row>
-                          <div className="text-center mt-3">
-                            <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                          </div>
-                        </div>
-                      </div>
-                    </Tab.Pane>
-
-                  </Tab.Content>
-                </Tab.Container>
-                <div className="mb-3">
-                  <h3 className="mb-3 doc-heading">Developer's Documentation</h3>
-                  <Tab.Container
-                    id="left-tabs-example"
-                    defaultActiveKey="create_sow"
-                    onSelect={handleSelect}
-                  >
-                    <Nav variant="pills" className="application-pills">
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="create_sow" className="application-link">
-                          Create SOW
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item className="application-item">
-                        <Nav.Link eventKey="create_noc" className="application-link">
-                          Create NOC
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                    <Tab.Content>
-                      <Tab.Pane eventKey="create_sow" className="py-4">
-                        <h4 className="mb-2 doc-subheading">Create Statement of work(SOW)</h4>
-                        <div>
-                          <div>
-                            <Row>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Project Title</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Developer Name</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Developer Address</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Developer Contact Information</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Project Budget</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={12}>
-                                <div className="mb-3">
-                                  <Form.Label>Project Objective</Form.Label>
-                                  <div className="custom-rich-editor">
-                                    <ReactQuill value={value} onChange={handleChange} />
-                                  </div>
-                                </div>
-                              </Col>
-                              <Col md={12}>
-                                <div className="mb-3">
-                                  <Form.Label>Scope of work</Form.Label>
-                                  <div className="custom-rich-editor">
-                                    <ReactQuill value={value} onChange={handleChange} />
-                                  </div>
-                                </div>
-                              </Col>
-                              <Col md={12}>
-                                <div className="mb-3">
-                                  <Form.Label>Responsibilities</Form.Label>
-                                  <div className="custom-rich-editor">
-                                    <ReactQuill value={value} onChange={handleChange} />
-                                  </div>
-                                </div>
-                              </Col>
+                                    </div>
+                                </Col>
                             </Row>
-                            <div className="text-center mt-3">
-                              <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                            </div>
-                          </div>
-                        </div>
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="create_noc" className="py-4">
-                        <h4 className="mb-2 doc-subheading">Create Non Disclousre Agreement(NDA)</h4>
-                        <div>
-                          <div>
+                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Candidate</h5>
                             <Row>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Developer Name</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Developer Address</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
-                              <Col md={4}>
-                                <div className="mb-3">
-                                  <Form.Label>Developer Contact Information</Form.Label>
-                                  <Form.Control type="text" className="common-field font-14" />
-                                </div>
-                              </Col>
+                                <Col lg={4}>
+                                    <div className="interview-wrapper position-relative mb-3">
+                                        <div>
+                                            <p className="dev-name mb-2 font-16">
+                                                <div className="me-1">
+                                                    <img src={devImg} />
+                                                </div>
+                                                <div>
+                                                    Rohit Sharma<br />
+                                                    <span className="associate-text">
+                                                        <span className="associate mt-1">Web developer</span>
+                                                    </span>
+                                                </div>
+                                            </p>
+                                            <div>
+                                                <h5 className="font-14 mt-3 mb-1">E-sign status</h5>
+                                                <span className="associate-text me-1">
+                                                    <span className="associate d-inline-flex align-items-center">SOW <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
+                                                </span>
+                                                <span className="associate-text">
+                                                    <span className="associate d-inline-flex align-items-center">NDA <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
+                                            </div>
+                                            <div className="d-flex align-items-center gap-2 mt-2">
+                                                <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
+                                                <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
+                                                <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
                             </Row>
-                            <div className="text-center mt-3">
-                              <Button variant="transparent" className="main-btn font-14">Submit</Button>
-                            </div>
-                          </div>
                         </div>
-                      </Tab.Pane>
-
-                    </Tab.Content>
-                  </Tab.Container>
-                </div>
-              </div>
-            </div>
-          </Tab>
+                    </Tab>
           <Tab eventKey="hired" title={hired}>
             {/* <div className="developers-list job-card">
                         <div className="developer-card">
