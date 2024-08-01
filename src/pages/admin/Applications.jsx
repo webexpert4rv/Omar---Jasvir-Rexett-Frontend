@@ -43,6 +43,7 @@ import { FaRegEye } from "react-icons/fa";
 import { HiDocumentReport } from "react-icons/hi";
 import { PiUserCircle, PiUserCircleCheck, PiUserCircleCheckThin } from "react-icons/pi";
 import { MdLaptopMac } from "react-icons/md";
+import { CiCircleCheck } from "react-icons/ci";
 import { ImUser } from "react-icons/im";
 
 const SECRET_KEY = "abcfuipqw222";
@@ -1364,8 +1365,10 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                         <PiUserCircleCheck />
                                         </span>}
                                        { item?.completed_steps  < 7 ? <span className="d-inline-flex align-items-center status-ind">
-                                          <MdLaptopMac />
-                                        </span> : "" }
+                                          <MdLaptopMac/>
+                                        </span> :  <span className="d-inline-flex align-items-center status-ind">
+                                          <CiCircleCheck/>
+                                        </span> }
                                       </div>
                                     </td>
                                     <td>
