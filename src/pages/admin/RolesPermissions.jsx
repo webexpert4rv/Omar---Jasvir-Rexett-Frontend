@@ -17,6 +17,8 @@ import { TiUserAdd } from "react-icons/ti";
 import EmployeeManagement from "../../components/common/AdminRoleAndPermission/AllUsers/EmployeeManagement";
 import Tabs from "../../components/common/LeaveRequest/Tabs";
 import { permissionTabText } from "../../components/clients/TimeReporiting/constant";
+
+
 const RolesPermission = () => {
     const {currentTab , setCurrentTab} = useState("first")
     const [newpermission, setNewPermissions] = useState(false);

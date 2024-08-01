@@ -84,7 +84,7 @@ const DeveloperRegistrationStepper = () => {
     resume: "",
     introVideo: "",
   });
-  const [registrationType, setRegistrationType] = useState("indivisual"); //for register as indivisual or company
+  const [registrationType, setRegistrationType] = useState("individual"); //for register as indivisual or company
   const [showSetUpModal, setShowSetUpJobModal] = useState({
     recommendation: false,
     introVideo: false,
@@ -93,8 +93,7 @@ const DeveloperRegistrationStepper = () => {
   const [isRegistrationStepModal, setIsRegistrationStepModal] = useState(false);
   const [filteredStepData, setFilteredStepData] = useState([]);
 
-  console.log(developerRegistrationData, "developerRegistrationData");
-  let developer_id = localStorage.getItem("userId");
+  let developer_id = localStorage.getItem("developerId");
   const activeStepFields = getDeveloperActiveStepFields(
     activeStep,
     nestedActiveStep
@@ -176,9 +175,6 @@ const DeveloperRegistrationStepper = () => {
   setValue('linkedin_url',stepData?.linkedin_url)
   setValue('country_code',{label:stepData?.country, value: stepData?.country_code})
   setValue('state_iso_code',{label:stepData?.state, value: stepData?.state_iso_code})
-
-
-  
   setValue("project_title", stepData[0]?.project_title);
   setValue("project_description", stepData[0]?.project_description);
   setValue("tech_stacks_used", stepData[0]?.tech_stacks_used);

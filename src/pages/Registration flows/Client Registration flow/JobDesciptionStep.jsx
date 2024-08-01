@@ -5,25 +5,29 @@ import { Link } from "react-router-dom";
 import StepperHeadingSection from "../StepperHeadingSection";
 import { Controller, useFieldArray } from "react-hook-form";
 import ReactQuill from "react-quill";
-import { IoAddCircle, IoAddOutline, IoTrash } from "react-icons/io5";
+import { IoAddCircle, IoAddOutline, IoClose, IoTrash } from "react-icons/io5";
 import { registerables } from "chart.js";
 import { createOptionsForReactSelect } from "../../websiteRegisterForm/developer/developeStepConstant";
 import CommonInput from "../../../components/atomic/CommonInput";
 import { t } from "i18next";
 import CloseIcon from "../../../components/atomic/CloseIcon";
 import CustomSkill from "../DeveloperRegistrationFlow/CustomSkill";
+import { useTranslation } from "react-i18next";
+import { FiCheck, FiPlus } from "react-icons/fi";
+import CreatableSelect from "react-select/creatable";
+
 const LEVEL_OPTIONS = [
   {
     label: "Beginner",
-    value: "beginner",
+    // value: "beginner",
   },
   {
     label: "Intemediate",
-    value: "intemediate",
+    // value: "intemediate",
   },
   {
     label: "Expert",
-    value: "expert",
+    // value: "expert",
   },
 ];
 const JobDesciptionStep = ({
@@ -33,13 +37,40 @@ const JobDesciptionStep = ({
   watch,
   register,
   skillOptions,
+  type
 }) => {
- 
- 
+  const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
+  useEffect(() => {
+    if (skillOptions?.length) {
+      const formattedSkillOptions = createOptionsForReactSelect(
+        skillOptions,
+        "id",
+        "title"
+      );
+      setFormattedSkillOptions(formattedSkillOptions);
+    }
+  }, [skillOptions]);
+
+  const { fields, remove, append } = useFieldArray({
+    control,
+    name: "skills",
+  });
+
+
+
+  const handleAppend = () => {
+    const index = watch("skills").findIndex(
+      (curElem) => curElem.title === "" || curElem.level === ""
+    );
+    //if index value is less than 0 (.i.e -1) means no field is empty
+    if (index < 0) {
+      append({ title: "", level: "" });
+    }
+  };
   return (
     <Row>
       <Col md={12}>
-        <StepperHeadingSection activeStep={activeStep} />
+        <StepperHeadingSection activeStep={activeStep} type={type} />
         <p className="font-12 fw-medium">* includes a required field</p>
         <div className="d-flex align-items-start gap-3">
           <Row className="w-100">
@@ -152,14 +183,66 @@ const JobDesciptionStep = ({
               </div>
             </Col>
             <Col md={6}>
-            <CustomSkill 
-             activeStep={activeStep}
-             errors={errors}
-             control={control}
-             watch={watch}
-             register={register}
-             skillOptions={skillOptions}
-            />
+              <div>
+                {fields?.map((field, idx) => (
+                  <>
+                    <div
+                      key={field.id}
+                      className="d-flex align-items-center gap-2"
+                    >
+                      <div className="w-100">
+                        <CommonInput
+                          label={"Enter Skill"}
+                          name={`skills.${idx}.title`}
+                          type={"select2"}
+                          control={control}
+                          rules={{ required: "This field is required" }}
+                          error={errors?.skills?.[idx]?.title}
+                          selectOptions={formattedSkillOptions}
+                          invalidFieldRequired={true}
+                          placeholder="Select Skill"
+                        />{" "}
+                      </div>
+                      <div className="w-100">
+                        <CommonInput
+                          label={"Enter Level"}
+                          name={`skills.${idx}.level`}
+                          type={"select2"}
+                          control={control}
+                          rules={{ required: "This field is required" }}
+                          error={errors?.skills?.[idx]?.level}
+                          selectOptions={LEVEL_OPTIONS}
+                          invalidFieldRequired={true}
+                          placeholder="Select Level"
+                        />{" "}
+                      </div>
+                      {/* <Button
+                          onClick={handleAppend}
+                          variant="transparent"
+                          className="text-green font-24 p-0 shadow-none border-0"
+                        >
+                          <IoAddCircle />
+                        </Button> */}
+                      {watch("skills")?.length > 1 && (
+                        <Button
+                          onClick={() => remove(idx)}
+                          variant="transparent"
+                          className="text-danger font-24 p-0 shadow-none border-0"
+                        >
+                          <IoTrash />
+                        </Button>
+                      )}
+                    </div>
+                  </>
+                ))}
+                <Button
+                  onClick={handleAppend}
+                  variant="transparent"
+                  className="text-green font-24 p-0 shadow-none border-0"
+                >
+                  <IoAddCircle />
+                </Button>
+              </div>
             </Col>
           </Row>
         </div>
@@ -169,3 +252,5 @@ const JobDesciptionStep = ({
 };
 
 export default JobDesciptionStep;
+
+

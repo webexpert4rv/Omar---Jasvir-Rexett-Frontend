@@ -43,7 +43,8 @@ const initialClientData = {
   OtpLoader: false,
   jobList: [],
   clientProfileData: {},
-  timeZoneList: []
+  timeZoneList: [],
+  degreeList:[]
 };
 export const clientDataSlice = createSlice({
   name: 'clientData',
@@ -203,7 +204,14 @@ export const clientDataSlice = createSlice({
     setClientProfileData: (state, action) => {
       state.clientProfileData = action.payload;
       state.screenLoader = false;
-    }
+    },
+    setDegreeList: (state, action) => {
+      let data = action?.payload?.map((item) => {
+        return { label: item.title, value: item.id };
+      });
+      console.log(data,"daataa")
+      state.degreeList = data;
+    },
 
   }
 })
@@ -212,7 +220,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
 
-export const { setOTPloader, setJobList, setListTimeZone, setStatesList, setCountriesList, setCitiesList, setClientLook, setWebClientData, setTimeZones, setInvoiceList, setAllJobPostedList, setClientHolidayList, closeApprovedLoader, setSuggstedDeveloper, setAddHoliday, setApproveDisapprove, setReconciliationsData, setFaqs, setLeaveClientHistory, setScreenLoader, setDeveloperDetails, setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails, setJobId, setClientProfileData } = clientDataSlice.actions
+export const { setOTPloader, setJobList, setListTimeZone,setDegreeList, setStatesList, setCountriesList, setCitiesList, setClientLook, setWebClientData, setTimeZones, setInvoiceList, setAllJobPostedList, setClientHolidayList, closeApprovedLoader, setSuggstedDeveloper, setAddHoliday, setApproveDisapprove, setReconciliationsData, setFaqs, setLeaveClientHistory, setScreenLoader, setDeveloperDetails, setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails, setJobId, setClientProfileData } = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -408,6 +416,21 @@ export function getClientLeaveStatus(payload) {
     }
   };
 }
+export function getDegreeList(payload, callback) {
+  return async (dispatch) => {
+    // dispatch(setSmallLoader())
+    try {
+      let result = await authInstance.get(`common/degree-list`);
+      console.log(result.data.data,"degreelisttttt")
+      dispatch(setDegreeList(result.data.data));
+      // return callback()
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      // dispatch(setFailDeveloperData());
+    }
+  };
+}
 export function getFolderData(payload, role) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
@@ -427,32 +450,28 @@ export function getFolderData(payload, role) {
   };
 }
 
-export function clientJobPost(payload, activeStep, callback) {
-  console.log(payload, "payload")
+export function clientJobPost(payload, activeStep, id) {
   const activeStepKey = ["", "step1", "step2", "step3"];
-
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    // dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.post(`common/post-job?user_id=${payload?.user_id}`, { ...payload });
-      if (result?.data?.[activeStepKey[activeStep]]?.id) {
-        localStorage.setItem(
-          "jobId",
-          result?.data?.[activeStepKey[activeStep]]?.id
-        );
+      let result = await authInstance.post(`common/post-job?user_id=${id}`, { ...payload });
+      if (result?.data?.step1?.id) {
+        localStorage.setItem("jobId", result?.data?.step1?.id);
       }
       // dispatch(setJobId(result?.data?.job?.id));
-      if (activeStep === 3) {
-        localStorage.removeItem("jobId");
+      if (activeStep === 5) {
+        localStorage.removeItem("jobId")
         localStorage.removeItem("activeStep");
+
         toast.success("Job successfully Posted", { position: "top-center" });
       }
       dispatch(setActionSuccessFully());
-      return callback();
+      // return callback();
     } catch (error) {
       const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
-      dispatch(setFailClientData());
+      // dispatch(setFailClientData());
     }
   };
 }
@@ -1240,8 +1259,23 @@ export function getJobLists(filters, callback) {
     }
   };
 }
+export function getProfile(id, callback) {
+  return async (dispatch) => {
+    // dispatch(setScreenLoader());
+    try {
+      let result = await authInstance.get(`/common/client-details/${id}`);
+      callback(result?.data?.data)
+      // dispatch(setProfile(result?.data?.data));
+    } catch (error) {
+      const message = error?.message;
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      // dispatch(setFailClientData());
+    }
+  };
+}
 
 export const uploadFileToS3Bucket = (payload, callback) => {
+  console.log(payload,"payload")
   return async (dispatch) => {
     // dispatch(setScreenLoader());
     dispatch(setSmallLoader());
@@ -1283,7 +1317,7 @@ export function clientRegistration(payload, callback) {
       });
       if (result.status === 200) {
         dispatch(setActionSuccessFully());
-        toast.success("Client Registered successfully", { position: "top-center" });
+        toast.success(result.data.message, { position: "top-center" });
       }
     } catch (error) {
       const message = error.message || "Something went wrong";

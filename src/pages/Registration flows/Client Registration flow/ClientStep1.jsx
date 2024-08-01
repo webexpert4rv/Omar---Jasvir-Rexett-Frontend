@@ -13,6 +13,9 @@ import CommonProfilePictureSection from "../../../components/common/CommonProfil
 import UploadFile from "../DeveloperRegistrationFlow/UploadFile";
 const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
+// const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
+// const GOOGLE_MAP_API_KEY = "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+
 const ClientStep1 = ({
   control,
   errors,
@@ -38,7 +41,7 @@ const ClientStep1 = ({
 }) => {
   const { t } = useTranslation();
   
-  
+  console.log(type,"typeClientStep1")
   let isStillWorking=watch("is_still_working")
   console.log(stepFields,"stepFields")
   // let isStillWorking=true
@@ -51,17 +54,17 @@ const ClientStep1 = ({
           <div className="d-flex align-items-start gap-3">
             {isProfileSectionRequired && (
               <CommonProfilePictureSection
-                register={register}
-                setValue={setValue}
-                clearErrors={clearErrors}
-                setImageFile={setImageFile}
-                setPreviewImage={setPreviewImage}
-                previewImage={previewImage}
-                setError={setError}
-                imageFile={imageFile}
-                fieldName={"profile_picture"}
-                errors={errors}
-              />
+              register={register}
+              setValue={setValue}
+              clearErrors={clearErrors}
+              setImageFile={setImageFile}
+              setPreviewImage={setPreviewImage}
+              previewImage={previewImage}
+              setError={setError}
+              imageFile={imageFile}
+              fieldName={"profile_picture"}
+              errors={errors}
+            />
             )}
             <Row className="w-100">
               {stepFields?.map(({label,
@@ -114,7 +117,7 @@ const ClientStep1 = ({
                           error={errors?.[fieldName]}
                           apiKey={GOOGLE_MAP_API_KEY}
                           onPlaceSelected={(place) => {
-                            setValue(fieldName, place.formatted_address);
+                            setValue(fieldName, place?.formatted_address);
                           }}
                           onChange={(e) => {
                             setValue(fieldName, e.target.value);
@@ -152,9 +155,8 @@ const ClientStep1 = ({
                               isMaxRequired={isMaxRequired}
                               disabled={isStillWorking}
                               isMinRequired={isMinRequired}
-                              readOnly={readOnly ? true : false}
-
-                            />
+                  readOnly={readOnly ? true : false}
+                   />
                           ): <UploadFile 
                           label={label}
                           placeholder={placeholder}
