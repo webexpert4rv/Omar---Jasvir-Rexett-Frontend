@@ -5619,14 +5619,16 @@ input[type="radio"]:checked {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-size: 13px;
+    max-height: 600px;
+    overflow: auto;
 }
 
 .docs-introduction p, .terms-conditions p {
     margin-bottom: 10px;
-    font-size: 13px;
+    font-size: 12px;
 }
 .docs-head{
-    font-size: 13px;
+    font-size: 14px;
     color: #312f2f;
     font-weight: 600;
     text-align: center;
