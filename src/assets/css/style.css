@@ -5607,6 +5607,35 @@ input[type="radio"]:checked {
   .card-body {
     margin-top: 10px;
   }
+
+
+/* Docs container */
+
+.docs-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-size: 13px;
+}
+
+.docs-introduction p, .terms-conditions p {
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+.docs-head{
+    font-size: 13px;
+    color: #312f2f;
+    font-weight: 600;
+    text-align: center;
+}
+.docs-head-section{
+    font-size: 15px;
+    color: #312f2f;
+    font-weight: 600;
+}
   
 /* common card component css */
 
