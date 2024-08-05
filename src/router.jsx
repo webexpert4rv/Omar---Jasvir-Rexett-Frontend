@@ -166,12 +166,12 @@ export const route = [
     // element: <ClientStep1 />,
     public: true,
   },
-  {
-    path: "/decision-makers",
-    element: <VendorDecisionMakers />,
-    // element: <ClientStep1 />,
-    public: true,
-  },
+  // {
+  //   path: "/decision-makers",
+  //   element: <VendorDecisionMakers />,
+  //   element: <ClientStep1 />,
+  //   public: true,
+  // },
   {
     path: "/developer-registration",
     element: <DeveloperRegistrationStepper />,

@@ -139,6 +139,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     ShowScheduleMeeting(false);
   }
 
+  const [createdMeetings , setCreatedMeetings] = useState()
+  console.log(createdMeetings,"createdMeetings")
+
 
   return (
     <>
@@ -234,8 +237,8 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
 
       <MessageInbox showMessagesInfo={showMessagesInfo} setShowMessagesInfo={setShowMessagesInfo} />
       <ToDoComponent showToDo={showToDo} setShowToDo={setShowToDo} />
-      <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
-      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} />
+      <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo}  createdMeetings={createdMeetings}/>
+      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} setCreatedMeetings={setCreatedMeetings} createdMeetings ={createdMeetings} />
     </>
   );
 };

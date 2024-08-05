@@ -31,6 +31,8 @@ const initialAdminData = {
     timeReportingDetailTotalPage:null,
     configDetails: {},
     allPermissionList:[],
+    employeeList:[],
+    toDoList:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -159,10 +161,18 @@ export const adminDataSlice = createSlice({
             state.allPermissionList = action.payload
             state.smallLoader = false;
            },
+        setEmployeeList : (state,action)=>{
+            state.employeeList = action.payload
+            state.smallLoader = false;
+        },
+        setTodoData:(state,action)=>{
+            state.toDoList = action.payload
+            state.smallLoader = false;
+        }
     }
 })
 
-export const { setTimeReportDetails,setConfigDetails ,setAllPermissionList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setConfigDetails,setTodoData ,setAllPermissionList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -795,6 +805,85 @@ export function getUpdateRolePermission(payload){
             }
         }catch(error){
             const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getAdminCreateToDo(payload,callback){
+    console.log(payload,"payload")
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.post("admin/create-todos" ,{...payload})
+            if (result.status === 200) {
+                toast.success(result?.data?.message, { position: "top-center" })
+            }
+            return callback()
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getAdminList(){
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.get("admin/employees")
+            dispatch(setEmployeeList(result.data.data))
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+        }catch(error){
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getAdminTodos(payload,callback){
+    console.log(payload,"payload")
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.get(("admin/todos"))
+            dispatch(setTodoData(result.data.data))
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+            // return callback();
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getEditToDo(id,payload,callback){
+    console.log(payload,"editpayload")
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.put((`admin/todos/${id}`,{...payload}))
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+            return callback();
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getDeleteTodo(id,callback){
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.delete((`admin/todos/${id}`))
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+            return callback();
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }

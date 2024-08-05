@@ -134,11 +134,11 @@ export const tabText = [
 ]
 export const Todo_tabText = [
   {
-    key: "first",
+    key: "my_todo",
     value: "My To-Dos"
   },
   {
-    key: "second",
+    key: "assigned_to",
     value: "Assigned To-Dos"
   }
 ]

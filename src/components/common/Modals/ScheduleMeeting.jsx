@@ -15,7 +15,8 @@ import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
 import { useLocation } from "react-router-dom";
-const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
+const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,setCreatedMeetings }) => {
+    console.log(selectedDeveloper,"selectedDeveloper")
     const {
         handleSubmit,
         register,
@@ -125,8 +126,9 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
 
     const meetingTypeValue = watch('meeting_type')
 
-
+    console.log(createdMeetings,"createdMeetings")
     const onSubmit = data => {
+        setCreatedMeetings(data)
         console.log(data, "dat")
         let payload = {
             "job_id": +id,
