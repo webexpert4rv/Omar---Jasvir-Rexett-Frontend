@@ -443,7 +443,7 @@ const SingleJobDetails = () => {
 
         // Set font settings
         pdf.setFont('Helvetica', 'normal'); // Change to 'Helvetica' for a clean font
-        pdf.setFontSize(8); // Set a readable font size
+        pdf.setFontSize(12); // Set a readable font size
 
         pdf.save('statement_of_work.pdf');
     };
