@@ -13154,3 +13154,6 @@ Account{name=etc, path=C:/Users/HP/OneDrive/Desktop/Rexett-pro/Omar---Jasvir-Rex
 Account{name=..., path=..., type=PREDICT}
 2024-08-01 09:35:15.327 [pool-3-thread-1] INFO  com.rs.mv.mvvs.client.account.AccountManager - [client:40010105]load account manager finish
 2024-08-01 09:35:15.329 [pool-3-thread-1] INFO  com.rs.mv.mvvs.instance.userspace.UserspaceManager - [framework:30010402]config file(C:\Users\HP/.rmv/config) watcher launch successful
+2024-08-01 10:10:44.725 [pool-3-thread-1] INFO  com.rs.mv.mvvs.client.catalog.from.scan.CurrentPathScanner - [client:400205]scan file in current open file directory(C:/Users/HP/OneDrive/Desktop/Rexett-pro/Omar---Jasvir-Rexett-Frontend/src/components/common/SingleJob)
+2024-08-01 10:10:45.898 [pool-3-thread-1] INFO  com.rs.mv.mvvs.client.catalog.from.scan.CurrentPathScanner - [client:400205]scan file in current open file directory(C:/Users/HP/OneDrive/Desktop/Rexett-pro/Omar---Jasvir-Rexett-Frontend/src/pages/admin)
+2024-08-01 10:10:47.630 [pool-3-thread-1] INFO  com.rs.mv.mvvs.client.catalog.from.scan.CurrentPathScanner - [client:400205]scan file in current open file directory(C:/Users/HP/OneDrive/Desktop/Rexett-pro/Omar---Jasvir-Rexett-Frontend/src/components/common/SingleJob)
