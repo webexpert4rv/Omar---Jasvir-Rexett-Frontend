@@ -166,6 +166,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                           <img src={devImg} />
                         </div>
                         {item?.creator?.displayName}
+                        <p>Meeting Link :{item?.hangoutLink}</p>
                       </p>
                       <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0, 10)}</p>
                       <button onClick={(e)=>syncCreatedMeetingsWithGoogle(e,item)}>Sync with Google</button>
