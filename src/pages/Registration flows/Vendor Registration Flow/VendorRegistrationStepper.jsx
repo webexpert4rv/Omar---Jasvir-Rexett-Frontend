@@ -184,7 +184,6 @@ const VendorRegistrationStepper = () => {
     const stepData = watch();
     let formData = new FormData();
     formData.append('file', imageFile?.profile_picture);
-    console.log( imageFile?.profile_picture," imageFile")
     dispatch(uploadFileToS3Bucket(formData, (url) => {
         let payload = {
             ...stepData,

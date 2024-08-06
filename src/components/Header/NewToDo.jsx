@@ -14,10 +14,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAdminCreateToDo, getAdminList, getAdminTodos, getEditToDo } from '../../redux/slices/adminDataSlice'
 import moment from 'moment'
 
-function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
-    const [valueMessage, setValueMessage] = useState('');
+function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stripHtmlTags,getSelectedCandidateDetails }) {
     const [value, onChange] = useState(new Date());
-    // const [data, setData] = useState()
     const quillRef = useRef(null);
     const dispatch = useDispatch()
     const {
@@ -28,80 +26,75 @@ function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
         setError,
         clearErrors,
         handleSubmit,
+        reset,
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
-
-    const { employeeList } = useSelector((state) => state.adminData)
-    console.log(employeeList,"employeeList")
-    console.log(selectedToDo?.description,"selectedToDodescriptiomn")
-    console.log(selectedToDo?.title,"selectedToDotitle")
-
+    const newDate = moment(value).format('YYYY-MM-DD');
+    const { employeeList, approvedLoader } = useSelector((state) => state.adminData)
 
     useEffect(() => {
         dispatch(getAdminList())
     }, [])
+    useEffect(() => {
+        if (isEdit === true) {
+            setValue("title", selectedToDo?.title)
+            setValue("description", selectedToDo?.description)
+        }
+    }, [isEdit])
 
-    useEffect(()=>{
-        setValue("title",selectedToDo?.title)
-        setValue("description",selectedToDo?.description)
-        
-
-
-    },[])
-
-    useEffect(()=>{
-        const data = {
-            tab: currentTab,
-            status: "pending",
-            due_date: newDate,
-            page: 1,
-            per_page: 10
-        };
-        console.log(data,"datauseEffect")
+    useEffect(() => {
+        let data = {
+            tab: currentTab
+        }
         dispatch(getAdminTodos(data));
-    },[])
-
-    const handleChange = (item) => {
-        console.log(item, "values")
-        setValueMessage(item)
-    }
-    const newDate = moment(value).format('YYYY-MM-DD');
-    console.log(valueMessage,"valueMessageccc")
-
- 
-
-
-
-
+    }, [])
     const onSubmit = async (values) => {
         console.log(values,"values")
+        getSelectedCandidateDetails(values?.assignees)
         let payload;
         if (isEdit) {
-            payload = {
-                title: values?.title,
-                description: valueMessage,
-                status: "pending",
-                due_date: newDate,
-                type: "to_self",
-            };
-            console.log(payload,"payloadonnewtodo")
-            await dispatch(getEditToDo(payload, selectedId, () => {
-                const data = {
-                    tab: currentTab,
+            if (currentTab === "my_todo") {
+                payload = {
+                    title: values?.title,
+                    description: (stripHtmlTags(values?.description)),
                     status: "pending",
                     due_date: newDate,
-                    page: 1,
-                    per_page: 10
+                    type: "to_self",
                 };
-                console.log(data,"dataonadmintodo")
-                dispatch(getAdminTodos(data));
-                setIsEdit(false)
-            }));
+                await dispatch(getEditToDo(payload, selectedId, () => {
+                    let data = {
+                        tab: currentTab
+                    }
+                    dispatch(getAdminTodos(data));
+                    setIsEdit(false)
+                    reset()
+                }));
+            } else {
+                payload = {
+                    title: values?.title,
+                    description: (stripHtmlTags(values?.description)),
+                    status: "pending",
+                    due_date: newDate,
+                    type: "assigned_to_employees",
+                    assignees: [
+                        values?.assignees
+                    ],
+                };
+                await dispatch(getEditToDo(payload, selectedId, () => {
+                    let data = {
+                        tab: currentTab
+                    }
+                    dispatch(getAdminTodos(data));
+                    setIsEdit(false)
+                    reset()
+                }));
+
+            }
         } else {
             if (currentTab === "my_todo") {
                 payload = {
                     title: values?.title,
-                    description: valueMessage,
+                    description: (stripHtmlTags(values?.description)),
                     status: "pending",
                     due_date: newDate,
                     type: "to_self",
@@ -109,27 +102,28 @@ function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
             } else {
                 payload = {
                     title: values?.title,
-                    description: valueMessage,
+                    description: (stripHtmlTags(values?.description)),
                     status: "pending",
                     due_date: newDate,
                     type: "assigned_to_employees",
-                    assignees: [41, 23],
+                    assignees: [ values?.assignees],
                 };
             }
             await dispatch(getAdminCreateToDo(payload, () => {
-                const data = {
-                    tab: currentTab,
-                    status: "pending",
-                    due_date: newDate,
-                    page: 1,
-                    per_page: 10
-                };
+                let data = {
+                    tab: currentTab
+                }
                 dispatch(getAdminTodos(data));
+                reset()
             }));
         }
     };
 
 
+
+    // const handleSelectedOption=(item)=>{
+    //     console.log(item,"item")
+    // }
     return (
         <div className="new-todo">
             <div className="">
@@ -139,9 +133,9 @@ function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
                             type="text"
                             className="common-field font-14 mb-2"
                             placeholder="Add your to-do..."
-                            defaultValue={selectedToDo?.title}
+                            defaultValue=""
                             {...register("title", {
-                                required: "Job title is required",
+                                required: "Task title is required",
                             })}
                         />
                         {errors?.title && (
@@ -149,23 +143,24 @@ function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
                         )}
                     </Form.Group>
                     <div className="custom-rich-editor todo-field">
-                        {/* <ReactQuill value={selectedToDo?.description} onChange={(e) => handleChange(e)} /> */}
                         <Controller
                             name="description"
                             control={control}
-                            // defaultValue={selectedToDo?.description}
+                            defaultValue={selectedToDo?.description || ""}
                             rules={{ required: "Description is required" }}
                             render={({ field }) => (
                                 <ReactQuill
                                     {...field}
                                     ref={quillRef}
-                                    value={ selectedToDo?.description}
+                                    value={watch("description")}
                                     theme="snow"
-                                    onChange={(content, delta, source, editor) => field.onChange(content)}
                                 />
-                             )} 
+                            )}
                         />
                     </div>
+                    {errors?.description && (
+                        <p className="error-message ">{errors.description?.message}</p>
+                    )}
                     <div className="d-flex justify-content-between align-items-center pt-2">
                         <div className="d-flex align-items-center gap-3">
                             {currentTab === "assigned_to" ?
@@ -180,7 +175,9 @@ function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
                                     <Dropdown.Menu className="assign-dropdown-menu">
                                         <Form.Select
                                             className="common-field font-12 mb-2"
-                                        // onChange={(e)=>handleSelectedOption(e)}
+                                            name="assignees"
+                                        // onChange={(e)=>handleSelectedOption(e.target.value)}
+                                        {...register("assignees", { required: "Please select candidate" })}
                                         >
                                             <option value="">Search Employee</option>
                                             {employeeList?.map(emp => (
@@ -204,35 +201,6 @@ function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
                                     <div>
                                         <span className="font-14 fw-medium d-block mb-2">Quick schedule</span>
                                     </div>
-                                    {/* <ul className="quick-listing">
-                                        <li>
-                                            <span className="d-inline-flex align-items-center gap-1">
-                                                <span className="quick-icon">
-                                                    <CgCalendar />
-                                                </span>
-                                                Today
-                                            </span>
-                                            <span className="fw-medium">26 Jun</span>
-                                        </li>
-                                        <li>
-                                            <span className="d-inline-flex align-items-center gap-1">
-                                                <span className="quick-icon">
-                                                    <TiWeatherSunny />
-                                                </span>
-                                                Tomorrow
-                                            </span>
-                                            <span className="fw-medium">27 Jun</span>
-                                        </li>
-                                        <li>
-                                            <span className="d-inline-flex align-items-center gap-1">
-                                                <span className="quick-icon">
-                                                    <TbCalendarShare />
-                                                </span>
-                                                Friday
-                                            </span>
-                                            <span className="fw-medium">28 Jun</span>
-                                        </li>
-                                    </ul> */}
                                     <div className="meeting-booking mt-3 to-doschedule mb-0">
                                         <Calendar onChange={onChange} value={value} />
                                     </div>
@@ -254,8 +222,8 @@ function NewToDo({ currentTab, isEdit,setIsEdit ,selectedToDo, selectedId }) {
                                 className="font-14 main-btn"
                                 text={isEdit ? "Update" : "Create Todo"}
                                 type="submit"
-                            // disabled={smallLoader}
-                            // isLoading={smallLoader}
+                                disabled={approvedLoader}
+                                isLoading={approvedLoader}
                             />
                         </div>
                     </div>

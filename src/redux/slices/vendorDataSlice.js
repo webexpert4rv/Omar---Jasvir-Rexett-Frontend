@@ -371,9 +371,6 @@ export function postVendorStepData(URL,payload,callback,activeStep,triggerVerifi
     }
 
 }
-
-
-
 export function getVendorStepData(user_id ,callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
@@ -389,7 +386,6 @@ export function getVendorStepData(user_id ,callback) {
     }
 }
 export const uploadFileToS3Bucket = (payload,callback) => {
-    console.log(payload,"payload")
     return async (dispatch) => {
     //   dispatch(setScreenLoader());
       try {
@@ -404,11 +400,24 @@ export const uploadFileToS3Bucket = (payload,callback) => {
     };
   };
   export function applyAsVendor(payload,callback) {
-    console.log(payload,'payload')
+    return async (dispatch) => {
+      // dispatch(setScreenLoader());
+      try {
+        let result = await authInstance.post("common/vendor-registration",{...payload})
+        localStorage.setItem("vendorId",result?.data?.data?.vendor.id);
+        return callback(result?.data?.data.Location);
+      } catch (error) {
+        // dispatch(setFailVendorData());
+        console.log(error,"error")
+      }
+    };
+}
+export function getEditDecision(payload,callback) {
     return async (dispatch) => {
     //   dispatch(setScreenLoader());
       try {
-        let result = await clientInstance.post(`/common/vendor-registration`,{...payload});
+        let result = await authInstance.post(`common/vendor-decision-makers-details`,{...payload});
+        localStorage.setItem("vendorId",result?.data?.data?.vendor?.id);
         callback()
       } catch (error) {
         const message = error?.message;
@@ -416,47 +425,26 @@ export const uploadFileToS3Bucket = (payload,callback) => {
           if (error.response?.data?.verify_user) {
           // triggerVerificationModal("verify"); 
         } else {
-          toast.error(error?.response?.data?.message, { position: "top-center" });
+          // toast.error(error?.response?.data?.message, { position: "top-center" });
         }
         dispatch(setFailVendorData());
       }
     };
   }
-  export function getEditDecision(payload,callback) {
-    console.log(payload,'payload')
+  export function getAreaExpertise(payload) {
     return async (dispatch) => {
     //   dispatch(setScreenLoader());
       try {
-        let result = await clientInstance.post(`/common/vendor-decision-makers-details`,{...payload});
-        localStorage.setItem("vendorId",result?.data?.data?.id);
-        callback()
+        let result = await authInstance.post(`common/vendor-area-expertise`,{...payload});
+        localStorage.setItem("vendorId",result?.data?.data?.vendor?.id);
+        // callback()
       } catch (error) {
         const message = error?.message;
         // if (error?.message === VERIFY_USER_MESSAGE) {
           if (error.response?.data?.verify_user) {
           // triggerVerificationModal("verify"); 
         } else {
-          toast.error(error?.response?.data?.message, { position: "top-center" });
-        }
-        dispatch(setFailVendorData());
-      }
-    };
-  }
-  export function getAreaExpertise(payload,callback) {
-    console.log(payload,'payload')
-    return async (dispatch) => {
-    //   dispatch(setScreenLoader());
-      try {
-        let result = await clientInstance.post(`/common/vendor-area-expertise`,{...payload});
-        localStorage.setItem("vendorId",result?.data?.data?.id);
-        callback()
-      } catch (error) {
-        const message = error?.message;
-        // if (error?.message === VERIFY_USER_MESSAGE) {
-          if (error.response?.data?.verify_user) {
-          // triggerVerificationModal("verify"); 
-        } else {
-          toast.error(error?.response?.data?.message, { position: "top-center" });
+          // toast.error(error?.response?.data?.message, { position: "top-center" });
         }
         dispatch(setFailVendorData());
       }
@@ -466,7 +454,7 @@ export const uploadFileToS3Bucket = (payload,callback) => {
     return async (dispatch) => {
     //   dispatch(setScreenLoader());
       try {
-        let result = await clientInstance.get(`/common/vendor-registration-details/${id}`);
+        let result = await authInstance.get(`common/vendor-registration-details/${id}`);
         callback(result?.data?.data)
         // localStorage.setItem("vendorId",result?.data?.data?.id);
       } catch (error) {
@@ -475,10 +463,9 @@ export const uploadFileToS3Bucket = (payload,callback) => {
           if (error.response?.data?.verify_user) {
           // triggerVerificationModal("verify"); 
         } else {
-          toast.error(error?.response?.data?.message, { position: "top-center" });
+          // toast.error(error?.response?.data?.message, { position: "top-center" });
         }
         dispatch(setFailVendorData());
       }
     };
   }
-  

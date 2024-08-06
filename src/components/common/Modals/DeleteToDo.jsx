@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RexettButton from "../../atomic/RexettButton";
-const DeleteToDo = ({ show, handleClose ,handleDelete }) => {
+const DeleteToDo = ({ show, handleClose ,handleDelete,smallLoader }) => {
 
     
     return(
@@ -23,6 +23,8 @@ const DeleteToDo = ({ show, handleClose ,handleDelete }) => {
                     className="delete-main-btn font-14 fw-semibold"
                     text={"Yes"}
                     onClick = {handleDelete}
+                    disabled={smallLoader}
+                    isLoading={smallLoader}
                     />
                 </div>
             </Modal.Body>

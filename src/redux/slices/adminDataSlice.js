@@ -811,13 +811,14 @@ export function getUpdateRolePermission(payload){
     }
 }
 export function getAdminCreateToDo(payload,callback){
-    console.log(payload,"payload")
     return async (dispatch)=>{
+        dispatch(setApprovedLoader())
         try{
             let result = await clientInstance.post("admin/create-todos" ,{...payload})
             if (result.status === 200) {
                 toast.success(result?.data?.message, { position: "top-center" })
             }
+            dispatch( setSuccessAdminData())
             return callback()
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -835,17 +836,22 @@ export function getAdminList(){
                 toast.success(result.data?.message, { position: "top-center" })
             }
         }catch(error){
-            const message = error?.response.data.message || "Something went wrong";
+            const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     }
 }
-export function getAdminTodos(payload,callback){
-    console.log(payload,"payload")
+export function getAdminTodos(payload){
     return async (dispatch)=>{
         try{
-            let result = await clientInstance.get(("admin/todos"))
+            let result;
+            if(payload)
+            {
+                 result = await clientInstance.get(generateApiUrl(payload,"admin/todos"))
+            }else{
+             result = await clientInstance.get("admin/todos")
+            }
             dispatch(setTodoData(result.data.data))
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
@@ -858,14 +864,16 @@ export function getAdminTodos(payload,callback){
         }
     }
 }
-export function getEditToDo(id,payload,callback){
-    console.log(payload,"editpayload")
+export function getEditToDo(payload,id,callback){
     return async (dispatch)=>{
+        dispatch(setApprovedLoader())
         try{
-            let result = await clientInstance.put((`admin/todos/${id}`,{...payload}))
+            let result = await clientInstance.put(`admin/todos/${id}`,{...payload})
+            console.log(result.data,"resultdata")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
+         dispatch( setSuccessAdminData())
             return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -876,11 +884,13 @@ export function getEditToDo(id,payload,callback){
 }
 export function getDeleteTodo(id,callback){
     return async (dispatch)=>{
+        dispatch(setBtnLoader())
         try{
             let result = await clientInstance.delete((`admin/todos/${id}`))
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
+            dispatch( setSuccessAdminData())
             return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
