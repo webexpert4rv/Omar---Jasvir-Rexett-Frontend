@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BiFont } from "react-icons/bi";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -14,6 +14,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { toast } from 'react-toastify'
 import CreatableSelect from 'react-select/creatable';
+import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 const Schedulemeeting = ({ show, handleClose }) => {
     const [value, onChange] = useState(new Date());
     const [firstSlot, setFirstSlot] = useState("");
@@ -116,6 +117,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
 
     const [meetingType, setMeetingType] = useState('instant'); // initial state set to 'instant'
 
+   
     const handleMeetingTypeChange = (e) => {
         setMeetingType(e.target.id);
     };

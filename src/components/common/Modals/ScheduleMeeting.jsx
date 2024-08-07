@@ -15,8 +15,10 @@ import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
 import { useLocation } from "react-router-dom";
-const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,setCreatedMeetings }) => {
-    console.log(selectedDeveloper,"selectedDeveloper")
+import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
+import { setDeveloperRegistrationDetails } from "../../../redux/slices/developerDataSlice";
+const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings, setCreatedMeetings }) => {
+    console.log(selectedDeveloper, "selectedDeveloper")
     const {
         handleSubmit,
         register,
@@ -28,6 +30,20 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
     } = useForm({});
     const dispatch = useDispatch()
     const location = useLocation()
+    const [data , setData] = useState()
+    const { developerList } = useSelector(state => state.adminData)
+    console.log(developerList?.developers, "developerList")
+    console.log(data,"data")
+
+
+
+    const getFormattedOptions = () => {
+        const newOptions = developerList?.developers?.map((item) => {
+            console.log(item?.email,"itemmmmmm---")
+            return( { label: item?.email, value: item.id})
+        })
+        return newOptions;
+    }
     let id = location.pathname.split("/")[3];
 
 
@@ -41,6 +57,11 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
     }, [])
 
     useEffect(() => {
+        dispatch(getDeveloperList())
+    }, [])
+
+
+    useEffect(() => {
         if (timeZoneList.length > 0) {
             let groupedTimeZones = timeZoneList?.map((item) => {
                 return {
@@ -50,14 +71,13 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
                     }),
                 }
             })
-            console.log(groupedTimeZones, "op")
             setGroupedTime(groupedTimeZones)
         }
 
 
 
     }, [timeZoneList])
-  
+
 
     console.log(timeZoneList, "timeZoneList")
 
@@ -125,14 +145,15 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const meetingTypeValue = watch('meeting_type')
+    console.log(watch('select_candidate'),"meeting")
 
-    console.log(createdMeetings,"createdMeetings")
+    console.log(createdMeetings, "createdMeetings")
     const onSubmit = data => {
         setCreatedMeetings(data)
-        console.log(data, "dat")
+        console.log(data?.select_candidate?.value, "dat")
         let payload = {
             "job_id": +id,
-            "developer_id": +selectedDeveloper?.id,
+            "developer_id": +data?.select_candidate?.value,
             "meeting_type": data?.meeting_type,
             "meeting_date": data?.meeting_date,
             "meeting_time": "01:00:00",
@@ -174,7 +195,7 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
                                             rules={{ required: "This field is required" }}
                                             invalidFieldRequired={true}
                                             placeholder="Add title"
-                                        />{" "}
+                                        />
                                     </div>
                                     <p>{errors?.title?.message}</p>
 
@@ -189,11 +210,12 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
                                             name={"select_candidate"}
                                             type={"select2"}
                                             control={control}
-                                            selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
+                                            // selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
                                             rules={{ required: "This field is required" }}
+                                            selectOptions={getFormattedOptions()}
                                             invalidFieldRequired={true}
                                             placeholder="Select Candidate"
-                                        />{" "}
+                                        />
                                         <p>{errors?.interviewers_list?.message}</p>
                                     </div>
                                 </Col>
@@ -211,7 +233,7 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
                                             rules={{ required: "This field is required" }}
                                             invalidFieldRequired={true}
                                             placeholder="Select Interviewer"
-                                        />{" "}
+                                        />
                                         <p>{errors?.select_candidate?.message}</p>
                                     </div>
                                 </Col>
@@ -307,7 +329,6 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper ,createdMeetings,
                                                     />{" "}
                                                 </div>
                                                 <div>
-
                                                     <CommonInput
                                                         name={"time_zone"}
                                                         type={"select"}

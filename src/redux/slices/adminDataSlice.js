@@ -32,7 +32,8 @@ const initialAdminData = {
     configDetails: {},
     allPermissionList:[],
     employeeList:[],
-    toDoList:{}
+    toDoList:{},
+    developerList:[]
 }
 
 export const adminDataSlice = createSlice({
@@ -168,11 +169,15 @@ export const adminDataSlice = createSlice({
         setTodoData:(state,action)=>{
             state.toDoList = action.payload
             state.smallLoader = false;
+        },
+        setDeveloperList:(state,action)=>{
+            state.developerList = action.payload
+            state.smallLoader = false;
         }
     }
 })
 
-export const { setTimeReportDetails,setConfigDetails,setTodoData ,setAllPermissionList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setConfigDetails,setTodoData ,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -892,6 +897,43 @@ export function getDeleteTodo(id,callback){
             }
             dispatch( setSuccessAdminData())
             return callback();
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getAllEvents(payload){
+    console.log(payload,"payload")
+    return async (dispatch)=>{
+        dispatch(setBtnLoader())
+        try{
+            let result = await clientInstance.get(`common/events?page=${1}&&limit=${10}`)
+            console.log(result.data,"getallevents")
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+            dispatch( setSuccessAdminData())
+            // return callback();
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+export function getDeveloperList(){
+    return async (dispatch)=>{
+        // dispatch(setBtnLoader())
+        try{
+            let result = await clientInstance.get("common/developers-list")
+            console.log(result.data,"getallevents")
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+            dispatch(setDeveloperList(result.data))
+            // return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })

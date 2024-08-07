@@ -35,9 +35,13 @@ const CommonInput = ({
   disabled,
   rows = null,
   className,
-  selectedRecommend
+  selectedRecommend,
+  // options,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  console.log(selectOptions,"newformattedOptions")
+ 
+  // console.log(options,"options")
 console.log(type,"ty")
 console.log(isMinRequired,"isMinRequired")
 console.log(isMaxRequired,"ismax")
@@ -118,11 +122,11 @@ console.log(isMaxRequired,"ismax")
                     options={selectOptions}
                     className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"} `}
                     isDisabled={readOnly}
-                    // onChange={(selectedOption) => field.onChange(selectedOption)}
-                    // value={selectOptions?.find(
-                    //   (option) => option.value === field.value
-                    // )}
-                    value={field.value ? field.value : selectedRecommend ? selectedRecommend : ''}
+                    onChange={(selectedOption) => field.onChange(selectedOption)}
+                    value={selectOptions?.find(
+                      (option) => option.value === field.value
+                    )}
+                    // value={field.value }
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />
