@@ -786,6 +786,24 @@ export function newRoleCreate(payload){
         }
     }
 }
+
+export function newEmployeeCreate(payload){
+    return async (dispatch)=>{
+        dispatch(setBtnLoader())
+        try{
+            let result = await clientInstance.post(`admin/create-employee`, {...payload})
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setSuccessAdminData())
+            }
+        }catch(error){
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+
 export function getUpdateRolePermission(payload){
     return async (dispatch)=>{
         try{

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllPermissionSeeder,
   newRoleCreate,
+  newEmployeeCreate
 } from "../../../redux/slices/adminDataSlice";
 import AddCandidate from "./AddCandidate";
 import NewEmployee from "./NewEmployee";
@@ -62,16 +63,25 @@ const RolesPermissionWrapper = ({
   };
 
   const onSubmit = async (values) => {
-    console.log(values,'valuessssss');
     setDetails(values);
     let payload = {
-      name: values?.role,
-      description: "description",
+      first_name: values?.first_name,
+      last_name: values?.last_name,
+      email: values?.email,
+      phone_number: values?.phone_number,
+      profile_picture: uploadedImage,
+      country: values?.country_code?.label,
+      state: values?.state_iso_code?.label,
+      city: values?.city,
+      passcode: values?.passcode,
+      time_zone: values?.time_zone?.value,
+      role: values?.role
     };
-    await dispatch(newRoleCreate(payload));
+    await dispatch(newEmployeeCreate(payload));
     dispatch(getAllPermissionSeeder());
     handleClose();
     reset();
+    setUploadedImage(null);
   };
   return (
     <Modal
