@@ -2,9 +2,15 @@ import React from "react";
 import { getActiveStepHeadingData } from "./registrationConstant";
 import { useTranslation } from "react-i18next";
 
+
 const StepperHeadingSection = ({ activeStep, type,nestedActiveStep }) => {
   const { t } = useTranslation();
-  let { heading, para } = getActiveStepHeadingData(activeStep , type,nestedActiveStep);
+  let { heading, para } = getActiveStepHeadingData(activeStep , type ,nestedActiveStep);
+  console.log(type,"type")
+  console.log(heading,"heading")
+  console.log(para,"para")
+
+
   return (
     <div>
       <h2 className="resume-heading">{t(heading)}</h2>
@@ -14,3 +20,4 @@ const StepperHeadingSection = ({ activeStep, type,nestedActiveStep }) => {
 };
 
 export default StepperHeadingSection;
+

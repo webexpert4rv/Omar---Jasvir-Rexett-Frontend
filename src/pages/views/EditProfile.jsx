@@ -40,11 +40,9 @@ const EditProfile = () => {
   });
 
   const { t } = useTranslation();
-
   let userId=localStorage.getItem("userId")
-
   const onSubmit = (values) => {
-    console.log(values, "va");
+    console.log(values, "vaues");
 
     const uploadFiles = (files) => {
       let uploadedUrls = {};
@@ -100,7 +98,9 @@ const EditProfile = () => {
           website_url: values?.website_url,
           yearly_revenue: values?.yearly_revenue,
           employee_strength: values?.employee_strength,
+          is_2FA_enabled: values?.is_2FA_enabled,
         };
+        console.log(payload,"payload")
 
         dispatch(clientRegistration(payload));
       });
@@ -111,31 +111,16 @@ const EditProfile = () => {
       profile_picture: imageFile.profile_picture,
     });
   }
-
   const watchAllFields = watch();
-
-
-console.log(watchAllFields,'allfieldsssssss hihi');
-
-  const toggleConfirmationModal = (e) => {
-    // Handle toggle confirmation modal
-  };
-
   const [screenLoader, setScreenLoader] = React.useState(false); // Assuming screenLoader is a state
 
   const activeStep = 1; // Assuming activeStep is defined somewhere
   const nestedActiveStep = 0; // Assuming nestedActiveStep is defined somewhere
   
-//  const activeStepFields = getActiveStepFields(
-//     activeStep,
-//     clientProfileData?.company_type
-//   );
-  // console.log(activeStepFields,'activeStepFields hihi');
-  // let stepData = getStepDataFromAPI(developerRegistrationData, activeStep);
-  console.log(clientProfileData,'hihi clientdata')
-
-  // let stepData = getStepDataFromAPI(clientProfileData, activeStep);
-
+ const activeStepFields = getActiveStepFields(
+    activeStep,
+  );
+  console.log(activeStepFields,'hihi clientdata')
   useEffect(() => {
 
     if(userId){
@@ -158,46 +143,10 @@ console.log(watchAllFields,'allfieldsssssss hihi');
     }
   }, [watch("state")]);
 
-  // console.log(stepData,'stepstep hihi');
   return (
     <>
       <ProfileWrapper>
-        {/* <section>
-          <Tab.Container
-            id="left-tabs-example"
-            defaultActiveKey="personal_details"
-          >
-            <Nav variant="pills" className="mb-4 application-pills">
-              <Nav.Item className="application-item">
-                <Nav.Link
-                  className="application-link"
-                  eventKey="personal_details"
-                >
-                  Personal Details
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item className="application-item">
-                <Nav.Link
-                  className="application-link"
-                  eventKey="company_details"
-                >
-                  Company Details
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
-            <Tab.Content>
-              <Tab.Pane eventKey="personal_details">
-              <AllRoleEditProfile role="client" name ={"indivisual"} />
-              </Tab.Pane>
-
-              <Tab.Pane eventKey="company_details">
-              <AllRoleEditProfile role="client" name = {"company"} />
-              </Tab.Pane>
-           
-            </Tab.Content> 
-          </Tab.Container>
-        </section> */}
-         <AllRoleEditProfile role="client" name={clientProfileData?.company_type && clientProfileData?.company_type} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={clientProfileData}/>
+         <AllRoleEditProfile role="client" name={"individual"} onSubmit={onSubmit} activeStep={activeStep} previewImage={previewImage} imageFile={imageFile} setImageFile={setImageFile} setPreviewImage={setPreviewImage} stepData={clientProfileData} activeStepFields={activeStepFields?.individual}/>
       </ProfileWrapper>
     </>
   );

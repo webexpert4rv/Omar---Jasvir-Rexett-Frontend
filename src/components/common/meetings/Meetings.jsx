@@ -106,6 +106,7 @@ const Meetings = ({showMeetings,handleCloseMeetings,handleShowSchedule,handleSho
                 </div>
                {item?.creator?.displayName}
               </p>
+              <p>Meeting Link :{item?.hangoutLink}</p>
               <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0,10)}</p>
             </div>
             <div className="mb-2 status-interview">

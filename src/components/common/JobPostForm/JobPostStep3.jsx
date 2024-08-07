@@ -100,19 +100,18 @@ const JobPostStep3 = ({
   invalidFieldRequired = false,
 }) => {
   const { t } = useTranslation();
-  const [degree, setDegree] = useState()
   const { fields, append, remove } = useFieldArray({
     control: control,
     name: "screening_questions",
   });
 
+  console.log(degreeList, "degreeList")
 
+  // const handleOnChange = (item) => {
+  //   console.log(item, "event")
+  //   setDegree(item)
 
-  const handleOnChange = (item) => {
-    console.log(item, "event")
-    setDegree(item)
-
-  }
+  // }
   const handleAddField = (opt) => {
     // remember to remove label while posting data
     append({
@@ -304,7 +303,7 @@ const JobPostStep3 = ({
                             }
                             options={degreeList}
                           />
-                           {/* {errors?.screening_questions[idx].Degree && (
+                          {/* {errors?.screening_questions[idx].Degree && (
                               <p className="error-message">
                                 {errors.screening_questions[idx].Degree.message}
                               </p>

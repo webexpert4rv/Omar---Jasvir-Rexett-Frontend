@@ -113,6 +113,7 @@ const DeveloperRegisterForm = ({ role }) => {
       setActiveStep(Number(storedStep));
     }
   }, []);
+
   useEffect(() => {
     if (activeStep === 1) {
       dispatch(getCoutriesList());

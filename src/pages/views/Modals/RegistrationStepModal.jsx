@@ -1,10 +1,5 @@
 import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-// import { FaCirclePlay, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa6";
-// import { FiExternalLink } from "react-icons/fi";
-// import { GoClockFill } from "react-icons/go";
-// import { MdLocalPhone, MdLocationPin, MdWork } from "react-icons/md";
-// import resumeImg from '../../../../assets/img/demo-img.jpg'
 import FinalizeResume from "../../admin/ResumeSteps/FinalizeResume";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +8,6 @@ const RegistrationStepModal = ({ show, handleClose,nextStep }) => {
     const navigate=useNavigate()
     const redirectToLogin=()=>{
         navigate("/developer-login")
-
     }
 
     let currentStep = localStorage.getItem('clientActiveStep');

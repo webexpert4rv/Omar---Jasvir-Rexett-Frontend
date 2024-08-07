@@ -24,11 +24,12 @@ import { current } from "@reduxjs/toolkit";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import { getDegreeList } from "../../../redux/slices/developerDataSlice";
 import { createForReactSelect } from "../../utils";
+import moment from "moment";
 
 // add this inside constant file later
 const hasNullOrUndefinedProperties = (obj, activeStep) => {
-  console.log(obj,"object")
-  console.log(activeStep,"activeStep")
+  console.log(obj, "object")
+  console.log(activeStep, "activeStep")
 
   if (activeStep === 3) {
     return !obj?.screening_questions?.length;
@@ -77,7 +78,7 @@ const JobPostStepContainer = ({ role }) => {
   const { id } = useParams();
   const [isEdit, setIsEdit] = useState(false);
   const [jobID, setJobID] = useState(null);
-  const [traitSkill,setTraitSkill]=useState([])
+  const [traitSkill, setTraitSkill] = useState([])
   // const { skillList } = useSelector((state) => state.clientData);
   // const skillListMapped = skillList.map((item) => {
   //   return { value: item.id, label: item.title };
@@ -125,7 +126,7 @@ const JobPostStepContainer = ({ role }) => {
     dispatch(getDegreeList())
   }, [])
 
-  const {degreeList} = useSelector(state => state.developerData)
+  const { degreeList } = useSelector(state => state.developerData)
 
   useEffect(() => {
     let tempSkills = [];
@@ -195,7 +196,7 @@ const JobPostStepContainer = ({ role }) => {
   //                   const newValue = {value:data[key],label:data[key]}
   //                   console.log(newValue,"newValue");
   //                   setValue(key,newValue);
-                  
+
   //               }else{
   //                 setValue(key,data[key])
   //               }
@@ -257,14 +258,14 @@ const JobPostStepContainer = ({ role }) => {
       setJobID(Number(jobId));
     }
     console.log(jobId, "jobId");
-  
+
     if (jobId) {
       dispatch(
         getJobPostData(jobId, (jobpost) => {
           console.log(jobpost, "jobpost");
-  
+
           if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
-              Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length) {
+            Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length) {
             console.log("insideapicall");
             const IsNull = hasNullOrUndefinedProperties(
               jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]],
@@ -275,32 +276,30 @@ const JobPostStepContainer = ({ role }) => {
             console.log(!IsNull, "IsEdit");
             setIsEdit(!IsNull);
           }
-  
+
           // Check if company_name exists and set value
           if (jobpost?.client?.["company_name"]) {
             console.log("inside company name");
             setValue("company_name", jobpost.client["company_name"]);
             console.log(jobpost.client["company_name"], "company name");
-          } 
-  
+          }
+
           // Iterate over keys based on activeStep
           if (jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]] &&
-              Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length) {
+            Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]])?.length) {
             Object.keys(jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]]).forEach((key) => {
-              console.log(`Processing key: ${key}`);
               const data = jobpost?.[ACTIVE_STEP_API_KEYS[activeStep]];
-  
               if (activeStep === 1) {
-                console.log(`Active step 1 - key: ${key}`);
                 if (key === "time_zone") {
                   const newValue = { value: data[key], label: data[key] };
-                  console.log(newValue, "newValue");
                   setValue(key, newValue);
+                } else if (key === "response_date") {
+                  let newDate = data[key].slice(0,10)
+                  setValue(key, newDate);
                 } else {
                   setValue(key, data[key]);
                 }
               } else if (activeStep === 2) {
-                console.log(`Active step 2 - key: ${key}`);
                 if (key === "skills" || key === "optional_skills") {
                   if (data[key]) {
                     const convertedArray = data[key].split(",");
@@ -315,7 +314,6 @@ const JobPostStepContainer = ({ role }) => {
                   }
                 }
               } else if (activeStep === 3) {
-                console.log(`Active step 3 - key: ${key}`);
                 if (key === "screening_questions") {
                   const screeningQuestions = data[key];
                   console.log(screeningQuestions, "screening question data inside data");
@@ -334,18 +332,6 @@ const JobPostStepContainer = ({ role }) => {
       );
     }
   }, [activeStep, dispatch, skillCate, id]); // Ensure all dependencies are included
-  
-
-
-
-
-
-
-
-
-
-
-
   const getActiveStepComponent = () => {
     switch (activeStep) {
       case 1:
@@ -375,7 +361,7 @@ const JobPostStepContainer = ({ role }) => {
       case 3:
         return (
           <JobPostStep3
-          degreeList={degreeList}
+            degreeList={degreeList}
             register={register}
             control={control}
             errors={errors}
@@ -402,18 +388,18 @@ const JobPostStepContainer = ({ role }) => {
     setActiveStep((prev) => prev - 1);
     localStorage.setItem(getActiveStepLocalStorageKey(), activeStep - 1);
   };
-  let finalValue= traitSkill?.map((item)=>{
-    return  {
+  let finalValue = traitSkill?.map((item) => {
+    return {
       "skill_id": item?.value,
       "skill_name": item?.label,
-      "weight": item?.level?.find((itm, idx)=>(itm?.isTrue==true))?.name
+      "weight": item?.level?.find((itm, idx) => (itm?.isTrue == true))?.name
     }
   })
-  console.log(finalValue,"weightvalue")
-  console.log(getActiveStepKeys[1],"step1keys")
- 
+  console.log(finalValue, "weightvalue")
+  console.log(getActiveStepKeys[1], "step1keys")
+
   const onSubmit = (stepData) => {
-    console.log(stepData,"stepdata")
+    console.log(stepData, "stepdata")
     let payload = {};
 
     // for getting data of active step only
@@ -440,12 +426,13 @@ const JobPostStepContainer = ({ role }) => {
         state: payload?.state_iso_code?.label,
         state_iso_code: payload?.state_iso_code?.value,
         time_zone: payload?.time_zone?.label,
+        response_date: stepData?.response_date
       };
     }
     if (activeStep === 2) {
       // converting skills fields array of objects into string
       const skills = payload["skills"];
-      
+
       const arrayOfSkills = skills?.map((curElem) => curElem.label);
       const formattedSkills = arrayOfSkills.toString();
       payload["skills"] = formattedSkills;
@@ -454,11 +441,12 @@ const JobPostStepContainer = ({ role }) => {
       const arrayOfOptionSkills = optionSkills?.map((curElem) => curElem.label);
       const formattedOptionSkills = arrayOfOptionSkills.toString();
       payload["optional_skills"] = formattedOptionSkills;
-      payload["job_skills"]=finalValue;
+      payload["job_skills"] = finalValue;
     }
+    console.log(payload, "payload")
     if (isEdit === true) {
       dispatch(
-        clientUpdatePost(payload, isEdit, activeStep, jobID,userId, increaseStep)
+        clientUpdatePost(payload, isEdit, activeStep, jobID, userId, increaseStep)
       )
     } else {
       dispatch(clientJobPost(payload, activeStep, increaseStep));

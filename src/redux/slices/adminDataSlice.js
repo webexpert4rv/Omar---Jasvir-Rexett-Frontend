@@ -789,7 +789,7 @@ export function newRoleCreate(payload){
 export function getUpdateRolePermission(payload){
     return async (dispatch)=>{
         try{
-            let result = await clientInstance.post(`admin/all-permissions` ,{...payload})
+            let result = await clientInstance.post(`admin/create-update-role-permissions` ,{...payload})
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }

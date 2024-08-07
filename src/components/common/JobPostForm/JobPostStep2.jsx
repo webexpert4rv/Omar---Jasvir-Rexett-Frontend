@@ -24,8 +24,6 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
   const [skills, setSkills] = useState([]);
   const [goodToSkills, setGoodToSkills] = useState([]);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
-  const [skillLvl, setSkillLvl] = useState()
-  const [skillId, setSkillId] = useState()
   const MAX_LENGTH = 10000;
 
   const skillListMapped = skillList.map((item) => {
@@ -84,6 +82,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
       }
     }
   };
+  console.log(traitSkill,"traitskill")
 
   return (
     <div>
@@ -242,7 +241,6 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
                             { name: "Expert", isTrue: false }
                           ]
                         }));
-
                         setTraitSkill(updatedValue)
                       }
                       setSelectedSkill(newValue)
@@ -304,7 +302,7 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
                         return (
                           <>
                             <div className="low-wrapper" key={inx}>
-                                <Form.Check type="radio" id={`${inx}-${skill?.value}`} onChange={(e) => handleSkillLevel(e, skill, index, lvl?.name, inx)} className="weight-radio" checked={lvl?.isTrue   } />
+                                <Form.Check type="radio" id={`${inx}-${skill?.value}`} onChange={(e) =>handleSkillLevel(e, skill, index, lvl?.name, inx)} className="weight-radio" checked={lvl?.isTrue} />
                             </div>
                           </>
                         )

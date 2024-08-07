@@ -150,7 +150,6 @@ const NewEmployee = ({ show, handleClose }) => {
     </Form>
     </Modal.Body>
     </Modal>
-
         </>
                  
               

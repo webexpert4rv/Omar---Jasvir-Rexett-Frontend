@@ -1,3 +1,4 @@
+
 import { TbRulerOff } from "react-icons/tb";
 import {
   JOB_TYPES_OPTIONS,
@@ -11,21 +12,18 @@ import {
   TEAM_SIZE
 } from "../../components/common/JobPostForm/constant";
 
-
-
-export const MODAL_INFORMATION={
-  1:{
-    heading:"Setting Up Your First Job post",
-    paragraph:"We are really excited that you want to set up a new job with us. Our team is dedicated to providing you with the best possible experience as you embark on this new journey. We are committed to supporting you every step of the way and ensuring that your transition is smooth and successful. Welcome aboard, and we look forward to achieving great things together!"
+export const MODAL_INFORMATION = {
+  1: {
+    heading: "Setting Up Your First Job post",
+    paragraph: "We are really excited that you want to set up a new job with us. Our team is dedicated to providing you with the best possible experience as you embark on this new journey. We are committed to supporting you every step of the way and ensuring that your transition is smooth and successful. Welcome aboard, and we look forward to achieving great things together!"
   },
-  4:{
-     heading:"Thank you for applying",
-     paragraph:<span>Welcome to the Rexett Community! <br/>  A Rexett Team  Will Reach Out to You Shortly for the Next Steps!</span>
+  4: {
+    heading: "Thank you for applying",
+    paragraph: <span>Welcome to the Rexett Community! <br />  A Rexett Team  Will Reach Out to You Shortly for the Next Steps!</span>
   }
 }
-
- const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const GOOGLE_AUTOCOMPLETE_API_KEY = "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
 export const SIDEBAR_ITEMS = {
   client: [
     { stepNumber: 1, label: "personal" },
@@ -64,6 +62,11 @@ export const VENDOR_STEPPER_HEADINGS = {
   2: { heading: "vendorStep2Heading", para: "vendorStep2Para" },
   3: { heading: "vendorStep4Heading", para: "vendorStep4Para" },
 };
+export const DEVELOPER_NESTED_STEPPER_HEADINGS = {
+  1: { heading: "developerNestedStep1Heading", para: "developerNestedStep1Para" },
+  2: { heading: "developerNestedStep3Heading", para: "" },
+  4:  { heading: "developerNestedStep4Heading", para: "developerNestedStep4Para" },
+};
 
 export const DEVELOPER_STEPPER_HEADINGS = {
   1: { heading: "developerStep1Heading", para: "developerStep1Para" },
@@ -71,34 +74,6 @@ export const DEVELOPER_STEPPER_HEADINGS = {
   3: { heading: "developerStep3Heading", para: "developerStep3Para" },
   4: { heading: "developerStep4Heading", para: "developerStep4Para" },
 };
-
-export const DEVELOPER_NESTED_STEPPER_HEADINGS = {
-  1: { heading: "developerNestedStep1Heading", para: "developerNestedStep1Para" },
-  2: { heading: "developerNestedStep3Heading", para: "" },
-  4:  { heading: "developerNestedStep4Heading", para: "developerNestedStep4Para" },
-};
-
-export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3 = {
-  2: { heading: "developerNestedStep1HeadingForStep3", para: "developerNestedStep1ParaForStep3" },
-  3: { heading: "developerNestedStep2HeadingForStep3", para: "'" },
-};
-export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4 = {
-  1: { heading: "developerNestedStep1HeadingForStep4", para: "developerNestedStep1ParaForStep4" },
-  2: { heading: "developerNestedStep2HeadingForStep4", para: "developerNestedStep2ParaForStep4" },
-  4:  { heading: "developerNestedStep3HeadingForStep3", para: "" },
-};
-
-export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_5 = {
-  1: { heading: "developerNestedStep1HeadingForStep5", para: "developerNestedStep1ParaForStep5" },
-
-};
-
-export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_6 = {
-  1: { heading: "developerNestedStep1HeadingForStep6", para: "developerNestedStep1ParaForStep6" },
-  2: { heading: "developerNestedStep2HeadingForStep6", para: "" },
-
-};
-
 export const DEVELOPER_INTRO_DATA = {
   2:{
     heading:"developerIntroData2Heading",
@@ -135,6 +110,26 @@ export const DEVELOPER_INTRO_DATA = {
 };
 
 
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3 = {
+  2: { heading: "developerNestedStep1HeadingForStep3", para: "developerNestedStep1ParaForStep3" },
+  3: { heading: "developerNestedStep2HeadingForStep3", para: "'" },
+};
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4 = {
+  1: { heading: "developerNestedStep1HeadingForStep4", para: "developerNestedStep1ParaForStep4" },
+  2: { heading: "developerNestedStep2HeadingForStep4", para: "developerNestedStep2ParaForStep4" },
+  4:  { heading: "developerNestedStep3HeadingForStep3", para: "" },
+};
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_5 = {
+  1: { heading: "developerNestedStep1HeadingForStep5", para: "developerNestedStep1ParaForStep5" },
+
+};
+
+export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_6 = {
+  1: { heading: "developerNestedStep1HeadingForStep6", para: "developerNestedStep1ParaForStep6" },
+  2: { heading: "developerNestedStep2HeadingForStep6", para: "" },
+
+};
 export const getActiveStepHeadingData = (activeStep ,type,nestedActiveStep ) => {
   if (type === 'client') {
     return CLIENT_STEPPER_HEADINGS[activeStep] ||{ heading: '' }; 
@@ -159,21 +154,13 @@ export const getActiveStepHeadingData = (activeStep ,type,nestedActiveStep ) => 
     else{
       return DEVELOPER_STEPPER_HEADINGS[activeStep] || { heading: '' };
     }
-   
-    
   }
-
-  
 }
-
-// export const getActiveStepVendorHeadingData = (activeStep) =>
-//   VENDOR_STEPPER_HEADINGS[activeStep] || null;
 
 export const getStepperIntroData=(activeStep)=>{
-   return DEVELOPER_INTRO_DATA[activeStep]
-
-  
+  return DEVELOPER_INTRO_DATA[activeStep]
 }
+
 
 // export const getActiveStepVendorHeadingData = (activeStep) =>
 //   VENDOR_STEPPER_HEADINGS[activeStep] || null;
@@ -245,7 +232,7 @@ const CLIENT_STEP_1_FIELDS = {
     },
     {
       label: "address",
-      fieldName: "company_address",
+      fieldName: "address",
       type: "select",
       placeholder: "e.g. Street 1341,New area,CA,USA",
       rules: { required: "Address is required" },
@@ -257,7 +244,7 @@ const CLIENT_STEP_1_FIELDS = {
       isLocation: true,
     },
   ],
-  partnership: [
+  company: [
     {
       label: "companyName",
       fieldName: "company_name",
@@ -279,11 +266,10 @@ const CLIENT_STEP_1_FIELDS = {
     {
       label: "establishmentYear",
       fieldName: "establishment_year",
-      type: "date",
+      type: "year-picker",
       isMinRequired: true,
-      isMaxRequired:false,
-      // placeholder: "Enter Tax ID",
-      rules: { required: "Establishment Year is required" },
+      isMaxRequired: false,
+      rules: { required: "Establishment year is required" },
       columnWidth: 6,
       isRequired: true,
     },
@@ -292,7 +278,7 @@ const CLIENT_STEP_1_FIELDS = {
       fieldName: "website_url",
       type: "text",
       placeholder: "e.g. www.xyztechnology.com",
-      rules: { required: "Website Url is required" },
+      rules: { required: "Tax ID is required" },
       columnWidth: 6,
       isRequired: true,
     },
@@ -307,7 +293,7 @@ const CLIENT_STEP_1_FIELDS = {
     },
     {
       label: "employeesStrength",
-      fieldName: "employee_strength",
+      fieldName: "total_it_recruiter",
       type: "text",
       placeholder: "e.g. 100",
       rules: { required: "Employees strength is required" },
@@ -369,7 +355,7 @@ const CLIENT_STEP_2_FIELDS = [
   {
     label: "workplaceType",
     type: "normal-select",
-    fieldName: "workplace_type",
+    fieldName: "job_type",
     isRequired: true,
     columnWidth: 6,
     rules: { required: "Workplace type is Required" },
@@ -390,7 +376,7 @@ const CLIENT_STEP_2_FIELDS = [
   {
     label: "jobType",
     type: "normal-select",
-    fieldName: "job_type",
+    fieldName: "contract_type",
     isRequired: true,
     columnWidth: 6,
     rules: { required: "Job type is Required" },
@@ -401,28 +387,35 @@ const CLIENT_STEP_2_FIELDS = [
   {
     label: "availablePositions",
     type: "text",
-    fieldName: "available_positions",
+    fieldName: "job_positions",
     isRequired: true,
     columnWidth: 6,
     rules: { required: "Number of positions available are Required" },
     placeholder: "e.g 10",
+  },
+  {
+    label: "Response Date",
+    type: "date",
+    fieldName: "response_date",
+    isRequired: true,
+    columnWidth: 6,
+    rules: { required: "Response Date is Required" },
+    placeholder: "e.g 01-01-2025",
   },
 ];
 const CLIENT_ACTIVE_STEP_FIELDS = {
   1: CLIENT_STEP_1_FIELDS,
   2: CLIENT_STEP_2_FIELDS,
 };
-
 export const getActiveStepFields = (activeStep, registrationType) => {
-  console.log(activeStep,"activeStep")
-  // if (activeStep === 1) {
-    // return CLIENT_ACTIVE_STEP_FIELDS[activeStep][registrationType] || null;
-  // } 
-  // else {
+  console.log(activeStep,"activestep")
+  console.log(registrationType,"registrationType")
+  if (activeStep === 1) {
+    return CLIENT_ACTIVE_STEP_FIELDS[activeStep][registrationType] || null;
+  } else {
     return CLIENT_ACTIVE_STEP_FIELDS[activeStep] || null;
-  // }
+  }
 };
-
 export const DEFAULT_SCREENING_DATA = [
   {
     optionId: 1,
@@ -492,8 +485,7 @@ const VENDOR_STEP_1_FIELDS = [
     label: "establishmentYear",
     fieldName: "establishment_year",
     type: "year-picker",
-    isMinRequired: true,
-      isMaxRequired:false,
+    isMaxRequired: true,
     rules: { required: "Establishment year is required" },
     columnWidth: 6,
     isRequired: true,
@@ -518,19 +510,10 @@ const VENDOR_STEP_1_FIELDS = [
   },
   {
     label: "employeeStrength",
-    fieldName: "total_employees", // need to change this field according to the API
+    fieldName: "total_it_recruiter", // need to change this field according to the API
     type: "text",
     placeholder: "e.g. 100",
     rules: { required: "Employees strength is required" },
-    columnWidth: 6,
-    isRequired: true,
-  },
-  {
-    label: "Total nos. of IT Recruiters ",
-    fieldName: "total_it_recruiter",
-    type: "text",
-    placeholder: "e.g. 8 ",
-    rules: { required: "This field is required" },
     columnWidth: 6,
     isRequired: true,
   },
@@ -574,7 +557,7 @@ const VENDOR_STEP_1_FIELDS = [
     isLocation: true,
   },
 ];
- const VENDOR_STEP_2_FIELDS = [
+const VENDOR_STEP_2_FIELDS = [
   {
     label: "Name",
     fieldName: "proprietor_name",
@@ -629,7 +612,6 @@ const VENDOR_STEP_4_FIELDS = [
     isRequired: true,
     defaultOption: "Select Specialization type",
   },
-
   {
     label: "serviceOffering",
     fieldName: "service_offering",
@@ -640,7 +622,6 @@ const VENDOR_STEP_4_FIELDS = [
     isRequired: true,
     defaultOption: "Select",
   },
-
   {
     label: "Your Turnaround time to close Contract Positions",
     fieldName: "turn_around_time_to_close_contract_position",
@@ -660,7 +641,7 @@ const VENDOR_STEP_4_FIELDS = [
     isRequired: true,
   },
   {
-    label: "Please share your success Stories with atleast 2 of your exiting IT customers and their Contact details for reference check ",
+    label: "Please share your success Stories with at least 2 of your exiting IT customers and their Contact details for reference check ",
     fieldName: "success_story",
     type: "text",
     placeholder: "e.g. Desc",
@@ -669,493 +650,477 @@ const VENDOR_STEP_4_FIELDS = [
     isRequired: true,
   },
 ]
-
 const VENDOR_STEP_FIELDS = {
   1: VENDOR_STEP_1_FIELDS,
   2: VENDOR_STEP_2_FIELDS,
   3: VENDOR_STEP_4_FIELDS,
 };
-
-export const getVendorActiveStepFields = (activeStep) =>{
-  return  VENDOR_STEP_FIELDS[activeStep] || null;
+export const getVendorActiveStepFields = (activeStep) => {
+  return VENDOR_STEP_FIELDS[activeStep] || null;
 }
- 
 
 const DEVELOPER_STEP_1_FIELDS = [
-    {
-      label: "firstName",
-      fieldName: "first_name",
-      type: "text",
-      placeholder: "e.g. John",
-      rules: { required: "First name is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "Last Name",
-      fieldName: "last_name",
-      type: "text",
-      placeholder: "e.g. Doe",
-      rules: { required: "Last name is required" },
-      columnWidth: 6,
-      isRequired: true,
-      
-    },
-    {
-      label: "Profession",
-      fieldName: "profession",
-      type: "text",
-      placeholder: "e.g. Software Engineer",
-      rules: { required: "Profession is required" },
-      columnWidth: 12,
-      isRequired: true,
-    },
-    {
-      label: "Language Preferences",
-      fieldName: "language_preference",
-      type: "normal-select",
-      rules: { required: "Preferences is required" },
-      columnWidth: 6,
-      isRequired: true,
-      options:LANGUAGE_PREFERENCES_OPTIONS,
-      defaultOption: "Select",
-    },
-    {
-      label: "Experience",
-      fieldName: "total_experience",
-      type: "normal-select",
-      rules: { required: "Experience is required" },
-      columnWidth: 6,
-      isRequired: true,
-      options:EXPERIENCE_YEAR,
-      defaultOption: "Select",
-    },
-    {
-      label: "phoneNumber",
-      fieldName: "phone_number",
-      type: "phone",
-      placeholder: "e.g. +91 1234567890",
-      rules: { required: "Phone number is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "email",
-      fieldName: "email",
-      type: "email",
-      placeholder: "e.g. johndoe123@gmail.com",
-      rules: {
-        required: "Email is required",
-        pattern: {
-          value: EMAIL_REGEX,
-          message: "Invalid Email",
-        },
-      },
-      columnWidth: 6,
-      isRequired: true,
-      readOnly:false
-    },
-    {
-      isPasswordSection: true,
-    },
-    {
-      isLocation: true,
-    },
+  {
+    label: "firstName",
+    fieldName: "first_name",
+    type: "text",
+    placeholder: "e.g. John",
+    rules: { required: "First name is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Last Name",
+    fieldName: "last_name",
+    type: "text",
+    placeholder: "e.g. Doe",
+    rules: { required: "Last name is required" },
+    columnWidth: 6,
+    isRequired: true,
     
-    {
-      label: "address",
-      fieldName: "address",
-      type: "select",
-      placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Address is required" },
-      columnWidth: 12,
-      isRequired: true,
-      isAutocomplete: true,
-      defaultOption: "Select",
-    },
-    {
-      label: "Resume",
-      fieldName: "resume",
-      type: "upload",
-      placeholder: "Upload Resume",
-      rules: { required: "Resume Required" },
-      columnWidth: 12,
-      isRequired: true,
-    },
-    {
-      label: "Intro Video",
-      fieldName: "intro_video_url",
-      type: "upload",
-      placeholder: "Upload Intro Video",
-      rules: { required: "Intro Video is required" },
-      columnWidth: 12,
-      isRequired: true,
-    },
-    {
-      label: "LinkedIn",
-      fieldName: "linkedin_url",
-      type: "text",
-      placeholder: "e.g. www.linkedin.com/profile/12345",
-      rules: { 
-        required: "LinkedIn URL is required",
-        pattern: {
-          value: /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}\/.*$/,
-          message: "Please enter a valid LinkedIn URL"
-        }
+  },
+  {
+    label: "Profession",
+    fieldName: "professional_title",
+    type: "text",
+    placeholder: "e.g. Software Engineer",
+    rules: { required: "Profession is required" },
+    columnWidth: 12,
+    isRequired: true,
+  },
+  {
+    label: "Language Preferences",
+    fieldName: "language_preference",
+    type: "normal-select",
+    rules: { required: "Preferences is required" },
+    columnWidth: 6,
+    isRequired: true,
+    options:LANGUAGE_PREFERENCES_OPTIONS,
+    defaultOption: "Select",
+  },
+  {
+    label: "Experience",
+    fieldName: "total_experience",
+    type: "normal-select",
+    rules: { required: "Experience is required" },
+    columnWidth: 6,
+    isRequired: true,
+    options:EXPERIENCE_YEAR,
+    defaultOption: "Select",
+  },
+  {
+    label: "phoneNumber",
+    fieldName: "phone_number",
+    type: "phone",
+    placeholder: "e.g. +91 1234567890",
+    rules: { required: "Phone number is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "email",
+    fieldName: "email",
+    type: "email",
+    placeholder: "e.g. johndoe123@gmail.com",
+    rules: {
+      required: "Email is required",
+      pattern: {
+        value: EMAIL_REGEX,
+        message: "Invalid Email",
       },
-      columnWidth: 6,
-      isRequired: true,
     },
-    {
-      label: "Github",
-      fieldName: "github_url", 
-      type: "text",
-      placeholder: "e.g. www.github.com/profile/12345",
-      rules: { 
-        required: "GitHub URL is required",
-        pattern: {
-          value: /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}\/.*$/,
-          message: "Please enter a valid GitHub URL"
-        }
-      },
-      columnWidth: 6,
-      isRequired: true,
-    },
-  ]
-
-  const NESTED_DEVELOPER_STEP_1_FIELDS = [
-    {
-      label: "Job Title",
-      fieldName: "job_title",
-      type: "text",
-      placeholder: "e.g. Web Developer",
-      rules: { required: "Job Title is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "Employer",
-      fieldName: "company_name",
-      type: "text",
-      placeholder: "e.g. Microsoft",
-      rules: { required: "Employer is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "Location",
-      fieldName: "job_location",
-      type: "select",
-      placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Location is required" },
-      columnWidth: 6,
-      isRequired: true,
-      isAutocomplete: true,
-    },
-    {
-      label: "Work Type",
-      fieldName: "work_type",
-      type: "normal-select",
-      options:WORK_TYPE,
-      // placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Work type is required" },
-      columnWidth: 6,
-      isRequired: true,
-      defaultOption: "Select Type",
-    },
-    {
-      label: "Start Date",
-      fieldName: "start_date",
-      type: "date",
-      isMinRequired: true,
-      isMaxRequired:false,
-      rules: { required: "Start date is required" },
-      columnWidth: 6,
-      isRequired: true,
-      defaultOption: "Select Month",
-    },
+    columnWidth: 6,
+    isRequired: true,
+    readOnly:false
+  },
+  {
+    isPasswordSection: true,
+  },
+  {
+    isLocation: true,
+  },
   
+  {
+    label: "address",
+    fieldName: "address",
+    type: "select",
+    placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Address is required" },
+    columnWidth: 12,
+    isRequired: true,
+    isAutocomplete: true,
+    defaultOption: "Select",
+  },
+  {
+    label: "Resume",
+    fieldName: "resume",
+    type: "upload",
+    placeholder: "Upload Resume",
+    rules: { required: "Resume Required" },
+    columnWidth: 12,
+    isRequired: true,
+  },
+  {
+    label: "Intro Video",
+    fieldName: "intro_video_url",
+    type: "upload",
+    placeholder: "Upload Intro Video",
+    rules: { required: "Intro Video is required" },
+    columnWidth: 12,
+    isRequired: true,
+  },
+  {
+    label: "LinkedIn",
+    fieldName: "linkedin_url",
+    type: "text",
+    placeholder: "e.g. www.linkedin.com/profile/12345",
+    rules: { required: "Linked in is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Github",
+    fieldName: "github_url", 
+    type: "text",
+    placeholder: "e.g. www.github.com/profile/12345",
+    rules: { required: "GitHub in is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+]
+const NESTED_DEVELOPER_STEP_1_FIELDS = [
+  {
+    label: "Job Title",
+    fieldName: "job_title",
+    type: "text",
+    placeholder: "e.g. Web Developer",
+    rules: { required: "Job Title is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Employer",
+    fieldName: "company_name",
+    type: "text",
+    placeholder: "e.g. Microsoft",
+    rules: { required: "Employer is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Location",
+    fieldName: "job_location",
+    type: "select",
+    placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Location is required" },
+    columnWidth: 6,
+    isRequired: true,
+    isAutocomplete: true,
+  },
+  {
+    label: "Work Type",
+    fieldName: "work_type",
+    type: "normal-select",
+    options:WORK_TYPE,
+    // placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Work type is required" },
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "Select Type",
+  },
+  {
+    label: "Start Date",
+    fieldName: "start_date",
+    type: "date",
+    isMinRequired: true,
+    isMaxRequired:false,
+    rules: { required: "Start date is required" },
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "Select Month",
+  },
 
-    {
-      label: "End Date",
-      fieldName: "end_date",
-      type: "date",
-      // placeholder: "e.g. Street 1341,New area,CA,USA",
-      isMinRequired: true,
-      isMaxRequired:false,
-      // rules: { required: "End date is required" },
-      columnWidth: 6,
-      // isRequired: false,
-      defaultOption: "Select Month",
-    },
-    
-    {
-      label: "Are you currently Working in this job?",
-      fieldName: "is_still_working",
-      type: "checkbox",
-      // rules: { required: "Job location is required" },
-      columnWidth: 12,
-      isRequired: false,
-    },
-  ]
 
-  const NESTED_DEVELOPER_STEP_2_FIELDS=[
-    {
-      label: "University Name",
-      fieldName: "name",
-      type: "text",
-      placeholder: "e.g. Delhi University",
-      rules: { required: "University name is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "University Location",
-      fieldName: "location",
-      type: "text",
-      placeholder: "e.g. Delhi,India",
-      rules: { required: "University location is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    // {
-    //   label: "Degree",
-    //   fieldName: "degree",
-    //   type: "normal-select",
-    //   placeholder: "e.g. Delhi,India",
-    //   rules: { required: "University location is required" },
-    //   columnWidth: 6,
-    //   isRequired: true,
-    // },
-    // {
-    //   label: "Enter Degree",
-    //   fieldName: "degree",
-    //   type: "text",
-    //   placeholder: "e.g. Delhi,India",
-    //   rules: { required: "University location is required" },
-    //   columnWidth: 6,
-    //   isRequired: true,
-    // },
-    {
-      label: "Field of Study",
-      fieldName: "study",
-      type: "text",
-      placeholder: "e.g. Delhi,India",
-      rules: { required: "University location is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    
-    {
-      label: "Graduation Date",
-      fieldName: "graduate_date",
-      type: "date",
-      isMinRequired: true,
-      isMaxRequired:false,
-      // placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Job location is required" },
-      columnWidth: 6,
-      isRequired: true,
-      defaultOption: "Select Month",
-    },
-
-  ]
-
-
-  const NESTED_DEVELOPER_STEP_6_FIELDS=[
-    {
-      label: "Project Title",
-      fieldName: "project_title",
-      type: "text",
-      placeholder: "e.g. AI chat bot",
-      rules: { required: "Project title is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "Role",
-      fieldName: "role_in_project",
-      type: "text",
-      placeholder: "e.g. Team Lead",
-      rules: { required: "Role is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    // {
-    //   label: "Degree",
-    //   fieldName: "degree",
-    //   type: "normal-select",
-    //   placeholder: "e.g. Delhi,India",
-    //   rules: { required: "University location is required" },
-    //   columnWidth: 6,
-    //   isRequired: true,
-    // },
-    // {
-    //   label: "Enter Degree",
-    //   fieldName: "degree",
-    //   type: "text",
-    //   placeholder: "e.g. Delhi,India",
-    //   rules: { required: "University location is required" },
-    //   columnWidth: 6,
-    //   isRequired: true,
-    // },
-    {
-      label: "Project Type",
-      fieldName: "project_type",
-      type: "normal-select",
-      placeholder: "e.g. Delhi,India",
-      rules: { required: "Project is required" },
-      columnWidth: 6,
-      isRequired: true,
-      options: PROJECT_TYPE,
-    },
-    {
-      label: "Team Size",
-      fieldName: "project_team_size",
-      type: "normal-select",
-      placeholder: "e.g. HTML",
-      rules: { required: "Skill is required" },
-      columnWidth: 6,
-      isRequired: true,
-      options: TEAM_SIZE,
-    },
-    
-    {
-      label: "Project URL",
-      fieldName: "project_link",
-      type: "text",
-      placeholder: "e.g. https://example.com",
-      rules: { required: "Project url is required" },
-      columnWidth: 6,
-      isRequired: true,
-      defaultOption: "",
-    },
-    {
-      label: "Skill",
-      fieldName: "tech_stacks_used",
-      type: "normal-select",
-      placeholder: "e.g. HTML",
-      rules: { required: "Skill is required" },
-      columnWidth: 6,
-      isRequired: true,
-      defaultOption: "",
-    },
-    {
-      label: "Start Date",
-      fieldName: "project_start_date",
-      type: "date",
-      isMinRequired: true,
-      isMaxRequired:false,
-      rules: { required: "Job location is required" },
-      columnWidth: 6,
-      isRequired: true,
-      defaultOption: "Select Month",
-    },
+  {
+    label: "End Date",
+    fieldName: "end_date",
+    type: "date",
+    // placeholder: "e.g. Street 1341,New area,CA,USA",
+    isMinRequired: true,
+    isMaxRequired:false,
+    // rules: { required: "End date is required" },
+    columnWidth: 6,
+    // isRequired: false,
+    defaultOption: "Select Month",
+  },
   
+  {
+    label: "Are you currently Working in this job?",
+    fieldName: "is_still_working",
+    type: "checkbox",
+    // rules: { required: "Job location is required" },
+    columnWidth: 12,
+    isRequired: false,
+  },
+]
 
-    {
-      label: "End Date",
-      fieldName: "project_end_date",
-      type: "date",
-      // placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Job location is required" },
-      columnWidth: 6,
-      isMinRequired: true,
-      isMaxRequired:false,
-      isRequired: true,
-      defaultOption: "Select Month",
-    },
+const NESTED_DEVELOPER_STEP_2_FIELDS=[
+  {
+    label: "University Name",
+    fieldName: "name",
+    type: "text",
+    placeholder: "e.g. Delhi University",
+    rules: { required: "University name is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "University Location",
+    fieldName: "location",
+    type: "text",
+    placeholder: "e.g. Delhi,India",
+    rules: { required: "University location is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  // {
+  //   label: "Degree",
+  //   fieldName: "degree",
+  //   type: "normal-select",
+  //   placeholder: "e.g. Delhi,India",
+  //   rules: { required: "University location is required" },
+  //   columnWidth: 6,
+  //   isRequired: true,
+  // },
+  // {
+  //   label: "Enter Degree",
+  //   fieldName: "degree",
+  //   type: "text",
+  //   placeholder: "e.g. Delhi,India",
+  //   rules: { required: "University location is required" },
+  //   columnWidth: 6,
+  //   isRequired: true,
+  // },
+  {
+    label: "Field of Study",
+    fieldName: "study",
+    type: "text",
+    placeholder: "e.g. Delhi,India",
+    rules: { required: "University location is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  
+  {
+    label: "Graduation Date",
+    fieldName: "graduate_date",
+    type: "date",
+    isMinRequired: true,
+    isMaxRequired:false,
+    // placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Job location is required" },
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "Select Month",
+  },
 
-  ]
+]
 
-  const adminStepData = [
-    {
-      label: "firstName",
-      fieldName: "first_name",
-      type: "text",
-      placeholder: "e.g. John",
-      rules: { required: "First name is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "surname",
-      fieldName: "last_name",
-      type: "text",
-      placeholder: "e.g. Doe",
-      rules: { required: "Surname is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "phoneNumber",
-      fieldName: "phone_number",
-      type: "phone",
-      placeholder: "e.g. +91 1234567890",
-      rules: { required: "Phone number is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "email",
-      fieldName: "email",
-      type: "email",
-      placeholder: "e.g. johndoe123@gmail.com",
-      rules: {
-        required: "Email is required",
-        pattern: {
-          value: EMAIL_REGEX,
-          message: "Invalid Email",
-        },
+
+const NESTED_DEVELOPER_STEP_6_FIELDS=[
+  {
+    label: "Project Title",
+    fieldName: "project_title",
+    type: "text",
+    placeholder: "e.g. AI chat bot",
+    rules: { required: "Project title is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "Role",
+    fieldName: "role_in_project",
+    type: "text",
+    placeholder: "e.g. Team Lead",
+    rules: { required: "Role is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  // {
+  //   label: "Degree",
+  //   fieldName: "degree",
+  //   type: "normal-select",
+  //   placeholder: "e.g. Delhi,India",
+  //   rules: { required: "University location is required" },
+  //   columnWidth: 6,
+  //   isRequired: true,
+  // },
+  // {
+  //   label: "Enter Degree",
+  //   fieldName: "degree",
+  //   type: "text",
+  //   placeholder: "e.g. Delhi,India",
+  //   rules: { required: "University location is required" },
+  //   columnWidth: 6,
+  //   isRequired: true,
+  // },
+  {
+    label: "Project Type",
+    fieldName: "project_type",
+    type: "normal-select",
+    placeholder: "e.g. Delhi,India",
+    rules: { required: "Project is required" },
+    columnWidth: 6,
+    isRequired: true,
+    options: PROJECT_TYPE,
+  },
+  {
+    label: "Team Size",
+    fieldName: "project_team_size",
+    type: "normal-select",
+    placeholder: "e.g. HTML",
+    rules: { required: "Skill is required" },
+    columnWidth: 6,
+    isRequired: true,
+    options: TEAM_SIZE,
+  },
+  
+  {
+    label: "Project URL",
+    fieldName: "project_link",
+    type: "text",
+    placeholder: "e.g. https://example.com",
+    rules: { required: "Project url is required" },
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "",
+  },
+  {
+    label: "Skill",
+    fieldName: "tech_stacks_used",
+    type: "normal-select",
+    placeholder: "e.g. HTML",
+    rules: { required: "Skill is required" },
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "",
+  },
+  {
+    label: "Start Date",
+    fieldName: "project_start_date",
+    type: "date",
+    isMinRequired: true,
+    isMaxRequired:false,
+    rules: { required: "Job location is required" },
+    columnWidth: 6,
+    isRequired: true,
+    defaultOption: "Select Month",
+  },
+
+
+  {
+    label: "End Date",
+    fieldName: "project_end_date",
+    type: "date",
+    // placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Job location is required" },
+    columnWidth: 6,
+    isMinRequired: true,
+    isMaxRequired:false,
+    isRequired: true,
+    defaultOption: "Select Month",
+  },
+
+]
+
+const adminStepData = [
+  {
+    label: "firstName",
+    fieldName: "first_name",
+    type: "text",
+    placeholder: "e.g. John",
+    rules: { required: "First name is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "surname",
+    fieldName: "last_name",
+    type: "text",
+    placeholder: "e.g. Doe",
+    rules: { required: "Surname is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "phoneNumber",
+    fieldName: "phone_number",
+    type: "phone",
+    placeholder: "e.g. +91 1234567890",
+    rules: { required: "Phone number is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "email",
+    fieldName: "email",
+    type: "email",
+    placeholder: "e.g. johndoe123@gmail.com",
+    rules: {
+      required: "Email is required",
+      pattern: {
+        value: EMAIL_REGEX,
+        message: "Invalid Email",
       },
-      columnWidth: 6,
-      isRequired: true,
     },
-    {
-      isPasswordSection: true,
-    },
-    {
-      label: "taxId",
-      fieldName: "tax_id",
-      type: "text",
-      placeholder: "Enter Tax ID",
-      rules: { required: "Phone number is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "cin",
-      fieldName: "cin",
-      type: "text",
-      placeholder: "CIN",
-      rules: { required: "CIN is required" },
-      columnWidth: 6,
-      isRequired: true,
-    },
-    {
-      label: "address",
-      fieldName: "address",
-      type: "select",
-      placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Address is required" },
-      columnWidth: 12,
-      isRequired: true,
-      isAutocomplete: true,
-    },
-    {
-      label: "address 2",
-      fieldName: "address_2",
-      type: "select",
-      placeholder: "e.g. Street 1341,New area,CA,USA",
-      rules: { required: "Address is required" },
-      columnWidth: 12,
-      isRequired: true,
-      isAutocomplete: true,
-    },
-    {
-      isLocation: true,
-    },
-  ]
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    isPasswordSection: true,
+  },
+  {
+    label: "taxId",
+    fieldName: "tax_id",
+    type: "text",
+    placeholder: "Enter Tax ID",
+    rules: { required: "Phone number is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "cin",
+    fieldName: "cin",
+    type: "text",
+    placeholder: "CIN",
+    rules: { required: "CIN is required" },
+    columnWidth: 6,
+    isRequired: true,
+  },
+  {
+    label: "address",
+    fieldName: "address",
+    type: "select",
+    placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Address is required" },
+    columnWidth: 12,
+    isRequired: true,
+    isAutocomplete: true,
+  },
+  {
+    label: "address 2",
+    fieldName: "address_2",
+    type: "select",
+    placeholder: "e.g. Street 1341,New area,CA,USA",
+    rules: { required: "Address is required" },
+    columnWidth: 12,
+    isRequired: true,
+    isAutocomplete: true,
+  },
+  {
+    isLocation: true,
+  },
+]
 
 const DEVELOPER_STEP_FIELDS = {
   1: DEVELOPER_STEP_1_FIELDS,
@@ -1171,7 +1136,9 @@ const DEVELOPER_STEP_FIELDS_FOR_STEP_6={
   1:NESTED_DEVELOPER_STEP_6_FIELDS,
 }
 
+
 export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
+  console.log(activeStep,nestedActiveStep,"cosn")
   if(nestedActiveStep>0  &&activeStep==2){
     return NESTED_DEVELOPER_STEP_FIELDS[1] || null;
   }else if(nestedActiveStep>0  &&activeStep==3){
@@ -1183,7 +1150,6 @@ export const getDeveloperActiveStepFields = (activeStep,nestedActiveStep) =>{
     return DEVELOPER_STEP_FIELDS[activeStep] || null
    }
 }
-
 export const getAdminActiveFields = () => {
   return adminStepData;
 }
@@ -1233,6 +1199,9 @@ export const stepperFormKeys=(activeStep)=>{
  return KEYS[activeStep]
 
 }
+
+
+
 
 
 
