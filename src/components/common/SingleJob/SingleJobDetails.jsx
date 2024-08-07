@@ -61,6 +61,10 @@ import RexettButton from "../../atomic/RexettButton";
 import Schedulemeeting from "../Modals/ScheduleMeeting";
 import sowIcon from '../../../assets/img/sow-icon.png';
 import ndaIcon from '../../../assets/img/nda-icon.png';
+import AddCandidate from "../../../pages/admin/Modals/AddCandidate";
+import NewEmployee from "../../../pages/admin/Modals/NewEmployee";
+import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
+import SowForm from "./SowForm";
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -68,6 +72,7 @@ const SingleJobDetails = () => {
     const [currentTabsStatus, setCurrnetTabsStatus] = useState("application");
     const [currentTab, setCurrentTab] = useState("application");
     const [selectedDeveloper, setSelectedDeveloper] = useState({})
+    const [manualSuggestion,showManualSuggestion]=useState(false)
     const [statusModal, setStatusModal] = useState({
         isTrue: false,
         id: null,
@@ -287,6 +292,10 @@ const SingleJobDetails = () => {
         }
     };
 
+    const handleShowaddCandidate=()=>{
+      navigate('/admin/register-developer')
+    }
+
 
     const handleEdit = () => {
         if (singleJobDescription?.status == "Unpublished") {
@@ -346,6 +355,9 @@ const SingleJobDetails = () => {
             });
         }
     };
+    const handleShowManualSuggestion = () => {
+      showManualSuggestion(!manualSuggestion);
+  }
     const currentStatusCssClass = (status) => {
         switch (status) {
             case "ended":
@@ -720,11 +732,13 @@ const SingleJobDetails = () => {
                     </Tab>
                     {role !== "client" && <Tab eventKey="suggested" title={suggest}>
                         <div className="text-end">
-                            <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
+                            {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
                                 isLoading={approvedLoader}
                                 disabled={approvedLoader}
-                                onClick={() => handleSuggestions()} />
+                                onClick={() => handleSuggestions()} /> */}
+                                                <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
+                                                <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
@@ -1185,44 +1199,7 @@ const SingleJobDetails = () => {
                                                                     </div>
                                                                 </div>
                                                             </Col>
-                                                            <Col md={6} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">Name</Form.Label>
-                                                                <Form.Control type="text" value="Aviox Technologies" className="common-field font-14" readOnly />
-                                                            </Col>
-                                                            <Col md={6} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">Address</Form.Label>
-                                                                <Form.Control type="text" value="Mohali, Punjab" className="common-field font-14" readOnly />
-                                                            </Col>
-                                                            <Col md={6} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">Start Date</Form.Label>
-                                                                <Form.Control type="date" className="common-field font-14" />
-                                                            </Col>
-                                                            <Col md={6} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">Work Location</Form.Label>
-                                                                <Form.Control type="text" value="Remotely" readOnly className="common-field font-14" />
-                                                            </Col>
-                                                            <Col md={12} className="mb-0">
-                                                                <Form.Label>Working Hours</Form.Label>
-                                                            </Col>
-                                                            <Col md={6} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">Start Time</Form.Label>
-                                                                <Form.Control type="time" className="common-field font-14" />
-                                                            </Col>
-                                                            <Col md={6} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">End Time</Form.Label>
-                                                                <Form.Control type="time" className="common-field font-14" />
-                                                            </Col>
-                                                            <Col md={8} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">Price (in dollars)</Form.Label>
-                                                                <div className="d-flex align-items-center gap-3">
-                                                                    <Form.Control type="text" className="common-field font-14" />
-                                                                    <Form.Check type="checkbox" label="Inc. GST" className="font-14 flex-none" />
-                                                                </div>
-                                                            </Col>
-                                                            <Col md={12} className="mb-3">
-                                                                <Form.Label className="font-14 fw-medium">Scope of work</Form.Label>
-                                                                <Form.Control type="text" as="textarea" rows={3} className="common-field font-14" />
-                                                            </Col>
+                                                            <SowForm/>
                                                         </Row>
                                                     </div>
 
@@ -1591,6 +1568,9 @@ const SingleJobDetails = () => {
             />
             {showMeetingInfo?.isMeeting ? <MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails} /> : ""}
             <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
+            {/* <AddCandidate show={true}/> */}
+            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} />
+          
         </>
     );
 };
