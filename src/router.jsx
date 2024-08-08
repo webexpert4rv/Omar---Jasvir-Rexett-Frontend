@@ -694,7 +694,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/website-builder",
+    path: "/admin/website-builder/:pageId",
     element: <WebsiteBuilder />,
     isAdmin: true,
     private: true,
