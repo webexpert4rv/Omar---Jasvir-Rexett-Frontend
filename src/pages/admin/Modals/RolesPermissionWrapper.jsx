@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllPermissionSeeder,
   newRoleCreate,
-  newEmployeeCreate
+  newEmployeeCreate,
+  getAllAdminEmployees
 } from "../../../redux/slices/adminDataSlice";
 import AddCandidate from "./AddCandidate";
 import NewEmployee from "./NewEmployee";
@@ -15,15 +16,15 @@ import { IoClose, IoCloudUploadOutline } from "react-icons/io5";
 import LocationSection from "../../websiteRegisterForm/developer/LocationSection";
 import { getCoutriesList } from "../../../redux/slices/clientDataSlice";
 
-const PERMISSIONS = [
-  { label: "Workspace Admin", value: "workspace_admin" },
-  { label: "Admin", value: "admin" },
-  { label: "Support Assistance", value: "support_assistance" },
-  { label: "Maintainance", value: "maintainance" },
-  { label: "Accountant", value: "accountant" },
-  { label: "HR", value: "hr" },
-  { label: "Assistance", value: "assistance" }
-];
+// const PERMISSIONS = [
+//   { label: "Workspace Admin", value: "workspace_admin" },
+//   { label: "Admin", value: "admin" },
+//   { label: "Support Assistance", value: "support_assistance" },
+//   { label: "Maintainance", value: "maintainance" },
+//   { label: "Accountant", value: "accountant" },
+//   { label: "HR", value: "hr" },
+//   { label: "Assistance", value: "assistance" }
+// ];
 const RolesPermissionWrapper = ({
   show,
   handleClose,
@@ -44,13 +45,19 @@ const RolesPermissionWrapper = ({
     clearErrors,
   } = useForm();
   const { smallLoader } = useSelector((state) => state.adminData);
+  const { allPermissionList } = useSelector((state) => state.adminData)
   const dispatch = useDispatch();
   const [details, setDetails] = useState();
   console.log(modalName, "modalname");
   const [uploadedImage, setUploadedImage] = useState(null);
+  
+  let PERMISSIONS = allPermissionList?.roles?.map((val)=>(
+    { label: val?.name, value: val?.name }
+  ))
 
   useEffect(()=>{
     dispatch(getCoutriesList());
+    dispatch(getAllAdminEmployees());
   },[])
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
