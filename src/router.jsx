@@ -123,7 +123,7 @@ const DeveloperList = lazy(() => import("./pages/admin/DeveloperList"));
 const ListClient = lazy(() => import("./pages/admin/ListClient"));
 const EditAdminProfile = lazy(() => import("./pages/admin/EditAdminProfile"));
 const AdminDocuments = lazy(() => import("./pages/admin/AdminDocuments"));
-const AdminTimeReporting = lazy(() =>import("./pages/admin/AdminTimeReporting"));
+const AdminTimeReporting = lazy(() => import("./pages/admin/AdminTimeReporting"));
 const AdminInvoice = lazy(() => import("./pages/admin/AdminInvoice"));
 const Revenue = lazy(() => import("./pages/admin/Revenue"));
 const DeveloperDashboard = lazy(() =>
@@ -146,7 +146,7 @@ const DeveloperLogin = lazy(() =>
 );
 const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp = lazy(() => import("./pages/Authentication/Otp")); 
+const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
 export const route = [
   {
@@ -177,14 +177,14 @@ export const route = [
     element: <DeveloperRegistrationStepper />,
     public: true,
   },
-  
+
   {
     path: "/vendor-registration",
     element: <VendorRegistrationStepper />,
     public: true,
   },
 
-  
+
   {
     path: "/otp",
     element: <Otp />,
@@ -468,13 +468,13 @@ export const route = [
     element: <VendorUploadInvoice />,
     isVendor: true,
     private: true,
-  },{
+  }, {
 
     path: "/vendor/developer-registration",
-    element: <DeveloperRegistrationStepper/>,
+    element: <DeveloperRegistrationStepper />,
     isVendor: true,
     private: true,
-    
+
   },
 
   {
@@ -542,7 +542,7 @@ export const route = [
   },
   {
     path: "/admin/developer-registration",
-    element: <DeveloperRegistrationStepper/>,
+    element: <DeveloperRegistrationStepper />,
     isAdmin: true,
     private: true,
   },
@@ -679,7 +679,7 @@ export const route = [
     isAdmin: true,
     private: true,
   },
-  
+
   {
     path: "/admin/interview-feedback",
     element: <InterviewFeedback />,
@@ -688,6 +688,12 @@ export const route = [
   },
   {
     path: "/admin/create-message-template",
+    element: <CreateMessageTemplate />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: '/admin/create-message-template/:id',
     element: <CreateMessageTemplate />,
     isAdmin: true,
     private: true,

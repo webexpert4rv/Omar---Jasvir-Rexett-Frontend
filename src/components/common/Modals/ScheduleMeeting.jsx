@@ -15,9 +15,9 @@ import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
 import { useLocation } from "react-router-dom";
-import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
+import { getAllEvents, getDeveloperList, postScheduleMeeting } from "../../../redux/slices/adminDataSlice";
 import { setDeveloperRegistrationDetails } from "../../../redux/slices/developerDataSlice";
-const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings, setCreatedMeetings }) => {
+const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings, setCreatedMeetings, type }) => {
     console.log(selectedDeveloper, "selectedDeveloper")
     const {
         handleSubmit,
@@ -30,17 +30,18 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     } = useForm({});
     const dispatch = useDispatch()
     const location = useLocation()
-    const [data , setData] = useState()
+    const [data, setData] = useState()
     const { developerList } = useSelector(state => state.adminData)
     console.log(developerList?.developers, "developerList")
-    console.log(data,"data")
+    console.log(data, "data")
+    console.log(type, "type")
 
 
 
     const getFormattedOptions = () => {
         const newOptions = developerList?.developers?.map((item) => {
-            console.log(item?.email,"itemmmmmm---")
-            return( { label: item?.email, value: item.id})
+            console.log(item?.email, "itemmmmmm---")
+            return ({ label: item?.email, value: item.id })
         })
         return newOptions;
     }
@@ -145,31 +146,58 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const meetingTypeValue = watch('meeting_type')
-    console.log(watch('select_candidate'),"meeting")
+    console.log(watch('select_candidate'), "meeting")
 
     console.log(createdMeetings, "createdMeetings")
-    const onSubmit = data => {
+    const onSubmit = (data) => {
         setCreatedMeetings(data)
-        console.log(data?.select_candidate?.value, "dat")
-        let payload = {
-            "job_id": +id,
-            "developer_id": +data?.select_candidate?.value,
-            "meeting_type": data?.meeting_type,
-            "meeting_date": data?.meeting_date,
-            "meeting_time": "01:00:00",
-            "title": data?.title,
-            "meeting_platform": data?.meeting_platform?.value,
-            "meeting_link": "https://example.com/meeting-link",
-            "status": "pending",
-            "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
-            "candidate_reminder": data?.candidate_reminder,
-            "interviewer_reminder": data?.interviewer_reminder,
-            "time_zone": data?.time_zone?.label
+        console.log(data, "dat")
+        if (type === "events") {
+            let payload = {
+                "title": data?.title,
+                "developer_id": +data?.select_candidate?.value,
+                "attendees": [
+                    {
+                        "email": data?.interviewers_list[0]?.label
+                    }
+                ],
+                "event_platform": data?.meeting_platform?.label,
+                "event_type": data?.meeting_type,
+                "event_date": data?.meeting_date,
+                "event_time": data?.meeting_time,
+                "time_zone": data?.time_zone?.label,
+                "candidate_reminder": data?.candidate_reminder,
+                "attendees_reminder": data?.interviewer_reminder,
+                "type": "meeting",
+                "event_link": "https://zoom.us/j/1234567890"
+            }
+            dispatch(postScheduleMeeting(payload, () => {
+                dispatch(getAllEvents())
+                handleClose()
+            }))
+
+        } else {
+            let payload = {
+                "job_id": +id,
+                "developer_id": +data?.select_candidate?.value,
+                "meeting_type": data?.meeting_type,
+                "meeting_date": data?.meeting_date,
+                "meeting_time": "01:00:00",
+                "title": data?.title,
+                "meeting_platform": data?.meeting_platform?.value,
+                "meeting_link": "https://example.com/meeting-link",
+                "status": "pending",
+                "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
+                "candidate_reminder": data?.candidate_reminder,
+                "interviewer_reminder": data?.interviewer_reminder,
+                "time_zone": data?.time_zone?.label
+            }
+
+            dispatch(postCandidateInterview(payload))
+
         }
 
-        dispatch(postCandidateInterview(payload))
     };
-
 
     return (
         <>
@@ -298,7 +326,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                                         invalidFieldRequired={true}
                                                         defaultOption="Select Time"
                                                         onChange={handleFirstSlotChange}
-                                                    />{" "}
+                                                    />
 
                                                     <span className="arrow-icon">
                                                         <FaArrowRightLong />
@@ -338,7 +366,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                                         invalidFieldRequired={true}
                                                         defaultOption="Time zone"
 
-                                                    />{" "}
+                                                    />
 
                                                 </div>
                                             </div>
