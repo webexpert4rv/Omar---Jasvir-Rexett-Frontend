@@ -108,6 +108,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       console.error('Error fetching events:', error);
     });
   };
+  console.log(event,"event")
 
     // const isEventDate = (date) => {
     //   return event.some(event => event.start?.dateTime.toDateString() === date.toDateString());
