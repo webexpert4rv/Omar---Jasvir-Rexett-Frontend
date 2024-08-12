@@ -101,8 +101,8 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       'orderBy': 'startTime',
     }).then((response) => {
       const events = response.result.items;
-      console.log('Events:', events);
-      setEvent([...events,...eventDetails,...allEvents?.events])
+      console.log(events,'Events:');
+      setEvent([...events,...allEvents?.events])
       // Update state with fetched events
     }).catch((error) => {
       console.error('Error fetching events:', error);
@@ -124,7 +124,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       console.log('User not authenticated');
       return;
     }
-    const event = {
+    const newEvent = {
       'summary': item.summary,
       'location': item.location,
       'description': item.description,
@@ -139,7 +139,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     };
     gapi.client.calendar.events.insert({
       'calendarId': 'primary',
-      'resource':event ,
+      'resource': newEvent ,
     }).then((response) => {
       console.log('Event created:', response);
       fetchCalendarEvents(); // Fetch the updated events list
@@ -148,7 +148,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     });
   };
 
-
+  console.log(event,"eventdown")
 
   return (
     <Offcanvas show={showMeetings} placement="end" onHide={handleCloseMeetings}>
@@ -176,7 +176,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
           <div className="interview-scheduled sidebar-meetings mt-4">
             <button onClick={fetchCalendarEvents}>Fetch</button>
             {event?.map((item, ind) => {
-              // console.log(item,"eventitem")
+              console.log(item,"eventitem")
               return (
                 <>
                   <div onClick={()=>handleShowMeetingInfo(item)} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">

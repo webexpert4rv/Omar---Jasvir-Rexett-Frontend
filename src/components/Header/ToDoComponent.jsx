@@ -184,10 +184,12 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                                                 <span><FaCalendarDays /></span>
                                                                                 <span>{item.due_date.slice(0, 10)}</span>
                                                                             </div>
-                                                                            {currentTab === "assigned_to" ? <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                                                <img src={devImg} alt="Assigned user" />
-                                                                                {details?.name}
-                                                                            </div> : ""}
+                                                                            {currentTab === "assigned_to" && (
+                                                                                <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                                    <img src={devImg} alt="Assigned user" />
+                                                                                    {details?.name}
+                                                                                </div>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -235,10 +237,12 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                                                             <span><FaCalendarDays /></span>
                                                                                             <span>{item.due_date.slice(0, 10)}</span>
                                                                                         </div>
-                                                                                        {currentTab === "assigned_to" ? <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                                                            <img src={devImg} alt="Assigned user" />
-                                                                                            {details?.name}
-                                                                                        </div> : ""}
+                                                                                        {currentTab === "assigned_to" && (
+                                                                                            <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                                                <img src={devImg} alt="Assigned user" />
+                                                                                                {details?.name}
+                                                                                            </div>
+                                                                                        )}
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
