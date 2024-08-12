@@ -52,19 +52,10 @@ const CreateMessageTemplate = () => {
         setDefaultReply(data?.default_reply || false)
         setWelcomeEmail(data?.welcome_email || false)
         setSelectedFile(
-
         <a href={data?.attachment_url} target="_blank" rel="noopener noreferrer">{data?.attachment_url} </a>
      )
     },[data])
-   
-
-
-
-
-
-
-
-    const handleDefaultReject = () => {
+      const handleDefaultReject = () => {
         setDefaultReject(!defaultReject)
     }
     const handleDefaultReply = () => {

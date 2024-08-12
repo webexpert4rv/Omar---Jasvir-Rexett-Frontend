@@ -45,6 +45,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   const [value, onChange] = useState(new Date());
   const [event, setEvent] = useState([])
   const {allEvents} = useSelector(state=>state.adminData)
+  console.log(allEvents,"allevents")
   console.log(event,"event")
   const dispatch = useDispatch()
 
@@ -108,9 +109,9 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     });
   };
 
-  //   const isEventDate = (date) => {
-  //     return event.some(event => event.start?.dateTime.toDateString() === date.toDateString());
-  //   };
+    // const isEventDate = (date) => {
+    //   return event.some(event => event.start?.dateTime.toDateString() === date.toDateString());
+    // };
 
   const isEventDate = (date) => {
     return event.some(event => new Date(event.start?.dateTime).toDateString() === date.toDateString());
