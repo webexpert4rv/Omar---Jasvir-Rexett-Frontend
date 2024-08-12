@@ -94,6 +94,13 @@ const last30Years = Array.from({ length: 31 }, (_, i) => {
 
 export const YEAR_OPTIONS = last30Years;
 
+const range = Array.from({ length: 15 }, (_, i) => ({
+  value: i + 1,
+  label: `${i + 1} year`
+}));
+
+export const EXPERIENCE_YEAR=range
+
 export const WORK_TYPE=[
   {label:"Remote",value:"remote"},
   {label:"OnSite",value:"onsite"},
@@ -110,3 +117,27 @@ export const EDUCATION_LEVEL= [
   { label: 'Masters' },
   { label: 'Doctorate or Ph. D' }
 ];
+
+
+export const PROJECT_TYPE= [
+  { label: 'Health Care' },
+  { label: 'Artificial Intelligence' },
+  { label: 'Social Media' },
+  { label: 'E-commerce' },
+  { label: 'Gaming' },
+  { label: 'Stocks' },
+  { label: 'Real State' },
+  {label:'Booking'}
+];
+
+export const TEAM_SIZE=[
+  {label:2},
+  {label:5},
+  {label:10},
+  {label:15},
+  {label:20},
+  {label:30},
+  {label:50},
+  {label:"100+"}
+
+]

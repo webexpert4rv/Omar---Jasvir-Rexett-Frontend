@@ -1,5 +1,15 @@
 import moment from "moment";
 
+export const createForReactSelect=({label,value})=>
+{
+  return {
+    label:label,
+    value:value
+  }
+}
+
+
+
 export const convertCountriesForSelect = (options,type) => {
     console.log(options,"options inside countries select");
     let formattedCountryOptions=[]

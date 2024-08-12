@@ -38,7 +38,7 @@ import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import ProjectsSection from "./ProjectsSection";
 import DeveloperStepSix from "./DeveloperStepSix";
-import ConfirmationModal from "../../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../../components/common/Modals/ConfirmationModal";
 import { VERIFY_USER_MESSAGE } from "../client/constant";
 import Otp from "../../Authentication/Otp";
 import LastStep from "./LastStep";
@@ -113,6 +113,7 @@ const DeveloperRegisterForm = ({ role }) => {
       setActiveStep(Number(storedStep));
     }
   }, []);
+
   useEffect(() => {
     if (activeStep === 1) {
       dispatch(getCoutriesList());

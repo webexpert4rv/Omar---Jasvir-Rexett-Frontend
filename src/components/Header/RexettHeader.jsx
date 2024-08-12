@@ -12,44 +12,25 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FaPencil, FaRegCircleCheck, FaTrash } from "react-icons/fa6";
 import { RiChat3Line } from "react-icons/ri";
-import devImg from '../../assets/img/user-img.jpg';
-import Calendar from 'react-calendar';
+
 import MeetingInfo from "../../pages/admin/Modals/MeetingInfo";
-import { RiUserAddFill } from "react-icons/ri";
+
 import { FaCalendarDays } from "react-icons/fa6";
-import { IoArrowForward, IoCloseCircleOutline } from "react-icons/io5";
-import { IoFilter } from "react-icons/io5";
-import { FaUserCircle } from "react-icons/fa";
-import { IoArchiveSharp } from "react-icons/io5";
-import { HiOutlineDotsVertical } from "react-icons/hi";
-import { IoClose } from "react-icons/io5";
-import ReactQuill from 'react-quill';
+
 import 'react-quill/dist/quill.snow.css';
-import { TbMessage } from "react-icons/tb";
-import { GrAttachment } from "react-icons/gr";
-import { HiOutlineLink } from "react-icons/hi";
-import { MdGifBox } from "react-icons/md";
-import { MdEmojiEmotions } from "react-icons/md";
 import Schedulemeeting from "../common/Modals/ScheduleMeeting";
 import { useDispatch, useSelector } from "react-redux";
-import { getConfigDetails } from "../../redux/slices/adminDataSlice";
-import { CgCalendar } from "react-icons/cg";
-import { TbCalendarShare } from "react-icons/tb";
-import { TiWeatherSunny } from "react-icons/ti";
+import { getConfigDetails, getToDoById } from "../../redux/slices/adminDataSlice";
 import { TbArrowBarToLeft } from "react-icons/tb";
-import AddUserConversation from "../common/Modals/AddUsers";
-import DeleteToDo from "../common/Modals/DeleteToDo";
-import rexettLogo from '../../assets/img/favicon.png'
-import { Todo_tabText } from "../clients/TimeReporiting/constant";
-import Tabs from "../common/LeaveRequest/Tabs";
-import NewToDo from "./NewToDo";
 import ToDoComponent from "./ToDoComponent";
 import MessageInbox from "./MessageInbox";
+import Meetings from "../common/meetings/Meetings";
 
 const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s+(.)/g, (c) => c.toUpperCase());
 
 const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
+  const [details, setDetails] = useState()
   const { t } = useTranslation();
   const [fridayMarquee, setFridayMarquee] = useState(false);
   const { pathname } = useLocation();
@@ -81,9 +62,13 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const handleShowMeetings = () => setShowMeetings(true);
 
   const [showMeetingInfo, setShowMeetingInfo] = useState(false);
-  const handleShowMeetingInfo = () => {
+  const handleShowMeetingInfo = (item) => {
+    console.log(item, "value======")
+    setDetails(item)
     setShowMeetingInfo(!showMeetingInfo)
   }
+
+  console.log(details, "details")
   const handleCloseMeetingInfo = () => {
     setShowMeetingInfo(false)
   }
@@ -142,7 +127,6 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     // navigate(routeName);
   };
 
-  const [value, onChange] = useState(new Date());
   const [currentTab, setCurrentTab] = useState("first")
   const [deletetodo, showDeletetodo] = useState(false);
   const handleShowDeleteToDo = () => {
@@ -159,6 +143,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const handleCloseSchdule = () => {
     ShowScheduleMeeting(false);
   }
+
+  const [createdMeetings, setCreatedMeetings] = useState()
+  console.log(createdMeetings, "createdMeetings")
 
 
   return (
@@ -225,7 +212,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
             )}
             {role == "vendor" ? (
               <Link
-                to={"/resume-detail"}
+                to={"/vendor/developer-registration"}
                 className="text-decoration-none main-btn"
               >
                 {t("registerNewDeveloper")}
@@ -250,74 +237,13 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
           </div>
         </div>
       </header>
-      <Offcanvas show={showMeetings} placement="end" onHide={handleCloseMeetings}>
-        <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
-          <div className="d-flex align-items-center gap-2">
-            <Offcanvas.Title>Meetings</Offcanvas.Title>
-            <ToolTip text={"New Meeting"}>
-              <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
-            </ToolTip>
-          </div>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
 
-          <div className="meeting-booking">
-            <Calendar onChange={onChange} value={value} />
-            <div className="interview-scheduled sidebar-meetings mt-4">
+      <Meetings showMeetings={showMeetings} handleCloseMeetings={handleCloseMeetings} handleShowSchedule={handleShowSchedule} handleShowMeetingInfo={handleShowMeetingInfo} />
 
-              <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-                <div>
-                  <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                  <p className="dev-name mb-2 font-14">
-                    <div className="me-1">
-                      <img src={devImg} />
-                    </div>
-                    Pankaj Pundir
-                  </p>
-                  <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-                </div>
-                <div className="mb-2 status-interview">
-                  <span className="status-upcoming">Upcoming in 1hr</span>
-                </div>
-              </div>
-              <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-                <div>
-                  <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                  <p className="dev-name mb-2 font-14">
-                    <div className="me-1">
-                      <img src={devImg} />
-                    </div>
-                    Pankaj Pundir
-                  </p>
-                  <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-                </div>
-                <div className="mb-2 status-interview">
-                  <span className="status-upcoming">Upcoming in 3hr</span>
-                </div>
-              </div>
-              <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-                <div>
-                  <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                  <p className="dev-name mb-2 font-14">
-                    <div className="me-1">
-                      <img src={devImg} />
-                    </div>
-                    Pankaj Pundir
-                  </p>
-                  <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-                </div>
-                <div className="mb-2 status-interview">
-                  <span className="status-upcoming">Upcoming in 5hr</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Offcanvas.Body>
-      </Offcanvas>
       <MessageInbox showMessagesInfo={showMessagesInfo} setShowMessagesInfo={setShowMessagesInfo} />
       <ToDoComponent showToDo={showToDo} setShowToDo={setShowToDo} />
-      <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
-      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} />
+      <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} createdMeetings={createdMeetings} details={details} />
+      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} setCreatedMeetings={setCreatedMeetings} createdMeetings={createdMeetings} type={"events"} />
     </>
   );
 };

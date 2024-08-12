@@ -141,6 +141,7 @@ const ProjectDetail = () => {
                             {isHours && " hrs"}
                           </p>
                         </div>
+                        
                       </Col>
                     )
                   )}

@@ -1,31 +1,93 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BiFont } from "react-icons/bi";
 import { FaArrowRightLong, FaUsers } from "react-icons/fa6";
 import { RiUser3Fill } from "react-icons/ri";
 import { FaClock } from "react-icons/fa6";
 import { IoAlarm } from "react-icons/io5";
-import clientImg from '../../../assets/img/amazon.png';
-import rexettLogo from '../../../assets/img/favicon.png';
-import devImg from '../../../assets/img/demo-img.jpg'
-import DatePicker from 'react-date-picker';
 import { FaVideo } from "react-icons/fa6";
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
-import { toast } from 'react-toastify'
-import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select'
-const Schedulemeeting = ({ show, handleClose }) => {
-    const [value, onChange] = useState(new Date());
+import CommonInput from "../../atomic/CommonInput";
+import { useForm } from "react-hook-form";
+import RexettButton from "../../atomic/RexettButton";
+import { VIDEO_MEETING } from "../../../helper/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
+import { useLocation } from "react-router-dom";
+import { getAllEvents, getDeveloperList, postScheduleMeeting } from "../../../redux/slices/adminDataSlice";
+import { setDeveloperRegistrationDetails } from "../../../redux/slices/developerDataSlice";
+const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings, setCreatedMeetings, type }) => {
+    console.log(selectedDeveloper, "selectedDeveloper")
+    const {
+        handleSubmit,
+        register,
+        control,
+        reset,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm({});
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const [data, setData] = useState()
+    const { developerList } = useSelector(state => state.adminData)
+    console.log(developerList?.developers, "developerList")
+    console.log(data, "data")
+    console.log(type, "type")
+
+
+
+    const getFormattedOptions = () => {
+        const newOptions = developerList?.developers?.map((item) => {
+            console.log(item?.email, "itemmmmmm---")
+            return ({ label: item?.email, value: item.id })
+        })
+        return newOptions;
+    }
+    let id = location.pathname.split("/")[3];
+
+
     const [firstSlot, setFirstSlot] = useState("");
     const [secondSlot, setSecondSlot] = useState("");
+    const [groupedTime, setGroupedTime] = useState([])
+    const { timeZoneList } = useSelector((state) => state.clientData)
+
+    useEffect(() => {
+        dispatch(getTimeZoneList())
+    }, [])
+
+    useEffect(() => {
+        dispatch(getDeveloperList())
+    }, [])
+
+
+    useEffect(() => {
+        if (timeZoneList.length > 0) {
+            let groupedTimeZones = timeZoneList?.map((item) => {
+                return {
+                    label: item?.country_name,
+                    options: item?.timezones.map((it) => {
+                        return { label: it, value: it }
+                    }),
+                }
+            })
+            setGroupedTime(groupedTimeZones)
+        }
+
+
+
+    }, [timeZoneList])
+
+
+    console.log(timeZoneList, "timeZoneList")
 
     const generateTimeSlots = () => {
         const slots = [];
         for (let hour = 0; hour < 24; hour++) {
             for (let minute = 0; minute < 60; minute += 15) {
                 const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-                slots.push(time);
+                slots.push({ label: time, value: time });
             }
         }
         return slots;
@@ -76,49 +138,65 @@ const Schedulemeeting = ({ show, handleClose }) => {
         if (minutes > 0) {
             duration += `${minutes}m`;
         }
+        setValue("meeting_time", duration.trim())
         return duration.trim();
     };
 
     // Filter second select options to be only after the first select value
-    const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot > firstSlot);
+    const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
-    const timeZones = [
-        { value: "UTC-12:00", label: "UTC-12:00" },
-        { value: "UTC-11:00", label: "UTC-11:00" },
-        { value: "UTC-10:00", label: "UTC-10:00" },
-        { value: "UTC-09:00", label: "UTC-09:00" },
-        { value: "UTC-08:00", label: "UTC-08:00" },
-        { value: "UTC-07:00", label: "UTC-07:00" },
-        { value: "UTC-06:00", label: "UTC-06:00" },
-        { value: "UTC-05:00", label: "UTC-05:00" },
-        { value: "UTC-04:00", label: "UTC-04:00" },
-        { value: "UTC-03:00", label: "UTC-03:00" },
-        { value: "UTC-02:00", label: "UTC-02:00" },
-        { value: "UTC-01:00", label: "UTC-01:00" },
-        { value: "UTC+00:00", label: "UTC+00:00" },
-        { value: "UTC+01:00", label: "UTC+01:00" },
-        { value: "UTC+02:00", label: "UTC+02:00" },
-        { value: "UTC+03:00", label: "UTC+03:00" },
-        { value: "UTC+04:00", label: "UTC+04:00" },
-        { value: "UTC+05:00", label: "UTC+05:00" },
-        { value: "UTC+06:00", label: "UTC+06:00" },
-        { value: "UTC+07:00", label: "UTC+07:00" },
-        { value: "UTC+08:00", label: "UTC+08:00" },
-        { value: "UTC+09:00", label: "UTC+09:00" },
-        { value: "UTC+10:00", label: "UTC+10:00" },
-        { value: "UTC+11:00", label: "UTC+11:00" },
-        { value: "UTC+12:00", label: "UTC+12:00" },
-        { value: "UTC+13:00", label: "UTC+13:00" },
-        { value: "UTC+14:00", label: "UTC+14:00" },
-    ];
-    const meetingToast = () => {
-        toast("Meeting Scheduled");
-    }
+    const meetingTypeValue = watch('meeting_type')
+    console.log(watch('select_candidate'), "meeting")
 
-    const [meetingType, setMeetingType] = useState('instant'); // initial state set to 'instant'
+    console.log(createdMeetings, "createdMeetings")
+    const onSubmit = (data) => {
+        setCreatedMeetings(data)
+        console.log(data, "dat")
+        if (type === "events") {
+            let payload = {
+                "title": data?.title,
+                "developer_id": +data?.select_candidate?.value,
+                "attendees": [
+                    {
+                        "email": data?.interviewers_list[0]?.label
+                    }
+                ],
+                "event_platform": data?.meeting_platform?.label,
+                "event_type": data?.meeting_type,
+                "event_date": data?.meeting_date,
+                "event_time": data?.meeting_time,
+                "time_zone": data?.time_zone?.label,
+                "candidate_reminder": data?.candidate_reminder,
+                "attendees_reminder": data?.interviewer_reminder,
+                "type": "meeting",
+                "event_link": "https://zoom.us/j/1234567890"
+            }
+            dispatch(postScheduleMeeting(payload, () => {
+                dispatch(getAllEvents())
+                handleClose()
+            }))
 
-    const handleMeetingTypeChange = (e) => {
-        setMeetingType(e.target.id);
+        } else {
+            let payload = {
+                "job_id": +id,
+                "developer_id": +data?.select_candidate?.value,
+                "meeting_type": data?.meeting_type,
+                "meeting_date": data?.meeting_date,
+                "meeting_time": "01:00:00",
+                "title": data?.title,
+                "meeting_platform": data?.meeting_platform?.value,
+                "meeting_link": "https://example.com/meeting-link",
+                "status": "pending",
+                "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
+                "candidate_reminder": data?.candidate_reminder,
+                "interviewer_reminder": data?.interviewer_reminder,
+                "time_zone": data?.time_zone?.label
+            }
+
+            dispatch(postCandidateInterview(payload))
+
+        }
+
     };
 
     return (
@@ -128,8 +206,8 @@ const Schedulemeeting = ({ show, handleClose }) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <h3 className="popup-heading">Schedule Meeting</h3>
-                    <Form>
+                    <h3 className="popup-heading">Schedule Meetings</h3>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <Row>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -137,15 +215,36 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <Form.Control type="text" className="common-field font-14" placeholder="Add title" />
+                                        {/* <Form.Control type="text" className="common-field font-14" placeholder="Add title" /> */}
+                                        <CommonInput
+                                            name={"title"}
+                                            type="text"
+                                            control={control}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                            placeholder="Add title"
+                                        />
                                     </div>
+                                    <p>{errors?.title?.message}</p>
+
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Select Candidate</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <Select isMulti />
+                                        {/* <Select isMulti /> */}
+                                        <CommonInput
+                                            name={"select_candidate"}
+                                            type={"select2"}
+                                            control={control}
+                                            // selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
+                                            rules={{ required: "This field is required" }}
+                                            selectOptions={getFormattedOptions()}
+                                            invalidFieldRequired={true}
+                                            placeholder="Select Candidate"
+                                        />
+                                        <p>{errors?.interviewers_list?.message}</p>
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -153,27 +252,37 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        <CreatableSelect isMulti />
+                                        {/* <CreatableSelect isMulti /> */}
+                                        <CommonInput
+                                            name={"interviewers_list"}
+                                            type={"multi-select"}
+                                            control={control}
+                                            selectOptions={[{ label: "JohnDoe@gmail.com", value: "JohnDoe@gmail.com" }, { label: "exapme@gmail.com", value: "example@gmail.com" }]}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                            placeholder="Select Interviewer"
+                                        />
+                                        <p>{errors?.select_candidate?.message}</p>
                                     </div>
                                 </Col>
-                                {/* <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Client</p>
-                                </Col>
-                                <Col lg={8} className="mb-3">
-                                    <div className="d-flex align-items-center gap-3 client-imgbx">
-                                        <img src={clientImg} />
-                                        <p className="font-14 mb-0">Amazon</p>
-                                    </div>
-                                </Col> */}
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
-                                    <Form.Select className="common-field font-14">
+                                    {/* <Form.Select className="common-field font-14">
                                         <option>Rexett video meeting</option>
                                         <option>Google meet</option>
                                         <option>Microsoft team</option>
-                                    </Form.Select>
+                                    </Form.Select> */}
+                                    <CommonInput
+                                        name={"meeting_platform"}
+                                        type={"select"}
+                                        control={control}
+                                        selectOptions={VIDEO_MEETING}
+                                        rules={{ required: "This field is required" }}
+                                        invalidFieldRequired={true}
+                                        placeholder="Video Meeting"
+                                    />{" "}
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
@@ -183,66 +292,82 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                         <div className="mb-2">
                                             <Form.Check
                                                 type="radio"
-                                                name="meeting-time"
+                                                name="instant"
                                                 label="Instant Meeting"
                                                 id="instant_meeting"
                                                 className="d-inline-block meeting-radio ps-0 me-2"
-                                                checked={meetingType === 'instant_meeting'}
-                                                onChange={handleMeetingTypeChange}
+                                                value="instant"
+                                                {...register("meeting_type")}
+
                                             />
+
                                             <Form.Check
                                                 type="radio"
-                                                name="meeting-time"
-                                                label="Specific Date & Time"
-                                                id="specific_meeting"
+                                                name="scheduled"
+                                                label="Scheduled Date & Time"
+                                                id="scheduled"
                                                 className="d-inline-block meeting-radio ps-0"
-                                                checked={meetingType === 'specific_meeting'}
-                                                onChange={handleMeetingTypeChange}
+                                                value="scheduled"
+                                                {...register("meeting_type")}
                                             />
+
                                         </div>
-                                        {meetingType === 'specific_meeting' && (
+                                        {meetingTypeValue === 'scheduled' && (
                                             <div className="specific-datetime">
                                                 <div className="d-flex align-items-center gap-3 mb-2">
-                                                    <Form.Select
-                                                        className="common-field font-14 w-auto"
+
+                                                    <CommonInput
+                                                        name={"meeting_time"}
+                                                        type={"normal-select"}
+                                                        control={control}
                                                         value={firstSlot}
+                                                        options={timeSlots}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+                                                        defaultOption="Select Time"
                                                         onChange={handleFirstSlotChange}
-                                                    >
-                                                        <option value="">Select Time</option>
-                                                        {timeSlots.map((slot, index) => (
-                                                            <option key={index} value={slot}>
-                                                                {slot}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
+                                                    />
+
                                                     <span className="arrow-icon">
                                                         <FaArrowRightLong />
                                                     </span>
-                                                    <Form.Select
-                                                        className="common-field font-14 w-auto"
+
+                                                    <CommonInput
+                                                        name={"meeting_time"}
+                                                        type={"normal-select"}
+                                                        control={control}
                                                         value={secondSlot}
+                                                        options={filteredTimeSlots}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+                                                        defaultOption="Select Time"
                                                         onChange={handleSecondSlotChange}
-                                                    >
-                                                        <option value="">Select Time</option>
-                                                        {filteredTimeSlots.map((slot, index) => (
-                                                            <option key={index} value={slot} disabled={slot === firstSlot}>
-                                                                {slot}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
+                                                    />{" "}
                                                     <span className="font-14">{calculateDuration(firstSlot, secondSlot)}</span>
                                                 </div>
                                                 <div className="mb-2 datefield-wrapper">
-                                                    <DatePicker onChange={onChange} value={value} />
+                                                    {/* <DatePicker onChange={onChange} value={value} /> */}
+                                                    <CommonInput
+                                                        name={"meeting_date"}
+                                                        type={"date"}
+                                                        control={control}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+
+                                                    />{" "}
                                                 </div>
                                                 <div>
-                                                    <Form.Select className="common-field font-14">
-                                                        {timeZones.map((zone, index) => (
-                                                            <option key={index} value={zone.value}>
-                                                                {zone.label}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
+                                                    <CommonInput
+                                                        name={"time_zone"}
+                                                        type={"select"}
+                                                        control={control}
+                                                        selectOptions={groupedTime}
+                                                        rules={{ required: "This field is required" }}
+                                                        invalidFieldRequired={true}
+                                                        defaultOption="Time zone"
+
+                                                    />
+
                                                 </div>
                                             </div>
                                         )}
@@ -262,6 +387,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                     type="checkbox"
                                                     role="switch"
                                                     id="candidate-reminder"
+                                                    {...register("candidate_reminder")}
                                                 />
                                             </div>
                                         </div>
@@ -277,6 +403,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                     type="checkbox"
                                                     role="switch"
                                                     id="client-reminder"
+                                                    {...register("interviewer_reminder")}
                                                 />
                                             </div>
                                         </div>
@@ -286,9 +413,14 @@ const Schedulemeeting = ({ show, handleClose }) => {
                             </Row>
                         </div>
                         <div className="text-center">
-                            <Button variant="transparent" onClick={() => { handleClose(); meetingToast(); }} className="main-btn px-4 font-14 fw-semibold">Send Invite</Button>
+                            {/* <Button variant="transparent" onClick={() => { handleClose(); meetingToast(); }} className="main-btn px-4 font-14 fw-semibold">Send Invite</Button> */}
+                            <RexettButton
+                                type="submit"
+                                text={"Send Invite"}
+                                className="main-btn px-4 font-14 fw-semibold"
+                            />
                         </div>
-                    </Form>
+                    </form>
                 </Modal.Body>
             </Modal>
         </>

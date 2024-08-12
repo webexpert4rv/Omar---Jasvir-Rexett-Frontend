@@ -35,22 +35,27 @@ import SuperDashboard from "./pages/SuperAdmin/Dashboard";
 import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
 import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
 import ClientListing from "./pages/SuperAdmin/ClientListing";
+import SupportAgents from "./pages/SuperAdmin/SupportAgent";
+import ManageShift from "./pages/SuperAdmin/ManageShift";
 import FeedbackView from "./pages/admin/FeedbackView";
-
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ResetPassword from "./pages/Authentication/ResetPassword";
 import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
-import ClientStep1 from "./pages/admin/ClientRegister/ClientStep1";
 import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
 import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
 import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
 import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
+import VendorEditProfile from "./pages/vendor/vendorEditProfile.jsx";
 const ClientRegisterForm = lazy(() =>
   import("./pages/websiteRegisterForm/client/ClientRegisterForm")
 );
 // const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
+
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
+);
+const MemberLogin =lazy(()=>
+  import("./pages/Authentication/MemberLogin.jsx")
 );
 const VendorDashboard = lazy(() => import("./pages/vendor/Dashboard"));
 const ProfileUpdationRequest = lazy(() =>
@@ -82,7 +87,6 @@ const VendorDocuments = lazy(() => import("./pages/vendor/VendorDocuments"));
 const VendorRevenue = lazy(() => import("./pages/vendor/VendorRevenue"));
 const VendorUploadInvoice = lazy(() => import("./pages/vendor/VendorInvoice"));
 const VendorTimeReporting = lazy(() => import("./pages/vendor/TimeReporting"));
-const EditVendorProfile = lazy(() => import("./pages/vendor/EditProfile"));
 const RentedDevelopers = lazy(() => import("./pages/vendor/RentedDevelopers"));
 const AllDeveloperList = lazy(() => import("./pages/vendor/ListAllDeveloper"));
 const RegisterDeveloper = lazy(() =>
@@ -108,7 +112,6 @@ const SingleClient = lazy(() =>
   import("./components/common/SingleClient/SingleClient")
 );
 const Applications = lazy(() => import("./pages/admin/Applications"));
-
 const Login = lazy(() => import("./pages/Authentication/Login"));
 const Dashboard = lazy(() => import("./pages/views/Dashboard"));
 const HiredDevelopers = lazy(() => import("./pages/views/HiredDevelopers"));
@@ -123,9 +126,7 @@ const DeveloperList = lazy(() => import("./pages/admin/DeveloperList"));
 const ListClient = lazy(() => import("./pages/admin/ListClient"));
 const EditAdminProfile = lazy(() => import("./pages/admin/EditAdminProfile"));
 const AdminDocuments = lazy(() => import("./pages/admin/AdminDocuments"));
-const AdminTimeReporting = lazy(() =>
-  import("./pages/admin/AdminTimeReporting")
-);
+const AdminTimeReporting = lazy(() => import("./pages/admin/AdminTimeReporting"));
 const AdminInvoice = lazy(() => import("./pages/admin/AdminInvoice"));
 const Revenue = lazy(() => import("./pages/admin/Revenue"));
 const DeveloperDashboard = lazy(() =>
@@ -148,7 +149,7 @@ const DeveloperLogin = lazy(() =>
 );
 const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp = lazy(() => import("./pages/Authentication/Otp")); 
+const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
 export const route = [
   {
@@ -158,28 +159,35 @@ export const route = [
     public: true,
   },
   {
+    path: "/meeting-detail",
+    element: <MeetingDetail />,
+    public: true,
+  },
+  {
     path: "/expert-area",
     element: <ExpertiseArea />,
     // element: <ClientStep1 />,
     public: true,
   },
-  {
-    path: "/decision-makers",
-    element: <VendorDecisionMakers />,
-    // element: <ClientStep1 />,
-    public: true,
-  },
+  // {
+  //   path: "/decision-makers",
+  //   element: <VendorDecisionMakers />,
+  //   element: <ClientStep1 />,
+  //   public: true,
+  // },
   {
     path: "/developer-registration",
     element: <DeveloperRegistrationStepper />,
     public: true,
   },
-  
+
   {
     path: "/vendor-registration",
     element: <VendorRegistrationStepper />,
     public: true,
   },
+
+
   {
     path: "/otp",
     element: <Otp />,
@@ -188,6 +196,11 @@ export const route = [
   {
     path: "/",
     element: <ClientLogin />,
+    public: true,
+  },
+  {
+    path: "/member-login",
+    element: <MemberLogin />,
     public: true,
   },
   {
@@ -463,16 +476,30 @@ export const route = [
     element: <VendorUploadInvoice />,
     isVendor: true,
     private: true,
+  }, {
+
+    path: "/vendor/developer-registration",
+    element: <DeveloperRegistrationStepper />,
+    isVendor: true,
+    private: true,
+
   },
+
   {
     path: "/vendor-time-reporting",
     element: <VendorTimeReporting />,
     isVendor: true,
     private: true,
   },
+  // {
+  //   path: "/edit-vendor-profile",
+  //   element: <EditVendorProfile />,
+  //   isVendor: true,
+  //   private: true,
+  // },
   {
     path: "/edit-vendor-profile",
-    element: <EditVendorProfile />,
+    element: <VendorEditProfile />,
     isVendor: true,
     private: true,
   },
@@ -523,7 +550,7 @@ export const route = [
   },
   {
     path: "/admin/developer-registration",
-    element: <DeveloperRegistrationStepper/>,
+    element: <DeveloperRegistrationStepper />,
     isAdmin: true,
     private: true,
   },
@@ -660,12 +687,7 @@ export const route = [
     isAdmin: true,
     private: true,
   },
-  {
-    path: "/admin/meeting-detail",
-    element: <MeetingDetail />,
-    isAdmin: true,
-    private: true,
-  },
+
   {
     path: "/admin/interview-feedback",
     element: <InterviewFeedback />,
@@ -679,7 +701,13 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/website-builder",
+    path: '/admin/create-message-template/:id',
+    element: <CreateMessageTemplate />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/website-builder/:pageId",
     element: <WebsiteBuilder />,
     isAdmin: true,
     private: true,
@@ -727,8 +755,26 @@ export const route = [
     private: true,
   },
   {
+    path: "/super-admin/support-agents",
+    element: <SupportAgents />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/manage-shift",
+    element: <ManageShift />,
+    isAdmin: true,
+    private: true,
+  },
+  {
     path: "/admin/feedback-view",
     element: <FeedbackView />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "admin/register-developer",
+    element: <DeveloperRegistrationStepper />,
     isAdmin: true,
     private: true,
   },

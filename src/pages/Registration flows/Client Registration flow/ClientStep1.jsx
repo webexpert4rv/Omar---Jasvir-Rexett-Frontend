@@ -13,6 +13,9 @@ import CommonProfilePictureSection from "../../../components/common/CommonProfil
 import UploadFile from "../DeveloperRegistrationFlow/UploadFile";
 const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
 
+// const GOOGLE_MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API;
+// const GOOGLE_MAP_API_KEY = "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+
 const ClientStep1 = ({
   control,
   errors,
@@ -20,6 +23,7 @@ const ClientStep1 = ({
   activeStep,
   nestedActiveStep,
   type,
+  name,
   stepFields,
   setError,
   clearErrors,
@@ -31,32 +35,36 @@ const ClientStep1 = ({
   setImageFile,
   imageFile,
   isProfileSectionRequired,
+  isEditMode,
+  skillOptions,
+  stepData
 }) => {
   const { t } = useTranslation();
-  // field name service offerenings  
-  console.log(activeStep,"activeStep")
-  console.log(watch("is_still_working"),"is")
+  
+  console.log(type,"typeClientStep1")
   let isStillWorking=watch("is_still_working")
+  console.log(stepFields,"stepFields")
+  // let isStillWorking=true
   return (
     <>
       <Row>
         <Col md={12}>
-          <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>
+         { <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>}
           <p className="font-12 fw-medium">* includes a required field</p>
           <div className="d-flex align-items-start gap-3">
             {isProfileSectionRequired && (
               <CommonProfilePictureSection
-                register={register}
-                setValue={setValue}
-                clearErrors={clearErrors}
-                setImageFile={setImageFile}
-                setPreviewImage={setPreviewImage}
-                previewImage={previewImage}
-                setError={setError}
-                imageFile={imageFile}
-                fieldName={"profile_picture"}
-                errors={errors}
-              />
+              register={register}
+              setValue={setValue}
+              clearErrors={clearErrors}
+              setImageFile={setImageFile}
+              setPreviewImage={setPreviewImage}
+              previewImage={previewImage}
+              setError={setError}
+              imageFile={imageFile}
+              fieldName={"profile_picture"}
+              errors={errors}
+            />
             )}
             <Row className="w-100">
               {stepFields?.map(({label,
@@ -72,7 +80,8 @@ const ClientStep1 = ({
                   isLocation,
                   defaultOption,
                   isMinRequired,
-                  isMaxRequired
+                  isMaxRequired,
+                  readOnly,
                 }) =>
                   isPasswordSection ? (
                     <PasswordSection
@@ -108,7 +117,7 @@ const ClientStep1 = ({
                           error={errors?.[fieldName]}
                           apiKey={GOOGLE_MAP_API_KEY}
                           onPlaceSelected={(place) => {
-                            setValue(fieldName, place.formatted_address);
+                            setValue(fieldName, place?.formatted_address);
                           }}
                           onChange={(e) => {
                             setValue(fieldName, e.target.value);
@@ -140,13 +149,14 @@ const ClientStep1 = ({
                               rules={{ ...rules }}
                               error={errors?.[fieldName]}
                               type={type}
-                              options={companyTypeOptions ? companyTypeOptions:options}//get options
+                              options={companyTypeOptions ? companyTypeOptions:skillOptions && label=="Skill" ?skillOptions:options}//get options
                               defaultOption={defaultOption}
                               placeholder={placeholder}
                               isMaxRequired={isMaxRequired}
                               disabled={isStillWorking}
                               isMinRequired={isMinRequired}
-                            />
+                  readOnly={readOnly ? true : false}
+                   />
                           ): <UploadFile 
                           label={label}
                           placeholder={placeholder}
@@ -160,6 +170,7 @@ const ClientStep1 = ({
                           imageFile={imageFile}
                           fieldName={fieldName}
                           errors={errors}
+                          stepData={stepData}
                           />}
 
                         </div>

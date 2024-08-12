@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import {getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
+import { getRefreshToken, getToken, updateLocalAccessToken } from "../helper/utlis";
 
 
 const clientInstance = axios.create({
@@ -41,7 +41,7 @@ clientInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         let refreshToken = getRefreshToken("refreshToken");

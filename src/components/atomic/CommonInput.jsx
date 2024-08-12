@@ -13,6 +13,7 @@ const CommonInput = ({
   label,
   name,
   type = "text",
+  value,
   control,
   rules,
   readOnly = false,
@@ -33,8 +34,14 @@ const CommonInput = ({
   defaultOption = "",
   disabled,
   rows = null,
+  className,
+  selectedRecommend,
+  // options,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  console.log(selectOptions,"newformattedOptions")
+ 
+  // console.log(options,"options")
 console.log(type,"ty")
 console.log(isMinRequired,"isMinRequired")
 console.log(isMaxRequired,"ismax")
@@ -49,9 +56,11 @@ console.log(isMaxRequired,"ismax")
       return <CloseIcon />;
     }
   };
+  console.log(name,"name")
+  // console.log(watch("total_it_recruiter"),"total recruiters")
   return (
     <Form.Group className="mb-3">
-      <Form.Label className="common-label">{label}</Form.Label>
+      <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>
       <div className="position-relative">
         <Controller
           name={name}
@@ -59,37 +68,29 @@ console.log(isMaxRequired,"ismax")
           rules={rules}
           render={({ field }) => {
             if (type === "radio") {
-              return options.map((option, index) => (
-                <Form.Check
+                  <Form.Check
                   {...field}
-                  key={index}
+                  label={label}
                   type="radio"
-                  id={`${name}-${index}`}
-                  label={option.label}
-                  value={option.value}
-                  checked={field.value === option.value}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  id="radio1"
+                  className={className}
+                  checked={field.value}
+                  onChange={(e) =>{
+                    field.onChange(e.target.checked)
+                  } }
                 />
-              ));
+              
             }
             if (type === "checkbox") {
-              return options.map((option, index) => (
-                <Form.Check
-                  {...field}
-                  key={index}
-                  type="checkbox"
-                  id={`${name}-${index}`}
-                  label={option.label}
-                  value={option.value}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      field.onChange(true);
-                    }else{
-                      field.onChange(false);
-                    }
-                  }}
-                />
-              ));
+              return   <Form.Check
+              {...field}
+              type="checkbox"
+              id="radio1"
+              checked={field.value}
+              onChange={(e) =>{
+                field.onChange(e.target.checked)
+              } }
+            />
             } 
             else if (type === "phone") {
               return (
@@ -98,6 +99,7 @@ console.log(isMaxRequired,"ismax")
                     placeholder={placeholder}
                     value={field.value ? String(field.value) : ""}
                     onChange={field.onChange}
+                    className="common-field"
                     inputProps={{
                       name: name,
                       readOnly: readOnly,
@@ -120,10 +122,11 @@ console.log(isMaxRequired,"ismax")
                     options={selectOptions}
                     className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"} `}
                     isDisabled={readOnly}
-                    // onChange={(selectedOption) => field.onChange(selectedOption)}
-                    // value={selectOptions?.find(
-                    //   (option) => option.value === field.value
-                    // )}
+                    onChange={(selectedOption) => field.onChange(selectedOption)}
+                    value={selectOptions?.find(
+                      (option) => option.value === field.value
+                    )}
+                    // value={field.value }
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />
@@ -160,6 +163,8 @@ console.log(isMaxRequired,"ismax")
                     className={`common-field ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
+                    // value={value}
+                    // onChange={onChange}
                   >
                     <option disabled selected value="">
                       {defaultOption}
@@ -253,19 +258,19 @@ console.log(isMaxRequired,"ismax")
               );
             } else if (type === "year-picker") {
               console.log(field.value, "this is field.value");
-              // return (
-              //   <DatePicker
-              //     {...field}
-              //     selected={field.value && field.value}
-              //     maxDate={new Date().toISOString().split("T")[0]}
-              //     maxDetail="decade"
-              //     onChange={(date) => field.onChange(date)}
-              //     showYearPicker
-              //     dateFormat="yyyy"
-              //     placeholderText="Select year"
-              //     className="common-field"
-              //   />
-              // )
+              return (
+                <DatePicker
+                  {...field}
+                  selected={field.value && field.value}
+                  maxDate={new Date().toISOString().split("T")[0]}
+                  maxDetail="decade"
+                  onChange={(date) => field.onChange(date)}
+                  showYearPicker
+                  dateFormat="yyyy"
+                  placeholderText="Select year"
+                  className="common-field"
+                />
+              )
             } else {
               return (
                 <>

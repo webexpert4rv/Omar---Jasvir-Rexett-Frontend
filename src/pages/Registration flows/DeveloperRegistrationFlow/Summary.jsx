@@ -1,17 +1,20 @@
-import React from "react";
+import {useEffect} from "react";
 import { Button, Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import { FaChevronDown, FaLightbulb, FaPencil } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
 import { TiEdit } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import StepperHeadingSection from "../StepperHeadingSection";
-import ConfirmationModal from "../../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../../components/common/Modals/ConfirmationModal";
+import { useDispatch } from "react-redux";
+import { getDeveloperProfileDetails } from "../../../redux/slices/developerDataSlice";
+import ResumeOverView from "./ResumeOverView";
 
 const Summary = ({
   nestedActiveStep,
   stepData,
   handleDelete,
-  handleCloseUploadFileModal,
+  handleClose,
   smallLoader,
   setShowSetUpJobModal,
   showSetUpModal,
@@ -21,6 +24,18 @@ const Summary = ({
   editSummary,
   objectKeys,
 }) => {
+
+  const dispatch = useDispatch();
+
+  let developerId=localStorage.getItem("developerId");
+
+  useEffect(()=>{
+    if(developerId){
+        dispatch(getDeveloperProfileDetails(developerId));
+    }
+  
+},[developerId])
+
   const handleDeleteModal = (id) => {
     setShowSetUpJobModal({
       isDelete: true,
@@ -53,7 +68,7 @@ const Summary = ({
 
   const populateHeaderItem = (item) => {
     if (item.job_title) {
-      return ` ${item.job_title} , ${item.company}`;
+      return ` ${item.job_title} , ${item.company_name}`;
     } else if (item.university_name) {
       return ` ${item.university_name} , ${item.field_of_study}`;
     } else if (item?.project_title) {
@@ -65,17 +80,20 @@ const Summary = ({
     if (item?.project_title) {
       return (
         <span>
-          {`${item?.project_type} , ${item.project_start_date} - ${item?.project_end_date}`}
+          {`${item?.project_type} , ${item?.project_start_date?.slice(0,10)} - ${item?.project_end_date?.slice(0,10)}`}
           <br />
           <span>{item?.project_link}</span>
         </span>
       );
+    }else if(item?.job_title){
+      return <span>{`${item?.job_location} | ${item?.start_date?.slice(0,10)} - ${item?.end_date?.slice(0,10)}`}</span> 
     }
   };
+
   return (
     <>
       <Row>
-        <Col md={12}>
+        <Col md={8}>
           <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <StepperHeadingSection
@@ -155,13 +173,18 @@ const Summary = ({
             </Button>
           </div>
         </Col>
+        <Col md={4}>
+                  <ResumeOverView activeStep={activeStep} />
+                </Col>
       </Row>
       <ConfirmationModal
         text={"Are you sure to delete this job?"}
-        show={showSetUpModal?.isDelete}
-        handleClose={handleCloseUploadFileModal}
+        show={showSetUpModal}
+        handleClose={handleClose}
         onClick={handleDelete}
         smallLoader={smallLoader}
+        handleAction={handleDelete}
+        type={type}
       />
     </>
   );

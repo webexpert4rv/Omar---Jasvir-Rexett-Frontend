@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { FaTrash } from "react-icons/fa";
 import { TiEdit } from "react-icons/ti";
 import AddFaq from "./Modals/AddFaq";
-import ConfirmationModal from "./Modals/ConfirmationModal";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 import { deleteFaq } from "../../redux/slices/adminDataSlice";
 import { useLocation } from "react-router-dom";
 import ScreenLoader from "../../components/atomic/ScreenLoader";

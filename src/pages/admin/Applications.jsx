@@ -20,7 +20,6 @@ import RexettButton from "../../components/atomic/RexettButton";
 import NoDataFound from "../../components/atomic/NoDataFound";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import RexettPagination from "../../components/atomic/RexettPagination";
-import { IoSearch } from "react-icons/io5";
 import { RxChevronRight } from "react-icons/rx";
 import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
@@ -44,6 +43,8 @@ import { FaRegEye } from "react-icons/fa";
 import { HiDocumentReport } from "react-icons/hi";
 import { PiUserCircle, PiUserCircleCheck, PiUserCircleCheckThin } from "react-icons/pi";
 import { MdLaptopMac } from "react-icons/md";
+import { CiCircleCheck } from "react-icons/ci";
+import { ImUser } from "react-icons/im";
 
 const SECRET_KEY = "abcfuipqw222";
 
@@ -173,13 +174,8 @@ const Applications = () => {
     setSelectedRejectedBtn(null);
     dispatch(allApplicationsList(data));
   };
-  // const approvedTooltip = () => (
-  //   <Tooltip id="button-tooltip" >
-  //     {t("approve")}
-  //   </Tooltip>
-  // );
+  
   const approvedTooltip = <Tooltip id="tooltip">{t("approve")}</Tooltip>;
-
   const rejectedTooltip = () => (
     <Tooltip id="button-tooltip">{t("reject")}</Tooltip>
   );
@@ -206,19 +202,25 @@ const Applications = () => {
   const redirectToWebsiteForm = (
     currentUser,
     id,
+    item,
     verificationReminderCount
   ) => {
+    console.log(item?.completed_steps+1,"currentUser")
     setLoadingRow(id);
-    const encrypted = encrypt(id);
+    // const encrypted = encrypt(id);
+    const encrypted = id;
+
+    const completeSteps = localStorage.setItem("setActiveStep",item?.completed_steps+1)
     const baseUrls = {
-      developer: process.env.REACT_APP_DEVELOPER,
-      vendor: process.env.REACT_APP_VENDOR,
-      client: process.env.REACT_APP_CLIENT,
+      developer: process.env.REACT_APP_BASE_URL,
+      vendor: process.env.REACT_APP_BASE_URL,
+      client: process.env.REACT_APP_BASE_URL,
     };
 
     const url = baseUrls[currentUser];
     let payload = {
-      user_id: id,
+      // user_id: id,
+      // link : `${url}-registration`
       link: `${url}?user_id=${encrypted}`,
     };
 
@@ -266,7 +268,7 @@ const Applications = () => {
   const rescheduleBtn = (
     <Tooltip>Reschedule</Tooltip>
   )
-
+console.log(allApplications?.developers?.completed_steps,"allApplications")
   return (
     <>
       {screenLoader ? (
@@ -327,14 +329,14 @@ const Applications = () => {
                     </span>
                   </Nav.Link>
                 </Nav.Item>
-                <Nav.Item className="application-item">
+                {/* <Nav.Item className="application-item">
                   <Nav.Link eventKey="developers" className="application-link">
                     Unregistered
                     <span className="new-app">
                       {allApplications?.developers?.length}
                     </span>
                   </Nav.Link>
-                </Nav.Item>
+                </Nav.Item> */}
               </Nav>
               <Tab.Content>
                 <Tab.Pane eventKey="clients" className="py-4">
@@ -377,7 +379,7 @@ const Applications = () => {
                                           }
                                         >
                                           <RxChevronRight />
-                                        </span>{" "}
+                                        </span>
                                         <div className="user-imgbx application-userbx">
                                           <img
                                             src={
@@ -487,7 +489,8 @@ const Applications = () => {
                                               redirectToWebsiteForm(
                                                 "client",
                                                 item?.id,
-                                                3
+                                                item,
+                                                // 3
                                               )
                                             }
                                           >
@@ -876,6 +879,7 @@ const Applications = () => {
                                               redirectToWebsiteForm(
                                                 "client",
                                                 item?.id,
+                                                item,
                                                 3
                                               )
                                             }
@@ -1355,12 +1359,16 @@ const Applications = () => {
                                           : "Incomplete"}
                                       </span> */}
                                       <div className="d-flex gap-2 align-items-center justify-content-center">
-                                        <span className="d-inline-flex align-items-center status-ind complete-status">
-                                          <PiUserCircle />
-                                        </span>
-                                        <span className="d-inline-flex align-items-center status-ind">
-                                          <MdLaptopMac />
-                                        </span>
+                                       {item?.completed_steps  < 7 ?<span  className="d-inline-flex align-items-center status-ind">
+                                          <PiUserCircle/>
+                                        </span> : <span className="d-inline-flex align-items-center status-ind" >
+                                        <PiUserCircleCheck />
+                                        </span>}
+                                       { item?.completed_steps  < 7 ? <span className="d-inline-flex align-items-center status-ind">
+                                          <MdLaptopMac/>
+                                        </span> :  <span className="d-inline-flex align-items-center status-ind">
+                                          <CiCircleCheck/>
+                                        </span> }
                                       </div>
                                     </td>
                                     <td>
@@ -1493,6 +1501,7 @@ const Applications = () => {
                                               redirectToWebsiteForm(
                                                 "client",
                                                 item?.id,
+                                                item,
                                                 3
                                               )
                                             }

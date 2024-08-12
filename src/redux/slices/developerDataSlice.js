@@ -27,15 +27,14 @@ const initialDeveloperData = {
   holidayList: [],
   paySlips: {},
   languageOptions: [],
-  skilloptions: [],
+  skillOptions: [],
   totalPaySlipPages: null,
   countries: [],
   degreeOptions: [],
   projectHistoryDetail: [],
   projectHistoryPagination: {},
   projectDetail: {},
-  developerRegistrationData:{}
-
+  developerRegistrationData:{},
 };
 
 export const developerDataSlice = createSlice({
@@ -190,7 +189,7 @@ export const {
   setLeaveHistory,
   setUpdateLeave,
   setAllCountries,
-  setDeveloperRegistrationDetails
+  setDeveloperRegistrationDetails,
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -552,7 +551,7 @@ export function updateDeveloperCvEducation(payload, role, callback) {
   };
 }
 
-export function getDegreeList(payload, callback) {
+export function getDegreeList() {
   return async (dispatch) => {
     // dispatch(setSmallLoader())
     try {
@@ -1047,6 +1046,26 @@ export const addDeveloperExperience = (
   };
 };
 
+
+export function developerGetJobListing(payload) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(
+        generateApiUrl(payload, `developer/matching-jobs`)
+      );
+      if (result.status === 200) {
+        // dispatch(setDeveloperTimeReports(result.data.data));
+      }
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+
 export const addDeveloperEducation = (
   developerId,
   payload,
@@ -1154,11 +1173,27 @@ export function getDeveloperProjects(developerId, callback, closeLoader) {
   };
 }
 
-export const uploadFileToS3Bucket = (payload, callback) => {
+//this is for website upload file
+export function fileUploadForWeb(fileData, callback) {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
     try {
-      let result = await clientFormInstance.post(`/web/upload-file/`, payload);
+      let result = await clientInstance.post(`web/upload-file`, fileData);
+      // dispatch(setActionSuccessFully());
+      return callback(result?.data?.data.Location);
+    } catch (error) {
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export const uploadFileToS3Bucket = (payload, callback) => {
+  console.log(payload,"payload")
+  return async (dispatch) => {
+    // dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.post(`/web/upload-file/`, payload);
       callback && callback(result?.data?.data?.Location);
       dispatch(setActionSuccessFully());
       // toast.success("project added successfully", {
@@ -1208,14 +1243,15 @@ export function getProjectDetail(filters, id, callback) {
 
 //all registration
 
-export function developerRegistration(payload) {
+export function developerRegistration(payload,callback) {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
     try {
       let result = await authInstance.post("common/developer-registration",{...payload});
-      toast.success("Your profile has been created", { position: "top-center" });
+      toast.success(result?.data?.message, { position: "top-center" });
       localStorage.setItem("developerId",result?.data?.data?.id)
       dispatch(setActionSuccessFully());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1224,13 +1260,14 @@ export function developerRegistration(payload) {
   };
 }
 
-export function registerDeveloperExperience(payload,id) {
+export function registerDeveloperExperience(payload,id,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/add-developer-experience?developer_id=${id}`, payload);
       toast.success("Experience is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -1254,13 +1291,15 @@ export function editDeveloperExperience(payload,id) {
   };
 }
 
-export function registerDeveloperEducation(payload,id) {
+
+export function registerDeveloperEducation(payload,id,callback) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/add-developer-education?developer_id=${id}`, payload);
       toast.success("Education is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -1299,13 +1338,14 @@ export function developerRegistrationBio(payload) {
   };
 }
 
-export function addDeveloperRegisProject(payload) {
+export function addDeveloperRegisProject(payload,callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.post("common/add-developer-project",payload);
       toast.success("Project is Added", { position: "top-center" });
       dispatch(setActionSuccessFully());
+      return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1331,5 +1371,3 @@ export function getDeveloperProfileDetails(id) {
     }
   };
 }
-
-

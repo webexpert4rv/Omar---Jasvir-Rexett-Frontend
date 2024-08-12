@@ -494,7 +494,6 @@ const RegisterDeveloper = () => {
                         ) : (
                           errors?.profile_picture && (
                             <p className="error-message">
-                              {" "}
                               {errors?.profile_picture?.message}
                             </p>
                           )

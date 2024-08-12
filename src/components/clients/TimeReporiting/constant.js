@@ -134,11 +134,11 @@ export const tabText = [
 ]
 export const Todo_tabText = [
   {
-    key: "first",
+    key: "my_todo",
     value: "My To-Dos"
   },
   {
-    key: "second",
+    key: "assigned_to",
     value: "Assigned To-Dos"
   }
 ]
@@ -330,10 +330,4 @@ export const permissionTabText = [
   },
 
 ]
-
-
-
-
-
-
 export const GOOGLE_AUTOCOMPLETE_API_KEY = "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"

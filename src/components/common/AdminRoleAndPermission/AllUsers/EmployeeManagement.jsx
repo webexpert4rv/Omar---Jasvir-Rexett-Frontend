@@ -1,4 +1,4 @@
- import React, { useState } from 'react'
+ import React, { useEffect, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import { FaEye, FaTrashCan } from 'react-icons/fa6'
 import { FiCheck } from 'react-icons/fi'
@@ -7,10 +7,14 @@ import { MdOutlineModeEditOutline } from 'react-icons/md'
 import RolesPermissionWrapper from '../../../../pages/admin/Modals/RolesPermissionWrapper'
 import NewEmployee from '../../../../pages/admin/Modals/NewEmployee'
 import { EMPLOYEE_ROLE } from '../../../../helper/constant'
+import { useDispatch, useSelector } from "react-redux";
  
  const EmployeeManagement = () => {
     const [newEmployee,setEmployee] = useState(false);
     const [editRoleModal, setRoleModal] = useState(false);
+    const { allAdminEmployees } = useSelector((state) => state.adminData);
+
+
 
     const handleNewEmployee = () => {
         setEmployee(!newEmployee)
@@ -21,6 +25,8 @@ import { EMPLOYEE_ROLE } from '../../../../helper/constant'
     const handleHideEditRole = () => {
         setRoleModal(false)
     }
+
+
    return (
      <>
       <div>
@@ -38,12 +44,13 @@ import { EMPLOYEE_ROLE } from '../../../../helper/constant'
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        {allAdminEmployees?.map((val)=>(
                                             <tr>
-                                                <td className="font-14 align-middle">John Smith</td>
-                                                <td className="font-14 align-middle">johnsmith@gmail.com</td>
+                                                <td className="font-14 align-middle">{val?.name}</td>
+                                                <td className="font-14 align-middle">{val?.email}</td>
                                                 <td className="align-middle">
                                                     <div className="d-flex align-items-center gap-2">
-                                                        <span className="role-pill">Workspace Admin</span>
+                                                        <span className="role-pill">{val?.roles[0]?.name}</span>
                                                         <Button variant="transparent" className="edit-role">
                                                             <FaEye />
                                                         </Button>
@@ -56,6 +63,7 @@ import { EMPLOYEE_ROLE } from '../../../../helper/constant'
                                                     </div>
                                                 </td>
                                             </tr>
+                                            ))}
                                             <tr>
                                                 <td colSpan={4}>
                                                     <p className="font-14">A Workspace Admin, with full access, is responsible for managing user accounts, permissions, and security policies within the digital workspace. They oversee workspace configuration, data management, and ensure compliance with organizational policies. Additionally, they provide technical support, training, and monitor system performance to maintain an optimized and secure environment.</p>

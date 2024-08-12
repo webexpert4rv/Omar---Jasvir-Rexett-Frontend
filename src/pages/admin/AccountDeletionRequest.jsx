@@ -9,7 +9,7 @@ import { IoSearch } from "react-icons/io5";
 import RexettPagination from "../../components/atomic/RexettPagination";
 import { MdOutlineDelete } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import ConfirmationModal from "../views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 import { getDeleteDeveloper } from "../../redux/slices/vendorDataSlice";
 import userImage from "../../assets/img/user-img.jpg"
 const AccountDeletionRequest = () => {

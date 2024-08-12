@@ -55,7 +55,7 @@ const FinalizeResume = () => {
                             <img src={resumeImg} className="resume-img" />
                           </div>
                           <h3 className="resume-name">
-                            John Doe
+                            {developerRegistrationData?.step1?.name}
                             <span className="text-green ms-2 cursor-pointer">
                               <FaCirclePlay />
                             </span>
@@ -67,7 +67,7 @@ const FinalizeResume = () => {
                                 <span>
                                   <FaEnvelope />
                                 </span>{" "}
-                                robertjohnson@gmail.com
+                                {developerRegistrationData?.step1?.email}
                               </p>
                             </div>
                             <div>
@@ -75,7 +75,7 @@ const FinalizeResume = () => {
                                 <span>
                                   <MdLocalPhone />
                                 </span>{" "}
-                                +91 123456789
+                                {developerRegistrationData?.step1?.phone_number}
                               </p>
                             </div>
                             <div>
@@ -91,7 +91,7 @@ const FinalizeResume = () => {
                                 <span>
                                   <MdLocationOn />
                                 </span>
-                                India
+                                {developerRegistrationData?.step1?.country}
                               </p>
                             </div>
                             <div>
@@ -107,7 +107,7 @@ const FinalizeResume = () => {
                                 <span>
                                   <GoClockFill />
                                 </span>{" "}
-                                GMT(+5:30) Kolkata
+                               {developerRegistrationData?.step1?.time_zone}
                               </p>
                             </div>
                           </div>
@@ -155,26 +155,27 @@ const FinalizeResume = () => {
                                 Projects
                               </h3>
                             </div>
+                            {developerRegistrationData?.step6?.map((ele)=>(
                             <div>
                               <div className="project-wrapper">
                                 <div>
                                   <p className="project-title mb-0">
-                                    AI bot project
+                                   {ele?.project_title}
                                   </p>
                                   <p className="project-role p-0 bg-transparent mb-0 d-block mb-2">
-                                    Web developer
+                                    {ele?.role_in_project}
                                   </p>
                                   <p className="project-role mb-1">
-                                    Healthcare
+                                    {ele?.project_type}
                                   </p>
                                 </div>
                                 <div className="d-flex align-items-center gap-2 project-date-wrapper status-finished">
                                   <p className="project-date mb-0">
-                                    10-05-2024
+                                    {ele?.project_start_date.slice(0,10)}
                                   </p>
                                   -
                                   <p className="project-date mb-0">
-                                    12-05-2024
+                                  {ele?.project_end_date.slice(0,10)}
                                   </p>
                                 </div>
                               </div>
@@ -183,18 +184,17 @@ const FinalizeResume = () => {
                               </label>
                               <div className="d-flex justify-content-between align-items-start">
                                 <div>
-                                  <ul className="skills-pill text-start">
+                                  <ul className="skills-pill text-start" >
                                     <li>
-                                      <span>HTML</span>
-                                      <span>CSS</span>
-                                      <span>Javascript</span>
-                                      <span>Bootstrap</span>
+                                      {ele?.tech_stacks_used?.split(',')?.map((val)=>(
+                                      <span>{val}</span>
+                                      ))}
                                     </li>
                                   </ul>
                                 </div>
                                 <div>
                                   <a
-                                    href={"/"}
+                                    href={`/${ele?.project_link}`}
                                     className="project-link main-btn px-1 py-1  outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
                                   >
                                     Show Project <FiExternalLink />
@@ -202,6 +202,7 @@ const FinalizeResume = () => {
                                 </div>
                               </div>
                             </div>
+                            ))}
                           </div>
                         </div>
                       </Col>
@@ -213,11 +214,9 @@ const FinalizeResume = () => {
                                 About Me
                               </h3>
                             </div>
-                            <p className="resume-text">
-                              Lorem Ipsum is simply dummy text of the printing
-                              and typesetting industry. Lorem Ipsum has been the
-                              industry's standard dummy text ever since the
-                              1500s
+                            <p className="resume-text" dangerouslySetInnerHTML={{
+                        __html:developerRegistrationData?.step5?.bio
+                      }}>
                             </p>
                           </div>
                         </div>
@@ -228,22 +227,22 @@ const FinalizeResume = () => {
                             </h3>
                           </div>
                           <div className="exp-timeline">
+                            { developerRegistrationData?.step2?.map((ele)=>(
                             <div>
-                              <h5>XYZ Company Pvt Ltd</h5>
+                              <h5>{ele?.company_name}</h5>
                               <p>3 years</p>
                               <div>
                                 <div className="sub-exp">
-                                  <h4 className="role-text">Web Developer </h4>
-                                  <p className="exp-date">Present - 2023</p>
-                                  <p className="exp-desc">
-                                    Lorem Ipsum is simply dummy text of the
-                                    printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy
-                                    text ever since the 1500s
+                                  <h4 className="role-text">{ele?.job_title} </h4>
+                                  <p className="exp-date">{`${ele?.start_date.slice(0,4)}-${ele?.is_still_working ? 'Present' : ele?.end_date.slice(0,4)}`}</p>
+                                  <p className="exp-desc" dangerouslySetInnerHTML={{
+                        __html:ele?.description
+                      }}>
                                   </p>
                                 </div>
                               </div>
                             </div>
+                            ))}
                           </div>
                         </div>
                         <div className="about-info px-2 pt-2">
@@ -252,15 +251,19 @@ const FinalizeResume = () => {
                               Education
                             </h3>
                           </div>
+                          {developerRegistrationData?.step3?.map((ele)=>(
                           <div className="exp-wrapper">
                             <p>
-                              20-06-2016 - 10-06-2020 | B.Tech Computer Science
+                              {`20-06-2016 - 10-06-2020 | ${ele?.field_of_study}`}
                             </p>
                             <ul className="exp-role">
-                              <li>Panjab University</li>
-                              <li>Bachelor of Science</li>
+                              <li>{ele?.university_name}</li>
+                              <li dangerouslySetInnerHTML={{
+                        __html:ele?.description
+                      }}></li>
                             </ul>
                           </div>
+))}
                         </div>
                       </Col>
                     </Row>
