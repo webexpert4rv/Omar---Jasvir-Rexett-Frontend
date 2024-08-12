@@ -4,7 +4,7 @@ import RexetLogin from '../../components/common/RexetLogin/RexetLogin'
 const MemberLogin = () => {
   return (
     <>
-     <RexetLogin userType="member"/>
+     <RexetLogin userType="subAdmin"/>
     </>
   )
 }

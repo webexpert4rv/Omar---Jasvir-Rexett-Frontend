@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
     const [editRoleModal, setRoleModal] = useState(false);
     const { allAdminEmployees } = useSelector((state) => state.adminData);
 
-    let employeesList = allAdminEmployees?.data;
+
 
     const handleNewEmployee = () => {
         setEmployee(!newEmployee)
@@ -44,7 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {employeesList?.map((val)=>(
+                                        {allAdminEmployees?.map((val)=>(
                                             <tr>
                                                 <td className="font-14 align-middle">{val?.name}</td>
                                                 <td className="font-14 align-middle">{val?.email}</td>
