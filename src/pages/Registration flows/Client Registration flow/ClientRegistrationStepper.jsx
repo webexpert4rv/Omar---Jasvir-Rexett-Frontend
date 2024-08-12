@@ -313,6 +313,7 @@ import { useTranslation } from "react-i18next";
   const handleProceed = () => {
     const stepData = watch();
     let fileData = new FormData();
+    console.log(imageFile,"imageFile")
     fileData.append("file", imageFile?.profile_picture)
     setShowSetUpJobModal(false);
     dispatch(uploadFileToS3Bucket(fileData, (url) => {

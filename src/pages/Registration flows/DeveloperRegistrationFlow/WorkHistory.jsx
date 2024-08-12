@@ -31,7 +31,6 @@ const WorkHistory = ({ nestedActiveStep, control, errors,stepData }) => {
             name="description"
             control={control}
             rules={{ required: "Job description is required" }}
-           
             render={({ field }) => (
               <ReactQuill
                 {...field}

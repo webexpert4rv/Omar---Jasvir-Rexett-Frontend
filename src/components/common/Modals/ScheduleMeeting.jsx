@@ -15,7 +15,10 @@ import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
 import { useLocation } from "react-router-dom";
-const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
+import { getAllEvents, getDeveloperList, postScheduleMeeting } from "../../../redux/slices/adminDataSlice";
+import { setDeveloperRegistrationDetails } from "../../../redux/slices/developerDataSlice";
+const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings, setCreatedMeetings, type }) => {
+    console.log(selectedDeveloper, "selectedDeveloper")
     const {
         handleSubmit,
         register,
@@ -27,6 +30,21 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
     } = useForm({});
     const dispatch = useDispatch()
     const location = useLocation()
+    const [data, setData] = useState()
+    const { developerList } = useSelector(state => state.adminData)
+    console.log(developerList?.developers, "developerList")
+    console.log(data, "data")
+    console.log(type, "type")
+
+
+
+    const getFormattedOptions = () => {
+        const newOptions = developerList?.developers?.map((item) => {
+            console.log(item?.email, "itemmmmmm---")
+            return ({ label: item?.email, value: item.id })
+        })
+        return newOptions;
+    }
     let id = location.pathname.split("/")[3];
 
 
@@ -40,6 +58,11 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
     }, [])
 
     useEffect(() => {
+        dispatch(getDeveloperList())
+    }, [])
+
+
+    useEffect(() => {
         if (timeZoneList.length > 0) {
             let groupedTimeZones = timeZoneList?.map((item) => {
                 return {
@@ -49,14 +72,13 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
                     }),
                 }
             })
-            console.log(groupedTimeZones, "op")
             setGroupedTime(groupedTimeZones)
         }
 
 
 
     }, [timeZoneList])
-  
+
 
     console.log(timeZoneList, "timeZoneList")
 
@@ -124,29 +146,58 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const meetingTypeValue = watch('meeting_type')
+    console.log(watch('select_candidate'), "meeting")
 
-
-    const onSubmit = data => {
+    console.log(createdMeetings, "createdMeetings")
+    const onSubmit = (data) => {
+        setCreatedMeetings(data)
         console.log(data, "dat")
-        let payload = {
-            "job_id": +id,
-            "developer_id": +selectedDeveloper?.id,
-            "meeting_type": data?.meeting_type,
-            "meeting_date": data?.meeting_date,
-            "meeting_time": "01:00:00",
-            "title": data?.title,
-            "meeting_platform": data?.meeting_platform?.value,
-            "meeting_link": "https://example.com/meeting-link",
-            "status": "pending",
-            "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
-            "candidate_reminder": data?.candidate_reminder,
-            "interviewer_reminder": data?.interviewer_reminder,
-            "time_zone": data?.time_zone?.label
+        if (type === "events") {
+            let payload = {
+                "title": data?.title,
+                "developer_id": +data?.select_candidate?.value,
+                "attendees": [
+                    {
+                        "email": data?.interviewers_list[0]?.label
+                    }
+                ],
+                "event_platform": data?.meeting_platform?.label,
+                "event_type": data?.meeting_type,
+                "event_date": data?.meeting_date,
+                "event_time": data?.meeting_time,
+                "time_zone": data?.time_zone?.label,
+                "candidate_reminder": data?.candidate_reminder,
+                "attendees_reminder": data?.interviewer_reminder,
+                "type": "meeting",
+                "event_link": "https://zoom.us/j/1234567890"
+            }
+            dispatch(postScheduleMeeting(payload, () => {
+                dispatch(getAllEvents())
+                handleClose()
+            }))
+
+        } else {
+            let payload = {
+                "job_id": +id,
+                "developer_id": +data?.select_candidate?.value,
+                "meeting_type": data?.meeting_type,
+                "meeting_date": data?.meeting_date,
+                "meeting_time": "01:00:00",
+                "title": data?.title,
+                "meeting_platform": data?.meeting_platform?.value,
+                "meeting_link": "https://example.com/meeting-link",
+                "status": "pending",
+                "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
+                "candidate_reminder": data?.candidate_reminder,
+                "interviewer_reminder": data?.interviewer_reminder,
+                "time_zone": data?.time_zone?.label
+            }
+
+            dispatch(postCandidateInterview(payload))
+
         }
 
-        dispatch(postCandidateInterview(payload))
     };
-
 
     return (
         <>
@@ -172,7 +223,7 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
                                             rules={{ required: "This field is required" }}
                                             invalidFieldRequired={true}
                                             placeholder="Add title"
-                                        />{" "}
+                                        />
                                     </div>
                                     <p>{errors?.title?.message}</p>
 
@@ -187,11 +238,12 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
                                             name={"select_candidate"}
                                             type={"select2"}
                                             control={control}
-                                            selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
+                                            // selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
                                             rules={{ required: "This field is required" }}
+                                            selectOptions={getFormattedOptions()}
                                             invalidFieldRequired={true}
                                             placeholder="Select Candidate"
-                                        />{" "}
+                                        />
                                         <p>{errors?.interviewers_list?.message}</p>
                                     </div>
                                 </Col>
@@ -209,7 +261,7 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
                                             rules={{ required: "This field is required" }}
                                             invalidFieldRequired={true}
                                             placeholder="Select Interviewer"
-                                        />{" "}
+                                        />
                                         <p>{errors?.select_candidate?.message}</p>
                                     </div>
                                 </Col>
@@ -274,7 +326,7 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
                                                         invalidFieldRequired={true}
                                                         defaultOption="Select Time"
                                                         onChange={handleFirstSlotChange}
-                                                    />{" "}
+                                                    />
 
                                                     <span className="arrow-icon">
                                                         <FaArrowRightLong />
@@ -305,7 +357,6 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
                                                     />{" "}
                                                 </div>
                                                 <div>
-
                                                     <CommonInput
                                                         name={"time_zone"}
                                                         type={"select"}
@@ -315,7 +366,7 @@ const Schedulemeeting = ({ show, handleClose,selectedDeveloper }) => {
                                                         invalidFieldRequired={true}
                                                         defaultOption="Time zone"
 
-                                                    />{" "}
+                                                    />
 
                                                 </div>
                                             </div>

@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { deleteEmailTemplate, getAllMessageTemplates, getMessageTemplates } from "../../../../redux/slices/adminDataSlice";
+import { FaPencil } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa";
 const MessageTemplate = ({currentTab}) => {
+    const {messageTemplates}= useSelector(state=>state.adminData)
+    const navigate = useNavigate()
+    console.log(messageTemplates,"messageTemplates")
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+        dispatch(getAllMessageTemplates())
+    },[])
+    const handleDelete=(id)=>{
+        dispatch(deleteEmailTemplate(id,()=>{
+            dispatch(getAllMessageTemplates())
+        }))}
+    const handleEdit=(id)=>{
+        console.log(id,"id")
+        navigate(`/admin/create-message-template/${id}`)
+
+    }
     return (
         <>
             <div>
@@ -20,42 +41,42 @@ const MessageTemplate = ({currentTab}) => {
                                         <th>Template name</th>
                                         <th>Subject</th>
                                         <th>Default template</th>
+                                        <th>Action</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                  {messageTemplates?.templates?.map((item,idx)=>{
+                                    return (<tr>
                                         <td>
-                                            Default reply
+                                            {item?.template_name}
                                         </td>
                                         <td>
-                                            We have received your application!
+                                        {item?.subject}
                                         </td>
                                         <td>
-                                            <span className="status-info">Default reply</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Reject email
+                                            <span className="status-info">{item?.template_type}</span>
                                         </td>
                                         <td>
-                                            Thank you for your job application!
+                                        <div className="d-flex align-items-center gap-3">
+                                                            <Button
+                                                            className="arrow-btn info-arrow"
+                                                            onClick={()=>handleEdit(item?.id)}
+                                                            
+                                                            
+                                                            >
+                                                                <FaPencil />
+                                                            </Button>
+                                                            <Button
+                                                             className="arrow-btn danger-arrow"
+                                                             onClick = {()=>handleDelete(item?.id)}
+                                                             
+                                                             >
+                                                                <FaTrash />
+                                                            </Button>
+                                                        </div>
                                         </td>
-                                        <td>
-                                            <span className="status-info">Connect</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Welcome to connect
-                                        </td>
-                                        <td>
-                                            Welcome to Aviox technologies pvt ltd!
-                                        </td>
-                                        <td>
-                                            <span className="status-info">Connect</span>
-                                        </td>
-                                    </tr>
+                                    </tr>)})}
                                 </tbody>
                             </table>
                         </div>

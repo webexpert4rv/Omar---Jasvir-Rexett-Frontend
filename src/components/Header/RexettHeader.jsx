@@ -20,7 +20,7 @@ import { FaCalendarDays } from "react-icons/fa6";
 import 'react-quill/dist/quill.snow.css';
 import Schedulemeeting from "../common/Modals/ScheduleMeeting";
 import { useDispatch, useSelector } from "react-redux";
-import { getConfigDetails } from "../../redux/slices/adminDataSlice";
+import { getConfigDetails, getToDoById } from "../../redux/slices/adminDataSlice";
 import { TbArrowBarToLeft } from "react-icons/tb";
 import ToDoComponent from "./ToDoComponent";
 import MessageInbox from "./MessageInbox";
@@ -30,6 +30,7 @@ const clientName = localStorage.getItem("userName")?.toString().replace(/^(.)|\s
 
 const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const navigate = useNavigate();
+  const [details, setDetails] = useState()
   const { t } = useTranslation();
   const [fridayMarquee, setFridayMarquee] = useState(false);
   const { pathname } = useLocation();
@@ -61,9 +62,13 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const handleShowMeetings = () => setShowMeetings(true);
 
   const [showMeetingInfo, setShowMeetingInfo] = useState(false);
-  const handleShowMeetingInfo = () => {
+  const handleShowMeetingInfo = (item) => {
+    console.log(item, "value======")
+    setDetails(item)
     setShowMeetingInfo(!showMeetingInfo)
   }
+
+  console.log(details, "details")
   const handleCloseMeetingInfo = () => {
     setShowMeetingInfo(false)
   }
@@ -138,6 +143,9 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
   const handleCloseSchdule = () => {
     ShowScheduleMeeting(false);
   }
+
+  const [createdMeetings, setCreatedMeetings] = useState()
+  console.log(createdMeetings, "createdMeetings")
 
 
   return (
@@ -229,13 +237,13 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
           </div>
         </div>
       </header>
-  
-      <Meetings showMeetings={showMeetings} handleCloseMeetings={handleCloseMeetings}  handleShowSchedule={handleShowSchedule} handleShowMeetingInfo={handleShowMeetingInfo}/>
+
+      <Meetings showMeetings={showMeetings} handleCloseMeetings={handleCloseMeetings} handleShowSchedule={handleShowSchedule} handleShowMeetingInfo={handleShowMeetingInfo} />
 
       <MessageInbox showMessagesInfo={showMessagesInfo} setShowMessagesInfo={setShowMessagesInfo} />
       <ToDoComponent showToDo={showToDo} setShowToDo={setShowToDo} />
-      <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} />
-      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} />
+      <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} createdMeetings={createdMeetings} details={details} />
+      <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} setCreatedMeetings={setCreatedMeetings} createdMeetings={createdMeetings} type={"events"} />
     </>
   );
 };

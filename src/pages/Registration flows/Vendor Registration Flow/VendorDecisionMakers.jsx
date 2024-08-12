@@ -8,44 +8,39 @@ import CommonInput from "../../../components/atomic/CommonInput";
 import { useTranslation } from "react-i18next";
 
 const VendorDecisionMakers = ({
+  activeStep,
+  type,
   activeStepFields,
   setError,
-  type,
   clearErrors,
   setValue,
   previewImage,
   setImageFile,
   errors,
   control,
-  activeStep,
+  watch,
+  register,
   getActiveStepText,
   smallLoader,
   setPreviewImage,
-  imageFile,
-  // register
-  watch
+  imageFile
 }) => {
-  // const { register, handleSubmit, reset, watch } = useForm({});
 
-  // const onSubmit = (values) => {
-  //   console.log(values, "values");
-  // };
-  // console.log(activeStepFields,"activeStepFields")
+  const { t } = useTranslation()
+  // const fields = getVendorActiveStepFields(activeStep);
+  const fields = activeStepFields;
+console.log(fields,"fields")
+console.log(errors?.proprietor_email,"proprietor_email")
 
-  const fields = getVendorActiveStepFields(activeStep);
-  console.log(fields, "fields")
-  console.log(watch("proprietor_name"),"wertyuiNAME")
-  const {t } = useTranslation()
 
 
   return (
     <>
       <section>
         <div>
-
           <Row>
             <Col md={12}>
-              <StepperHeadingSection activeStep={activeStep} type={type} />
+              <StepperHeadingSection activeStep={activeStep} type={"vendor"} />
               <p className="font-12 fw-medium">* includes a required field</p>
               <div>
                 <Row className="w-100">
@@ -54,6 +49,7 @@ const VendorDecisionMakers = ({
                       {
                         label,
                         fieldName,
+                        type,
                         rules,
                         placeholder,
                         columnWidth,
@@ -65,22 +61,29 @@ const VendorDecisionMakers = ({
                         defaultOption,
                       },
                       index
-                    ) =>
-                        (
-                          <Col md={columnWidth} key={index}>
-                               <CommonInput
-                              label={t(`${label}`) + `${isRequired ? " *" :""}`}
+                    ) => (
+
+                      <>
+                      {console.log(fieldName,"errror inside loop")}
+                      <div className="mb-3">
+                        <Col md={columnWidth} >
+                        <CommonInput
+                              label={t(`${label}`) + `${isRequired && " *"}`}
                               name={fieldName}
                               control={control}
                               invalidFieldRequired={true}
                               rules={{ ...rules }}
                               error={errors?.[fieldName]}
                               type={type}
+                              defaultOption={defaultOption}
                               placeholder={placeholder}
                             />
-                          </Col>
-                        )
-                      
+
+                        </Col>
+                        </div>
+                      </>
+
+                    )
                   )}
                 </Row>
                 {/* <div className="">

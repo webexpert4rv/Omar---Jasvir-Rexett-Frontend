@@ -605,6 +605,7 @@ export function getJobCategoryList(payload, callback) {
 }
 
 export function postCandidateInterview(payload, callback) {
+  console.log(payload,"payloadd")
   return async (dispatch) => {
     try {
       let result = await clientInstance.post(`common/interview`,{...payload});

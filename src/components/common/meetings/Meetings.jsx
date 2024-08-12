@@ -4,15 +4,51 @@ import ToolTip from '../Tooltip/ToolTip'
 import Calendar from 'react-calendar'
 import devImg from '../../../assets/img/user-img.jpg';
 import { gapi } from 'gapi-script';
+import { getAllEvents } from '../../../redux/slices/adminDataSlice';
+import { useDispatch, useSelector } from 'react-redux';
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 const CLIENT_ID = "904487780052-sjeu9i0nd8r72hnv7gsu4blh9r5gdera.apps.googleusercontent.com";
 const API_KEY = 'AIzaSyDJtuRbVlALGiSU8YztXZmNIpMtcinc2nY';
 
-const Meetings = ({showMeetings,handleCloseMeetings,handleShowSchedule,handleShowMeetingInfo}) => {
+const eventDetails = [{
+  'summary': 'Google I/O 2015',
+      'location': '800 Howard St., San Francisco, CA 94103',
+      'description': 'A chance to hear more about Google\'s developer products.',
+      'start': {
+        'dateTime': '2025-08-01T09:31:20.142Z',
+        'timeZone': 'America/Los_Angeles',
+      },
+      'end': {
+        'dateTime': '2025-08-01T09:31:20.142Z' ,
+        'timeZone': 'America/Los_Angeles',
+      }
+    },
+    {
+      'summary': 'Google I/O 2015',
+          'location': '800 Howard St., San Francisco, CA 94103',
+          'description': 'A chance to hear more about Google\'s developer products.',
+          'start': {
+            'dateTime': '2025-08-01T09:31:20.142Z',
+            'timeZone': 'America/Los_Angeles',
+          },
+          'end': {
+            'dateTime': '2025-08-01T09:31:20.142Z' ,
+            'timeZone': 'America/Los_Angeles',
+          }
+        }
+]
+
+
+const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {
 
   const [value, onChange] = useState(new Date());
-  const [event,setEvent]=useState([])
+  const [event, setEvent] = useState([])
+  const {allEvents} = useSelector(state=>state.adminData)
+  console.log(allEvents,"allevents")
+  console.log(event,"event")
+  const dispatch = useDispatch()
+
 
   useEffect(() => {
     function start() {
@@ -32,12 +68,26 @@ const Meetings = ({showMeetings,handleCloseMeetings,handleShowSchedule,handleSho
     }
     gapi.load('client:auth2', start);
   }, []);
+
+  
+
   const fetchCalendarEvents = () => {
 
     const timeMin = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString(); // One year ago
     const timeMax = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(); // One year in the future
+     const data = {
+      'calendarId': 'primary',
+      'timeMin': timeMin,
+      'timeMax': timeMax,
+      'showDeleted': false,
+      'singleEvents': true,
+      'maxResults': 10,
+      'orderBy': 'startTime',
+     }
 
-    if ( gapi && !gapi.auth2.getAuthInstance().isSignedIn.get()) {
+
+    dispatch(getAllEvents(data))
+    if (gapi && !gapi.auth2.getAuthInstance().isSignedIn.get()) {
       console.log('User not authenticated');
       return;
     }
@@ -52,72 +102,108 @@ const Meetings = ({showMeetings,handleCloseMeetings,handleShowSchedule,handleSho
     }).then((response) => {
       const events = response.result.items;
       console.log('Events:', events);
-      setEvent(events)
+      setEvent([...events,...eventDetails,...allEvents?.events])
       // Update state with fetched events
     }).catch((error) => {
       console.error('Error fetching events:', error);
     });
   };
+  console.log(event,"event")
 
-//   const isEventDate = (date) => {
-//     return event.some(event => event.start?.dateTime.toDateString() === date.toDateString());
-//   };
+    // const isEventDate = (date) => {
+    //   return event.some(event => event.start?.dateTime.toDateString() === date.toDateString());
+    // };
 
   const isEventDate = (date) => {
     return event.some(event => new Date(event.start?.dateTime).toDateString() === date.toDateString());
   };
+  const syncCreatedMeetingsWithGoogle = (e,item) => {
+    console.log(item,"item")
+    e.stopPropagation()
+    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      console.log('User not authenticated');
+      return;
+    }
+    const event = {
+      'summary': item.summary,
+      'location': item.location,
+      'description': item.description,
+      'start': {
+        'dateTime': "2024-08-26T16:50:00",
+        'timeZone': 'America/Los_Angeles',
+      },
+      'end': {
+        'dateTime': "2024-08-29T16:50:00",
+        'timeZone': 'America/Los_Angeles',
+      }
+    };
+    gapi.client.calendar.events.insert({
+      'calendarId': 'primary',
+      'resource':event ,
+    }).then((response) => {
+      console.log('Event created:', response);
+      fetchCalendarEvents(); // Fetch the updated events list
+    }).catch((error) => {
+      console.error('Error creating event:', error);
+    });
+  };
+
 
 
   return (
     <Offcanvas show={showMeetings} placement="end" onHide={handleCloseMeetings}>
-    <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
-      <div className="d-flex align-items-center gap-2">
-        <Offcanvas.Title>Meetings</Offcanvas.Title>
-        <ToolTip text={"New Meeting"}>
-          <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
-        </ToolTip>
-      </div>
-    </Offcanvas.Header>
-    <Offcanvas.Body>
+      <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
+        <div className="d-flex align-items-center gap-2">
+          <Offcanvas.Title>Meetings</Offcanvas.Title>
+          <ToolTip text={"New Meeting"}>
+            <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
+          </ToolTip>
+        </div>
+      </Offcanvas.Header>
+      <Offcanvas.Body>
 
-      <div className="meeting-booking">
-        <Calendar onChange={onChange} value={value} 
-        
-        tileClassName={({ date, view }) => {
-            // Add class to event dates
-            if (view === 'month' && isEventDate(date)) {
-              return 'event-date';
-            }
-          }}
-        
-        />
-        <div className="interview-scheduled sidebar-meetings mt-4">
+        <div className="meeting-booking">
+          <Calendar onChange={onChange} value={value}
+
+            tileClassName={({ date, view }) => {
+              // Add class to event dates
+              if (view === 'month' && isEventDate(date)) {
+                return 'event-date';
+              }
+            }}
+
+          />
+          <div className="interview-scheduled sidebar-meetings mt-4">
             <button onClick={fetchCalendarEvents}>Fetch</button>
-
-          {event?.map((item,ind)=>{
-            return (
+            {event?.map((item, ind) => {
+              // console.log(item,"eventitem")
+              return (
                 <>
-                <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-            <div>
-              <p className="interview-title mb-2">{item?.summary}</p>
-              <p className="dev-name mb-2 font-14">
-                <div className="me-1">
-                  <img src={devImg} />
-                </div>
-               {item?.creator?.displayName}
-              </p>
-              <p>Meeting Link :{item?.hangoutLink}</p>
-              <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0,10)}</p>
-            </div>
-            <div className="mb-2 status-interview">
-              <span className="status-upcoming">Upcoming in 1hr</span>
-            </div>
-          </div>
+                  <div onClick={()=>handleShowMeetingInfo(item)} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
+                    <div>
+                      <p className="interview-title mb-2">{item?.summary}</p>
+                      <p className="dev-name mb-2 font-14">
+                        <div className="me-1">
+                          <img src={devImg} />
+                        </div>
+                        {item?.creator?.displayName}
+                        <p>Meeting Link :{item?.hangoutLink}</p>
+                      </p>
+                      <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0, 10)}</p>
+                    { item?.kind? "": <button onClick={(e)=>syncCreatedMeetingsWithGoogle(e,item)}>Sync with Google</button>}
+                    </div>
+                    <div className="mb-2 status-interview">
+                      <span className="status-upcoming">Upcoming in 1hr</span>
+                    </div>
+                  </div>
                 </>
-            )
+              )
 
-          })}
-          {/* <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
+            })}
+            {/* {createdMeetings ?  */}
+           
+            {/* :""} */}
+            {/* <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
             <div>
               <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
               <p className="dev-name mb-2 font-14">
@@ -147,10 +233,10 @@ const Meetings = ({showMeetings,handleCloseMeetings,handleShowSchedule,handleSho
               <span className="status-upcoming">Upcoming in 5hr</span>
             </div>
           </div> */}
+          </div>
         </div>
-      </div>
-    </Offcanvas.Body>
-  </Offcanvas>
+      </Offcanvas.Body>
+    </Offcanvas>
   )
 }
 
