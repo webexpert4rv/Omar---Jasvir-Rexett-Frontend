@@ -54,6 +54,9 @@ const ClientRegisterForm = lazy(() =>
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
 );
+const MemberLogin =lazy(()=>
+  import("./pages/Authentication/MemberLogin.jsx")
+);
 const VendorDashboard = lazy(() => import("./pages/vendor/Dashboard"));
 const ProfileUpdationRequest = lazy(() =>
   import("./pages/admin/ProfileUpdationRequest")
@@ -193,6 +196,11 @@ export const route = [
   {
     path: "/",
     element: <ClientLogin />,
+    public: true,
+  },
+  {
+    path: "/member-login",
+    element: <MemberLogin />,
     public: true,
   },
   {
@@ -699,7 +707,7 @@ export const route = [
     private: true,
   },
   {
-    path: "/admin/website-builder",
+    path: "/admin/website-builder/:pageId",
     element: <WebsiteBuilder />,
     isAdmin: true,
     private: true,

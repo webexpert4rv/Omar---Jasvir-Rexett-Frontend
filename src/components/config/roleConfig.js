@@ -40,6 +40,13 @@ const roleConfig = {
     privateRoute:"/super-admin-dashboard",
     // publicRoute:'/super-login'
   },
+  subAdmin:{
+    sidebarItems: ADMIN_SIDE_BAR_ITEMS,
+    floatingOptions: OTHER_OPTIONS_ADMIN,
+    headerProps: { role: "admin" },
+    privateRoute:"/admin/admin-dashboard",
+    publicRoute:'/member-login'
+  },
   otp:{
     privateRoute:"/otp",
   }
