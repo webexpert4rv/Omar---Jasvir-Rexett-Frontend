@@ -31,6 +31,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
     } = useForm({});
     const newDate = moment(value).format('YYYY-MM-DD');
     const { employeeList, approvedLoader } = useSelector((state) => state.adminData)
+    console.log(employeeList,"employlist")
 
     useEffect(() => {
         dispatch(getAdminList())

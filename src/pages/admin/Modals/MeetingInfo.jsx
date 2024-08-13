@@ -105,13 +105,44 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         return newOptions;
     }
     const options = getFormattedOptions();
-    const refreshedDate =((details?.event_date)?.slice(0, 10));
+    const refreshedDate = ((details?.event_date)?.slice(0, 10));
     console.log(refreshedDate, "refreshedDate");
-    const getInterviewList=()=>{
-        const selectedInterviewers = details?.attendees?.map(itm=>itm?.email)
+    const getInterviewList = () => {
+        const selectedInterviewers = details?.attendees?.map(itm => itm?.email)
         return selectedInterviewers
     }
     console.log(selectedDeveloper, "selectedDeveloper")
+
+    const baseDate = '1970-01-01';
+    const startTime = moment(`${baseDate}T${details?.event_time}`);
+    const endTime = moment(`${baseDate}T${details?.event_end_time}`);
+    console.log(details?.event_time, "start_time")
+    console.log(details?.event_end_time, "end_time")
+    console.log(endTime, "endTime")
+    console.log(startTime, "startTime")
+
+
+
+    const duration = moment.duration(endTime.diff(startTime));
+
+    console.log(duration.hours(), "hours");
+    console.log(duration.minutes(), "minutes");
+    console.log(duration.seconds(), "seconds");
+
+
+
+
+    // const differenceInMilliseconds = endTime - startTime;
+    // const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
+    // const hours = Math.floor(differenceInSeconds / 3600);
+    // const minutes = Math.floor((differenceInSeconds % 3600) / 60);
+    // const seconds = differenceInSeconds % 60;
+
+
+
+
+
+
     return (
         <>
             <Modal show={show} onHide={handleClose} centered animation size="lg" className="custom-modal">
@@ -151,22 +182,22 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                 {...register("select_candidate", {
                                                     required: "select_candidate is required",
                                                 })}
-                                                // className={`common-field font-14 ${errors.select_candidate ? 'is-invalid' : ''}`}
-                                                // isInvalid={!!errors.select_candidate}
+                                            // className={`common-field font-14 ${errors.select_candidate ? 'is-invalid' : ''}`}
+                                            // isInvalid={!!errors.select_candidate}
                                             >
                                                 {options?.map((option, idx) => (
-                                                    <option key={idx} value={selectedDeveloper ? selectedDeveloper?.email :option.value}>
+                                                    <option key={idx} value={selectedDeveloper ? selectedDeveloper?.email : option.value}>
                                                         {option.label}
                                                     </option>
                                                 ))}
-                                               
+
                                             </Form.Select>
                                             {errors.select_candidate && (
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.select_candidate.message}
                                                 </Form.Control.Feedback>
                                             )}
-                                        </Form.Group>              
+                                        </Form.Group>
                                     </div>
                                 </Col>
 
@@ -182,7 +213,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                 isInvalid={!!errors.meeting_platform}
                                             >
                                                 {interviewOptions?.map((option, idx) => (
-                                                    <option key={idx} value={details? getInterviewList(): option.value}>
+                                                    <option key={idx} value={details ? getInterviewList() : option.value}>
                                                         {option.label}
                                                     </option>
                                                 ))}
@@ -250,7 +281,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                     max={
                                                         new Date().toISOString().split("T")[0]
                                                     }
-                                                      placeholder="yyyy-mm-dd"
+                                                    placeholder="yyyy-mm-dd"
                                                 />
                                             </div>
                                         </div>
@@ -260,10 +291,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                 <FaArrowRightLong />
                                             </span>
                                             <p className="font-14 mb-0">{details?.event_end_time}</p>
-                                            {/* <span className="font-14">{details?.event_end_time}-{details?.event_time}</span> */}
+                                            <p>Duration</p>
+                                            <span className="font-14">{duration.hours()}:{duration.minutes()}:{duration.seconds()}</span>
                                         </div>
                                     </div>
-                                </Col>
+                                </Col>:
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading">Status</p>
                                 </Col>
@@ -302,6 +334,13 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                     </Modal.Body>
                 </form>
             </Modal>
+            {/* {
+                employeeList?.map(({ name }) => (
+                    <div>
+                        {name}
+                    </div>
+                ))
+            } */}
         </>
     )
 }
