@@ -132,15 +132,11 @@ const SingleJobDetails = () => {
             })
         );
     };
+    console.log(selectedTabsData,"selectedTabsData")
     const handleSelect = (key) => {
+        console.log(key,"key")
         setCurrentTab(key);
         setSelectedTabsData(singleJobDescription?.job_applications[key]);
-        if (key == "suggested") {
-            setCurrnetTabsStatus("shortlisted");
-        }
-        const handleSelect = (key) => {
-            setCurrentTab(key);
-            setSelectedTabsData(jobPostedData[key]);
             if (key == "suggested") {
                 setCurrnetTabsStatus("shortlisted");
             }
@@ -154,68 +150,52 @@ const SingleJobDetails = () => {
                 setCurrnetTabsStatus("application");
             }
         };
-        const handleJobStatusAction = (e, data) => {
-            e.preventDefault();
-            if (data.status == "ended") {
-                dispatch(
-                    publishedPost(singleJobDescription?.id, data, () => {
-                        setStatusModal({});
-                        dispatch(singleJobPostData(id, () => { }));
-                    })
-                );
-            } else if (data.status == "application") {
-                dispatch(
-                    getDeleteJob(statusModal?.id, () => {
-                        setStatusModal({});
-                        navigate("/client/job-posted");
-                    })
-                );
-            } else {
-                dispatch(
-                    changeJobStatus(currentTab, statusModal?.id, data, () => {
-                        dispatch(
-                            singleJobPostData(id, () => {
-                                setStatusModal({});
-                                let prevData = { ...jobPostedData?.job?.job_applications };
-                                let d = prevData[currentTab]?.filter(
-                                    (item) => item.id !== statusModal?.id
-                                );
-                                prevData[currentTab] = d;
-                                setSelectedTabsData(prevData[currentTab]);
+        // const handleJobStatusAction = (e, data) => {
+        //     e.preventDefault();
+        //     if (data.status == "ended") {
+        //         dispatch(
+        //             publishedPost(singleJobDescription?.id, data, () => {
+        //                 setStatusModal({});
+        //                 dispatch(singleJobPostData(id, () => { }));
+        //             })
+        //         );
+        //     } else if (data.status == "application") {
+        //         dispatch(
+        //             getDeleteJob(statusModal?.id, () => {
+        //                 setStatusModal({});
+        //                 navigate("/client/job-posted");
+        //             })
+        //         );
+        //     } else {
+        //         dispatch(
+        //             changeJobStatus(currentTab, statusModal?.id, data, () => {
+        //                 dispatch(
+        //                     singleJobPostData(id, () => {
+        //                         setStatusModal({});
+        //                         let prevData = { ...jobPostedData?.job?.job_applications };
+        //                         let d = prevData[currentTab]?.filter(
+        //                             (item) => item.id !== statusModal?.id
+        //                         );
+        //                         prevData[currentTab] = d;
+        //                         setSelectedTabsData(prevData[currentTab]);
 
-                            })
-                        );
-                    })
-                );
-            }
-        };
+        //                     })
+        //                 );
+        //             })
+        //         );
+        //     }
+        // };
 
-        const handleEdit = () => {
-            if (singleJobDescription?.status == "Unpublished") {
-                navigate(`/job-edit-post/${id}`);
-            }
-        };
+        // const handleEdit = () => {
+        //     if (singleJobDescription?.status == "Unpublished") {
+        //         navigate(`/job-edit-post/${id}`);
+        //     }
+        // };
 
 
 
-        const handleDelete = (status, id) => {
-            if (singleJobDescription?.status == "Unpublished") {
-                setStatusModal({
-                    [status]: !statusModal.isTrue,
-                    id: id,
-                });
-            }
-        };
-        if (key == "shortlisted") {
-            setCurrnetTabsStatus("interviewing");
-        }
-        if (key == "interviewing") {
-            setCurrnetTabsStatus("hired");
-        }
-        if (key == "application") {
-            setCurrnetTabsStatus("application");
-        }
-    };
+  
+    
     const handleJobStatusAction = (e, data) => {
         e.preventDefault();
         if (data.status == "ended") {
@@ -730,7 +710,7 @@ const SingleJobDetails = () => {
                             ></p>
                         </div>
                     </Tab>
-                    {role !== "client" && <Tab eventKey="suggested" title={suggest}>
+                    {role !== "client" && <Tab eventKey="suggestions" title={suggest}>
                         <div className="text-end">
                             {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
@@ -743,7 +723,7 @@ const SingleJobDetails = () => {
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
                             type="Suggested"
-                            data={selectedTabsData}
+                            data={selectedTabsData?.suggested}
                             jobStatus={singleJobDescription?.status}
                             role="client"
                         />

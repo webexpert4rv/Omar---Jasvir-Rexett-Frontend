@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tabs from '../common/LeaveRequest/Tabs'
 import { MESSAGE_TAB_TEXT } from '../clients/TimeReporiting/constant'
 import { Button, Dropdown, Form, Offcanvas, Tab } from 'react-bootstrap'
@@ -15,19 +15,29 @@ import rexettLogo from '../../assets/img/favicon.png'
 import AddUserConversation from '../common/Modals/AddUsers';
 import MoreChatOptions from '../common/MessageBox/MoreChatOptions';
 import MessageInboxCard from '../common/MessageBox/MessageInboxCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllInboxMessage, getAllMessageTemplates, getTemplateById, messageSendFunc } from '../../redux/slices/adminDataSlice';
 
 
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
+    let userId=localStorage.getItem("userId")
     const [currentTab, setCurrentTab] = useState()
     const [hasContent, setHasContent] = useState(false);
-    const [isEditorFocused, setIsEditorFocused] = useState(false);
+    const [isEditorFocused, setIsEditorFocused] = useState(true);
     const [valuemessga, setValuemessga] = useState('');
     const [messageWrapperVisible, setMessageWrapperVisible] = useState(false);
+    const [messageTitle,setMessageTitle]=useState('')
+    const {messageTemplates,chatRoom}= useSelector(state=>state.adminData)
+    const dispatch=useDispatch()
 
+  const [adduserconversation, showAddUserConversation] = useState(false);
+console.log(messageTemplates,"messageTemplates")
+  useEffect(()=>{
+   dispatch(getAllMessageTemplates())
+   dispatch(getAllInboxMessage(userId))
+  },[])
 
-
-    const [adduserconversation, showAddUserConversation] = useState(false);
     const handleShowUserConversation = () => {
         showAddUserConversation(!adduserconversation);
     }
@@ -57,15 +67,38 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
         setIsEditorFocused(false);
     };
 
-    const handleChange = (value) => {
-        setValuemessga(value);
-        setHasContent(value.trim().length > 0);
+    const handleMessageChange = (value,name) => {
+        console.log(value,"fff")
+        if(name=='msg'){
+            setValuemessga(value);
+            setHasContent(value.trim().length > 0);
+        }else{
+            setMessageTitle(value.target.value)
+       
+        }
+      
+       
     };
 
+    const sendMessage=()=>{
+        let payload={
+            "chatroom_id": 0,
+            "sender_id": 0,
+            "message_title": messageTitle,
+            "message_body": valuemessga,
+            "message_attachment_url": "string"
+          }
+          dispatch(messageSendFunc(payload))
+    }
 
+    const popuplateOntheMessage=(data)=>{
+        dispatch(getTemplateById(data?.id,(response)=>{
+            console.log(response,"rep")
+            setValuemessga(response?.message);
+            setMessageTitle(response?.subject)
 
-
-
+        }))
+    }
 
     return (
         <div>
@@ -192,17 +225,18 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                         </div>
                         <div className="write-message-area">
                             <div className="d-flex justify-content-between align-items-center mb-3">
-                                <p className="mb-0"><span className="fw-medium">Subject: <span className="ongoing-subject">Re: Invited</span></span> <span className="new-subject">+ New Subject</span></p>
+                                <p className="mb-0"><span className="fw-medium">Subject: <span className="ongoing-subject">Re: Invited</span></span> 
+                                <span className="new-subject">+ New Subject</span></p>
                                 <div className="sender-profile">
                                     <img src={devImg} />
                                 </div>
                             </div>
                             <div>
-                                <Form.Control type="text" className="common-field font-14 mb-2" placeholder="Enter new subject" />
+                                <Form.Control type="text" value={messageTitle} className="common-field font-14 mb-2" placeholder="Enter new subject"  onChange={(e)=>handleMessageChange(e,"title")}/>
                             </div>
                             <div className="position-relative">
                                 <div className={`custom-rich-editor message-field ${(isEditorFocused || hasContent) ? 'focused' : ''}`}>
-                                    <ReactQuill value={valuemessga} onChange={handleChange} onFocus={handleEditorFocus} onBlur={handleEditorBlur} />
+                                    <ReactQuill value={valuemessga} onChange={(e)=>handleMessageChange(e,"msg")}/>
                                 </div>
                                 <div className={`field-msg-options d-flex align-items-center gap-3 ${(isEditorFocused || hasContent) ? 'focused' : ''}`}>
                                     <div className="inner-field-msg-options">
@@ -219,15 +253,19 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                                                     <Form.Control type="text" className="common-field font-12 mb-2" placeholder="Search Template" />
                                                 </div>
                                                 <div className="employee-listing">
-                                                    <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                                        <span className="font-14">Default reply</span>
+                                                    {
+                                                        messageTemplates?.templates?.map((item)=>{
+                                                            return(
+                                                                <>
+                                                                 <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                                        <span className="font-14" onClick={()=>popuplateOntheMessage(item)}>{item.template_name}</span>
                                                     </div>
-                                                    <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                                        <span className="font-14">Reject mail</span>
-                                                    </div>
-                                                    <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                                        <span className="font-14">Welcome to company</span>
-                                                    </div>
+                                                                </>
+                                                            )
+                                                        })
+                                                    }
+                                                   
+                                                    
                                                 </div>
                                             </Dropdown.Menu>
                                         </Dropdown>
@@ -272,7 +310,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                                             </span>
                                         </ToolTip>
                                     </div>
-                                    <Button variant="transparent" className="main-btn font-14">Send Message</Button>
+                                    <Button variant="transparent" onClick={sendMessage} className="main-btn font-14">Send Message</Button>
                                 </div>
                             </div>
                         </div>
