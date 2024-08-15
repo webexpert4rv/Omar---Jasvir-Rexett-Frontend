@@ -5,16 +5,18 @@ import formPlugin from "grapesjs-plugin-forms";
 import { useEffect, useRef, useState } from "react";
 import grapesjs from "grapesjs";
 import featuredDev from "../../assets/img/demo-img.jpg";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import webSiteBuilderInstance from "../../services/webSiteBuilderInstance";
 import { toast } from "react-toastify";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
+import { Button } from "react-bootstrap";
 
 export const WebsiteBuilder = () => {
   const { pageId } = useParams();
   const editorRef = useRef(null);
   const editorInstance = useRef(null);
   const [screenLoader, setScreenLoader] = useState(true);
+  const navigate = useNavigate();
   useEffect(() => {
     const editor = grapesjs.init({
       container: editorRef.current,
@@ -201,7 +203,7 @@ export const WebsiteBuilder = () => {
           droppable: true,
           components: [
             {
-              ttagName: "div",
+              tagName: "div",
               attributes: { class: "header-logo" },
               components: [
                 {
@@ -238,6 +240,17 @@ export const WebsiteBuilder = () => {
                               label: "Text",
                               name: "content",
                             },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
+                            },
                           ],
                         },
                       ],
@@ -259,6 +272,17 @@ export const WebsiteBuilder = () => {
                               type: "text",
                               label: "Text",
                               name: "content",
+                            },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
                             },
                           ],
                         },
@@ -282,6 +306,17 @@ export const WebsiteBuilder = () => {
                               label: "Text",
                               name: "content",
                             },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
+                            },
                           ],
                         },
                       ],
@@ -303,6 +338,17 @@ export const WebsiteBuilder = () => {
                               type: "text",
                               label: "Text",
                               name: "content",
+                            },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
                             },
                           ],
                         },
@@ -585,6 +631,17 @@ export const WebsiteBuilder = () => {
                               label: "Text",
                               name: "content",
                             },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
+                            },
                           ],
                         },
                         {
@@ -601,6 +658,17 @@ export const WebsiteBuilder = () => {
                               type: "text",
                               label: "Text",
                               name: "content",
+                            },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
                             },
                           ],
                         },
@@ -637,6 +705,17 @@ export const WebsiteBuilder = () => {
                               label: "Text",
                               name: "content",
                             },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
+                            },
                           ],
                         },
                         {
@@ -653,6 +732,17 @@ export const WebsiteBuilder = () => {
                               type: "text",
                               label: "Text",
                               name: "content",
+                            },
+                            {
+                              type: "select",
+                              label: "Target",
+                              name: "target",
+                              options: [
+                                { value: "_self", name: "Same Window" },
+                                { value: "_blank", name: "New Window" },
+                                { value: "_parent", name: "Parent Frame" },
+                                { value: "_top", name: "Full Window" },
+                              ],
                             },
                           ],
                         },
@@ -730,6 +820,8 @@ export const WebsiteBuilder = () => {
               editorInstance.current.setStyle(JSON.parse(styles));
               //   editorInstance.current.setComponents(html);
               editorInstance.current.AssetManager.add(JSON.parse(assets));
+              const rootComponents = editorInstance.current.getComponents();
+              addTraitsToLinks(rootComponents);
             }
           }
           setScreenLoader(false);
@@ -744,6 +836,46 @@ export const WebsiteBuilder = () => {
 
     loadPageContent();
   }, []);
+
+  function addTraitsToLinks(components) {
+    components.forEach((component) => {
+      // Check if the current component is an <a> tag
+      if (component.get("tagName") === "a") {
+        // Example: Adding a trait
+        const traits = component.get("traits") || [];
+        const attributes = component.get("attributes") || {};
+        const hrefValue = attributes.href || ""; // Retrieve href value
+        const targetValue = attributes.target || ""; // Retrieve target value
+
+        traits.push({
+          name: "href",
+          label: "Href",
+          type: "text",
+          value: component.get("attributes").href, // Set the value to the href
+        });
+        traits.push({
+          name: "target", // Trait name for target
+          label: "Target",
+          type: "select",
+          options: [
+            { value: "_self", name: "Self" },
+            { value: "_blank", name: "Blank" },
+            { value: "_parent", name: "Parent" },
+            { value: "_top", name: "Top" },
+          ],
+          value: targetValue, // Set the value to the target
+        });
+
+        component.set("traits", traits);
+      }
+
+      // Check if this component has children and recurse
+      const childComponents = component.components();
+      if (childComponents.length > 0) {
+        addTraitsToLinks(childComponents);
+      }
+    });
+  }
 
   const handleSave = async () => {
     setScreenLoader(true);
@@ -778,11 +910,22 @@ export const WebsiteBuilder = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate("/admin/website-pages");
+  };
+
   return (
     <>
       <button className="save-button" onClick={handleSave}>
         Save
       </button>
+        <Button
+          variant="transparent"
+          className="font-14 main-btn px-5"
+          onClick={handleBack}
+        >
+          Back
+        </Button>
       <div ref={editorRef}></div>
       {screenLoader && <ScreenLoader />}
     </>

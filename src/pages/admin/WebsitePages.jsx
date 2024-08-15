@@ -17,6 +17,10 @@ const WebsitePages = () => {
     show: false,
   });
   const [showCreatePage, ShowCreateWebsite] = useState(false);
+  const [editWebPage, setEditPage] = useState({
+    isEdit: false,
+    pageData: {},
+  });
 
   useEffect(() => {
     webSiteBuilderInstance
@@ -34,11 +38,20 @@ const WebsitePages = () => {
   }, []);
 
   const updatePageList = (data, created) => {
-    if(created){
-        console.log(data,"asdfasdf")
-        setPageList([...pageList, data]);
-    }else {
-        setPageList((prev) => prev.filter((pg) => pg.slug !== data));
+    if (created === "created") {
+      setPageList([...pageList, data]);
+    } else if (created === "updated") {
+      const tempPageList = [...pageList];
+      const index = tempPageList.findIndex((pg) => pg._id === data._id);
+      tempPageList[index] = data;
+      if (data.isHomePage) {
+        tempPageList.forEach((page) => {
+          page.isHomePage = page._id === data._id;
+        });
+      }
+      setPageList(tempPageList);
+    } else {
+      setPageList((prev) => prev.filter((pg) => pg.name !== data));
     }
   };
 
@@ -51,12 +64,28 @@ const WebsitePages = () => {
       id: "",
       show: false,
     });
+    setEditPage({
+      isEdit: false,
+      pageData: {},
+    });
   };
   const handleShowWebsite = () => {
     ShowCreateWebsite(true);
   };
   const handleCloseWebsite = () => {
     ShowCreateWebsite(false);
+    setEditPage({
+      isEdit: false,
+      pageData: {},
+    });
+  };
+
+  const handleEditWebsitePage = (page) => {
+    setEditPage({
+      isEdit: true,
+      pageData: page,
+    });
+    ShowCreateWebsite(true);
   };
 
   return (
@@ -81,24 +110,28 @@ const WebsitePages = () => {
                 <div className="website-card">
                   <div className="action-website" key={page._id}>
                     <OverlayTrigger placement="bottom" overlay={editPage}>
-                      <Link
-                        to={`/admin/website-builder/${page.slug}`}
-                        className="text-decoration-none website-action"
+                      <Button
+                        variant="transparent"
+                        className="website-action"
+                        onClick={() => handleEditWebsitePage(page)}
                       >
                         <FaPencil />
+                      </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="bottom" overlay={viewPage}>
+                      <Link
+                        to={`/admin/website-builder/${page.name}`}
+                        className="text-decoration-none website-action"
+                      >
+                        <FaEye />
                       </Link>
                     </OverlayTrigger>
-                    {/* <OverlayTrigger placement="bottom" overlay={viewPage}>
-                      <Button variant="transparent" className="website-action">
-                        <FaEye />
-                      </Button>
-                    </OverlayTrigger> */}
                     <OverlayTrigger placement="bottom" overlay={delPage}>
                       <Button
                         variant="transparent"
                         className="website-action text-danger"
                         onClick={() =>
-                          setDeletePageModal({ id: page.slug, show: true })
+                          setDeletePageModal({ id: page.name, show: true })
                         }
                       >
                         <FaTrash />
@@ -122,6 +155,8 @@ const WebsitePages = () => {
           pageList={pageList}
           updatePageList={updatePageList}
           setScreenLoader={setScreenLoader}
+          isEdit={editWebPage.isEdit}
+          pageData={editWebPage.pageData}
         />
       )}
       {deletePageModal.show && (
