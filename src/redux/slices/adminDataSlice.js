@@ -31,13 +31,14 @@ const initialAdminData = {
     timeReportingDetailTotalPage:null,
     configDetails: {},
     allPermissionList:[],
-    employeeList:[],
+    employeeList: [],
     toDoList:{},
     developerList:[],
     allEvents:{},
     messageTemplates:{},
     allAdminEmployees:[],
-    chatRoom:{}
+    chatRoom:{},
+    assignedMemberStatus: null,
 }
 
 export const adminDataSlice = createSlice({
@@ -193,11 +194,14 @@ export const adminDataSlice = createSlice({
         setChatRoom:(state,action)=>{
             state.chatRoom =action.payload
             state.smallLoader = false
-        }
+        },
+        setAssignMemberStatus: (state, action) => {
+            state.assignedMemberStatus = action.payload;
+        },
     }
 })
 
-export const { setTimeReportDetails,setAdminEmployees,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setAdminEmployees,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader, setAssignMemberStatus} = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -1207,3 +1211,46 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       }
     };
   }
+export const getEmployeeList = () => async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+        const response = await clientInstance.get('admin/employees');
+        if (response.status === 200) {
+            dispatch(setEmployeeList(response.data));
+        }
+        dispatch(setSuccessAdminData());
+    } catch (error) {
+        const message = error?.response?.data?.message || 'Something went wrong';
+        toast.error(message, { position: 'top-center' });
+        dispatch(setFailAdminData());
+    }
+};
+
+export const assignMember = (userId, assignedMemberId, assignedMemberRole) => async (dispatch) => {
+    dispatch(setScreenLoader());
+    debugger;
+    try {
+        const response = await clientInstance.post(
+            'admin/assign-team-member', // API URL
+            { // Request body
+                user_id: userId,
+                assigned_member_id: assignedMemberId,
+                assigned_member_role: assignedMemberRole,
+            }
+        );
+
+        if (response.status === 201) {
+            dispatch(setAssignMemberStatus({ success: true, data: response.data }));
+            toast.success('Employee assigned successfully!', { position: 'top-center' });
+        } else {
+            dispatch(setAssignMemberStatus({ success: false, error: response.data.message }));
+            toast.error('Failed to assign employee.', { position: 'top-center' });
+        }
+    } catch (error) {
+        const message = error?.response?.data?.message || 'Something went wrong';
+        dispatch(setAssignMemberStatus({ success: false, error: message }));
+        toast.error(message, { position: 'top-center' });
+    } finally {
+        dispatch(setSuccessAdminData());
+    }
+};
