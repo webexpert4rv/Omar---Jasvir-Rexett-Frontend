@@ -40,7 +40,6 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
 
     const getFormattedOptions = () => {
         const newOptions = developerList?.developers?.map((item) => {
-            console.log(item?.email, "itemmmmmm---")
             return ({ label: item?.email, value: item.id })
         })
         return newOptions;
@@ -150,7 +149,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
 
     console.log(createdMeetings, "createdMeetings")
     const onSubmit = (data) => {
-        setCreatedMeetings(data)
+        // setCreatedMeetings(data)
         console.log(data, "dat")
         if (type === "events") {
             let payload = {

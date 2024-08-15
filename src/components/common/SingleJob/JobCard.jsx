@@ -156,8 +156,11 @@ const JobCard = ({
                                   disabled={
                                     jobStatus === "Ended" ? true : false
                                   }
-                                  onClick={(e) =>
+                                  onClick={(e) =>{
                                     handleJobStatusModal(e, item?.id, type)
+                                    console.log("hell")
+                                  }
+                                   
                                   }
                                   className="w-100 main-btn text-black border-white mt-3"
                                 >

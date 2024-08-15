@@ -35,7 +35,7 @@ export function getToken(tokenKey) {
 
   export const jobPostConfirmMessage=(key)=>{
    let message={
-    "suggested":"Want to shortlist this developer?",
+    "suggestions":"Want to shortlist this developer?",
     "shortlisted":"Want to interview this developer?",
     "interviewing":"Want to hire this developer?",
     "application":"Are you sure you want to Delete this job?"

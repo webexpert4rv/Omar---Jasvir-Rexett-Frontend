@@ -15,8 +15,9 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
     // const handle = () => {
     //     handleAction();
     // }
+    // role === "client-edit-profile" ? show :show?.isDelete
     return(
-        <Modal show={role === "client-edit-profile" ? show :show?.isDelete} onHide={handleClose} centered animation className="custom-modal" noValidate> 
+        <Modal show={show} onHide={handleClose} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">
             {/* <Modal.Title>End Job</Modal.Title> */}
             </Modal.Header>
