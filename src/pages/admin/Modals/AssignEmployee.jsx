@@ -31,14 +31,12 @@ const AssignEmployee = ({ show, handleClose, selectedUserId }) => {
             toast.error('Please select an employee and role.', { position: 'top-center' });
             return;
         }
-        debugger;
         dispatch(assignMember(selectedUserId, selectedEmployeeId, selectedEmployeeRole))
             .then(() => {
                 handleClose();
             })
             .catch((error) => {
                 console.error('Error assigning employee:', error);
-                // Handle error (e.g., show an error message)
             });
     };
 

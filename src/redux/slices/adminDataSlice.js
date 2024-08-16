@@ -1228,11 +1228,10 @@ export const getEmployeeList = () => async (dispatch) => {
 
 export const assignMember = (userId, assignedMemberId, assignedMemberRole) => async (dispatch) => {
     dispatch(setScreenLoader());
-    debugger;
     try {
         const response = await clientInstance.post(
-            'admin/assign-team-member', // API URL
-            { // Request body
+            'admin/assign-team-member',
+            {
                 user_id: userId,
                 assigned_member_id: assignedMemberId,
                 assigned_member_role: assignedMemberRole,

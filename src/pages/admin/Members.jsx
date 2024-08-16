@@ -522,7 +522,15 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
+                                      {item.assigned_team_members.length > 0 ? (
+                                        item.assigned_team_members.map((member) => (
+                                          <span key={member.id} className="associate white-nowrap">
+                                            {member.assignedMember.email ? member.assignedMember.email : "assign team member"}
+                                          </span>
+                                        ))
+                                        ) : (
+                                        <span className="associate white-nowrap">Assign Team Member</span>
+                                      )}
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={() => handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />
@@ -846,7 +854,15 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
-                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
+                                      {item.assigned_team_members.length > 0 ? (
+                                        item.assigned_team_members.map((member) => (
+                                          <span key={member.id} className="associate white-nowrap">
+                                            {member.assignedMember.email ? member.assignedMember.email : "assign team member"}
+                                          </span>
+                                        ))
+                                        ) : (
+                                        <span className="associate white-nowrap">Assign Team Member</span>
+                                      )}
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={() => handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />
@@ -1306,7 +1322,15 @@ const Members = () => {
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex gap-2 align-items-center">
-                                      <span className="associate white-nowrap">johndoe123gmail.com</span>
+                                      {item.assigned_team_members.length > 0 ? (
+                                        item.assigned_team_members.map((member) => (
+                                          <span key={member.id} className="associate white-nowrap">
+                                            {member.assignedMember.email ? member.assignedMember.email : "assign team member"}
+                                          </span>
+                                        ))
+                                        ) : (
+                                        <span className="associate white-nowrap">Assign Team Member</span>
+                                      )}
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
                                         <span onClick={() => handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />
