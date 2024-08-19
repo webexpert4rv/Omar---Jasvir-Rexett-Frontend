@@ -155,7 +155,7 @@ const ClientStep1 = ({
                               isMaxRequired={isMaxRequired}
                               disabled={isStillWorking}
                               isMinRequired={isMinRequired}
-                  readOnly={readOnly ? true : false}
+                              readOnly={readOnly ? true : false}
                    />
                           ): <UploadFile 
                           label={label}
