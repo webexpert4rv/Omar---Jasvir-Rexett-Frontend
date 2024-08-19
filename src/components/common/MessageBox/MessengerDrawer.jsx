@@ -9,11 +9,16 @@ import { FaUserCircle } from 'react-icons/fa'
 import { TbMessage } from 'react-icons/tb'
 import ReactQuill from 'react-quill'
 import devImg from "../../../assets/img/user-img.jpg"
+import { useSelector } from 'react-redux'
 
 const MessengerDrawer = ({messageWrapperVisible,handleCloseMessageWrapper,isEditorFocused,
     handleShowUserConversation,valuemessga,hasContent,handleEditorFocus,handleEditorBlur,
     handleChange
 }) => {
+
+
+    
+
     return (
         <>
             <div className={`message-wrapper ${messageWrapperVisible ? 'visible' : ''}`}>

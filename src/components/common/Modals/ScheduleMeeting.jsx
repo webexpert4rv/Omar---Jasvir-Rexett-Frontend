@@ -134,7 +134,8 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
 
     const meetingTypeValue = watch('meeting_type')
     const onSubmit = (data) => {
-        setCreatedMeetings(data)
+        // setCreatedMeetings(data)
+        console.log(data, "dat")
         if (type === "events") {
             let payload = {
                 "title": data?.title,

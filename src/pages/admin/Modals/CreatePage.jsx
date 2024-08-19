@@ -1,39 +1,81 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import webSiteBuilderInstance from "../../../services/webSiteBuilderInstance";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-const CreateWebsitePage = ({ show, handleClose, pageList, updatePageList,setScreenLoader }) => {
+const CreateWebsitePage = ({
+  show,
+  handleClose,
+  pageList,
+  updatePageList,
+  setScreenLoader,
+  isEdit = false,
+  pageData,
+}) => {
+  const [updateList, setUpdatedList] = useState([]);
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    console.log(isEdit, pageData);
+    if (isEdit && pageData) {
+      setUpdatedList(() => pageList.filter((pg) => pg._id !== pageData._id));
+      setValue("name", pageData.name);
+      setValue("isHomePage", pageData.isHomePage);
+      setValue("template", pageData.template ? pageData.template : "blank");
+    } else {
+      setUpdatedList([...pageList]);
+    }
+  }, [pageData]);
 
   const onSubmit = (data) => {
     const payload = {
       ...data,
-      template: data.template === 'blank' ? '':data.template
+      template: data.template === "blank" ? "" : data.template,
+    };
+    setScreenLoader(true);
+    if (isEdit) {
+      webSiteBuilderInstance
+        .put(`/api/pages/${pageData._id}`, payload)
+        .then((response) => {
+          const message = "Page updated successfully!";
+          toast.success(message, { position: "top-center" });
+          updatePageList(response.data.page, "updated");
+          handleClose();
+          setScreenLoader(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          const message =
+            err?.response?.data?.message || "Something went wrong";
+          toast.error(message, { position: "top-center" });
+          // handleClose()
+          setScreenLoader(false);
+        });
+    } else {
+      webSiteBuilderInstance
+        .post(`/api/pages/`, payload)
+        .then((response) => {
+          console.log(response, "??//");
+          const message = "Page created successfully!";
+          toast.success(message, { position: "top-center" });
+          updatePageList(response.data.page, "created");
+          handleClose();
+          setScreenLoader(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          const message =
+            err?.response?.data?.message || "Something went wrong";
+          toast.error(message, { position: "top-center" });
+          // handleClose()
+          setScreenLoader(false);
+        });
     }
-    setScreenLoader(true)
-    webSiteBuilderInstance
-      .post(`/api/pages/`, payload)
-      .then((response) => {
-        console.log(response,"??//")
-        const message = "Page created successfully!";
-        toast.success(message, { position: "top-center" });
-        updatePageList(response.data.page, "created")
-        handleClose()
-        setScreenLoader(false)
-      })
-      .catch((err) => {
-        console.log(err)
-        const message = err?.response?.data?.message || "Something went wrong";
-        toast.error(message, { position: "top-center" });
-        // handleClose()
-        setScreenLoader(false)
-      });
   };
 
   return (
@@ -48,7 +90,9 @@ const CreateWebsitePage = ({ show, handleClose, pageList, updatePageList,setScre
         <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
 
         <Modal.Body>
-          <h3 className="popup-heading">Create new page</h3>
+          <h3 className="popup-heading">{`${
+            isEdit ? "Update" : "Create new"
+          } page`}</h3>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Group className="mb-4">
               <Form.Label className="font-14 fw-medium">Page Name *</Form.Label>
@@ -72,19 +116,31 @@ const CreateWebsitePage = ({ show, handleClose, pageList, updatePageList,setScre
                   required: "Template selection is required",
                 })}
               >
-                <option selected value="" >Select Template</option>
+                <option selected value="">
+                  Select Template
+                </option>
                 <option value="blank">Blank page</option>
-                {
-                  pageList.map((page)=> <option value={page.slug} key={page._id}>{page.name}</option>)
-                }
+                {updateList.map((page) => (
+                  <option value={page.name} key={page._id}>
+                    {page.name}
+                  </option>
+                ))}
               </Form.Select>
               {errors.template && (
                 <p className="text-danger">{errors.template.message}</p>
               )}
             </Form.Group>
+            <Form.Group className="mb-4">
+              <Form.Check
+                type="checkbox"
+                className="font-14"
+                label="Make this as Home Page"
+                {...register("isHomePage")}
+              />
+            </Form.Group>
             <div className="text-center">
               <button type="submit" className="main-btn font-14">
-                Create new page
+                {`${isEdit ? "Update" : "Create new"} page`}
               </button>
             </div>
           </Form>
