@@ -32,9 +32,6 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const location = useLocation()
     const [data, setData] = useState()
     const { developerList } = useSelector(state => state.adminData)
-    console.log(developerList?.developers, "developerList")
-    console.log(data, "data")
-    console.log(type, "type")
 
 
 
@@ -54,12 +51,8 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
 
     useEffect(() => {
         dispatch(getTimeZoneList())
-    }, [])
-
-    useEffect(() => {
         dispatch(getDeveloperList())
     }, [])
-
 
     useEffect(() => {
         if (timeZoneList.length > 0) {
@@ -73,14 +66,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
             })
             setGroupedTime(groupedTimeZones)
         }
-
-
-
     }, [timeZoneList])
-
-
-    console.log(timeZoneList, "timeZoneList")
-
     const generateTimeSlots = () => {
         const slots = [];
         for (let hour = 0; hour < 24; hour++) {
@@ -96,7 +82,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
 
     const handleFirstSlotChange = (event) => {
         const selectedTime = event.target.value;
-        setFirstSlot(selectedTime);
+        setFirstSlot(event.target.value);
 
         // Automatically set second slot to 1 hour after the first slot if not already set
         if (!secondSlot || selectedTime >= secondSlot) {
@@ -114,7 +100,9 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
         }
     };
 
+
     const handleSecondSlotChange = (event) => {
+        console.log("secondSlot")
         setSecondSlot(event.target.value);
     };
 
@@ -145,12 +133,8 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const meetingTypeValue = watch('meeting_type')
-    console.log(watch('select_candidate'), "meeting")
-
-    console.log(createdMeetings, "createdMeetings")
     const onSubmit = (data) => {
         // setCreatedMeetings(data)
-        console.log(data, "dat")
         if (type === "events") {
             let payload = {
                 "title": data?.title,
@@ -163,7 +147,8 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                 "event_platform": data?.meeting_platform?.label,
                 "event_type": data?.meeting_type,
                 "event_date": data?.meeting_date,
-                "event_time": data?.meeting_time,
+                "event_time": data?.meeting_start_time,
+                "event_end_time": data?.meeting_end_time,
                 "time_zone": data?.time_zone?.label,
                 "candidate_reminder": data?.candidate_reminder,
                 "attendees_reminder": data?.interviewer_reminder,
@@ -191,9 +176,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                 "interviewer_reminder": data?.interviewer_reminder,
                 "time_zone": data?.time_zone?.label
             }
-
             dispatch(postCandidateInterview(payload))
-
         }
 
     };
@@ -316,7 +299,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                                 <div className="d-flex align-items-center gap-3 mb-2">
 
                                                     <CommonInput
-                                                        name={"meeting_time"}
+                                                        name={"meeting_start_time"}
                                                         type={"normal-select"}
                                                         control={control}
                                                         value={firstSlot}
@@ -332,7 +315,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                                     </span>
 
                                                     <CommonInput
-                                                        name={"meeting_time"}
+                                                        name={"meeting_end_time"}
                                                         type={"normal-select"}
                                                         control={control}
                                                         value={secondSlot}
@@ -341,7 +324,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                                         invalidFieldRequired={true}
                                                         defaultOption="Select Time"
                                                         onChange={handleSecondSlotChange}
-                                                    />{" "}
+                                                    />
                                                     <span className="font-14">{calculateDuration(firstSlot, secondSlot)}</span>
                                                 </div>
                                                 <div className="mb-2 datefield-wrapper">

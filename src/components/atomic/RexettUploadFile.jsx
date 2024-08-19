@@ -25,8 +25,6 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole
         setDetails(values)
         let formData = new FormData();
         formData.append("file", values.file_name[0]);
-        console.log(selectedFile , "selectedFile")
-        
         if (values?.category === "3" && values?.file_name[0]?.type !== "application/pdf") {
             alert("Only PDF files are allowed for Invoices category.");
             return; 

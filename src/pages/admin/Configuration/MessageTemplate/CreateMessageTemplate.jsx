@@ -109,6 +109,7 @@ const CreateMessageTemplate = () => {
         if (file && allowedTypes.includes(file.type)) {
             setFile(file)
             setSelectedFile(file.name)
+            
         } else {
             setFileError(true)
         }
@@ -213,7 +214,7 @@ const CreateMessageTemplate = () => {
                             </div>
                         </Col>
                         <Col md={5}>
-                            {/* <div className="mb-3">
+                            <div className="mb-3">
                                 <Form.Label className="font-14">Preview</Form.Label>
                                 <div className="message-preview">
                                     <div className='d-flex align-items-end gap-2 mb-3'>
@@ -245,7 +246,7 @@ const CreateMessageTemplate = () => {
                                         <div className='send-profile'></div>
                                     </div>
                                 </div>
-                            </div> */}
+                            </div>
                         </Col>
                     </Row>
                     <div className='mb-3'>

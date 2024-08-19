@@ -873,6 +873,7 @@ export function getUpdateRolePermission(payload){
     }
 }
 export function getAdminCreateToDo(payload,callback){
+    console.log(payload,"payload")
     return async (dispatch)=>{
         dispatch(setApprovedLoader())
         try{
@@ -985,7 +986,6 @@ export function getDeveloperList(){
         // dispatch(setBtnLoader())
         try{
             let result = await clientInstance.get("common/developers-list")
-            console.log(result.data,"getallevents")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
@@ -1008,7 +1008,7 @@ export function postScheduleMeeting(payload,callback){
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
+            // dispatch(setDeveloperList(result.data))
             return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1047,7 +1047,7 @@ export function updateEvent(id,payload){
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
+            // dispatch(setDeveloperList(result.data))
             // return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1066,7 +1066,6 @@ export function deleteEvent(id,callback){
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
             return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1075,17 +1074,16 @@ export function deleteEvent(id,callback){
         }
     }
 }
-export function getUpdatedDetails(id,callback){
+export function getSelectedEvent(id,callback){
     console.log(id,"id")
     return async (dispatch)=>{
         // dispatch(setBtnLoader())
         try{
-            let result = await clientInstance.get(`common/get-events/${id}`)
-            console.log(result.data,"getallevents")
+            let result = await clientInstance.get(`common/get-event/${id}`)
+            console.log(result.data,"getSelectecEvent")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
             return callback(result.data);
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
