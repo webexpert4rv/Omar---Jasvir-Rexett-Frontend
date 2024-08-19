@@ -80,6 +80,7 @@ const RecommendationAI = ({
       const handleRecommendation=(item)=>{
         console.log(item,"kk")
         const itemToSet = currentStep === '4' ? {label: item.text, value: item.text} : item.text
+        console.log(itemToSet,"itemToSet")
         setSelectedRecommend(itemToSet);
       }
 
@@ -110,14 +111,14 @@ const RecommendationAI = ({
               </Button>
             </div>
           </div> */}
-          <CommonInput
+          {/* <CommonInput
             label=""
             name="search"
             type="text"
             control={control}
             invalidFieldRequired={true}
             placeholder="Search keywords"
-          />
+          /> */}
           <div className="recommended-desc">
             {(currentStep === '4' ? skillRecommendations: recommendations).map((item) => (
               <div key={item.id} className="d-flex align-items-center gap-3" onClick={()=>handleRecommendation(item)}>

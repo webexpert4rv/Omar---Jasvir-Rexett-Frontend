@@ -48,7 +48,6 @@ const AddEducation = ({
   skillOptions,
   name
 }) => {
-
   const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
   useEffect(() => {
     if (skillOptions?.length) {
