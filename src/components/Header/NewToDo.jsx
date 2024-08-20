@@ -31,6 +31,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
     } = useForm({});
     const newDate = moment(value).format('YYYY-MM-DD');
     const { employeeList, approvedLoader } = useSelector((state) => state.adminData)
+    console.log(employeeList,"employlist")
 
     useEffect(() => {
         dispatch(getAdminList())
@@ -51,8 +52,9 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
     const onSubmit = async (values) => {
         console.log(values,"values")
         getSelectedCandidateDetails(values?.assignees)
+        console.log(isEdit,"isEdit")
         let payload;
-        if (isEdit) {
+        if (isEdit === true) {
             if (currentTab === "my_todo") {
                 payload = {
                     title: values?.title,
@@ -92,6 +94,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
             }
         } else {
             if (currentTab === "my_todo") {
+                console.log("inside my todo")
                 payload = {
                     title: values?.title,
                     description: (stripHtmlTags(values?.description)),
@@ -100,6 +103,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                     type: "to_self",
                 };
             } else {
+                console.log("inside assinged to do ")
                 payload = {
                     title: values?.title,
                     description: (stripHtmlTags(values?.description)),
@@ -109,7 +113,7 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                     assignees: [ values?.assignees],
                 };
             }
-            await dispatch(getAdminCreateToDo(payload, () => {
+             dispatch(getAdminCreateToDo(payload, () => {
                 let data = {
                     tab: currentTab
                 }

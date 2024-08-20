@@ -67,6 +67,7 @@ console.log(isMaxRequired,"ismax")
           control={control}
           rules={rules}
           render={({ field }) => {
+            console.log(field,"field")
             if (type === "radio") {
                   <Form.Check
                   {...field}
@@ -124,9 +125,9 @@ console.log(isMaxRequired,"ismax")
                     isDisabled={readOnly}
                     onChange={(selectedOption) => field.onChange(selectedOption)}
                     value={selectOptions?.find(
-                      (option) => option.value === field.value
+                      (option) => option.label === field.label
                     )}
-                    // value={field.value }
+                    // value={field.label }
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />

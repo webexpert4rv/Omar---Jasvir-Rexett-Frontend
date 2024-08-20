@@ -36,7 +36,8 @@ const initialAdminData = {
     developerList:[],
     allEvents:{},
     messageTemplates:{},
-    allAdminEmployees:[]
+    allAdminEmployees:[],
+    chatRoom:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -188,11 +189,15 @@ export const adminDataSlice = createSlice({
         setAdminEmployees:(state,action)=>{
             state.allAdminEmployees =action.payload
             state.smallLoader = false
+        },
+        setChatRoom:(state,action)=>{
+            state.chatRoom =action.payload
+            state.smallLoader = false
         }
     }
 })
 
-export const { setTimeReportDetails,setAdminEmployees,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setAdminEmployees,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -868,6 +873,7 @@ export function getUpdateRolePermission(payload){
     }
 }
 export function getAdminCreateToDo(payload,callback){
+    console.log(payload,"payload")
     return async (dispatch)=>{
         dispatch(setApprovedLoader())
         try{
@@ -980,7 +986,6 @@ export function getDeveloperList(){
         // dispatch(setBtnLoader())
         try{
             let result = await clientInstance.get("common/developers-list")
-            console.log(result.data,"getallevents")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
@@ -1003,7 +1008,7 @@ export function postScheduleMeeting(payload,callback){
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
+            // dispatch(setDeveloperList(result.data))
             return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1042,7 +1047,7 @@ export function updateEvent(id,payload){
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
+            // dispatch(setDeveloperList(result.data))
             // return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1061,7 +1066,6 @@ export function deleteEvent(id,callback){
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
             return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1070,17 +1074,16 @@ export function deleteEvent(id,callback){
         }
     }
 }
-export function getUpdatedDetails(id,callback){
+export function getSelectedEvent(id,callback){
     console.log(id,"id")
     return async (dispatch)=>{
         // dispatch(setBtnLoader())
         try{
-            let result = await clientInstance.get(`common/get-events/${id}`)
-            console.log(result.data,"getallevents")
+            let result = await clientInstance.get(`common/get-event/${id}`)
+            console.log(result.data,"getSelectecEvent")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            dispatch(setDeveloperList(result.data))
             return callback(result.data);
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1124,7 +1127,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     return async (dispatch) => {
       dispatch(setSmallLoader());
       try {
-        let result = await clientInstance.get("admin/message-templates");
+        let result = await clientInstance.get("common/message-templates");
         dispatch(setMessageTemplates(result.data));
       } catch (error) {
         const message = error.message || "Something went wrong";
@@ -1175,3 +1178,30 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     };
   }
 
+  export function messageSendFunc(payload){
+    return async (dispatch) => {
+      dispatch(setSmallLoader());
+      try {
+        let result = await clientInstance.post(`/messages/send-messages`,{...payload});
+      } catch (error) {
+        const message = error.message || "Something went wrong";
+        toast.error(message, { position: "top-center" });
+        // dispatch(setFailClientData());
+      }
+    };
+  }
+
+  export function getAllInboxMessage(payload){
+    return async (dispatch) => {
+      dispatch(setSmallLoader());
+      try {
+        let result = await clientInstance.get(`/messages/chatroom_list/${payload}`);
+        console.log(result,"res")
+        dispatch(setChatRoom(result?.data?.data))
+      } catch (error) {
+        const message = error.message || "Something went wrong";
+        toast.error(message, { position: "top-center" });
+        // dispatch(setFailClientData());
+      }
+    };
+  }

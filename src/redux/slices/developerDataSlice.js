@@ -35,6 +35,8 @@ const initialDeveloperData = {
   projectHistoryPagination: {},
   projectDetail: {},
   developerRegistrationData:{},
+  chatRoomMessageList:{},
+  chatData:{}
 };
 
 export const developerDataSlice = createSlice({
@@ -159,6 +161,14 @@ export const developerDataSlice = createSlice({
       state.developerRegistrationData = action.payload;
       state.screenLoader = false;
     },
+    setMessageRoomList: (state, action) => {
+      state.chatRoomMessageList = action.payload;
+      state.screenLoader = false;
+    },
+    setChatData: (state, action) => {
+      state.chatData = action.payload;
+      state.screenLoader = false;
+    },
   },
 });
 
@@ -190,6 +200,8 @@ export const {
   setUpdateLeave,
   setAllCountries,
   setDeveloperRegistrationDetails,
+  setMessageRoomList,
+  setChatData
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -1364,6 +1376,55 @@ export function getDeveloperProfileDetails(id) {
       let result = await clientInstance.get(`common/developer-profile?developer_id=${id}`);
       dispatch(setDeveloperRegistrationDetails(result?.data?.data))
       dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+export function messageChatRoomList(id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`messages/chatroom_list/${id}`);
+      dispatch(setMessageRoomList(result?.data?.data))
+      // dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+
+export function getChatRoomData(id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`messages/chatroom-messages/${id}`);
+      console.log(result,"...")
+      dispatch(setChatData(result?.data?.messages?.data))
+      // dispatch(setSuccessActionData());
+    } catch (error) {
+      const message = error.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+
+
+export function getChatRoomMembers(id) {
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.get(`messages/chatroom-members/${id}`);
+      console.log(result,"...")
+      // dispatch(setChatData(result?.data?.messages?.data))
+      // dispatch(setSuccessActionData());
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });

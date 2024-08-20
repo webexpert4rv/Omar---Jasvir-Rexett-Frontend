@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, Form, Offcanvas, Tab } from 'react-bootstrap';
 import { IoFilter } from 'react-icons/io5';
 import devImg from '../../assets/img/user-img.jpg';
@@ -19,7 +19,13 @@ function ToDoComponent({ showToDo, setShowToDo }) {
     const [isEdit, setIsEdit] = useState(false)
     const [selectedId, setSelectedId] = useState()
     const [deleteId, setDeleteId] = useState()
-    const [details, setDetails] = useState()
+    const [selectedCandidates, setSelectedCandidates] = useState([]);
+    const [details, setDetails] = useState();
+
+    useEffect(() => {
+        // Log selected candidates to see state updates
+        console.log('Selected Candidates:', details);
+      }, [details]);
 
 
     const handleCloseToDo = () => {
@@ -90,11 +96,17 @@ function ToDoComponent({ showToDo, setShowToDo }) {
         dispatch(getAdminTodos(filter))
     }
     const getSelectedCandidateDetails = (canId) => {
-        const candidateDetails = employeeList
-            .flatMap(itm => itm)
-            .find(candidate => candidate.id === canId);
-        setDetails(candidateDetails)
+        if(canId){
+        const candidateDetails = employeeList .flatMap(itm => itm).find(candidate => candidate.id === canId);
+            console.log(candidateDetails?.name,"candidateDetails")
+            setDetails(candidateDetails?.name)
+            console.log(details,"details Inside")
+             return candidateDetails?.name
     }
+}
+    console.log(details,"details outside")
+    console.log(selectedCandidates?.name, "newDetails")
+
 
     return (
         <div>
@@ -184,10 +196,13 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                                                 <span><FaCalendarDays /></span>
                                                                                 <span>{item.due_date.slice(0, 10)}</span>
                                                                             </div>
-                                                                            {currentTab === "assigned_to" ? <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                                                <img src={devImg} alt="Assigned user" />
-                                                                                {details?.name}
-                                                                            </div> : ""}
+                                                                            {currentTab === "assigned_to" && (
+                                                                                <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                                    <img src={devImg} alt="Assigned user" />
+                                                                                    {/* {getSelectedCandidateDetails(item?.id)} */}
+                                                                                    {details}
+                                                                                </div>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -235,10 +250,13 @@ function ToDoComponent({ showToDo, setShowToDo }) {
                                                                                             <span><FaCalendarDays /></span>
                                                                                             <span>{item.due_date.slice(0, 10)}</span>
                                                                                         </div>
-                                                                                        {currentTab === "assigned_to" ? <div className="d-flex align-items-center gap-1 assigned-user font-14">
-                                                                                            <img src={devImg} alt="Assigned user" />
-                                                                                            {details?.name}
-                                                                                        </div> : ""}
+                                                                                        {currentTab === "assigned_to" && (
+                                                                                            <div className="d-flex align-items-center gap-1 assigned-user font-14">
+                                                                                                <img src={devImg} alt="Assigned user" />
+                                                                                                {/* {getSelectedCandidateDetails(item?.id)} */}
+                                                                                                {details}
+                                                                                            </div>
+                                                                                        )}
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

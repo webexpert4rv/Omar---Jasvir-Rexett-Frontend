@@ -179,7 +179,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
             ) : (
               ""
             )}
-            {role == "admin" ? (
+            {role == "admin" || role=="developer" ? (
               <ToolTip text={"Messages"} >
                 <span onClick={handleShowMessages} className="email-icon">
                   <RiChat3Line />
