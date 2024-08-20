@@ -25,8 +25,8 @@ function SingleDetailForm({handleBack,handleSave}) {
 
     const handleOwnerSelect = (e) => {
         setDocumentOwner(e.target.value);
-        setDetailsFilled(false);
-        setDocumentSaved(false);
+        // setDetailsFilled(false);
+        // setDocumentSaved(false);
     };
 
     return (
