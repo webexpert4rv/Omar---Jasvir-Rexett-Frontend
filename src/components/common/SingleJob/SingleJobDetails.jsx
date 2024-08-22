@@ -380,12 +380,18 @@ const SingleJobDetails = () => {
     const handleChange = (content) => {
         setValue(content);
     };
+    const interviewsCount = singleJobDescription?.job_applications?.interviews_count || 0;
+    const shortlistedCount = singleJobDescription?.job_applications?.shortlisted_count || 0;
+    const suggestionsCount = singleJobDescription?.job_applications?.suggestion_count || 0;
+    const offeredCount = singleJobDescription?.job_applications?.offered_count || 0;
+    const hiredCount = singleJobDescription?.job_applications?.hired_count || 0;
 
-    let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> 4</div></div>;
-    let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1"><span className="stage-icon"><FaClipboardUser /></span> 1</div></div>;
-    let interview = <div>Interviews <div className="stage-indicator ms-1 stage-interview gap-1"><span className="stage-icon"><PiChatsFill /></span> 2</div></div>;
-    let offered = <div>Offered <div className="stage-indicator ms-1 stage-offer gap-1"><span className="stage-icon"><FaHandshake /></span> 0</div></div>;
-    let hired = <div>Hired <div className="stage-indicator ms-1 stage-hired gap-1"><span className="stage-icon"><MdWorkHistory /></span> 0</div></div>;
+    let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> {suggestionsCount}</div></div>;
+    let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1">
+        <span className="stage-icon"><FaClipboardUser /></span>{shortlistedCount}</div></div>;
+    let interview = <div>Interviews <div className="stage-indicator ms-1 stage-interview gap-1"><span className="stage-icon"><PiChatsFill /></span>{interviewsCount} </div></div>;
+    let offered = <div>Offered <div className="stage-indicator ms-1 stage-offer gap-1"><span className="stage-icon"><FaHandshake /></span> {offeredCount}</div></div>;
+    let hired = <div>Hired <div className="stage-indicator ms-1 stage-hired gap-1"><span className="stage-icon"><MdWorkHistory /></span> {hiredCount}</div></div>;
     const scheduleInterview = (
         <Tooltip>Move to interview</Tooltip>
     )
@@ -430,6 +436,18 @@ const SingleJobDetails = () => {
         pdf.save('statement_of_work.pdf');
     };
 
+    const handleFeedbackClick = (interviewId) => {
+        navigate('/client/interview-feedback', {
+            state: { interviewId },
+        });
+    };
+
+    const handleInterviewReport = (interviewId) => {
+        navigate('/client/interview-detail', {
+            state: { interviewId },
+        });
+    };
+    // console.log(singleJobDescription, 'singleJobDescription')
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -785,99 +803,83 @@ const SingleJobDetails = () => {
 
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>
-                        <div>
-                            <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
-                            <Row>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
+                        {singleJobDescription && (
+                            <div>
+                                <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
+                                <Row>
+                                    {singleJobDescription?.job_applications?.interviews?.interview_completed?.map((item, index) => (
+                                        <Col lg={4} key={index}>
+                                            <div className="interview-wrapper position-relative mb-3 pt-4">
+                                                <div>
+                                                    <p className="interview-title mb-2">
+                                                        Interview Call for {singleJobDescription.title}
+                                                    </p>
+                                                    <p className="dev-name mb-2 font-14">
+                                                        <div className="me-1">
+                                                            <img src={item.developer.profile_picture} alt={item.developer.name} />
+                                                        </div>
+                                                        {item.developer.name}
+                                                    </p>
+                                                    <div>
+                                                        <span className="associate-text">
+                                                            <span className="associate">
+                                                                {item.interview.meeting_date}, {item.interview.meeting_time} - {item.interview.meeting_end_time}
+                                                            </span>
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                Rohit Sharma
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
+                                                <div className="mb-2 status-interview">
+                                                <span className={`status-${item.interview.status.toLowerCase()}`}>
+                                                    {item.interview.status
+                                                        .toLowerCase()
+                                                        .split(' ')
+                                                        .map(word => word === 'complete' ? 'Complete' : word.charAt(0).toUpperCase() + word.slice(1))
+                                                        .join(' ')}
                                                 </span>
-                                            </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-finished">Completed</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                            </div>
-                                            <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/client/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
                                                 </div>
-                                                Rohit Sharma
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-finished">Selected</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                            </div>
-                                            <div className="d-flex align-items-center gap-2 mt-2">
-                                                <Link to={'/client/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
-                                                <Button variant="transparent" className="outline-main-btn font-14">Move to offer</Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <div></div>
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        {item.interview.status == 'completed' && (
+                                                            <button
+                                                                onClick={() => handleFeedbackClick(item.interview.id)}
+                                                                className="main-btn font-14 text-decoration-none"
+                                                            >
+                                                                Share Feedback
+                                                            </button>
+                                                        )}
+                                                        {item.interview.status === 'selected' && (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleInterviewReport(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Interview Report
+                                                                </button>
+                                                                <Button
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    Move to offer
+                                                                </Button>
+                                                            </>
+                                                        )}
+                                                        {item.interview.status === 'rejected' && (
+                                                            <button
+                                                                onClick={() => handleInterviewReport(item.interview.id)}
+                                                                className="main-btn font-14 text-decoration-none"
+                                                            >
+                                                                Interview Report
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                                Rohit Sharma
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                                                </span>
                                             </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-rejected">Rejected</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                            </div>
-                                            <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/client/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </div>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </div>
+                        )}
 
                         <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
                         <div className="interview-scheduled pt-2 mb-3">

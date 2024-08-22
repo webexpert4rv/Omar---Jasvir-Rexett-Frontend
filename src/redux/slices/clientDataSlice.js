@@ -44,7 +44,9 @@ const initialClientData = {
   jobList: [],
   clientProfileData: {},
   timeZoneList: [],
-  degreeList:[]
+  degreeList:[],
+  interviewDetails: {},
+  feedbackDetails: {},
 };
 export const clientDataSlice = createSlice({
   name: 'clientData',
@@ -212,7 +214,31 @@ export const clientDataSlice = createSlice({
       console.log(data,"daataa")
       state.degreeList = data;
     },
+    setInterviewDetails: (state, action) => {
+      state.interviewDetails = action.payload;
+      state.screenLoader = false;
+    },
 
+    clearInterviewDetails: (state) => {
+      state.interviewDetails = null;
+    },
+
+    setFailInterviewDetails: (state) => {
+      state.interviewDetails = null;
+      state.screenLoader = false;
+    },
+
+    setFeedbackDetails: (state, action) => {
+      state.feedbackDetails = action.payload;
+      state.screenLoader = false;
+    },
+    clearFeedbackDetails: (state) => {
+      state.feedbackDetails = null;
+    },
+    setFailFeedbackDetails: (state) => {
+      state.feedbackDetails = null;
+      state.screenLoader = false;
+    },
   }
 })
 
@@ -220,7 +246,7 @@ export const clientDataSlice = createSlice({
 export default clientDataSlice.reducer;
 
 
-export const { setOTPloader, setJobList, setListTimeZone,setDegreeList, setStatesList, setCountriesList, setCitiesList, setClientLook, setWebClientData, setTimeZones, setInvoiceList, setAllJobPostedList, setClientHolidayList, closeApprovedLoader, setSuggstedDeveloper, setAddHoliday, setApproveDisapprove, setReconciliationsData, setFaqs, setLeaveClientHistory, setScreenLoader, setDeveloperDetails, setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails, setJobId, setClientProfileData } = clientDataSlice.actions
+export const { setOTPloader, setJobList, setListTimeZone,setDegreeList, setStatesList, setCountriesList, setCitiesList, setClientLook, setWebClientData, setTimeZones, setInvoiceList, setAllJobPostedList, setClientHolidayList, closeApprovedLoader, setSuggstedDeveloper, setAddHoliday, setApproveDisapprove, setReconciliationsData, setFaqs, setLeaveClientHistory, setScreenLoader, setDeveloperDetails, setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails, setJobId, setClientProfileData, setInterviewDetails,clearInterviewDetails,setFailInterviewDetails,setFeedbackDetails, clearFeedbackDetails, setFailFeedbackDetails } = clientDataSlice.actions
 
 
 export function developerAssignList(payload) {
@@ -547,6 +573,20 @@ export function getShortListInterview(payload) {
       const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
+    }
+  };
+}
+
+export function getInterviewDetails(interviewId) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`common/interview/${interviewId}`);
+      dispatch(setInterviewDetails(result.data));
+    } catch (error) {
+      const message = error?.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailInterviewDetails());
     }
   };
 }
@@ -1328,3 +1368,32 @@ export function clientRegistration(payload, callback) {
   };
 }
 
+export function getAverageFeedbackDetails(interviewId) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`common/average-skill-ratings/${interviewId}`);
+      dispatch(setFeedbackDetails(result.data));
+    } catch (error) {
+      const message = error?.message || "Something went wrong";
+      console.error("Error fetching feedback details:", message);
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailFeedbackDetails());
+    }
+  };
+}
+
+export function submitFeedback(feedbackData) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      await clientInstance.post('common/share-feedback', feedbackData);
+      toast.success("Feedback submitted successfully!", { position: "top-center" });
+    } catch (error) {
+      const message = error?.response?.data?.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+    } finally {
+      dispatch(clearFeedbackDetails());
+    }
+  };
+}
