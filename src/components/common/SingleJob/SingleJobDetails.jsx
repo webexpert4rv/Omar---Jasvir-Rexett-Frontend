@@ -380,6 +380,9 @@ const SingleJobDetails = () => {
     const handleChange = (content) => {
         setValue(content);
     };
+    const needToSchedule = singleJobDescription?.job_applications?.interviews?.need_to_schedule || [];
+    const completedInterview = singleJobDescription?.job_applications?.interviews?.interview_completed || [];
+    const scheduledInterviews = singleJobDescription?.job_applications?.interviews?.scheduled_interviews || [];
     const interviewsCount = singleJobDescription?.job_applications?.interviews_count || 0;
     const shortlistedCount = singleJobDescription?.job_applications?.shortlisted_count || 0;
     const suggestionsCount = singleJobDescription?.job_applications?.suggestion_count || 0;
@@ -447,7 +450,7 @@ const SingleJobDetails = () => {
             state: { interviewId },
         });
     };
-    // console.log(singleJobDescription, 'singleJobDescription')
+    console.log(singleJobDescription?.job_applications?.interviews, 'singleJobDescription')
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -880,104 +883,103 @@ const SingleJobDetails = () => {
                                 </Row>
                             </div>
                         )}
-
-                        <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
-                        <div className="interview-scheduled pt-2 mb-3">
-                            <Row>
-                                {singleJobDescription?.job_applications?.interviews?.scheduled_interviews?.map((item) => {
-                                    return (
-                                        <>
-                                            <Col lg={4}>
+                        {scheduledInterviews.length > 0 && (
+                            <>
+                                <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
+                                <div className="interview-scheduled pt-2 mb-3">
+                                    <Row>
+                                        {scheduledInterviews.map((item) => (
+                                            <Col lg={4} key={item.id}> {/* Ensure each item has a unique key */}
                                                 <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} item={item} />
                                             </Col>
-                                        </>
-                                    )
-                                })}
-                                {/* <Col lg={4}><InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} /></Col> */}
-
-
-                            </Row>
-                        </div>
-
-                        <Tab.Container defaultActiveKey={'list-view'}>
-                            <div className="mb-4 d-flex justify-content-between align-items-center">
-                                {role !== "developer" && <h5 className="font-22 mb-0 fw-bold">Need to schedule</h5>}
-                                <Nav variant="pills" className="document-view-pill">
-                                    <Nav.Item className="document-view-item">
-                                        <Nav.Link
-                                            className="document-view-link"
-                                            eventKey="list-view"
-                                        >
-                                            <FaListUl />
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item className="document-view-item">
-                                        <Nav.Link
-                                            className="document-view-link"
-                                            eventKey="grid-view"
-                                        >
-                                            <IoGrid />
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-                            </div>
-                            <Tab.Content>
-                                <Tab.Pane eventKey="list-view">
-                                    <div>
-                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.interviews?.need_to_schedule} />
-
+                                        ))}
+                                    </Row>
+                                </div>
+                            </>
+                        )}
+                        {needToSchedule.length > 0 && (
+                            <>
+                                <Tab.Container defaultActiveKey={'list-view'}>
+                                    <div className="mb-4 d-flex justify-content-between align-items-center">
+                                        {role !== "developer" && <h5 className="font-22 mb-0 fw-bold">Need to schedule</h5>}
+                                        <Nav variant="pills" className="document-view-pill">
+                                            <Nav.Item className="document-view-item">
+                                                <Nav.Link
+                                                    className="document-view-link"
+                                                    eventKey="list-view"
+                                                >
+                                                    <FaListUl />
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item className="document-view-item">
+                                                <Nav.Link
+                                                    className="document-view-link"
+                                                    eventKey="grid-view"
+                                                >
+                                                    <IoGrid />
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                        </Nav>
                                     </div>
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="grid-view">
-                                    <div className="developers-list mb-4">
-                                        <div className="developer-card p-0">
-                                            <div className="overflow-hidden inner-dev-card">
-                                                <div className="user-imgbx">
-                                                    <img src={devImg} className="user-img" />
-                                                </div>
-                                                <div className="text-center">
-                                                    <h3 className="user-name">John Doe</h3>
-                                                    <div className="text-center mt-2">
-                                                        <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
-                                                    </div>
-                                                    <div className="mb-2">
-                                                        <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                            <FaStar /> 4.4
-                                                        </span>
-                                                    </div>
-                                                    <p className="designation-user">Software Developer</p>
-                                                    <p className="email-user">johndoe123@gmail.com</p>
-                                                    <ul className="social-icons">
-                                                        <li>
-                                                            <Link to="#">
-                                                                <FaGithub />
-                                                            </Link>
-                                                        </li>
-                                                        <li>
-                                                            <Link to="#">
-                                                                <FaLinkedin />
-                                                            </Link>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="job-card-btns">
-                                                        <OverlayTrigger placement="top" overlay={scheduleInterview}>
-                                                            <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
-                                                                <LuMessagesSquare />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                        <OverlayTrigger placement="top" overlay={rejectedApply}>
-                                                            <Button variant="danger">
-                                                                <FaTimes />
-                                                            </Button>
-                                                        </OverlayTrigger>
+                                    <Tab.Content>
+                                        <Tab.Pane eventKey="list-view">
+                                            <div>
+                                                <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.interviews?.need_to_schedule} />
+
+                                            </div>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="grid-view">
+                                            <div className="developers-list mb-4">
+                                                <div className="developer-card p-0">
+                                                    <div className="overflow-hidden inner-dev-card">
+                                                        <div className="user-imgbx">
+                                                            <img src={devImg} className="user-img" />
+                                                        </div>
+                                                        <div className="text-center">
+                                                            <h3 className="user-name">John Doe</h3>
+                                                            <div className="text-center mt-2">
+                                                                <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                                                            </div>
+                                                            <div className="mb-2">
+                                                                <span className="status-upcoming d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </div>
+                                                            <p className="designation-user">Software Developer</p>
+                                                            <p className="email-user">johndoe123@gmail.com</p>
+                                                            <ul className="social-icons">
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaGithub />
+                                                                    </Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaLinkedin />
+                                                                    </Link>
+                                                                </li>
+                                                            </ul>
+                                                            <div className="job-card-btns">
+                                                                <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                                    <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                        <LuMessagesSquare />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </Tab.Pane>
-                            </Tab.Content>
-                        </Tab.Container>
+                                        </Tab.Pane>
+                                    </Tab.Content>
+                                </Tab.Container>
+                            </>
+                        )}
                         {/* <JobCard
               handleJobStatusModal={handleJobStatusModal}
               type="Interviewing"
