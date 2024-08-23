@@ -37,10 +37,11 @@ const ClientStep1 = ({
   isProfileSectionRequired,
   isEditMode,
   skillOptions,
-  stepData
+  stepData,
+  countryCode
 }) => {
   const { t } = useTranslation();
-  
+  console.log(countryCode,"countryCode")
   console.log(type,"typeClientStep1")
   let isStillWorking=watch("is_still_working")
   console.log(stepFields,"stepFields")
@@ -149,14 +150,14 @@ const ClientStep1 = ({
                               rules={{ ...rules }}
                               error={errors?.[fieldName]}
                               type={type}
-                              options={companyTypeOptions ? companyTypeOptions:skillOptions && label=="Skill" ?skillOptions:options}//get options
+                              options={companyTypeOptions ? companyTypeOptions:skillOptions && label=="Skill" ? skillOptions: fieldName=="time_zone"? skillOptions :options}//get options
                               defaultOption={defaultOption}
                               placeholder={placeholder}
                               isMaxRequired={isMaxRequired}
                               disabled={isStillWorking}
                               isMinRequired={isMinRequired}
                               readOnly={readOnly ? true : false}
-                   />
+                              />
                           ): <UploadFile 
                           label={label}
                           placeholder={placeholder}

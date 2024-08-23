@@ -17,6 +17,7 @@ import {
   clientJobPost,
   getCoutriesList,
   getProfile,
+  getTimeZoneList,
   uploadFileToS3Bucket,
 } from "../../../redux/slices/clientDataSlice";
 import RegistrationType from "./RegistrationType";
@@ -41,8 +42,13 @@ import { useTranslation } from "react-i18next";
   const [registrationType, setRegistrationType] = useState("individual"); //for register as indivisual or company
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
   const activeStepFields = getActiveStepFields(activeStep, registrationType);
+  const [skillDetails , setSkillDetails] = useState({
+    skillName: [],
+    skillWeight: []
+  })
+  const [groupedTime, setGroupedTime] = useState([])
   console.log(activeStepFields,"activeStepFields")
-  const { profileData } = useSelector((state) => state?.clientData)
+  const { profileData ,timeZoneList } = useSelector((state) => state?.clientData)
   const {
     handleSubmit,
     register,
@@ -63,11 +69,26 @@ import { useTranslation } from "react-i18next";
   const { t } = useTranslation()
   const [countryCode , setCountryCode] = useState()
   useEffect(() => {
+   dispatch(getTimeZoneList())
     const storedStep = localStorage.getItem("clientActiveStep");
     if (storedStep) {
       setActiveStep(Number(storedStep));
     }
   }, []);
+  useEffect(() => {
+    if (timeZoneList?.length > 0) {
+      let groupedTimeZones = timeZoneList?.map((item) => {
+        return {
+          label: item?.country_name,
+          options: item?.timezones?.map((it) => {
+            return { label: it, value: it }
+          }),
+        }
+      })
+      setGroupedTime(groupedTimeZones)
+    }
+  }, [timeZoneList])
+
   useEffect(() => {
     if (activeStep == 1) {
       dispatch(getCoutriesList());
@@ -85,9 +106,11 @@ import { useTranslation } from "react-i18next";
       2: "step2",
       3: "step3",
       4: "step4",
-    }
+    };
+
     if (user_id) {
       dispatch(getProfile(user_id, (data) => {
+        console.log(data, "data")
         for (let key in data) {
           if (activeStep === 1) {
             if (key === "country_code") {
@@ -95,7 +118,7 @@ import { useTranslation } from "react-i18next";
                 label: data["country"],
                 value: data[key],
               };
-              setCountryCode(newValue?.value)
+              setCountryCode(newValue?.value);
               setValue(key, newValue);
             } else if (key === "state_iso_code") {
               const newValue = { label: data["state"], value: data[key] };
@@ -104,26 +127,66 @@ import { useTranslation } from "react-i18next";
               const newValue = { label: data[key], value: data[key] };
               setValue(key, newValue);
             } else {
-              setValue(key, data[key])
+              setValue(key, data[key]);
             }
             if (key === "name") {
-              const [firstName, surname] = data[key]?.split(" ");
-              setValue("first_name", firstName)
-              setValue("last_name", surname)
+              const [firstName, surname] = data[key]?.split(" ") ;
+              setValue("first_name", firstName );
+              setValue("last_name", surname);
             }
             if (key === "address") {
-              setValue("company_address", data[key])
+              setValue("address", data[key]);
             }
             if (key === "tax_id") {
-              setValue("company_tax_id", data[key])
+              setValue("company_tax_id", data[key]);
             }
-          } else if (activeStep !== 1) {
-            setValue(key, data[key])
+            if (key === "company_logo") {
+              setPreviewImage({profile_picture : data?.profile_picture})
+            }
+          } else if (activeStep === 2) {
+            const step1Data = data.jobs[0].step1;
+            console.log(step1Data, "step1Data")
+            for (let step1Key in step1Data) {
+              if (step1Key === "response_date") {
+                const new_date = step1Data?.response_date.slice(0, 10)
+                setValue(key, new_date)
+              } else {
+                setValue(step1Key, step1Data[step1Key]);
+              }
+            }
+          } else if (activeStep === 3) {
+            const step2Data = data.jobs[1].step2;
+            console.log(step2Data.job_skills,"job_skills")
+            if (step2Data?.job_skills) {
+              // Extract skill names and weights from job_skills
+              const skillName = step2Data.job_skills.map(itm => itm.skill_name);
+              const skillWeight = step2Data.job_skills.map(itm => itm.weight);
+            
+              // Ensure both arrays are of the same length and correctly populated
+              console.log(skillName, "skillName");
+              console.log(skillWeight, "skillWeight");
+            
+              // Update state with both skillName and skillWeight
+              setSkillDetails({
+                skillName: skillName,
+                skillWeight: skillWeight
+              });
+            } else {
+              console.warn('job_skills not found in step2Data');
+            }
+            
+            for (let step2Key in step2Data) {
+              if (step2Key !== "job_skills") {
+                setValue(step2Key, step2Data[step2Key]);
+              }
+            }
+            
+            
           }
         }
-      }))
+      }));
     }
-  }, [activeStep, user_id])
+  }, [activeStep, user_id, dispatch]);
 
   const getActiveStepText = (values) => {
     switch (activeStep) {
@@ -138,7 +201,7 @@ import { useTranslation } from "react-i18next";
     }
   };
   const onSubmit = () => {
-    if (activeStep === 1 || activeStep == 4) {
+    if (activeStep == 1 || activeStep == 4) {
       setShowSetUpJobModal(true);
     } else {
       increaseStepCount();
@@ -146,7 +209,8 @@ import { useTranslation } from "react-i18next";
     const buttonText = getActiveStepText();
     switch (buttonText) {
       case "Next : Setup Job" : 
-        handleProceed();
+        // handleProceed();
+        setShowSetUpJobModal(true);
         break;
       case "Next : Job Description":
         callJobStep1API();
@@ -168,6 +232,8 @@ import { useTranslation } from "react-i18next";
       job_location: jobStepData?.job_location,
       job_positions: jobStepData?.job_positions,
       job_type: jobStepData?.job_type,
+      response_date :  jobStepData?.response_date,
+      time_zone :  jobStepData?.time_zone,
     }
     dispatch(clientJobPost(payload, activeStep, user_id))
   }
@@ -246,13 +312,14 @@ import { useTranslation } from "react-i18next";
             setError={setError}
             clearErrors={clearErrors}
             watch={watch}
-            setValue={setValue}
+            setValue={setValue}n
             previewImage={previewImage}
             imageFile={imageFile}
             setPreviewImage={setPreviewImage}
             setImageFile={setImageFile}
             isProfileSectionRequired={activeStep === 1}
             countryCode={countryCode}
+            skillOptions={groupedTime}
           />
         );
       case 3:
@@ -303,7 +370,9 @@ import { useTranslation } from "react-i18next";
     setShowSetUpJobModal((prev) => !prev);
   };
   const handleRedirect = () => {
-    window.location.href = "https://rexett-frontend.rvtechnologies.info"
+    window.location.href = "/"
+
+    // window.location.href = "https://rexett-frontend.rvtechnologies.info"
     // window.location.href= process.env.REACT_APP_BASE_URL
   }
   const handleAfterApiSuccess = () => {
@@ -318,7 +387,8 @@ import { useTranslation } from "react-i18next";
     setShowSetUpJobModal(false);
     dispatch(uploadFileToS3Bucket(fileData, (url) => {
       const payload = {
-        name :`${stepData?.first_name } ${stepData?.last_name}`,
+        first_name: stepData?.first_name,
+        last_name: stepData?.last_name,
         password: stepData?.password,
         profile_picture: url,
         country_code: stepData?.country_code?.value,
@@ -327,7 +397,7 @@ import { useTranslation } from "react-i18next";
         country_code: stepData?.country_code?.value,
         yearly_revenue: stepData?.yearly_revenue,
         tax_id: stepData?.company_tax_id,
-        address: stepData?.company_address,
+        address: stepData?.address,
         country: stepData?.country_code?.label,
         state: stepData?.state_iso_code?.label,
         phone_number: stepData?.phone_number,
@@ -380,7 +450,8 @@ import { useTranslation } from "react-i18next";
           </section>
         )}
       </div>
-      {showSetUpModal ? <SetUpJobModal
+      {showSetUpModal ? 
+      <SetUpJobModal
         show={showSetUpModal}
         handleClose={handleToggleSetupModal}
         handleRedirect={handleRedirect}

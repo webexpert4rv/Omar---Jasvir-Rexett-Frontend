@@ -402,6 +402,16 @@ const CLIENT_STEP_2_FIELDS = [
     rules: { required: "Response Date is Required" },
     placeholder: "e.g 01-01-2025",
   },
+  {
+    label: "Time Zone",
+    fieldName: "time_zone",
+    type: "grouped-select",
+    // placeholder: "",
+    rules: { required: "Time Zone is required" },
+    columnWidth: 6,
+    isRequired: false,
+    defaultOption: "Select Time Zone",
+  },
 ];
 const CLIENT_ACTIVE_STEP_FIELDS = {
   1: CLIENT_STEP_1_FIELDS,

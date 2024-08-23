@@ -1175,22 +1175,22 @@ export function getWebClientLookUp(callback) {
 }
 
 export function applyAsClient(payload, callback, triggerVerificationModal) {
-  console.log(payload, 'payload')
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
-      let result = await authInstance.post(`web/apply-as-client`, { ...payload });
+      let result = await authInstance.post(`/common/client-registration`, { ...payload });
       localStorage.setItem("clientId", result?.data?.data?.id);
-      callback()
+      toast.success(result.data.message, { position: "top-center" });
+      return callback(result?.data?.data.Location);
     } catch (error) {
-      const message = error?.message;
+      // const message = error?.message;
       // if (error?.message === VERIFY_USER_MESSAGE) {
-      if (error.response?.data?.verify_user) {
+      // if (error.response?.data?.verify_user) {
         // triggerVerificationModal("verify"); 
-      } else {
+      // } else {
         toast.error(error?.response?.data?.message, { position: "top-center" });
-      }
-      dispatch(setFailClientData());
+      // }
+      // dispatch(setFailClientData());
     }
   };
 }
