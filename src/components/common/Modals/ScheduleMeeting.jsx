@@ -16,7 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTimeZoneList, postCandidateInterview } from "../../../redux/slices/clientDataSlice";
 import { useLocation } from "react-router-dom";
 import { getAllEvents, getDeveloperList, postScheduleMeeting } from "../../../redux/slices/adminDataSlice";
-import { setDeveloperRegistrationDetails } from "../../../redux/slices/developerDataSlice";
+import GoogleLogin from "react-google-login";
+import { gapi } from 'gapi-script';
+import ThirdPartyServices from "./ThirdParyServices";
 const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings, setCreatedMeetings, type }) => {
     console.log(selectedDeveloper, "selectedDeveloper")
     const {
@@ -32,6 +34,8 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const location = useLocation()
     const [data, setData] = useState()
     const { developerList } = useSelector(state => state.adminData)
+    const [thirdParty,setThirdParty]=useState(false)
+    const [meetingLink,setMeetingLink]=useState(null)
 
 
 
@@ -135,26 +139,40 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const meetingTypeValue = watch('meeting_type')
     const onSubmit = (data) => {
         // setCreatedMeetings(data)
+<<<<<<< HEAD
         console.log(data, "dat")
+=======
+        console.log(data,"dat")
+>>>>>>> 6da675085c1e7f5e9496aa3b14b4eeb246530a6e
         if (type === "events") {
             let payload = {
                 "title": data?.title,
-                "developer_id": +data?.select_candidate?.value,
-                "attendees": [
-                    {
-                        "email": data?.interviewers_list[0]?.label
-                    }
-                ],
-                "event_platform": data?.meeting_platform?.label,
-                "event_type": data?.meeting_type,
-                "event_date": data?.meeting_date,
-                "event_time": data?.meeting_start_time,
-                "event_end_time": data?.meeting_end_time,
-                "time_zone": data?.time_zone?.label,
-                "candidate_reminder": data?.candidate_reminder,
-                "attendees_reminder": data?.interviewer_reminder,
-                "type": "meeting",
-                "event_link": "https://zoom.us/j/1234567890"
+            //     "developer_id": +data?.select_candidate?.value,
+            //    "attendees": "attendee1@example.com,attendee2@example.com",
+            //     "event_platform": data?.meeting_platform?.label,
+            //     "event_type": data?.meeting_type,
+            //     "event_date": data?.meeting_date,
+            //     "event_time": data?.meeting_start_time,
+            //     "event_end_time": data?.meeting_end_time,
+            //     "time_zone": data?.time_zone?.label,
+            //     "candidate_reminder": data?.candidate_reminder,
+            //     "attendees_reminder": data?.interviewer_reminder,
+            //     "type": "meeting",
+            //     "event_link": "https://zoom.us/j/1234567890",
+            //     "developer_email": "developer@example.com"
+            "attendees": "attendee1@example.com, attendee2@example.com",
+            "event_platform": "Zoom",
+            "event_type": "scheduled",
+            "event_date": "2024-07-25",
+            "event_time": "10:00:00",
+            "event_end_time": "11:00:00",
+            "event_duration": "1h",
+            "time_zone": "UTC",
+            "candidate_reminder": true,
+            "attendees_reminder": true,
+            "type": "meeting",
+            "event_link": "https://zoom.us/j/1234567890",
+            "developer_email": "developer@example.com"
             }
             dispatch(postScheduleMeeting(payload, () => {
                 dispatch(getAllEvents())
@@ -181,6 +199,70 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
         }
 
     };
+
+    let r=watch("meeting_platform")
+  useEffect(()=>{
+  
+    setThirdParty(r?.value=="google_meet"?true:false)
+  },[r])
+
+  const handleCloseThirdPary=()=>{
+    setThirdParty(false)
+  }
+
+  const generateRequestId = () => {
+    return `request_${new Date().getTime()}_${Math.floor(Math.random() * 1000)}`;
+};
+
+  const syncCreatedMeetingsWithGoogle = (e) => {
+    let summary = watch("title");
+    console.log(summary, "sum");
+    
+
+    e.stopPropagation();
+    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        console.log('User not authenticated');
+        return;
+    }
+
+    const newEvent = {
+        'summary': summary || "Untitled Meeting",
+        'location': "jkk",
+        'description': "mmmm",
+        'start': {
+            'dateTime': "2024-08-26T16:50:00",
+            'timeZone': 'America/Los_Angeles',
+        },
+        'end': {
+            'dateTime': "2024-08-29T16:50:00",
+            'timeZone': 'America/Los_Angeles',
+        },
+        'conferenceData': {
+            'createRequest': {
+                'requestId': generateRequestId(), // A unique string identifying this request. Use a unique value for each new event.
+                'conferenceSolutionKey': {
+                    'type': "hangoutsMeet" // Use Google Meet
+                },
+            }
+        }
+    };
+
+    gapi.client.calendar.events.insert({
+        'calendarId': 'primary',
+        'resource': newEvent,
+        'conferenceDataVersion': 1, // Required to create Google Meet link
+    }).then((response) => {
+        console.log('Event created:', response.result);
+        if (response.result.hangoutLink) {
+            console.log('Google Meet link:', response.result.hangoutLink);
+            setMeetingLink(response.result.hangoutLink)
+        }
+    }).catch((error) => {
+        console.error('Error creating event:', error);
+    });
+};
+
+  
 
     return (
         <>
@@ -230,12 +312,11 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                         <p>{errors?.interviewers_list?.message}</p>
                                     </div>
                                 </Col>
-                                <Col lg={4} className="mb-lg-3 mb-1">
+                                {/* <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaUsers /></span>Interviewer's list</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
-                                        {/* <CreatableSelect isMulti /> */}
                                         <CommonInput
                                             name={"interviewers_list"}
                                             type={"multi-select"}
@@ -247,26 +328,8 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                         />
                                         <p>{errors?.select_candidate?.message}</p>
                                     </div>
-                                </Col>
-                                <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
-                                </Col>
-                                <Col lg={8} className="mb-3">
-                                    {/* <Form.Select className="common-field font-14">
-                                        <option>Rexett video meeting</option>
-                                        <option>Google meet</option>
-                                        <option>Microsoft team</option>
-                                    </Form.Select> */}
-                                    <CommonInput
-                                        name={"meeting_platform"}
-                                        type={"select"}
-                                        control={control}
-                                        selectOptions={VIDEO_MEETING}
-                                        rules={{ required: "This field is required" }}
-                                        invalidFieldRequired={true}
-                                        placeholder="Video Meeting"
-                                    />{" "}
-                                </Col>
+                                </Col> */}
+                              
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
                                 </Col>
@@ -357,6 +420,25 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
+                                    <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
+                                </Col>
+                                <Col lg={8} className="mb-3">
+                                    {/* <Form.Select className="common-field font-14">
+                                        <option>Rexett video meeting</option>
+                                        <option>Google meet</option>
+                                        <option>Microsoft team</option>
+                                    </Form.Select> */}
+                                    <CommonInput
+                                        name={"meeting_platform"}
+                                        type={"select"}
+                                        control={control}
+                                        selectOptions={VIDEO_MEETING}
+                                        rules={{ required: "This field is required" }}
+                                        invalidFieldRequired={true}
+                                        placeholder="Video Meeting"
+                                    />{" "}
+                                </Col>
+                                <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><IoAlarm /></span>Reminders</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
@@ -406,6 +488,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                     </form>
                 </Modal.Body>
             </Modal>
+            <ThirdPartyServices show={thirdParty} handleClose={handleCloseThirdPary} text={"Link With Google"} syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle} meetingLink={meetingLink}/>
         </>
     )
 }
