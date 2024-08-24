@@ -1191,13 +1191,16 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     };
   }
 
-  export function getAllInboxMessage(payload){
+
+  export function updateChatRoom(id,payload,callback){
+    console.log(payload,"payload")
     return async (dispatch) => {
       dispatch(setSmallLoader());
       try {
-        let result = await clientInstance.get(`/messages/chatroom_list/${payload}`);
+        let result = await clientInstance.put(`/messages/update-chatroom/${id}`,{...payload});
         console.log(result,"res")
         dispatch(setChatRoom(result?.data?.data))
+        return callback()
       } catch (error) {
         const message = error.message || "Something went wrong";
         toast.error(message, { position: "top-center" });
@@ -1205,3 +1208,5 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       }
     };
   }
+ 
+  

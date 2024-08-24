@@ -98,11 +98,11 @@ export const MESSAGE_TAB_TEXT = [
 
   },
   {
-    key: "Second",
+    key: "second",
     value: "Unread"
   },
   {
-    key: "Third",
+    key: "third",
     value: "Archive"
   }
 ]
