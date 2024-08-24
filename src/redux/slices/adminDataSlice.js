@@ -1056,7 +1056,7 @@ export function updateEvent(id,payload){
         }
     }
 }
-export function deleteEvent(id,callback){
+export function deleteEvent(id){
     console.log(id,"id")
     return async (dispatch)=>{
         // dispatch(setBtnLoader())
@@ -1066,7 +1066,7 @@ export function deleteEvent(id,callback){
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-            return callback();
+            // return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })

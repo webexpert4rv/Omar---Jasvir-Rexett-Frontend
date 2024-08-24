@@ -6,6 +6,7 @@ import axios from "axios";
 import authInstance from "../../services/auth.instance";
 import { VERIFY_USER_MESSAGE } from "../../pages/websiteRegisterForm/client/constant";
 import { setSuccessActionData } from "./developerDataSlice";
+import { setBtnLoader } from "./adminDataSlice";
 
 const initialClientData = {
 
@@ -394,6 +395,20 @@ export function getApproveDisapprove(payload, id) {
       const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" })
       dispatch(setFailClientData())
+    }
+  };
+}
+export const updateClientPost =(user_id,job_id,payload,callback)=>{
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await authInstance.put(`/common/update-job/${job_id}?user_id=${user_id}`, payload);
+      callback && callback(result?.data?.data?.Location);
+      dispatch(setActionSuccessFully())
+    } catch (error) {
+      console.log(error, "error")
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
     }
   };
 }
@@ -1176,11 +1191,12 @@ export function getWebClientLookUp(callback) {
 
 export function applyAsClient(payload, callback, triggerVerificationModal) {
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
     try {
       let result = await authInstance.post(`/common/client-registration`, { ...payload });
       localStorage.setItem("clientId", result?.data?.data?.id);
       toast.success(result.data.message, { position: "top-center" });
+      dispatch(setActionSuccessFully())
       return callback(result?.data?.data.Location);
     } catch (error) {
       // const message = error?.message;

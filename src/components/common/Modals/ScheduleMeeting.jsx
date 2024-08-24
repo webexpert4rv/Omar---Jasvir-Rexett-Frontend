@@ -34,8 +34,8 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const location = useLocation()
     const [data, setData] = useState()
     const { developerList } = useSelector(state => state.adminData)
-    const [thirdParty,setThirdParty]=useState(false)
-    const [meetingLink,setMeetingLink]=useState(null)
+    const [thirdParty, setThirdParty] = useState(false)
+    const [meetingLink, setMeetingLink] = useState(null)
 
 
 
@@ -137,38 +137,39 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const meetingTypeValue = watch('meeting_type')
+    console.log(meetingTypeValue, "meetingTypeValue")
     const onSubmit = (data) => {
         // setCreatedMeetings(data)
-        console.log(data,"dat")
+        console.log(data, "dat")
         if (type === "events") {
             let payload = {
                 "title": data?.title,
-            //     "developer_id": +data?.select_candidate?.value,
-            //    "attendees": "attendee1@example.com,attendee2@example.com",
-            //     "event_platform": data?.meeting_platform?.label,
-            //     "event_type": data?.meeting_type,
-            //     "event_date": data?.meeting_date,
-            //     "event_time": data?.meeting_start_time,
-            //     "event_end_time": data?.meeting_end_time,
-            //     "time_zone": data?.time_zone?.label,
-            //     "candidate_reminder": data?.candidate_reminder,
-            //     "attendees_reminder": data?.interviewer_reminder,
-            //     "type": "meeting",
-            //     "event_link": "https://zoom.us/j/1234567890",
-            //     "developer_email": "developer@example.com"
-            "attendees": "attendee1@example.com, attendee2@example.com",
-            "event_platform": "Zoom",
-            "event_type": "scheduled",
-            "event_date": "2024-07-25",
-            "event_time": "10:00:00",
-            "event_end_time": "11:00:00",
-            "event_duration": "1h",
-            "time_zone": "UTC",
-            "candidate_reminder": true,
-            "attendees_reminder": true,
-            "type": "meeting",
-            "event_link": "https://zoom.us/j/1234567890",
-            "developer_email": "developer@example.com"
+                "developer_id": +data?.select_candidate?.value,
+                "attendees": "attendee1@example.com, attendee2@example.com",
+                "event_platform": data?.meeting_platform?.label,
+                "event_type": data?.meeting_type,
+                "event_date": data?.meeting_date,
+                "event_time": data?.meeting_start_time,
+                "event_end_time": data?.meeting_end_time,
+                "time_zone": data?.time_zone?.label,
+                "candidate_reminder": data?.candidate_reminder,
+                "attendees_reminder": data?.interviewer_reminder,
+                "type": "meeting",
+                "event_link": meetingLink,
+                "developer_email": data?.select_candidate?.label
+                // "attendees": "attendee1@example.com, attendee2@example.com",
+                // "event_platform": "Zoom",
+                // "event_type": "scheduled",
+                // "event_date": "2024-07-25",
+                // "event_time": "10:00:00",
+                // "event_end_time": "11:00:00",
+                // "event_duration": "1h",
+                // "time_zone": "UTC",
+                // "candidate_reminder": true,
+                // "attendees_reminder": true,
+                // "type": "meeting",
+                // "event_link": "https://zoom.us/j/1234567890",
+                // "developer_email": "developer@example.com"
             }
             dispatch(postScheduleMeeting(payload, () => {
                 dispatch(getAllEvents())
@@ -196,69 +197,71 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
 
     };
 
-    let r=watch("meeting_platform")
-  useEffect(()=>{
-  
-    setThirdParty(r?.value=="google_meet"?true:false)
-  },[r])
+    let r = watch("meeting_platform")
+    useEffect(() => {
 
-  const handleCloseThirdPary=()=>{
-    setThirdParty(false)
-  }
+        setThirdParty(r?.value == "google_meet" ? true : false)
+    }, [r])
 
-  const generateRequestId = () => {
-    return `request_${new Date().getTime()}_${Math.floor(Math.random() * 1000)}`;
-};
-
-  const syncCreatedMeetingsWithGoogle = (e) => {
-    let summary = watch("title");
-    console.log(summary, "sum");
-    
-
-    e.stopPropagation();
-    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        console.log('User not authenticated');
-        return;
+    const handleCloseThirdPary = () => {
+        setThirdParty(false)
     }
 
-    const newEvent = {
-        'summary': summary || "Untitled Meeting",
-        'location': "jkk",
-        'description': "mmmm",
-        'start': {
-            'dateTime': "2024-08-26T16:50:00",
-            'timeZone': 'America/Los_Angeles',
-        },
-        'end': {
-            'dateTime': "2024-08-29T16:50:00",
-            'timeZone': 'America/Los_Angeles',
-        },
-        'conferenceData': {
-            'createRequest': {
-                'requestId': generateRequestId(), // A unique string identifying this request. Use a unique value for each new event.
-                'conferenceSolutionKey': {
-                    'type': "hangoutsMeet" // Use Google Meet
-                },
-            }
-        }
+    const generateRequestId = () => {
+        return `request_${new Date().getTime()}_${Math.floor(Math.random() * 1000)}`;
     };
 
-    gapi.client.calendar.events.insert({
-        'calendarId': 'primary',
-        'resource': newEvent,
-        'conferenceDataVersion': 1, // Required to create Google Meet link
-    }).then((response) => {
-        console.log('Event created:', response.result);
-        if (response.result.hangoutLink) {
-            console.log('Google Meet link:', response.result.hangoutLink);
-            setMeetingLink(response.result.hangoutLink)
-        }
-    }).catch((error) => {
-        console.error('Error creating event:', error);
-    });
-};
+    const syncCreatedMeetingsWithGoogle = (e) => {
+        let summary = watch("title");
 
-  
+        console.log(summary, "sum");
+
+
+        e.stopPropagation();
+        if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+            console.log('User not authenticated');
+            return;
+        }
+
+        const newEvent = {
+            'summary': summary || "Untitled Meeting",
+            'location': "jkk",
+            'description': "mmmm",
+            'start': {
+                'dateTime': "2024-08-26T16:50:00",
+                'timeZone': 'America/Los_Angeles',
+            },
+            'end': {
+                'dateTime': "2024-08-29T16:50:00",
+                'timeZone': 'America/Los_Angeles',
+            },
+            'conferenceData': {
+                'createRequest': {
+                    'requestId': generateRequestId(), // A unique string identifying this request. Use a unique value for each new event.
+                    'conferenceSolutionKey': {
+                        'type': "hangoutsMeet" // Use Google Meet
+                    },
+                }
+            }
+        };
+
+        gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': newEvent,
+            'conferenceDataVersion': 1, // Required to create Google Meet link
+        }).then((response) => {
+            console.log('Event created:', response.result);
+            if (response.result.hangoutLink) {
+                console.log('Google Meet link:', response.result.hangoutLink);
+                setMeetingLink(response.result.hangoutLink)
+            }
+        }).catch((error) => {
+            console.error('Error creating event:', error);
+        });
+        setThirdParty(false)
+    };
+
+
 
     return (
         <>
@@ -325,7 +328,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                         <p>{errors?.select_candidate?.message}</p>
                                     </div>
                                 </Col> */}
-                              
+
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
                                 </Col>
@@ -484,7 +487,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                     </form>
                 </Modal.Body>
             </Modal>
-            <ThirdPartyServices show={thirdParty} handleClose={handleCloseThirdPary} text={"Link With Google"} syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle} meetingLink={meetingLink}/>
+            <ThirdPartyServices show={thirdParty} handleClose={handleCloseThirdPary} text={"Link With Google"} syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle} meetingLink={meetingLink} />
         </>
     )
 }

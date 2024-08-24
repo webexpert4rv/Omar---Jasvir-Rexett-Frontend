@@ -37,21 +37,20 @@ const ClientStep1 = ({
   isProfileSectionRequired,
   isEditMode,
   skillOptions,
-  stepData,
-  countryCode
+  stepData
 }) => {
   const { t } = useTranslation();
-  console.log(countryCode,"countryCode")
-  console.log(type,"typeClientStep1")
+  
+  console.log(stepFields,"fieldname")
   let isStillWorking=watch("is_still_working")
-  console.log(stepFields,"stepFields")
+  console.log(skillOptions,"skillOptions")
   // let isStillWorking=true
   return (
     <>
       <Row>
         <Col md={12}>
          { <StepperHeadingSection activeStep={activeStep} type = {type} nestedActiveStep={nestedActiveStep}/>}
-          <p className="font-12 fw-medium">* includes a required field</p>
+          <p className="font-12 req-text fw-medium">* includes a required field</p>
           <div className="d-flex align-items-start gap-3">
             {isProfileSectionRequired && (
               <CommonProfilePictureSection
@@ -150,14 +149,15 @@ const ClientStep1 = ({
                               rules={{ ...rules }}
                               error={errors?.[fieldName]}
                               type={type}
-                              options={companyTypeOptions ? companyTypeOptions:skillOptions && label=="Skill" ? skillOptions: fieldName=="time_zone"? skillOptions :options}//get options
+                              options={companyTypeOptions ? companyTypeOptions:skillOptions && label=="Skill" ?skillOptions: fieldName=="time_zone"? skillOptions :options}//get options
                               defaultOption={defaultOption}
                               placeholder={placeholder}
                               isMaxRequired={isMaxRequired}
                               disabled={isStillWorking}
                               isMinRequired={isMinRequired}
                               readOnly={readOnly ? true : false}
-                              />
+                              watch={watch}
+                             />
                           ): <UploadFile 
                           label={label}
                           placeholder={placeholder}
@@ -173,7 +173,6 @@ const ClientStep1 = ({
                           errors={errors}
                           stepData={stepData}
                           />}
-
                         </div>
                       )}
                     
@@ -189,3 +188,4 @@ const ClientStep1 = ({
 };
 
 export default ClientStep1;
+
