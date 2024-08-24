@@ -26,6 +26,7 @@ import {
     getSuggestedDeveloper,
     publishedPost,
     singleJobPostData,
+    approveFeedback,
 } from "../../../redux/slices/clientDataSlice";
 
 import { jobPostConfirmMessage } from "../../../helper/utlis";
@@ -62,6 +63,7 @@ import Schedulemeeting from "../Modals/ScheduleMeeting";
 import sowIcon from '../../../assets/img/sow-icon.png';
 import ndaIcon from '../../../assets/img/nda-icon.png';
 import SingleDetailForm from "./SingleDetailForm";
+import FeedbackPopup from './FeedbackPopup';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -438,6 +440,21 @@ const SingleJobDetails = () => {
 
         pdf.save('statement_of_work.pdf');
     };
+    const [expandedInterviewId, setExpandedInterviewId] = useState(null);
+
+    // Toggle expand/collapse for an interview
+    const handleToggleExpand = (id) => {
+        setExpandedInterviewId(expandedInterviewId === id ? null : id);
+    };
+
+    const [showDetails, setShowDetails] = useState({});
+
+    const handleToggleDetails = (interviewId) => {
+        setShowDetails((prevState) => ({
+            ...prevState,
+            [interviewId]: !prevState[interviewId]
+        }));
+    };
 
     const handleFeedbackClick = (interviewId) => {
         navigate('/client/interview-feedback', {
@@ -450,6 +467,20 @@ const SingleJobDetails = () => {
             state: { interviewId },
         });
     };
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedInterviewId, setSelectedInterviewId] = useState(null);
+
+    const handleApproveFeedback = (interviewId) => {
+        setSelectedInterviewId(interviewId);
+        setShowPopup(true);
+    };
+
+    const closePopup = () => {
+        setShowPopup(false);
+        setSelectedInterviewId(null);
+    };
+
+  
     console.log(singleJobDescription?.job_applications?.interviews, 'singleJobDescription')
     return (
         <>
@@ -817,39 +848,54 @@ const SingleJobDetails = () => {
                                                     <p className="interview-title mb-2">
                                                         Interview Call for {singleJobDescription.title}
                                                     </p>
-                                                    <p className="dev-name mb-2 font-14">
+                                                    <div className="dev-name mb-2 font-14 d-flex align-items-center">
                                                         <div className="me-1">
                                                             <img src={item.developer.profile_picture} alt={item.developer.name} />
                                                         </div>
                                                         {item.developer.name}
-                                                    </p>
+                                                    </div>
                                                     <div>
                                                         <span className="associate-text">
                                                             <span className="associate">
-                                                                {item.interview.meeting_date}, {item.interview.meeting_time} - {item.interview.meeting_end_time}
+                                                                Date: {item.interview.meeting_date}, Time: {item.interview.meeting_time} - {item.interview.meeting_end_time}
                                                             </span>
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="mb-2 status-interview">
-                                                <span className={`status-${item.interview.status.toLowerCase()}`}>
-                                                    {item.interview.status
-                                                        .toLowerCase()
-                                                        .split(' ')
-                                                        .map(word => word === 'complete' ? 'Complete' : word.charAt(0).toUpperCase() + word.slice(1))
-                                                        .join(' ')}
-                                                </span>
+                                                    <span className={`status-${item.interview.status.toLowerCase()}`}>
+                                                        {item.interview.status
+                                                            .toLowerCase()
+                                                            .split(' ')
+                                                            .map(word => word === 'complete' ? 'Complete' : word.charAt(0).toUpperCase() + word.slice(1))
+                                                            .join(' ')}
+                                                    </span>
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-between">
                                                     <div></div>
                                                     <div className="d-flex align-items-center gap-2">
-                                                        {item.interview.status == 'completed' && (
-                                                            <button
-                                                                onClick={() => handleFeedbackClick(item.interview.id)}
-                                                                className="main-btn font-14 text-decoration-none"
-                                                            >
-                                                                Share Feedback
-                                                            </button>
+                                                        {item.interview.status === 'completed' && (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleFeedbackClick(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Share Feedback
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => handleApproveFeedback(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Publish Feedback
+                                                                </button>
+                                                                <Button
+                                                                    onClick={() => handleToggleDetails(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                </Button>
+                                                            </>
                                                         )}
                                                         {item.interview.status === 'selected' && (
                                                             <>
@@ -865,18 +911,55 @@ const SingleJobDetails = () => {
                                                                 >
                                                                     Move to offer
                                                                 </Button>
+                                                                <Button
+                                                                    onClick={() => handleToggleDetails(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                </Button>
                                                             </>
                                                         )}
                                                         {item.interview.status === 'rejected' && (
-                                                            <button
-                                                                onClick={() => handleInterviewReport(item.interview.id)}
-                                                                className="main-btn font-14 text-decoration-none"
-                                                            >
-                                                                Interview Report
-                                                            </button>
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleInterviewReport(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Interview Report
+                                                                </button>
+                                                                <Button
+                                                                    onClick={() => handleToggleDetails(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                </Button>
+                                                            </>
                                                         )}
                                                     </div>
                                                 </div>
+                                                {showDetails[item.interview.id] && (
+                                                    <div className="feedback-details mt-3">
+                                                        {item.interview.shareFeedbacks.map((feedback, fbIndex) => (
+                                                            <div key={fbIndex} className="feedback">
+                                                                <p><strong>Feedback by:</strong> {feedback.feedback_given_by.name} ({feedback.feedback_given_by.email})</p>
+                                                                <p><strong>Feedback Type:</strong> {feedback.feedback_type}</p>
+                                                                <p><strong>Feedback Text:</strong> {feedback.feedback_text}</p>
+                                                                <p><strong>Interviewer Decision:</strong> {feedback.interviewer_decision}</p>
+                                                                <p><strong>Candidate Rating:</strong> {feedback.candidates_rating}</p>
+                                                                <p><strong>Skill Ratings:</strong></p>
+                                                                <ul>
+                                                                    {feedback.skillRatings.map((rating, ratingIndex) => (
+                                                                        <li key={ratingIndex}>
+                                                                            {rating.skill_name}: {rating.rating}
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </div>
                                         </Col>
                                     ))}
@@ -1588,6 +1671,13 @@ const SingleJobDetails = () => {
             />
             {showMeetingInfo?.isMeeting ? <MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails} /> : ""}
             <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
+            {showPopup && (
+                <FeedbackPopup
+                interviewId={selectedInterviewId}
+                showPopup={showPopup}
+                closePopup={closePopup}
+                />
+            )}
         </>
     );
 };
