@@ -60,7 +60,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const {chatRoomMessageList}=useSelector((state)=>state.developerData)
   const user_id = localStorage.getItem("userId")
 
-  
   useEffect(()=>{
 
     socket.on("connect", () => {
