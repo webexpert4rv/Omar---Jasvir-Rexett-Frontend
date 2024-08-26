@@ -2895,7 +2895,16 @@ input[type="radio"]:checked {
     border-bottom: none !important;
 }
 
-.status-finished {
+.status-completed {
+    font-size: 13px;
+    border-radius: 30px;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #d1fff8 !important;
+    color: #037563 !important;
+}
+
+.status-selected {
     font-size: 13px;
     border-radius: 30px;
     padding: 5px 17px !important;
@@ -8722,7 +8731,7 @@ select.apply-field
 {
     font-size: 10px;
 }
-.preview-resume-form .status-finished
+.preview-resume-form .status-completed
 {
     font-size: 10px;
     padding: 1px 12px;

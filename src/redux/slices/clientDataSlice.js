@@ -8,7 +8,6 @@ import { VERIFY_USER_MESSAGE } from "../../pages/websiteRegisterForm/client/cons
 import { setSuccessActionData } from "./developerDataSlice";
 
 const initialClientData = {
-
   jobId: null,
   screenLoader: false,
   approvedLoader: false,
@@ -44,134 +43,129 @@ const initialClientData = {
   jobList: [],
   clientProfileData: {},
   timeZoneList: [],
-  degreeList:[]
+  degreeList: [],
+  interviewDetails: {},
+  feedbackDetails: {},
+  feedbackApproval: {},
+  approveFeedbackLoader: false,
 };
+
 export const clientDataSlice = createSlice({
   name: 'clientData',
   initialState: initialClientData,
   reducers: {
-
-    setScreenLoader: (state, action) => {
+    setScreenLoader: (state) => {
       state.screenLoader = true;
     },
-    setSmallLoader: (state, action) => {
+    setSmallLoader: (state) => {
       state.smallLoader = true;
     },
-    setApprovedLoader: (state, action) => {
+    setFeedbackApproval: (state, action) => {
+      state.feedbackApproval = action.payload;
+      state.smallLoader = false;
+      state.screenLoader = false;
+    },
+    setApprovedLoader: (state) => {
       state.approvedLoader = true;
     },
-    closeApprovedLoader: (state, action) => {
+    closeApprovedLoader: (state) => {
       state.approvedLoader = false;
     },
-
     setAssignDeveloperList: (state, action) => {
-      state.assignedDeveloperList = action.payload
+      state.assignedDeveloperList = action.payload;
       state.screenLoader = false;
     },
-
     setClientLook: (state, action) => {
-      state.clientLook = action.payload
+      state.clientLook = action.payload;
       state.screenLoader = false;
     },
-
     setWebClientData: (state, action) => {
-      state.webClientData = action.payload
+      state.webClientData = action.payload;
       state.screenLoader = false;
     },
-
-    setFailClientData: (state, action) => {
+    setFailClientData: (state) => {
       state.smallLoader = false;
       state.approvedLoader = false;
       state.screenLoader = false;
-      state.OtpLoader = false
+      state.OtpLoader = false;
     },
-
-    setActionSuccessFully: (state, action) => {
+    setActionSuccessFully: (state) => {
       state.smallLoader = false;
       state.approvedLoader = false;
       state.screenLoader = false;
-      state.OtpLoader = false
+      state.OtpLoader = false;
     },
-
     setClientProfileDetails: (state, action) => {
       state.clientProfileDetails = action.payload;
       state.screenLoader = false;
     },
-
     setTimeReporting: (state, action) => {
-      let data = {
+      const data = {
         totalPages: action.payload.totalPages,
         totalRecords: action.payload.totalRecords
-      }
-      state.timeReportingPage = data
-      state.timeReportingData = action.payload.data
+      };
+      state.timeReportingPage = data;
+      state.timeReportingData = action.payload.data;
       state.smallLoader = false;
       state.screenLoader = false;
-
-
     },
     setFolderData: (state, action) => {
-      let comibedFile = [...action.payload.files, ...action.payload.shared_files]
-      state.folderData = comibedFile;
+      const combinedFile = [...action.payload.files, ...action.payload.shared_files];
+      state.folderData = combinedFile;
       state.screenLoader = false;
     },
     setJobCategory: (state, action) => {
-      let newData = action.payload.map((item) => { return { label: item.title, value: item.id } })
-      state.jobCategoryList = newData
+      const newData = action.payload.map(item => ({ label: item.title, value: item.id }));
+      state.jobCategoryList = newData;
     },
     setSkillList: (state, action) => {
-      state.skillList = action.payload
+      state.skillList = action.payload;
     },
     setAllJobPostedList: (state, action) => {
-      state.allJobPostedList = action.payload
+      state.allJobPostedList = action.payload;
       state.screenLoader = false;
     },
     setJobPostedData: (state, action) => {
-      state.jobPostedData = action.payload
+      state.jobPostedData = action.payload;
       state.screenLoader = false;
     },
     setEarnedBackData: (state, action) => {
-      state.earnedBack = action.payload
+      state.earnedBack = action.payload;
       state.screenLoader = false;
     },
-    // setCurrentJobStatusChnage:(state,action)=>{
-    //     console.log(state.allJobPostedList,"llll")
-    //    let d= state.allJobPostedList[action?.tab].filter(item=>item.id!==action.id)
-    //    console.log(d,"ppp")
-    // }
     setDeveloperDetails: (state, action) => {
-      state.developerDetails = action.payload
+      state.developerDetails = action.payload;
       state.screenLoader = false;
     },
     setFaqs: (state, action) => {
-      state.faqsData = action.payload
+      state.faqsData = action.payload;
       state.screenLoader = false;
     },
     setInvoiceList: (state, action) => {
       state.invoiceList = action.payload.data;
       state.screenLoader = false;
-      state.totalInvoicePages = action.payload.pagination.totalPages
+      state.totalInvoicePages = action.payload.pagination.totalPages;
     },
     setLeaveClientHistory: (state, action) => {
-      state.clientLeaveHistory = action.payload
+      state.clientLeaveHistory = action.payload;
       state.screenLoader = false;
     },
     setReconciliationsData: (state, action) => {
-      state.reconciliationsData = action.payload
+      state.reconciliationsData = action.payload;
     },
     setClientHolidayList: (state, action) => {
-      state.clientHolidayList = action.payload
-      state.screenLoader = false
+      state.clientHolidayList = action.payload;
+      state.screenLoader = false;
     },
     setAddHoliday: (state, action) => {
-      state.addHoliday = action.payload
-      state.smallLoader = false
+      state.addHoliday = action.payload;
+      state.smallLoader = false;
     },
     setApproveDisapprove: (state, action) => {
-      state.approveDisapprove = action.payload
+      state.approveDisapprove = action.payload;
     },
-    setSuggstedDeveloper: (state, action) => {
-      state.smallLoader = false
+    setSuggstedDeveloper: (state) => {
+      state.smallLoader = false;
     },
     setTimeZones: (state, action) => {
       state.timeZones = action.payload;
@@ -179,7 +173,6 @@ export const clientDataSlice = createSlice({
     },
     setListTimeZone: (state, action) => {
       state.timeZoneList = action.payload;
-      console.log(action.payload, "----------------------------")
       state.screenLoader = false;
     },
     setCountriesList: (state, action) => {
@@ -194,7 +187,7 @@ export const clientDataSlice = createSlice({
       state.citiesList = action.payload;
       state.screenLoader = false;
     },
-    setOTPloader: (state, action) => {
+    setOTPloader: (state) => {
       state.OtpLoader = true;
     },
     setJobList: (state, action) => {
@@ -206,21 +199,90 @@ export const clientDataSlice = createSlice({
       state.screenLoader = false;
     },
     setDegreeList: (state, action) => {
-      let data = action?.payload?.map((item) => {
-        return { label: item.title, value: item.id };
-      });
-      console.log(data,"daataa")
+      const data = action.payload.map(item => ({ label: item.title, value: item.id }));
       state.degreeList = data;
     },
-
+    setInterviewDetails: (state, action) => {
+      state.interviewDetails = action.payload;
+      state.screenLoader = false;
+    },
+    clearInterviewDetails: (state) => {
+      state.interviewDetails = null;
+    },
+    setFailInterviewDetails: (state) => {
+      state.interviewDetails = null;
+      state.screenLoader = false;
+    },
+    setFeedbackDetails: (state, action) => {
+      state.feedbackDetails = action.payload;
+      state.screenLoader = false;
+    },
+    clearFeedbackDetails: (state) => {
+      state.feedbackDetails = null;
+    },
+    setFailFeedbackDetails: (state) => {
+      state.feedbackDetails = null;
+      state.screenLoader = false;
+    },
+    setApproveFeedbackLoader: (state, action) => { 
+      state.approveFeedbackLoader = action.payload;
+      state.smallLoader = false;
+    },
+    setApproveFeedback: (state) => { 
+      state.smallLoader = false;
+      state.approveFeedbackLoader = false;
+    },
   }
-})
-
+});
 
 export default clientDataSlice.reducer;
 
-
-export const { setOTPloader, setJobList, setListTimeZone,setDegreeList, setStatesList, setCountriesList, setCitiesList, setClientLook, setWebClientData, setTimeZones, setInvoiceList, setAllJobPostedList, setClientHolidayList, closeApprovedLoader, setSuggstedDeveloper, setAddHoliday, setApproveDisapprove, setReconciliationsData, setFaqs, setLeaveClientHistory, setScreenLoader, setDeveloperDetails, setJobPostedData, setApprovedLoader, setEarnedBackData, setFailClientData, setAssignDeveloperList, setFolderData, setSmallLoader, setJobCategory, setSkillList, setActionSuccessFully, setTimeReporting, setClientProfileDetails, setJobId, setClientProfileData } = clientDataSlice.actions
+export const { 
+  setOTPloader, 
+  setJobList, 
+  setListTimeZone,
+  setDegreeList, 
+  setStatesList, 
+  setCountriesList, 
+  setCitiesList, 
+  setClientLook, 
+  setWebClientData, 
+  setTimeZones, 
+  setInvoiceList, 
+  setAllJobPostedList, 
+  setClientHolidayList, 
+  closeApprovedLoader, 
+  setSuggstedDeveloper, 
+  setAddHoliday, 
+  setApproveDisapprove, 
+  setReconciliationsData, 
+  setFaqs, 
+  setLeaveClientHistory, 
+  setScreenLoader, 
+  setDeveloperDetails, 
+  setJobPostedData, 
+  setApprovedLoader, 
+  setEarnedBackData, 
+  setFailClientData, 
+  setAssignDeveloperList, 
+  setFolderData, 
+  setSmallLoader, 
+  setJobCategory, 
+  setSkillList, 
+  setActionSuccessFully, 
+  setTimeReporting, 
+  setClientProfileDetails, 
+  setClientProfileData, 
+  setInterviewDetails,
+  clearInterviewDetails,
+  setFailInterviewDetails,
+  setFeedbackDetails, 
+  clearFeedbackDetails, 
+  setFailFeedbackDetails, 
+  setFeedbackApproval,
+  setApproveFeedbackLoader,
+  setApproveFeedback,
+} = clientDataSlice.actions;
 
 
 export function developerAssignList(payload) {
@@ -565,6 +627,20 @@ export function getShortListInterview(payload) {
       const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
+    }
+  };
+}
+
+export function getInterviewDetails(interviewId) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`common/interview/${interviewId}`);
+      dispatch(setInterviewDetails(result.data));
+    } catch (error) {
+      const message = error?.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailInterviewDetails());
     }
   };
 }
@@ -1347,3 +1423,49 @@ export function clientRegistration(payload, callback) {
   };
 }
 
+export function getAverageFeedbackDetails(interviewId) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      let result = await clientInstance.get(`common/average-skill-ratings/${interviewId}`);
+      dispatch(setFeedbackDetails(result.data));
+    } catch (error) {
+      const message = error?.message || "Something went wrong";
+      console.error("Error fetching feedback details:", message);
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailFeedbackDetails());
+    }
+  };
+}
+
+export function submitFeedback(feedbackData) {
+  return async (dispatch) => {
+    dispatch(setScreenLoader());
+    try {
+      await clientInstance.post('common/share-feedback', feedbackData);
+      toast.success("Feedback submitted successfully!", { position: "top-center" });
+    } catch (error) {
+      const message = error?.response?.data?.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+    } finally {
+      dispatch(clearFeedbackDetails());
+    }
+  };
+}
+export const approveFeedback = (id, status) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setApproveFeedbackLoader(true));
+      const response = await clientInstance.put(`admin/interview/update-status/${id}`, { status });
+      if (response.data.success) {
+        dispatch(setApproveFeedback(response.data));
+      } else {
+        dispatch(setFailClientData());
+      }
+    } catch (error) {
+      dispatch(setFailClientData());
+    } finally {
+      dispatch(setApproveFeedbackLoader(false));
+    }
+  };
+};

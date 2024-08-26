@@ -26,6 +26,7 @@ import {
     getSuggestedDeveloper,
     publishedPost,
     singleJobPostData,
+    approveFeedback,
 } from "../../../redux/slices/clientDataSlice";
 
 import { jobPostConfirmMessage } from "../../../helper/utlis";
@@ -62,6 +63,7 @@ import Schedulemeeting from "../Modals/ScheduleMeeting";
 import sowIcon from '../../../assets/img/sow-icon.png';
 import ndaIcon from '../../../assets/img/nda-icon.png';
 import SingleDetailForm from "./SingleDetailForm";
+import FeedbackPopup from './FeedbackPopup';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -380,12 +382,21 @@ const SingleJobDetails = () => {
     const handleChange = (content) => {
         setValue(content);
     };
+    const needToSchedule = singleJobDescription?.job_applications?.interviews?.need_to_schedule || [];
+    const completedInterview = singleJobDescription?.job_applications?.interviews?.interview_completed || [];
+    const scheduledInterviews = singleJobDescription?.job_applications?.interviews?.scheduled_interviews || [];
+    const interviewsCount = singleJobDescription?.job_applications?.interviews_count || 0;
+    const shortlistedCount = singleJobDescription?.job_applications?.shortlisted_count || 0;
+    const suggestionsCount = singleJobDescription?.job_applications?.suggestion_count || 0;
+    const offeredCount = singleJobDescription?.job_applications?.offered_count || 0;
+    const hiredCount = singleJobDescription?.job_applications?.hired_count || 0;
 
-    let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> 4</div></div>;
-    let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1"><span className="stage-icon"><FaClipboardUser /></span> 1</div></div>;
-    let interview = <div>Interviews <div className="stage-indicator ms-1 stage-interview gap-1"><span className="stage-icon"><PiChatsFill /></span> 2</div></div>;
-    let offered = <div>Offered <div className="stage-indicator ms-1 stage-offer gap-1"><span className="stage-icon"><FaHandshake /></span> 0</div></div>;
-    let hired = <div>Hired <div className="stage-indicator ms-1 stage-hired gap-1"><span className="stage-icon"><MdWorkHistory /></span> 0</div></div>;
+    let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> {suggestionsCount}</div></div>;
+    let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1">
+        <span className="stage-icon"><FaClipboardUser /></span>{shortlistedCount}</div></div>;
+    let interview = <div>Interviews <div className="stage-indicator ms-1 stage-interview gap-1"><span className="stage-icon"><PiChatsFill /></span>{interviewsCount} </div></div>;
+    let offered = <div>Offered <div className="stage-indicator ms-1 stage-offer gap-1"><span className="stage-icon"><FaHandshake /></span> {offeredCount}</div></div>;
+    let hired = <div>Hired <div className="stage-indicator ms-1 stage-hired gap-1"><span className="stage-icon"><MdWorkHistory /></span> {hiredCount}</div></div>;
     const scheduleInterview = (
         <Tooltip>Move to interview</Tooltip>
     )
@@ -429,7 +440,48 @@ const SingleJobDetails = () => {
 
         pdf.save('statement_of_work.pdf');
     };
+    const [expandedInterviewId, setExpandedInterviewId] = useState(null);
 
+    // Toggle expand/collapse for an interview
+    const handleToggleExpand = (id) => {
+        setExpandedInterviewId(expandedInterviewId === id ? null : id);
+    };
+
+    const [showDetails, setShowDetails] = useState({});
+
+    const handleToggleDetails = (interviewId) => {
+        setShowDetails((prevState) => ({
+            ...prevState,
+            [interviewId]: !prevState[interviewId]
+        }));
+    };
+
+    const handleFeedbackClick = (interviewId) => {
+        navigate('/client/interview-feedback', {
+            state: { interviewId },
+        });
+    };
+
+    const handleInterviewReport = (interviewId) => {
+        navigate('/client/interview-detail', {
+            state: { interviewId },
+        });
+    };
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedInterviewId, setSelectedInterviewId] = useState(null);
+
+    const handleApproveFeedback = (interviewId) => {
+        setSelectedInterviewId(interviewId);
+        setShowPopup(true);
+    };
+
+    const closePopup = () => {
+        setShowPopup(false);
+        setSelectedInterviewId(null);
+    };
+
+  
+    console.log(singleJobDescription?.job_applications?.interviews, 'singleJobDescription')
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -785,197 +837,232 @@ const SingleJobDetails = () => {
 
                     </Tab>
                     <Tab eventKey="interviewing" title={interview}>
-                        <div>
-                            <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
-                            <Row>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
-                                                </div>
-                                                Rohit Sharma
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-finished">Completed</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                            </div>
-                                            <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/client/interview-feedback'} className="main-btn font-14 text-decoration-none">Share Feedback</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
-                                                </div>
-                                                Rohit Sharma
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-finished">Selected</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                            </div>
-                                            <div className="d-flex align-items-center gap-2 mt-2">
-                                                <Link to={'/client/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
-                                                <Button variant="transparent" className="outline-main-btn font-14">Move to offer</Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
-                                <Col lg={4}>
-                                    <div className="interview-wrapper position-relative mb-3 pt-4">
-                                        <div>
-                                            <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-                                            <p className="dev-name mb-2 font-14">
-                                                <div className="me-1">
-                                                    <img src={devImg} />
-                                                </div>
-                                                Rohit Sharma
-                                            </p>
-                                            <div>
-                                                <span className="associate-text">
-                                                    <span className="associate">Tuesday 22-06-24, 22:00 - 23:00</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="mb-2 status-interview">
-                                            <span className="status-rejected">Rejected</span>
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                            </div>
-                                            <div className="d-flex align-items-center gap-2">
-                                                <Link to={'/client/interview-detail'} className="main-btn font-14 text-decoration-none">Interview Report</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </div>
-
-                        <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
-                        <div className="interview-scheduled pt-2 mb-3">
-                            <Row>
-                                {singleJobDescription?.job_applications?.interviews?.scheduled_interviews?.map((item) => {
-                                    return (
-                                        <>
-                                            <Col lg={4}>
-                                                <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} item={item} />
-                                            </Col>
-                                        </>
-                                    )
-                                })}
-                                {/* <Col lg={4}><InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} /></Col> */}
-
-
-                            </Row>
-                        </div>
-
-                        <Tab.Container defaultActiveKey={'list-view'}>
-                            <div className="mb-4 d-flex justify-content-between align-items-center">
-                                {role !== "developer" && <h5 className="font-22 mb-0 fw-bold">Need to schedule</h5>}
-                                <Nav variant="pills" className="document-view-pill">
-                                    <Nav.Item className="document-view-item">
-                                        <Nav.Link
-                                            className="document-view-link"
-                                            eventKey="list-view"
-                                        >
-                                            <FaListUl />
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item className="document-view-item">
-                                        <Nav.Link
-                                            className="document-view-link"
-                                            eventKey="grid-view"
-                                        >
-                                            <IoGrid />
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-                            </div>
-                            <Tab.Content>
-                                <Tab.Pane eventKey="list-view">
-                                    <div>
-                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.interviews?.need_to_schedule} />
-
-                                    </div>
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="grid-view">
-                                    <div className="developers-list mb-4">
-                                        <div className="developer-card p-0">
-                                            <div className="overflow-hidden inner-dev-card">
-                                                <div className="user-imgbx">
-                                                    <img src={devImg} className="user-img" />
-                                                </div>
-                                                <div className="text-center">
-                                                    <h3 className="user-name">John Doe</h3>
-                                                    <div className="text-center mt-2">
-                                                        <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                        {singleJobDescription && (
+                            <div>
+                                <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
+                                <Row>
+                                    {singleJobDescription?.job_applications?.interviews?.interview_completed?.map((item, index) => (
+                                        <Col lg={4} key={index}>
+                                            <div className="interview-wrapper position-relative mb-3 pt-4">
+                                                <div>
+                                                    <p className="interview-title mb-2">
+                                                        Interview Call for {singleJobDescription.title}
+                                                    </p>
+                                                    <div className="dev-name mb-2 font-14 d-flex align-items-center">
+                                                        <div className="me-1">
+                                                            <img src={item.developer.profile_picture} alt={item.developer.name} />
+                                                        </div>
+                                                        {item.developer.name}
                                                     </div>
-                                                    <div className="mb-2">
-                                                        <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                            <FaStar /> 4.4
+                                                    <div>
+                                                        <span className="associate-text">
+                                                            <span className="associate">
+                                                                Date: {item.interview.meeting_date}, Time: {item.interview.meeting_time} - {item.interview.meeting_end_time}
+                                                            </span>
                                                         </span>
                                                     </div>
-                                                    <p className="designation-user">Software Developer</p>
-                                                    <p className="email-user">johndoe123@gmail.com</p>
-                                                    <ul className="social-icons">
-                                                        <li>
-                                                            <Link to="#">
-                                                                <FaGithub />
-                                                            </Link>
-                                                        </li>
-                                                        <li>
-                                                            <Link to="#">
-                                                                <FaLinkedin />
-                                                            </Link>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="job-card-btns">
-                                                        <OverlayTrigger placement="top" overlay={scheduleInterview}>
-                                                            <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
-                                                                <LuMessagesSquare />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                        <OverlayTrigger placement="top" overlay={rejectedApply}>
-                                                            <Button variant="danger">
-                                                                <FaTimes />
-                                                            </Button>
-                                                        </OverlayTrigger>
+                                                </div>
+                                                <div className="mb-2 status-interview">
+                                                    <span className={`status-${item.interview.status.toLowerCase()}`}>
+                                                        {item.interview.status
+                                                            .toLowerCase()
+                                                            .split(' ')
+                                                            .map(word => word === 'complete' ? 'Complete' : word.charAt(0).toUpperCase() + word.slice(1))
+                                                            .join(' ')}
+                                                    </span>
+                                                </div>
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <div></div>
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        {item.interview.status === 'completed' && (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleFeedbackClick(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Share Feedback
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => handleApproveFeedback(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Publish Feedback
+                                                                </button>
+                                                                <Button
+                                                                    onClick={() => handleToggleDetails(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                </Button>
+                                                            </>
+                                                        )}
+                                                        {item.interview.status === 'selected' && (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleInterviewReport(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Interview Report
+                                                                </button>
+                                                                <Button
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    Move to offer
+                                                                </Button>
+                                                                <Button
+                                                                    onClick={() => handleToggleDetails(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                </Button>
+                                                            </>
+                                                        )}
+                                                        {item.interview.status === 'rejected' && (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleInterviewReport(item.interview.id)}
+                                                                    className="main-btn font-14 text-decoration-none"
+                                                                >
+                                                                    Interview Report
+                                                                </button>
+                                                                <Button
+                                                                    onClick={() => handleToggleDetails(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                </Button>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                {showDetails[item.interview.id] && (
+                                                    <div className="feedback-details mt-3">
+                                                        {item.interview.shareFeedbacks.map((feedback, fbIndex) => (
+                                                            <div key={fbIndex} className="feedback">
+                                                                <p><strong>Feedback by:</strong> {feedback.feedback_given_by.name} ({feedback.feedback_given_by.email})</p>
+                                                                <p><strong>Feedback Type:</strong> {feedback.feedback_type}</p>
+                                                                <p><strong>Feedback Text:</strong> {feedback.feedback_text}</p>
+                                                                <p><strong>Interviewer Decision:</strong> {feedback.interviewer_decision}</p>
+                                                                <p><strong>Candidate Rating:</strong> {feedback.candidates_rating}</p>
+                                                                <p><strong>Skill Ratings:</strong></p>
+                                                                <ul>
+                                                                    {feedback.skillRatings.map((rating, ratingIndex) => (
+                                                                        <li key={ratingIndex}>
+                                                                            {rating.skill_name}: {rating.rating}
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </div>
+                        )}
+                        {scheduledInterviews.length > 0 && (
+                            <>
+                                <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
+                                <div className="interview-scheduled pt-2 mb-3">
+                                    <Row>
+                                        {scheduledInterviews.map((item) => (
+                                            <Col lg={4} key={item.id}> {/* Ensure each item has a unique key */}
+                                                <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} item={item} />
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </div>
+                            </>
+                        )}
+                        {needToSchedule.length > 0 && (
+                            <>
+                                <Tab.Container defaultActiveKey={'list-view'}>
+                                    <div className="mb-4 d-flex justify-content-between align-items-center">
+                                        {role !== "developer" && <h5 className="font-22 mb-0 fw-bold">Need to schedule</h5>}
+                                        <Nav variant="pills" className="document-view-pill">
+                                            <Nav.Item className="document-view-item">
+                                                <Nav.Link
+                                                    className="document-view-link"
+                                                    eventKey="list-view"
+                                                >
+                                                    <FaListUl />
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item className="document-view-item">
+                                                <Nav.Link
+                                                    className="document-view-link"
+                                                    eventKey="grid-view"
+                                                >
+                                                    <IoGrid />
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                        </Nav>
+                                    </div>
+                                    <Tab.Content>
+                                        <Tab.Pane eventKey="list-view">
+                                            <div>
+                                                <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.interviews?.need_to_schedule} />
+
+                                            </div>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="grid-view">
+                                            <div className="developers-list mb-4">
+                                                <div className="developer-card p-0">
+                                                    <div className="overflow-hidden inner-dev-card">
+                                                        <div className="user-imgbx">
+                                                            <img src={devImg} className="user-img" />
+                                                        </div>
+                                                        <div className="text-center">
+                                                            <h3 className="user-name">John Doe</h3>
+                                                            <div className="text-center mt-2">
+                                                                <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                                                            </div>
+                                                            <div className="mb-2">
+                                                                <span className="status-upcoming d-inline-flex align-items-center gap-1">
+                                                                    <FaStar /> 4.4
+                                                                </span>
+                                                            </div>
+                                                            <p className="designation-user">Software Developer</p>
+                                                            <p className="email-user">johndoe123@gmail.com</p>
+                                                            <ul className="social-icons">
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaGithub />
+                                                                    </Link>
+                                                                </li>
+                                                                <li>
+                                                                    <Link to="#">
+                                                                        <FaLinkedin />
+                                                                    </Link>
+                                                                </li>
+                                                            </ul>
+                                                            <div className="job-card-btns">
+                                                                <OverlayTrigger placement="top" overlay={scheduleInterview}>
+                                                                    <Button onClick={handleShowScheduleMeeting} className="main-btn py-2 text-black font-15">
+                                                                        <LuMessagesSquare />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger placement="top" overlay={rejectedApply}>
+                                                                    <Button variant="danger">
+                                                                        <FaTimes />
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </Tab.Pane>
-                            </Tab.Content>
-                        </Tab.Container>
+                                        </Tab.Pane>
+                                    </Tab.Content>
+                                </Tab.Container>
+                            </>
+                        )}
                         {/* <JobCard
               handleJobStatusModal={handleJobStatusModal}
               type="Interviewing"
@@ -1584,6 +1671,13 @@ const SingleJobDetails = () => {
             />
             {showMeetingInfo?.isMeeting ? <MeetingInfo show={showMeetingInfo?.isMeeting} handleClose={handleCloseMeetingInfo} details={showMeetingInfo?.meetingDetails} /> : ""}
             <Schedulemeeting show={showScheduleMeeting} handleClose={handleCloseScheduleMeeting} selectedDeveloper={selectedDeveloper} />
+            {showPopup && (
+                <FeedbackPopup
+                interviewId={selectedInterviewId}
+                showPopup={showPopup}
+                closePopup={closePopup}
+                />
+            )}
         </>
     );
 };
