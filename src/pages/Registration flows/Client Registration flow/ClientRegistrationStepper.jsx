@@ -36,7 +36,7 @@ import moment from "moment";
 
 const ClientRegistrationStepper = () => {
   const dispatch = useDispatch();
-  const { smallLoader, screenLoader, timeZoneList, clientJobPostDetails } = useSelector((state) => state?.clientData);
+  const { smallLoader,approvedLoader , screenLoader, timeZoneList, clientJobPostDetails } = useSelector((state) => state?.clientData);
   const [text, setText] = useState("");
   const [details, setDetails] = useState()
   const [activeStep, setActiveStep] = useState(0);
@@ -91,9 +91,7 @@ const ClientRegistrationStepper = () => {
       dispatch(getSkillOptions());
     }
   }, [activeStep]);
-  console.log(job_id, "job_id")
   const user_id = localStorage.getItem("clientId")
-  console.log(user_id, "user_id")
   useEffect(() => {
     if (timeZoneList?.length > 0) {
       let groupedTimeZones = timeZoneList?.map((item) => {
@@ -118,7 +116,6 @@ const ClientRegistrationStepper = () => {
 
     if (user_id) {
       dispatch(getProfile(user_id, (data) => {
-        console.log(data, "data")
         for (let key in data) {
           if (activeStep === 1) {
             if (key === "country_code") {
@@ -158,7 +155,7 @@ const ClientRegistrationStepper = () => {
                 const newValue = { label: step1Data[step1Key], value: step1Data[step1Key] };
                 setValue("time_zone", newValue);
               } else if (step1Key === "response_date") {
-                const responseDate = moment(watch("response_date")).format("YYYY-MM-DD")
+                const responseDate = step1Data[step1Key].slice(0,10)
                 setValue("response_date", responseDate)
               } else {
                 setValue(step1Key, step1Data[step1Key])
@@ -166,7 +163,6 @@ const ClientRegistrationStepper = () => {
             }
           } else if (activeStep === 3) {
             const step2Data = data?.jobs[0]?.step2;
-            console.log(step2Data, "step2Data")
             for (let step2Key in step2Data) {
               if (step2Data?.job_skills) {
                 const skillName = step2Data.job_skills.map(itm => itm.skill_name);
@@ -230,14 +226,11 @@ const ClientRegistrationStepper = () => {
   };
 
   const jobStepData = watch();
-  console.log(jobStepData, "jobStepData")
-  console.log(clientJobPostDetails?.id, "job_id")
   const callJobStep1API = () => {
 
     if (activeStep == 2) {
       let payload;
       if (job_id) {
-        console.log("jobIdHere")
         payload = {
           step: 1,
           title: jobStepData?.title,
@@ -250,7 +243,6 @@ const ClientRegistrationStepper = () => {
         }
         dispatch(updateClientPost(user_id, job_id, payload, handleAfterApiSuccess))
       } else {
-        console.log("NoJobId")
         payload = {
           step: 1,
           title: jobStepData?.title,
@@ -261,7 +253,7 @@ const ClientRegistrationStepper = () => {
           response_date: jobStepData?.response_date,
           time_zone: jobStepData?.time_zone?.label
         }
-        dispatch(clientJobPost(payload, activeStep, user_id, handleAfterApiSuccess))
+        dispatch(clientJobPost(payload, activeStep,user_id, handleAfterApiSuccess))
       }
     }
   }
@@ -270,7 +262,6 @@ const ClientRegistrationStepper = () => {
     skill_name: skill?.title?.label,
     weight: skill?.level?.label,
   }));
-  console.log(jobSkills, "jobSkills")
 
   const screeningQuestions = jobStepData?.screening_questions?.map(ques => (
     {
@@ -309,8 +300,6 @@ const ClientRegistrationStepper = () => {
 
     }
   }
-
-  console.log(groupedTime, "groupedTime")
 
   const increaseStepCount = () => {
     if (activeStep === 4) {
@@ -414,7 +403,6 @@ const ClientRegistrationStepper = () => {
   const handleProceed = () => {
     const stepData = watch();
     let fileData = new FormData();
-    console.log(imageFile, "imageFile")
     fileData.append("file", imageFile?.profile_picture)
     setShowSetUpJobModal(false);
     dispatch(uploadFileToS3Bucket(fileData, (url) => {
@@ -444,7 +432,8 @@ const ClientRegistrationStepper = () => {
   };
   return (
     <>
-      {screenLoader ? <ScreenLoader /> : <div>
+      {/* {screenLoader ? <ScreenLoader /> : */}
+       <div>
         {activeStep === 0 ? (
           <RegistrationType handleRegistrationType={handleRegistrationType} />
         ) : (
@@ -483,7 +472,8 @@ const ClientRegistrationStepper = () => {
             </div>
           </section>
         )}
-      </div>}
+      </div>
+      {/* } */}
       {showSetUpModal ? <SetUpJobModal
         show={showSetUpModal}
         handleClose={handleToggleSetupModal}
@@ -492,7 +482,8 @@ const ClientRegistrationStepper = () => {
         smallLoader={smallLoader}
         modalData={MODAL_INFORMATION[activeStep]}
         activeStep={activeStep}
-      /> : ""}
+      />
+       : ""}
       {/* <ThankRegister
         show={false}
         handleClose={handleCloseThanksRegister}

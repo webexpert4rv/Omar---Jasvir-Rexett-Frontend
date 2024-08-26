@@ -127,13 +127,13 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     setIsEditorFocused(false);
   };
 
-  const handleMessageChange = (value, name) => {
-    console.log(value, "fff");
+  const handleMessageChange = (e, name) => {
+    const newValue = e;
     if (name == "msg") {
-      setValuemessga(value);
-      setHasContent(value.trim().length > 0);
+      setValuemessga(newValue);
+      setHasContent(newValue.trim().length > 0);
     } else {
-      setMessageTitle(value.target.value);
+      setMessageTitle(newValue.target.value);
     }
   };
 
@@ -373,7 +373,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
               <div>
                 <Form.Control
                   type="text"
-                  value={messageTitle}
+                  // value={messageTitle}
                   className="common-field font-14 mb-2"
                   placeholder="Enter new subject"
                   onChange={(e) => handleMessageChange(e, "title")}
@@ -385,7 +385,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     }`}
                 >
                   <ReactQuill
-                    value={valuemessga}
+                    // value={valuemessga}
                     onChange={(e) => handleMessageChange(e, "msg")}
                   />
                 </div>

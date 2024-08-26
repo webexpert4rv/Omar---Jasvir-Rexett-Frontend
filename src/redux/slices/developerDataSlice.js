@@ -1304,22 +1304,22 @@ export function editDeveloperExperience(payload,id) {
 }
 
 
-export function registerDeveloperEducation(payload,id,callback) {
+export function registerDeveloperEducation(payload, id, callback) {
+  console.log(payload,"payload")
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`common/add-developer-education?developer_id=${id}`, payload);
-      toast.success("Education is Added", { position: "top-center" });
+      let result = await authInstance.post(`common/add-developer-education?developer_id=${id}`, payload);
+      // toast.success("Education is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
       return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
-      toast.error(message, { position: "top-center" });
+      // toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
   };
 }
-
 export function registerDeveloperSkills(payload,id) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
@@ -1369,16 +1369,17 @@ export function addDeveloperRegisProject(payload,callback) {
 
 
 
-export function getDeveloperProfileDetails(id) {
+export function getDeveloperProfileDetails(id,callback) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.get(`common/developer-profile?developer_id=${id}`);
+      let result = await authInstance.get(`common/developer-profile?developer_id=${id}`);
       dispatch(setDeveloperRegistrationDetails(result?.data?.data))
-      dispatch(setSuccessActionData());
+      return callback(result.data.data)
+      dispatch(setActionSuccessFully());
     } catch (error) {
       const message = error.message || "Something went wrong";
-      toast.error(message, { position: "top-center" });
+      // toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
   };

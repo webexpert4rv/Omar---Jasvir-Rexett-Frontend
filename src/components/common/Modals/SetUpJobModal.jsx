@@ -6,6 +6,7 @@ const SetUpJobModal = ({
   show,
   handleClose,
   handleProceed,
+  handleRedirect,
   smallLoader,
   modalData,
   activeStep,
@@ -42,10 +43,10 @@ const SetUpJobModal = ({
               <Link
                 to={"#"}
                 variant="transparent"
-                onClick={handleClose}
+                onClick={handleRedirect}
                 className="outline-main-btn font-14 text-decoration-none rounded-3"
               >
-                Back to home
+               Login
               </Link>
             )}
           </div>
