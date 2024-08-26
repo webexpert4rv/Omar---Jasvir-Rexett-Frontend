@@ -37,9 +37,7 @@ export const authenticationDataSlice = createSlice({
             state.smallLoader = false;
             state.otpLoader = false;
         },
-        
-
-
+      
     }
 })
 
@@ -135,10 +133,10 @@ export function getVerifyOtp(payload) {
                     window.location.href = '/developer/dashboard'
                 }
 
-                if (result.data.data.role === "admin") {
+                if (result.data.data.role === "admin" || result.data.data.role === "sub-admin") {
                     localStorage.setItem("token", result.data.access_token);
                     localStorage.setItem("refreshToken", result.data.refresh_token);
-                    localStorage.setItem("role", "admin")
+                    localStorage.setItem("role", result.data.data.role=="admin"?"admin":"sub-admin")
                     localStorage.setItem("userId", result.data.data.id)
                     localStorage.setItem("userName",result?.data?.data?.name)
                     window.location.href = "/admin/admin-dashboard"
@@ -151,6 +149,7 @@ export function getVerifyOtp(payload) {
                     localStorage.setItem("userName",result?.data?.data?.name)
                     window.location.href = "/vendor-dashboard"
                 }
+        
             }
 
         } catch (error) {
@@ -240,7 +239,6 @@ export function resendOtpDispatch(payload, callback) {
         }
     };
 }
-
 
 export function getAllCountries() {
     return async (dispatch) => {

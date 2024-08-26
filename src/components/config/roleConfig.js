@@ -1,4 +1,4 @@
-import { CLIENT_SIDE_BAR_ITEMS, OTHER_OPTIONS_DEVELOPER  } from "./constant";
+import { CLIENT_SIDE_BAR_ITEMS, OTHER_OPTIONS_DEVELOPER, SUPERADMIN_SIDE_BAR_ITEMS  } from "./constant";
 import { ADMIN_SIDE_BAR_ITEMS, OTHER_OPTIONS_ADMIN } from "./constant";
 import { VENDOR_SIDE_BAR_ITEMS,OTHER_OPTIONS_VENDOR } from "./constant";
 import { DEVELOPER_SIDE_BAR_ITEMS,OTHER_OPTIONS_CLIENT } from "./constant";
@@ -32,6 +32,20 @@ const roleConfig = {
     headerProps: { role: "developer" },
     privateRoute:"/developer/dashboard",
     publicRoute:'/developer-login'
+  },
+  superAdmin:{
+    sidebarItems: SUPERADMIN_SIDE_BAR_ITEMS,
+    // floatingOptions: OTHER_OPTIONS_SUPERADMIN,
+    headerProps: { role: "superAdmin" },
+    privateRoute:"/super-admin-dashboard",
+    // publicRoute:'/super-login'
+  },
+  subAdmin:{
+    sidebarItems: ADMIN_SIDE_BAR_ITEMS,
+    floatingOptions: OTHER_OPTIONS_ADMIN,
+    headerProps: { role: "admin" },
+    privateRoute:"/admin/admin-dashboard",
+    publicRoute:'/member-login'
   },
   otp:{
     privateRoute:"/otp",

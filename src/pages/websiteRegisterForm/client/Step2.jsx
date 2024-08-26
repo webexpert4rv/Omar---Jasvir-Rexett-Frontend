@@ -14,7 +14,6 @@ const Step2 = ({
   headingData,
   label
 }) => {
-  setValue(name, "current_team");
   return (
     <div className="container">
       <h2>{headingData.h1}</h2>

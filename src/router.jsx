@@ -3,11 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
 
 import { lazy } from "react";
-import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
-import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
-import RolesPermission from "./pages/admin/RolesPermissions";
-import InterviewListing from "./pages/admin/InterviewListing";
-import InterviewDetail from "./pages/admin/InterviewDetail";
+
 import MeetingDetail from "./pages/MeetingDetail";
 import InterviewFeedback from "./pages/admin/InterviewFeedback";
 import ProjectHistory from "./pages/developer/ProjectHistory";
@@ -19,10 +15,47 @@ import DeveloperJobListing from "./pages/developer/DeveloperJobListing";
 import DeveloperSingleJob from "./pages/developer/DeveloperSingleJob";
 import ClientInterviewDetail from "./pages/views/InterviewDetail";
 import ClientInterviewFeedback from "./pages/views/InterviewFeedback";
+import VendorTimeDetail from "./pages/vendor/SingleTimeDetail";
+import CreateMessageTemplate from "./pages/admin/Configuration/MessageTemplate/CreateMessageTemplate";
+import WebsiteBuilder from "./pages/WebsiteBuilder/WebsiteBuilder";
 
-const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
+import JobPostStepContainer from "./components/common/JobPostForm/JobPostStepContainer";
+import DeveloperRegisterForm from "./pages/websiteRegisterForm/developer/DeveloperRegisterForm";
+import RolesPermission from "./pages/admin/RolesPermissions";
+import InterviewListing from "./pages/admin/InterviewListing";
+import InterviewDetail from "./pages/admin/InterviewDetail";
+import VendorRegisterForm from "./pages/websiteRegisterForm/vendor/VendorRegisterForm";
+import VendorSettings from "./pages/vendor/VendorSettings";
+import DeveloperSettings from "./pages/developer/DeveloperSettings";
+import ClientSettings from "./pages/views/ClientSettings";
+import WebsitePages from "./pages/admin/WebsitePages";
+import EmployeeDashboard from "./pages/employee/Dashboard";
+import AssignedListing from "./pages/employee/AssignedListing";
+import SuperDashboard from "./pages/SuperAdmin/Dashboard";
+import SubscriptionPlan from "./pages/SuperAdmin/SubscriptionPlan";
+import CreateNewPlan from "./pages/SuperAdmin/CreateNewPlan";
+import ClientListing from "./pages/SuperAdmin/ClientListing";
+import SupportAgents from "./pages/SuperAdmin/SupportAgent";
+import ManageShift from "./pages/SuperAdmin/ManageShift";
+import FeedbackView from "./pages/admin/FeedbackView";
+import ForgotPassword from "./pages/Authentication/ForgotPassword";
+import ResetPassword from "./pages/Authentication/ResetPassword";
+import ClientRegistrationStepper from "./pages/Registration flows/Client Registration flow/ClientRegistrationStepper";
+import VendorRegistrationStepper from "./pages/Registration flows/Vendor Registration Flow/VendorRegistrationStepper";
+import VendorDecisionMakers from "./pages/Registration flows/Vendor Registration Flow/VendorDecisionMakers";
+import ExpertiseArea from "./pages/Registration flows/Vendor Registration Flow/ExpertiseArea";
+import DeveloperRegistrationStepper from "./pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
+import VendorEditProfile from "./pages/vendor/vendorEditProfile.jsx";
+const ClientRegisterForm = lazy(() =>
+  import("./pages/websiteRegisterForm/client/ClientRegisterForm")
+);
+// const ClientRegisterForm = lazy(()=> import("./pages/websiteRegisterForm/client/ClientRegisterForm") );
+
 const VendorSingleDeveloper = lazy(() =>
   import("./pages/vendor/VendorSingleDeveloper")
+);
+const MemberLogin =lazy(()=>
+  import("./pages/Authentication/MemberLogin.jsx")
 );
 const VendorDashboard = lazy(() => import("./pages/vendor/Dashboard"));
 const ProfileUpdationRequest = lazy(() =>
@@ -37,9 +70,7 @@ const NotificationDeveloper = lazy(() =>
 const DeveloperInvoice = lazy(() =>
   import("./pages/developer/DeveloperInvoice")
 );
-const DeveloperLeaveApply = lazy(() =>
-  import("./pages/developer/PlanLeave")
-);
+const DeveloperLeaveApply = lazy(() => import("./pages/developer/PlanLeave"));
 const Faq = lazy(() => import("./pages/views/Faq"));
 const ContactSupport = lazy(() => import("./pages/views/ContactSupport"));
 const JobPost = lazy(() => import("./pages/views/JobPost"));
@@ -56,7 +87,6 @@ const VendorDocuments = lazy(() => import("./pages/vendor/VendorDocuments"));
 const VendorRevenue = lazy(() => import("./pages/vendor/VendorRevenue"));
 const VendorUploadInvoice = lazy(() => import("./pages/vendor/VendorInvoice"));
 const VendorTimeReporting = lazy(() => import("./pages/vendor/TimeReporting"));
-const EditVendorProfile = lazy(() => import("./pages/vendor/EditProfile"));
 const RentedDevelopers = lazy(() => import("./pages/vendor/RentedDevelopers"));
 const AllDeveloperList = lazy(() => import("./pages/vendor/ListAllDeveloper"));
 const RegisterDeveloper = lazy(() =>
@@ -82,7 +112,6 @@ const SingleClient = lazy(() =>
   import("./components/common/SingleClient/SingleClient")
 );
 const Applications = lazy(() => import("./pages/admin/Applications"));
-
 const Login = lazy(() => import("./pages/Authentication/Login"));
 const Dashboard = lazy(() => import("./pages/views/Dashboard"));
 const HiredDevelopers = lazy(() => import("./pages/views/HiredDevelopers"));
@@ -97,9 +126,7 @@ const DeveloperList = lazy(() => import("./pages/admin/DeveloperList"));
 const ListClient = lazy(() => import("./pages/admin/ListClient"));
 const EditAdminProfile = lazy(() => import("./pages/admin/EditAdminProfile"));
 const AdminDocuments = lazy(() => import("./pages/admin/AdminDocuments"));
-const AdminTimeReporting = lazy(() =>
-  import("./pages/admin/AdminTimeReporting")
-);
+const AdminTimeReporting = lazy(() => import("./pages/admin/AdminTimeReporting"));
 const AdminInvoice = lazy(() => import("./pages/admin/AdminInvoice"));
 const Revenue = lazy(() => import("./pages/admin/Revenue"));
 const DeveloperDashboard = lazy(() =>
@@ -117,33 +144,63 @@ const DeveloperTimeReporting = lazy(() =>
 );
 const DeveloperCV = lazy(() => import("./pages/developer/DeveloperCV"));
 const AdminLogin = lazy(() => import("./pages/Authentication/AdminLogin"));
-const DeveloperLogin =lazy(() => import("./pages/Authentication/DeveloperLogin"));
-const ClientLogin =lazy(() => import("./pages/Authentication/Login"));
-const VendorLogin =lazy(() => import("./pages/Authentication/VendorLogin"));
-const Otp =lazy(() => import("./pages/Authentication/Otp"));
-
-
+const DeveloperLogin = lazy(() =>
+  import("./pages/Authentication/DeveloperLogin")
+);
+const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
+const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));
+const Otp = lazy(() => import("./pages/Authentication/Otp"));
 
 export const route = [
-
   {
     path: "/client-registration",
-    element: <ClientRegisterForm />,
+    element: <ClientRegistrationStepper />,
+    // element: <ClientStep1 />,
     public: true,
   },
+  {
+    path: "/meeting-detail",
+    element: <MeetingDetail />,
+    public: true,
+  },
+  {
+    path: "/expert-area",
+    element: <ExpertiseArea />,
+    // element: <ClientStep1 />,
+    public: true,
+  },
+  // {
+  //   path: "/decision-makers",
+  //   element: <VendorDecisionMakers />,
+  //   element: <ClientStep1 />,
+  //   public: true,
+  // },
   {
     path: "/developer-registration",
-    element: <DeveloperRegisterForm />,
+    element: <DeveloperRegistrationStepper />,
     public: true,
   },
+
+  {
+    path: "/vendor-registration",
+    element: <VendorRegistrationStepper />,
+    public: true,
+  },
+
+
   {
     path: "/otp",
-    element: <Otp/>,
+    element: <Otp />,
     public: true,
   },
   {
     path: "/",
     element: <ClientLogin />,
+    public: true,
+  },
+  {
+    path: "/member-login",
+    element: <MemberLogin />,
     public: true,
   },
   {
@@ -168,6 +225,16 @@ export const route = [
     private: true,
     isClient: true,
   },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+    public: true,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
+    public: true,
+  },
 
   // <------------------------------------------------------------------------------! Client Flow !-----------------------------------------------------------------------------?
   {
@@ -176,6 +243,7 @@ export const route = [
     private: true,
     isClient: true,
   },
+
   {
     path: "/client/hired-developers",
     element: <HiredDevelopers />,
@@ -233,7 +301,7 @@ export const route = [
   },
   {
     path: "/client/leave-request",
-    element: <LeaveRequest/>,
+    element: <LeaveRequest />,
     private: true,
     isClient: true,
   },
@@ -343,7 +411,7 @@ export const route = [
     isDeveloper: true,
     private: true,
   },
- 
+
   {
     path: "developer/leave-plan",
     element: <DeveloperLeaveApply />,
@@ -357,7 +425,8 @@ export const route = [
     private: true,
   },
   {
-    path: "developer/project-detail",
+    // add a appropriate name instead of projectid if needed
+    path: "developer/project-detail/:projectId",
     element: <ProjectDetail />,
     isDeveloper: true,
     private: true,
@@ -407,16 +476,30 @@ export const route = [
     element: <VendorUploadInvoice />,
     isVendor: true,
     private: true,
+  }, {
+
+    path: "/vendor/developer-registration",
+    element: <DeveloperRegistrationStepper />,
+    isVendor: true,
+    private: true,
+
   },
+
   {
     path: "/vendor-time-reporting",
     element: <VendorTimeReporting />,
     isVendor: true,
     private: true,
   },
+  // {
+  //   path: "/edit-vendor-profile",
+  //   element: <EditVendorProfile />,
+  //   isVendor: true,
+  //   private: true,
+  // },
   {
     path: "/edit-vendor-profile",
-    element: <EditVendorProfile />,
+    element: <VendorEditProfile />,
     isVendor: true,
     private: true,
   },
@@ -450,12 +533,24 @@ export const route = [
     isVendor: true,
     private: true,
   },
+  {
+    path: "/vendor-time-detail/:id",
+    element: <VendorTimeDetail />,
+    isVendor: true,
+    private: true,
+  },
   // <------------------------------------------------------------------------------! Vendor Flow !-----------------------------------------------------------------------------?
 
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
   {
     path: "/admin/admin-dashboard",
     element: <AdminDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/developer-registration",
+    element: <DeveloperRegistrationStepper />,
     isAdmin: true,
     private: true,
   },
@@ -471,12 +566,12 @@ export const route = [
     isAdmin: true,
     private: true,
   },
-  {
-    path: "/admin/edit-admin-profile",
-    element: <EditAdminProfile />,
-    isAdmin: true,
-    private: true,
-  },
+  // {
+  //   path: "/admin/edit-admin-profile",
+  //   element: <EditAdminProfile />,
+  //   isAdmin: true,
+  //   private: true,
+  // },
   {
     path: "/admin/job-post",
     element: <AdminJobPost />,
@@ -510,7 +605,7 @@ export const route = [
   {
     path: "/admin/admin-invoice",
     // element: <AdminInvoice />,
-    element:<Revenue/>,
+    element: <Revenue />,
     isAdmin: true,
     private: true,
   },
@@ -570,40 +665,118 @@ export const route = [
   },
   {
     path: "/admin/customization",
-    element: <Customization/>,
+    element: <Customization />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/roles-permissions",
-    element: <RolesPermission/>,
+    element: <RolesPermission />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/interviews",
-    element: <InterviewListing/>,
+    element: <InterviewListing />,
     isAdmin: true,
     private: true,
   },
   {
     path: "/admin/interview-detail",
-    element: <InterviewDetail/>,
+    element: <InterviewDetail />,
     isAdmin: true,
     private: true,
   },
-  {
-    path: "/admin/meeting-detail",
-    element: <MeetingDetail />,
-    isAdmin: true,
-    private: true,
-  },
+
   {
     path: "/admin/interview-feedback",
     element: <InterviewFeedback />,
     isAdmin: true,
     private: true,
   },
+  {
+    path: "/admin/create-message-template",
+    element: <CreateMessageTemplate />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: '/admin/create-message-template/:id',
+    element: <CreateMessageTemplate />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/website-builder/:pageId",
+    element: <WebsiteBuilder />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/website-pages",
+    element: <WebsitePages />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/employee-dashboard",
+    element: <EmployeeDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/assigned-listing",
+    element: <AssignedListing />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin-dashboard",
+    element: <SuperDashboard />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/subscription-plan",
+    element: <SubscriptionPlan />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/create-new-plan",
+    element: <CreateNewPlan />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/client-listing",
+    element: <ClientListing />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/support-agents",
+    element: <SupportAgents />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/super-admin/manage-shift",
+    element: <ManageShift />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/admin/feedback-view",
+    element: <FeedbackView />,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "admin/register-developer",
+    element: <DeveloperRegistrationStepper />,
+    isAdmin: true,
+    private: true,
+  },
   // <------------------------------------------------------------------------------! Admin Flow !-----------------------------------------------------------------------------?
-
 ];

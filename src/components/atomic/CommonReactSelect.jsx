@@ -3,18 +3,41 @@ import { Form } from "react-bootstrap";
 import { Controller } from "react-hook-form";
 import Select from "react-select";
 import { convertCountriesForSelect } from "../utils";
+import CloseIcon from "./CloseIcon";
 
-const CommonReactSelect = ({ control, name, errors, options, required ,label,type}) => {
-  // in required prop a  message should be given eg. Country name is required 
-  const [formattedOptions,setFormattedOptions] = useState([]);
-  useEffect(() => {
-    const formattedOptions = convertCountriesForSelect(options,type);
-    setFormattedOptions(formattedOptions);
-  },[options]);
+const CommonReactSelect = ({
+  control,
+  name,
+  errors,
+  options,
+  watch,
+  required,
+  invalidFieldRequired = false,
+  label,
+  type,
+  handleChange = null,
+}) => {
+  // in required prop a  message should be given eg. Country name is required
+  const [formattedOptions, setFormattedOptions] = useState([]);
   
+
+  useEffect(() => {
+    const formattedOptions = convertCountriesForSelect(options, type);
+    setFormattedOptions(formattedOptions);
+  }, [options]);
+
+
+  const showCloseIcon = () => {
+    if(invalidFieldRequired && errors?.[name]?.message){
+      return <CloseIcon/>
+    }
+  }
   return (
-     <Form.Group className="mb-3">
-      <Form.Label className="common-label">{label}{required && "*"}</Form.Label>
+    <Form.Group className="mb-3">
+      <Form.Label className="common-label font-14 fw-medium">
+        {label}
+        {required && "*"}
+      </Form.Label>
       <Controller
         name={name}
         control={control}
@@ -24,10 +47,50 @@ const CommonReactSelect = ({ control, name, errors, options, required ,label,typ
             message: required,
           },
         }}
-        render={({ field }) => <Select className="common-field" {...field} options={formattedOptions}/>}
+        render={({ field }) =>
+          handleChange ? (
+            <>
+              <Select
+                className={`common-field font-14 ${
+                  invalidFieldRequired &&
+                  errors[name]?.message &&
+                  "invalid-field"
+                }`}
+                {...field}
+                value={watch(name)}
+                onChange={(selectedOption) => {
+                  handleChange(selectedOption, name);
+                }}
+                options={formattedOptions}
+              />
+              {showCloseIcon()}
+            </>
+          ) : (
+            <>
+              <Select
+                className={`common-field 14 ${
+                  invalidFieldRequired &&
+                  errors[name]?.message &&
+                  "invalid-field"
+                }`}
+                {...field}
+                options={formattedOptions}
+              />
+              {showCloseIcon()}
+            </>
+          )
+        }
       />
-      {errors[name] && <p className="error-message">{errors[name]?.message}</p>}
-      </Form.Group>
+      {errors[name] && (
+        <p
+          className={`${
+            invalidFieldRequired ? "field-error" : "error-message"
+          }`}
+        >
+          {errors[name]?.message}
+        </p>
+      )}
+    </Form.Group>
   );
 };
 

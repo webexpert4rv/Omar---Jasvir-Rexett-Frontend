@@ -249,8 +249,7 @@ const DeveloperList = () => {
                 </Tab.Content>
             </Tab.Container>}
 
-            {
-                !screenLoader && assignedDeveloper?.total_developers_count > 5 && assignedDeveloper?.developers?.length !== assignedDeveloper.total_developers_count ? (
+            { !screenLoader && assignedDeveloper?.total_developers_count > 5 && assignedDeveloper?.developers?.length !== assignedDeveloper.total_developers_count ? (
                     <div className="text-center mt-3">
                         <SeeMore setCount={setCount} />
                     </div>

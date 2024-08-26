@@ -108,7 +108,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
       })
     );
     if (data == "Documents") {
-      navigate(`/${doc}`);
+      navigate(`/${role}/${doc}`);
     } else if (data == "Jobs") {
       navigate(`/${job}/${id}`);
     } else if (data == "Time_reports") {

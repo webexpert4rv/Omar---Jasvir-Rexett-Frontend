@@ -1,112 +1,349 @@
-import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
-import { Controller } from 'react-hook-form';
-import 'react-phone-number-input/style.css';
-import PhoneInput from 'react-phone-number-input';
-import Select from 'react-select';
+import React, { useState } from "react";
+import { Form } from "react-bootstrap";
+import { Controller } from "react-hook-form";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+import Select from "react-select";
+import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+import CloseIcon from "./CloseIcon";
+import moment from "moment";
 
 const CommonInput = ({
+  watch,
   label,
   name,
-  type = 'text',
+  type = "text",
+  value,
   control,
   rules,
   readOnly = false,
-  placeholder = '',
+  placeholder = "",
   error,
-  autoComplete = 'off',
+  autoComplete = "off",
   isPassword = false,
   onTogglePassword,
   icon,
   onChange,
   accept,
-  options = [], // For radio inputs or select options
+  options, // For radio inputs or select options
   selectOptions, // For react-select options
+  isMulti = false,
+  isMinRequired ,
+  isMaxRequired,
+  invalidFieldRequired = false,
+  defaultOption = "",
+  disabled,
+  rows = null,
+  className,
+  selectedRecommend
 }) => {
-  console.log(selectOptions,"selectOptions")
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
+console.log(options,"options")
+console.log(isMinRequired,"isMinRequired")
+console.log(isMaxRequired,"ismax")
   const handleTogglePassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
     if (onTogglePassword) {
       onTogglePassword();
     }
   };
-
+  const showCloseIcon = () => {
+    if (invalidFieldRequired && error?.message) {
+      return <CloseIcon />;
+    }
+  };
+ 
   return (
     <Form.Group className="mb-3">
-      <Form.Label className="common-label">{label}</Form.Label>
+      <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>
       <div className="position-relative">
         <Controller
           name={name}
           control={control}
           rules={rules}
           render={({ field }) => {
-            if (type === 'radio') {
-              return options.map((option, index) => (
-                <Form.Check
-                  key={index}
-                  type="radio"
-                  id={`${name}-${index}`}
-                  label={option.label}
-                  value={option.value}
-                  checked={field.value === option.value}
-                  onChange={(e) => field.onChange(e.target.value)}
-                />
-              ));
-            } else if (type === 'phone') {
-              return (
-                <PhoneInput
-                  placeholder={placeholder}
-                  value={field.value}
-                  onChange={field.onChange}
-                  inputProps={{
-                    name: name,
-                    readOnly: readOnly,
-                    autoComplete: autoComplete,
-                    className: 'common-field',
-                  }}
-                />
-              );
-            } else if (type === 'select') {
-              return (
-                <Select
+            if (type === "radio") {
+                  <Form.Check
                   {...field}
-                  options={selectOptions}
-                  className="common-field"
-                  isDisabled={readOnly}
-                  onChange={(selectedOption) => field.onChange(selectedOption)}
-                  value={selectOptions?.find(option => option.value === field.value)}
-                  placeholder={placeholder}
+                  label={label}
+                  type="radio"
+                  id="radio1"
+                  className={className}
+                  checked={field.value}
+                  onChange={(e) =>{
+                    field.onChange(e.target.checked)
+                  } }
                 />
+            }
+            if (type === "checkbox") {
+              return   <Form.Check
+              {...field}
+              type="checkbox"
+              id="radio1"
+              checked={field.value}
+              onChange={(e) =>{
+                field.onChange(e.target.checked)
+              } }
+            />
+            } 
+            else if (type === "phone") {
+              return (
+                <>
+                  <PhoneInput
+                    placeholder={placeholder}
+                    value={field.value ? String(field.value) : ""}
+                    onChange={field.onChange}
+                    className="common-field"
+                    inputProps={{
+                      name: name,
+                      readOnly: readOnly,
+                      autoComplete: autoComplete,
+                      className: `common-field ${
+                        invalidFieldRequired &&
+                        error?.message &&
+                        "invalid-field"
+                      }`,
+                    }}
+                  />
+                  {showCloseIcon()}
+                </>
               );
+            } else if (type === "select2") {
+              return (
+                <>
+                  <Select
+                    {...field}
+                    options={selectOptions}
+                    className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"} `}
+                    isDisabled={readOnly}
+                    // onChange={(selectedOption) => field.onChange(selectedOption)}
+                    // value={selectOptions?.find(
+                    //   (option) => option.value === field.value
+                    // )}
+                    value={field.value ? field.value : selectedRecommend ? selectedRecommend : ''}
+                    placeholder={placeholder}
+                    isMulti={isMulti}
+                  />
+                  {showCloseIcon()}
+                </>
+              );
+            } else if (type === "select") {
+              return (
+                <>
+                  <Select
+                    {...field}
+                    options={selectOptions}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    isDisabled={readOnly}
+                    onChange={(selectedOption) =>
+                      field.onChange(selectedOption)
+                    }
+                    value={selectOptions?.find(
+                      (option) => option.value === field.value
+                    )}
+                    placeholder={placeholder}
+                    isMulti={isMulti}
+                  />
+                  {showCloseIcon()}
+                </>
+              );
+            } else if (type === "normal-select") {
+              return (
+                <>
+                  <Form.Select
+                    {...field}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    // value={value}
+                    // onChange={onChange}
+                  >
+                    <option disabled selected value="">
+                      {defaultOption}
+                    </option>
+                    {options?.map(({ label, value }, idx) => (
+                      <option key={idx} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  {showCloseIcon()}
+                </>
+              );
+            }
+            else if (type === "grouped-select") {
+              return (
+                <>
+                  <Select
+                    {...field}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    // value={value}
+                    // onChange={onChange}
+                    options={options}
+                  >
+                    {/* <option disabled selected value="">
+                      {defaultOption}
+                    </option>
+                    {options?.map(({ label, value }, idx) => (
+                      <option key={idx} value={value}>
+                        {label}
+                      </option>
+                    ))} */}
+                  </Select>
+                  {showCloseIcon()}
+                </>
+              );
+            }
+            
+            else if (type === "multi-select") {
+              return (
+                <>
+                  <Select
+                    {...field}
+                    options={selectOptions}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    // isDisabled={readOnly}
+                    // onChange={(selectedOption) => field.onChange(selectedOption)}
+                    // value={selectOptions?.find(option => option.value === field.value)}
+                    placeholder={placeholder}
+                    isMulti={true}
+                  />
+                  {showCloseIcon()}
+                </>
+              );
+            } else if (type === "date") {
+              return (
+                <>
+                  <Form.Control
+                    {...field}
+                    type="date"
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    // value={new Date(watch("response_date")).toISOString().split("T")[0]}
+                    // if date should not be less than current date
+                    min={
+                      isMinRequired && new Date().toISOString().split("T")[0]
+                    }
+                    // if date should not be less than current date
+                    max={
+                      isMaxRequired && new Date().toISOString().split("T")[0]
+                    }
+                    disabled={disabled && name=="end_date"}
+                  />
+                  {showCloseIcon()}
+                </>
+              );
+            } else if (type === "onlyNumber") {
+              return (
+                <>
+                  <Form.Control
+                    {...field}
+                    type="text"
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    onChange={(e) => {
+                      const numericValue = e.target.value.replace(
+                        /[^0-9]/g,
+                        ""
+                      );
+                      field.onChange(numericValue);
+                    }}
+                  />
+                  {showCloseIcon()}
+                </>
+              );
+            } else if (type === "time") {
+              return (
+                <Form.Control {...field} type="time" className="common-field" />
+              );
+            } else if (type === "textarea") {
+              return (
+                <>
+                  <Form.Control
+                    {...field}
+                    as={type}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    rows={3}
+                  />
+                  {showCloseIcon()}
+                </>
+              );
+            } else if (type === "year-picker") {
+              console.log(field.value, "this is field.value");
+              return (
+                <DatePicker
+                  {...field}
+                  selected={field.value && field.value}
+                  maxDate={new Date().toISOString().split("T")[0]}
+                  maxDetail="decade"
+                  onChange={(date) => field.onChange(date)}
+                  showYearPicker
+                  dateFormat="yyyy"
+                  placeholderText="Select year"
+                  className="common-field w-100"
+                />
+              )
             } else {
               return (
-                <Form.Control
-                  {...field}
-                  type={isPassword ? (isPasswordVisible ? 'text' : 'password') : type}
-                  className="common-field"
-                  placeholder={placeholder}
-                  readOnly={readOnly}
-                  autoComplete={autoComplete}
-                  onChange={onChange ? (e) => onChange(e, field) : field.onChange}
-                  accept={accept}
-                />
+                <>
+                  <Form.Control
+                    {...field}
+                    type={
+                      isPassword
+                        ? isPasswordVisible
+                          ? "text"
+                          : "password"
+                        : type
+                    }
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    // id='developer-image'
+                    placeholder={placeholder}
+                    readOnly={readOnly}
+                    autoComplete={autoComplete}
+                    onChange={
+                      onChange ? (e) => onChange(e, field) : field.onChange
+                    }
+                    accept={accept}
+                  />
+                  {showCloseIcon()}
+                </>
               );
             }
           }}
         />
         {isPassword && (
-          <span 
-            className="eye-btn" 
-            onClick={handleTogglePassword} 
+          <span
+            className="eye-btn"
+            onClick={handleTogglePassword}
             aria-label={isPasswordVisible ? "Hide password" : "Show password"}
           >
             {icon}
           </span>
         )}
       </div>
-      {error && <p className="error-message">{error.message}</p>}
+      {error && (
+        <p
+          className={`${
+            invalidFieldRequired ? "field-error" : "error-message"
+          }`}
+        >
+          {error.message}
+        </p>
+      )}
     </Form.Group>
   );
 };

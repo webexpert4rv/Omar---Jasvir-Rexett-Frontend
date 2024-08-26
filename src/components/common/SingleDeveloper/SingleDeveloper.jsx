@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import resumeImg from "../../../assets/img/user-img.jpg";
 import { Link, useLocation } from "react-router-dom";
-import { FaGithub, FaStar } from "react-icons/fa6";
+import { FaEnvelope, FaGithub, FaStar } from "react-icons/fa6";
 import { MdEditNote, MdEmail, MdLocalPhone, MdLockClock, MdOutlineOndemandVideo, MdPunchClock, MdWork } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaTimes } from "react-icons/fa";
 import ScreenLoader from "../../atomic/ScreenLoader";
 import { useTranslation } from "react-i18next";
 import AboutCV from "../Modals/AboutCVModal";
@@ -39,6 +39,8 @@ import { TbFileDownload } from "react-icons/tb";
 import introVideo from '../../../assets/img/interview-video.mp4'
 import { FaCirclePlay } from "react-icons/fa6";
 import IntroVideo from "../Modals/IntroVideo";
+import { IoCloseOutline } from "react-icons/io5";
+import CertificateUpload from "../Modals/CertificateUpload";
 
 const SingleDeveloper = ({ data, role }) => {
   const { startTour, closeTour } = useTourContext();
@@ -227,6 +229,13 @@ const SingleDeveloper = ({ data, role }) => {
   const handleCloseIntroVideo = () => {
     setShowIntroVideo(false);
   }
+  const [showcertificateupload, setShowCertificateUpload] = useState(false);
+  const handleShowCertificateUpload = () => {
+    setShowCertificateUpload(!showcertificateupload);
+  }
+  const handleCloseCertificateUpload = () => {
+    setShowCertificateUpload(false);
+  }
 
   return (
     <>
@@ -296,68 +305,7 @@ const SingleDeveloper = ({ data, role }) => {
                     <p className="resume-designation">
                       {data?.developer_detail?.professional_title}
                     </p>
-                    <div className="text-start mt-3 d-flex align-items-center gap-2 flex-wrap justify-content-center mb-3 personal-info-wrapper">
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdAlternateEmail /></span> robertjohnson@gmail.com</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdLocalPhone /></span> +91 123456789</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdWork /></span> 5 years</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><MdLocationOn /></span> Mohali, Punjab, India (160055)</p>
-                      </div>
-                      <div>
-                        <p className="mb-0 font-14">
-                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
-                      </div>
-                    </div>
-                    {data?.developer_detail ? (
-                      <div className="px-3 d-flex justify-content-center align-items-center gap-2 mb-3">
-                        <ul className="social-media">
-                          <li>
-                            {data?.developer_detail?.github_url ? (
-                              <Link
-                                className="social-media-link"
-                                to={data?.developer_detail?.github_url}
-                              >
-                                <FaGithub />
-                              </Link>
-                            ) : (
-                              ""
-                            )}
-                          </li>
-                          <li>
-                            {data?.developer_detail?.linkedin_url ? (
-                              <Link
-                                className="social-media-link"
-                                to={data?.developer_detail?.linkedin_url}
-                              >
-                                <FaLinkedin />
-                              </Link>
-                            ) : (
-                              ""
-                            )}
-                          </li>
-                        </ul>
-                        {role !== "client" && (
-                          <div
-                            className="add_more_section"
-                            onClick={handleShowSocialMediaModal}
-                          >
-                            <MdEditNote size={25} />
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      ""
-                    )}
+
                     <div>
                       <OverlayTrigger placement="bottom" overlay={seeReview}>
                         <span className="status-upcoming rating-status cursor-pointer" onClick={toggleFeedbackSection}>
@@ -448,6 +396,72 @@ const SingleDeveloper = ({ data, role }) => {
                           </div>
                         </div>
                       </div>)}
+                    <div className="text-start mt-3 d-flex align-items-center gap-2 flex-wrap justify-content-center mb-3 personal-info-wrapper">
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><FaEnvelope /></span> robertjohnson@gmail.com</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdLocalPhone /></span> +91 123456789</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdWork /></span> 5 years</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdLocationOn /></span>India</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><MdWork /></span> Remote</p>
+                      </div>
+                      <div>
+                        <p className="mb-0 font-14">
+                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
+                      </div>
+                    </div>
+                    {data?.developer_detail ? (
+                      <div className="px-3 d-flex justify-content-center align-items-center gap-2">
+                        <ul className="social-media">
+                          <li>
+                            {data?.developer_detail?.github_url ? (
+                              <Link
+                                className="social-media-link"
+                                to={data?.developer_detail?.github_url}
+                              >
+                                <FaGithub />
+                              </Link>
+                            ) : (
+                              ""
+                            )}
+                          </li>
+                          <li>
+                            {data?.developer_detail?.linkedin_url ? (
+                              <Link
+                                className="social-media-link"
+                                to={data?.developer_detail?.linkedin_url}
+                              >
+                                <FaLinkedin />
+                              </Link>
+                            ) : (
+                              ""
+                            )}
+                          </li>
+                        </ul>
+                        {/* {role !== "client" && (
+                          <div
+                            className="add_more_section"
+                            onClick={handleShowSocialMediaModal}
+                          >
+                            <MdEditNote size={25} />
+                          </div>
+                        )} */}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     {role !== "client" && (
                       <div
                         className="add_more_section_detail"
@@ -608,16 +622,18 @@ const SingleDeveloper = ({ data, role }) => {
                                             Healthcare
                                           </p>
                                         </div>
-                                        <div className="d-flex align-items-center gap-2 project-date-wrapper status-finished">
-                                          <p className="project-date mb-0">{`${project_start_date?.slice(
-                                            0,
-                                            10
-                                          )}`}</p>{" "}
-                                          -
-                                          <p className="project-date mb-0">{`${project_end_date?.slice(
-                                            0,
-                                            10
-                                          )}`}</p>
+                                        <div className="project-date-wrapper status-finished">
+                                          <div className="d-flex align-items-center gap-2">
+                                            <p className="project-date mb-0">{`${project_start_date?.slice(
+                                              0,
+                                              10
+                                            )}`}</p>{" "}
+                                            -
+                                            <p className="project-date mb-0">{`${project_end_date?.slice(
+                                              0,
+                                              10
+                                            )}`}</p>
+                                          </div>
                                         </div>
                                       </div>
                                       <label className="font-14 mb-1">
@@ -837,6 +853,51 @@ const SingleDeveloper = ({ data, role }) => {
                   <div className="about-info px-4 pt-4">
                     <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
                       <h3 className="subheading-resume text-center mb-0">
+                        Certifications
+                      </h3>
+                      {role !== "client" && (
+                        <div
+                          className="add_more_section"
+                          id="edit_2"
+                          onClick={handleShowCertificateUpload}
+                        >
+                          <MdEditNote size={25} />
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-2">
+                      <div className="project-wrapper">
+                        <div className="d-flex align-items-center justify-content-between">
+                          <div>
+                            <p className="project-title mb-0">
+                              Network association
+                            </p>
+                            <p className="project-role mb-1">
+                              Microsoft
+                            </p>
+                          </div>
+                          <div className="project-date-wrapper status-finished">
+                            <div className="d-flex align-items-center gap-2 ">
+                              <p className="project-date mb-0">12-05-2023</p>{" "}
+                              -
+                              <p className="project-date mb-0">16-10-2023</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-2">
+                          <a
+                            href={'#'}
+                            className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2"
+                          >
+                            Show Certificate <FiExternalLink />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="about-info px-4 pt-4">
+                    <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
+                      <h3 className="subheading-resume text-center mb-0">
                         Screening Round
                       </h3>
                       {role !== "client" && (
@@ -852,49 +913,49 @@ const SingleDeveloper = ({ data, role }) => {
                     <div className="rating-container">
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={overallRating} text={`${overallRating}`} styles={buildStyles({ pathColor: '#00af6c', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Overall</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#037563', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={reactRating} text={`${reactRating}`} styles={buildStyles({ pathColor: '#00af6c', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">React JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={vueRating} text={`${vueRating}`} styles={buildStyles({ pathColor: '#ffcb1a', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Vue JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={jsRating} text={`${jsRating}`} styles={buildStyles({ pathColor: '#05db8a', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">JavaScript</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={angularRating} text={`${angularRating}`} styles={buildStyles({ pathColor: '#eaeb08', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Angular JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#d7ce00', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={nextRating} text={`${nextRating}`} styles={buildStyles({ pathColor: '#eaeb08', textColor: '#121212', textSize: '25px', trailColor: '#fffdc3' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">MongoDB</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffa727', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={nodeRating} text={`${nodeRating}`} styles={buildStyles({ pathColor: '#ffcb1a', textColor: '#121212', textSize: '25px', trailColor: '#ffe5c0' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Node JS</p>
                       </div>
                       <div className="ratinng-wrapper d-block text-center">
                         <div className="rating-progress mb-2">
-                          <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#00b598', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
+                          <CircularProgressbar value={commRating} text={`${commRating}`} styles={buildStyles({ pathColor: '#05db8a', textColor: '#121212', textSize: '25px', trailColor: '#c6fff6' })} strokeWidth={12} maxValue={10} />
                         </div>
                         <p className="font-14">Communication</p>
                       </div>
@@ -1012,6 +1073,7 @@ const SingleDeveloper = ({ data, role }) => {
         </ModalWrapper>
       )}
       <IntroVideo show={showIntroVideo} handleClose={handleCloseIntroVideo} />
+      <CertificateUpload show={showcertificateupload} handleClose={handleCloseCertificateUpload} />
     </>
   );
 };

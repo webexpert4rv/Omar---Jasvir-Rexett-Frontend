@@ -10,7 +10,7 @@ import ScreenLoader from "../../atomic/ScreenLoader";
 import RexettPagination from "../../atomic/RexettPagination";
 import { useTranslation } from "react-i18next";
 
-const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
+const RexettTimeReporting = ({ timeReportingData, handleShowModal, role,flag }) => {
     const dispatch = useDispatch();
     const [selectedPeriod, setSelectedPeriod] = useState("weekly");
     const [selectedFilter, setSelectedFilter] = useState({ filter: "weekly" });
@@ -114,7 +114,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                                             <option value="" disabled selected>
                                                 {t("selectYear")}
                                             </option>
-                                            {yearOption?.map((item )=>(
+                                            {yearOption?.map((item ) => (
                                                  <option key={item}>{item}</option>
                                             ))}
                                         </Form.Select>
@@ -250,6 +250,7 @@ const RexettTimeReporting = ({ timeReportingData, handleShowModal, role }) => {
                         data={timeReportingData}
                         role={role}
                         page={page}
+                        flag={flag}
                     />
 
                     {timeReportingPage?.totalPages > 1 ? (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import interviewVideo from '../../assets/img/interview-video.mp4';
 import { HiDownload } from "react-icons/hi";
 import { Button, Col, Form, Row } from "react-bootstrap";
@@ -7,14 +7,112 @@ import { TbFileDescription } from "react-icons/tb";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import 'react-circular-progressbar/dist/styles.css';
 import ClientAddOtherSkill from "./Modals/ClientAddOtherSkill";
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getInterviewDetails, submitFeedback } from '../../redux/slices/clientDataSlice';
+
 const ClientInterviewFeedback = () => {
+    const [selectedDecision, setSelectedDecision] = useState('');
+    const [overallFeedback, setOverallFeedback] = useState('');
+    const [skillRatings, setSkillRatings] = useState({});
+    const [skills, setSkills] = useState([]);
     const [showAddSkill, setShowAddSkill] = useState(false);
-    const handleShowOtherSkill = () => {
-        setShowAddSkill(!showAddSkill);
-    }
-    const handleCloseOtherSkill = () => {
+    const [availableSkills, setAvailableSkills] = useState([]);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const { interviewId } = location.state || {};
+    const interviewDetails = useSelector(state => state.clientData.interviewDetails);
+    const [loading, setLoading] = useState(true);
+
+    const handleShowAddSkill = () => setShowAddSkill(true);
+    const handleCloseAddSkill = () => setShowAddSkill(false);
+    useEffect(() => {
+        if (interviewId) {
+            dispatch(getInterviewDetails(interviewId))
+                .then(() => {
+                    setLoading(false);
+                })
+                .catch(() => setLoading(false));
+        }
+    }, [interviewId, dispatch]);
+
+    useEffect(() => {
+        if (interviewDetails?.data?.skills) {
+            const skillsFromDetails = interviewDetails.data.skills;
+            setSkills(skillsFromDetails);
+            setAvailableSkills(skillsFromDetails.map(skill => ({ label: skill, value: skill })));
+        }
+    }, [interviewDetails]);
+
+    const handleAddSkills = (newSkills) => {
+        if (!Array.isArray(newSkills)) {
+            console.error('Expected newSkills to be an array');
+            return;
+        }
+        const newSkillsWithUnique = newSkills
+            .filter(skill => skill && skill.label && !skills.includes(skill.label));
+
+        setSkills(prevSkills => {
+            const updatedSkills = [...prevSkills, ...newSkillsWithUnique.map(skill => skill.label)];
+            setAvailableSkills(updatedSkills.map(skill => ({ label: skill, value: skill })));
+            console.log('Updated Skills:', updatedSkills);
+            return updatedSkills;
+        });
         setShowAddSkill(false);
+    };
+
+    const handleRemoveSkill = (skillToRemove) => {
+        setSkills(prevSkills => prevSkills.filter(skill => skill !== skillToRemove));
+        setSkillRatings(prevRatings => {
+            const { [skillToRemove]: removedSkill, ...rest } = prevRatings;
+            return rest;
+        });
+        setAvailableSkills(prevSkills => prevSkills.filter(skill => skill !== skillToRemove).map(skill => ({ label: skill, value: skill })));
+    };
+
+    const handleDecisionChange = (e) => {
+        setSelectedDecision(e.target.value);
+    };
+
+    const handleRatingChange = (skill, rating) => {
+        setSkillRatings(prevRatings => ({
+            ...prevRatings,
+            [skill]: rating,
+        }));
+    };
+
+    const handleFeedbackChange = (e) => {
+        setOverallFeedback(e.target.value);
+    };
+
+    const handleSubmit = () => {
+        const feedbackData = {
+            interview_id: interviewId,
+            interviewer_decision: selectedDecision,
+            overall_feedback: overallFeedback,
+            skill_ratings: Object.keys(skillRatings).map(skill => ({
+                skill_name: skill,
+                rating: skillRatings[skill],
+            })),
+            feedback_text: "Interview feedback",
+            feedback_type: "positive",
+            feedback_given_by_email: "user@example.com",
+            feedback_given_by_name: "User Name",
+            candidates_rating: 5,
+        };
+
+        dispatch(submitFeedback(feedbackData)).then(() => {
+            navigate(-1);
+        }).catch((error) => {
+            console.error("Feedback submission failed:", error);
+        });
+    };
+
+    if (loading) {
+        return <p>Loading...</p>;
     }
+    const { data } = interviewDetails;
     return (
         <>
             <div className="card-box">
@@ -28,275 +126,114 @@ const ClientInterviewFeedback = () => {
                 <div className="interview-details mb-4">
                     <div>
                         <h4 className="detail-name">Project Name</h4>
-                        <p className="detail-info">Figma to UI</p>
+                        <p className="detail-info">{data.title}</p>
                     </div>
 
                     <div>
                         <h4 className="detail-name">Developer Name</h4>
-                        <p className="detail-info">Rohit Sharma</p>
+                        <p className="detail-info">{data.developer_name}</p>
                     </div>
                     <div>
                         <h4 className="detail-name">Client Name</h4>
-                        <p className="detail-info">Amazon</p>
+                        <p className="detail-info">{data.client_name}</p>
                     </div>
                     <div>
                         <h4 className="detail-name">Interviewer Name</h4>
-                        <p className="detail-info">James Williams</p>
+                        <p className="detail-info">{data.interviewers_list}</p>
                     </div>
                     <div>
                         <h4 className="detail-name">Date</h4>
-                        <p className="detail-info">11-06-2024</p>
+                        <p className="detail-info">{data.meeting_date}</p>
                     </div>
                     <div>
                         <h4 className="detail-name">Time</h4>
-                        <p className="detail-info">11:30AM - 12:30PM</p>
+                        <p className="detail-info">
+                            {data.meeting_time} - {data.meeting_end_time}
+                        </p>
                     </div>
                     <div>
                         <h4 className="detail-name">Duration</h4>
-                        <p className="detail-info">45 mins</p>
+                        <p className="detail-info">{data.interview_duration}</p>
                     </div>
                     <div>
                         <h4 className="detail-name">Status</h4>
-                        <span className="status-finished">Completed</span>
+                        <span className="status-completed">{data.status.charAt(0).toUpperCase() + data.status.slice(1)}</span>
                     </div>
                 </div>
                 <h3 className="section-subhead mb-3">Interviewer's Decision</h3>
                 <div className="d-flex align-items-center gap-3 mb-4">
-                    {/* <Form.Select className="common-field font-14 w-auto">
-                        <option value="">Select Decision</option>
-                        <option value="selected">Selected</option>
-                        <option value="reject">Rejected</option>
-                    </Form.Select> */}
-                    <Form.Check type="radio" name="interview-decision" label="Selected" id="candidate-selected" className="interview-decision d-inline-block ps-0" />
-                    <Form.Check type="radio" name="interview-decision" label="Rejected" id="candidate-rejected" className="interview-decision d-inline-block ps-0" />
+                    <Form.Check
+                    type="radio"
+                    name="interview-decision"
+                    label="Selected"
+                    id="candidate-selected"
+                    value="selected"
+                    onChange={handleDecisionChange}
+                    className="interview-decision d-inline-block ps-0"
+                    />
+                    <Form.Check
+                    type="radio"
+                    name="interview-decision"
+                    label="Rejected"
+                    id="candidate-rejected"
+                    value="rejected"
+                    onChange={handleDecisionChange}
+                    className="interview-decision d-inline-block ps-0"
+                    />
                 </div>
                 <div className="mb-4">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h3 className="section-subhead mb-0">Candidate's Rating</h3>
-                        <Button onClick={handleShowOtherSkill} variant="transparent" className="main-btn font-14">
+                        <Button onClick={handleShowAddSkill} variant="transparent" className="main-btn font-14">
                             Add other skill
                         </Button>
                     </div>
                     <Row>
-                        <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div className="mb-2">
-                                    <p className="text-start fw-medium">React JS</p>
-                                    <p className="font-14 text-start">(Low Level Design)</p>
-                                </div>
-                                <div>
+                        {skills.map((skill, index) => (
+                            <Col lg={4} key={index}>
+                                <div className="rating-wrapper text-center">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <p className="text-start fw-medium">{skill}</p>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <button  variant="link" onClick={() => handleRemoveSkill(skill)} type="button" class="arrow-btn danger-arrow shadow-none p-0 bg-transparent border-0 w-auto h-auto lh-1 ms-2 btn btn-transparent">×</button>
+                                        </div>
+                                    </div>
                                     <div>
                                         <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_one" label="1" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_two" label="2" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_three" label="3" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_four" label="4" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_five" label="5" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_six" label="6" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_seven" label="7" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_eight" label="8" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_nine" label="9" />
-                                            <Form.Check type="radio" name="react_rate" className="rating_button ps-0" id="react_ten" label="10" />
+                                            {[...Array(10)].map((_, i) => (
+                                                <Form.Check
+                                                    type="radio"
+                                                    name={`${skill.toLowerCase().replace(/\s+/g, '_')}_rate`}
+                                                    className="rating_button ps-0"
+                                                    id={`${skill.toLowerCase().replace(/\s+/g, '_')}_${i + 1}`}
+                                                    label={i + 1}
+                                                    key={i}
+                                                    onChange={() => handleRatingChange(skill, i + 1)}
+                                                />
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
-                                {/* <Form.Select className="common-field font-14 mb-2 w-auto">
-                                    <option value="">Select Rating</option>
-                                    <option value="one">1</option>
-                                    <option value="two">2</option>
-                                    <option value="three">3</option>
-                                    <option value="four">4</option>
-                                    <option value="five">5</option>
-                                    <option value="six">6</option>
-                                    <option value="seven">7</option>
-                                    <option value="eight">8</option>
-                                    <option value="nine">9</option>
-                                    <option value="ten">10</option>
-                                </Form.Select> */}
-                            </div>
-                        </Col>
-                        <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start fw-medium">Vue JS</p>
-                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
-                                </div>
-                                <div>
-                                    <div>
-                                        <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_one" label="1" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_two" label="2" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_three" label="3" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_four" label="4" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_five" label="5" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_six" label="6" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_seven" label="7" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_eight" label="8" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_nine" label="9" />
-                                            <Form.Check type="radio" name="vue_rate" className="rating_button ps-0" id="vue_ten" label="10" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start fw-medium">JavaScript</p>
-                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
-                                </div>
-                                <div>
-                                    <div>
-                                        <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_one" label="1" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_two" label="2" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_three" label="3" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_four" label="4" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_five" label="5" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_six" label="6" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_seven" label="7" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_eight" label="8" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_nine" label="9" />
-                                            <Form.Check type="radio" name="js_rate" className="rating_button ps-0" id="js_ten" label="10" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start fw-medium">Angular JS</p>
-                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
-                                </div>
-                                <div>
-                                    <div>
-                                        <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_one" label="1" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_two" label="2" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_three" label="3" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_four" label="4" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_five" label="5" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_six" label="6" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_seven" label="7" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_eight" label="8" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_nine" label="9" />
-                                            <Form.Check type="radio" name="angular_rate" className="rating_button ps-0" id="angular_ten" label="10" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start fw-medium">MongoDB</p>
-                                    <p className="font-14 text-start mb-2">(Data Structure & Algorithms)</p>
-                                </div>
-                                <div>
-                                    <div>
-                                        <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_one" label="1" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_two" label="2" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_three" label="3" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_four" label="4" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_five" label="5" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_six" label="6" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_seven" label="7" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_eight" label="8" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_nine" label="9" />
-                                            <Form.Check type="radio" name="mongo_rate" className="rating_button ps-0" id="mongo_ten" label="10" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start fw-medium">Node JS</p>
-                                    <p className="font-14 text-start mb-2">(Low Level Design)</p>
-                                </div>
-                                <div>
-                                    <div>
-                                        <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_one" label="1" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_two" label="2" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_three" label="3" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_four" label="4" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_five" label="5" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_six" label="6" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_seven" label="7" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_eight" label="8" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_nine" label="9" />
-                                            <Form.Check type="radio" name="nodejs_rate" className="rating_button ps-0" id="nodejs_ten" label="10" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg={4}>
-                            <div className="ratinng-wrapper text-center">
-                                <div>
-                                    <p className="text-start mb-2 fw-medium">Communication</p>
-                                </div>
-                                <div>
-                                    <div>
-                                        <div className="rating_btn_wrapper">
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_one" label="1" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_two" label="2" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_three" label="3" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_four" label="4" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_five" label="5" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_six" label="6" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_seven" label="7" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_eight" label="8" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_nine" label="9" />
-                                            <Form.Check type="radio" name="communication_rate" className="rating_button ps-0" id="communication_ten" label="10" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col lg={4}>
-                            <div>
-                                <div className="ratinng-wrapper">
-                                    <div className="d-flex align-items-center mb-2">
-                                        <div>
-                                            <p className="text-start fw-medium">HTML</p>
-                                        </div>
-                                        <div className="d-flex align-items-center gap-2">
-                                            <Button variant="transparent" className="arrow-btn danger-arrow shadow-none p-0 bg-transparent border-0 w-auto h-auto lh-1 ms-2">&times;</Button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div>
-                                            <div className="rating_btn_wrapper">
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_one" label="1" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_two" label="2" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_three" label="3" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_four" label="4" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_five" label="5" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_six" label="6" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_seven" label="7" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_eight" label="8" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_nine" label="9" />
-                                                <Form.Check type="radio" name="html_rate" className="rating_button ps-0" id="html_ten" label="10" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
+                            </Col>
+                        ))}
                     </Row>
                     <div className="mb-4">
                         <div className="d-flex align-items-center justify-content-between mb-3">
                             <h4 className="section-subhead mb-0">Your Overall Feedback</h4>
                         </div>
-                        <Form.Control as="textarea" className="common-field font-14" placeholder="Enter your overall feedback" rows="3" />
+                        <Form.Control
+                            as="textarea"
+                            className="common-field font-14"
+                            placeholder="Enter your overall feedback"
+                            rows="3"
+                            value={overallFeedback}
+                            onChange={handleFeedbackChange}
+                        />
                     </div>
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                        <Button variant="transparent" className="main-btn font-14" onClick={handleSubmit}>
+                            Submit
+                        </Button>
                     </div>
                     <div className="mb-4">
                         <h4 className="section-subhead mb-3">Summary</h4>
@@ -365,7 +302,11 @@ const ClientInterviewFeedback = () => {
                     </div>
                 </div>
             </div>
-            <ClientAddOtherSkill show={showAddSkill} handleClose={handleCloseOtherSkill} />
+            <ClientAddOtherSkill
+                show={showAddSkill}
+                handleClose={handleCloseAddSkill}
+                onAddSkills={handleAddSkills}
+            />
         </>
     )
 }

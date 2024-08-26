@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import userImg from "../../../assets/img/user-img.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaTimes } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { MdOutlinePersonRemove } from "react-icons/md";
 import NoDataFound from "../../atomic/NoDataFound";
@@ -16,6 +16,7 @@ import ScreenLoader from "../../atomic/ScreenLoader";
 import { LuMessagesSquare } from "react-icons/lu";
 import ScheduleMeeting from "../Modals/ScheduleMeeting";
 import { FaStar } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa6";
 
 const JobCard = ({
   handleJobStatusModal,
@@ -31,7 +32,13 @@ const JobCard = ({
     (state) => state.adminData
   );
   const scheduleInterview = (
-    <Tooltip>Schedule Interview</Tooltip>
+    <Tooltip>Move to Interview</Tooltip>
+  )
+  const approvedApply = (
+    <Tooltip>Approve</Tooltip>
+  )
+  const rejectedApply = (
+    <Tooltip>Reject</Tooltip>
   )
   console.log(screenLoader, "screenloader")
   const developerCardToolTip = (
@@ -39,7 +46,7 @@ const JobCard = ({
       {type === "Interviewing"
         ? "Hire"
         : type === "Shortlisted"
-          ? "Interview"
+          ? " Move to Interview"
           : "Shortlist"}
     </Tooltip>
   );
@@ -109,6 +116,9 @@ const JobCard = ({
                         </div>
                         <div className="text-center">
                           <h3 className="user-name">{item?.developer?.name}</h3>
+                          <div className="text-center mt-2">
+                            <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                          </div>
                           <div className="mb-2">
                             <span className="status-upcoming d-inline-flex align-items-center gap-1">
                               <FaStar /> 4.4
@@ -133,7 +143,7 @@ const JobCard = ({
                           </ul>
                           <div className="job-card-btns">
                             {role !== "admin" &&
-                              (type === "Shortlisted" ||
+                              (type == "Shortlisted" ||
                                 type === "Suggested" ||
                                 type === "Interviewing") &&
                               type !== "Hired" ? (
@@ -146,8 +156,11 @@ const JobCard = ({
                                   disabled={
                                     jobStatus === "Ended" ? true : false
                                   }
-                                  onClick={(e) =>
+                                  onClick={(e) =>{
                                     handleJobStatusModal(e, item?.id, type)
+                                    console.log("hell")
+                                  }
+                                   
                                   }
                                   className="w-100 main-btn text-black border-white mt-3"
                                 >
@@ -215,11 +228,20 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            <OverlayTrigger placement="top" overlay={scheduleInterview}>
-                              <Button onClick={handleShowScheduleMeeting} className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
-                                <LuMessagesSquare />
+                            {role === "admin" && (
+                            <OverlayTrigger placement="top" overlay={approvedApply}>
+                              <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
+                                <FaCheck />
                               </Button>
                             </OverlayTrigger>
+                            )}
+                            {role === "admin" && (
+                            <OverlayTrigger placement="top" overlay={rejectedApply}>
+                              <Button variant="danger" className="w-100">
+                                <FaTimes />
+                              </Button>
+                            </OverlayTrigger>
+                            )}
                           </div>
                         </div>
                       </div>

@@ -13,10 +13,19 @@ const NotFound = () => {
 
     return obj[currentRole];
   };
+  
   const navigate = useNavigate();
+  const rolePath = getCurrentRole(role);
   const handleRedirect = () => {
-    navigate(getCurrentRole(role));
+    if (rolePath) {
+      navigate(rolePath);
+    } else {
+      navigate(-1);
+    }
   };
+  // const handleRedirect = () => {
+  //   navigate(getCurrentRole(role));
+  // };
   return (
     <>
       <section className="not-found">
@@ -35,8 +44,8 @@ const NotFound = () => {
                   The Page you are looking for may have been
                   moved,deleted&nbsp;or possible never existed.
                 </h5>
-                <a className="main-btn" onClick={handleRedirect}>
-                  <span className="backto-home-btn">Back to Home</span>
+                <a className="main-btn cursor-pointer" onClick={handleRedirect}>
+                  <span className="backto-home-btn ">{role ? 'Back to Home' : 'Back to Login'}</span>
                 </a>
               </div>
             </Col>
