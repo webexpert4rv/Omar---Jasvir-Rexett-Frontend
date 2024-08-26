@@ -45,7 +45,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     (state) => state.adminData
   );
   const { chatData } = useSelector((state) => state.developerData);
-  console.log(chatData, "chatData");
   const [chatmessages,setChatMessages]=useState([])
 
   const dispatch = useDispatch();
@@ -69,7 +68,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       });
       socket.on(`new_message_received_${userId}`, (message) => {
         console.log(message,"message")
-        setChatMessages([...chatmessages,message])
+        setChatMessages([...chatmessages,message]);
       
       });
     
