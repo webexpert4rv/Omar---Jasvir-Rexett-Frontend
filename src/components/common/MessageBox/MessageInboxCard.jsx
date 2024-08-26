@@ -6,22 +6,21 @@ import { messageChatRoomList } from '../../../redux/slices/developerDataSlice'
 import NoDataFound from '../../atomic/NoDataFound'
 import moment from 'moment'
 
-const MessageInboxCard = ({ messageWrapperVisible, handleChatProfileClick }) => {
+const MessageInboxCard = ({ type,chatRoom ,messageWrapperVisible, handleChatProfileClick }) => {
     const dispatch =useDispatch()
     let userID=localStorage.getItem("userId")
     const {chatRoomMessageList}=useSelector((state)=>state.developerData)
-    console.log(chatRoomMessageList,"chatRoomMessageList")
 
-    useEffect(()=>{
-     dispatch(messageChatRoomList(userID))
-    },[])
+    // useEffect(()=>{
+    //  dispatch(messageChatRoomList(userID))
+    // },[])
     return (
         <>
           { chatRoomMessageList?.chatRooms?.length>0? chatRoomMessageList?.chatRooms?.map((it)=>{
             return (
                 <>
                 <div className={messageWrapperVisible ? "chat-profile-wrapper position-relative active-chat py-2 px-3" : "chat-profile-wrapper position-relative py-2 px-3"} onClick={()=>handleChatProfileClick(it?.members[0]?.chatroom_id)}>
-                <MoreChatOptions/>
+                <MoreChatOptions  item={it} type={type}/>
                 <div className="chat-profile-img">
                     <img src={it?.members[0]?.user?.profile_picture} />
                 </div>

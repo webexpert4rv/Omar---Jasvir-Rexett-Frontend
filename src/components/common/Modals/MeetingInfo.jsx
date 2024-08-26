@@ -67,17 +67,17 @@ const MeetingInfo = ({ show, handleClose,details }) => {
                                     <p className="font-14 mb-0">Amazon</p>
                                 </div>
                             </Col> */}
-                            <Col lg={4} className="mb-lg-3 mb-1">
+                            {/* <Col lg={4} className="mb-lg-3 mb-1">
                                 <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Interviewer's List</p>
-                            </Col>
+                            </Col> */}
                             <Col lg={8} className="mb-3">
                                 <div className="d-flex flex-wrap gap-2 align-items-start">
-                                    <div className="associate-text d-inline-block">
+                                    {/* <div className="associate-text d-inline-block">
                                         <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                             <img src={devImg} />
                                             <p className="mb-0">{interviewers_list}</p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     {/* <div className="associate-text d-inline-block">
                                         <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                             <span className="prefix-latter">RG</span>

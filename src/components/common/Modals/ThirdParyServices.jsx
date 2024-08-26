@@ -58,7 +58,7 @@ const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCre
                    : <p>Meeting Link :{meetingLink}</p>
                     }
                     <div className="text-center">
-                        <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{smallLoader?<RexettSpinner/>:"Get Link"}  </Button>
+                        <Button variant="transparent" className="main-btn px-4 font-14 fw-semibold" onClick={syncCreatedMeetingsWithGoogle}>{meetingLink ==null ? smallLoader?<RexettSpinner/>:"Get Link" : "Submit"}  </Button>
                     </div>
             </Modal.Body>
         </Modal>

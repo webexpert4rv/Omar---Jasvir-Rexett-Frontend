@@ -8,8 +8,10 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import CloseIcon from "./CloseIcon";
+import moment from "moment";
 
 const CommonInput = ({
+  watch,
   label,
   name,
   type = "text",
@@ -35,14 +37,10 @@ const CommonInput = ({
   disabled,
   rows = null,
   className,
-  selectedRecommend,
-  // options,
+  selectedRecommend
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  console.log(selectOptions,"newformattedOptions")
- 
-  // console.log(options,"options")
-console.log(type,"ty")
+console.log(options,"options")
 console.log(isMinRequired,"isMinRequired")
 console.log(isMaxRequired,"ismax")
   const handleTogglePassword = () => {
@@ -56,8 +54,7 @@ console.log(isMaxRequired,"ismax")
       return <CloseIcon />;
     }
   };
-  console.log(name,"name")
-  // console.log(watch("total_it_recruiter"),"total recruiters")
+ 
   return (
     <Form.Group className="mb-3">
       <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>
@@ -67,7 +64,6 @@ console.log(isMaxRequired,"ismax")
           control={control}
           rules={rules}
           render={({ field }) => {
-            console.log(field,"field")
             if (type === "radio") {
                   <Form.Check
                   {...field}
@@ -80,7 +76,6 @@ console.log(isMaxRequired,"ismax")
                     field.onChange(e.target.checked)
                   } }
                 />
-              
             }
             if (type === "checkbox") {
               return   <Form.Check
@@ -123,11 +118,11 @@ console.log(isMaxRequired,"ismax")
                     options={selectOptions}
                     className={`common-field ${invalidFieldRequired && error?.message && "invalid-field"} `}
                     isDisabled={readOnly}
-                    onChange={(selectedOption) => field.onChange(selectedOption)}
-                    value={selectOptions?.find(
-                      (option) => option.label === field.label
-                    )}
-                    // value={field.label }
+                    // onChange={(selectedOption) => field.onChange(selectedOption)}
+                    // value={selectOptions?.find(
+                    //   (option) => option.value === field.value
+                    // )}
+                    value={field.value ? field.value : selectedRecommend ? selectedRecommend : ''}
                     placeholder={placeholder}
                     isMulti={isMulti}
                   />
@@ -179,7 +174,34 @@ console.log(isMaxRequired,"ismax")
                   {showCloseIcon()}
                 </>
               );
-            } else if (type === "multi-select") {
+            }
+            else if (type === "grouped-select") {
+              return (
+                <>
+                  <Select
+                    {...field}
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    // value={value}
+                    // onChange={onChange}
+                    options={options}
+                  >
+                    {/* <option disabled selected value="">
+                      {defaultOption}
+                    </option>
+                    {options?.map(({ label, value }, idx) => (
+                      <option key={idx} value={value}>
+                        {label}
+                      </option>
+                    ))} */}
+                  </Select>
+                  {showCloseIcon()}
+                </>
+              );
+            }
+            
+            else if (type === "multi-select") {
               return (
                 <>
                   <Select
@@ -206,14 +228,15 @@ console.log(isMaxRequired,"ismax")
                     className={`common-field ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
+                    // value={new Date(watch("response_date")).toISOString().split("T")[0]}
                     // if date should not be less than current date
-                    max={
-                       new Date().toISOString().split("T")[0]
+                    min={
+                      isMinRequired && new Date().toISOString().split("T")[0]
                     }
                     // if date should not be less than current date
-                    // max={
-                    //   isMaxRequired && new Date().toISOString().split("T")[0]
-                    // }
+                    max={
+                      isMaxRequired && new Date().toISOString().split("T")[0]
+                    }
                     disabled={disabled && name=="end_date"}
                   />
                   {showCloseIcon()}
@@ -269,7 +292,7 @@ console.log(isMaxRequired,"ismax")
                   showYearPicker
                   dateFormat="yyyy"
                   placeholderText="Select year"
-                  className="common-field"
+                  className="common-field w-100"
                 />
               )
             } else {

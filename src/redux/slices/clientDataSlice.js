@@ -6,6 +6,7 @@ import axios from "axios";
 import authInstance from "../../services/auth.instance";
 import { VERIFY_USER_MESSAGE } from "../../pages/websiteRegisterForm/client/constant";
 import { setSuccessActionData } from "./developerDataSlice";
+import { setBtnLoader } from "./adminDataSlice";
 
 const initialClientData = {
 
@@ -394,6 +395,20 @@ export function getApproveDisapprove(payload, id) {
       const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" })
       dispatch(setFailClientData())
+    }
+  };
+}
+export const updateClientPost =(user_id,job_id,payload,callback)=>{
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await authInstance.put(`/common/update-job/${job_id}?user_id=${user_id}`, payload);
+      callback && callback(result?.data?.data?.Location);
+      dispatch(setActionSuccessFully())
+    } catch (error) {
+      console.log(error, "error")
+      toast.error(error?.response?.data?.message, { position: "top-center" });
+      dispatch(setFailClientData());
     }
   };
 }
@@ -1175,22 +1190,23 @@ export function getWebClientLookUp(callback) {
 }
 
 export function applyAsClient(payload, callback, triggerVerificationModal) {
-  console.log(payload, 'payload')
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    dispatch(setSmallLoader());
     try {
-      let result = await authInstance.post(`web/apply-as-client`, { ...payload });
+      let result = await authInstance.post(`/common/client-registration`, { ...payload });
       localStorage.setItem("clientId", result?.data?.data?.id);
-      callback()
+      toast.success(result.data.message, { position: "top-center" });
+      dispatch(setActionSuccessFully())
+      return callback(result?.data?.data.Location);
     } catch (error) {
-      const message = error?.message;
+      // const message = error?.message;
       // if (error?.message === VERIFY_USER_MESSAGE) {
-      if (error.response?.data?.verify_user) {
+      // if (error.response?.data?.verify_user) {
         // triggerVerificationModal("verify"); 
-      } else {
+      // } else {
         toast.error(error?.response?.data?.message, { position: "top-center" });
-      }
-      dispatch(setFailClientData());
+      // }
+      // dispatch(setFailClientData());
     }
   };
 }
@@ -1278,8 +1294,7 @@ export function getProfile(id, callback) {
 export const uploadFileToS3Bucket = (payload, callback) => {
   console.log(payload,"payload")
   return async (dispatch) => {
-    // dispatch(setScreenLoader());
-    dispatch(setSmallLoader());
+    dispatch(setScreenLoader());
     try {
       let result = await clientFormInstance.post(`/web/upload-file/`, payload);
       callback && callback(result?.data?.data?.Location);

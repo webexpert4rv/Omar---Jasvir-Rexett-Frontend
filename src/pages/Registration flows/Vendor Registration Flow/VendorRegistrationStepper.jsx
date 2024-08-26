@@ -94,6 +94,7 @@ const VendorRegistrationStepper = () => {
     if (userId && [activeStepKeys[activeStep]]) {
       dispatch(getVendorUpdatedDetails(userId, (response) => {
         const data = response[activeStepKeys[activeStep]];
+        console.log(data,"data")
         for (let key in data) {
         
           if (activeStep === 1) {
@@ -113,10 +114,10 @@ const VendorRegistrationStepper = () => {
               const newValue = { label: data[key], value: data["time_zone"] };
               setValue(key, newValue);
             } else if (key === "company_logo") {
-              setPreviewImage(data?.company_logo)
+              setPreviewImage({profile_picture : data?.company_logo})
             } else{
               setValue(key, data[key])
-            }
+            } 
           }
           if (activeStep !== 1){
             setValue(key, data[key])
@@ -135,7 +136,8 @@ const VendorRegistrationStepper = () => {
 
   const onSubmit = () => {
     if (activeStep === 1) {
-      setShowSetUpJobModal(true);
+      // setShowSetUpJobModal(true);
+      handleProceed()
     } 
     const buttonText = getActiveStepText();
     switch (buttonText) {
@@ -237,7 +239,14 @@ const VendorRegistrationStepper = () => {
       success_story: stepData?.success_story
     }
     dispatch(getAreaExpertise(payload))
+    handleRedirect()
+    
   };
+
+  const handleRedirect = () => {
+    window.location.href = "/vendor-login"
+    // window.location.href= process.env.REACT_APP_BASE_URL
+  }
 
   
   const renderActiveStep = () => {
@@ -329,14 +338,14 @@ const VendorRegistrationStepper = () => {
           </form>
         </div>
       </section>
-      {showSetUpModal ? <SetUpJobModal
+      {/* {showSetUpModal ? <SetUpJobModal
         show={showSetUpModal}
         handleClose={handleToggleSetupModal}
         handleProceed={handleProceed}
         smallLoader={smallLoader}
         modalData={MODAL_INFORMATION[1]}
         activeStep={activeStep}
-      /> : ""}
+      /> : ""} */}
     </>
   );
 };
