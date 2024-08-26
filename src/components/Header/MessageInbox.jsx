@@ -11,6 +11,7 @@ import { IoArchiveSharp, IoClose, IoCloseCircleOutline } from "react-icons/io5";
 import ReactQuill from "react-quill";
 import { TbMessage } from "react-icons/tb";
 import { GrAttachment } from "react-icons/gr";
+import io from "socket.io-client";
 import rexettLogo from "../../assets/img/favicon.png";
 import AddUserConversation from "../common/Modals/AddUsers";
 import MoreChatOptions from "../common/MessageBox/MoreChatOptions";
@@ -24,6 +25,7 @@ import {
 } from "../../redux/slices/adminDataSlice";
 import { getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
 import moment from "moment";
+import { NOTIFICATIONBASEURL } from "../../helper/utlis";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   let userId = localStorage.getItem("userId");
@@ -39,12 +41,34 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   );
   const { chatData } = useSelector((state) => state.developerData);
   console.log(chatData, "chatData");
+  const [chatmessages,setChatMessages]=useState([])
 
   const dispatch = useDispatch();
  
-
+  const socket = io(NOTIFICATIONBASEURL);
   const [adduserconversation, showAddUserConversation] = useState(false);
+
+  useEffect(()=>{
+    setChatMessages(chatData)
+    
+  },[chatData])
   
+  useEffect(()=>{
+
+    socket.on("connect", () => {
+        console.log("Connected to Socket.IO server");
+      });
+      socket.on(`new_message_received_${userId}`, (message) => {
+        console.log(message,"message")
+        setChatMessages([...chatmessages,message])
+      
+      });
+    
+      return () => {
+        socket.disconnect();
+      };
+  },[])
+
 
   useEffect(() => {
     dispatch(getAllMessageTemplates());
@@ -101,6 +125,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       message_attachment_url: "string",
     };
     dispatch(messageSendFunc(payload));
+    
+    socket.on(`new_message_sent_${userId}`, (rmsg) => {
+        console.log(rmsg,"Rmessage")
+      
+      });
   };
 
   const popuplateOntheMessage = (data) => {
@@ -223,15 +252,15 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                 <p className="msg-subject-name">
                   <span className="subject-name">Invited</span>
                 </p>
-                {chatData?.length > 0
-                  ? chatData?.map((item,index) => {
+                {chatmessages?.length > 0
+                  ? chatmessages?.map((item,index) => {
                   let  isReceiver=item?.sender_id==userId
                   let data=item?.message_body
                 
         
                 const showTime =
-                  index === chatData.length - 1 ||
-                  chatData[index + 1].sender_id !== item.sender_id;
+                  index === chatmessages.length - 1 ||
+                  chatmessages[index + 1].sender_id !== item.sender_id;
 
                       return (
                         <>
@@ -315,7 +344,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
               </div>
             </div>
             <div className="write-message-area">
-              <div className="d-flex justify-content-between align-items-center mb-3">
+              {/* <div className="d-flex justify-content-between align-items-center mb-3">
                 <p className="mb-0">
                   <span className="fw-medium">
                     Subject:{" "}
@@ -326,8 +355,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                 <div className="sender-profile">
                   <img src={devImg} />
                 </div>
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <Form.Control
                   type="text"
                   value={messageTitle}
@@ -335,7 +364,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   placeholder="Enter new subject"
                   onChange={(e) => handleMessageChange(e, "title")}
                 />
-              </div>
+              </div> */}
               <div className="position-relative">
                 <div
                   className={`custom-rich-editor message-field ${
