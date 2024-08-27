@@ -48,27 +48,27 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const [chatmessages,setChatMessages]=useState([])
 
   const dispatch = useDispatch();
+
+  console.log(chatmessages,"chatmessages")
  
   const socket = io(NOTIFICATIONBASEURL);
   const [adduserconversation, showAddUserConversation] = useState(false);
 
   useEffect(()=>{
     setChatMessages(chatData)
-    
   },[chatData])
+  console.log(chatData,"chatData")
 
   const {chatRoomMessageList}=useSelector((state)=>state.developerData)
   const user_id = localStorage.getItem("userId")
 
   useEffect(()=>{
-
     socket.on("connect", () => {
         console.log("Connected to Socket.IO server");
       });
       socket.on(`new_message_received_${userId}`, (message) => {
         console.log(message,"message")
         setChatMessages([...chatmessages,message]);
-      
       });
     
       return () => {
@@ -169,10 +169,12 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       message_attachment_url: "string",
     };
     dispatch(messageSendFunc(payload));
+    setMessageTitle("")
+    setValuemessga("")
+    setHasContent("")
     
     socket.on(`new_message_sent_${userId}`, (rmsg) => {
         console.log(rmsg,"Rmessage")
-      
       });
   };
 
@@ -399,22 +401,22 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   <img src={selectedChat?.members[0]?.user?.profile_picture} />
                 </div>
               </div> */}
-              {/* <div>
+              <div>
                 <Form.Control
                   type="text"
-                  // value={messageTitle}
+                  value={messageTitle}
                   className="common-field font-14 mb-2"
                   placeholder="Enter new subject"
                   onChange={(e) => handleMessageChange(e, "title")}
                 />
-              </div> */}
+              </div>
               <div className="position-relative">
                 <div
                   className={`custom-rich-editor message-field ${isEditorFocused || hasContent ? "focused" : ""
                     }`}
                 >
                   <ReactQuill
-                    // value={valuemessga}
+                    value={valuemessga}
                     onChange={(e) => handleMessageChange(e, "msg")}
                   />
                 </div>
