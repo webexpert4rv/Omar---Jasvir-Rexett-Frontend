@@ -93,6 +93,7 @@ console.log(isMaxRequired,"ismax")
                 <>
                   <PhoneInput
                     placeholder={placeholder}
+                    defaultCountry="SE"
                     value={field.value ? String(field.value) : ""}
                     onChange={field.onChange}
                     className="common-field"

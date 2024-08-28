@@ -4,11 +4,8 @@ import { useTranslation } from "react-i18next";
 
 
 const StepperHeadingSection = ({ activeStep, type,nestedActiveStep }) => {
-  const { t } = useTranslation();
-  let { heading, para } = getActiveStepHeadingData(activeStep , type ,nestedActiveStep);
-  console.log(type,"type")
-  console.log(heading,"heading")
-  console.log(para,"para")
+  const { t } = useTranslation()
+  let { heading, para } = getActiveStepHeadingData(activeStep , type ,nestedActiveStep)
 
 
   return (
@@ -20,4 +17,6 @@ const StepperHeadingSection = ({ activeStep, type,nestedActiveStep }) => {
 };
 
 export default StepperHeadingSection;
+
+
 

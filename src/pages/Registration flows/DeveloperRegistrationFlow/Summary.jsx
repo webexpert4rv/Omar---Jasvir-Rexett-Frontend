@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import { Button, Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import { FaChevronDown, FaLightbulb, FaPencil } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
@@ -28,33 +28,29 @@ const Summary = ({
 
   const dispatch = useDispatch();
   let developerId=localStorage.getItem("developerId");
-
-  console.log(filteredStepData,"filteredStepDataSummary")
-
-
+  const[eduId , setEduId] = useState("")
   useEffect(()=>{
     if(developerId){
         dispatch(getDeveloperProfileDetails(developerId));
     }
 },[developerId])
 
+console.log(filteredStepData,"filteredStepData")
+
   const handleDeleteModal = (id) => {
-   handleDelete(id)
-  
+    setEduId(id)
     setShowSetUpJobModal({
       isDelete: true,
       deletedId: id,
     });
   };
-  const handleDelete = (id) => {
-    console.log(id,"selecttedid")
-    console.log("Delete in Summary")
+  const handleDelete = () => {
     const tempArr = [...filteredStepData];
-    const indexToRemove = tempArr.findIndex(item => item.id === id);
+    const indexToRemove = tempArr.findIndex(item => item.id === eduId);
     if (indexToRemove !== -1) {
       tempArr.splice(indexToRemove, 1);
     }
-    console.log(tempArr, "tempArr after splice");
+
     setFilteredStepData(tempArr);
     setShowSetUpJobModal({
       isDelete: false,

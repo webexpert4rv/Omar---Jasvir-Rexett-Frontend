@@ -36,7 +36,7 @@ import moment from "moment";
 
 const ClientRegistrationStepper = () => {
   const dispatch = useDispatch();
-  const { smallLoader,approvedLoader , screenLoader, timeZoneList, clientJobPostDetails } = useSelector((state) => state?.clientData);
+  const { smallLoader, approvedLoader, screenLoader, timeZoneList, clientJobPostDetails } = useSelector((state) => state?.clientData);
   const [text, setText] = useState("");
   const [details, setDetails] = useState()
   const [activeStep, setActiveStep] = useState(0);
@@ -155,7 +155,7 @@ const ClientRegistrationStepper = () => {
                 const newValue = { label: step1Data[step1Key], value: step1Data[step1Key] };
                 setValue("time_zone", newValue);
               } else if (step1Key === "response_date") {
-                const responseDate = step1Data[step1Key].slice(0,10)
+                const responseDate = step1Data[step1Key].slice(0, 10)
                 setValue("response_date", responseDate)
               } else {
                 setValue(step1Key, step1Data[step1Key])
@@ -165,16 +165,16 @@ const ClientRegistrationStepper = () => {
             const step2Data = data?.jobs[0]?.step2;
             for (let step2Key in step2Data) {
               if (step2Data?.job_skills) {
-                const skillName = step2Data.job_skills.map(itm => itm.skill_name);
-                const skillWeight = step2Data.job_skills.map(itm => itm.weight);
-                console.log(skillName, "skillName");
-                console.log(skillWeight, "skillWeight");
-                const newSkill = 
-
+                const newSkills = [];
+                const newWeights = [];
+                step2Data?.job_skills?.forEach((item) => {
+                  newSkills.push({ label: item?.skill_name, value: item?.skill_name });
+                  newWeights.push({ label: item?.weight, value: item?.weight });
+                });
                 setSkillDetails({
-                  skillName: skillName,
-                  skillWeight: skillWeight
-                })
+                  skillName: newSkills,
+                  skillWeight: newWeights
+                });
               }
               if (step2Key === "description") {
                 const desc = stripHtmlTags(step2Data[step2Key])
@@ -253,7 +253,7 @@ const ClientRegistrationStepper = () => {
           response_date: jobStepData?.response_date,
           time_zone: jobStepData?.time_zone?.label
         }
-        dispatch(clientJobPost(payload, activeStep,user_id, handleAfterApiSuccess))
+        dispatch(clientJobPost(payload, activeStep, user_id, handleAfterApiSuccess))
       }
     }
   }
@@ -433,7 +433,7 @@ const ClientRegistrationStepper = () => {
   return (
     <>
       {/* {screenLoader ? <ScreenLoader /> : */}
-       <div>
+      <div>
         {activeStep === 0 ? (
           <RegistrationType handleRegistrationType={handleRegistrationType} />
         ) : (
@@ -483,7 +483,7 @@ const ClientRegistrationStepper = () => {
         modalData={MODAL_INFORMATION[activeStep]}
         activeStep={activeStep}
       />
-       : ""}
+        : ""}
       {/* <ThankRegister
         show={false}
         handleClose={handleCloseThanksRegister}
