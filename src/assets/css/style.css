@@ -9860,6 +9860,12 @@ select.apply-field
     object-fit: cover;
     border-radius: 50%;
 }
+.template-card
+{
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
         max-width: 120px;
