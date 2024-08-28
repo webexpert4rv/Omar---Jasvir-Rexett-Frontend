@@ -218,16 +218,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       })
     );
   };
-  console.log(type, "type---")
   const imageTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"]
   const handleFileUpload = (event) => {
     const allowedTypes = ["application/pdf", "image/png", "image/jpeg", "image/jpg", "image/svg+xml", "application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",];
     const file = event.target.files[0];
-    // console.log(file,"file")
-    // const extension= file?.type?.split('/')[1]
-    // console.log(extension,"imaaaaa")
     setType(file?.type)
-    // console.log(file,"fileUploaded")
     setSelectedImg(file)
     if (file && allowedTypes.includes(file.type)) {
       const reader = new FileReader();
