@@ -9,6 +9,7 @@ import {
     OverlayTrigger,
     Form,
     Nav,
+    ProgressBar,
 } from "react-bootstrap";
 // import userImg from '../../assets/img/user-img.jpg'
 
@@ -66,6 +67,7 @@ import SingleDetailForm from "./SingleDetailForm";
 import FeedbackPopup from './FeedbackPopup';
 import sowImage from '../../../assets/img/sow-img.png';
 import { RiFileCloseLine } from "react-icons/ri";
+import AgreementDetails from "../../../pages/admin/Modals/AgreementDetail";
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -492,6 +494,28 @@ const SingleJobDetails = () => {
 
     const editPage = <Tooltip>Proceed</Tooltip>;
     const viewPage = <Tooltip>View</Tooltip>;
+    const dateCreated = <Tooltip>09/08/2024 | 10:28:30 PM</Tooltip>
+    const waitingText = <Tooltip>
+        <div className="waiting-details">
+            <h5>Waiting for</h5>
+            <ul>
+                <li>Sahil Kansal
+                    <ul>
+                        <li>Sent on 09/08/2024 | 10:28:30 PM</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </Tooltip>
+
+    const [showagreement, setAgreementDetail] = useState(false);
+    const handleAgreement = () => {
+        setAgreementDetail(true);
+    }
+
+    const handleCloseAgreement = () => {
+        setAgreementDetail(!showagreement);
+    }
     return (
         <>
             {screenLoader ? <ScreenLoader /> : <section className="single-job-section">
@@ -1237,6 +1261,7 @@ const SingleJobDetails = () => {
                                                             <Button
                                                                 variant="transparent"
                                                                 className="website-action"
+                                                                onClick={handleNext}
                                                             >
                                                                 <FaArrowRight />
                                                             </Button>
@@ -1261,6 +1286,7 @@ const SingleJobDetails = () => {
                                                             <Button
                                                                 variant="transparent"
                                                                 className="website-action"
+                                                                onClick={handleNext}
                                                             >
                                                                 <FaArrowRight />
                                                             </Button>
@@ -1285,6 +1311,7 @@ const SingleJobDetails = () => {
                                                             <Button
                                                                 variant="transparent"
                                                                 className="website-action"
+                                                                onClick={handleNext}
                                                             >
                                                                 <FaArrowRight />
                                                             </Button>
@@ -1309,6 +1336,7 @@ const SingleJobDetails = () => {
                                                             <Button
                                                                 variant="transparent"
                                                                 className="website-action"
+                                                                onClick={handleNext}
                                                             >
                                                                 <FaArrowRight />
                                                             </Button>
@@ -1320,9 +1348,6 @@ const SingleJobDetails = () => {
                                         <div className="text-center mt-4">
                                             <Button variant="transparent" className="font-14 outline-main-btn main-btn px-5 me-2" onClick={handleBack}>
                                                 Back
-                                            </Button>
-                                            <Button variant="transparent" className="font-14 main-btn px-5" onClick={handleNext}>
-                                                Next
                                             </Button>
                                         </div>
                                     </div>
@@ -1425,242 +1450,40 @@ const SingleJobDetails = () => {
                                     </Nav.Item>
                                 </Nav>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey="client-sow">
-                                        <Tab.Container defaultActiveKey="grid-view-sow">
-                                            <div className="d-flex justify-content-end">
-                                                <Nav variant="pills" className="document-view-pill">
-                                                    <Nav.Item className="document-view-item">
-                                                        <Nav.Link
-                                                            className="document-view-link"
-                                                            eventKey="grid-view-sow"
-                                                        >
-                                                            <IoGrid />
-                                                        </Nav.Link>
-                                                    </Nav.Item>
-                                                    <Nav.Item className="document-view-item">
-                                                        <Nav.Link
-                                                            className="document-view-link"
-                                                            eventKey="list-view-nda"
-                                                        >
-                                                            <FaListUl />
-                                                        </Nav.Link>
-                                                    </Nav.Item>
-                                                </Nav>
+                                    <Tab.Pane eventKey="client-sow" className="pt-2 pb-4">
+                                        <div className="d-flex justify-content-between align-items-center activity-doc-wrapper">
+                                            <div>
+                                                <p className="name-text">Aviox Technologies</p>
+                                                <div className="sender-text">
+                                                    <p>To : loremipsum@gmail.com, rohit124@gmail.com</p>
+                                                    <span className="more-sender">+3</span>
+                                                </div>
+                                                <OverlayTrigger placement="bottom" overlay={dateCreated}>
+                                                    <p className="created-date">
+                                                        09-08-2024
+                                                    </p>
+                                                </OverlayTrigger>
                                             </div>
-                                            <Tab.Content>
-                                                <Tab.Pane eventKey="grid-view-sow" className="pt-2 pb-4">
-                                                    <Row>
-                                                        <Col lg={4}>
-                                                            <div className="interview-wrapper position-relative mb-3">
-                                                                <div>
-                                                                    <p className="dev-name mb-2 font-16">
-                                                                        <div className="me-1">
-                                                                            <img src={companyImg} />
-                                                                        </div>
-                                                                        <div>
-                                                                            Aviox Technologies Pvt Ltd<br />
-                                                                            {/* <span className="associate-text">
-                                                                                        <span className="associate mt-1">Mohali, India</span>
-                                                                                    </span> */}
-                                                                        </div>
-                                                                    </p>
-                                                                    <p className="associate-text mb-2 d-inline-block me-2">
-                                                                        <span className="associate">Date Created : <b>10-05-2024</b></span>
-                                                                    </p>
-                                                                    <p className="associate-text d-inline-block mb-2">
-                                                                        <span className="associate">Created by : <b>Rexett</b></span>
-                                                                    </p>
-                                                                    <div>
-                                                                        <p className="associate-text d-inline-block mb-2">
-                                                                            <span className="associate">Viewers <FaEye /> : <b>7</b></span>
-                                                                        </p>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5 className="font-14 mt-2 mb-1">Status</h5>
-                                                                        <span className="associate-text me-1">
-                                                                            <span className="associate d-inline-flex align-items-center">Sign by client <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
-                                                                        </span>
-                                                                        <span className="associate-text">
-                                                                            <span className="associate d-inline-flex align-items-center">Sign by admin <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="d-flex align-items-center justify-content-between">
-                                                                    <div>
-                                                                        {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                                                    </div>
-                                                                    <div className="d-flex align-items-center gap-2 mt-2">
-                                                                        <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
-                                                                        <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
-                                                                        <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                </Tab.Pane>
-                                                <Tab.Pane eventKey="list-view-nda" className="pt-2 pb-4">
-                                                    <div className="table-responsive">
-                                                        <table className="table table-ui-custom">
-                                                            <thead>
-                                                                <th>Name</th>
-                                                                <th>Date Created</th>
-                                                                <th>Created By</th>
-                                                                <th>Viewers</th>
-                                                                <th>Sign by client</th>
-                                                                <th>Sign by admin</th>
-                                                                <th>Action</th>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td className="font-14 align-middle">
-                                                                        Aviox Technologies
-                                                                    </td>
-                                                                    <td className="font-14 align-middle">10-08-2024</td>
-                                                                    <td className="font-14 align-middle">Rexett</td>
-                                                                    <td className="font-14 align-middle">7</td>
-                                                                    <td className="font-14 align-middle">
-                                                                        <span className="status-completed">Signed</span>
-                                                                    </td>
-                                                                    <td className="font-14 align-middle">
-                                                                        <span className="status-rejected">Not Signed</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div className="d-flex align-items-center gap-3">
-                                                                            <Button variant="transparent" className="arrow-btn danger-arrow">
-                                                                                <RiFileCloseLine />
-                                                                            </Button>
-                                                                            <Button variant="transparent" className="arrow-btn info-arrow">
-                                                                                <LuDownload />
-                                                                            </Button>
-                                                                            <Button variant="transparent" className="arrow-btn primary-arrow">
-                                                                                <FaFileSignature />
-                                                                            </Button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </Tab.Pane>
-                                            </Tab.Content>
-                                        </Tab.Container>
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="client-nda">
-                                        <Tab.Container defaultActiveKey="nda-grid">
-                                            <div className="d-flex justify-content-end">
-                                                <Nav variant="pills" className="document-view-pill">
-                                                    <Nav.Item className="document-view-item">
-                                                        <Nav.Link
-                                                            className="document-view-link"
-                                                            eventKey="nda-grid"
-                                                        >
-                                                            <IoGrid />
-                                                        </Nav.Link>
-                                                    </Nav.Item>
-                                                    <Nav.Item className="document-view-item">
-                                                        <Nav.Link
-                                                            className="document-view-link"
-                                                            eventKey="nda-list"
-                                                        >
-                                                            <FaListUl />
-                                                        </Nav.Link>
-                                                    </Nav.Item>
-                                                </Nav>
+                                            <div className="waiting-wrapper">
+                                                <ProgressBar now={50} />
+                                                <OverlayTrigger placement="bottom" overlay={waitingText}>
+                                                    <p className="waiting-text">Waiting for Sahil</p>
+                                                </OverlayTrigger>
                                             </div>
-                                            <Tab.Content>
-                                                <Tab.Pane eventKey="nda-grid" className="pt-2 pb-4">
-                                                    <Row>
-                                                        <Col lg={4}>
-                                                            <div className="interview-wrapper position-relative mb-3">
-                                                                <div>
-                                                                    <p className="dev-name mb-2 font-16">
-                                                                        <div className="me-1">
-                                                                            <img src={companyImg} />
-                                                                        </div>
-                                                                        <div>
-                                                                            Aviox Technologies Pvt Ltd<br />
-                                                                            {/* <span className="associate-text">
-                                                                                        <span className="associate mt-1">Mohali, India</span>
-                                                                                    </span> */}
-                                                                        </div>
-                                                                    </p>
-                                                                    <p className="associate-text mb-2 d-inline-block me-2">
-                                                                        <span className="associate">Date Created : <b>10-05-2024</b></span>
-                                                                    </p>
-                                                                    <p className="associate-text d-inline-block mb-2">
-                                                                        <span className="associate">Created by : <b>Rexett</b></span>
-                                                                    </p>
-                                                                    <div>
-                                                                        <h5 className="font-14 mt-2 mb-1">Status</h5>
-                                                                        <span className="associate-text me-1">
-                                                                            <span className="associate d-inline-flex align-items-center">Sign by client <span className="text-green font-18 d-inline-block ms-2"><IoCheckmarkOutline /> </span></span>
-                                                                        </span>
-                                                                        <span className="associate-text">
-                                                                            <span className="associate d-inline-flex align-items-center">Sign by admin <span className="text-danger font-18 d-inline-block ms-2"><IoCloseOutline /></span></span>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="d-flex align-items-center justify-content-between">
-                                                                    <div>
-                                                                        {/* <Button variant="transparent" className="link-btn font-14 text-decoration-none"><FaLink /> Copy Link</Button> */}
-                                                                    </div>
-                                                                    <div className="d-flex align-items-center gap-2 mt-2">
-                                                                        <Button variant="transparent" className="cancel-btn font-14">Cancel Doc</Button>
-                                                                        <Link to={'/admin/interview-detail'} className="outline-main-btn rounded-2 font-14 text-decoration-none">Download PDF</Link>
-                                                                        <Button variant="transparent" className="main-btn font-14">Send for E-sign</Button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
-                                                </Tab.Pane>
-                                                <Tab.Pane eventKey="nda-list" className="pt-2 pb-4">
-                                                    <div className="table-responsive">
-                                                        <table className="table table-ui-custom">
-                                                            <thead>
-                                                                <th>Name</th>
-                                                                <th>Date Created</th>
-                                                                <th>Created By</th>
-                                                                <th>Viewers</th>
-                                                                <th>Sign by client</th>
-                                                                <th>Sign by admin</th>
-                                                                <th>Action</th>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td className="font-14 align-middle">
-                                                                        Aviox Technologies
-                                                                    </td>
-                                                                    <td className="font-14 align-middle">10-08-2024</td>
-                                                                    <td className="font-14 align-middle">Rexett</td>
-                                                                    <td className="font-14 align-middle">7</td>
-                                                                    <td className="font-14 align-middle">
-                                                                        <span className="status-completed">Signed</span>
-                                                                    </td>
-                                                                    <td className="font-14 align-middle">
-                                                                        <span className="status-rejected">Not Signed</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div className="d-flex align-items-center gap-3">
-                                                                            <Button variant="transparent" className="arrow-btn danger-arrow">
-                                                                                <RiFileCloseLine />
-                                                                            </Button>
-                                                                            <Button variant="transparent" className="arrow-btn info-arrow">
-                                                                                <LuDownload />
-                                                                            </Button>
-                                                                            <Button variant="transparent" className="arrow-btn primary-arrow">
-                                                                                <FaFileSignature />
-                                                                            </Button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </Tab.Pane>
-                                            </Tab.Content>
-                                        </Tab.Container>
+                                            <div>
+                                                <div className="d-flex align-items-center gap-3">
+                                                    <Button variant="transparent" className="arrow-btn danger-arrow">
+                                                        <RiFileCloseLine />
+                                                    </Button>
+                                                    <Button variant="transparent" className="arrow-btn info-arrow">
+                                                        <LuDownload />
+                                                    </Button>
+                                                    <Button variant="transparent" className="arrow-btn primary-arrow">
+                                                        <FaFileSignature />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Tab.Container>
