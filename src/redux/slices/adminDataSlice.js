@@ -1154,7 +1154,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     return async (dispatch) => {
       dispatch(setSmallLoader());
       try {
-        let result = await clientInstance.get(`admin/message-templates/${id}`);
+        let result = await clientInstance.get(`common/message-templates/${id}`);
         return callback(result.data?.template)
       } catch (error) {
         const message = error.message || "Something went wrong";

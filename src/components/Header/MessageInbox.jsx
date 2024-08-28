@@ -28,10 +28,13 @@ import {
 import { getAllMessages, getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
 import moment from "moment";
 import { NOTIFICATIONBASEURL } from "../../helper/utlis";
+import { useForm } from "react-hook-form";
+import PreviewModal from "../../pages/admin/ResumeSteps/Modals/PreviewResume";
+import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   let userId = localStorage.getItem("userId");
-  const [selectedTab,setSelectedTab] = useState("")
+  const [selectedTab, setSelectedTab] = useState("")
   const [currentTab, setCurrentTab] = useState();
   const [hasContent, setHasContent] = useState(false);
   const [isEditorFocused, setIsEditorFocused] = useState(true);
@@ -39,59 +42,66 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const [messageWrapperVisible, setMessageWrapperVisible] = useState(false);
   const [messageTitle, setMessageTitle] = useState("");
   const [chtRoomId, setChtRoomId] = useState(null)
-  const [selectedChat,setSelectedChat] = useState()
-
+  const [selectedChat, setSelectedChat] = useState()
+  const [previewUrl, setPreviewUrl] = useState()
+  const [selectedImg, setSelectedImg] = useState()
+  const [type, setType] = useState("")
+  const dispatch = useDispatch();
   const { messageTemplates, chatRoom } = useSelector(
     (state) => state.adminData
   );
   const { chatData } = useSelector((state) => state.developerData);
-  const [chatmessages,setChatMessages]=useState([])
+  const [chatmessages, setChatMessages] = useState([])
 
-  const dispatch = useDispatch();
+  const { register, handleSubmit, watch, setValue } = useForm();
 
-  console.log(chatmessages,"chatmessages")
- 
+
+
   const socket = io(NOTIFICATIONBASEURL);
   const [adduserconversation, showAddUserConversation] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     setChatMessages(chatData)
-  },[chatData])
-  console.log(chatData,"chatData")
+    setMessageTitle("")
+    setValuemessga("")
+    setHasContent("")
+    setSelectedImg("")
+    setPreviewUrl("")
+  }, [chatData])
 
-  const {chatRoomMessageList}=useSelector((state)=>state.developerData)
+  const { chatRoomMessageList } = useSelector((state) => state.developerData)
   const user_id = localStorage.getItem("userId")
 
-  useEffect(()=>{
+
+  useEffect(() => {
     socket.on("connect", () => {
-        console.log("Connected to Socket.IO server");
-      });
-      socket.on(`new_message_received_${userId}`, (message) => {
-        console.log(message,"message")
-        setChatMessages([...chatmessages,message]);
-      });
-    
-      return () => {
-        socket.disconnect();
-      };
-  },[])
+      console.log("Connected to Socket.IO server");
+    });
+    socket.on(`new_message_received_${userId}`, (message) => {
+      setChatMessages([...chatmessages, message]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [])
 
 
 
   useEffect(() => {
     dispatch(getAllMessageTemplates());
-   
+
   }, []);
 
   const handleShowUserConversation = () => {
     showAddUserConversation(!adduserconversation);
   };
   const handleSelect = (selectedTab) => {
-    if(currentTab === "first"){
+    if (currentTab === "first") {
       setSelectedTab("inbox")
-    }else if(currentTab==="second"){
+    } else if (currentTab === "second") {
       setSelectedTab("unread")
-    }else{
+    } else {
       setSelectedTab("archive")
     }
     if (selectedTab === "first") {
@@ -99,25 +109,25 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
         type: "inbox",
         // developer_name : "pankaj_pundir",
         page: "1",
-        per_page:"10"
+        per_page: "10"
       }
-      dispatch(getAllMessages(userId , payload ));
+      dispatch(getAllMessages(userId, payload));
     } else if (selectedTab === "second") {
       const payload = {
         type: "unread",
         // developer_name : "pankaj_pundir",
         page: "1",
-        per_page:"10"
+        per_page: "10"
       }
-      dispatch(getAllMessages(userId,payload));
+      dispatch(getAllMessages(userId, payload));
     } else {
       const payload = {
         type: "archive",
         // developer_name : "pankaj_pundir",
         page: "1",
-        per_page:"10"
+        per_page: "10"
       }
-      dispatch(getAllMessages( userId,payload));
+      dispatch(getAllMessages(userId, payload));
     }
     setCurrentTab(selectedTab);
   };
@@ -129,9 +139,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   };
 
 
-  const handleChatProfileClick = (roomId ) => {
-    const selectedChat = chatRoomMessageList?.chatRooms?.find(itm=>itm.id==roomId)
-    console.log(selectedChat,"selectedChat")
+  const handleChatProfileClick = (roomId) => {
+    const selectedChat = chatRoomMessageList?.chatRooms?.find(itm => itm.id == roomId)
     setSelectedChat(selectedChat)
     setChtRoomId(roomId)
     dispatch(getChatRoomData(roomId));
@@ -159,34 +168,78 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       setMessageTitle(newValue.target.value);
     }
   };
-
   const sendMessage = () => {
-    let payload = {
-      chatroom_id: chtRoomId,
-      sender_id: userId,
-      message_title: messageTitle,
-      message_body: valuemessga,
-      message_attachment_url: "string",
-    };
-    dispatch(messageSendFunc(payload));
+    console.log("innside send message")
+    let payload;
+    if (selectedImg) {
+      let fileData = new FormData()
+      fileData.append("file", selectedImg);
+      console.log("here we are")
+      dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+        console.log("case1")
+        payload = {
+          chatroom_id: chtRoomId,
+          sender_id: userId,
+          message_title: messageTitle,
+          message_body: valuemessga,
+          file_type: type,
+          message_attachment_url: url,
+        };
+        dispatch(messageSendFunc(payload));
+      }))
+    } else {
+      console.log("case2")
+      payload = {
+        chatroom_id: chtRoomId,
+        sender_id: userId,
+        message_title: messageTitle,
+        message_body: valuemessga,
+        message_attachment_url: "string",
+        file_type: "",
+      }
+      dispatch(messageSendFunc(payload))
+    }
     setMessageTitle("")
     setValuemessga("")
     setHasContent("")
-    
+    setSelectedImg("")
+    setPreviewUrl("")
     socket.on(`new_message_sent_${userId}`, (rmsg) => {
-        console.log(rmsg,"Rmessage")
-      });
+      console.log(rmsg, "Rmessage")
+    });
   };
+
 
   const popuplateOntheMessage = (data) => {
     dispatch(
       getTemplateById(data?.id, (response) => {
-        console.log(response, "rep");
         setValuemessga(response?.message);
         setMessageTitle(response?.subject);
       })
     );
   };
+  console.log(type, "type---")
+  const imageTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"]
+  const handleFileUpload = (event) => {
+    const allowedTypes = ["application/pdf", "image/png", "image/jpeg", "image/jpg", "image/svg+xml", "application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",];
+    const file = event.target.files[0];
+    // console.log(file,"file")
+    // const extension= file?.type?.split('/')[1]
+    // console.log(extension,"imaaaaa")
+    setType(file?.type)
+    // console.log(file,"fileUploaded")
+    setSelectedImg(file)
+    if (file && allowedTypes.includes(file.type)) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (reader.result) {
+          setPreviewUrl(reader.result);
+        }
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+
 
   return (
     <div>
@@ -297,25 +350,51 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   <span className="subject-name">Invited</span>
                 </p>
                 {chatmessages?.length > 0
-                  ? chatmessages?.map((item,index) => {
-                  let  isReceiver=item?.sender_id==userId
-                  let data=item?.message_body
-                
-        
-                const showTime =
-                  index === chatmessages.length - 1 ||
-                  chatmessages[index + 1].sender_id !== item.sender_id;
+                  ? chatmessages?.map((item, index) => {
+                    let isReceiver = item?.sender_id == userId
+                    let data = item?.message_body
+                    let file = item?.message_attachment_url
+                    let file_type = item?.file_type
+                    console.log(file_type, "fileing")
+
+
+
+
+                    const showTime =
+                      index === chatmessages.length - 1 ||
+                      chatmessages[index + 1].sender_id !== item.sender_id;
 
 
                     return (
                       <>
                         <div className={isReceiver ? "receiver-message" : "sender-message"}>
                           {isReceiver && showTime && <div className="sender-profile">
-                            <img src={selectedChat?.members[0]?.user?.profile_picture } />
+                            <img src={selectedChat?.members[0]?.user?.profile_picture} />
                           </div>}
                           <div>
+
+                            {/* <div>
                             <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
                             {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
+                          </div> */}
+
+
+                            {file && data ? (
+                              <div >
+                                {imageTypes?.includes(file_type) ? <div className="preview-upload-imgwrapper">
+                                  <img src={file} className="upload-preview-img" alt="Preview" />
+                                </div> : <a href={file} target="_blank" rel="noopener noreferrer">{file} </a>}
+                                <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
+                                {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
+                              </div>
+                            ) : (
+                              data && (
+                                <div>
+                                  <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
+                                  {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
+                                </div>
+                              )
+                            )}
                           </div>
                           {!isReceiver && showTime && <div className="sender-profile">
                             <img src={selectedChat?.members[0]?.user?.profile_picture} />
@@ -406,7 +485,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   type="text"
                   value={messageTitle}
                   className="common-field font-14 mb-2"
-                  placeholder="Enter new subject"
+                  placeholder=""
                   onChange={(e) => handleMessageChange(e, "title")}
                 />
               </div>
@@ -463,11 +542,20 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                         </div>
                       </Dropdown.Menu>
                     </Dropdown>
-                    <input
+                    <Form.Control
                       type="file"
                       id="attach-file-msg"
+                      name="message_attachment_url"
                       className="d-none"
+                      onChange={handleFileUpload}
+                    // {...register("message_attachment_url", {
+                    //   onChange: (e) => handleFileUpload(e),
+                    // })
+                    // }
                     />
+                    {imageTypes.includes(selectedImg?.type) ? <div className="preview-upload-imgwrapper">
+                      <img src={previewUrl} className="upload-preview-img" alt="URL" />
+                    </div> : <a href={previewUrl} target="_blank" rel="noopener noreferrer">{previewUrl} </a>}
                     <ToolTip text={"Add Attachment"}>
                       <label htmlFor="attach-file-msg">
                         <span>
@@ -561,7 +649,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                         <Tab.Content>
                           <Tab.Pane eventKey="all-in-message" className="mt-2">
                             <MessageInboxCard
-                            type={selectedTab}
+                              type={selectedTab}
                               chatRoom={chatRoom}
                               messageWrapperVisible={messageWrapperVisible}
                               handleChatProfileClick={handleChatProfileClick}

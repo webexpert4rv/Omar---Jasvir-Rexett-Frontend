@@ -48,7 +48,6 @@ const CommonFilterSection = ({
   };
   const isAnyFieldFilled = () => {
     const fields = watch();
-    console.log(fields,"fields")
     return Object.values(fields).some((value) => value !== "");
   };
 

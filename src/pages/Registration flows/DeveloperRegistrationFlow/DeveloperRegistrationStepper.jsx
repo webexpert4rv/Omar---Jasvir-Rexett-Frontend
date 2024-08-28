@@ -124,7 +124,7 @@ const DeveloperRegistrationStepper = () => {
     return str?.replace(/<\/?[^>]+(>|$)/g, "");
   };
 
-console.log(filteredStepData,"filteredStepDataDeveloperStepper")
+  console.log(filteredStepData, "filteredStepDataDeveloperStepper")
   useEffect(() => {
     setFilteredStepData(stepData);
   }, [stepData])
@@ -147,7 +147,7 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
   let lastName = rest.join(' ');
   const devId = localStorage.getItem("developerId")
 
-  
+
   useEffect(() => {
     const activeStepKeys = {
       1: "step1",
@@ -189,7 +189,7 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
           }
         }
 
-        if (currentStep === "step2" ) {
+        if (currentStep === "step2") {
           const details = data?.find((item, idx) => idx === data.length - 1)
 
           if (details) {
@@ -216,13 +216,13 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
 
         if (currentStep === "step4") {
           const details = data?.find((item, idx) => idx === data.length - 1)
-          console.log(details,"details")
+          console.log(details, "details")
 
-                
+
 
 
           if (details) {
-       for (let key in details) {
+            for (let key in details) {
               setValue(key, details[key]);
             }
           }
@@ -243,10 +243,10 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
           if (details) {
             for (let key in details) {
               if (key == "project_start_date") {
-                const startDate = details[key].slice(0,10);
+                const startDate = details[key].slice(0, 10);
                 setValue("project_start_date", startDate);
               } else if (key === "project_end_date") {
-                const endDate = details[key].slice(0,10);
+                const endDate = details[key].slice(0, 10);
                 setValue("project_end_date", endDate);
               } else {
                 setValue(key, details[key]);
@@ -256,7 +256,7 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
         }
       }));
     }
-  }, [devId, storedStep,nestedActiveStep]);
+  }, [devId, storedStep, nestedActiveStep]);
 
 
   useEffect(() => {
@@ -522,7 +522,7 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
     }
   };
 
-  
+
 
   const editSummary = (id) => {
     let selectedEditData = stepData?.find(it => it.id == id)
@@ -701,7 +701,7 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
             return (
               <Summary
                 nestedActiveStep={nestedActiveStep}
-                filteredStepData= {filteredStepData}
+                filteredStepData={filteredStepData}
                 setFilteredStepData={setFilteredStepData}
                 // handleDelete={handleDelete}
                 handleCloseUploadFileModal={handleClose}
@@ -840,7 +840,7 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
             return (
               <Summary
                 nestedActiveStep={nestedActiveStep}
-                filteredStepData= {filteredStepData}
+                filteredStepData={filteredStepData}
                 setFilteredStepData={setFilteredStepData}
                 // handleDelete={handleDelete}
                 handleCloseUploadFileModal={handleClose}
@@ -884,6 +884,8 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
           return Promise.resolve(); // Resolve immediately if no file to upload
         }
       });
+      console.log(uploadedUrls?.profile_picture, "imagess")
+
       Promise.all(uploadPromises).then(() => {
         let payload = {
           first_name: values?.first_name,
@@ -910,6 +912,7 @@ console.log(filteredStepData,"filteredStepDataDeveloperStepper")
           intro_video_url: uploadedUrls?.introVideo,
           user_id: developer_id ? developer_id : null
         };
+        console.log(payload,"paysload")
 
         dispatch(developerRegistration(payload, () => {
           if (!ifDone) {

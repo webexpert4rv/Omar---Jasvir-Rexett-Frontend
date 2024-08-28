@@ -35,7 +35,6 @@ const Summary = ({
     }
 },[developerId])
 
-console.log(filteredStepData,"filteredStepData")
 
   const handleDeleteModal = (id) => {
     setEduId(id)

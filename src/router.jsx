@@ -176,13 +176,13 @@ export const route = [
   //   public: true,
   // },
   {
-    path: "/developer-registration",
+    path: "/talent-registration",
     element: <DeveloperRegistrationStepper />,
     public: true,
   },
 
   {
-    path: "/vendor-registration",
+    path: "/partner-registration",
     element: <VendorRegistrationStepper />,
     public: true,
   },
