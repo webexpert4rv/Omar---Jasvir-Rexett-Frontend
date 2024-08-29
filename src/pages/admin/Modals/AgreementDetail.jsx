@@ -29,9 +29,9 @@ const AgreementDetails = ({ show, handleClose }) => {
                 </h3>
                 <div className="info-agreement">
                     <p>Envelope ID : <strong className="text-green">ff05ba12-00a2-4e35-8076-6d2003632ebd</strong> <span className="copy-btn"><FaCopy /></span>  </p>
-                    <p>From: Robin Gautam</p>
-                    <p>Last change on 8/28/2024 | 04:19:06 pm</p>
-                    <p>Sent on 8/28/2024 | 04:18:50 pm</p>
+                    <p>From: <b>Robin Gautam</b></p>
+                    <p>Last change on <b>8/28/2024 | 04:19:06 pm</b></p>
+                    <p>Sent on <b>8/28/2024 | 04:18:50 pm</b></p>
                 </div>
                 <div>
                     <h4 className="recipients-text">Recipients</h4>

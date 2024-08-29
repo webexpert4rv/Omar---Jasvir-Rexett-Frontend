@@ -6,37 +6,37 @@ import videoImg from "../../../assets/img/demo-video.png";
 import IntroVideo from "../../../components/common/Modals/IntroVideo";
 
 const UploadFile = ({ label, placeholder,
-    register,
-    fieldName,
-    previewImage,
-    setPreviewImage,
-    imageFile,
-    setImageFile,
-    setValue,
-    clearErrors,
-    errors,
-    setError,
-    stepData
- }) => {
-  console.log(imageFile,"imagefile")
-  const [showVideo,setShowVideo]=useState(false)
-  console.log(fieldName,"fieldName")
- const DOC_ALLOWED_EXTENSIONS = [
-        "application/pdf",
-        "application/msword"
+  register,
+  fieldName,
+  previewImage,
+  setPreviewImage,
+  imageFile,
+  setImageFile,
+  setValue,
+  clearErrors,
+  errors,
+  setError,
+  stepData
+}) => {
+  console.log(imageFile, "imagefile")
+  const [showVideo, setShowVideo] = useState(false)
+  console.log(fieldName, "fieldName")
+  const DOC_ALLOWED_EXTENSIONS = [
+    "application/pdf",
+    "application/msword"
 
-      ];
- const VIDEO_ALLOWED_EXTENSIONS=[
+  ];
+  const VIDEO_ALLOWED_EXTENSIONS = [
     "video/mp4",
     "video/webm",
     "video/ogg"
- ]     
- console.log(imageFile,"imageFile")
+  ]
+  console.log(imageFile, "imageFile")
 
- console.log(previewImage,'previewImage hghg');
+  console.log(previewImage, 'previewImage hghg');
 
-  
- const handleFileChange = async (e, name) => {
+
+  const handleFileChange = async (e, name) => {
     const file = e.target.files[0];
     const isImage = DOC_ALLOWED_EXTENSIONS.includes(file?.type);
     const isVideo = VIDEO_ALLOWED_EXTENSIONS.includes(file?.type);
@@ -47,7 +47,7 @@ const UploadFile = ({ label, placeholder,
         setPreviewImage((prev) => ({ ...prev, resume: url }));
         setImageFile((prev) => ({ ...prev, resume: file }));
         clearErrors(fieldName);
-      } else if (name=="intro_video_url" && isVideo) {
+      } else if (name == "intro_video_url" && isVideo) {
         const url = URL.createObjectURL(file);
         setPreviewImage((prev) => ({ ...prev, introVideo: url }));
         setImageFile((prev) => ({ ...prev, introVideo: file }));
@@ -63,16 +63,16 @@ const UploadFile = ({ label, placeholder,
     }
   };
 
-console.log(imageFile,"imageFile")
-console.log(previewImage,"previewImage")
-console.log(fieldName,"fieldName")
-console.log(errors,"err")
-console.log(showVideo,"showe")
+  console.log(imageFile, "imageFile")
+  console.log(previewImage, "previewImage")
+  console.log(fieldName, "fieldName")
+  console.log(errors, "err")
+  console.log(showVideo, "showe")
 
-const handleIntroVideo=()=>{
-  console.log("int")
-  setShowVideo(!showVideo)
-}
+  const handleIntroVideo = () => {
+    console.log("int")
+    setShowVideo(!showVideo)
+  }
 
   return (
     <>
@@ -80,28 +80,36 @@ const handleIntroVideo=()=>{
         <Form.Label className="font-14 fw-medium">{label} *</Form.Label>
 
         <Form.Control
-            {...register(fieldName, {
-              onChange: (e) => handleFileChange(e,fieldName),
-            })}
-            type="file"
-            id={fieldName}
-            placeholder="Company Name"
-            className="common-field d-none"
-          />
+          {...register(fieldName, {
+            onChange: (e) => handleFileChange(e, fieldName),
+          })}
+          type="file"
+          id={fieldName}
+          placeholder="Company Name"
+          className="common-field d-none"
+        />
         <Form.Label htmlFor={fieldName} className="upload-intro-file">
           {placeholder}
         </Form.Label>
-       
+
       </div>
       <div>
-      {errors[fieldName] && (
-            <p className="field-error">{errors[fieldName]?.message}</p>
-          )}
-        {label!=="Resume" ? (
+        {errors[fieldName] && (
+          <p className="field-error">{errors[fieldName]?.message}</p>
+        )}
+        {label !== "Resume" ? (
           <div className="profile-upload-preview position-relative preview_intro mb-3">
             <div className="profile-img-preview w-100 h-100">
-              <video src={previewImage?.introVideo ? previewImage?.introVideo : stepData?.intro_video_url ? stepData?.intro_video_url : videoImg} className="w-100 h-100"/>
-            
+              <video
+                src={
+                  previewImage?.introVideo
+                    ? previewImage?.introVideo
+                    : stepData?.intro_video_url
+                      ? stepData?.intro_video_url
+                      : videoImg
+                }
+                className="w-100 h-100"
+              />
             </div>
             <div className="playback_intro" onClick={handleIntroVideo}>
               <IoPlay />
@@ -109,23 +117,24 @@ const handleIntroVideo=()=>{
             <Form.Label htmlFor="intro-video" className="profile-img-label">
               <FaUpload />
             </Form.Label>
-  
           </div>
         ) : (
-          <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
-            <span className="font-14 fw-medium">{imageFile?.resume?.name ? imageFile?.resume?.name : stepData?.resume}</span>
-            <span className="cursor-pointer text-danger">
-              {/* <IoClose /> */}
-                {/* {errors[fieldName] && (
-            <p className="field-error">{errors[fieldName]?.message}</p>
-          )} */}
-            </span>
-        
-          </div>
-          
+          <>
+            {/* Conditional rendering of the div */}
+            {imageFile?.resume && (
+              <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
+                <span className="font-14 fw-medium">
+                  {imageFile?.resume?.name ? imageFile?.resume?.name : stepData?.resume}
+                </span>
+                <span className="cursor-pointer text-danger">
+                  <IoClose onClick={() => setImageFile((prev) => ({ ...prev, resume: null }))} />
+                </span>
+              </div>
+            )}
+          </>
         )}
       </div>
-      <IntroVideo show={showVideo} handleClose={handleIntroVideo} previewImage={previewImage?.introVideo ? previewImage?.introVideo : stepData?.intro_video_url}/>
+      <IntroVideo show={showVideo} handleClose={handleIntroVideo} previewImage={previewImage?.introVideo ? previewImage?.introVideo : stepData?.intro_video_url} />
     </>
   );
 };

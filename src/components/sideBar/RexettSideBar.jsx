@@ -26,7 +26,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) =>
 
     return (
         <>
-            <aside className={collapseActive ? "sidebar collapse-active" : "sidebar"}>
+            <aside className={collapseActive ? "sidebar" : "sidebar collapse-active"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
                         <div className="sidebar-logo mt-3 mb-4">
