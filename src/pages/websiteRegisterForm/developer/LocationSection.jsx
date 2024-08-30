@@ -38,6 +38,7 @@ useEffect(() => {
 }, [countryCode, watch]);
 
   const handleDropDownChange = (value, name) => {
+    console.log(value,"cityValue")
     if (name === "country_code") {
       setValue("country_code", value);
       clearErrors("country_code");
@@ -45,7 +46,7 @@ useEffect(() => {
       dispatch(getTimeZoneForCountry(watch("country_code")?.value));
       setValue("time_zone", null);
       setValue("state_iso_code", null);
-      // setValue("city", null);
+      setValue("city", null);
     } else if (name === "state_iso_code") {
       setValue("state_iso_code", value);
       clearErrors("state_iso_code");
@@ -55,15 +56,19 @@ useEffect(() => {
       dispatch(
         getCitiesList(
           watch("country_code")?.value,
-          watch("state_iso_code")?.label
+          watch("state_iso_code")?.value
         )
       );
-      setValue("city", null);
-    } else if (name === "time_zone") {
+      // setValue("city", null);
+    } else if (name === "city"){
+      setValue("city",value)
+      
+    }else if (name === "time_zone") {
       setValue("time_zone", value);
       clearErrors("time_zone");
     }
   };
+  console.log(watch("city"),"NmeState")
   return (
     <>
       {isRegistrationStep ? (

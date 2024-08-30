@@ -1209,6 +1209,7 @@ export function getStatesList(countryCode) {
   };
 }
 export function getCitiesList(countryCode, stateName) {
+  console.log(stateName,"statename")
   return async (dispatch) => {
     // dispatch(setScreenLoader());
     try {

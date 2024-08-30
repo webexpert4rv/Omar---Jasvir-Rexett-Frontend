@@ -177,6 +177,11 @@ const DeveloperRegistrationStepper = () => {
           } else if (key === "state_iso_code") {
             const newValue = { label: data["state"], value: data[key] };
             setValue(key, newValue);
+          } else if (key === "city") {
+            const newValue = { 
+              label: data["city"], 
+              value: data[key] };
+            setValue(key, newValue)
           } else if (key === "time_zone") {
             const newValue = { label: data[key], value: data[key] };
             setValue(key, newValue);
@@ -896,7 +901,7 @@ const DeveloperRegistrationStepper = () => {
           country: values?.country_code?.label,
           address: values?.address,
           password: values?.password,
-          city: values?.city?.value,
+          city: values?.city.label,
           state: values?.state_iso_code?.label,
           country_iso_code: values?.country_iso_code?.value,
           state_iso_code: values?.state_iso_code?.value,
