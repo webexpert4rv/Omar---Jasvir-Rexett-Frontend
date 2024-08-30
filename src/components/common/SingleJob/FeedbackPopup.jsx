@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { approveFeedback } from '../../../redux/slices/clientDataSlice';
 import { toast } from 'react-toastify';
+import { FaThumbsDown, FaThumbsUp } from 'react-icons/fa6';
 
 const FeedbackPopup = ({ interviewId, showPopup, closePopup }) => {
   const dispatch = useDispatch();
@@ -19,25 +20,21 @@ const FeedbackPopup = ({ interviewId, showPopup, closePopup }) => {
   };
 
   return (
-    <Modal show={showPopup} onHide={closePopup}>
-      <Modal.Header closeButton>
-        <Modal.Title>Select Feedback Status</Modal.Title>
+    <Modal show={showPopup} onHide={closePopup} centered animation className="custom-modal">
+      <Modal.Header closeButton className="border-0 pb-3">
       </Modal.Header>
+
       <Modal.Body>
-        <div className="d-flex justify-content-around">
-          <Button onClick={() => handleFeedback('selected')} className="btn-approve">
-            Selected
+        <h3 className="popup-heading">Share Feedback</h3>
+        <div className="d-flex justify-content-center gap-3">
+          <Button onClick={() => handleFeedback('selected')} className="main-btn font-14 px-4">
+            Selected <FaThumbsUp />
           </Button>
-          <Button onClick={() => handleFeedback('rejected')} className="btn-reject">
-            Rejected
+          <Button onClick={() => handleFeedback('rejected')} className="cancel-btn px-4">
+            Rejected <FaThumbsDown />
           </Button>
         </div>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={closePopup}>
-          Close
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };

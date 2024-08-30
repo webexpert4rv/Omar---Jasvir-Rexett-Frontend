@@ -10,6 +10,7 @@ import {
     Form,
     Nav,
     ProgressBar,
+    Modal,
 } from "react-bootstrap";
 // import userImg from '../../assets/img/user-img.jpg'
 
@@ -36,7 +37,7 @@ import { BsFillSendFill } from "react-icons/bs";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import sidebarLogo from "../../../assets/img/rexett-logo.png";
-import { FaArrowRight, FaBriefcase, FaCheck, FaEye, FaFileSignature, FaGithub, FaLinkedin, FaPencil, FaStar, FaTrash, FaTrashCan, FaUsersLine, FaUsersViewfinder } from "react-icons/fa6";
+import { FaArrowRight, FaBriefcase, FaCheck, FaEye, FaFileSignature, FaGithub, FaLinkedin, FaPencil, FaStar, FaThumbsUp, FaTrash, FaTrashCan, FaUsersLine, FaUsersViewfinder } from "react-icons/fa6";
 import { TiEdit } from "react-icons/ti";
 import { FaRegHandshake } from "react-icons/fa6";
 import { SlLocationPin } from "react-icons/sl";
@@ -68,6 +69,7 @@ import FeedbackPopup from './FeedbackPopup';
 import sowImage from '../../../assets/img/sow-img.png';
 import { RiFileCloseLine } from "react-icons/ri";
 import AgreementDetails from "../../../pages/admin/Modals/AgreementDetail";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -457,13 +459,13 @@ const SingleJobDetails = () => {
     };
 
     const [showDetails, setShowDetails] = useState({});
-
     const handleToggleDetails = (interviewId) => {
         setShowDetails((prevState) => ({
             ...prevState,
             [interviewId]: !prevState[interviewId]
         }));
     };
+    const closeFeedback = () => setShowDetails(false);
 
     const handleFeedbackClick = (interviewId) => {
         navigate('/client/interview-feedback', {
@@ -485,8 +487,8 @@ const SingleJobDetails = () => {
     };
 
     const closePopup = () => {
-        setShowPopup(false);
         setSelectedInterviewId(null);
+        setShowPopup(!showPopup);
     };
 
 
@@ -516,6 +518,8 @@ const SingleJobDetails = () => {
     const handleCloseAgreement = () => {
         setAgreementDetail(!showagreement);
     }
+
+
 
     return (
         <>
@@ -874,7 +878,7 @@ const SingleJobDetails = () => {
                     <Tab eventKey="interviewing" title={interview}>
                         {singleJobDescription && (
                             <div>
-                                <h5 className="font-22 mb-4 fw-bold">Interview Completed</h5>
+                                <h5 className="font-22 mb-4 fw-bold">Interviews</h5>
                                 <Row>
                                     {singleJobDescription?.job_applications?.interviews?.interview_completed?.map((item, index) => (
                                         <Col lg={4} key={index}>
@@ -887,9 +891,12 @@ const SingleJobDetails = () => {
                                                         <div className="me-1">
                                                             <img src={item.developer.profile_picture} alt={item.developer.name} />
                                                         </div>
-                                                        {item.developer.name}
+                                                        <div>
+                                                            {item.developer.name}
+                                                            <span className="font-14 fw-normal d-block">{item.developer.email}</span>
+                                                        </div>
                                                     </div>
-                                                    <div>
+                                                    <div className="mb-3">
                                                         <span className="associate-text">
                                                             <span className="associate">
                                                                 Date: {item.interview.meeting_date}, Time: {item.interview.meeting_time} - {item.interview.meeting_end_time}
@@ -921,14 +928,15 @@ const SingleJobDetails = () => {
                                                                     onClick={() => handleApproveFeedback(item.interview.id)}
                                                                     className="main-btn font-14 text-decoration-none"
                                                                 >
-                                                                    Publish Feedback
+                                                                    Select Decision
                                                                 </button>
                                                                 <Button
                                                                     onClick={() => handleToggleDetails(item.interview.id)}
                                                                     variant="transparent"
                                                                     className="outline-main-btn font-14"
                                                                 >
-                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                    Show Feedback
+                                                                    {/* {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'} */}
                                                                 </Button>
                                                             </>
                                                         )}
@@ -951,7 +959,8 @@ const SingleJobDetails = () => {
                                                                     variant="transparent"
                                                                     className="outline-main-btn font-14"
                                                                 >
-                                                                    {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'}
+                                                                    Show Feedback
+                                                                    {/* {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'} */}
                                                                 </Button>
                                                             </>
                                                         )}
@@ -975,47 +984,155 @@ const SingleJobDetails = () => {
                                                     </div>
                                                 </div>
                                                 {showDetails[item.interview.id] && (
-                                                    <div className="feedback-details mt-3">
-                                                        {item.interview.shareFeedbacks.map((feedback, fbIndex) => (
-                                                            <div key={fbIndex} className="feedback">
-                                                                <p><strong>Feedback by:</strong> {feedback.feedback_given_by.name} ({feedback.feedback_given_by.email})</p>
-                                                                <p><strong>Feedback Type:</strong> {feedback.feedback_type}</p>
-                                                                <p><strong>Feedback Text:</strong> {feedback.feedback_text}</p>
-                                                                <p><strong>Interviewer Decision:</strong> {feedback.interviewer_decision}</p>
-                                                                <p><strong>Candidate Rating:</strong> {feedback.candidates_rating}</p>
-                                                                <p><strong>Skill Ratings:</strong></p>
-                                                                <ul>
-                                                                    {feedback.skillRatings.map((rating, ratingIndex) => (
-                                                                        <li key={ratingIndex}>
-                                                                            {rating.skill_name}: {rating.rating}
-                                                                        </li>
+                                                    <>
+                                                        <Modal show={showDetails} onHide={closeFeedback} centered animation className="custom-modal">
+                                                            <Modal.Header closeButton className="border-0 pb-3">
+                                                            </Modal.Header>
+                                                            <Modal.Body>
+                                                                <h3 className="popup-heading">Feedback</h3>
+
+                                                                <div className="feedback-details mt-3">
+                                                                    {item.interview.shareFeedbacks.map((feedback, fbIndex) => (
+                                                                        <div key={fbIndex} className="feedback">
+                                                                            <Row>
+                                                                                <Col md={6}>
+                                                                                    <p className="font-14 fw-bold mb-2">Feedback Given</p>
+                                                                                    <p className="font-14">{feedback.feedback_given_by.name} ({feedback.feedback_given_by.email})</p>
+                                                                                </Col>
+                                                                                <Col md={6}>
+                                                                                    <p className="font-14 fw-bold mb-2">Feedback Type</p>
+                                                                                    <p className="font-14 text-capitalize">{feedback.feedback_type}</p>
+                                                                                </Col>
+                                                                                <Col md={6}>
+                                                                                    <p className="font-14 fw-bold mb-2">Feedback Text</p>
+                                                                                    <p className="font-14">{feedback.feedback_text}</p>
+                                                                                </Col>
+                                                                                <Col md={6}>
+                                                                                    <p className="font-14 fw-bold mb-2">Interviewer Decision</p>
+                                                                                    <p className="text-capitalize font-14 d-inline-flex align-items-center gap-2 status-completed   ">{feedback.interviewer_decision} <FaThumbsUp /> </p>
+                                                                                </Col>
+                                                                                <Col md={12} className="mb-2">
+                                                                                    <p className="font-14 mb-2 fw-bold">Candidate Rating</p>
+                                                                                    <span className="d-inline-flex align-items-center gap-1 rating-text great-rating py-2 px-3">{feedback.candidates_rating} <FaStar /></span>
+                                                                                </Col>
+                                                                                <Col md={12}>
+                                                                                    <p><strong>Skill Ratings:</strong></p>
+                                                                                    <ul className="skill-rating-graph">
+                                                                                        {feedback.skillRatings.map((rating, ratingIndex) => {
+                                                                                            let pathColor, trailColor;
+
+                                                                                            if (rating.rating < 5) {
+                                                                                                trailColor = '#fff5f5';
+                                                                                                pathColor = '#ff6868';
+                                                                                            } else if (rating.rating < 7) {
+                                                                                                trailColor = '#fffdc3';
+                                                                                                pathColor = '#eaeb08';
+                                                                                            } else if (rating.rating < 9) {
+                                                                                                trailColor = '#c6fff6';
+                                                                                                pathColor = '#05db8a';
+                                                                                            } else {
+                                                                                                trailColor = '#c6fff6';
+                                                                                                pathColor = '#00af6c';
+                                                                                            }
+
+                                                                                            return (
+                                                                                                <li key={ratingIndex}>
+                                                                                                    <CircularProgressbar
+                                                                                                        value={rating.rating}
+                                                                                                        text={`${rating.skill_name}`}
+                                                                                                        styles={buildStyles({
+                                                                                                            pathColor: pathColor,
+                                                                                                            textColor: '#121212',
+                                                                                                            textSize: '14px',
+                                                                                                            trailColor: trailColor,
+                                                                                                        })}
+                                                                                                        strokeWidth={12}
+                                                                                                        maxValue={10}
+                                                                                                    />
+                                                                                                </li>
+                                                                                            );
+                                                                                        })}
+                                                                                    </ul>
+
+                                                                                </Col>
+                                                                            </Row>
+                                                                        </div>
                                                                     ))}
-                                                                </ul>
-                                                            </div>
-                                                        ))}
-                                                    </div>
+                                                                </div>
+                                                            </Modal.Body>
+                                                        </Modal>
+
+                                                    </>
                                                 )}
                                             </div>
                                         </Col>
                                     ))}
+                                    <Col lg={4} className="mb-3">
+                                        <div className="interview-wrapper position-relative pt-4 h-100 d-flex justify-content-between flex-column">
+                                            <div>
+                                                <div>
+                                                    <p className="interview-title mb-2">
+                                                        Interview Call for Figma Design
+                                                    </p>
+                                                    <div className="dev-name mb-2 font-14 d-flex align-items-center">
+                                                        <div className="me-1">
+                                                            <img src={devImg} alt="developer-img" />
+                                                        </div>
+                                                        <div>
+                                                            Rohit Sharma
+                                                            <span className="font-14 fw-normal d-block">rohit1234@gmail.com</span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <span className="associate-text">
+                                                            <span className="associate">Experience : <b>3 years</b></span>
+                                                        </span>
+                                                        <span className="associate-text">
+                                                            <span className="associate">Screening Rating : <b>4.4 <FaStar /> </b></span>
+                                                        </span>
+                                                    </div>
+                                                    <div className="mb-3">
+                                                        <span className="associate-text">
+                                                            {/* <span className="associate">
+                                                                    Date: {item.interview.meeting_date}, Time: {item.interview.meeting_time} - {item.interview.meeting_end_time}
+                                                                </span> */}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="mb-2 status-interview">
+                                                    <span className="status-upcoming">
+                                                        Need to schedule
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="d-flex align-items-center justify-content-between align-self-end">
+                                                <div className="d-flex align-items-center gap-2">
+                                                    <button className="main-btn font-14 text-decoration-none">
+                                                        Schedule Interview
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Col>
                                 </Row>
                             </div>
                         )}
-                        {scheduledInterviews.length > 0 && (
+                        {/* {scheduledInterviews.length > 0 && (
                             <>
                                 <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
                                 <div className="interview-scheduled pt-2 mb-3">
                                     <Row>
                                         {scheduledInterviews.map((item) => (
-                                            <Col lg={4} key={item.id}> {/* Ensure each item has a unique key */}
+                                            <Col lg={4} key={item.id}>
                                                 <InterviewCard handleShowMeetingInfo={handleShowMeetingInfo} item={item} />
                                             </Col>
                                         ))}
                                     </Row>
                                 </div>
                             </>
-                        )}
-                        {needToSchedule.length > 0 && (
+                        )} */}
+
+                        {/* {needToSchedule.length > 0 && (
                             <>
                                 <Tab.Container defaultActiveKey={'list-view'}>
                                     <div className="mb-4 d-flex justify-content-between align-items-center">
@@ -1097,7 +1214,7 @@ const SingleJobDetails = () => {
                                     </Tab.Content>
                                 </Tab.Container>
                             </>
-                        )}
+                        )} */}
                         {/* <JobCard
               handleJobStatusModal={handleJobStatusModal}
               type="Interviewing"
