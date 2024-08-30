@@ -62,11 +62,11 @@ import RegistrationStepModal from "../../views/Modals/RegistrationStepModal.jsx"
 
 const DeveloperRegistrationStepper = () => {
   const dispatch = useDispatch();
+  let token = localStorage.getItem('token')
   const { smallLoader, developerRegistrationData } = useSelector(
     (state) => state?.developerData
   );
   const [countryCode, setCountryCode] = useState()
-  console.log(countryCode, "countryCode")
   const [educationLevel, setEducationLevel] = useState(null);
   const [isEditMode, setEditMode] = useState({
     isEdit: false,
@@ -74,7 +74,7 @@ const DeveloperRegistrationStepper = () => {
   })
   const [ifDone, setDone] = useState(true);
   const [selectedRecommend, setSelectedRecommend] = useState(null)
-  const [activeStep, setActiveStep] = useState(4);
+  const [activeStep, setActiveStep] = useState(1);
   const [isAnotherData, setIsAnotherData] = useState(true);
   const [nestedActiveStep, setNestedActiveStep] = useState(0);
   const [previewImage, setPreviewImage] = useState({
@@ -912,8 +912,6 @@ const DeveloperRegistrationStepper = () => {
           intro_video_url: uploadedUrls?.introVideo,
           user_id: developer_id ? developer_id : null
         };
-        console.log(payload,"paysload")
-
         dispatch(developerRegistration(payload, () => {
           if (!ifDone) {
             setIsRegistrationStepModal(true);
@@ -1245,9 +1243,6 @@ const DeveloperRegistrationStepper = () => {
 
 
 
-  let token = localStorage.getItem('token')
-  console.log(activeStep, "activeStep")
-  console.log(nestedActiveStep, "nes")
 
   return (
     <section className={`${token ? "edit-developer-wrapper resume-section-wrapper" : "resume-section-wrapper"}`}>
@@ -1319,6 +1314,7 @@ const DeveloperRegistrationStepper = () => {
         show={isRegistrationStepModal}
         handleClose={handleRegistrationModal}
         nextStep={decreaseStepCount}
+        role = {"developer"}
       />
     </section>
   );

@@ -19,27 +19,15 @@ import SetUpJobModal from "../../../components/common/Modals/SetUpJobModal";
 import { uploadFileToS3Bucket } from "../../../redux/slices/developerDataSlice";
 import { applyAsVendor, getAreaExpertise, getEditDecision, getVendorUpdatedDetails } from "../../../redux/slices/vendorDataSlice";
 import ExpertiseArea from "./ExpertiseArea";
+import RegistrationStepModal from "../../views/Modals/RegistrationStepModal";
 
-// import React, { useEffect, useState } from "react";
-// import { useForm } from "react-hook-form";
-// import { Container } from "react-bootstrap";
-// import { FaArrowLeft } from "react-icons/fa6";
-// import { useDispatch, useSelector } from "react-redux";
-// import SidebarSection from "../SidebarSection";
-// import { getVendorActiveStepFields, MODAL_INFORMATION, SIDEBAR_ITEMS } from "../../helper/RegisterConstant";
-// import ClientStep1 from "../ClientRegistrationFlow/ClientStep1";
-// import { createOptionsForReactSelect } from "../../constant/developerStepConstant";
-// import { getCoutriesList, getWebClientLookUp, uploadFileToS3Bucket } from "../../Redux/Slices/ClientDataSlice";
-// import SetUpJobModal from "../../common/Modals/SetUpJobModal";
-// import { applyAsVendor, getAreaExpertise, getEditDecision, getVendorUpdatedDetails } from "../../Redux/Slices/VendorDataSlice";
-// import VendorDecisionMakers from "./VendorDecisionMakers";
-// import RexettButton from "../../atomic/RexettButton";
-// import RegistrationType from "../ClientRegistrationFlow/RegistrationType";
+
 
 const VendorRegistrationStepper = () => {
   const dispatch = useDispatch();
   const [companyTypeOptions, setCompanyTypeOptions] = useState([]);
-  const { smallLoader } = useSelector((state) => state.developerData);
+  const { smallLoader } = useSelector((state) => state.vendorData);
+  const [isRegistrationStepModal, setIsRegistrationStepModal] = useState(false);
   // const { } = useSelector((state) => state.clientData);
   const {
     handleSubmit,
@@ -58,8 +46,6 @@ const VendorRegistrationStepper = () => {
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
   const userId = localStorage.getItem("vendorId")
   const activeStepFields = getVendorActiveStepFields(activeStep);
-  console.log(activeStepFields,"activeStepFields")
-  console.log(activeStep,"activestep")
 
   useEffect(() => {
     const storedStep = localStorage.getItem("vendorActiveStep");
@@ -115,7 +101,9 @@ const VendorRegistrationStepper = () => {
               setValue(key, newValue);
             } else if (key === "company_logo") {
               setPreviewImage({profile_picture : data?.company_logo})
-            } else{
+            } else if(key === "passcode"){
+              setValue("post_code",data[key])
+            }else{
               setValue(key, data[key])
             } 
           }
@@ -133,6 +121,9 @@ const VendorRegistrationStepper = () => {
   const handleToggleSetupModal = () => {
     setShowSetUpJobModal((prev) => !prev);
   };
+  const handleRegistrationModal = () => {
+    setIsRegistrationStepModal(false);
+  }
 
   const onSubmit = () => {
     if (activeStep === 1) {
@@ -162,6 +153,7 @@ const VendorRegistrationStepper = () => {
   };
 
   const decreaseStepCount = () => {
+    setIsRegistrationStepModal(false);
     setActiveStep((prev) => prev - 1);
     localStorage.setItem("vendorActiveStep", activeStep - 1);
   };
@@ -239,6 +231,7 @@ const VendorRegistrationStepper = () => {
       success_story: stepData?.success_story
     }
     dispatch(getAreaExpertise(payload))
+    setIsRegistrationStepModal(true)
     handleRedirect()
     
   };
@@ -273,7 +266,7 @@ const VendorRegistrationStepper = () => {
             setPreviewImage={setPreviewImage}
             setImageFile={setImageFile}
             isProfileSectionRequired={activeStep === 1}
-            isVendorStep1={true}
+            isVendorStep1={"true"}
           />
         );
       case 2:
@@ -346,6 +339,12 @@ const VendorRegistrationStepper = () => {
         modalData={MODAL_INFORMATION[1]}
         activeStep={activeStep}
       /> : ""} */}
+       <RegistrationStepModal
+        show={isRegistrationStepModal}
+        handleClose={handleRegistrationModal}
+        nextStep={decreaseStepCount}
+        role={"vendor"}
+      />
     </>
   );
 };

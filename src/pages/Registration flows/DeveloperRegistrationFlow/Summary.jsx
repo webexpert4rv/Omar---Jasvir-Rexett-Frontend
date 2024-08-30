@@ -43,6 +43,7 @@ const Summary = ({
       deletedId: id,
     });
   };
+  console.log(filteredStepData,"filteredStepData")
   const handleDelete = () => {
     const tempArr = [...filteredStepData];
     const indexToRemove = tempArr.findIndex(item => item.id === eduId);

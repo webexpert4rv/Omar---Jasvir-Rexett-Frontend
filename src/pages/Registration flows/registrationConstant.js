@@ -591,7 +591,7 @@ const VENDOR_STEP_2_FIELDS = [
     label: "Phone Number",
     fieldName: "proprietor_contact_number",
     type: "phone",
-    placeholder: "e.g. +918979003975",
+    placeholder: "e.g.  +46766921023",
     rules: { required: "Phone number is required" },
     columnWidth: 6,
     isRequired: true,

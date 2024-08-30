@@ -144,8 +144,7 @@ const DeveloperTimeReporting = lazy(() =>
 );
 const DeveloperCV = lazy(() => import("./pages/developer/DeveloperCV"));
 const AdminLogin = lazy(() => import("./pages/Authentication/AdminLogin"));
-const DeveloperLogin = lazy(() =>
-  import("./pages/Authentication/DeveloperLogin")
+const DeveloperLogin = lazy(() =>import("./pages/Authentication/DeveloperLogin")
 );
 const ClientLogin = lazy(() => import("./pages/Authentication/Login"));
 const VendorLogin = lazy(() => import("./pages/Authentication/VendorLogin"));

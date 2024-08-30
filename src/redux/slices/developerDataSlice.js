@@ -1260,10 +1260,12 @@ export function developerRegistration(payload,callback) {
     dispatch(setSmallLoader());
     try {
       let result = await authInstance.post("common/developer-registration",{...payload});
-      toast.success(result?.data?.message, { position: "top-center" });
       localStorage.setItem("developerId",result?.data?.data?.id)
+      if (result.status === 201) {
+      toast.success(result?.data?.message, { position: "top-center" });
       dispatch(setActionSuccessFully());
       return callback()
+      }
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1376,11 +1378,11 @@ export function getDeveloperProfileDetails(id,callback) {
       let result = await authInstance.get(`common/developer-profile?developer_id=${id}`);
       dispatch(setDeveloperRegistrationDetails(result?.data?.data))
       return callback(result.data.data)
-      dispatch(setActionSuccessFully());
+      // dispatch(setActionSuccessFully());
     } catch (error) {
       const message = error.message || "Something went wrong";
       // toast.error(message, { position: "top-center" });
-      dispatch(setFailDeveloperData());
+      // dispatch(setFailDeveloperData());
     }
   };
 }
@@ -1403,7 +1405,6 @@ export function getDeveloperProfileDetails(id,callback) {
 
 
 export function getAllMessages(id ,payload){
-  console.log(payload,"payload")
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {

@@ -25,7 +25,7 @@ import {
   getUnreadMessages,
   messageSendFunc,
 } from "../../redux/slices/adminDataSlice";
-import { getAllMessages, getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
+import { fileUploadForWeb, getAllMessages, getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
 import moment from "moment";
 import { NOTIFICATIONBASEURL } from "../../helper/utlis";
 import { useForm } from "react-hook-form";
@@ -175,7 +175,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       let fileData = new FormData()
       fileData.append("file", selectedImg);
       console.log("here we are")
-      dispatch(filePreassignedUrlGenerate(fileData, (url) => {
+      dispatch(fileUploadForWeb(fileData, (url) => {
         console.log("case1")
         payload = {
           chatroom_id: chtRoomId,
@@ -205,8 +205,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     setSelectedImg("")
     setPreviewUrl("")
     socket.on(`new_message_sent_${userId}`, (rmsg) => {
-      console.log(rmsg, "Rmessage")
-    });
+    })
   };
 
 
@@ -350,7 +349,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     let data = item?.message_body
                     let file = item?.message_attachment_url
                     let file_type = item?.file_type
-                    console.log(file_type, "fileing")
 
 
 
@@ -543,10 +541,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                       name="message_attachment_url"
                       className="d-none"
                       onChange={handleFileUpload}
-                    // {...register("message_attachment_url", {
-                    //   onChange: (e) => handleFileUpload(e),
-                    // })
-                    // }
                     />
                     {imageTypes.includes(selectedImg?.type) ? <div className="preview-upload-imgwrapper">
                       <img src={previewUrl} className="upload-preview-img" alt="URL" />
