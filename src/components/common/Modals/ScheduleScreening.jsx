@@ -18,9 +18,10 @@ import { useLocation } from "react-router-dom";
 import { getAllEvents, getDeveloperList, postScheduleMeeting } from "../../../redux/slices/adminDataSlice";
 import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
+import { toast } from 'react-toastify';
+
 import ThirdPartyServices from "./ThirdParyServices";
-const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings, setCreatedMeetings, type }) => {
-    console.log(selectedDeveloper, "selectedDeveloper")
+const ScheduleScreening = ({ show, handleClose, selectedDeveloper,type, selectedEmail, selectedId }) => {
     const {
         handleSubmit,
         register,
@@ -141,68 +142,35 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const onSubmit = (data) => {
         // setCreatedMeetings(data)
         console.log(data, "dat")
-        if (type === "events") {
+         {
             let payload = {
+                "job_id": +id,
+                "developer_id": selectedId,
+                "developer_email": selectedEmail,
+                "meeting_type": data?.meeting_type,
+                "meeting_date": data?.meeting_date,
+                "meeting_time": data?.meeting_start_time,
+                "meeting_end_time": data?.meeting_end_time,
                 "title": data?.title,
-                "developer_id": +data?.select_candidate?.value,
-                "attendees": "attendee1@example.com, attendee2@example.com",
-                "event_platform": data?.meeting_platform?.label,
-                "event_type": "scheduled",
-                "event_date": data?.meeting_date,
-                "event_time": data?.meeting_start_time,
-                "event_end_time": data?.meeting_end_time,
-                "time_zone": data?.time_zone?.label,
+                "meeting_platform": data?.meeting_platform?.value,
+                "meeting_link": "https://example.com/meeting-link",
+                "status": "pending",
+                "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
                 "candidate_reminder": data?.candidate_reminder,
-                "attendees_reminder": data?.interviewer_reminder,
-                "type": "events",
-                "event_link": meetingLink,
-                "developer_email": data?.select_candidate?.label
-                // "attendees": "attendee1@example.com, attendee2@example.com",
-                // "event_platform": "Zoom",
-                // "event_type": "scheduled",
-                // "event_date": "2024-07-25",
-                // "event_time": "10:00:00",
-                // "event_end_time": "11:00:00",
-                // "event_duration": "1h",
-                // "time_zone": "UTC",
-                // "candidate_reminder": true,
-                // "attendees_reminder": true,
-                // "type": "meeting",
-                // "event_link": "https://zoom.us/j/1234567890",
-                // "developer_email": "developer@example.com"
+                "interviewer_reminder": data?.interviewer_reminder,
+                "time_zone": data?.time_zone?.label,
+                "type": "screening",
             }
-            dispatch(postScheduleMeeting(payload, () => {
-                dispatch(getAllEvents())
-                handleClose()
-            }))
-
-        } else {
-            let payload = {
-                
-                    "job_id": 1,
-                    "job_external_id": "550e8400-e29b-41d4-a716-446655440000",
-                    "developer_id": 1,
-                    "developer_email": "user@gmail.com",
-                    "meeting_type": "instant",
-                    "meeting_date": "2024-07-14",
-                    "meeting_time": "15:00:00",
-                    "meeting_end_time": "16:00:00",
-                    "title": "Technical Interview",
-                    "meeting_platform": "google meet",
-                    "meeting_link": "https://example.com/meeting-link",
-                    "status": "pending",
-                    "interviewers_list": "interviewer1@example.com,interviewer2@example.com",
-                    "time_zone": "string",
-                    "candidate_reminder": true,
-                    "interviewer_reminder": true,
-                    "interview_duration": "string"
-                  
-
-            }
-              
             dispatch(postCandidateInterview(payload))
+            .then(() => {
+              toast.success('Screening scheduled successfully!')
+              handleClose();
+            })
+            .catch((error) => {
+              toast.error('Failed to schedule screening.');
+              console.error('Error scheduling screening:', error);
+            });
         }
-
     };
 
     let r = watch("meeting_platform")
@@ -270,7 +238,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     };
 
 
-
+    console.log(selectedEmail, 'selectedEmail coming like this')
     return (
         <>
             <Modal show={show} onHide={handleClose} centered size="lg" animation className="custom-modal">
@@ -282,61 +250,6 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <Row>
-                                <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><BiFont /></span>Title</p>
-                                </Col>
-                                <Col lg={8} className="mb-3">
-                                    <div>
-                                        {/* <Form.Control type="text" className="common-field font-14" placeholder="Add title" /> */}
-                                        <CommonInput
-                                            name={"title"}
-                                            type="text"
-                                            control={control}
-                                            rules={{ required: "This field is required" }}
-                                            invalidFieldRequired={true}
-                                            placeholder="Add title"
-                                        />
-                                    </div>
-                                    <p>{errors?.title?.message}</p>
-
-                                </Col>
-                                <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><RiUser3Fill /></span>Select Candidate</p>
-                                </Col>
-                                <Col lg={8} className="mb-3">
-                                    <div>
-                                        {/* <Select isMulti /> */}
-                                        <CommonInput
-                                            name={"select_candidate"}
-                                            type={"select2"}
-                                            control={control}
-                                            // selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
-                                            rules={{ required: "This field is required" }}
-                                            selectOptions={getFormattedOptions()}
-                                            invalidFieldRequired={true}
-                                            placeholder="Select Candidate"
-                                        />
-                                        <p>{errors?.interviewers_list?.message}</p>
-                                    </div>
-                                </Col>
-                                {/* <Col lg={4} className="mb-lg-3 mb-1">
-                                    <p className="font-14 schedule-heading"><span><FaUsers /></span>Interviewer's list</p>
-                                </Col>
-                                <Col lg={8} className="mb-3">
-                                    <div>
-                                        <CommonInput
-                                            name={"interviewers_list"}
-                                            type={"multi-select"}
-                                            control={control}
-                                            selectOptions={[{ label: "JohnDoe@gmail.com", value: "JohnDoe@gmail.com" }, { label: "exapme@gmail.com", value: "example@gmail.com" }]}
-                                            rules={{ required: "This field is required" }}
-                                            invalidFieldRequired={true}
-                                            placeholder="Select Interviewer"
-                                        />
-                                        <p>{errors?.select_candidate?.message}</p>
-                                    </div>
-                                </Col> */}
-
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
                                 </Col>
@@ -427,14 +340,59 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
+                                    <p className="font-14 schedule-heading"><span><BiFont /></span>Title</p>
+                                </Col>
+                                <Col lg={8} className="mb-3">
+                                    <div>
+                                        <CommonInput
+                                            name={"title"}
+                                            type="text"
+                                            control={control}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                            placeholder="Add title"
+                                        />
+                                    </div>
+                                    <p>{errors?.title?.message}</p>
+
+                                </Col>
+                                <Col lg={4} className="mb-lg-3 mb-1">
+                                    <p className="font-14 schedule-heading"><RiUser3Fill /> Candidate</p>
+                                </Col>
+                                <Col lg={8} className="mb-3">
+                                    <CommonInput
+                                        name="candidate"
+                                        type="text"
+                                        control={control}
+                                        rules={{ required: "This field is required" }}
+                                        invalidFieldRequired={true}
+                                        placeholder="Select Candidate"
+                                        defaultValue={ selectedEmail || "" }
+                                        autoComplete="on"
+                                    />
+                                    <p>{errors?.candidate?.message}</p>
+                                </Col>
+                                 <Col lg={4} className="mb-lg-3 mb-1">
+                                    <p className="font-14 schedule-heading"><span><FaUsers /></span>Interviewer's list</p>
+                                </Col>
+                                <Col lg={8} className="mb-3">
+                                    <div>
+                                        <CommonInput
+                                            name={"interviewers_list"}
+                                            type={"multi-select"}
+                                            control={control}
+                                            selectOptions={[{ label: "JohnDoe@gmail.com", value: "JohnDoe@gmail.com" }, { label: "exapme@gmail.com", value: "example@gmail.com" }]}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                            placeholder="Select Interviewer"
+                                        />
+                                        <p>{errors?.select_candidate?.message}</p>
+                                    </div>
+                                </Col>
+                                <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaVideo /></span>Video Meeting Solution</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
-                                    {/* <Form.Select className="common-field font-14">
-                                        <option>Rexett video meeting</option>
-                                        <option>Google meet</option>
-                                        <option>Microsoft team</option>
-                                    </Form.Select> */}
                                     <CommonInput
                                         name={"meeting_platform"}
                                         type={"select"}
@@ -451,7 +409,6 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                 <Col lg={8} className="mb-3">
                                     <div className="mb-2">
                                         <div className="d-flex align-items-center justify-content-between mb-2">
-                                            {/* <img src={} /> */}
                                             <label className="font-14 mb-0 cursor-pointer" htmlFor="candidate-reminder">Candidate reminder</label>
                                             <div class="form-check form-switch toggle-switch-wrapper">
                                                 <input
@@ -499,4 +456,4 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
         </>
     )
 }
-export default Schedulemeeting;
+export default ScheduleScreening;
