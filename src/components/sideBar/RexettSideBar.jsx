@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import sidebarLogo from "../../assets/img/rexett-logo-white.png";
 import { Link, NavLink } from "react-router-dom"; 
-import { Button } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaTimes } from "react-icons/fa";
@@ -26,7 +26,7 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) =>
 
     return (
         <>
-            <aside className={collapseActive ? "sidebar collapse-active" : "sidebar"}>
+            <aside className={collapseActive ? "sidebar" : "sidebar collapse-active"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
                         <div className="sidebar-logo mt-3 mb-4">
@@ -41,7 +41,20 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) =>
                                 className="dashboard-link"
                                 activeClassName="active"
                             >
-                                <span className="sidebar-icon">{item.icon}</span> <span className="sidebar-text">{t(item.text)}</span>
+                                {collapseActive ?
+                                <span className="sidebar-icon">
+                                    {item.icon}
+                                </span> : 
+                                <OverlayTrigger placement="right" overlay={<Tooltip>{t(item.text)}</Tooltip>}>
+                                    <span className="sidebar-icon">
+                                        {item.icon}
+                                    </span>
+                                </OverlayTrigger>
+                                
+                                }
+                                <span className="sidebar-text">
+                                    {t(item.text)}
+                                </span>
                             </NavLink>
                         ))}
                     </div>

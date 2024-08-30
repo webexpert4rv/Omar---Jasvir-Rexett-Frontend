@@ -45,7 +45,7 @@ const PrivateLayout = ({ children }) => {
         <Outlet />
       )}
 
-      <main className={collapseLayout ? "main-wrapper collapsable-active" : "main-wrapper"}>
+      <main className={collapseLayout ? "main-wrapper" : "main-wrapper collapsable-active"}>
         {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
           <>
             <RexettHeader collapseLayout={collapseLayout} handleCollapseSidebar={handleShowCollpaseLayout} {...headerProps} />

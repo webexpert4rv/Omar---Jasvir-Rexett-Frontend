@@ -12,10 +12,7 @@ const ConfirmationModal = ({ submitText="Yes",text,show, handleClose,onClick ,ha
         }
         onClick(e,data,show?.deletedId)
     }
-    // const handle = () => {
-    //     handleAction();
-    // }
-    // role === "client-edit-profile" ? show :show?.isDelete
+    
     return(
         <Modal show={show} onHide={handleClose} centered animation className="custom-modal" noValidate> 
             <Modal.Header closeButton className="border-0 pb-3">

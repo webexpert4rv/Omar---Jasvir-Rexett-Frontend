@@ -11,7 +11,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Calendar from "react-calendar";
 import CommonInput from "../../../components/atomic/CommonInput";
 import Select from "react-select";
@@ -19,6 +19,7 @@ import { VIDEO_MEETING } from "../../../helper/constant";
 import RexettButton from "../../../components/atomic/RexettButton";
 import { deleteEvent, getAllEvents, getSelectedEvent, getToDoById, getUpdatedDetails, updateEvent } from "../../../redux/slices/adminDataSlice";
 import moment from "moment";
+import ConfirmationModal from "../../../components/common/Modals/ConfirmationModal";
 
 
 
@@ -27,6 +28,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     const [value, onChange] = useState(new Date());
     const dispatch = useDispatch()
     const { developerList } = useSelector(state => state.adminData)
+    const [deleteModal, setDeleteModal] = useState(false)
     const {
         register,
         setValue,
@@ -37,6 +39,8 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         formState: { errors, isDirty, isValid, isSubmitting },
     } = useForm({});
     const selectedDeveloper = developerList?.developers?.find(val => val?.id == details?.developer_id)
+    console.log(details, "details")
+    console.log(selectedDeveloper, "selectedDeveloper")
     useEffect(() => {
         if (details) {
             dispatch(getSelectedEvent(details.id, (data) => {
@@ -73,11 +77,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         let payload = {
             "title": data?.title,
             "developer_id": +data?.select_candidate?.value,
-            "attendees": [
-                {
-                    "email": data?.interviewers_list[0]?.label
-                }
-            ],
+            "attendees": "attendee1@example.com, attendee2@example.com",
             "event_platform": data?.meeting_platform?.label,
             "event_type": data?.meeting_type,
             "event_date": data?.meeting_date,
@@ -86,7 +86,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
             "candidate_reminder": data?.candidate_reminder,
             "attendees_reminder": data?.interviewer_reminder,
             "type": "meeting",
-            "event_link": "https://zoom.us/j/1234567890"
+            "event_link": data?.event_link
         }
         dispatch(updateEvent(details.id, payload))
         handleClose()
@@ -96,7 +96,12 @@ const MeetingInfo = ({ show, handleClose, details }) => {
         dispatch(deleteEvent(details?.id, () => {
             dispatch(getAllEvents())
         }))
+        setDeleteModal(!deleteModal)
+    }
+    console.log(deleteModal, "deleteModal")
+    const handleToggleModal = () => {
         handleClose()
+        setDeleteModal(!deleteModal)
     }
     const getFormattedOptions = () => {
         const newOptions = developerList?.developers?.map((item) => {
@@ -107,10 +112,10 @@ const MeetingInfo = ({ show, handleClose, details }) => {
     const options = getFormattedOptions();
     const refreshedDate = ((details?.event_date)?.slice(0, 10));
     console.log(refreshedDate, "refreshedDate");
-    const getInterviewList = () => {
-        const selectedInterviewers = details?.attendees?.map(itm => itm?.email)
-        return selectedInterviewers
-    }
+    // const getInterviewList = () => {
+    //     const selectedInterviewers = details?.attendees?.map(itm => itm?.email)
+    //     return selectedInterviewers
+    // }
     console.log(selectedDeveloper, "selectedDeveloper")
 
     const baseDate = '1970-01-01';
@@ -178,20 +183,24 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                         {/* <img src={devImg} /> */}
                                         <Form.Group controlId="select_candidate">
                                             <Form.Label className="font-14 schedule-heading"><span><RiUser3Fill /></span>Developer Name</Form.Label>
-                                            <Form.Select
-                                                {...register("select_candidate", {
-                                                    required: "select_candidate is required",
-                                                })}
-                                            // className={`common-field font-14 ${errors.select_candidate ? 'is-invalid' : ''}`}
-                                            // isInvalid={!!errors.select_candidate}
-                                            >
-                                                {options?.map((option, idx) => (
-                                                    <option key={idx} value={selectedDeveloper ? selectedDeveloper?.email : option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-
-                                            </Form.Select>
+                                            <Controller
+                                                name="select_candidate"
+                                                control={control}
+                                                defaultValue={selectedDeveloper ? selectedDeveloper.email : ""}
+                                                rules={{ required: "Select candidate is required" }}
+                                                render={({ field }) => (
+                                                    <Form.Select
+                                                        {...field}
+                                                        isInvalid={!!errors.select_candidate}
+                                                    >
+                                                        {options?.map((option, idx) => (
+                                                            <option key={idx} value={option.value}>
+                                                                {option.label}
+                                                            </option>
+                                                        ))}
+                                                    </Form.Select>
+                                                )}
+                                            />
                                             {errors.select_candidate && (
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.select_candidate.message}
@@ -203,7 +212,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
 
                                 <Col lg={8} className="mb-3">
                                     <div className="d-flex flex-wrap gap-2 align-items-start">
-                                        <Form.Group controlId="meetingPlatform">
+                                        {/* <Form.Group controlId="meetingPlatform">
                                             <Form.Label className="font-14 schedule-heading"><span><RiUser3Fill /></span>Interviewer's List</Form.Label>
                                             <Form.Select
                                                 {...register("interviewers_list", {
@@ -223,7 +232,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                     {errors.meeting_platform.message}
                                                 </Form.Control.Feedback>
                                             )}
-                                        </Form.Group>
+                                        </Form.Group> */}
                                     </div>
                                 </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -277,7 +286,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                 {/* <DatePicker onChange={onChange} value={value} /> */}
                                                 <Form.Control
                                                     type="date"
-                                                    value={refreshedDate}
+                                                    defaultValue={refreshedDate ? refreshedDate : ""}
                                                     max={
                                                         new Date().toISOString().split("T")[0]
                                                     }
@@ -295,7 +304,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                             <span className="font-14">{duration.hours()}:{duration.minutes()}:{duration.seconds()}</span>
                                         </div>
                                     </div>
-                                </Col>:
+                                </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading">Status</p>
                                 </Col>
@@ -314,10 +323,11 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                         <div className="d-flex justify-content-between align-items-center">
                             <div>
                                 <RexettButton
+                                    type="button"
                                     variant="transparent"
                                     className="cancel-btn font-14"
                                     text={"Cancel Meeting"}
-                                    onClick={handleDeleteAction}
+                                    onClick={handleToggleModal}
 
                                 />
                             </div>
@@ -334,6 +344,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                     </Modal.Body>
                 </form>
             </Modal>
+            <ConfirmationModal text={"Are you sure, you want to delete this meeting. "} handleAction={handleDeleteAction} show={deleteModal} handleClose={handleToggleModal} />
             {/* {
                 employeeList?.map(({ name }) => (
                     <div>

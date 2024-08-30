@@ -11,50 +11,114 @@ import { IoArchiveSharp, IoClose, IoCloseCircleOutline } from "react-icons/io5";
 import ReactQuill from "react-quill";
 import { TbMessage } from "react-icons/tb";
 import { GrAttachment } from "react-icons/gr";
+import io from "socket.io-client";
 import rexettLogo from "../../assets/img/favicon.png";
 import AddUserConversation from "../common/Modals/AddUsers";
 import MoreChatOptions from "../common/MessageBox/MoreChatOptions";
 import MessageInboxCard from "../common/MessageBox/MessageInboxCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAllArchiveMessages,
   getAllInboxMessage,
   getAllMessageTemplates,
   getTemplateById,
+  getUnreadMessages,
   messageSendFunc,
 } from "../../redux/slices/adminDataSlice";
-import { getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
+import { getAllMessages, getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
 import moment from "moment";
+import { NOTIFICATIONBASEURL } from "../../helper/utlis";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   let userId = localStorage.getItem("userId");
+  const [selectedTab,setSelectedTab] = useState("")
   const [currentTab, setCurrentTab] = useState();
   const [hasContent, setHasContent] = useState(false);
   const [isEditorFocused, setIsEditorFocused] = useState(true);
   const [valuemessga, setValuemessga] = useState("");
   const [messageWrapperVisible, setMessageWrapperVisible] = useState(false);
   const [messageTitle, setMessageTitle] = useState("");
-  const [chtRoomId,setChtRoomId]=useState(null)
+  const [chtRoomId, setChtRoomId] = useState(null)
+  const [selectedChat,setSelectedChat] = useState()
+
   const { messageTemplates, chatRoom } = useSelector(
     (state) => state.adminData
   );
   const { chatData } = useSelector((state) => state.developerData);
-  console.log(chatData, "chatData");
+  const [chatmessages,setChatMessages]=useState([])
 
   const dispatch = useDispatch();
  
-
+  const socket = io(NOTIFICATIONBASEURL);
   const [adduserconversation, showAddUserConversation] = useState(false);
-  
+
+  useEffect(()=>{
+    setChatMessages(chatData)
+    
+  },[chatData])
+
+  const {chatRoomMessageList}=useSelector((state)=>state.developerData)
+  const user_id = localStorage.getItem("userId")
+
+  useEffect(()=>{
+
+    socket.on("connect", () => {
+        console.log("Connected to Socket.IO server");
+      });
+      socket.on(`new_message_received_${userId}`, (message) => {
+        console.log(message,"message")
+        setChatMessages([...chatmessages,message]);
+      
+      });
+    
+      return () => {
+        socket.disconnect();
+      };
+  },[])
+
+
 
   useEffect(() => {
     dispatch(getAllMessageTemplates());
-    dispatch(getAllInboxMessage(userId));
+   
   }, []);
 
   const handleShowUserConversation = () => {
     showAddUserConversation(!adduserconversation);
   };
   const handleSelect = (selectedTab) => {
+    if(currentTab === "first"){
+      setSelectedTab("inbox")
+    }else if(currentTab==="second"){
+      setSelectedTab("unread")
+    }else{
+      setSelectedTab("archive")
+    }
+    if (selectedTab === "first") {
+      const payload = {
+        type: "inbox",
+        // developer_name : "pankaj_pundir",
+        page: "1",
+        per_page:"10"
+      }
+      dispatch(getAllMessages(userId , payload ));
+    } else if (selectedTab === "second") {
+      const payload = {
+        type: "unread",
+        // developer_name : "pankaj_pundir",
+        page: "1",
+        per_page:"10"
+      }
+      dispatch(getAllMessages(userId,payload));
+    } else {
+      const payload = {
+        type: "archive",
+        // developer_name : "pankaj_pundir",
+        page: "1",
+        per_page:"10"
+      }
+      dispatch(getAllMessages( userId,payload));
+    }
     setCurrentTab(selectedTab);
   };
   const handleCloseMessageWrapper = () => {
@@ -64,7 +128,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     showAddUserConversation(false);
   };
 
-  const handleChatProfileClick = (roomId) => {
+
+  const handleChatProfileClick = (roomId ) => {
+    const selectedChat = chatRoomMessageList?.chatRooms?.find(itm=>itm.id==roomId)
+    console.log(selectedChat,"selectedChat")
+    setSelectedChat(selectedChat)
     setChtRoomId(roomId)
     dispatch(getChatRoomData(roomId));
     dispatch(getChatRoomMembers(roomId))
@@ -101,6 +169,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       message_attachment_url: "string",
     };
     dispatch(messageSendFunc(payload));
+    
+    socket.on(`new_message_sent_${userId}`, (rmsg) => {
+        console.log(rmsg,"Rmessage")
+      
+      });
   };
 
   const popuplateOntheMessage = (data) => {
@@ -118,21 +191,19 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       <Offcanvas
         show={showMessagesInfo}
         placement="end"
-        className={`message-offcanvas ${
-          messageWrapperVisible ? "visible" : ""
-        }`}
+        className={`message-offcanvas ${messageWrapperVisible ? "visible" : ""
+          }`}
         onHide={handleCloseMessages}
       >
         <div className="d-flex align-items-start">
           <div
-            className={`message-wrapper ${
-              messageWrapperVisible ? "visible" : ""
-            }`}
+            className={`message-wrapper ${messageWrapperVisible ? "visible" : ""
+              }`}
           >
             <div className="message-wrapper-header">
               <div className="about-chat">
-                <img src={devImg} />
-                <h3>Pankaj Pundir</h3>
+                <img src={selectedChat?.members[0]?.user?.profile_picture} />
+                <h3>{selectedChat?.members[0]?.user?.name}</h3>
               </div>
               <div className="message-options">
                 <span className="message-header-icon">
@@ -215,39 +286,40 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
             </div>
             <div className="main-message-area">
               <div className="area-profile mb-4">
-                <img src={devImg} />
-                <h4>Pankaj Pundir</h4>
+                <img src={selectedChat?.members[0]?.user?.profile_picture} />
+                <h4>{selectedChat?.members[0]?.user?.name}</h4>
                 <span className="status-info">Developer</span>
               </div>
               <div>
                 <p className="msg-subject-name">
                   <span className="subject-name">Invited</span>
                 </p>
-                {chatData?.length > 0
-                  ? chatData?.map((item,index) => {
+                {chatmessages?.length > 0
+                  ? chatmessages?.map((item,index) => {
                   let  isReceiver=item?.sender_id==userId
                   let data=item?.message_body
                 
         
                 const showTime =
-                  index === chatData.length - 1 ||
-                  chatData[index + 1].sender_id !== item.sender_id;
+                  index === chatmessages.length - 1 ||
+                  chatmessages[index + 1].sender_id !== item.sender_id;
 
-                      return (
-                        <>
-                          <div className={isReceiver? "receiver-message": "sender-message"}>
-                         {isReceiver && showTime &&<div className="sender-profile">
-                              <img src={devImg} />
-                            </div>}
-                            <div>
-                              <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
-                            { showTime&& <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
-                            </div>
-                          { !isReceiver && showTime && <div className="sender-profile">
-                              <img src={devImg} />
-                            </div>}
+
+                    return (
+                      <>
+                        <div className={isReceiver ? "receiver-message" : "sender-message"}>
+                          {isReceiver && showTime && <div className="sender-profile">
+                            <img src={selectedChat?.members[0]?.user?.profile_picture } />
+                          </div>}
+                          <div>
+                            <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
+                            {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
                           </div>
-                          {/* <div className="receiver-message">
+                          {!isReceiver && showTime && <div className="sender-profile">
+                            <img src={selectedChat?.members[0]?.user?.profile_picture} />
+                          </div>}
+                        </div>
+                        {/* <div className="receiver-message">
                             <div className="receiver-profile">
                               <img src={devImg} />
                             </div>
@@ -308,14 +380,14 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                               <img src={devImg} />
                             </div>
                           </div> */}
-                        </>
-                      );
-                    })
+                      </>
+                    );
+                  })
                   : ""}
               </div>
             </div>
             <div className="write-message-area">
-              <div className="d-flex justify-content-between align-items-center mb-3">
+              {/* <div className="d-flex justify-content-between align-items-center mb-3">
                 <p className="mb-0">
                   <span className="fw-medium">
                     Subject:{" "}
@@ -324,10 +396,10 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   <span className="new-subject">+ New Subject</span>
                 </p>
                 <div className="sender-profile">
-                  <img src={devImg} />
+                  <img src={selectedChat?.members[0]?.user?.profile_picture} />
                 </div>
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <Form.Control
                   type="text"
                   value={messageTitle}
@@ -335,12 +407,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   placeholder="Enter new subject"
                   onChange={(e) => handleMessageChange(e, "title")}
                 />
-              </div>
+              </div> */}
               <div className="position-relative">
                 <div
-                  className={`custom-rich-editor message-field ${
-                    isEditorFocused || hasContent ? "focused" : ""
-                  }`}
+                  className={`custom-rich-editor message-field ${isEditorFocused || hasContent ? "focused" : ""
+                    }`}
                 >
                   <ReactQuill
                     value={valuemessga}
@@ -348,9 +419,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   />
                 </div>
                 <div
-                  className={`field-msg-options d-flex align-items-center gap-3 ${
-                    isEditorFocused || hasContent ? "focused" : ""
-                  }`}
+                  className={`field-msg-options d-flex align-items-center gap-3 ${isEditorFocused || hasContent ? "focused" : ""
+                    }`}
                 >
                   <div className="inner-field-msg-options">
                     <Dropdown className="assign-dropdown">
@@ -457,11 +527,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
           </div>
 
           <div className="inner-message-area">
-            <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
+            {/* <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
               <div className="d-flex align-items-center gap-2">
                 <Offcanvas.Title>Message Inbox</Offcanvas.Title>
               </div>
-            </Offcanvas.Header>
+            </Offcanvas.Header> */}
             <Offcanvas.Body className="message-canvas-body">
               <div>
                 <div>
@@ -489,6 +559,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                         <Tab.Content>
                           <Tab.Pane eventKey="all-in-message" className="mt-2">
                             <MessageInboxCard
+                            type={selectedTab}
+                              chatRoom={chatRoom}
                               messageWrapperVisible={messageWrapperVisible}
                               handleChatProfileClick={handleChatProfileClick}
                             />

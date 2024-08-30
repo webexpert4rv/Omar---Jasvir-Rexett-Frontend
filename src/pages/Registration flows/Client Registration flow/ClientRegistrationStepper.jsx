@@ -17,6 +17,8 @@ import {
   clientJobPost,
   getCoutriesList,
   getProfile,
+  getTimeZoneList,
+  updateClientPost,
   uploadFileToS3Bucket,
 } from "../../../redux/slices/clientDataSlice";
 import RegistrationType from "./RegistrationType";
@@ -28,11 +30,13 @@ import { getSkillOptions } from "../../../redux/slices/developerDataSlice.js";
 import ScreeningSection from "./ScreeningSection.jsx";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import ScreenLoader from "../../../components/atomic/ScreenLoader.jsx";
+import moment from "moment";
 
 
-  const ClientRegistrationStepper = () => {
+const ClientRegistrationStepper = () => {
   const dispatch = useDispatch();
-  const { smallLoader } = useSelector((state) => state?.clientData);
+  const { smallLoader, screenLoader, timeZoneList, clientJobPostDetails } = useSelector((state) => state?.clientData);
   const [text, setText] = useState("");
   const [details, setDetails] = useState()
   const [activeStep, setActiveStep] = useState(0);
@@ -40,8 +44,16 @@ import { useTranslation } from "react-i18next";
   const [imageFile, setImageFile] = useState(null);
   const [registrationType, setRegistrationType] = useState("individual"); //for register as indivisual or company
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
-  const activeStepFields = getActiveStepFields(activeStep, registrationType);
-  console.log(activeStepFields,"activeStepFields")
+  const [groupedTime, setGroupedTime] = useState([])
+  const [skillDetails, setSkillDetails] = useState({
+    skillName: [],
+    skillWeight: []
+  })
+  console.log(clientJobPostDetails, "clientJobPostDetails")
+  const job_id = localStorage.getItem("jobId")
+  let currentFormtype = localStorage.getItem("currentRegisterFormType")
+  const activeStepFields = getActiveStepFields(activeStep, currentFormtype);
+  console.log(activeStepFields, "activeStepFields")
   const { profileData } = useSelector((state) => state?.clientData)
   const {
     handleSubmit,
@@ -61,8 +73,11 @@ import { useTranslation } from "react-i18next";
   });
   const { skillOptions } = useSelector((state) => state.developerData);
   const { t } = useTranslation()
-  const [countryCode , setCountryCode] = useState()
+  const [countryCode, setCountryCode] = useState()
+  let arrPercentage = [0, 0, 30, 50, 70, 100]
+
   useEffect(() => {
+    dispatch(getTimeZoneList())
     const storedStep = localStorage.getItem("clientActiveStep");
     if (storedStep) {
       setActiveStep(Number(storedStep));
@@ -76,8 +91,22 @@ import { useTranslation } from "react-i18next";
       dispatch(getSkillOptions());
     }
   }, [activeStep]);
+  console.log(job_id, "job_id")
   const user_id = localStorage.getItem("clientId")
-  console.log(user_id,"user_id")
+  console.log(user_id, "user_id")
+  useEffect(() => {
+    if (timeZoneList?.length > 0) {
+      let groupedTimeZones = timeZoneList?.map((item) => {
+        return {
+          label: item?.country_name,
+          options: item?.timezones?.map((it) => {
+            return { label: it, value: it }
+          }),
+        }
+      })
+      setGroupedTime(groupedTimeZones)
+    }
+  }, [timeZoneList])
 
   useEffect(() => {
     const activeStepKeys = {
@@ -85,9 +114,11 @@ import { useTranslation } from "react-i18next";
       2: "step2",
       3: "step3",
       4: "step4",
-    }
+    };
+
     if (user_id) {
       dispatch(getProfile(user_id, (data) => {
+        console.log(data, "data")
         for (let key in data) {
           if (activeStep === 1) {
             if (key === "country_code") {
@@ -95,7 +126,7 @@ import { useTranslation } from "react-i18next";
                 label: data["country"],
                 value: data[key],
               };
-              setCountryCode(newValue?.value)
+              setCountryCode(newValue?.value);
               setValue(key, newValue);
             } else if (key === "state_iso_code") {
               const newValue = { label: data["state"], value: data[key] };
@@ -104,26 +135,61 @@ import { useTranslation } from "react-i18next";
               const newValue = { label: data[key], value: data[key] };
               setValue(key, newValue);
             } else {
-              setValue(key, data[key])
+              setValue(key, data[key]);
             }
             if (key === "name") {
               const [firstName, surname] = data[key]?.split(" ");
-              setValue("first_name", firstName)
-              setValue("last_name", surname)
+              setValue("first_name", firstName);
+              setValue("last_name", surname);
             }
             if (key === "address") {
-              setValue("company_address", data[key])
+              setValue("address", data[key]);
             }
             if (key === "tax_id") {
-              setValue("company_tax_id", data[key])
+              setValue("company_tax_id", data[key]);
             }
-          } else if (activeStep !== 1) {
-            setValue(key, data[key])
+            if (key === "company_logo") {
+              setPreviewImage({ profile_picture: data?.profile_picture })
+            }
+          } else if (activeStep === 2) {
+            const step1Data = data.jobs[0].step1;
+            for (let step1Key in step1Data) {
+              if (step1Key === "time_zone") {
+                const newValue = { label: step1Data[step1Key], value: step1Data[step1Key] };
+                setValue("time_zone", newValue);
+              } else if (step1Key === "response_date") {
+                const responseDate = moment(watch("response_date")).format("YYYY-MM-DD")
+                setValue("response_date", responseDate)
+              } else {
+                setValue(step1Key, step1Data[step1Key])
+              }
+            }
+          } else if (activeStep === 3) {
+            const step2Data = data?.jobs[0]?.step2;
+            console.log(step2Data, "step2Data")
+            for (let step2Key in step2Data) {
+              if (step2Data?.job_skills) {
+                const skillName = step2Data.job_skills.map(itm => itm.skill_name);
+                const skillWeight = step2Data.job_skills.map(itm => itm.weight);
+                console.log(skillName, "skillName");
+                console.log(skillWeight, "skillWeight");
+                const newSkill = 
+
+                setSkillDetails({
+                  skillName: skillName,
+                  skillWeight: skillWeight
+                })
+              }
+              if (step2Key === "description") {
+                const desc = stripHtmlTags(step2Data[step2Key])
+                setValue(step2Key, desc)
+              }
+            }
           }
         }
-      }))
+      }));
     }
-  }, [activeStep, user_id])
+  }, [activeStep, user_id, dispatch]);
 
   const getActiveStepText = (values) => {
     switch (activeStep) {
@@ -132,21 +198,21 @@ import { useTranslation } from "react-i18next";
       case 2:
         return "Next : Job Description";
       case 3:
-        return "Next:Screening Info";
+        return "Next: Screening Info";
       case 4:
         return "Submit";
     }
   };
   const onSubmit = () => {
-    if (activeStep === 1 || activeStep == 4) {
+    if (activeStep == 1 || activeStep == 4) {
       setShowSetUpJobModal(true);
     } else {
-      increaseStepCount();
+      // increaseStepCount();
     }
     const buttonText = getActiveStepText();
     switch (buttonText) {
-      case "Next : Setup Job" : 
-        handleProceed();
+      case "Next : Setup Job":
+        setShowSetUpJobModal(true);
         break;
       case "Next : Job Description":
         callJobStep1API();
@@ -158,27 +224,53 @@ import { useTranslation } from "react-i18next";
         callJobStep3API();
     }
   };
+
+  const stripHtmlTags = (str) => {
+    return str?.replace(/<\/?[^>]+(>|$)/g, "");
+  };
+
   const jobStepData = watch();
+  console.log(jobStepData, "jobStepData")
+  console.log(clientJobPostDetails?.id, "job_id")
   const callJobStep1API = () => {
-    if(activeStep == 2){
-    let payload = {
-      step: 1,
-      title: jobStepData?.job_title,
-      contract_type: jobStepData?.contract_type,
-      job_location: jobStepData?.job_location,
-      job_positions: jobStepData?.job_positions,
-      job_type: jobStepData?.job_type,
+
+    if (activeStep == 2) {
+      let payload;
+      if (job_id) {
+        console.log("jobIdHere")
+        payload = {
+          step: 1,
+          title: jobStepData?.title,
+          contract_type: jobStepData?.contract_type,
+          job_location: jobStepData?.job_location,
+          job_positions: jobStepData?.job_positions,
+          job_type: jobStepData?.job_type,
+          response_date: jobStepData?.response_date,
+          time_zone: jobStepData?.time_zone?.label
+        }
+        dispatch(updateClientPost(user_id, job_id, payload, handleAfterApiSuccess))
+      } else {
+        console.log("NoJobId")
+        payload = {
+          step: 1,
+          title: jobStepData?.title,
+          contract_type: jobStepData?.contract_type,
+          job_location: jobStepData?.job_location,
+          job_positions: jobStepData?.job_positions,
+          job_type: jobStepData?.job_type,
+          response_date: jobStepData?.response_date,
+          time_zone: jobStepData?.time_zone?.label
+        }
+        dispatch(clientJobPost(payload, activeStep, user_id, handleAfterApiSuccess))
+      }
     }
-    dispatch(clientJobPost(payload, activeStep, user_id))
   }
-}
-  const job_id = localStorage.getItem("jobId")
   const jobSkills = jobStepData?.skills?.map(skill => ({
     skill_id: skill?.title?.value,
     skill_name: skill?.title?.label,
     weight: skill?.level?.label,
   }));
-  console.log(jobSkills,"jobSkills")
+  console.log(jobSkills, "jobSkills")
 
   const screeningQuestions = jobStepData?.screening_questions?.map(ques => (
     {
@@ -190,33 +282,35 @@ import { useTranslation } from "react-i18next";
     }
   ))
   const callJobStep2API = () => {
-    if(activeStep == 3){
-    if (job_id) {
-      let payload = {
-        step: 2,
-        job_id: job_id,
-        description: jobStepData?.description,
-        job_skills: jobSkills,
+    if (activeStep == 3) {
+      if (job_id) {
+        let payload = {
+          step: 2,
+          // job_id: job_id,
+          description: jobStepData?.description,
+          job_skills: jobSkills,
+        }
+        dispatch(updateClientPost(user_id, job_id, payload, handleAfterApiSuccess))
       }
-      dispatch(clientJobPost(payload, activeStep, user_id))
     }
-  }
   }
 
   const callJobStep3API = () => {
-    if(activeStep == 4){
-    const stepData = watch();
-    let payload = {
-      step: 3,
-      job_id: job_id,
-      user_id: user_id,
-      qualification_filter_out: jobStepData?.qualification_filter_out,
-      screening_questions: screeningQuestions,
-    }
-    dispatch(clientJobPost(payload, activeStep, user_id))
-  }
-}
+    if (activeStep == 4) {
+      const stepData = watch();
+      let payload = {
+        step: 3,
+        job_id: job_id,
+        user_id: user_id,
+        qualification_filter_out: jobStepData?.qualification_filter_out,
+        screening_questions: screeningQuestions,
+      }
+      dispatch(updateClientPost(user_id, job_id, payload, handleAfterApiSuccess))
 
+    }
+  }
+
+  console.log(groupedTime, "groupedTime")
 
   const increaseStepCount = () => {
     if (activeStep === 4) {
@@ -237,6 +331,8 @@ import { useTranslation } from "react-i18next";
         return (
           // this step will be used for both first and second
           <ClientStep1
+
+            screenLoader={screenLoader}
             control={control}
             errors={errors}
             activeStep={activeStep}
@@ -253,11 +349,14 @@ import { useTranslation } from "react-i18next";
             setImageFile={setImageFile}
             isProfileSectionRequired={activeStep === 1}
             countryCode={countryCode}
+            skillOptions={groupedTime}
           />
         );
       case 3:
         return (
           <JobDesciptionStep
+            skillDetails={skillDetails}
+            screenLoader={screenLoader}
             register={register}
             stepFields={activeStepFields}
             errors={errors}
@@ -272,6 +371,7 @@ import { useTranslation } from "react-i18next";
       case 4:
         return (
           <ScreeningSection
+            screenLoader={screenLoader}
             activeStep={activeStep}
             register={register}
             control={control}
@@ -296,6 +396,7 @@ import { useTranslation } from "react-i18next";
   }, [activeStep])
 
   const handleRegistrationType = (registrationType) => {
+    localStorage.setItem("currentRegisterFormType", registrationType)
     setRegistrationType(registrationType);
     increaseStepCount();
   };
@@ -313,12 +414,14 @@ import { useTranslation } from "react-i18next";
   const handleProceed = () => {
     const stepData = watch();
     let fileData = new FormData();
-    console.log(imageFile,"imageFile")
+    console.log(imageFile, "imageFile")
     fileData.append("file", imageFile?.profile_picture)
     setShowSetUpJobModal(false);
     dispatch(uploadFileToS3Bucket(fileData, (url) => {
       const payload = {
-        name :`${stepData?.first_name } ${stepData?.last_name}`,
+        // name :`${stepData?.first_name } ${stepData?.last_name}`,
+        first_name: stepData?.first_name,
+        last_name: stepData?.last_name,
         password: stepData?.password,
         profile_picture: url,
         country_code: stepData?.country_code?.value,
@@ -327,7 +430,7 @@ import { useTranslation } from "react-i18next";
         country_code: stepData?.country_code?.value,
         yearly_revenue: stepData?.yearly_revenue,
         tax_id: stepData?.company_tax_id,
-        address: stepData?.company_address,
+        address: stepData?.address,
         country: stepData?.country_code?.label,
         state: stepData?.state_iso_code?.label,
         phone_number: stepData?.phone_number,
@@ -341,7 +444,7 @@ import { useTranslation } from "react-i18next";
   };
   return (
     <>
-      <div>
+      {screenLoader ? <ScreenLoader /> : <div>
         {activeStep === 0 ? (
           <RegistrationType handleRegistrationType={handleRegistrationType} />
         ) : (
@@ -350,6 +453,7 @@ import { useTranslation } from "react-i18next";
               activeStep={activeStep}
               handleSetActiveStep={handleSetActiveStep}
               stepperSideBarItems={SIDEBAR_ITEMS?.client}
+              arrPercentage={arrPercentage}
             />
             <div className="resume-main-wrapper">
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -366,7 +470,7 @@ import { useTranslation } from "react-i18next";
                     <div>
                       <RexettButton
                         type="submit"
-                        onClick={() => text === "Submit"}
+                        // onClick={() => text === "Submit"}
                         text={getActiveStepText()}
                         className="main-btn px-5 mr-2"
                         disabled={smallLoader}
@@ -379,7 +483,7 @@ import { useTranslation } from "react-i18next";
             </div>
           </section>
         )}
-      </div>
+      </div>}
       {showSetUpModal ? <SetUpJobModal
         show={showSetUpModal}
         handleClose={handleToggleSetupModal}
@@ -390,8 +494,9 @@ import { useTranslation } from "react-i18next";
         activeStep={activeStep}
       /> : ""}
       {/* <ThankRegister
-        show={showthanksregister}
+        show={false}
         handleClose={handleCloseThanksRegister}
+        role={"client"}
       /> */}
     </>
   );

@@ -1384,17 +1384,35 @@ export function getDeveloperProfileDetails(id) {
   };
 }
 
-export function messageChatRoomList(id) {
+// export function messageChatRoomList(id) {
+//   console.log(id,"developerId")
+//   return async (dispatch) => {
+//     dispatch(setSmallLoader());
+//     try {
+//       let result = await clientInstance.get(`messages/chatroom_list/${id}`);
+//       dispatch(setMessageRoomList(result?.data?.data))
+//       // dispatch(setSuccessActionData());
+//     } catch (error) {
+//       const message = error.message || "Something went wrong";
+//       toast.error(message, { position: "top-center" });
+//       dispatch(setFailDeveloperData());
+//     }
+//   };
+// }
+
+
+export function getAllMessages(id ,payload){
+  console.log(payload,"payload")
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.get(`messages/chatroom_list/${id}`);
+      let result = await clientInstance.get(generateApiUrl(payload,`messages/chatroom_list/${id}`));
+      console.log(result,"res")
       dispatch(setMessageRoomList(result?.data?.data))
-      // dispatch(setSuccessActionData());
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
-      dispatch(setFailDeveloperData());
+      // dispatch(setFailClientData());
     }
   };
 }
@@ -1423,6 +1441,7 @@ export function getChatRoomMembers(id) {
     try {
       let result = await clientInstance.get(`messages/chatroom-members/${id}`);
       console.log(result,"...")
+      
       // dispatch(setChatData(result?.data?.messages?.data))
       // dispatch(setSuccessActionData());
     } catch (error) {

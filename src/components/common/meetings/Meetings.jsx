@@ -181,15 +181,15 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                 <>
                   <div onClick={()=>handleShowMeetingInfo(item)} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
                     <div>
-                      <p className="interview-title mb-2">{item?.summary}</p>
+                      <p className="interview-title mb-2">{item?.kind? item?.summary : item?.title}</p>
                       <p className="dev-name mb-2 font-14">
                         <div className="me-1">
                           <img src={devImg} />
                         </div>
-                        {item?.creator?.displayName}
-                        <p>Meeting Link :{item?.hangoutLink}</p>
+                        {/* {item?.creator?.displayName} */}
+                       { item?.kind? <p>Meeting Link :{item?.hangoutLink}</p> :  <p>Meeting Link :{item?.event_link}</p>}
                       </p>
-                      <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0, 10)}</p>
+                      {/* <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0, 10)}</p> */}
                     { item?.kind? "": <button onClick={(e)=>syncCreatedMeetingsWithGoogle(e,item)}>Sync with Google</button>}
                     </div>
                     <div className="mb-2 status-interview">

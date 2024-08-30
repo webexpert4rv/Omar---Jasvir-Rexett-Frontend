@@ -16,13 +16,13 @@ const RegistrationType = ({ handleRegistrationType }) => {
           <div>
             <Row className="justify-content-center">
               <Col md={10}>
-                <Link
+                {/* <Link
                   to={"/"}
                   className="font-14 text-decoration-none rounded-3 d-inline-flex align-items-center mb-2 p-0 border-0 shadow-none text-green"
                 >
                   <FaArrowLeft />
                   <span className="d-inline-block ms-1">Go Back</span>
-                </Link>
+                </Link> */}
                 <h2 className="client-main-heading text-center">
                   Are you a company or an individual?
                 </h2>
