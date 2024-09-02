@@ -85,7 +85,7 @@ const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
     const [selectedTabsData, setSelectedTabsData] = useState([]);
-    const [currentTabsStatus, setCurrnetTabsStatus] = useState("application");
+    const [currentTabsStatus, setCurrnetTabsStatus] = useState("shortlisted");
     const [currentTab, setCurrentTab] = useState("application");
     const [selectedDeveloper, setSelectedDeveloper] = useState({});
     const [statusModal, setStatusModal] = useState({
@@ -483,11 +483,11 @@ console.log(developerList,"developerList")
     const needToSchedule = singleJobDescription?.job_applications?.interviews?.need_to_schedule || [];
     const completedInterview = singleJobDescription?.job_applications?.interviews?.interview_completed || [];
     const scheduledInterviews = singleJobDescription?.job_applications?.interviews?.scheduled_interviews || [];
-    const interviewsCount = singleJobDescription?.job_applications?.interviews_count || 0;
-    const shortlistedCount = singleJobDescription?.job_applications?.shortlisted_count || 0;
-    const suggestionsCount = singleJobDescription?.job_applications?.suggestion_count || 0;
-    const offeredCount = singleJobDescription?.job_applications?.offered_count || 0;
-    const hiredCount = singleJobDescription?.job_applications?.hired_count || 0;
+    const interviewsCount = singleJobDescription?.job_applications?.interviews_count > 0 ? singleJobDescription?.job_applications?.interviews_count : '';
+    const shortlistedCount = singleJobDescription?.job_applications?.shortlisted_count > 0 ? singleJobDescription?.job_applications?.shortlisted_count : '';
+    const suggestionsCount = singleJobDescription?.job_applications?.suggestion_count > 0 ? singleJobDescription?.job_applications?.suggestion_count : '';
+    const offeredCount = singleJobDescription?.job_applications?.offered_count > 0 ? singleJobDescription?.job_applications?.offered_count : '';
+    const hiredCount = singleJobDescription?.job_applications?.hired_count > 0 ? singleJobDescription?.job_applications?.hired_count : '';
 
     let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> {suggestionsCount}</div></div>;
     let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1">
