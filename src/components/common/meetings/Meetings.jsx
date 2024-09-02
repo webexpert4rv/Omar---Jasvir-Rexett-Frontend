@@ -5,7 +5,9 @@ import Calendar from 'react-calendar'
 import devImg from '../../../assets/img/user-img.jpg';
 import { gapi } from 'gapi-script';
 import { getAllEvents } from '../../../redux/slices/adminDataSlice';
+import googleIcon from '../../../assets/img/google-icon.png';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaCopy } from 'react-icons/fa';
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
@@ -151,13 +153,14 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   console.log(event,"eventdown")
 
   return (
-    <Offcanvas show={showMeetings} placement="end" onHide={handleCloseMeetings}>
+    <Offcanvas show={showMeetings} placement="end" className="meeting-sidebar" onHide={handleCloseMeetings}>
       <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
         <div className="d-flex align-items-center gap-2">
           <Offcanvas.Title>Meetings</Offcanvas.Title>
           <ToolTip text={"New Meeting"}>
             <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
           </ToolTip>
+          <button onClick={fetchCalendarEvents} className="main-btn font-14 py-1">Sync Meetings</button>
         </div>
       </Offcanvas.Header>
       <Offcanvas.Body>
@@ -174,7 +177,6 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
 
           />
           <div className="interview-scheduled sidebar-meetings mt-4">
-            <button onClick={fetchCalendarEvents}>Fetch</button>
             {event?.map((item, ind) => {
               console.log(item,"eventitem")
               return (
@@ -186,11 +188,21 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                         <div className="me-1">
                           <img src={devImg} />
                         </div>
-                        {/* {item?.creator?.displayName} */}
-                       { item?.kind? <p>Meeting Link :{item?.hangoutLink}</p> :  <p>Meeting Link :{item?.event_link}</p>}
+                        <div className='d-flex align-items-center gap-2 meeting-link-wrapper'>
+                          {/* {item?.creator?.displayName} */}
+                          { item?.kind? <p className='mb-0 meeting-link-text'>Meeting Link :{item?.hangoutLink}</p> :  <p className='mb-0 meeting-link-text'>Meeting Link :{item?.event_link}</p>}
+                          <Button className='copy-btn p-0'>
+                            <FaCopy />
+                          </Button>
+                        </div>
                       </p>
+                      <div className='d-flex align-items-center flex-wrap gap-3 mt-2'>
+                        <p className='mb-1 associate-text'><span className='associate font-14'>Date : <strong>08-09-2024</strong></span></p>
+                        <p className=' mb-1 associate-text'><span className='associate font-14'>Time : <strong>11:30 AM - 12:30 PM</strong></span></p>
+                      </div>
                       {/* <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0, 10)}</p> */}
-                    { item?.kind? "": <button onClick={(e)=>syncCreatedMeetingsWithGoogle(e,item)}>Sync with Google</button>}
+                    { item?.kind? "": <button className='google-btn' onClick={(e)=>syncCreatedMeetingsWithGoogle(e,item)}>
+                      <img src={googleIcon} /> Sync with Google</button>}
                     </div>
                     <div className="mb-2 status-interview">
                       <span className="status-upcoming">Upcoming in 1hr</span>

@@ -353,7 +353,7 @@ const Applications = () => {
                           </th>
                           <th>{t("phoneNumber")}</th>
                           <th>Type</th>
-                          <th className="text-center">Send Email</th>
+                          {/* <th className="text-center">Send Email</th> */}
                           <th>{t("status")}</th>
                           <th>{t("action")}</th>
                         </tr>
@@ -405,7 +405,7 @@ const Applications = () => {
                                     </td>
                                     <td>{item?.phone_number}</td>
                                     <td>{item.client_type}</td>
-                                    <td className="text-center">
+                                    {/* <td className="text-center">
                                       <div className="d-inline-flex gap-1 align-items-center">
                                         <OverlayTrigger placement="bottom" overlay={sendEmail}>
                                           <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
@@ -413,7 +413,7 @@ const Applications = () => {
                                           </span>
                                         </OverlayTrigger>
                                       </div>
-                                    </td>
+                                    </td> */}
                                     <td>
                                       <span
                                         className={`white-nowrap ${item?.is_profile_completed
@@ -1262,10 +1262,7 @@ const Applications = () => {
                           <th>{t("phoneNumber")}</th>
 
                           <th>Coming from</th>
-                          <th>Resume</th>
                           <th>Status</th>
-                          <th className="text-center">Send Email</th>
-                          <th>Screening Round</th>
                           <th>{t("action")}</th>
                         </tr>
                       </thead>
@@ -1319,31 +1316,6 @@ const Applications = () => {
                                     </td>
                                     <td>{item?.phone_number}</td>
                                     <td>Career page</td>
-                                    <td>
-                                      <RexettButton
-                                        onClick={(e) =>
-                                          handleDownload(
-                                            e,
-                                            item?.developer_detail?.resume
-                                          )
-                                        }
-                                        disabled={
-                                          !item?.developer_detail?.resume
-                                        }
-                                        icon={
-                                          selectedRejectedBtn === index ? (
-                                            approvedLoader
-                                          ) : (
-                                            <div ref={targetRef}>
-                                              <HiDownload />
-                                            </div>
-                                          )
-                                        }
-                                        className={`arrow-btn primary-arrow ${!item?.developer_detail?.resume &&
-                                          "not-allowed"
-                                          }`}
-                                      />
-                                    </td>
                                     {/* <td>
                                       <Button
                                         variant="transparent"
@@ -1390,7 +1362,7 @@ const Applications = () => {
                                           ? "Completed"
                                           : "Incomplete"}
                                       </span> */}
-                                      <div className="d-flex gap-2 align-items-center justify-content-center">
+                                      <div className="d-flex gap-2 align-items-center">
                                         {item?.completed_steps < 7 ? <span className="d-inline-flex align-items-center status-ind">
                                           <PiUserCircle />
                                         </span> : <span className="d-inline-flex align-items-center status-ind" >
@@ -1402,70 +1374,6 @@ const Applications = () => {
                                           <CiCircleCheck />
                                         </span>}
                                       </div>
-                                    </td>
-                                    <td>
-                                      <div className="d-flex align-items-center gap-2 justify-content-center">
-                                        <div className="d-inline-flex gap-1 align-items-center">
-                                          <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                            <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
-                                              <span className="email_shot">1</span>
-                                            </span>
-                                          </OverlayTrigger>
-                                        </div>
-                                        {/* {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
-                                          <div
-                                            onClick={() =>
-                                              !smallLoader &&
-                                              redirectToWebsiteForm(
-                                                "developer",
-                                                item?.id,
-                                                item?.verification_reminder_count
-                                              )
-                                            }
-                                          >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2 white-nowrap">
-                                              {item.id === loadingRow
-                                                ? smallLoader && (
-                                                  <RexettSpinner />
-                                                )
-                                                : "Send Email"
-                                              }
-                                              <FiExternalLink />
-                                            </span>
-
-
-                                          </div>
-                                        </div> : "Maximum Limit reached"} */}
-                                      </div>
-                                    </td>
-                                    <td className="text-center">
-                                      <Button variant="transparent" onClick={handleShowScheduleScreening} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Schedule Screening</Button>
-                                      <div className="d-inline-flex align-items-center gap-2">
-                                        <span className="status-upcoming lh-1">
-                                          <span className="d-inline-flex align-items-center gap-1">
-                                            <FaStar />
-                                            8.9
-                                          </span>
-                                        </span>
-                                        <OverlayTrigger placement="bottom" overlay={viewReport}>
-                                          <Link to={'/admin/interview-detail'} className="main-btn view-time-btn text-decoration-none">
-                                            <HiDocumentReport />
-                                          </Link>
-                                        </OverlayTrigger>
-                                      </div>
-                                      <div>
-                                        <span className="status-finished">Invite accepted</span>
-                                      </div>
-                                      <div className="d-inline-flex align-items-center gap-2">
-                                        <span className="status-rejected">Invite declined</span>
-                                        <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
-                                          <Button onClick={handleShowScheduleScreening} variant="transparent" className="reschedule-btn">
-                                            <FaRotateRight />
-                                          </Button>
-                                        </OverlayTrigger>
-                                      </div>
-                                      <Button variant="transparent" onClick={handleShowScreeningInfo} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Reschedule</Button>
-                                      <Link to={'/admin/interview-feedback'} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Share feedback</Link>
                                     </td>
                                     <td>
                                       {item?.is_profile_completed ? (
@@ -1812,6 +1720,35 @@ const Applications = () => {
                                                       View Report
                                                     </Link>
                                                   </div>
+                                                  <div>
+                                                    <Button variant="transparent" onClick={handleShowScheduleScreening} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Schedule Screening</Button>
+                                                    <div className="d-inline-flex align-items-center gap-2">
+                                                      <span className="status-upcoming lh-1">
+                                                        <span className="d-inline-flex align-items-center gap-1">
+                                                          <FaStar />
+                                                          8.9
+                                                        </span>
+                                                      </span>
+                                                      <OverlayTrigger placement="bottom" overlay={viewReport}>
+                                                        <Link to={'/admin/interview-detail'} className="main-btn view-time-btn text-decoration-none">
+                                                          <HiDocumentReport />
+                                                        </Link>
+                                                      </OverlayTrigger>
+                                                    </div>
+                                                    <div>
+                                                      <span className="status-finished">Invite accepted</span>
+                                                    </div>
+                                                    <div className="d-inline-flex align-items-center gap-2">
+                                                      <span className="status-rejected">Invite declined</span>
+                                                      <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
+                                                        <Button onClick={handleShowScheduleScreening} variant="transparent" className="reschedule-btn">
+                                                          <FaRotateRight />
+                                                        </Button>
+                                                      </OverlayTrigger>
+                                                    </div>
+                                                    <Button variant="transparent" onClick={handleShowScreeningInfo} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Reschedule</Button>
+                                                    <Link to={'/admin/interview-feedback'} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Share feedback</Link>
+                                                  </div>
                                                 </div>
                                               </Col>
                                             )}
@@ -1825,6 +1762,50 @@ const Applications = () => {
                                                 </div>
                                               </Col>
                                             )}
+                                            <Col>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Resume
+                                                </h3>
+                                                <RexettButton
+                                                  onClick={(e) =>
+                                                    handleDownload(
+                                                      e,
+                                                      item?.developer_detail?.resume
+                                                    )
+                                                  }
+                                                  disabled={
+                                                    !item?.developer_detail?.resume
+                                                  }
+                                                  icon={
+                                                    selectedRejectedBtn === index ? (
+                                                      approvedLoader
+                                                    ) : (
+                                                      <div ref={targetRef}>
+                                                        <HiDownload />
+                                                      </div>
+                                                    )
+                                                  }
+                                                  className={`arrow-btn primary-arrow ${!item?.developer_detail?.resume &&
+                                                    "not-allowed"
+                                                    }`}
+                                                />
+                                              </div>
+                                            </Col>
+                                            <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Send Email
+                                                </h3>
+                                                <div className="d-inline-flex gap-1 align-items-center">
+                                                  <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                                    <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
+                                                      <span className="email_shot">1</span>
+                                                    </span>
+                                                  </OverlayTrigger>
+                                                </div>
+                                              </div>
+                                            </Col>
                                           </Row>
                                         </div>
                                       </td>

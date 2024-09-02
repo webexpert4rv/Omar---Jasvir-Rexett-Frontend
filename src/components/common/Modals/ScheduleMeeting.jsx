@@ -357,9 +357,25 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                             />
 
                                         </div>
+                                        {meetingTypeValue === 'instant' &&(
+                                            <>
+                                                <Form.Control type="date" className="common-field font-14" />
+                                                <div className="associate-text mt-2">
+                                                    <div className="d-flex align-items-center gap-2 associate p-3">
+                                                        <p className="font-14 mb-0">11:30AM</p>
+                                                        <span className="arrow-icon">
+                                                            <FaArrowRightLong />
+                                                        </span>
+                                                        <p className="font-14 mb-0">12:30PM</p>
+                                                        <p className="mb-0 font-14">Duration</p>
+                                                        <span className="font-14">1 hr</span>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )}
                                         {meetingTypeValue === 'scheduled' && (
                                             <div className="specific-datetime">
-                                                <div className="d-flex align-items-center gap-3 mb-2">
+                                                <div className="d-flex align-items-center gap-3">
 
                                                     <CommonInput
                                                         name={"meeting_start_time"}
@@ -370,10 +386,11 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
                                                         defaultOption="Select Time"
+                                                        className={'mb-0'}
                                                         onChange={handleFirstSlotChange}
                                                     />
 
-                                                    <span className="arrow-icon">
+                                                    <span className="arrow-icon mb-3">
                                                         <FaArrowRightLong />
                                                     </span>
 
@@ -386,6 +403,7 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                                         rules={{ required: "This field is required" }}
                                                         invalidFieldRequired={true}
                                                         defaultOption="Select Time"
+                                                        className={'mb-0'}
                                                         onChange={handleSecondSlotChange}
                                                     />
                                                     <span className="font-14">{calculateDuration(firstSlot, secondSlot)}</span>
