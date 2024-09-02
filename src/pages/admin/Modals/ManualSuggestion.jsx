@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Modal, Nav, Tab } from "react-bootstrap";
 import devImg from '../../../assets/img/user-img.jpg';
 import { FaStar } from "react-icons/fa6";
-const ManualSuggestions = ({ show, handleClose }) => {
+const ManualSuggestions = ({ show, handleClose,developerList }) => {
     return (
         <>
             <Modal show={show} onHide={handleClose} centered animation size="lg" className="custom-modal">
@@ -37,7 +37,10 @@ const ManualSuggestions = ({ show, handleClose }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    {developerList?.map((item)=>{
+                                        return (
+                                            <>
+                                            <tr>
                                         <td className="font-14 align-middle">
                                             <Form.Check type="checkbox" className="primary_checkbox" />
                                         </td>
@@ -48,7 +51,7 @@ const ManualSuggestions = ({ show, handleClose }) => {
                                                     <img src={devImg} className="user-img"
                                                     />
                                                 </div>
-                                                John Doe
+                                                {item?.name}
                                             </div>
                                         </td>
                                         <td className="font-14 align-middle">
@@ -57,168 +60,15 @@ const ManualSuggestions = ({ show, handleClose }) => {
                                             </span>
                                         </td>
                                         <td className="font-14 align-middle">
-                                            johndoe1234@gmail.com
+                                           {item?.email}
                                         </td>
                                         <td className="font-14 align-middle">
                                             Software Developer
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td className="font-14 align-middle">
-                                            <Form.Check type="checkbox" className="primary_checkbox" />
-                                        </td>
-                                        <td className="font-14 align-middle">
-
-                                            <div className="d-flex align-items-center">
-                                                <div className="user-imgbx application-userbx">
-                                                    <img src={devImg} className="user-img"
-                                                    />
-                                                </div>
-                                                John Doe
-                                            </div>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                <FaStar /> 4.4
-                                            </span>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            johndoe1234@gmail.com
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            Software Developer
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="font-14 align-middle">
-                                            <Form.Check type="checkbox" className="primary_checkbox" />
-                                        </td>
-                                        <td className="font-14 align-middle">
-
-                                            <div className="d-flex align-items-center">
-                                                <div className="user-imgbx application-userbx">
-                                                    <img src={devImg} className="user-img"
-                                                    />
-                                                </div>
-                                                John Doe
-                                            </div>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                <FaStar /> 4.4
-                                            </span>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            johndoe1234@gmail.com
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            Software Developer
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="font-14 align-middle">
-                                            <Form.Check type="checkbox" className="primary_checkbox" />
-                                        </td>
-                                        <td className="font-14 align-middle">
-
-                                            <div className="d-flex align-items-center">
-                                                <div className="user-imgbx application-userbx">
-                                                    <img src={devImg} className="user-img"
-                                                    />
-                                                </div>
-                                                John Doe
-                                            </div>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                <FaStar /> 4.4
-                                            </span>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            johndoe1234@gmail.com
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            Software Developer
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="font-14 align-middle">
-                                            <Form.Check type="checkbox" className="primary_checkbox" />
-                                        </td>
-                                        <td className="font-14 align-middle">
-
-                                            <div className="d-flex align-items-center">
-                                                <div className="user-imgbx application-userbx">
-                                                    <img src={devImg} className="user-img"
-                                                    />
-                                                </div>
-                                                John Doe
-                                            </div>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                <FaStar /> 4.4
-                                            </span>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            johndoe1234@gmail.com
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            Software Developer
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="font-14 align-middle">
-                                            <Form.Check type="checkbox" className="primary_checkbox" />
-                                        </td>
-                                        <td className="font-14 align-middle">
-
-                                            <div className="d-flex align-items-center">
-                                                <div className="user-imgbx application-userbx">
-                                                    <img src={devImg} className="user-img"
-                                                    />
-                                                </div>
-                                                John Doe
-                                            </div>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                <FaStar /> 4.4
-                                            </span>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            johndoe1234@gmail.com
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            Software Developer
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="font-14 align-middle">
-                                            <Form.Check type="checkbox" className="primary_checkbox" />
-                                        </td>
-                                        <td className="font-14 align-middle">
-
-                                            <div className="d-flex align-items-center">
-                                                <div className="user-imgbx application-userbx">
-                                                    <img src={devImg} className="user-img"
-                                                    />
-                                                </div>
-                                                John Doe
-                                            </div>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            <span className="status-upcoming d-inline-flex align-items-center gap-1">
-                                                <FaStar /> 4.4
-                                            </span>
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            johndoe1234@gmail.com
-                                        </td>
-                                        <td className="font-14 align-middle">
-                                            Software Developer
-                                        </td>
-                                    </tr>
+                                            </>
+                                        )
+                                    }) }
                                 </tbody>
                             </table>
                         </div>

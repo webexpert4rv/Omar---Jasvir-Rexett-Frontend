@@ -34,6 +34,7 @@ import {
 import { jobPostConfirmMessage } from "../../../helper/utlis";
 import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
+import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import sidebarLogo from "../../../assets/img/rexett-logo.png";
@@ -71,6 +72,7 @@ import { RiFileCloseLine } from "react-icons/ri";
 import AgreementDetails from "../../../pages/admin/Modals/AgreementDetail";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { gapi } from 'gapi-script';
+import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 
 const DISCOVERY_DOCS = [
     "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
@@ -106,8 +108,9 @@ const SingleJobDetails = () => {
     const [isNewStepCompleted, setIsNewStepCompleted] = useState(false);
     const [detailsFilled, setDetailsFilled] = useState(false);
     const [documentSaved, setDocumentSaved] = useState(false);
-    const { configDetails } = useSelector(state => state.adminData)
-
+    const { configDetails,developerList } = useSelector(state => state.adminData)
+    const [manualSuggestion,showManualSuggestion]=useState(false)
+console.log(developerList,"developerList")
     const {
         allJobPostedList,
         jobCategoryList,
@@ -145,6 +148,10 @@ const SingleJobDetails = () => {
         dispatch(getJobCategoryList());
     }, []);
     console.log(jobPostedData, "jobPostedData")
+
+    useEffect(()=>{
+      dispatch(getDeveloperList())
+    },[])
 
     useEffect(() => {
         setSingleJobDescription(jobPostedData?.job);
@@ -553,6 +560,14 @@ const SingleJobDetails = () => {
         });
     };
 
+    const handleShowaddCandidate=()=>{
+        navigate('/admin/register-developer')
+      }
+
+    const handleShowManualSuggestion = () => {
+        showManualSuggestion(!manualSuggestion);
+    }
+
     const handleInterviewReport = (interviewId) => {
         navigate('/client/interview-detail', {
             state: { interviewId },
@@ -873,11 +888,14 @@ const SingleJobDetails = () => {
                     </Tab>
                     {role !== "client" && <Tab eventKey="suggestions" title={suggest}>
                         <div className="text-end">
-                            <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
+                            {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
                                 isLoading={approvedLoader}
                                 disabled={approvedLoader}
-                                onClick={() => handleSuggestions()} />
+                                onClick={() => handleSuggestions()} /> */}
+
+<Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
+<Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
@@ -1339,9 +1357,9 @@ const SingleJobDetails = () => {
                     <Tab eventKey="documentation" title={offered}>
                         {/* <Button onClick={handleDownloadPdf}>DownLoad pdf</Button> */}
                         <div>
-                            {/* <div className="text-end mb-4">
+                            <div className="text-end mb-4">
                                 <Button variant="transparent" className="font-14 main-btn">Create Document</Button>
-                            </div> */}
+                            </div>
                             <div className="card-box mb-4">
                                 {!selectedDocument && (
                                     <div>
@@ -1870,6 +1888,7 @@ const SingleJobDetails = () => {
                 />
             )}
             <AgreementDetails show={showagreement} handleClose={handleCloseAgreement} />
+            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers} />
         </>
     );
 };

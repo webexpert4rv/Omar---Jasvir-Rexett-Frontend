@@ -527,12 +527,12 @@ export function getFolderData(payload, role) {
   };
 }
 
-export function clientJobPost(payload, activeStep, id) {
+export function clientJobPost(payload, activeStep, id,callback) {
   const activeStepKey = ["", "step1", "step2", "step3"];
   return async (dispatch) => {
     // dispatch(setScreenLoader());
     try {
-      let result = await authInstance.post(`common/post-job?user_id=${id}`, { ...payload });
+      let result = await authInstance.post(`common/post-job?user_id=359`, { ...payload });
       if (result?.data?.step1?.id) {
         localStorage.setItem("jobId", result?.data?.step1?.id);
       }
@@ -544,7 +544,7 @@ export function clientJobPost(payload, activeStep, id) {
         toast.success("Job successfully Posted", { position: "top-center" });
       }
       dispatch(setActionSuccessFully());
-      // return callback();
+      return callback();
     } catch (error) {
       const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
