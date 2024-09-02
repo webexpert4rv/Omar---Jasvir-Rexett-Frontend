@@ -70,13 +70,22 @@ import sowImage from '../../../assets/img/sow-img.png';
 import { RiFileCloseLine } from "react-icons/ri";
 import AgreementDetails from "../../../pages/admin/Modals/AgreementDetail";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { gapi } from 'gapi-script';
+
+const DISCOVERY_DOCS = [
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+  ];
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
+const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
     const [selectedTabsData, setSelectedTabsData] = useState([]);
     const [currentTabsStatus, setCurrnetTabsStatus] = useState("application");
     const [currentTab, setCurrentTab] = useState("application");
-    const [selectedDeveloper, setSelectedDeveloper] = useState({})
+    const [selectedDeveloper, setSelectedDeveloper] = useState({});
     const [statusModal, setStatusModal] = useState({
         isTrue: false,
         id: null,
@@ -109,6 +118,25 @@ const SingleJobDetails = () => {
     } = useSelector((state) => state.clientData);
     const { t } = useTranslation();
     console.log(singleJobDescription, "singleJobDescription")
+
+    useEffect(() => {
+        function start() {
+          gapi.client.init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+          }).then(() => {
+            console.log('GAPI Initialized');
+            const authInstance = gapi.auth2.getAuthInstance();
+            localStorage.setItem("authentication",authInstance.isSignedIn.get())
+          }).catch((error) => {
+            console.error('Error initializing GAPI:', error);
+          });
+        }
+        gapi.load('client:auth2', start);
+      }, []);
+    
     useEffect(() => {
         if (id) {
             dispatch(singleJobPostData(id, () => { }));
@@ -198,7 +226,55 @@ const SingleJobDetails = () => {
     //     }
     // };
 
+    const fetchMeetingDetails = async (meetingCode) => {
+        const response = await gapi.client.reports.activities.list({
+          userKey: 'all',
+          applicationName: 'meet',
+          eventName: 'call_ended',
+          filters: `meeting_code==${meetingCode}`,
+        });
+    
+        const activities = response.result.items || [];
+        const participants = activities.flatMap(activity =>
+          activity.events.flatMap(event =>
+            event.parameters
+              .filter(param => param.name === 'user_email')
+              .map(param => param.value)
+          )
+        );
+    
+        const duration = activities.flatMap(activity =>
+          activity.events.flatMap(event =>
+            event.parameters
+              .filter(param => param.name === 'duration_seconds')
+              .map(param => parseInt(param.value, 10))
+          )
+        ).reduce((acc, val) => acc + val, 0);
+    
+        console.log(participants,"part");
+    console.log(duration,"duration");
+      };
 
+  
+    const checkEventStatus = async (eventId) => {
+        const response = await gapi.client.calendar.events.get({
+          calendarId: 'primary',
+          eventId: "688ebijbl636qsme6vi95maa8q",
+        });
+    
+        if (response.result.status === 'cancelled') {
+          alert('This meeting was cancelled.');
+        } else {
+          const now = new Date();
+          const meetingStart = new Date(response.result.start.dateTime);
+          if (meetingStart < now) {
+            fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
+            alert('The meeting should have started or is over.');
+          } else {
+            alert('The meeting is still scheduled.');
+          }
+        }
+      };
 
 
 
@@ -219,8 +295,12 @@ const SingleJobDetails = () => {
                 })
             );
         } else {
+            let newData={
+                "applicationId": statusModal?.id,
+                "newStatus":data.status
+              }
             dispatch(
-                changeJobStatus(currentTab, statusModal?.id, data, () => {
+                changeJobStatus(currentTab, newData, () => {
                     dispatch(
                         singleJobPostData(id, () => {
                             setStatusModal({});
@@ -936,7 +1016,15 @@ const SingleJobDetails = () => {
                                                                     className="outline-main-btn font-14"
                                                                 >
                                                                     Show Feedback
-                                                                    {/* {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'} */}
+                                                                
+                                                                </Button>
+                                                                <Button
+                                                                    onClick={() => checkEventStatus(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    Check Status
+                                                                
                                                                 </Button>
                                                             </>
                                                         )}
@@ -1251,9 +1339,9 @@ const SingleJobDetails = () => {
                     <Tab eventKey="documentation" title={offered}>
                         {/* <Button onClick={handleDownloadPdf}>DownLoad pdf</Button> */}
                         <div>
-                            <div className="text-end mb-4">
+                            {/* <div className="text-end mb-4">
                                 <Button variant="transparent" className="font-14 main-btn">Create Document</Button>
-                            </div>
+                            </div> */}
                             <div className="card-box mb-4">
                                 {!selectedDocument && (
                                     <div>
@@ -1550,7 +1638,7 @@ const SingleJobDetails = () => {
                                     </div>
                                 )}
                             </div>
-                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Client</h5>
+                            {/* <h5 className="font-22 mb-4 fw-bold">Created Documents for Client</h5>
                             <Tab.Container
                                 id="left-tabs-example"
                                 defaultActiveKey="client-sow"
@@ -1730,7 +1818,7 @@ const SingleJobDetails = () => {
                                         </div>
                                     </Tab.Pane>
                                 </Tab.Content>
-                            </Tab.Container>
+                            </Tab.Container> */}
                         </div>
                     </Tab>
                     <Tab eventKey="hired" title={hired}>

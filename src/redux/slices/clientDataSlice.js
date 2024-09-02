@@ -880,13 +880,13 @@ export function _deleteFileAndFolder(payload, callback) {
   };
 }
 
-export function changeJobStatus(currentTb, payload, data, callback) {
+export function changeJobStatus(currentTb, data, callback) {
   return async (dispatch) => {
     if (data) {
       dispatch(setSmallLoader());
       try {
         let result = await clientInstance.put(
-          `client/jobs/${payload}/change-job-status`,
+          `common/job-application/status`,
           { ...data }
         );
         dispatch(setActionSuccessFully());

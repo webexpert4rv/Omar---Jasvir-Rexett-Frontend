@@ -179,25 +179,22 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
         } else {
             let payload = {
                 
-                    "job_id": 1,
-                    "job_external_id": "550e8400-e29b-41d4-a716-446655440000",
-                    "developer_id": 1,
-                    "developer_email": "user@gmail.com",
+                    "job_id": +id,
+                    "developer_id": +data?.select_candidate?.value,
+                    "developer_email": data?.select_candidate?.label,
                     "meeting_type": "instant",
                     "meeting_date": "2024-07-14",
                     "meeting_time": "15:00:00",
                     "meeting_end_time": "16:00:00",
                     "title": "Technical Interview",
                     "meeting_platform": "google meet",
-                    "meeting_link": "https://example.com/meeting-link",
+                    "meeting_link": meetingLink,
                     "status": "pending",
                     "interviewers_list": "interviewer1@example.com,interviewer2@example.com",
-                    "time_zone": "string",
-                    "candidate_reminder": true,
-                    "interviewer_reminder": true,
-                    "interview_duration": "string"
-                  
-
+                    "time_zone": data?.time_zone?.label,
+                    "candidate_reminder": data?.candidate_reminder,
+                    "attendees_reminder": data?.interviewer_reminder,
+                    "interview_duration": "string"       
             }
               
             dispatch(postCandidateInterview(payload))
@@ -319,23 +316,22 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                         <p>{errors?.interviewers_list?.message}</p>
                                     </div>
                                 </Col>
-                                {/* <Col lg={4} className="mb-lg-3 mb-1">
+                                <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaUsers /></span>Interviewer's list</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
                                         <CommonInput
                                             name={"interviewers_list"}
-                                            type={"multi-select"}
+                                            type={"creatable"}
                                             control={control}
-                                            selectOptions={[{ label: "JohnDoe@gmail.com", value: "JohnDoe@gmail.com" }, { label: "exapme@gmail.com", value: "example@gmail.com" }]}
                                             rules={{ required: "This field is required" }}
                                             invalidFieldRequired={true}
                                             placeholder="Select Interviewer"
                                         />
                                         <p>{errors?.select_candidate?.message}</p>
                                     </div>
-                                </Col> */}
+                                </Col>
 
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>

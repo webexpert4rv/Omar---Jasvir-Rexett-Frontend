@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { Controller } from "react-hook-form";
 import "react-phone-number-input/style.css";
+import CreatableSelect from 'react-select/creatable';
 import PhoneInput from "react-phone-number-input";
 import Select from "react-select";
 import DatePicker from "react-date-picker";
@@ -219,7 +220,27 @@ console.log(isMaxRequired,"ismax")
                   {showCloseIcon()}
                 </>
               );
-            } else if (type === "date") {
+            }
+            else if (type === "creatable") {
+              return (
+                <>
+                  <CreatableSelect 
+                    {...field}
+                    isClearable 
+                    className={`common-field ${
+                      invalidFieldRequired && error?.message && "invalid-field"
+                    }`}
+                    // isDisabled={readOnly}
+                    // onChange={(selectedOption) => field.onChange(selectedOption)}
+                    // value={selectOptions?.find(option => option.value === field.value)}
+                    placeholder={placeholder}
+                    isMulti={true}
+                  />
+                  {showCloseIcon()}
+                </>
+              );
+            }
+            else if (type === "date") {
               return (
                 <>
                   <Form.Control
