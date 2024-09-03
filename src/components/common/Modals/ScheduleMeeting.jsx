@@ -49,7 +49,8 @@ const Schedulemeeting = ({
   const dispatch = useDispatch();
   const location = useLocation();
   const [data, setData] = useState();
-  const { developerList,smallLoader } = useSelector((state) => state.adminData);
+  const { developerList } = useSelector((state) => state.adminData);
+  const {smallLoader } = useSelector((state) => state.clientData);
   const [thirdParty, setThirdParty] = useState(false);
   const [meetingLink, setMeetingLink] = useState(null);
 

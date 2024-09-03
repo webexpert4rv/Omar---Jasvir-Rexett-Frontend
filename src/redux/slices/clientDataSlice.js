@@ -700,10 +700,9 @@ export function postCandidateInterview(payload, callback) {
     dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/interview`,{...payload});
-      if (result.status === 200) {
-       toast.success("Interview is scheduled")
+       toast.success("Interview is scheduled",{ position: "top-center" })
        dispatch(setActionSuccessFully());
-      }
+      
     } catch (error) {
       const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
