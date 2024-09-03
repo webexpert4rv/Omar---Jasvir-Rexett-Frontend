@@ -45,6 +45,7 @@ const JobDesciptionStep = ({
   setValue
 }) => {
   const [recommend,setRecommend]=useState(null)
+  const [fieldNo , setFieldNo] = useState()
   const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
   useEffect(() => {
     if (skillOptions?.length) {
@@ -59,6 +60,7 @@ const JobDesciptionStep = ({
 
   useEffect(()=>{
     setValue("description",recommend)
+    
   },[recommend])
 
   const { fields, remove, append } = useFieldArray({
@@ -67,6 +69,7 @@ const JobDesciptionStep = ({
   });
 
   console.log(recommend,"recommend")
+  console.log(watch("skills")?.length,"no Of fields")
 
   const handleAppend = () => {
     const index = watch("skills")?.findIndex(
@@ -76,6 +79,7 @@ const JobDesciptionStep = ({
     if (index < 0) {
       append({ title: "", level: "" });
     }
+    setFieldNo(watch("skills")?.length)
   };
   
   return (

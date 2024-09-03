@@ -93,6 +93,18 @@ const UploadFile = ({ label, placeholder,
         </Form.Label>
 
       </div>
+      <Form.Control
+        {...register(fieldName, {
+          onChange: (e) => handleFileChange(e, fieldName),
+        })}
+        type="file"
+        id={fieldName}
+        placeholder="Company Name"
+        className="common-field d-none"
+      />
+
+
+
       <div>
         {errors[fieldName] && (
           <p className="field-error">{errors[fieldName]?.message}</p>

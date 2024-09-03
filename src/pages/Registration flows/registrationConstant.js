@@ -112,7 +112,7 @@ export const DEVELOPER_INTRO_DATA = {
 
 export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_3 = {
   2: { heading: "developerNestedStep1HeadingForStep3", para: "developerNestedStep1ParaForStep3" },
-  3: { heading: "developerNestedStep2HeadingForStep3", para: "'" },
+  3: { heading: "developerNestedStep2HeadingForStep3", para: "" },
 };
 export const DEVELOPER_STEPPER_HEADINGS_FOR_STEP_4 = {
   1: { heading: "developerNestedStep1HeadingForStep4", para: "developerNestedStep1ParaForStep4" },
@@ -530,6 +530,7 @@ const VENDOR_STEP_1_FIELDS = [
   {
     label: "phoneNumber",
     fieldName: "phone_number",
+    placeholder: "e.g. +46766921023",
     type: "phone",
     rules: { required: "Phone number is required" },
     columnWidth: 6,
@@ -590,7 +591,7 @@ const VENDOR_STEP_2_FIELDS = [
     label: "Phone Number",
     fieldName: "proprietor_contact_number",
     type: "phone",
-    placeholder: "e.g. +918979003975",
+    placeholder: "e.g.  +46766921023",
     rules: { required: "Phone number is required" },
     columnWidth: 6,
     isRequired: true,
@@ -691,7 +692,7 @@ const DEVELOPER_STEP_1_FIELDS = [
   },
   {
     label: "Profession",
-    fieldName: "professional_title",
+    fieldName: "profession",
     type: "text",
     placeholder: "e.g. Software Engineer",
     rules: { required: "Profession is required" },
@@ -722,7 +723,7 @@ const DEVELOPER_STEP_1_FIELDS = [
     label: "phoneNumber",
     fieldName: "phone_number",
     type: "phone",
-    placeholder: "e.g. +91 1234567890",
+    placeholder: "e.g. +46766921023",
     rules: { required: "Phone number is required" },
     columnWidth: 6,
     isRequired: true,
@@ -877,7 +878,7 @@ const NESTED_DEVELOPER_STEP_1_FIELDS = [
 const NESTED_DEVELOPER_STEP_2_FIELDS=[
   {
     label: "University Name",
-    fieldName: "name",
+    fieldName: "university_name",
     type: "text",
     placeholder: "e.g. Delhi University",
     rules: { required: "University name is required" },
@@ -886,7 +887,7 @@ const NESTED_DEVELOPER_STEP_2_FIELDS=[
   },
   {
     label: "University Location",
-    fieldName: "location",
+    fieldName: "address",
     type: "text",
     placeholder: "e.g. Delhi,India",
     rules: { required: "University location is required" },
@@ -913,9 +914,9 @@ const NESTED_DEVELOPER_STEP_2_FIELDS=[
   // },
   {
     label: "Field of Study",
-    fieldName: "study",
+    fieldName: "field_of_study",
     type: "text",
-    placeholder: "e.g. Delhi,India",
+    placeholder: "e.g. B.Tech.",
     rules: { required: "University location is required" },
     columnWidth: 6,
     isRequired: true,
@@ -923,7 +924,7 @@ const NESTED_DEVELOPER_STEP_2_FIELDS=[
   
   {
     label: "Graduation Date",
-    fieldName: "graduate_date",
+    fieldName: "end_month",
     type: "date",
     isMinRequired: true,
     isMaxRequired:false,
@@ -1066,7 +1067,7 @@ const adminStepData = [
     label: "phoneNumber",
     fieldName: "phone_number",
     type: "phone",
-    placeholder: "e.g. +91 1234567890",
+    placeholder: "e.g. +46766921023",
     rules: { required: "Phone number is required" },
     columnWidth: 6,
     isRequired: true,
