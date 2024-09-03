@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import sidebarLogo from "../../assets/img/rexett-logo-white.png";
-import { Link, NavLink } from "react-router-dom"; 
-import { Button } from "react-bootstrap";
+import sidebarLogo2 from "../../assets/img/rexett-logo-white2.png";
+import { Link, NavLink } from "react-router-dom";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaTimes } from "react-icons/fa";
 import { FaQuestion } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
-   
-const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) => {
-    console.log(role,"role")
+
+const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) => {
+    console.log(role, "role")
     const { t } = useTranslation();
-    const {configDetails} = useSelector(state=>state.adminData)
-    let currentRoute= role=="client"?"/":`/${role}-login`
-    
+    const { configDetails } = useSelector(state => state.adminData)
+    let currentRoute = role == "client" ? "/" : `/${role}-login`
+
     const logout = () => {
         localStorage.clear();
         window.location.href = currentRoute;
@@ -26,23 +27,52 @@ const RexettSideBar = ({ sidebarItems,floatingOptions,role, collapseActive }) =>
 
     return (
         <>
-            <aside className={collapseActive ? "sidebar collapse-active" : "sidebar"}>
+            <aside className={collapseActive ? "sidebar" : "sidebar collapse-active"}>
                 <div className="inner-sidebar h-100 d-flex flex-column justify-content-between align-items-center">
                     <div className="w-100">
-                        <div className="sidebar-logo mt-3 mb-4">
+                        <div className={collapseActive ? "sidebar-logo mt-3 mb-4" : "sidebar-logo mt-3 mb-4 logo-sidebar-wrapper"}>
                             <a href="https://www.rexett.com/">
-                                <img src={configDetails?.company_logo ? configDetails?.company_logo :sidebarLogo} alt="Sidebar Logo" />
+                                { collapseActive ?
+                                    <img src={configDetails?.company_logo ? configDetails?.company_logo : sidebarLogo   } alt="Sidebar Logo" />
+                                    :
+                                    <img src={sidebarLogo2} alt="Sidebar Logo" />
+                                }
                             </a>
                         </div>
                         {sidebarItems.map((item, index) => (
-                            <NavLink
-                                key={index}
-                                to={item.to}
-                                className="dashboard-link"
-                                activeClassName="active"
-                            >
-                                <span className="sidebar-icon">{item.icon}</span> <span className="sidebar-text">{t(item.text)}</span>
-                            </NavLink>
+                            <>
+                                {collapseActive ?
+                                    <NavLink
+                                        key={index}
+                                        to={item.to}
+                                        className="dashboard-link"
+                                        activeClassName="active"
+                                    >
+                                        <span className="sidebar-icon">
+                                            {item.icon}
+                                        </span>
+                                        <span className="sidebar-text">
+                                            {t(item.text)}
+                                        </span>
+                                    </NavLink> :
+
+                                    <OverlayTrigger placement="right" overlay={<Tooltip>{t(item.text)}</Tooltip>}>
+                                        <NavLink
+                                            key={index}
+                                            to={item.to}
+                                            className="dashboard-link"
+                                            activeClassName="active"
+                                        >
+                                            <span className="sidebar-icon">
+                                                {item.icon}
+                                            </span>
+                                            <span className="sidebar-text">
+                                                {t(item.text)}
+                                            </span>
+                                        </NavLink>
+                                    </OverlayTrigger>
+                                }
+                            </>
                         ))}
                     </div>
                     <div className="w-100 px-3 mt-3">

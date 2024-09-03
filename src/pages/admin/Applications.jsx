@@ -9,6 +9,7 @@ import {
   OverlayTrigger,
   Tooltip,
   Offcanvas,
+  Dropdown,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -36,7 +37,7 @@ import CryptoJS from "crypto-js";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 import { APPLICANT_FILTER_FIELDS } from "./adminConstant";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
-import { FaEnvelope, FaEye, FaRotateRight, FaStar } from "react-icons/fa6";
+import { FaEnvelope, FaEye, FaRotateRight, FaStar, FaTrashCan } from "react-icons/fa6";
 import Schedulemeeting from "../../components/common/Modals/ScheduleMeeting";
 import MeetingInfo from "./Modals/MeetingInfo";
 import { FaRegEye } from "react-icons/fa";
@@ -45,6 +46,8 @@ import { PiUserCircle, PiUserCircleCheck, PiUserCircleCheckThin } from "react-ic
 import { MdLaptopMac } from "react-icons/md";
 import { CiCircleCheck } from "react-icons/ci";
 import { ImUser } from "react-icons/im";
+import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
+import { LuPencil } from "react-icons/lu";
 
 const SECRET_KEY = "abcfuipqw222";
 
@@ -174,7 +177,7 @@ const Applications = () => {
     setSelectedRejectedBtn(null);
     dispatch(allApplicationsList(data));
   };
-  
+
   const approvedTooltip = <Tooltip id="tooltip">{t("approve")}</Tooltip>;
   const rejectedTooltip = () => (
     <Tooltip id="button-tooltip">{t("reject")}</Tooltip>
@@ -205,12 +208,12 @@ const Applications = () => {
     item,
     verificationReminderCount
   ) => {
-    console.log(item?.completed_steps+1,"currentUser")
+    console.log(item?.completed_steps + 1, "currentUser")
     setLoadingRow(id);
     // const encrypted = encrypt(id);
     const encrypted = id;
 
-    const completeSteps = localStorage.setItem("setActiveStep",item?.completed_steps+1)
+    const completeSteps = localStorage.setItem("setActiveStep", item?.completed_steps + 1)
     const baseUrls = {
       developer: process.env.REACT_APP_BASE_URL,
       vendor: process.env.REACT_APP_BASE_URL,
@@ -268,7 +271,7 @@ const Applications = () => {
   const rescheduleBtn = (
     <Tooltip>Reschedule</Tooltip>
   )
-console.log(allApplications?.developers?.completed_steps,"allApplications")
+  console.log(allApplications?.developers?.completed_steps, "allApplications")
   return (
     <>
       {screenLoader ? (
@@ -350,7 +353,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                           </th>
                           <th>{t("phoneNumber")}</th>
                           <th>Type</th>
-                          <th className="text-center">Send Email</th>
+                          {/* <th className="text-center">Send Email</th> */}
                           <th>{t("status")}</th>
                           <th>{t("action")}</th>
                         </tr>
@@ -402,7 +405,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                     </td>
                                     <td>{item?.phone_number}</td>
                                     <td>{item.client_type}</td>
-                                    <td className="text-center">
+                                    {/* <td className="text-center">
                                       <div className="d-inline-flex gap-1 align-items-center">
                                         <OverlayTrigger placement="bottom" overlay={sendEmail}>
                                           <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
@@ -410,7 +413,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                           </span>
                                         </OverlayTrigger>
                                       </div>
-                                    </td>
+                                    </td> */}
                                     <td>
                                       <span
                                         className={`white-nowrap ${item?.is_profile_completed
@@ -424,84 +427,99 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                       </span>
                                     </td>
                                     <td>
-                                      {item?.is_profile_completed ? (
-                                        <div className="d-flex gap-3">
-                                          <RexettButton
-                                            icon={
-                                              selectedApprovedBtn === index ? (
-                                                approvedLoader
-                                              ) : (
-                                                <IoCheckmark />
-                                              )
-                                            }
-                                            className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
-                                              "not-allowed"
-                                              }`}
-                                            variant="transparent"
-                                            // disabled={!item?.is_profile_completed}
-                                            onClick={(e) =>
-                                              handleClick(
-                                                e,
-                                                item?.id,
-                                                "approved",
-                                                index
-                                              )
-                                            }
-                                            isLoading={
-                                              selectedApprovedBtn === index
-                                                ? approvedLoader
-                                                : false
-                                            }
-                                          />
-                                          <RexettButton
-                                            icon={
-                                              selectedRejectedBtn === index ? (
-                                                approvedLoader
-                                              ) : (
-                                                <IoCloseOutline />
-                                              )
-                                            }
-                                            // disabled={!item?.is_profile_completed}
-                                            className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
-                                              "not-allowed"
-                                              }`}
-                                            variant={"transparent"}
-                                            onClick={(e) =>
-                                              handleClick(
-                                                e,
-                                                item?.id,
-                                                "rejected",
-                                                index
-                                              )
-                                            }
-                                            isLoading={
-                                              selectedRejectedBtn === index
-                                                ? approvedLoader
-                                                : false
-                                            }
-                                          />
-                                        </div>
-                                      ) : (
-                                        <div className="d-flex gap-3">
-                                          <div
-                                            onClick={() =>
-                                              !smallLoader &&
-                                              redirectToWebsiteForm(
-                                                "client",
-                                                item?.id,
-                                                item,
-                                                // 3
-                                              )
-                                            }
-                                          >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+                                      <Dropdown>
+                                        <Dropdown.Toggle variant="transparent" className="action-dropdown" id="action-dropdown">
+                                          <BsThreeDotsVertical />
+                                        </Dropdown.Toggle>
 
-                                              Complete profile
-                                              <FiExternalLink />
-                                            </span>
+                                        <Dropdown.Menu className="action-dropdown-menu">
+
+                                          {item?.is_profile_completed ? (
+                                            <div className="d-flex gap-3">
+                                              <RexettButton
+                                                icon={
+                                                  selectedApprovedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCheckmark />
+                                                  )
+                                                }
+                                                className={`arrow-btn primary-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant="transparent"
+                                                // disabled={!item?.is_profile_completed}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "approved",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedApprovedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                              <RexettButton
+                                                icon={
+                                                  selectedRejectedBtn === index ? (
+                                                    approvedLoader
+                                                  ) : (
+                                                    <IoCloseOutline />
+                                                  )
+                                                }
+                                                // disabled={!item?.is_profile_completed}
+                                                className={`arrow-btn danger-arrow ${!item?.is_profile_completed &&
+                                                  "not-allowed"
+                                                  }`}
+                                                variant={"transparent"}
+                                                onClick={(e) =>
+                                                  handleClick(
+                                                    e,
+                                                    item?.id,
+                                                    "rejected",
+                                                    index
+                                                  )
+                                                }
+                                                isLoading={
+                                                  selectedRejectedBtn === index
+                                                    ? approvedLoader
+                                                    : false
+                                                }
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div className="d-flex justify-content-center gap-3">
+                                              <div
+                                                onClick={() =>
+                                                  !smallLoader &&
+                                                  redirectToWebsiteForm(
+                                                    "client",
+                                                    item?.id,
+                                                    item,
+                                                    // 3
+                                                  )
+                                                }
+                                              >
+                                                <span className="project-link px-2 py-1 font-14 text-green text-decoration-none mb-1 d-inline-flex align-items-center gap-2">
+
+                                                  Complete profile
+                                                  <FiExternalLink />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          )}
+                                          <div className="text-center py-1">
+                                            <Link to={'#'} className="font-14 text-green">Edit Profile <LuPencil /> </Link>
                                           </div>
-                                        </div>
-                                      )}
+                                          <div className="text-center py-1">
+                                            <Link to={'#'} className="font-14 text-danger">Delete <FaTrashCan /> </Link>
+                                          </div>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
                                     </td>
                                   </tr>
                                   {expandedRow === index && (
@@ -585,6 +603,20 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                 <p className="application-text">
                                                   {item?.email}
                                                 </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Send Email
+                                                </h3>
+                                                <div className="d-inline-flex gap-1 align-items-center">
+                                                  <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                                    <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
+                                                      <span className="email_shot">1</span>
+                                                    </span>
+                                                  </OverlayTrigger>
+                                                </div>
                                               </div>
                                             </Col>
 
@@ -1230,10 +1262,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                           <th>{t("phoneNumber")}</th>
 
                           <th>Coming from</th>
-                          <th>Resume</th>
                           <th>Status</th>
-                          <th className="text-center">Send Email</th>
-                          <th>Screening Round</th>
                           <th>{t("action")}</th>
                         </tr>
                       </thead>
@@ -1287,31 +1316,6 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                     </td>
                                     <td>{item?.phone_number}</td>
                                     <td>Career page</td>
-                                    <td>
-                                      <RexettButton
-                                        onClick={(e) =>
-                                          handleDownload(
-                                            e,
-                                            item?.developer_detail?.resume
-                                          )
-                                        }
-                                        disabled={
-                                          !item?.developer_detail?.resume
-                                        }
-                                        icon={
-                                          selectedRejectedBtn === index ? (
-                                            approvedLoader
-                                          ) : (
-                                            <div ref={targetRef}>
-                                              <HiDownload />
-                                            </div>
-                                          )
-                                        }
-                                        className={`arrow-btn primary-arrow ${!item?.developer_detail?.resume &&
-                                          "not-allowed"
-                                          }`}
-                                      />
-                                    </td>
                                     {/* <td>
                                       <Button
                                         variant="transparent"
@@ -1358,82 +1362,18 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                           ? "Completed"
                                           : "Incomplete"}
                                       </span> */}
-                                      <div className="d-flex gap-2 align-items-center justify-content-center">
-                                       {item?.completed_steps  < 7 ?<span  className="d-inline-flex align-items-center status-ind">
-                                          <PiUserCircle/>
+                                      <div className="d-flex gap-2 align-items-center">
+                                        {item?.completed_steps < 7 ? <span className="d-inline-flex align-items-center status-ind">
+                                          <PiUserCircle />
                                         </span> : <span className="d-inline-flex align-items-center status-ind" >
-                                        <PiUserCircleCheck />
+                                          <PiUserCircleCheck />
                                         </span>}
-                                       { item?.completed_steps  < 7 ? <span className="d-inline-flex align-items-center status-ind">
-                                          <MdLaptopMac/>
-                                        </span> :  <span className="d-inline-flex align-items-center status-ind">
-                                          <CiCircleCheck/>
-                                        </span> }
+                                        {item?.completed_steps < 7 ? <span className="d-inline-flex align-items-center status-ind">
+                                          <MdLaptopMac />
+                                        </span> : <span className="d-inline-flex align-items-center status-ind">
+                                          <CiCircleCheck />
+                                        </span>}
                                       </div>
-                                    </td>
-                                    <td>
-                                      <div className="d-flex align-items-center gap-2 justify-content-center">
-                                        <div className="d-inline-flex gap-1 align-items-center">
-                                          <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                            <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
-                                              <span className="email_shot">1</span>
-                                            </span>
-                                          </OverlayTrigger>
-                                        </div>
-                                        {/* {item?.verification_reminder_count < 2 ? <div className="d-flex gap-3">
-                                          <div
-                                            onClick={() =>
-                                              !smallLoader &&
-                                              redirectToWebsiteForm(
-                                                "developer",
-                                                item?.id,
-                                                item?.verification_reminder_count
-                                              )
-                                            }
-                                          >
-                                            <span className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none mb-1 d-inline-flex align-items-center gap-2 white-nowrap">
-                                              {item.id === loadingRow
-                                                ? smallLoader && (
-                                                  <RexettSpinner />
-                                                )
-                                                : "Send Email"
-                                              }
-                                              <FiExternalLink />
-                                            </span>
-
-
-                                          </div>
-                                        </div> : "Maximum Limit reached"} */}
-                                      </div>
-                                    </td>
-                                    <td className="text-center">
-                                      <Button variant="transparent" onClick={handleShowScheduleScreening} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Schedule Screening</Button>
-                                      <div className="d-inline-flex align-items-center gap-2">
-                                        <span className="status-upcoming lh-1">
-                                          <span className="d-inline-flex align-items-center gap-1">
-                                            <FaStar />
-                                            8.9
-                                          </span>
-                                        </span>
-                                        <OverlayTrigger placement="bottom" overlay={viewReport}>
-                                          <Link to={'/admin/interview-detail'} className="main-btn view-time-btn text-decoration-none">
-                                            <HiDocumentReport />
-                                          </Link>
-                                        </OverlayTrigger>
-                                      </div>
-                                      <div>
-                                        <span className="status-finished">Invite accepted</span>
-                                      </div>
-                                      <div className="d-inline-flex align-items-center gap-2">
-                                        <span className="status-rejected">Invite declined</span>
-                                        <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
-                                          <Button onClick={handleShowScheduleScreening} variant="transparent" className="reschedule-btn">
-                                            <FaRotateRight />
-                                          </Button>
-                                        </OverlayTrigger>
-                                      </div>
-                                      <Button variant="transparent" onClick={handleShowScreeningInfo} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Reschedule</Button>
-                                      <Link to={'/admin/interview-feedback'} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Share feedback</Link>
                                     </td>
                                     <td>
                                       {item?.is_profile_completed ? (
@@ -1780,6 +1720,35 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                       View Report
                                                     </Link>
                                                   </div>
+                                                  <div>
+                                                    <Button variant="transparent" onClick={handleShowScheduleScreening} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Schedule Screening</Button>
+                                                    <div className="d-inline-flex align-items-center gap-2">
+                                                      <span className="status-upcoming lh-1">
+                                                        <span className="d-inline-flex align-items-center gap-1">
+                                                          <FaStar />
+                                                          8.9
+                                                        </span>
+                                                      </span>
+                                                      <OverlayTrigger placement="bottom" overlay={viewReport}>
+                                                        <Link to={'/admin/interview-detail'} className="main-btn view-time-btn text-decoration-none">
+                                                          <HiDocumentReport />
+                                                        </Link>
+                                                      </OverlayTrigger>
+                                                    </div>
+                                                    <div>
+                                                      <span className="status-finished">Invite accepted</span>
+                                                    </div>
+                                                    <div className="d-inline-flex align-items-center gap-2">
+                                                      <span className="status-rejected">Invite declined</span>
+                                                      <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
+                                                        <Button onClick={handleShowScheduleScreening} variant="transparent" className="reschedule-btn">
+                                                          <FaRotateRight />
+                                                        </Button>
+                                                      </OverlayTrigger>
+                                                    </div>
+                                                    <Button variant="transparent" onClick={handleShowScreeningInfo} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Reschedule</Button>
+                                                    <Link to={'/admin/interview-feedback'} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Share feedback</Link>
+                                                  </div>
                                                 </div>
                                               </Col>
                                             )}
@@ -1793,6 +1762,50 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                 </div>
                                               </Col>
                                             )}
+                                            <Col>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Resume
+                                                </h3>
+                                                <RexettButton
+                                                  onClick={(e) =>
+                                                    handleDownload(
+                                                      e,
+                                                      item?.developer_detail?.resume
+                                                    )
+                                                  }
+                                                  disabled={
+                                                    !item?.developer_detail?.resume
+                                                  }
+                                                  icon={
+                                                    selectedRejectedBtn === index ? (
+                                                      approvedLoader
+                                                    ) : (
+                                                      <div ref={targetRef}>
+                                                        <HiDownload />
+                                                      </div>
+                                                    )
+                                                  }
+                                                  className={`arrow-btn primary-arrow ${!item?.developer_detail?.resume &&
+                                                    "not-allowed"
+                                                    }`}
+                                                />
+                                              </div>
+                                            </Col>
+                                            <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Send Email
+                                                </h3>
+                                                <div className="d-inline-flex gap-1 align-items-center">
+                                                  <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                                    <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
+                                                      <span className="email_shot">1</span>
+                                                    </span>
+                                                  </OverlayTrigger>
+                                                </div>
+                                              </div>
+                                            </Col>
                                           </Row>
                                         </div>
                                       </td>

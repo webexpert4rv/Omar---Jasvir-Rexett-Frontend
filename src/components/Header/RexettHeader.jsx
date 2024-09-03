@@ -158,7 +158,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       <header className="mb-4 zIndex3">
         <div className="d-flex align-items-center justify-content-between gap-3">
           <div>
-            <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2 active-collapse" : "shadow-none p-0 collapsable_btn me-2"}><TbArrowBarToLeft /></Button>
+            <Button onClick={handleCollapseSidebar} variant="transparent" className={collapseLayout ? "shadow-none p-0 collapsable_btn me-2" : "shadow-none p-0 collapsable_btn me-2 active-collapse"}><TbArrowBarToLeft /></Button>
             {routePath(isSingleJob) && (
               <Button
                 onClick={backBtn}
@@ -192,7 +192,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                 </span>
               </ToolTip>) : ("")}
             {role == "developer" ? <DeveloperCheckInOut /> : ""}
-            <LanguageChange />
+            {/* <LanguageChange /> */}
             <Notification
               route={routePath(role)}
               job="single-job"
