@@ -17,7 +17,8 @@ const MeetingDetail = () => {
  const [isAcceptorReject,setAcceptReject]=useState("accept")
   const {search}=useLocation()
   let id=search.split("=")[2];
-  let token=search.split("=")[1]
+  let tokenEmp=search.split("=")[1]
+  let token=tokenEmp.split("&")[0]
 
 
 
