@@ -50,7 +50,7 @@ export function getAdobeTemplate(payload) {
     return async (dispatch) => {
       dispatch(setScreenLoader());
       try {
-        let result = await adobeInstance.get();
+        let result = await adobeInstance.get("api/templates/template-details");
       } catch (error) {
         const message = error.message || "Something went wrong";
         toast.error(message, { position: "top-center" });

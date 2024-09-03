@@ -73,6 +73,7 @@ import AgreementDetails from "../../../pages/admin/Modals/AgreementDetail";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { gapi } from 'gapi-script';
 import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
+import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 
 const DISCOVERY_DOCS = [
     "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
@@ -151,6 +152,8 @@ console.log(developerList,"developerList")
 
     useEffect(()=>{
       dispatch(getDeveloperList())
+      dispatch(getAdobeTemplate())
+
     },[])
 
     useEffect(() => {
