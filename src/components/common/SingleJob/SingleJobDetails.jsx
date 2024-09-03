@@ -111,7 +111,7 @@ const SingleJobDetails = () => {
     const [documentSaved, setDocumentSaved] = useState(false);
     const { configDetails,developerList } = useSelector(state => state.adminData)
     const [manualSuggestion,showManualSuggestion]=useState(false)
-console.log(developerList,"developerList")
+
     const {
         allJobPostedList,
         jobCategoryList,
@@ -148,7 +148,6 @@ console.log(developerList,"developerList")
         }
         dispatch(getJobCategoryList());
     }, []);
-    console.log(jobPostedData, "jobPostedData")
 
     useEffect(()=>{
       dispatch(getDeveloperList())
@@ -1175,7 +1174,10 @@ console.log(developerList,"developerList")
                                             </div>
                                         </Col>
                                     ))}
-                                    <Col lg={4} className="mb-3">
+                                   {needToSchedule?.map((item)=>{
+                                    return (
+                                        <>
+                                        <Col lg={4} className="mb-3">
                                         <div className="interview-wrapper position-relative pt-4 h-100 d-flex justify-content-between flex-column">
                                             <div>
                                                 <div>
@@ -1184,11 +1186,11 @@ console.log(developerList,"developerList")
                                                     </p>
                                                     <div className="dev-name mb-2 font-14 d-flex align-items-center">
                                                         <div className="me-1">
-                                                            <img src={devImg} alt="developer-img" />
+                                                            <img src={item?.developer?.profile_picture} alt="developer-img" />
                                                         </div>
                                                         <div>
-                                                            Rohit Sharma
-                                                            <span className="font-14 fw-normal d-block">rohit1234@gmail.com</span>
+                                                            {item?.developer?.name}
+                                                            <span className="font-14 fw-normal d-block">{item?.developer?.email}</span>
                                                         </div>
                                                     </div>
                                                     <div>
@@ -1215,13 +1217,17 @@ console.log(developerList,"developerList")
                                             </div>
                                             <div className="d-flex align-items-center justify-content-between align-self-end">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <button className="main-btn font-14 text-decoration-none">
+                                                    <button className="main-btn font-14 text-decoration-none" onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)}>
                                                         Schedule Interview
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </Col>
+                                        </>
+                                    )
+                                   }) }
+                                    
                                 </Row>
                             </div>
                         )}

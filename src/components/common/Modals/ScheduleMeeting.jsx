@@ -58,6 +58,11 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
         dispatch(getDeveloperList())
     }, [])
 
+    useEffect(()=>{
+        setValue("candidate_reminder",true)
+        setValue("interviewer_reminder",true)
+    },[])
+
     useEffect(() => {
         if (timeZoneList.length > 0) {
             let groupedTimeZones = timeZoneList?.map((item) => {
