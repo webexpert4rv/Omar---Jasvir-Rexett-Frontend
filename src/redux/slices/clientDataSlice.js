@@ -696,15 +696,16 @@ export function getJobCategoryList(payload, callback) {
 }
 
 export function postCandidateInterview(payload, callback) {
-  console.log(payload,"payloadd")
   return async (dispatch) => {
+    dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/interview`,{...payload});
       if (result.status === 200) {
-       toast.success(result.data.message)
+       toast.success("Interview is scheduled")
+       dispatch(setActionSuccessFully());
       }
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
