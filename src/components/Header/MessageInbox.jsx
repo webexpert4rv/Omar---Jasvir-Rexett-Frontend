@@ -81,7 +81,10 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     });
     socket.on(`new_message_received_${userId}`, (message) => {
       // setChatMessages([...chatmessages, message]); 
+
+      if(message){
       setChatMessages(prevMessages => [...prevMessages, message]);
+      }
     });
 
     return () => {
