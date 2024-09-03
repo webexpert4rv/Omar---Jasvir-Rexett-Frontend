@@ -1208,5 +1208,20 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       }
     };
   }
+
+  export function suggestDevelopers(payload) {
+
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post(`/admin/suggest-developers`,{...payload})
+            dispatch(setSuccessAdminData())
+            toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
+        } catch (error) {
+            console.log(error,"errrrr")
+        }
+    };
+}
+
  
   

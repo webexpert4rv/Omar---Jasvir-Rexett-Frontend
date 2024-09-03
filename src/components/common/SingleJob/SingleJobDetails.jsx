@@ -384,7 +384,6 @@ console.log(developerList,"developerList")
     };
 
     const handleJobStatusModal = (e, id, status) => {
-        console.log(e, id, status)
         if (e == undefined) {
             setStatusModal({
                 [status]: !statusModal.isTrue,
@@ -935,7 +934,7 @@ console.log(developerList,"developerList")
                                 <Tab.Pane eventKey="list-view">
                                     <div className="">
 
-                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.shortlisted} />
+                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} type={'Interviewing'} handleJobStatusModal={handleJobStatusModal} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.shortlisted} />
                                     </div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="grid-view">
