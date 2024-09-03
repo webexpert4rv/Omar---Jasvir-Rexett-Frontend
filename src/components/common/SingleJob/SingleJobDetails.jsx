@@ -1182,7 +1182,7 @@ const SingleJobDetails = () => {
                                             <div>
                                                 <div>
                                                     <p className="interview-title mb-2">
-                                                        Interview Call for Figma Design
+                                                    {singleJobDescription?.title}
                                                     </p>
                                                     <div className="dev-name mb-2 font-14 d-flex align-items-center">
                                                         <div className="me-1">

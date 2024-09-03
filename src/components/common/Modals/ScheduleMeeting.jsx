@@ -142,7 +142,13 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const meetingTypeValue = watch('meeting_type')
-    console.log(meetingTypeValue, "meetingTypeValue")
+
+    useEffect(()=>{
+        const currentDate = new Date();
+console.log(currentDate,"dt");
+     setValue("date",currentDate)
+    },[])
+
     const onSubmit = (data) => {
         // setCreatedMeetings(data)
         console.log(data, "dat")
@@ -368,7 +374,15 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                         </div>
                                         {meetingTypeValue === 'instant' &&(
                                             <>
-                                                <Form.Control type="date" className="common-field font-14" />
+                                                {/* <Form.Control type="date" className="common-field font-14" /> */}
+
+                                                <CommonInput
+                                            name={"date"}
+                                            type="date"
+                                            control={control}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                        />
                                                 <div className="associate-text mt-2">
                                                     <div className="d-flex align-items-center gap-2 associate p-3">
                                                         <p className="font-14 mb-0">11:30AM</p>
