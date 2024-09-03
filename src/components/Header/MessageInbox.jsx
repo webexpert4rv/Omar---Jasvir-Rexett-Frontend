@@ -26,6 +26,7 @@ import {
   getTemplateById,
   getUnreadMessages,
   messageSendFunc,
+  updateChatRoom,
 } from "../../redux/slices/adminDataSlice";
 import { fileUploadForWeb, getAllMessages, getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
 import moment from "moment";
@@ -51,7 +52,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const { chatRoomMessageList } = useSelector((state) => state.developerData)
   const [filteredName, setFilteredName] = useState("")
   const [type, setType] = useState("")
-  const{memberList} = useSelector(state=>state.developerData)
+  const { memberList } = useSelector(state => state.developerData)
   const dispatch = useDispatch();
   const { messageTemplates, chatRoom } = useSelector(
     (state) => state.adminData
@@ -73,17 +74,15 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     setPreviewUrl("")
   }, [chatData])
 
- 
+
 
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Connected to Socket.IO server");
     });
     socket.on(`new_message_received_${userId}`, (message) => {
-      // setChatMessages([...chatmessages, message]); 
-
-      if(message){
-      setChatMessages(prevMessages => [...prevMessages, message]);
+      if (message) {
+        setChatMessages(prevMessages => [...prevMessages, message]);
       }
     });
 
@@ -109,15 +108,15 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const handleShowUserConversation = () => {
     showAddUserConversation(!adduserconversation);
   };
-  const handleSelect = (selectedTab) => {
-    if (currentTab === "first") {
+  const handleSelect = (tab) => {
+    if (tab === "first") {
       setSelectedTab("inbox")
-    } else if (currentTab === "second") {
+    } else if (tab === "second") {
       setSelectedTab("unread")
     } else {
       setSelectedTab("archive")
     }
-    if (selectedTab === "first") {
+    if (tab === "first") {
       const payload = {
         type: "inbox",
         // developer_name : "pankaj_pundir",
@@ -125,7 +124,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
         per_page: "10"
       }
       dispatch(getAllMessages(userId, payload));
-    } else if (selectedTab === "second") {
+    } else if (tab === "second") {
       const payload = {
         type: "unread",
         // developer_name : "pankaj_pundir",
@@ -150,15 +149,29 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const handleCloseUserConversation = () => {
     showAddUserConversation(false);
   };
+  console.log(currentTab, "currenttab")
 
 
-  const handleChatProfileClick = (roomId) => {
+  const handleChatProfileClick = async (roomId) => {
     const selectedChat = chatRoomMessageList?.chatRooms?.find(itm => itm.id == roomId)
     setSelectedChat(selectedChat)
     setChtRoomId(roomId)
     dispatch(getChatRoomData(roomId));
     dispatch(getChatRoomMembers(roomId))
     setMessageWrapperVisible(true);
+    if (selectedTab === "unread") {
+      let data = {
+        type: "inbox",
+      }
+      await dispatch(updateChatRoom(roomId, data, () => {
+        let data = {
+          type: "unread",
+          page: "1",
+          per_page: "10"
+        }
+        dispatch(getAllMessages(userId, data))
+      }))
+    }
   };
   const handleCloseMessages = () => {
     setShowMessagesInfo(false);
@@ -251,6 +264,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       "assigned_member_role": emp?.role
     }
     dispatch(getReassign(payload))
+
+
   }
 
 
@@ -408,7 +423,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                           {isReceiver && showTime && <div className="sender-profile">
                             <img src={memberList[0]?.profile_picture} />
                           </div>
-                          
+
                           }
                           <div>
 

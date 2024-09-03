@@ -49,6 +49,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   const [value, onChange] = useState(new Date());
   const [event, setEvent] = useState([])
   const {allEvents} = useSelector(state=>state.adminData)
+  const [linkCopied , setLinkedCopied] = useState(false)
   console.log(allEvents,"allevents")
   console.log(event,"event")
   const dispatch = useDispatch()
@@ -74,6 +75,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       });
     }
     gapi.load('client:auth2', start);
+    setLinkedCopied(false)
   }, []);
 
   
@@ -155,21 +157,34 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     });
   };
 
-  const getDuration=(item)=>{
+  const getGoogleEventDetails=(event, fieldName)=>{
+    const start_time=moment(event?.start?.dateTime).format('HH:mm:ss')
+    const end_time=moment(event?.end?.dateTime).format('HH:mm:ss')
+    const profile_img = event?.conferenceData?.conferenceSolution?.iconUri
+    const start_date = event?.start?.dateTime?.slice(0,10)
+    const end_date = event?.end?.dateTime?.slice(0,10)
+    const currentTime = moment()
+    const formattedStartTime = moment(event?.start?.dateTime)
+    const differenceInMillis = currentTime.diff(formattedStartTime);
+    const duration =  moment.duration(differenceInMillis);
+    const hours = duration.hours();
+    if (fieldName === "date"){
+      return end_date;
+    }else if(fieldName === "time"){
+    return `${start_time} - ${end_time}`;
+    }else if(fieldName === "profile_picture"){
+      return profile_img;
+    }else if(fieldName === "upcoming"){
+      return hours;
+    }
 
-    const endTime = moment( item?.event_end_time)
-    console.log(endTime,"endTime")
-    const duration = moment.duration(endTime.diff(currentTime))
-    console.log(duration,"duration")
-    // return duration.asHours().toFixed(2);
 
   }
-
-
-
-
-  console.log(event,"eventdown")
-
+  const handleCopy=(e,link)=>{
+    e.stopPropagation()
+    navigator.clipboard.writeText(link)
+    setLinkedCopied(true)
+  }
   return (
     <Offcanvas show={showMeetings} placement="end" className="meeting-sidebar" onHide={handleCloseMeetings}>
       <Offcanvas.Header className="border-bottom-grey pb-3" closeButton>
@@ -201,27 +216,28 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                 <>
                   <div onClick={()=>handleShowMeetingInfo(item)} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4 meeting-info-card">
                     <div className='meeting-type'>
-                        <img src={googleIcon} />
-                        <img src={rexettIcon} />
+                       { item?.kind ?<img src={googleIcon} />:<img src={rexettIcon} />}
                     </div>
                     <div>
                       <p className="interview-title mb-2">{item?.kind? item?.summary : item?.title}</p>
                       <p className="dev-name mb-2 font-14">
                         <div className="me-1">
-                          <img src={item?.developer_profile_picture? item?.developer_profile_picture : item?.items?.map(itm => itm?.conferenceData?.conferenceSolution?.iconUri)
-} />
+                          <img src={item?.kind ? getGoogleEventDetails(item,"profile_picture") : item?.developer_profile_picture  } />
                         </div>
                         <div className='d-flex align-items-center gap-2 meeting-link-wrapper'>
                           {/* {item?.creator?.displayName} */}
                           { item?.kind? <p className='mb-0 meeting-link-text'>Meeting Link :{item?.hangoutLink}</p> :  <p className='mb-0 meeting-link-text'>Meeting Link :{item?.event_link}</p>}
-                          <Button className='copy-btn p-0'>
+                          <ToolTip text={linkCopied ? "Link copied to clipboard" : "Copy Link"}>
+                          <Button className='copy-btn p-0' onClick = {(e)=>handleCopy( e,item?.kind? item?.hangoutLink : item?.event_link)}>
                             <FaCopy />
                           </Button>
+                          </ToolTip>
+                          
                         </div>
                       </p>
                       <div className='d-flex align-items-center flex-wrap gap-3 mt-2'>
-                        <p className='mb-1 associate-text'><span className='associate font-14'>Date : <strong>{item?.event_date?.slice(0,10)}</strong></span></p>
-                        <p className=' mb-1 associate-text'><span className='associate font-14'>Time : <strong>{item?.event_time}-{item?.event_end_time}</strong></span></p>
+                        <p className='mb-1 associate-text'><span className='associate font-14'>Date : <strong>{item?.kind ? getGoogleEventDetails(item,"date")   :item?.event_date?.slice(0,10)}</strong></span></p>
+                        <p className=' mb-1 associate-text'><span className='associate font-14'>Time : <strong>{item?.kind ? getGoogleEventDetails(item,"time") : item?.event_time}-{item?.event_end_time}</strong></span></p>
                       </div>
                       {/* <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0, 10)}</p> */}
                     { item?.kind? "": <button className='google-btn' onClick={(e)=>syncCreatedMeetingsWithGoogle(e,item)}>
@@ -229,7 +245,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                     </div>
                     <div className="mb-2 status-interview">
                       {/* <span className="status-upcoming">Upcoming in{getDuration(item?.event_end_time)}hr</span> */}
-                      <span className="status-upcoming">Upcoming in 1 hr</span>
+                      <span className="status-upcoming">Upcoming in {getGoogleEventDetails(item,"upcoming")} hr</span>
 
                     </div>
                   </div>

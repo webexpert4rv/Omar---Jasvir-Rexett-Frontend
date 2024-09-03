@@ -9,7 +9,7 @@ import moment from 'moment'
 const MessageInboxCard = ({ type,chatRoom,stripHtmlTags ,messageWrapperVisible, handleChatProfileClick,filteredName,setSelectedTab }) => {
     const dispatch =useDispatch()
     const {chatRoomMessageList}=useSelector((state)=>state.developerData)
-   
+    console.log(type , "typeonmessage")
 
     
     // useEffect(()=>{

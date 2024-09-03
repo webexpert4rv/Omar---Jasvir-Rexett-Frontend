@@ -198,21 +198,8 @@ const Schedulemeeting = ({
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         type: "events",
-        event_link: meetingLink,
+        event_link: meetingLink ?meetingLink : "" ,
         developer_email: data?.select_candidate?.label,
-        // "attendees": "attendee1@example.com, attendee2@example.com",
-        // "event_platform": "Zoom",
-        // "event_type": "scheduled",
-        // "event_date": "2024-07-25",
-        // "event_time": "10:00:00",
-        // "event_end_time": "11:00:00",
-        // "event_duration": "1h",
-        // "time_zone": "UTC",
-        // "candidate_reminder": true,
-        // "attendees_reminder": true,
-        // "type": "meeting",
-        // "event_link": "https://zoom.us/j/1234567890",
-        // "developer_email": "developer@example.com"
       };
       dispatch(
         postScheduleMeeting(payload, () => {
@@ -239,9 +226,9 @@ const Schedulemeeting = ({
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "string",
       };
-
       dispatch(postCandidateInterview(payload));
     }
+    reset()
   };
 
   let r = watch("meeting_platform");
@@ -350,7 +337,7 @@ const Schedulemeeting = ({
                       placeholder="Add title"
                     />
                   </div>
-                  <p>{errors?.title?.message}</p>
+                  <p className="error-message">{errors?.title?.message}</p>
                 </Col>
                 <Col lg={4} className="mb-lg-3 mb-1">
                   <p className="font-14 schedule-heading">
@@ -373,7 +360,7 @@ const Schedulemeeting = ({
                       invalidFieldRequired={true}
                       placeholder="Select Candidate"
                     />
-                    <p>{errors?.interviewers_list?.message}</p>
+                    <p className="error-message">{errors?.select_candidate?.message}</p>
                   </div>
                 </Col>
                { type === "events" ? ""
