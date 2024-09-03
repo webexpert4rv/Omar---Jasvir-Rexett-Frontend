@@ -48,7 +48,7 @@ const Schedulemeeting = ({
   const dispatch = useDispatch();
   const location = useLocation();
   const [data, setData] = useState();
-  const { developerList } = useSelector((state) => state.adminData);
+  const { developerList,smallLoader } = useSelector((state) => state.adminData);
   const [thirdParty, setThirdParty] = useState(false);
   const [meetingLink, setMeetingLink] = useState(null);
 
@@ -600,6 +600,8 @@ const Schedulemeeting = ({
                 type="submit"
                 text={"Send Invite"}
                 className="main-btn px-4 font-14 fw-semibold"
+                disabled={smallLoader}
+                isLoading={smallLoader}
               />
             </div>
           </form>
