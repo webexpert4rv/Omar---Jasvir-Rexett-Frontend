@@ -449,7 +449,7 @@ const JobPostStepContainer = ({ role }) => {
         clientUpdatePost(payload, isEdit, activeStep, jobID, userId, increaseStep)
       )
     } else {
-      dispatch(clientJobPost(payload, activeStep, increaseStep));
+      dispatch(clientJobPost(payload, activeStep,0, increaseStep));
     }
   };
 

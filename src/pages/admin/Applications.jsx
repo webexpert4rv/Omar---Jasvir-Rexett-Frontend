@@ -39,6 +39,7 @@ import { APPLICANT_FILTER_FIELDS } from "./adminConstant";
 import RexettSpinner from "../../components/atomic/RexettSpinner";
 import { FaEnvelope, FaEye, FaRotateRight, FaStar, FaTrashCan } from "react-icons/fa6";
 import Schedulemeeting from "../../components/common/Modals/ScheduleMeeting";
+import ScheduleScreening from "../../components/common/Modals/ScheduleScreening";
 import MeetingInfo from "./Modals/MeetingInfo";
 import { FaRegEye } from "react-icons/fa";
 import { HiDocumentReport } from "react-icons/hi";
@@ -251,12 +252,20 @@ const Applications = () => {
     <Tooltip>Already sent</Tooltip>
   )
   const [schedulescreeening, showScheduleScreening] = useState(false);
-  const handleShowScheduleScreening = () => {
-    showScheduleScreening(!schedulescreeening);
-  }
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handleShowScheduleScreening = (email, id) => {
+    setSelectedEmail(email);
+    setSelectedId(id);
+    showScheduleScreening(true);
+  };
+
   const handleCloseScheduleScreening = () => {
     showScheduleScreening(false);
-  }
+    setSelectedEmail(null);
+    setSelectedId(null);
+  };
 
   const [screeninginfo, showScreeningInfo] = useState(false);
   const handleShowScreeningInfo = () => {
@@ -272,6 +281,19 @@ const Applications = () => {
     <Tooltip>Reschedule</Tooltip>
   )
   console.log(allApplications?.developers?.completed_steps, "allApplications")
+
+  const handleFeedbackClick = (interviewId) => {
+    navigate('/client/interview-feedback', {
+        state: { interviewId },
+    });
+  };
+
+  const handleInterviewReport = (interviewId) => {
+    navigate('/client/interview-detail', {
+        state: { interviewId },
+    });
+  };
+console.log(allApplications?.developers?.completed_steps,"allApplications")
   return (
     <>
       {screenLoader ? (
@@ -1263,6 +1285,7 @@ const Applications = () => {
 
                           <th>Coming from</th>
                           <th>Status</th>
+                          <th>Screening</th>
                           <th>{t("action")}</th>
                         </tr>
                       </thead>
@@ -1374,6 +1397,123 @@ const Applications = () => {
                                           <CiCircleCheck />
                                         </span>}
                                       </div>
+                                    </td>
+                                    {/* <td>
+                                      <div className="d-flex align-items-center gap-2 justify-content-center">
+                                        <div className="d-inline-flex gap-1 align-items-center">
+                                          <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                            <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
+                                              <span className="email_shot">1</span>
+                                            </span>
+                                          </OverlayTrigger>
+                                        </div>
+                                      </div>
+                                    </td> */}
+                                    <td className="text-center">
+                                      {/* Show Schedule Screening button if no interviews */}
+                                      {item?.interviews?.length <= 0 ? (
+                                        <Button
+                                          variant="transparent"
+                                          onClick={() => handleShowScheduleScreening(item?.email, item?.id)}
+                                          className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap"
+                                        >
+                                          Schedule Screening
+                                        </Button>
+                                      ) : (
+                                        (() => {
+                                          // Sort interviews by created_at in descending order to get the latest interview first
+                                          const sortedInterviews = [...item.interviews].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                                          const latestInterview = sortedInterviews[0];
+                                          
+                                          // Calculate average rating if there is feedback
+                                          const feedbacks = latestInterview.shareFeedbacks || [];
+                                          const skillRatingsMap = {};
+                                          // Collect ratings by skill name
+                                          feedbacks.forEach(feedback => {
+                                            const skillRatings = feedback.skillRatings || [];
+                                            skillRatings.forEach(rating => {
+                                              if (!skillRatingsMap[rating.skill_name]) {
+                                                skillRatingsMap[rating.skill_name] = [];
+                                              }
+                                              skillRatingsMap[rating.skill_name].push(rating.rating);
+                                            });
+                                          });
+
+                                          // Calculate average rating per skill
+                                          const skillAverages = Object.keys(skillRatingsMap).map(skillName => {
+                                            const ratings = skillRatingsMap[skillName];
+                                            const avgRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+                                            return avgRating;
+                                          });
+
+                                          // Calculate overall average rating
+                                          const overallAverageRating = skillAverages.length > 0 ? (skillAverages.reduce((a, b) => a + b, 0) / skillAverages.length).toFixed(1) : 'N/A';
+
+                                          return (
+                                            <>
+                                              {/* Show Invite accepted status if the latest interview is accepted */}
+                                              {latestInterview?.status === "accepted" && latestInterview?.is_accepted &&  (
+                                                <div>
+                                                  <span className="status-finished">Invite accepted</span>
+                                                </div>
+                                              )}
+
+                                              {/* Show Invite declined status if the latest interview is pending and not accepted */}
+                                              {latestInterview?.status === "pending" && latestInterview?.is_accepted === false && (
+                                                <div className="d-inline-flex align-items-center gap-2">
+                                                  <span className="status-rejected">Invite declined</span>
+                                                  <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
+                                                    <Button
+                                                      onClick={() => handleShowScheduleScreening(item?.email, item?.id)}
+                                                      variant="transparent"
+                                                      className="reschedule-btn"
+                                                    >
+                                                      <FaRotateRight />
+                                                    </Button>
+                                                  </OverlayTrigger>
+                                                </div>
+                                              )}
+
+                                              {/* Show Invite sent status if the latest interview is pending and is_accepted is null */}
+                                              {latestInterview?.status === "pending" && latestInterview?.is_accepted === null && (
+                                                <div>
+                                                  <span className="status-upcoming">Invite sent</span>
+                                                </div>
+                                              )}
+
+                                              {/* Show Share Feedback button if the latest interview is completed, accepted, and no feedbacks */}
+                                              {latestInterview?.status === "completed" && latestInterview?.is_accepted && feedbacks.length <= 0 && (
+                                                <button
+                                                  onClick={() => handleFeedbackClick(latestInterview?.id)}
+                                                  className="main-btn font-14 text-decoration-none"
+                                                >
+                                                  Share Feedback
+                                                </button>
+                                              )}
+
+                                              {/* Show rating and view report link if there is feedback */}
+                                              {latestInterview?.status === "completed" && feedbacks.length > 0 && (
+                                                <div className="d-inline-flex align-items-center gap-2">
+                                                  <span className="status-upcoming lh-1">
+                                                    <span className="d-inline-flex align-items-center gap-1">
+                                                      <FaStar />
+                                                      {overallAverageRating}
+                                                    </span>
+                                                  </span>
+                                                  <OverlayTrigger placement="bottom" overlay={viewReport}>
+                                                    <button
+                                                      onClick={() => handleInterviewReport(latestInterview.id)}
+                                                      className="main-btn font-14 text-decoration-none"
+                                                    >
+                                                      <HiDocumentReport />
+                                                    </button>
+                                                  </OverlayTrigger>
+                                                </div>
+                                              )}
+                                            </>
+                                          );
+                                        })()
+                                      )}
                                     </td>
                                     <td>
                                       {item?.is_profile_completed ? (
@@ -1706,49 +1846,59 @@ const Applications = () => {
                                             {item?.developer_detail && (
                                               <Col md={3}>
                                                 <div>
-                                                  <h3 className="application-heading">
-                                                    Screening Round
-                                                  </h3>
-                                                  <div className="d-inline-flex align-items-center gap-2">
-                                                    <span className="status-upcoming lh-1">
-                                                      <span className="d-inline-flex align-items-center gap-1">
-                                                        <FaStar />
-                                                        8.9
-                                                      </span>
-                                                    </span>
-                                                    <Link to={'/admin/interview-detail'} className="text-green font-14">
-                                                      View Report
-                                                    </Link>
-                                                  </div>
-                                                  <div>
-                                                    <Button variant="transparent" onClick={handleShowScheduleScreening} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Schedule Screening</Button>
-                                                    <div className="d-inline-flex align-items-center gap-2">
-                                                      <span className="status-upcoming lh-1">
-                                                        <span className="d-inline-flex align-items-center gap-1">
-                                                          <FaStar />
-                                                          8.9
+                                                  <h3 className="application-heading">Screening Round</h3>
+                                                  {item.interviews && item.interviews.length > 0 ? (() => {
+                                                    // Sort interviews by created_at in descending order to get the latest interview first
+                                                    const sortedInterviews = [...item.interviews].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                                                    const latestInterview = sortedInterviews[0];
+
+                                                    // Calculate average rating if there is feedback
+                                                    const feedbacks = latestInterview.shareFeedbacks || [];
+                                                    const skillRatingsMap = {};
+
+                                                    // Collect ratings by skill name
+                                                    feedbacks.forEach(feedback => {
+                                                      const skillRatings = feedback.skillRatings || [];
+                                                      skillRatings.forEach(rating => {
+                                                        if (!skillRatingsMap[rating.skill_name]) {
+                                                          skillRatingsMap[rating.skill_name] = [];
+                                                        }
+                                                        skillRatingsMap[rating.skill_name].push(rating.rating);
+                                                      });
+                                                    });
+
+                                                    // Calculate average rating per skill
+                                                    const skillAverages = Object.keys(skillRatingsMap).map(skillName => {
+                                                      const ratings = skillRatingsMap[skillName];
+                                                      const avgRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+                                                      return avgRating;
+                                                    });
+
+                                                    // Calculate overall average rating
+                                                    const overallAverageRating = skillAverages.length > 0 ? (skillAverages.reduce((a, b) => a + b, 0) / skillAverages.length).toFixed(1) : 'N/A';
+
+                                                    return (
+                                                      <div className="d-inline-flex align-items-center gap-2">
+                                                        <span className="status-upcoming lh-1">
+                                                          <span className="d-inline-flex align-items-center gap-1">
+                                                            <FaStar />
+                                                            {overallAverageRating}
+                                                          </span>
                                                         </span>
-                                                      </span>
-                                                      <OverlayTrigger placement="bottom" overlay={viewReport}>
-                                                        <Link to={'/admin/interview-detail'} className="main-btn view-time-btn text-decoration-none">
-                                                          <HiDocumentReport />
-                                                        </Link>
-                                                      </OverlayTrigger>
-                                                    </div>
-                                                    <div>
-                                                      <span className="status-finished">Invite accepted</span>
-                                                    </div>
-                                                    <div className="d-inline-flex align-items-center gap-2">
-                                                      <span className="status-rejected">Invite declined</span>
-                                                      <OverlayTrigger placement="bottom" overlay={rescheduleBtn}>
-                                                        <Button onClick={handleShowScheduleScreening} variant="transparent" className="reschedule-btn">
-                                                          <FaRotateRight />
-                                                        </Button>
-                                                      </OverlayTrigger>
-                                                    </div>
-                                                    <Button variant="transparent" onClick={handleShowScreeningInfo} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Reschedule</Button>
-                                                    <Link to={'/admin/interview-feedback'} className="project-link main-btn px-2 py-1 font-14 outline-main-btn text-decoration-none white-nowrap">Share feedback</Link>
-                                                  </div>
+                                                        {/* Show the "View Report" button only if there is feedback */}
+                                                        {feedbacks.length > 0 && (
+                                                          <button
+                                                            onClick={() => handleInterviewReport(latestInterview.id)}
+                                                            className="main-btn font-14 text-decoration-none"
+                                                          >
+                                                            View Report
+                                                          </button>
+                                                        )}
+                                                      </div>
+                                                    );
+                                                  })() : (
+                                                    <div>No Interviews Found</div>
+                                                  )}
                                                 </div>
                                               </Col>
                                             )}
@@ -1978,7 +2128,12 @@ const Applications = () => {
               </div>
             </Offcanvas.Body>
           </Offcanvas>
-          <Schedulemeeting show={schedulescreeening} handleClose={handleCloseScheduleScreening} />
+          <ScheduleScreening 
+            show={schedulescreeening} 
+            handleClose={handleCloseScheduleScreening} 
+            selectedEmail={selectedEmail} 
+            selectedId={selectedId}
+          />
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
         </>
       )}

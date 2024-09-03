@@ -4,10 +4,10 @@ import RexettSpinner from "../../atomic/RexettSpinner";
 import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
 const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCreatedMeetingsWithGoogle,meetingLink}) => {
-    const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-    const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-    const CLIENT_ID = "904487780052-sjeu9i0nd8r72hnv7gsu4blh9r5gdera.apps.googleusercontent.com";
-    const API_KEY = 'AIzaSyDJtuRbVlALGiSU8YztXZmNIpMtcinc2nY';
+  const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+  const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+  const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
+  const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     let authentication=localStorage.getItem("authentication")
 

@@ -58,6 +58,11 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
         dispatch(getDeveloperList())
     }, [])
 
+    useEffect(()=>{
+        setValue("candidate_reminder",true)
+        setValue("interviewer_reminder",true)
+    },[])
+
     useEffect(() => {
         if (timeZoneList.length > 0) {
             let groupedTimeZones = timeZoneList?.map((item) => {
@@ -137,7 +142,13 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
     const filteredTimeSlots = timeSlots.filter(slot => !firstSlot || slot.label > firstSlot);
 
     const meetingTypeValue = watch('meeting_type')
-    console.log(meetingTypeValue, "meetingTypeValue")
+
+    useEffect(()=>{
+        const currentDate = new Date();
+console.log(currentDate,"dt");
+     setValue("date",currentDate)
+    },[])
+
     const onSubmit = (data) => {
         // setCreatedMeetings(data)
         console.log(data, "dat")
@@ -147,14 +158,14 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                 "developer_id": +data?.select_candidate?.value,
                 "attendees": "attendee1@example.com, attendee2@example.com",
                 "event_platform": data?.meeting_platform?.label,
-                "event_type": data?.meeting_type,
+                "event_type": "scheduled",
                 "event_date": data?.meeting_date,
                 "event_time": data?.meeting_start_time,
                 "event_end_time": data?.meeting_end_time,
                 "time_zone": data?.time_zone?.label,
                 "candidate_reminder": data?.candidate_reminder,
                 "attendees_reminder": data?.interviewer_reminder,
-                "type": "meeting",
+                "type": "events",
                 "event_link": meetingLink,
                 "developer_email": data?.select_candidate?.label
                 // "attendees": "attendee1@example.com, attendee2@example.com",
@@ -178,20 +189,25 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
 
         } else {
             let payload = {
-                "job_id": +id,
-                "developer_id": +data?.select_candidate?.value,
-                "meeting_type": data?.meeting_type,
-                "meeting_date": data?.meeting_date,
-                "meeting_time": "01:00:00",
-                "title": data?.title,
-                "meeting_platform": data?.meeting_platform?.value,
-                "meeting_link": "https://example.com/meeting-link",
-                "status": "pending",
-                "interviewers_list": data?.interviewers_list.map((item) => item.value).join(','),
-                "candidate_reminder": data?.candidate_reminder,
-                "interviewer_reminder": data?.interviewer_reminder,
-                "time_zone": data?.time_zone?.label
+                
+                    "job_id": +id,
+                    "developer_id": +data?.select_candidate?.value,
+                    "developer_email": data?.select_candidate?.label,
+                    "meeting_type": "instant",
+                    "meeting_date": "2024-07-14",
+                    "meeting_time": "15:00:00",
+                    "meeting_end_time": "16:00:00",
+                    "title": "Technical Interview",
+                    "meeting_platform": "google meet",
+                    "meeting_link": meetingLink,
+                    "status": "pending",
+                    "interviewers_list": "interviewer1@example.com,interviewer2@example.com",
+                    "time_zone": data?.time_zone?.label,
+                    "candidate_reminder": data?.candidate_reminder,
+                    "attendees_reminder": data?.interviewer_reminder,
+                    "interview_duration": "string"       
             }
+              
             dispatch(postCandidateInterview(payload))
         }
 
@@ -311,23 +327,22 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                         <p>{errors?.interviewers_list?.message}</p>
                                     </div>
                                 </Col>
-                                {/* <Col lg={4} className="mb-lg-3 mb-1">
+                                <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaUsers /></span>Interviewer's list</p>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div>
                                         <CommonInput
                                             name={"interviewers_list"}
-                                            type={"multi-select"}
+                                            type={"creatable"}
                                             control={control}
-                                            selectOptions={[{ label: "JohnDoe@gmail.com", value: "JohnDoe@gmail.com" }, { label: "exapme@gmail.com", value: "example@gmail.com" }]}
                                             rules={{ required: "This field is required" }}
                                             invalidFieldRequired={true}
                                             placeholder="Select Interviewer"
                                         />
                                         <p>{errors?.select_candidate?.message}</p>
                                     </div>
-                                </Col> */}
+                                </Col>
 
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
@@ -359,7 +374,15 @@ const Schedulemeeting = ({ show, handleClose, selectedDeveloper, createdMeetings
                                         </div>
                                         {meetingTypeValue === 'instant' &&(
                                             <>
-                                                <Form.Control type="date" className="common-field font-14" />
+                                                {/* <Form.Control type="date" className="common-field font-14" /> */}
+
+                                                <CommonInput
+                                            name={"date"}
+                                            type="date"
+                                            control={control}
+                                            rules={{ required: "This field is required" }}
+                                            invalidFieldRequired={true}
+                                        />
                                                 <div className="associate-text mt-2">
                                                     <div className="d-flex align-items-center gap-2 associate p-3">
                                                         <p className="font-14 mb-0">11:30AM</p>

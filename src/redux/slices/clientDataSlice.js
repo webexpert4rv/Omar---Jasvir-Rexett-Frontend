@@ -528,13 +528,12 @@ export function getFolderData(payload, role) {
 }
 
 export function clientJobPost(payload, activeStep, id,callback) {
-  // const activeStepKey = ["", "step1", "step2", "step3"];
+  const activeStepKey = ["", "step1", "step2", "step3"];
   return async (dispatch) => {
     // dispatch(setScreenLoader());
      dispatch(setSmallLoader());
     try {
-      let result = await authInstance.post(`common/post-job?user_id=${id}`, {...payload});
-      console.log(result,"result")
+      let result = await authInstance.post(`common/post-job?user_id=359`, { ...payload });
       if (result?.data?.step1?.id) {
         localStorage.setItem("jobId", result?.data?.step1?.id);
       }
@@ -547,7 +546,7 @@ export function clientJobPost(payload, activeStep, id,callback) {
       }
       callback && callback(result?.data?.data?.Location);
       dispatch(setActionSuccessFully());
-      // return callback();
+      return callback();
     } catch (error) {
       const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -576,14 +575,12 @@ export function clientUpdatePost(
       if (activeStep === 3) {
         localStorage.removeItem("jobId");
         localStorage.removeItem("activeStep");
-
         if (isEdit) {
           toast.success("Job Updated successfully ", { position: "top-center" });
 
         } else {
           toast.success("Job Posted successfully ", { position: "top-center" });
         }
-
       }
       dispatch(setActionSuccessFully());
       return callback();
@@ -883,13 +880,13 @@ export function _deleteFileAndFolder(payload, callback) {
   };
 }
 
-export function changeJobStatus(currentTb, payload, data, callback) {
+export function changeJobStatus(currentTb, data, callback) {
   return async (dispatch) => {
     if (data) {
       dispatch(setSmallLoader());
       try {
         let result = await clientInstance.put(
-          `client/jobs/${payload}/change-job-status`,
+          `common/job-application/status`,
           { ...data }
         );
         dispatch(setActionSuccessFully());
