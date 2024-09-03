@@ -192,7 +192,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                 </span>
               </ToolTip>) : ("")}
             {role == "developer" ? <DeveloperCheckInOut /> : ""}
-            <LanguageChange />
+            {/* <LanguageChange /> */}
             <Notification
               route={routePath(role)}
               job="single-job"

@@ -1107,9 +1107,9 @@ const SingleJobDetails = () => {
                                             </div>
                                             <div className="d-flex align-items-center justify-content-between align-self-end">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <button className="main-btn font-14 text-decoration-none">
+                                                    <Button variant="transparent" onClick={handleShowScheduleMeeting} className="main-btn font-14 text-decoration-none">
                                                         Schedule Interview
-                                                    </button>
+                                                    </Button>
                                                 </div>
                                             </div>
                                         </div>

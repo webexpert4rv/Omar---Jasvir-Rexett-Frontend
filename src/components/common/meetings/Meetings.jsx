@@ -6,6 +6,7 @@ import devImg from '../../../assets/img/user-img.jpg';
 import { gapi } from 'gapi-script';
 import { getAllEvents } from '../../../redux/slices/adminDataSlice';
 import googleIcon from '../../../assets/img/google-icon.png';
+import rexettIcon from '../../../assets/img/favicon.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCopy } from 'react-icons/fa';
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
@@ -160,7 +161,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
           <ToolTip text={"New Meeting"}>
             <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
           </ToolTip>
-          <button onClick={fetchCalendarEvents} className="main-btn font-14 py-1">Sync Meetings</button>
+          <button onClick={fetchCalendarEvents} className="main-btn font-14 py-1">Sync with Google</button>
         </div>
       </Offcanvas.Header>
       <Offcanvas.Body>
@@ -181,7 +182,11 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
               console.log(item,"eventitem")
               return (
                 <>
-                  <div onClick={()=>handleShowMeetingInfo(item)} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
+                  <div onClick={()=>handleShowMeetingInfo(item)} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4 meeting-info-card">
+                    <div className='meeting-type'>
+                        <img src={googleIcon} />
+                        <img src={rexettIcon} />
+                    </div>
                     <div>
                       <p className="interview-title mb-2">{item?.kind? item?.summary : item?.title}</p>
                       <p className="dev-name mb-2 font-14">
