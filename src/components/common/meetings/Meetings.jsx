@@ -9,6 +9,7 @@ import googleIcon from '../../../assets/img/google-icon.png';
 import rexettIcon from '../../../assets/img/favicon.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCopy } from 'react-icons/fa';
+import moment from 'moment';
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
@@ -51,6 +52,9 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   console.log(allEvents,"allevents")
   console.log(event,"event")
   const dispatch = useDispatch()
+  const currentTime = moment()
+  console.log(currentTime,"currentTime")
+
 
 
   useEffect(() => {
@@ -151,6 +155,19 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     });
   };
 
+  const getDuration=(item)=>{
+
+    const endTime = moment( item?.event_end_time)
+    console.log(endTime,"endTime")
+    const duration = moment.duration(endTime.diff(currentTime))
+    console.log(duration,"duration")
+    // return duration.asHours().toFixed(2);
+
+  }
+
+
+
+
   console.log(event,"eventdown")
 
   return (
@@ -191,7 +208,8 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                       <p className="interview-title mb-2">{item?.kind? item?.summary : item?.title}</p>
                       <p className="dev-name mb-2 font-14">
                         <div className="me-1">
-                          <img src={devImg} />
+                          <img src={item?.developer_profile_picture? item?.developer_profile_picture : item?.items?.map(itm => itm?.conferenceData?.conferenceSolution?.iconUri)
+} />
                         </div>
                         <div className='d-flex align-items-center gap-2 meeting-link-wrapper'>
                           {/* {item?.creator?.displayName} */}
@@ -202,15 +220,17 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                         </div>
                       </p>
                       <div className='d-flex align-items-center flex-wrap gap-3 mt-2'>
-                        <p className='mb-1 associate-text'><span className='associate font-14'>Date : <strong>08-09-2024</strong></span></p>
-                        <p className=' mb-1 associate-text'><span className='associate font-14'>Time : <strong>11:30 AM - 12:30 PM</strong></span></p>
+                        <p className='mb-1 associate-text'><span className='associate font-14'>Date : <strong>{item?.event_date?.slice(0,10)}</strong></span></p>
+                        <p className=' mb-1 associate-text'><span className='associate font-14'>Time : <strong>{item?.event_time}-{item?.event_end_time}</strong></span></p>
                       </div>
                       {/* <p className="interview-timing mb-2 font-14">{item?.start?.dateTime?.slice(0, 10)}</p> */}
                     { item?.kind? "": <button className='google-btn' onClick={(e)=>syncCreatedMeetingsWithGoogle(e,item)}>
                       <img src={googleIcon} /> Sync with Google</button>}
                     </div>
                     <div className="mb-2 status-interview">
-                      <span className="status-upcoming">Upcoming in 1hr</span>
+                      {/* <span className="status-upcoming">Upcoming in{getDuration(item?.event_end_time)}hr</span> */}
+                      <span className="status-upcoming">Upcoming in 1 hr</span>
+
                     </div>
                   </div>
                 </>

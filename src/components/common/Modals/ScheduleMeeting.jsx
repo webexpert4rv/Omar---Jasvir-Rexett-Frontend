@@ -36,6 +36,7 @@ const Schedulemeeting = ({
   type,
 }) => {
   console.log(selectedDeveloper, "selectedDeveloper");
+  console.log(type,"type")
   const {
     handleSubmit,
     register,
@@ -309,6 +310,8 @@ const Schedulemeeting = ({
     setThirdParty(false);
   };
 
+
+ 
   return (
     <>
       <Modal
@@ -372,7 +375,9 @@ const Schedulemeeting = ({
                     <p>{errors?.interviewers_list?.message}</p>
                   </div>
                 </Col>
-                <Col lg={4} className="mb-lg-3 mb-1">
+               { type === "events" ? ""
+               : <>
+               <Col lg={4} className="mb-lg-3 mb-1">
                   <p className="font-14 schedule-heading">
                     <span>
                       <FaUsers />
@@ -393,6 +398,7 @@ const Schedulemeeting = ({
                     <p>{errors?.select_candidate?.message}</p>
                   </div>
                 </Col>
+                </>}
 
                 <Col lg={4} className="mb-lg-3 mb-1">
                   <p className="font-14 schedule-heading">

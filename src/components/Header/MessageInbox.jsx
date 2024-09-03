@@ -406,7 +406,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                       <>
                         <div className={isReceiver ? "receiver-message" : "sender-message"}>
                           {isReceiver && showTime && <div className="sender-profile">
-                            <img src={memberList[0].profile_picture} />
+                            <img src={memberList[0]?.profile_picture} />
                           </div>
                           
                           }
