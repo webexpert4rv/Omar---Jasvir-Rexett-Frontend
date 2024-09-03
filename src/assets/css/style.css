@@ -9843,6 +9843,14 @@ select.apply-field
     visibility: hidden;
     opacity: 0;
 }
+
+.no-data-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100%; /* Full height of parent */
+    width: 100%; /* Full width of parent */
+  }
 .candidate_checkbox:checked + .select_candidate_label
 {
     border: 1px solid #037563;
@@ -9859,6 +9867,10 @@ select.apply-field
     height: 30px;
     object-fit: cover;
     border-radius: 50%;
+}
+.attachment-msg
+{
+    border: 1px solid #ccc;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {

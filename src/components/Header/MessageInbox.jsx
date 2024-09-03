@@ -18,9 +18,11 @@ import MoreChatOptions from "../common/MessageBox/MoreChatOptions";
 import MessageInboxCard from "../common/MessageBox/MessageInboxCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAllAdminEmployees,
   getAllArchiveMessages,
   getAllInboxMessage,
   getAllMessageTemplates,
+  getReassign,
   getTemplateById,
   getUnreadMessages,
   messageSendFunc,
@@ -28,9 +30,10 @@ import {
 import { fileUploadForWeb, getAllMessages, getChatRoomData, getChatRoomMembers } from "../../redux/slices/developerDataSlice";
 import moment from "moment";
 import { NOTIFICATIONBASEURL } from "../../helper/utlis";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import PreviewModal from "../../pages/admin/ResumeSteps/Modals/PreviewResume";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
+import RexettButton from "../atomic/RexettButton";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   let userId = localStorage.getItem("userId");
@@ -45,40 +48,40 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const [selectedChat, setSelectedChat] = useState()
   const [previewUrl, setPreviewUrl] = useState()
   const [selectedImg, setSelectedImg] = useState()
+  const { chatRoomMessageList } = useSelector((state) => state.developerData)
+  const [filteredName, setFilteredName] = useState("")
   const [type, setType] = useState("")
+  const{memberList} = useSelector(state=>state.developerData)
   const dispatch = useDispatch();
   const { messageTemplates, chatRoom } = useSelector(
     (state) => state.adminData
   );
+
   const { chatData } = useSelector((state) => state.developerData);
+  const { approvedLoader } = useSelector((state) => state.adminData);
+  const { allAdminEmployees } = useSelector(state => state.adminData)
   const [chatmessages, setChatMessages] = useState([])
-
-  const { register, handleSubmit, watch, setValue } = useForm();
-
-
-
+  const { register, handleSubmit, reset, control, watch, formState: { errors } } = useForm();
   const socket = io(NOTIFICATIONBASEURL);
   const [adduserconversation, showAddUserConversation] = useState(false);
 
   useEffect(() => {
     setChatMessages(chatData)
-    setMessageTitle("")
     setValuemessga("")
     setHasContent("")
     setSelectedImg("")
     setPreviewUrl("")
   }, [chatData])
 
-  const { chatRoomMessageList } = useSelector((state) => state.developerData)
-  const user_id = localStorage.getItem("userId")
-
+ 
 
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Connected to Socket.IO server");
     });
     socket.on(`new_message_received_${userId}`, (message) => {
-      setChatMessages([...chatmessages, message]);
+      // setChatMessages([...chatmessages, message]); 
+      setChatMessages(prevMessages => [...prevMessages, message]);
     });
 
     return () => {
@@ -87,11 +90,18 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   }, [])
 
 
+  const stripHtmlTags = (str) => {
+    return str?.replace(/<\/?[^>]+(>|$)/g, "");
+  };
+
+
 
   useEffect(() => {
+    dispatch(getAllAdminEmployees())
+    dispatch(getAllMessages(userId));
     dispatch(getAllMessageTemplates());
 
-  }, []);
+  }, [userId]);
 
   const handleShowUserConversation = () => {
     showAddUserConversation(!adduserconversation);
@@ -164,48 +174,45 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     if (name == "msg") {
       setValuemessga(newValue);
       setHasContent(newValue.trim().length > 0);
-    } else {
-      setMessageTitle(newValue.target.value);
+      // } else {
+      // setMessageTitle(newValue.target.value);
     }
   };
-  const sendMessage = () => {
-    console.log("innside send message")
+  const onSubmit = (values) => {
     let payload;
     if (selectedImg) {
       let fileData = new FormData()
       fileData.append("file", selectedImg);
-      console.log("here we are")
       dispatch(fileUploadForWeb(fileData, (url) => {
-        console.log("case1")
         payload = {
           chatroom_id: chtRoomId,
           sender_id: userId,
-          message_title: messageTitle,
-          message_body: valuemessga,
+          message_title: "string",
+          message_body: (stripHtmlTags(values?.message)),
           file_type: type,
           message_attachment_url: url,
         };
         dispatch(messageSendFunc(payload));
       }))
     } else {
-      console.log("case2")
       payload = {
         chatroom_id: chtRoomId,
         sender_id: userId,
-        message_title: messageTitle,
-        message_body: valuemessga,
+        message_title: "string",
+        message_body: (stripHtmlTags(values?.message)),
         message_attachment_url: "string",
         file_type: "",
       }
       dispatch(messageSendFunc(payload))
     }
-    setMessageTitle("")
+    // setMessageTitle("")
     setValuemessga("")
     setHasContent("")
     setSelectedImg("")
     setPreviewUrl("")
     socket.on(`new_message_sent_${userId}`, (rmsg) => {
     })
+    reset()
   };
 
 
@@ -213,7 +220,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     dispatch(
       getTemplateById(data?.id, (response) => {
         setValuemessga(response?.message);
-        setMessageTitle(response?.subject);
+        // setMessageTitle(response?.subject);
       })
     );
   };
@@ -232,6 +239,33 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       }
       reader.readAsDataURL(file);
     }
+  }
+
+  const handleEmpSelect = (emp) => {
+    let payload = {
+      "user_id": userId,
+      "assigned_member_id": emp?.id,
+      "assigned_member_role": emp?.role
+    }
+    dispatch(getReassign(payload))
+  }
+
+
+  const filterByName = (event) => {
+    const searchValue = event.target.value;
+    const filteredChatRooms = chatRoomMessageList?.chatRooms?.filter(chatRoom =>
+      chatRoom.members[0]?.user?.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredName(filteredChatRooms)
+    return filteredChatRooms;
+  };
+
+
+  const handleClose = () => {
+    setMessageWrapperVisible(false);
+  }
+  const handleClear = () => {
+    setSelectedImg()
   }
 
 
@@ -277,21 +311,28 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                         />
                       </div>
                       <div className="employee-listing">
-                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                        {allAdminEmployees?.map((emp, idx) => {
+                          return (
+                            <>
+                              <div className="d-flex align-items-center gap-2 employee-item cursor-pointer" key={idx} onClick={() => handleEmpSelect(emp)}>
+                                <span className="profile-pic-prefix">{emp?.profile_picture}</span>
+                                <span className="font-12">{emp?.name}</span>
+                              </div>
+                            </>
+                          )
+                        }
+                        )}
+                        {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                           <span className="profile-pic-prefix">RG</span>
                           <span className="font-12">robingautam@gmail.com</span>
-                        </div>
-                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                          <span className="profile-pic-prefix">RG</span>
-                          <span className="font-12">robingautam@gmail.com</span>
-                        </div>
+                        </div> */}
                       </div>
                     </Dropdown.Menu>
                   </Dropdown>
                 </span>
-                <span className="message-header-icon">
+                {/* <span className="message-header-icon">
                   <IoArchiveSharp />
-                </span>
+                </span> */}
                 <span className="message-header-icon">
                   <Dropdown className="assign-dropdown">
                     <Dropdown.Toggle
@@ -305,19 +346,19 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
                       <div className="employee-listing">
-                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                        {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                           <span className="font-14">Mark as unread</span>
-                        </div>
-                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                          <span
+                        </div> */}
+                        {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer"> */}
+                        {/* <span
                             className="font-14 d-inline-block cursor-pointer"
                             onClick={handleShowUserConversation}
                           >
                             Add users
-                          </span>
-                        </div>
+                          </span> */}
+                        {/* </div> */}
                         <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                          <span className="font-14 text-danger">
+                          <span className="font-14 text-danger" onClick={handleClose}>
                             Leave conversation
                           </span>
                         </div>
@@ -362,8 +403,10 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                       <>
                         <div className={isReceiver ? "receiver-message" : "sender-message"}>
                           {isReceiver && showTime && <div className="sender-profile">
-                            <img src={selectedChat?.members[0]?.user?.profile_picture} />
-                          </div>}
+                            <img src={memberList[0].profile_picture} />
+                          </div>
+                          
+                          }
                           <div>
 
                             {/* <div>
@@ -372,11 +415,15 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                           </div> */}
 
 
-                            {file && data ? (
+                            {file_type && data ? (
                               <div >
-                                {imageTypes?.includes(file_type) ? <div className="preview-upload-imgwrapper">
-                                  <img src={file} className="upload-preview-img" alt="Preview" />
-                                </div> : <a href={file} target="_blank" rel="noopener noreferrer">{file} </a>}
+                                {imageTypes?.includes(file_type) ?
+                                  <div className="preview-upload-imgwrapper">
+                                    <img src={file} className="upload-preview-img" alt="Preview" />
+                                  </div>
+                                  :
+                                  <a href={file} target="_blank" rel="noopener noreferrer">{file} </a>
+                                }
                                 <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
                                 {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
                               </div>
@@ -390,7 +437,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                             )}
                           </div>
                           {!isReceiver && showTime && <div className="sender-profile">
-                            <img src={selectedChat?.members[0]?.user?.profile_picture} />
+                            <img src={memberList[1]?.profile_picture} />
                           </div>}
                         </div>
                         {/* <div className="receiver-message">
@@ -473,7 +520,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   <img src={selectedChat?.members[0]?.user?.profile_picture} />
                 </div>
               </div> */}
-              <div>
+              {/* <div>
                 <Form.Control
                   type="text"
                   value={messageTitle}
@@ -481,108 +528,130 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                   placeholder=""
                   onChange={(e) => handleMessageChange(e, "title")}
                 />
-              </div>
-              <div className="position-relative">
-                <div
-                  className={`custom-rich-editor message-field ${isEditorFocused || hasContent ? "focused" : ""
-                    }`}
-                >
-                  <ReactQuill
-                    value={valuemessga}
-                    onChange={(e) => handleMessageChange(e, "msg")}
-                  />
-                </div>
-                <div
-                  className={`field-msg-options d-flex align-items-center gap-3 ${isEditorFocused || hasContent ? "focused" : ""
-                    }`}
-                >
-                  <div className="inner-field-msg-options">
-                    <Dropdown className="assign-dropdown">
-                      <Dropdown.Toggle
-                        variant="transparent"
-                        className="asssign-dropdown-toggle"
-                        id="dropdown-basic"
-                      >
-                        <ToolTip text={"Message Template"}>
-                          <span>
-                            <TbMessage />
-                          </span>
-                        </ToolTip>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
-                        <div className="search-field-employee">
-                          <Form.Control
-                            type="text"
-                            className="common-field font-12 mb-2"
-                            placeholder="Search Template"
-                          />
-                        </div>
-                        <div className="employee-listing">
-                          {messageTemplates?.templates?.map((item) => {
-                            return (
-                              <>
-                                <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                  <span
-                                    className="font-14"
-                                    onClick={() => popuplateOntheMessage(item)}
-                                  >
-                                    {item.template_name}
-                                  </span>
-                                </div>
-                              </>
-                            );
-                          })}
-                        </div>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    <Form.Control
-                      type="file"
-                      id="attach-file-msg"
-                      name="message_attachment_url"
-                      className="d-none"
-                      onChange={handleFileUpload}
+              </div> */}
+              {selectedImg ? <div className="py-1 px-2 mb-1 attachment-msg rounded-2 d-flex justify-content-between align-items-center">
+                {/* <p className="mb-0 font-14">  */}
+                {imageTypes.includes(selectedImg?.type) ?
+                  <div className="preview-upload-imgwrapper">
+                    <img src={previewUrl} className="upload-preview-img" alt="URL" />
+                  </div>
+                  : <a href={previewUrl} target="_blank" rel="noopener noreferrer">{previewUrl} </a>}
+                {/* </p> */}
+                <button className="bg-transparent cursor-pointer border-0 outline-none shadow-none" onClick={handleClear}>&times;</button>
+              </div> : ""}
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="position-relative">
+                  <div
+                    className={`custom-rich-editor message-field ${isEditorFocused || hasContent ? "focused" : ""
+                      }`}
+                  >
+                    <Controller
+                      name="message"
+                      control={control}
+                      rules={{ required: "This field is required" }}
+                      render={({ field: { onChange, value } }) => (
+                        <ReactQuill
+                          value={valuemessga ? valuemessga : value}
+                          onChange={onChange}
+                        />
+                      )}
                     />
-                    {imageTypes.includes(selectedImg?.type) ? <div className="preview-upload-imgwrapper">
-                      <img src={previewUrl} className="upload-preview-img" alt="URL" />
-                    </div> : <a href={previewUrl} target="_blank" rel="noopener noreferrer">{previewUrl} </a>}
-                    <ToolTip text={"Add Attachment"}>
-                      <label htmlFor="attach-file-msg">
-                        <span>
-                          <GrAttachment />
-                        </span>
-                      </label>
-                    </ToolTip>
-                    <Dropdown className="assign-dropdown">
-                      <Dropdown.Toggle
-                        variant="transparent"
-                        className="asssign-dropdown-toggle"
-                        id="dropdown-basic"
-                      >
-                        <ToolTip text={" Smart Link"}>
+                    {errors?.message && (
+                      <p className="error-message ">{errors.message?.message}</p>
+                    )}
+
+                  </div>
+                  <div
+                    className={`field-msg-options d-flex align-items-center gap-3 ${isEditorFocused || hasContent ? "focused" : ""
+                      }`}
+                  >
+                    <div className="inner-field-msg-options">
+                      <Dropdown className="assign-dropdown">
+                        <Dropdown.Toggle
+                          variant="transparent"
+                          className="asssign-dropdown-toggle"
+                          id="dropdown-basic"
+                        >
+                          <ToolTip text={"Message Template"}>
+                            <span>
+                              <TbMessage />
+                            </span>
+                          </ToolTip>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
+                          <div className="search-field-employee">
+                            <Form.Control
+                              type="text"
+                              className="common-field font-12 mb-2"
+                              placeholder="Search Template"
+                            />
+                          </div>
+                          <div className="employee-listing">
+                            {messageTemplates?.templates?.map((item) => {
+                              return (
+                                <>
+                                  <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                    <span
+                                      className="font-14"
+                                      onClick={() => popuplateOntheMessage(item)}
+                                    >
+                                      {item.template_name}
+                                    </span>
+                                  </div>
+                                </>
+                              );
+                            })}
+                          </div>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      <Form.Control
+                        type="file"
+                        id="attach-file-msg"
+                        name="message_attachment_url"
+                        className="d-none"
+                        onChange={handleFileUpload}
+                      />
+                      {/* {imageTypes.includes(selectedImg?.type) ? <div className="preview-upload-imgwrapper">
+                        <img src={previewUrl} className="upload-preview-img" alt="URL" />
+                      </div> : <a href={previewUrl} target="_blank" rel="noopener noreferrer">{previewUrl} </a>} */}
+                      <ToolTip text={"Add Attachment"}>
+                        <label htmlFor="attach-file-msg">
                           <span>
-                            <HiOutlineLink />
+                            <GrAttachment />
                           </span>
-                        </ToolTip>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
-                        <div className="search-field-employee">
-                          <Form.Control
-                            type="text"
-                            className="common-field font-12 mb-2"
-                            placeholder="Search Pages"
-                          />
-                        </div>
-                        <div className="employee-listing">
-                          <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                            <span className="font-14">Career page</span>
+                        </label>
+                      </ToolTip>
+                      <Dropdown className="assign-dropdown">
+                        <Dropdown.Toggle
+                          variant="transparent"
+                          className="asssign-dropdown-toggle"
+                          id="dropdown-basic"
+                        >
+                          <ToolTip text={" Smart Link"}>
+                            <span>
+                              <HiOutlineLink />
+                            </span>
+                          </ToolTip>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
+                          <div className="search-field-employee">
+                            <Form.Control
+                              type="text"
+                              className="common-field font-12 mb-2"
+                              placeholder="Search Pages"
+                            />
                           </div>
-                          <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                            <span className="font-14">Job page</span>
-                          </div>
-                        </div>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    <ToolTip text={"Add gif"}>
+                          {/* <div className="employee-listing">
+                            <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                              <span className="font-14">Career page</span>
+                            </div>
+                            <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                              <span className="font-14">Job page</span>
+                            </div>
+                          </div> */}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      {/* <ToolTip text={"Add gif"}>
                       <span>
                         <MdGifBox />
                       </span>
@@ -591,17 +660,20 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                       <span>
                         <MdEmojiEmotions />
                       </span>
-                    </ToolTip>
+                    </ToolTip> */}
+                    </div>
+                    <RexettButton
+                      type={"submit"}
+                      text={"Send Message"}
+                      variant="transparent"
+                      // onClick={sendMessage}
+                      className="main-btn font-14"
+                      isLoading={approvedLoader}
+                      disabled={approvedLoader}
+                    />
                   </div>
-                  <Button
-                    variant="transparent"
-                    onClick={sendMessage}
-                    className="main-btn font-14"
-                  >
-                    Send Message
-                  </Button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
 
@@ -618,6 +690,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     type="text"
                     placeholder="Search here..."
                     className="common-field font-14 mb-2"
+                    onChange={(e) => filterByName(e)}
                   />
                 </div>
                 <Tab.Container
@@ -642,6 +715,9 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                               chatRoom={chatRoom}
                               messageWrapperVisible={messageWrapperVisible}
                               handleChatProfileClick={handleChatProfileClick}
+                              stripHtmlTags={stripHtmlTags}
+                              filteredName={filteredName}
+                              setSelectedTab={setSelectedTab}
                             />
                           </Tab.Pane>
                         </Tab.Content>

@@ -128,7 +128,14 @@ const ClientRegistrationStepper = () => {
             } else if (key === "state_iso_code") {
               const newValue = { label: data["state"], value: data[key] };
               setValue(key, newValue);
-            } else if (key === "time_zone") {
+            } 
+            else if (key === "city") {
+              const newValue = {
+                label: data["city"],
+                value: data[key]
+              }
+              setValue(key, newValue)
+            }else if (key === "time_zone") {
               const newValue = { label: data[key], value: data[key] };
               setValue(key, newValue);
             } else {
@@ -414,6 +421,7 @@ const ClientRegistrationStepper = () => {
         profile_picture: url,
         country_code: stepData?.country_code?.value,
         state_iso_code: stepData?.state_iso_code?.value,
+        city:stepData?.city.label,
         email: stepData?.email,
         country_code: stepData?.country_code?.value,
         yearly_revenue: stepData?.yearly_revenue,

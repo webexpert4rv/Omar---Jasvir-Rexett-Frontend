@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { generateApiUrl } from '../../helper/utlis';
 import clientInstance from '../../services/client.instance';
-import { setSmallLoader } from './vendorDataSlice';
 
 const initialAdminData = {
     screenLoader: false,
@@ -197,7 +196,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setTimeReportDetails,setAdminEmployees,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -808,18 +807,16 @@ export function getAllPermissionSeeder(){
 
 export function getAllAdminEmployees(){
     return async (dispatch)=>{
-        dispatch(setBtnLoader())
+        // dispatch(setBtnLoader())
         try{
             let result = await clientInstance.get(`admin/employees`)
-            console.log(result,"res")
-            
                 // toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setAdminEmployees(result.data.data))
             
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
-            dispatch(setFailAdminData())
+            // dispatch(setFailAdminData())
         }
     }
 }
@@ -1179,15 +1176,17 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
 
   export function messageSendFunc(payload){
-    
+    console.log(payload,"payyyyyload")
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+        dispatch(setApprovedLoader());
       try {
         let result = await clientInstance.post(`/messages/send-messages`,{...payload});
+        console.log(result,"result")
+        dispatch( setSuccessAdminData())
       } catch (error) {
         const message = error.message || "Something went wrong";
         toast.error(message, { position: "top-center" });
-        // dispatch(setFailClientData());
+        dispatch(setFailAdminData())
       }
     };
   }
@@ -1209,5 +1208,21 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       }
     };
   }
- 
+  export function getReassign(payload){
+    console.log(payload,"payload")
+    return async (dispatch) => {
+      dispatch(setSmallLoader());
+      try {
+        let result = await clientInstance.post("/admin/assign-team-member",payload);
+        // console.log(result,"reuskee")
+        toast.success("This conversation has been assigned", { position: "top-center" })
+        dispatch(setChatRoom(result?.data?.data))
+        // return callback()
+      } catch (error) {
+        const message = error.message || "Something went wrong";
+        toast.error(message, { position: "top-center" });
+        // dispatch(setFailClientData());
+      }
+    };
+  }
   

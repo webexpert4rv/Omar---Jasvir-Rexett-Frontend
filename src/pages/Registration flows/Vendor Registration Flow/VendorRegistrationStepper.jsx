@@ -96,7 +96,13 @@ const VendorRegistrationStepper = () => {
                 value: data[key],
               };
               setValue(key, newValue);
-            } else if (key === "time_zone") {
+            }else if (key === "city") {
+              const newValue = {
+                label: data["city"],
+                value: data[key]
+              }
+              setValue(key, newValue)
+             } else if (key === "time_zone") {
               const newValue = { label: data[key], value: data["time_zone"] };
               setValue(key, newValue);
             } else if (key === "company_logo") {
@@ -176,6 +182,7 @@ const VendorRegistrationStepper = () => {
   };
   const handleProceed = () => {
     const stepData = watch();
+    console.log(stepData,"stepDataNew")
     let formData = new FormData();
     formData.append('file', imageFile?.profile_picture);
     dispatch(uploadFileToS3Bucket(formData, (url) => {
@@ -185,6 +192,7 @@ const VendorRegistrationStepper = () => {
             state_iso_code: stepData["state_iso_code"]?.value,
             country: stepData["country_code"]?.label,
             state: stepData["state_iso_code"]?.label,
+            city: stepData?.city?.label,
             company_logo: url,
             time_zone: stepData?.time_zone?.label,
             establishment_year: (new Date(stepData?.establishment_year).getFullYear()),
