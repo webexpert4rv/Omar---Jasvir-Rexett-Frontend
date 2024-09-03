@@ -54,7 +54,6 @@ const handleLoginSuccess = (response) => {
                             </h2>
                         </div>
                         <p className="font-14">Stay up to date with events and appointments by connecting your calendar with services like Microsoft Outlook and Google Calendar. These platforms offer seamless integration, ensuring you never miss a scheduled activity.</p>
-                        <Link to={'#'} className="main-btn font-14 text-decoration-none mb-2">Connect with calendar</Link>
                         <GoogleLogin
                             clientId={CLIENT_ID}
                             buttonText="Login with Google"
@@ -62,7 +61,7 @@ const handleLoginSuccess = (response) => {
                             onFailure={handleLoginFailure}
                             cookiePolicy={'single_host_origin'}
                         />
-                        <div className="d-flex align-items-center gap-2">
+                        <div className="d-flex align-items-center gap-2 mt-2">
                             <Button variant="transparent" className="main-btn font-14" disabled>Connected with google</Button>
                             <Button variant="transparent" className="cancel-btn font-14">Disconnect</Button>
                         </div>

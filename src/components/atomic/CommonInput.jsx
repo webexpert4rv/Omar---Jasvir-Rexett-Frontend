@@ -58,7 +58,7 @@ console.log(isMaxRequired,"ismax")
  
   return (
     <Form.Group className="mb-3">
-      <Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>
+      {label?<Form.Label className="font-14 fw-medium form-label">{label}</Form.Label>:""}
       <div className="position-relative">
         <Controller
           name={name}
@@ -157,7 +157,7 @@ console.log(isMaxRequired,"ismax")
                 <>
                   <Form.Select
                     {...field}
-                    className={`common-field ${
+                    className={`common-field font-14 ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     // value={value}
@@ -181,7 +181,7 @@ console.log(isMaxRequired,"ismax")
                 <>
                   <Select
                     {...field}
-                    className={`common-field ${
+                    className={`common-field font-14 ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     // value={value}
@@ -208,7 +208,7 @@ console.log(isMaxRequired,"ismax")
                   <Select
                     {...field}
                     options={selectOptions}
-                    className={`common-field ${
+                    className={`common-field font-14 ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     // isDisabled={readOnly}
@@ -246,7 +246,7 @@ console.log(isMaxRequired,"ismax")
                   <Form.Control
                     {...field}
                     type="date"
-                    className={`common-field ${
+                    className={`common-field font-14 ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     // value={new Date(watch("response_date")).toISOString().split("T")[0]}
@@ -269,7 +269,7 @@ console.log(isMaxRequired,"ismax")
                   <Form.Control
                     {...field}
                     type="text"
-                    className={`common-field ${
+                    className={`common-field font-14 ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     onChange={(e) => {
@@ -285,7 +285,7 @@ console.log(isMaxRequired,"ismax")
               );
             } else if (type === "time") {
               return (
-                <Form.Control {...field} type="time" className="common-field" />
+                <Form.Control {...field} type="time" className="common-field font-14" />
               );
             } else if (type === "textarea") {
               return (
@@ -293,7 +293,7 @@ console.log(isMaxRequired,"ismax")
                   <Form.Control
                     {...field}
                     as={type}
-                    className={`common-field ${
+                    className={`common-field font-14 ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     rows={3}
@@ -313,7 +313,7 @@ console.log(isMaxRequired,"ismax")
                   showYearPicker
                   dateFormat="yyyy"
                   placeholderText="Select year"
-                  className="common-field w-100"
+                  className="common-field w-100 font-14"
                 />
               )
             } else {
@@ -328,7 +328,7 @@ console.log(isMaxRequired,"ismax")
                           : "password"
                         : type
                     }
-                    className={`common-field ${
+                    className={`common-field font-14 ${
                       invalidFieldRequired && error?.message && "invalid-field"
                     }`}
                     // id='developer-image'

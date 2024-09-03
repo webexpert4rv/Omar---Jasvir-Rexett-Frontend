@@ -201,9 +201,23 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                 onChange={handleMeetingTypeChange}
                                             />
                                         </div>
+                                        {meetingType === 'instant_meeting' &&(
+                                            <>
+                                                <Form.Control type="date" className="common-field font-14" />
+                                                <div className="d-flex align-items-center gap-2 associate p-3">
+                                                    <p className="font-14 mb-0">11:30AM</p>
+                                                    <span className="arrow-icon">
+                                                        <FaArrowRightLong />
+                                                    </span>
+                                                    <p className="font-14 mb-0">12:30PM</p>
+                                                    <p className="mb-0">Duration</p>
+                                                    <span className="font-14">1 hr</span>
+                                                </div>
+                                            </>
+                                        )}
                                         {meetingType === 'specific_meeting' && (
                                             <div className="specific-datetime">
-                                                <div className="d-flex align-items-center gap-3 mb-2">
+                                                <div className="d-flex align-items-center gap-3">
                                                     <Form.Select
                                                         className="common-field font-14 w-auto"
                                                         value={firstSlot}
@@ -216,7 +230,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                             </option>
                                                         ))}
                                                     </Form.Select>
-                                                    <span className="arrow-icon">
+                                                    <span className="arrow-icon mb-3">
                                                         <FaArrowRightLong />
                                                     </span>
                                                     <Form.Select

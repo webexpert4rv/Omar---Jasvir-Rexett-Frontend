@@ -453,10 +453,10 @@ ul {
 }
 
 .no-data-container {
-    min-height: calc(100vh - 200px);
+    /* min-height: calc(100vh - 200px); */
     display: flex;
     justify-content: center;
-    width: calc(100vw - 390px);
+    width: 100%;
     align-items: center;
 }
 
@@ -2903,7 +2903,15 @@ input[type="radio"]:checked {
     background-color: #d1fff8 !important;
     color: #037563 !important;
 }
-
+.status-finished
+{
+    font-size: 13px;
+    border-radius: 30px;
+    padding: 5px 17px !important;
+    display: inline-block !important;
+    background-color: #d1fff8 !important;
+    color: #037563 !important;
+}
 .status-selected {
     font-size: 13px;
     border-radius: 30px;
@@ -8205,8 +8213,8 @@ select.apply-field
 .sidebar.collapse-active
 {
     width: 120px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 .sidebar-text
 {
@@ -10061,7 +10069,7 @@ select.apply-field
     font-size: 14px;
     margin-bottom: 5px;
 }
-.info-agreement .copy-btn
+.copy-btn
 {
     width: 25px;
     height: 25px;
@@ -10073,6 +10081,7 @@ select.apply-field
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    flex: none;
 }
 .recipients-text
 {
@@ -10158,6 +10167,106 @@ select.apply-field
 .action-dropdown-menu
 {
     min-width: 200px;
+}
+.meeting-sidebar
+{
+    max-width: 600px !important;
+    width: 100% !important;
+}
+.google-btn
+{
+    background-color: rgb(255, 255, 255);
+    display: inline-flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.54);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px 0px, rgba(0, 0, 0, 0.24) 0px 0px 1px 0px;
+    padding: 0px;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Roboto, sans-serif;
+    padding: 8px 16px;
+    gap: 10px;
+}
+.google-btn img
+{
+    width: 20px;
+}
+.meeting-link-text
+{
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+.meeting-link-wrapper
+{
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+.common-field .css-hlgwow
+{
+    padding: 0px;
+}
+.common-field .css-1jqq78o-placeholder,
+.common-field .css-1dimb5e-singleValue
+{
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+.common-field .css-t3ipsp-control
+{
+    min-height: 1px;
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+.common-field .css-15lsz6c-indicatorContainer
+{
+    padding: 0px !important;
+}
+.common-field .css-1nmdiq5-menu *
+{
+    font-size: 14px;
+}
+.common-field .css-19bb58m
+{
+    padding: 0;
+    margin: 0;
+}
+.meeting-info-card
+{
+    border: 1px solid transparent;
+    transition: .4s ease;
+}
+.meeting-info-card:hover
+{
+    border: 1px solid var(--primary);
+}
+.meeting-type
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.meeting-type img
+{
+    width: 20px;
+}
+.sidebar.collapse-active .logo-sidebar-wrapper img
+{
+    max-height: 32px;
+    width: auto;
+}
+.logo-sidebar-wrapper
+{
+    padding: 0 21px;
 }
 @media only screen and (max-width: 1550px) {
     .sidebar-logo img {
