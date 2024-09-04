@@ -441,26 +441,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                             <img src={memberList[0]?.profile_picture} />
                           </div>
                           }
-                          <div>
-
-                            {/* <div>
-                            <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
-                            {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
-                          </div> */}
-
-
-                            {/* {isReceiver && showTime && <div className="sender-profile">
-                              <img src={devImg} />
-                            </div>}
-                            <div>
-                              <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
-                              {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
-                            </div>
-                            {!isReceiver && showTime && <div className="sender-profile">
-                              <img src={devImg} />
-                            </div>} */}
-
-
+                          {/* <p>helloworld</p> */}
                             {file_type && data ?
                               imageTypes?.includes(file_type) ?
                                 <div className="preview-upload-imgwrapper">
@@ -474,72 +455,10 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                                   {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
                                 </div>
                               )}
-                          </div >
                           {!isReceiver && showTime && <div className="sender-profile">
                             <img src={memberList[1]?.profile_picture} />
                           </div>}
                         </div>
-                        {/* <div className="receiver-message">
-                            <div className="receiver-profile">
-                              <img src={devImg} />
-                            </div>
-                            <div>
-                              <p className="message">
-                                I need your help in timesheet reporting. I am
-                                facing in submission.
-                              </p>
-                              <p className="message-time">1 hour ago</p>
-                            </div>
-                          </div>
-                          <div className="receiver-message mt-3">
-                            <div className="receiver-profile">
-                              <img src={rexettLogo} />
-                            </div>
-                            <div>
-                              <p className="message">
-                                <span className="admin-badge">Admin</span>{" "}
-                                <br /> Hi, <br /> Lorem Ipsum is simply dummy
-                                text of the printing and typesetting industry.
-                                Lorem Ipsum has been the industry's standard
-                                dummy text ever since the 1500s.
-                              </p>
-                              <p className="message-time">1 hour ago</p>
-                            </div>
-                          </div>
-                          <div   className="sender-message">
-                            <div>
-                              <div className="message">
-                                <p>
-                                  Hi, <br /> <br />
-                                  Welcome and thank you for showing an interest
-                                  in Aviox technologies pvt ltd. Being connected
-                                  to our company means you get the chance to let
-                                  us get to know you even more. Start by
-                                  introducing yourself on your personal profile.
-                                  A good and informative profile will help us
-                                  find a right match. We will keep you up to
-                                  date with jobs that suit your profile. <br />{" "}
-                                  <br />
-                                  Have a great day
-                                </p>
-                                <div className="attachment_preview">
-                                  <p className="mb-0">Privacy Policy.pdf</p>
-                                  <p className="del-attac mb-0">
-                                    <IoCloseCircleOutline />
-                                  </p>
-                                </div>
-                                <p>
-                                  {" "}
-                                  -- <br />
-                                  <br /> Aviox Technologies Pvt Ltd.
-                                </p>
-                              </div>
-                              <p className="message-time">1 hour ago</p>
-                            </div>
-                            <div className="sender-profile">
-                              <img src={devImg} />
-                            </div>
-                          </div> */}
                       </>
                     );
                   })

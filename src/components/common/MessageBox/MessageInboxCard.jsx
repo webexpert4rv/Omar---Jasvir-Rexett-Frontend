@@ -6,7 +6,7 @@ import { messageChatRoomList } from '../../../redux/slices/developerDataSlice'
 import NoDataFound from '../../atomic/NoDataFound'
 import moment from 'moment'
 
-const MessageInboxCard = ({ type, chatRoom, stripHtmlTags, messageWrapperVisible, handleChatProfileClick, filteredName, setSelectedTab, onScroll, listInnerRef, userList }) => {
+const MessageInboxCard = ({ type, chatRoom, messageWrapperVisible, handleChatProfileClick, filteredName, setSelectedTab, onScroll, listInnerRef, userList }) => {
     const dispatch = useDispatch()
     const { chatRoomMessageList } = useSelector((state) => state.developerData)
     console.log(type, "typeonmessage")
@@ -15,6 +15,12 @@ const MessageInboxCard = ({ type, chatRoom, stripHtmlTags, messageWrapperVisible
     // useEffect(()=>{
     //  dispatch(messageChatRoomList(userID))
     // },[])
+
+    const stripHtmlTags = (str) => {
+        return str?.replace(/<\/?[^>]+(>|$)/g, "");
+      };
+    
+    
 
 
     return (
@@ -38,7 +44,7 @@ const MessageInboxCard = ({ type, chatRoom, stripHtmlTags, messageWrapperVisible
                                             <p className="chat-time"> {moment(it?.created_at).fromNow()}</p>
                                         </div>
                                         <p className="chat-message mb-0">
-                                            {/* {(stripHtmlTags(it?.messages[0]?.message_body))} */}
+                                            {(stripHtmlTags(it?.messages[0]?.message_body))}
                                         </p>
                                     </div>
                                 </div>

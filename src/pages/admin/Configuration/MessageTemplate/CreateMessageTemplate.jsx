@@ -5,8 +5,9 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
 import ReactQuill, { Quill } from 'react-quill';
 import RexettButton from '../../../../components/atomic/RexettButton';
 import { editMessageTemplate, filePreassignedUrlGenerate, getAllMessageTemplates, getMessageTemplate, getMessageTemplates, getTemplateById } from '../../../../redux/slices/adminDataSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { setSmallLoader } from '../../../../redux/slices/developerDataSlice';
 
 const CreateMessageTemplate = () => {
     const {
@@ -32,6 +33,7 @@ const CreateMessageTemplate = () => {
     const [defaultReject, setDefaultReject] = useState(false)
     const [defaultReply, setDefaultReply] = useState(false)
     const [welcomeEmail, setWelcomeEmail] = useState(false)
+    const { smallLoader } = useSelector(state => state.adminData)
     const id = location.pathname.split("/")[3];
 
 
@@ -46,16 +48,16 @@ const CreateMessageTemplate = () => {
             }))
         }
     }, [id])
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         setDefaultReject(data?.default_reject || false)
         setDefaultReply(data?.default_reply || false)
         setWelcomeEmail(data?.welcome_email || false)
         setSelectedFile(
-        <a href={data?.attachment_url} target="_blank" rel="noopener noreferrer">{data?.attachment_url} </a>
-     )
-    },[data])
-      const handleDefaultReject = () => {
+            <a href={data?.attachment_url} target="_blank" rel="noopener noreferrer">{data?.attachment_url} </a>
+        )
+    }, [data])
+    const handleDefaultReject = () => {
         setDefaultReject(!defaultReject)
     }
     const handleDefaultReply = () => {
@@ -109,7 +111,7 @@ const CreateMessageTemplate = () => {
         if (file && allowedTypes.includes(file.type)) {
             setFile(file)
             setSelectedFile(file.name)
-            
+
         } else {
             setFileError(true)
         }
@@ -138,10 +140,15 @@ const CreateMessageTemplate = () => {
                                 required: {
                                     value: true,
                                     message: "Template Name is required",
-                                },
-
+                                }
                             })}
                         />
+                        {errors?.template_name && (
+                            <p className="error-message">
+                                {errors?.template_name?.message}
+                            </p>
+                        )}
+
                     </div>
                     <div className="mb-3">
                         <Form.Label className="font-14">Subject *</Form.Label>
@@ -157,6 +164,11 @@ const CreateMessageTemplate = () => {
 
                             })}
                         />
+                        {errors?.subject && (
+                            <p className="error-message">
+                                {errors?.subject?.message}
+                            </p>
+                        )}
                     </div>
                     <Row>
                         <Col md={7}>
@@ -196,20 +208,19 @@ const CreateMessageTemplate = () => {
                                     // defaultValue={data?.attachment_url?data?.attachment_url:""}
                                     {...register("attachment_url", {
                                         onChange: handleUploadFile,
-                                        required: "File is required",
+                                        required: "This field is required"
                                     })}
                                     className="d-none"
                                 />
                                 <Form.Label
                                     htmlFor='attachment_url'
                                     className='attachedmessage'> Attach file </Form.Label>
-                                {fileError && (
-                                    <p style={{ color: "red" }}>
-                                        Please upload a valid PDF file.
-                                    </p>
+                                {errors?.attachment_url && (
+                                    <p className="error-message ">{errors.attachment_url?.message}</p>
                                 )}
-                                {/* {id ? data?.attachment_url :selectedFile && <div>{selectedFile}</div>} */}
-                                { selectedFile && <div>{selectedFile}</div>}
+                                {selectedFile ? <div>{selectedFile}</div> : <p style={{ color: "red" }}>
+                                    Please upload a valid PDF file.
+                                </p>}
 
                             </div>
                         </Col>
@@ -285,6 +296,8 @@ const CreateMessageTemplate = () => {
                             className="main-btn font-14"
                             text={id ? "Update Template" : "Create Template"}
                             type={"submit"}
+                            isLoading={smallLoader}
+                            disabled={smallLoader}
                         />
 
                     </div>
