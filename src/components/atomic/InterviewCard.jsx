@@ -25,13 +25,13 @@ const InterviewCard = ({ handleShowMeetingInfo, item }) => {
           <p className="interview-title mb-2">{item?.interview?.title}</p>
           <p className="dev-name mb-2 font-14">
             <div className="me-1">
-              <img src={devImg} alt="Developer" />
+              <img src={item?.developer?.profile_picture} alt="Developer" />
             </div>
-            {developer_name}
+            {item?.developer?.name}
           </p>
           <div>
             <span className="associate-text">
-              <span className="associate">{meeting_date}, Time : {meeting_time}</span>
+              <span className="associate">{item?.interview?.meeting_date}, Time : {item?.interview?.meeting_time}</span>
             </span>
           </div>
         </div>
