@@ -119,7 +119,7 @@ const JobPostStepContainer = ({ role }) => {
     if (savedStep) {
       setActiveStep(Number(savedStep));
     }
-  }, []);
+  }, [activeStep]);
 
 
   useEffect(() => {
@@ -331,7 +331,8 @@ const JobPostStepContainer = ({ role }) => {
         })
       );
     }
-  }, [activeStep, dispatch, skillCate, id]); // Ensure all dependencies are included
+  }, [activeStep, dispatch, skillCate, id]); 
+  
   const getActiveStepComponent = () => {
     switch (activeStep) {
       case 1:
@@ -373,6 +374,7 @@ const JobPostStepContainer = ({ role }) => {
   };
   const increaseStep = () => {
     if (activeStep < 3) {
+      console.log(activeStep,"activeStep")
       setActiveStep((prev) => prev + 1);
       localStorage.setItem(getActiveStepLocalStorageKey(), activeStep + 1);
     } else {
@@ -449,7 +451,7 @@ const JobPostStepContainer = ({ role }) => {
         clientUpdatePost(payload, isEdit, activeStep, jobID, userId, increaseStep)
       )
     } else {
-      dispatch(clientJobPost(payload, activeStep,0, increaseStep));
+      dispatch(clientJobPost(payload, activeStep,userId, increaseStep));
     }
   };
 

@@ -1896,7 +1896,7 @@ const SingleJobDetails = () => {
                 />
             )}
             <AgreementDetails show={showagreement} handleClose={handleCloseAgreement} />
-            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers} />
+            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers}  jobId={id}/>
         </>
     );
 };
