@@ -34,6 +34,7 @@ import {
 import { jobPostConfirmMessage } from "../../../helper/utlis";
 import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
+import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
 import { BsFillSendXFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import sidebarLogo from "../../../assets/img/rexett-logo.png";
@@ -70,13 +71,24 @@ import sowImage from '../../../assets/img/sow-img.png';
 import { RiFileCloseLine } from "react-icons/ri";
 import AgreementDetails from "../../../pages/admin/Modals/AgreementDetail";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { gapi } from 'gapi-script';
+import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
+import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
+
+const DISCOVERY_DOCS = [
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+  ];
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
+const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
     const [selectedTabsData, setSelectedTabsData] = useState([]);
-    const [currentTabsStatus, setCurrnetTabsStatus] = useState("application");
+    const [currentTabsStatus, setCurrnetTabsStatus] = useState("shortlisted");
     const [currentTab, setCurrentTab] = useState("application");
-    const [selectedDeveloper, setSelectedDeveloper] = useState({})
+    const [selectedDeveloper, setSelectedDeveloper] = useState({});
     const [statusModal, setStatusModal] = useState({
         isTrue: false,
         id: null,
@@ -97,7 +109,8 @@ const SingleJobDetails = () => {
     const [isNewStepCompleted, setIsNewStepCompleted] = useState(false);
     const [detailsFilled, setDetailsFilled] = useState(false);
     const [documentSaved, setDocumentSaved] = useState(false);
-    const { configDetails } = useSelector(state => state.adminData)
+    const { configDetails,developerList } = useSelector(state => state.adminData)
+    const [manualSuggestion,showManualSuggestion]=useState(false)
 
     const {
         allJobPostedList,
@@ -109,6 +122,25 @@ const SingleJobDetails = () => {
     } = useSelector((state) => state.clientData);
     const { t } = useTranslation();
     console.log(singleJobDescription, "singleJobDescription")
+
+    useEffect(() => {
+        function start() {
+          gapi.client.init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+          }).then(() => {
+            console.log('GAPI Initialized');
+            const authInstance = gapi.auth2.getAuthInstance();
+            localStorage.setItem("authentication",authInstance.isSignedIn.get())
+          }).catch((error) => {
+            console.error('Error initializing GAPI:', error);
+          });
+        }
+        gapi.load('client:auth2', start);
+      }, []);
+    
     useEffect(() => {
         if (id) {
             dispatch(singleJobPostData(id, () => { }));
@@ -116,7 +148,12 @@ const SingleJobDetails = () => {
         }
         dispatch(getJobCategoryList());
     }, []);
-    console.log(jobPostedData, "jobPostedData")
+
+    useEffect(()=>{
+      dispatch(getDeveloperList())
+      dispatch(getAdobeTemplate())
+
+    },[])
 
     useEffect(() => {
         setSingleJobDescription(jobPostedData?.job);
@@ -198,7 +235,55 @@ const SingleJobDetails = () => {
     //     }
     // };
 
+    const fetchMeetingDetails = async (meetingCode) => {
+        const response = await gapi.client.reports.activities.list({
+          userKey: 'all',
+          applicationName: 'meet',
+          eventName: 'call_ended',
+          filters: `meeting_code==${meetingCode}`,
+        });
+    
+        const activities = response.result.items || [];
+        const participants = activities.flatMap(activity =>
+          activity.events.flatMap(event =>
+            event.parameters
+              .filter(param => param.name === 'user_email')
+              .map(param => param.value)
+          )
+        );
+    
+        const duration = activities.flatMap(activity =>
+          activity.events.flatMap(event =>
+            event.parameters
+              .filter(param => param.name === 'duration_seconds')
+              .map(param => parseInt(param.value, 10))
+          )
+        ).reduce((acc, val) => acc + val, 0);
+    
+        console.log(participants,"part");
+    console.log(duration,"duration");
+      };
 
+  
+    const checkEventStatus = async (eventId) => {
+        const response = await gapi.client.calendar.events.get({
+          calendarId: 'primary',
+          eventId: "688ebijbl636qsme6vi95maa8q",
+        });
+    
+        if (response.result.status === 'cancelled') {
+          alert('This meeting was cancelled.');
+        } else {
+          const now = new Date();
+          const meetingStart = new Date(response.result.start.dateTime);
+          if (meetingStart < now) {
+            fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
+            alert('The meeting should have started or is over.');
+          } else {
+            alert('The meeting is still scheduled.');
+          }
+        }
+      };
 
 
 
@@ -219,8 +304,12 @@ const SingleJobDetails = () => {
                 })
             );
         } else {
+            let newData={
+                "applicationId": statusModal?.id,
+                "newStatus":data.status
+              }
             dispatch(
-                changeJobStatus(currentTab, statusModal?.id, data, () => {
+                changeJobStatus(currentTab, newData, () => {
                     dispatch(
                         singleJobPostData(id, () => {
                             setStatusModal({});
@@ -294,7 +383,6 @@ const SingleJobDetails = () => {
     };
 
     const handleJobStatusModal = (e, id, status) => {
-        console.log(e, id, status)
         if (e == undefined) {
             setStatusModal({
                 [status]: !statusModal.isTrue,
@@ -396,11 +484,11 @@ const SingleJobDetails = () => {
     const needToSchedule = singleJobDescription?.job_applications?.interviews?.need_to_schedule || [];
     const completedInterview = singleJobDescription?.job_applications?.interviews?.interview_completed || [];
     const scheduledInterviews = singleJobDescription?.job_applications?.interviews?.scheduled_interviews || [];
-    const interviewsCount = singleJobDescription?.job_applications?.interviews_count || 0;
-    const shortlistedCount = singleJobDescription?.job_applications?.shortlisted_count || 0;
-    const suggestionsCount = singleJobDescription?.job_applications?.suggestion_count || 0;
-    const offeredCount = singleJobDescription?.job_applications?.offered_count || 0;
-    const hiredCount = singleJobDescription?.job_applications?.hired_count || 0;
+    const interviewsCount = singleJobDescription?.job_applications?.interviews_count > 0 ? singleJobDescription?.job_applications?.interviews_count : '';
+    const shortlistedCount = singleJobDescription?.job_applications?.shortlisted_count > 0 ? singleJobDescription?.job_applications?.shortlisted_count : '';
+    const suggestionsCount = singleJobDescription?.job_applications?.suggestion_count > 0 ? singleJobDescription?.job_applications?.suggestion_count : '';
+    const offeredCount = singleJobDescription?.job_applications?.offered_count > 0 ? singleJobDescription?.job_applications?.offered_count : '';
+    const hiredCount = singleJobDescription?.job_applications?.hired_count > 0 ? singleJobDescription?.job_applications?.hired_count : '';
 
     let suggest = <div>Suggestions <div className="stage-indicator ms-1 stage-suggest gap-1"><span className="stage-icon"><FaUsers /></span> {suggestionsCount}</div></div>;
     let shortlist = <div>Shortlisted <div className="stage-indicator ms-1 stage-shortlist gap-1">
@@ -472,6 +560,14 @@ const SingleJobDetails = () => {
             state: { interviewId },
         });
     };
+
+    const handleShowaddCandidate=()=>{
+        navigate('/admin/register-developer')
+      }
+
+    const handleShowManualSuggestion = () => {
+        showManualSuggestion(!manualSuggestion);
+    }
 
     const handleInterviewReport = (interviewId) => {
         navigate('/client/interview-detail', {
@@ -793,11 +889,14 @@ const SingleJobDetails = () => {
                     </Tab>
                     {role !== "client" && <Tab eventKey="suggestions" title={suggest}>
                         <div className="text-end">
-                            <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
+                            {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
                                 isLoading={approvedLoader}
                                 disabled={approvedLoader}
-                                onClick={() => handleSuggestions()} />
+                                onClick={() => handleSuggestions()} /> */}
+
+<Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
+<Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
@@ -834,7 +933,7 @@ const SingleJobDetails = () => {
                                 <Tab.Pane eventKey="list-view">
                                     <div className="">
 
-                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.shortlisted} />
+                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} type={'Interviewing'} handleJobStatusModal={handleJobStatusModal} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.shortlisted} />
                                     </div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="grid-view">
@@ -936,7 +1035,15 @@ const SingleJobDetails = () => {
                                                                     className="outline-main-btn font-14"
                                                                 >
                                                                     Show Feedback
-                                                                    {/* {showDetails[item.interview.id] ? 'Hide Feedback' : 'Show Feedback'} */}
+                                                                
+                                                                </Button>
+                                                                <Button
+                                                                    onClick={() => checkEventStatus(item.interview.id)}
+                                                                    variant="transparent"
+                                                                    className="outline-main-btn font-14"
+                                                                >
+                                                                    Check Status
+                                                                
                                                                 </Button>
                                                             </>
                                                         )}
@@ -1067,20 +1174,23 @@ const SingleJobDetails = () => {
                                             </div>
                                         </Col>
                                     ))}
-                                    <Col lg={4} className="mb-3">
+                                   {needToSchedule?.map((item)=>{
+                                    return (
+                                        <>
+                                        <Col lg={4} className="mb-3">
                                         <div className="interview-wrapper position-relative pt-4 h-100 d-flex justify-content-between flex-column">
                                             <div>
                                                 <div>
                                                     <p className="interview-title mb-2">
-                                                        Interview Call for Figma Design
+                                                    {singleJobDescription?.title}
                                                     </p>
                                                     <div className="dev-name mb-2 font-14 d-flex align-items-center">
                                                         <div className="me-1">
-                                                            <img src={devImg} alt="developer-img" />
+                                                            <img src={item?.developer?.profile_picture} alt="developer-img" />
                                                         </div>
                                                         <div>
-                                                            Rohit Sharma
-                                                            <span className="font-14 fw-normal d-block">rohit1234@gmail.com</span>
+                                                            {item?.developer?.name}
+                                                            <span className="font-14 fw-normal d-block">{item?.developer?.email}</span>
                                                         </div>
                                                     </div>
                                                     <div>
@@ -1107,17 +1217,21 @@ const SingleJobDetails = () => {
                                             </div>
                                             <div className="d-flex align-items-center justify-content-between align-self-end">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <button className="main-btn font-14 text-decoration-none">
+                                                    <button className="main-btn font-14 text-decoration-none" onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)}>
                                                         Schedule Interview
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </Col>
+                                        </>
+                                    )
+                                   }) }
+                                    
                                 </Row>
                             </div>
                         )}
-                        {/* {scheduledInterviews.length > 0 && (
+                        {scheduledInterviews.length > 0 && (
                             <>
                                 <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
                                 <div className="interview-scheduled pt-2 mb-3">
@@ -1130,7 +1244,7 @@ const SingleJobDetails = () => {
                                     </Row>
                                 </div>
                             </>
-                        )} */}
+                        )}
 
                         {/* {needToSchedule.length > 0 && (
                             <>
@@ -1550,7 +1664,7 @@ const SingleJobDetails = () => {
                                     </div>
                                 )}
                             </div>
-                            <h5 className="font-22 mb-4 fw-bold">Created Documents for Client</h5>
+                            {/* <h5 className="font-22 mb-4 fw-bold">Created Documents for Client</h5>
                             <Tab.Container
                                 id="left-tabs-example"
                                 defaultActiveKey="client-sow"
@@ -1730,7 +1844,7 @@ const SingleJobDetails = () => {
                                         </div>
                                     </Tab.Pane>
                                 </Tab.Content>
-                            </Tab.Container>
+                            </Tab.Container> */}
                         </div>
                     </Tab>
                     <Tab eventKey="hired" title={hired}>
@@ -1782,6 +1896,7 @@ const SingleJobDetails = () => {
                 />
             )}
             <AgreementDetails show={showagreement} handleClose={handleCloseAgreement} />
+            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers}  jobId={id}/>
         </>
     );
 };

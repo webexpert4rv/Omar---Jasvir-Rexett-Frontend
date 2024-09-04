@@ -36,7 +36,8 @@ const initialDeveloperData = {
   projectDetail: {},
   developerRegistrationData:{},
   chatRoomMessageList:{},
-  chatData:{}
+  chatData:{},
+  memberList:[]
 };
 
 export const developerDataSlice = createSlice({
@@ -169,6 +170,9 @@ export const developerDataSlice = createSlice({
       state.chatData = action.payload;
       state.screenLoader = false;
     },
+    setMemberList:(state,action) =>{
+      state.memberList = action.payload;
+    }
   },
 });
 
@@ -201,7 +205,8 @@ export const {
   setAllCountries,
   setDeveloperRegistrationDetails,
   setMessageRoomList,
-  setChatData
+  setChatData,
+  setMemberList
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -1260,10 +1265,12 @@ export function developerRegistration(payload,callback) {
     dispatch(setSmallLoader());
     try {
       let result = await authInstance.post("common/developer-registration",{...payload});
-      toast.success(result?.data?.message, { position: "top-center" });
       localStorage.setItem("developerId",result?.data?.data?.id)
+      if (result.status === 201) {
+      toast.success(result?.data?.message, { position: "top-center" });
       dispatch(setActionSuccessFully());
       return callback()
+      }
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(error?.response?.data?.message, { position: "top-center" });
@@ -1304,22 +1311,22 @@ export function editDeveloperExperience(payload,id) {
 }
 
 
-export function registerDeveloperEducation(payload,id,callback) {
+export function registerDeveloperEducation(payload, id, callback) {
+  console.log(payload,"payload")
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.post(`common/add-developer-education?developer_id=${id}`, payload);
-      toast.success("Education is Added", { position: "top-center" });
+      let result = await authInstance.post(`common/add-developer-education?developer_id=${id}`, payload);
+      // toast.success("Education is Added", { position: "top-center" });
       dispatch(setSuccessActionData());
       return callback()
     } catch (error) {
       const message = error.message || "Something went wrong";
-      toast.error(message, { position: "top-center" });
+      // toast.error(message, { position: "top-center" });
       dispatch(setFailDeveloperData());
     }
   };
 }
-
 export function registerDeveloperSkills(payload,id) {
   return async (dispatch) => {
     dispatch(setSmallLoader());
@@ -1369,17 +1376,18 @@ export function addDeveloperRegisProject(payload,callback) {
 
 
 
-export function getDeveloperProfileDetails(id) {
+export function getDeveloperProfileDetails(id,callback) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.get(`common/developer-profile?developer_id=${id}`);
+      let result = await authInstance.get(`common/developer-profile?developer_id=${id}`);
       dispatch(setDeveloperRegistrationDetails(result?.data?.data))
-      dispatch(setSuccessActionData());
+      return callback(result.data.data)
+      // dispatch(setActionSuccessFully());
     } catch (error) {
       const message = error.message || "Something went wrong";
-      toast.error(message, { position: "top-center" });
-      dispatch(setFailDeveloperData());
+      // toast.error(message, { position: "top-center" });
+      // dispatch(setFailDeveloperData());
     }
   };
 }
@@ -1402,12 +1410,10 @@ export function getDeveloperProfileDetails(id) {
 
 
 export function getAllMessages(id ,payload){
-  console.log(payload,"payload")
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
       let result = await clientInstance.get(generateApiUrl(payload,`messages/chatroom_list/${id}`));
-      console.log(result,"res")
       dispatch(setMessageRoomList(result?.data?.data))
     } catch (error) {
       const message = error.message || "Something went wrong";
@@ -1420,7 +1426,7 @@ export function getAllMessages(id ,payload){
 
 export function getChatRoomData(id) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
       let result = await clientInstance.get(`messages/chatroom-messages/${id}`);
       console.log(result,"...")
@@ -1429,7 +1435,7 @@ export function getChatRoomData(id) {
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
-      dispatch(setFailDeveloperData());
+      // dispatch(setFailDeveloperData());
     }
   };
 }
@@ -1437,17 +1443,18 @@ export function getChatRoomData(id) {
 
 export function getChatRoomMembers(id) {
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
       let result = await clientInstance.get(`messages/chatroom-members/${id}`);
-      console.log(result,"...")
+      console.log(result?.data?.data,"...")
       
-      // dispatch(setChatData(result?.data?.messages?.data))
+      dispatch(setMemberList(result?.data?.data))
+      
       // dispatch(setSuccessActionData());
     } catch (error) {
       const message = error.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
-      dispatch(setFailDeveloperData());
+      // dispatch(setFailDeveloperData());
     }
   };
 }

@@ -54,8 +54,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
                             </Col>
                             <Col lg={8} className="mb-3">
                                 <div className="d-flex align-items-center gap-3 client-imgbx">
-                                    <img src={devImg} />
-                                    <p className="font-14 mb-0">{developer_name}</p>
+                                    <img src={details?.developer?.profile_picture} />
+                                    <p className="font-14 mb-0">{details?.developer?.name}</p>
                                 </div>
                             </Col>
                             {/* <Col lg={4} className="mb-lg-3 mb-1">
@@ -117,7 +117,7 @@ const MeetingInfo = ({ show, handleClose,details }) => {
                                         <Button variant="transparent" className="copy-link">
                                             <FaRegCopy />
                                         </Button>
-                                        <Link to={'/video-screen'} target="_blank" variant="transparent" className="text-decoration-none main-btn font-14 py-2">
+                                        <Link to={details?.interview?.meeting_link} target="_blank" variant="transparent" className="text-decoration-none main-btn font-14 py-2">
                                             <FaVideo /> Join
                                         </Link>
                                         {/* <Button variant="transparent" className="main-btn font-14 ms-2 py-2">
@@ -163,9 +163,9 @@ const MeetingInfo = ({ show, handleClose,details }) => {
                         <div>
                             <Button variant="transparent" className="cancel-btn font-14" onClick={cancelMeeting}>Cancel Meeting</Button>
                         </div>
-                        {/* <div>
-                            <Button variant="transparent" className="outline-main-btn font-14">Edit Meeting</Button>
-                        </div> */}
+                        <div>
+                            <Button variant="transparent" className="outline-main-btn font-14">Interview Completed</Button>
+                        </div>
                     </div>
                 </Modal.Body>
             </Modal>

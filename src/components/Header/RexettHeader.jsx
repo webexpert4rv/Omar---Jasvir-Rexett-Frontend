@@ -192,7 +192,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
                 </span>
               </ToolTip>) : ("")}
             {role == "developer" ? <DeveloperCheckInOut /> : ""}
-            <LanguageChange />
+            {/* <LanguageChange /> */}
             <Notification
               route={routePath(role)}
               job="single-job"
@@ -202,7 +202,11 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
               <ToolTip text="Create Job">
                 <button
                   className="main-btn add-new-job-btn"
-                  onClick={() => navigate(`/${role}/job-post`)}
+                  onClick={() =>
+                    {
+                      navigate(`/${role}/job-post`)
+                      localStorage.removeItem("jobId")
+                    } }
                 >
                   +
                 </button>

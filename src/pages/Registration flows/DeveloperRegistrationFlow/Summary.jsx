@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import { Button, Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import { FaChevronDown, FaLightbulb, FaPencil } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
@@ -12,9 +12,10 @@ import ResumeOverView from "./ResumeOverView";
 
 const Summary = ({
   nestedActiveStep,
-  stepData,
-  handleDelete,
-  handleClose,
+  filteredStepData,
+  // handleDelete,
+  setFilteredStepData,
+  handleCloseUploadFileModal,
   smallLoader,
   setShowSetUpJobModal,
   showSetUpModal,
@@ -26,20 +27,33 @@ const Summary = ({
 }) => {
 
   const dispatch = useDispatch();
-
   let developerId=localStorage.getItem("developerId");
-
+  const[eduId , setEduId] = useState("")
   useEffect(()=>{
     if(developerId){
         dispatch(getDeveloperProfileDetails(developerId));
     }
-  
 },[developerId])
 
+
   const handleDeleteModal = (id) => {
+    setEduId(id)
     setShowSetUpJobModal({
       isDelete: true,
       deletedId: id,
+    });
+  };
+  console.log(filteredStepData,"filteredStepData")
+  const handleDelete = () => {
+    const tempArr = [...filteredStepData];
+    const indexToRemove = tempArr.findIndex(item => item.id === eduId);
+    if (indexToRemove !== -1) {
+      tempArr.splice(indexToRemove, 1);
+    }
+
+    setFilteredStepData(tempArr);
+    setShowSetUpJobModal({
+      isDelete: false,
     });
   };
   const tipstext = (
@@ -80,7 +94,7 @@ const Summary = ({
     if (item?.project_title) {
       return (
         <span>
-          {`${item?.project_type} , ${item?.project_start_date?.slice(0,10)} - ${item?.project_end_date?.slice(0,10)}`}
+          {`${item?.project_type} , ${item?.project_start_date} - ${item?.project_end_date}`}
           <br />
           <span>{item?.project_link}</span>
         </span>
@@ -93,7 +107,7 @@ const Summary = ({
   return (
     <>
       <Row>
-        <Col md={8}>
+        <Col md={12}>
           <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <StepperHeadingSection
@@ -115,7 +129,7 @@ const Summary = ({
               </div>
             </div>
           </div>
-          {stepData?.map((item, index) => {
+          {filteredStepData?.map((item, index) => {
             return (
               <>
                 <div className="work-summary-wrapper mb-3 position-relative">
@@ -173,18 +187,14 @@ const Summary = ({
             </Button>
           </div>
         </Col>
-        <Col md={4}>
-                  <ResumeOverView activeStep={activeStep} />
-                </Col>
       </Row>
       <ConfirmationModal
         text={"Are you sure to delete this job?"}
-        show={showSetUpModal}
-        handleClose={handleClose}
-        onClick={handleDelete}
-        smallLoader={smallLoader}
+        show={showSetUpModal?.isDelete}
+        handleClose={handleCloseUploadFileModal}
         handleAction={handleDelete}
-        type={type}
+        smallLoader={smallLoader}
+
       />
     </>
   );

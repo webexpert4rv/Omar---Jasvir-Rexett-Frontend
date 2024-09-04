@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { useDispatch } from 'react-redux'
 import { updateChatRoom } from '../../../redux/slices/adminDataSlice'
 import { getAllMessages } from '../../../redux/slices/developerDataSlice'
 
-const MoreChatOptions = ({ item, type }) => {
+const MoreChatOptions = ({ item, type, setCurrentTab }) => {
     let userID = localStorage.getItem("userId")
+    console.log(type, "type")
     const dispatch = useDispatch()
-    const handleUnRead = () => {
+    const handleUnRead = async (e) => {
+        e.stopPropagation()
         let payload = {
             type: "unread",
-
         }
-        dispatch(updateChatRoom(item?.id, payload, () => {
+        await dispatch(updateChatRoom(item?.id, payload, () => {
             let data = {
                 type: type,
                 page: "1",
@@ -23,12 +24,12 @@ const MoreChatOptions = ({ item, type }) => {
         }))
     }
 
-    const handleArchive = (e) => {
+    const handleArchive = async (e) => {
         e.stopPropagation()
         let payload = {
             type: "archive",
         }
-        dispatch(updateChatRoom(item?.id, payload, () => {
+        await dispatch(updateChatRoom(item?.id, payload, () => {
             let data = {
                 type: type,
                 page: "1",
@@ -36,7 +37,6 @@ const MoreChatOptions = ({ item, type }) => {
             }
             dispatch(getAllMessages(userID, data))
         }))
-
     }
     return (
         <span className="more-chat-options">
@@ -48,17 +48,32 @@ const MoreChatOptions = ({ item, type }) => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="assign-dropdown-menu more-option-menu">
                     <div className="employee-listing">
-                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                           { type === "unread" ? <span className="font-14" onClick={handleUnRead}>Mark as unread</span>:""}
-                        </div>
-                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+
+                        {type === "inbox" ?
+                            <>
+                                <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                    <span className="font-14" onClick={(e) => handleArchive(e)}>Archive</span>
+                                </div>
+                                <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                    <span className="font-14" onClick={(e) => handleUnRead(e)}>Mark as unread</span>
+                                </div>
+                            </>
+
+                            :
+                            <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
+                                <span className="font-14" onClick={(e) => handleUnRead(e)}>Mark as unread</span>
+                            </div>}
+
+                        {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                             <span className="font-14">Reassign user</span>
-                        </div>
+                        </div> */}
                         {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                   <span className="font-14 d-inline-block cursor-pointer" onClick={handleShowUserConversation}>Add users</span>
                   </div> */}
                         <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                          { type === "archive"? <span className="font-14" onClick={handleArchive}>Archive</span> : ""}
+                            {type === "unread" ? <span className="font-14" onClick={(e) => handleArchive(e)}>Archive</span> : ""}
+                        </div>
+                        <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                         </div>
                     </div>
                 </Dropdown.Menu>

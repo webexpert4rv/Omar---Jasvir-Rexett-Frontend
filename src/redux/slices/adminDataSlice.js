@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { generateApiUrl } from '../../helper/utlis';
 import clientInstance from '../../services/client.instance';
-import { setSmallLoader } from './vendorDataSlice';
 
 const initialAdminData = {
     screenLoader: false,
@@ -197,7 +196,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setTimeReportDetails,setAdminEmployees,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -349,7 +348,7 @@ export function adminJobListing(payload, callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload, `admin/job-list`))
+            let result = await clientInstance.get(generateApiUrl(payload, `common/job-list`))
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successfully", { position: "top-center" })
                 dispatch(setSuccessAdminJobListing(result.data))
@@ -808,18 +807,16 @@ export function getAllPermissionSeeder(){
 
 export function getAllAdminEmployees(){
     return async (dispatch)=>{
-        dispatch(setBtnLoader())
+        // dispatch(setBtnLoader())
         try{
             let result = await clientInstance.get(`admin/employees`)
-            console.log(result,"res")
-            
                 // toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setAdminEmployees(result.data.data))
             
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
-            dispatch(setFailAdminData())
+            // dispatch(setFailAdminData())
         }
     }
 }
@@ -1096,11 +1093,12 @@ export function getSelectedEvent(id,callback){
 export function getMessageTemplate(payload){
     console.log(payload,"payload")
     return async (dispatch)=>{
-        // dispatch(setBtnLoader())
+        dispatch(setBtnLoader())
         try{
             let result = await clientInstance.post(`admin/message-templates`,{...payload})
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setSuccessAdminData());
             }
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1114,7 +1112,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       dispatch(setSmallLoader());
       try {
         let result = await clientInstance.post(`common/upload-file`, fileData);
-        // dispatch(setActionSuccessFully());
+        dispatch(setSuccessAdminData());
         return callback(result?.data?.data.Location);
       } catch (error) {
         const message = error.message || "Something went wrong";
@@ -1154,7 +1152,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     return async (dispatch) => {
       dispatch(setSmallLoader());
       try {
-        let result = await clientInstance.get(`admin/message-templates/${id}`);
+        let result = await clientInstance.get(`common/message-templates/${id}`);
         return callback(result.data?.template)
       } catch (error) {
         const message = error.message || "Something went wrong";
@@ -1179,14 +1177,17 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
 
   export function messageSendFunc(payload){
+    console.log(payload,"payyyyyload")
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+        dispatch(setApprovedLoader());
       try {
         let result = await clientInstance.post(`/messages/send-messages`,{...payload});
+        console.log(result,"result")
+        dispatch( setSuccessAdminData())
       } catch (error) {
         const message = error.message || "Something went wrong";
         toast.error(message, { position: "top-center" });
-        // dispatch(setFailClientData());
+        dispatch(setFailAdminData())
       }
     };
   }
@@ -1208,5 +1209,37 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       }
     };
   }
+  export function getReassign(payload){
+    console.log(payload,"payload")
+    return async (dispatch) => {
+      dispatch(setSmallLoader());
+      try {
+        let result = await clientInstance.post("/admin/assign-team-member",payload);
+        // console.log(result,"reuskee")
+        toast.success("This conversation has been assigned", { position: "top-center" })
+        dispatch(setChatRoom(result?.data?.data))
+        // return callback()
+      } catch (error) {
+        const message = error.message || "Something went wrong";
+        toast.error(message, { position: "top-center" });
+        // dispatch(setFailClientData());
+      }
+    };
+  }
+
+  export function suggestDevelopers(payload) {
+
+    return async (dispatch) => {
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.post(`/admin/suggest-developers`,{...payload})
+            dispatch(setSuccessAdminData())
+            toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
+        } catch (error) {
+            console.log(error,"errrrr")
+        }
+    };
+}
+
  
   

@@ -6,7 +6,6 @@ import axios from "axios";
 import authInstance from "../../services/auth.instance";
 import { VERIFY_USER_MESSAGE } from "../../pages/websiteRegisterForm/client/constant";
 import { setSuccessActionData } from "./developerDataSlice";
-import { setBtnLoader } from "./adminDataSlice";
 
 const initialClientData = {
   jobId: null,
@@ -460,11 +459,12 @@ export function getApproveDisapprove(payload, id) {
     }
   };
 }
-export const updateClientPost =(user_id,job_id,payload,callback)=>{
+export function updateClientPost (user_id,job_id,payload,callback){
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
       let result = await authInstance.put(`/common/update-job/${job_id}?user_id=${user_id}`, payload);
+      console.log(result?.data?.data?.Location,"Location")
       callback && callback(result?.data?.data?.Location);
       dispatch(setActionSuccessFully())
     } catch (error) {
@@ -527,10 +527,12 @@ export function getFolderData(payload, role) {
   };
 }
 
-export function clientJobPost(payload, activeStep, id) {
+export function clientJobPost(payload, activeStep, id,callback) {
+
   const activeStepKey = ["", "step1", "step2", "step3"];
   return async (dispatch) => {
     // dispatch(setScreenLoader());
+     dispatch(setSmallLoader());
     try {
       let result = await authInstance.post(`common/post-job?user_id=${id}`, { ...payload });
       if (result?.data?.step1?.id) {
@@ -543,8 +545,9 @@ export function clientJobPost(payload, activeStep, id) {
 
         toast.success("Job successfully Posted", { position: "top-center" });
       }
+      callback && callback(result?.data?.data?.Location);
       dispatch(setActionSuccessFully());
-      // return callback();
+      return callback();
     } catch (error) {
       const message = error?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -573,14 +576,12 @@ export function clientUpdatePost(
       if (activeStep === 3) {
         localStorage.removeItem("jobId");
         localStorage.removeItem("activeStep");
-
         if (isEdit) {
           toast.success("Job Updated successfully ", { position: "top-center" });
 
         } else {
           toast.success("Job Posted successfully ", { position: "top-center" });
         }
-
       }
       dispatch(setActionSuccessFully());
       return callback();
@@ -696,15 +697,15 @@ export function getJobCategoryList(payload, callback) {
 }
 
 export function postCandidateInterview(payload, callback) {
-  console.log(payload,"payloadd")
   return async (dispatch) => {
+    dispatch(setSmallLoader());
     try {
       let result = await clientInstance.post(`common/interview`,{...payload});
-      if (result.status === 200) {
-       toast.success(result.data.message)
-      }
+       toast.success("Interview is scheduled",{ position: "top-center" })
+       dispatch(setActionSuccessFully());
+      
     } catch (error) {
-      const message = error.message || "Something went wrong";
+      const message = error?.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
       dispatch(setFailClientData());
     }
@@ -880,13 +881,13 @@ export function _deleteFileAndFolder(payload, callback) {
   };
 }
 
-export function changeJobStatus(currentTb, payload, data, callback) {
+export function changeJobStatus(currentTb, data, callback) {
   return async (dispatch) => {
     if (data) {
       dispatch(setSmallLoader());
       try {
         let result = await clientInstance.put(
-          `client/jobs/${payload}/change-job-status`,
+          `common/job-application/status`,
           { ...data }
         );
         dispatch(setActionSuccessFully());
@@ -1206,6 +1207,7 @@ export function getStatesList(countryCode) {
   };
 }
 export function getCitiesList(countryCode, stateName) {
+  console.log(stateName,"statename")
   return async (dispatch) => {
     // dispatch(setScreenLoader());
     try {
@@ -1266,6 +1268,7 @@ export function getWebClientLookUp(callback) {
 }
 
 export function applyAsClient(payload, callback, triggerVerificationModal) {
+  // console.log("LoaderWorking")
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {
@@ -1282,7 +1285,7 @@ export function applyAsClient(payload, callback, triggerVerificationModal) {
       // } else {
         toast.error(error?.response?.data?.message, { position: "top-center" });
       // }
-      // dispatch(setFailClientData());
+      dispatch(setFailClientData());
     }
   };
 }
@@ -1368,9 +1371,9 @@ export function getProfile(id, callback) {
 }
 
 export const uploadFileToS3Bucket = (payload, callback) => {
-  console.log(payload,"payload")
   return async (dispatch) => {
-    dispatch(setScreenLoader());
+    dispatch(setSmallLoader())
+    // dispatch(setScreenLoader());
     try {
       let result = await clientFormInstance.post(`/web/upload-file/`, payload);
       callback && callback(result?.data?.data?.Location);

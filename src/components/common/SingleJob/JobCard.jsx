@@ -252,7 +252,7 @@ const JobCard = ({
             </>
           ) : (
             <div>
-              <NoDataFound data="No developer found" />
+              <NoDataFound data="⚙️ No Developer in Sight" />
             </div>
           )}
 

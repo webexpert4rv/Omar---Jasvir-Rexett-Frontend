@@ -5,7 +5,7 @@ import { FaStar, FaTimes } from 'react-icons/fa'
 import { LuMessagesSquare } from 'react-icons/lu'
 import NoDataFound from './NoDataFound'
 
-const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,listing}) => {
+const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,listing,handleJobStatusModal,type}) => {
   console.log(listing,"listing")
 
   return (
@@ -86,7 +86,8 @@ const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,li
                               <td className="document-data">
                                 <div className="d-flex align-items-center gap-2 job-action-btns">
                                   <OverlayTrigger placement="top" overlay={scheduleInterview}>
-                                    <Button onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)} className="main-btn py-2 text-black font-15">
+                                    {/* <Button onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)} className="main-btn py-2 text-black font-15"> */}
+                                    <Button onClick={(e)=>handleJobStatusModal(e, item?.id, type)} className="main-btn py-2 text-black font-15">
                                       <LuMessagesSquare />
                                     </Button>
                                   </OverlayTrigger>

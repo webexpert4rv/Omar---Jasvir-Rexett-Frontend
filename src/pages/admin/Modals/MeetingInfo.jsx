@@ -181,8 +181,15 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                 <Col lg={4} className="mb-lg-3 mb-1">
                                     <div className="d-flex align-items-center gap-3 client-imgbx">
                                         {/* <img src={devImg} /> */}
-                                        <Form.Group controlId="select_candidate">
+                                        <Form.Group>
                                             <Form.Label className="font-14 schedule-heading"><span><RiUser3Fill /></span>Developer Name</Form.Label>
+                                        </Form.Group>
+                                    </div>
+                                </Col>
+
+                                <Col lg={8} className="mb-3">
+                                    <div className="d-flex flex-wrap w-100 gap-2 align-items-start">
+                                        <Form.Group controlId="select_candidate">
                                             <Controller
                                                 name="select_candidate"
                                                 control={control}
@@ -192,6 +199,7 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                     <Form.Select
                                                         {...field}
                                                         isInvalid={!!errors.select_candidate}
+                                                        className="common-field font-14"
                                                     >
                                                         {options?.map((option, idx) => (
                                                             <option key={idx} value={option.value}>
@@ -209,40 +217,14 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                         </Form.Group>
                                     </div>
                                 </Col>
-
-                                <Col lg={8} className="mb-3">
-                                    <div className="d-flex flex-wrap gap-2 align-items-start">
-                                        {/* <Form.Group controlId="meetingPlatform">
-                                            <Form.Label className="font-14 schedule-heading"><span><RiUser3Fill /></span>Interviewer's List</Form.Label>
-                                            <Form.Select
-                                                {...register("interviewers_list", {
-                                                    required: "Meeting platform is required",
-                                                })}
-                                                className={`common-field font-14 ${errors.meeting_platform ? 'is-invalid' : ''}`}
-                                                isInvalid={!!errors.meeting_platform}
-                                            >
-                                                {interviewOptions?.map((option, idx) => (
-                                                    <option key={idx} value={details ? getInterviewList() : option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </Form.Select>
-                                            {errors.meeting_platform && (
-                                                <Form.Control.Feedback type="invalid">
-                                                    {errors.meeting_platform.message}
-                                                </Form.Control.Feedback>
-                                            )}
-                                        </Form.Group> */}
-                                    </div>
-                                </Col>
                                 <Col lg={4} className="mb-lg-3 mb-1">
+                                    <Form.Label className="font-14 schedule-heading"><FaVideo /> Video Meeting Solution</Form.Label>
                                 </Col>
                                 <Col lg={8} className="mb-3">
                                     <div className="d-flex justify-content-between align-items-center">
                                         <div className="d-flex align-items-center gap-3 video-meetbx">
                                             <img src={rexettLogo} />
                                             <Form.Group controlId="meetingPlatform">
-                                                <Form.Label className="font-14 schedule-heading">Video Meeting Solution</Form.Label>
                                                 <Form.Select
                                                     {...register("meeting_platform", {
                                                         required: "Meeting platform is required",
@@ -280,12 +262,13 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                     <p className="font-14 schedule-heading"><span><FaClock /></span>Time and Date</p>
                                 </Col>
                                 <Col lg={8} className="mb-3 associate-text">
-                                    <div className="d-inline-flex align-items-center gap-2">
+                                    <div className="">
                                         <div className="meeting-booking">
                                             <div className="mb-2 datefield-wrapper">
                                                 {/* <DatePicker onChange={onChange} value={value} /> */}
                                                 <Form.Control
                                                     type="date"
+                                                    className="common-field font-14"
                                                     defaultValue={refreshedDate ? refreshedDate : ""}
                                                     max={
                                                         new Date().toISOString().split("T")[0]
@@ -294,13 +277,13 @@ const MeetingInfo = ({ show, handleClose, details }) => {
                                                 />
                                             </div>
                                         </div>
-                                        <div className="d-flex align-items-center gap-2 associate">
+                                        <div className="d-flex align-items-center gap-2 associate p-3">
                                             <p className="font-14 mb-0">{details?.event_time}</p>
                                             <span className="arrow-icon">
                                                 <FaArrowRightLong />
                                             </span>
                                             <p className="font-14 mb-0">{details?.event_end_time}</p>
-                                            <p>Duration</p>
+                                            <p className="mb-0">Duration</p>
                                             <span className="font-14">{duration.hours()}:{duration.minutes()}:{duration.seconds()}</span>
                                         </div>
                                     </div>

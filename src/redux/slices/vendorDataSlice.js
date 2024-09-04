@@ -401,24 +401,25 @@ export const uploadFileToS3Bucket = (payload,callback) => {
   };
   export function applyAsVendor(payload,callback) {
     return async (dispatch) => {
-      // dispatch(setScreenLoader());
+      dispatch(setSmallLoader())
       try {
         let result = await authInstance.post("common/vendor-registration",{...payload})
         localStorage.setItem("vendorId",result?.data?.data?.vendor.id);
-        return callback(result?.data?.data.Location);
+        dispatch(setVendorSuccess())
+        return callback();
       } catch (error) {
-        // dispatch(setFailVendorData());
-        console.log(error,"error")
+        dispatch(setFailVendorData());
       }
     };
 }
 export function getEditDecision(payload,callback) {
     return async (dispatch) => {
-    //   dispatch(setScreenLoader());
+    dispatch(setSmallLoader())
       try {
         let result = await authInstance.post(`common/vendor-decision-makers-details`,{...payload});
         localStorage.setItem("vendorId",result?.data?.data?.vendor?.id);
-        callback()
+        dispatch(setVendorSuccess())
+        return callback()
       } catch (error) {
         const message = error?.message;
         // if (error?.message === VERIFY_USER_MESSAGE) {
@@ -431,13 +432,14 @@ export function getEditDecision(payload,callback) {
       }
     };
   }
-  export function getAreaExpertise(payload) {
+  export function getAreaExpertise(payload,callback) {
     return async (dispatch) => {
-    //   dispatch(setScreenLoader());
+        dispatch(setSmallLoader())
       try {
         let result = await authInstance.post(`common/vendor-area-expertise`,{...payload});
         localStorage.setItem("vendorId",result?.data?.data?.vendor?.id);
-        // callback()
+        dispatch(setVendorSuccess())
+        return callback()
       } catch (error) {
         const message = error?.message;
         // if (error?.message === VERIFY_USER_MESSAGE) {
