@@ -752,7 +752,7 @@ export function publishedPost(payload, status, callback) {
     dispatch(setApprovedLoader());
     try {
       let result = await clientInstance.put(
-        `client/jobs/${payload}/unpublish`,
+        `common/jobs/${payload}/unpublish`,
         { ...status }
       );
       if (result.status === 200) {
