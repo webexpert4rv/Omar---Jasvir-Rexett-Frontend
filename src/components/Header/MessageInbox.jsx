@@ -35,6 +35,7 @@ import { Controller, useForm } from "react-hook-form";
 import PreviewModal from "../../pages/admin/ResumeSteps/Modals/PreviewResume";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import RexettButton from "../atomic/RexettButton";
+import ListingPageScroller from "../common/ListingPageContainer/ListingPageScroller";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   let userId = localStorage.getItem("userId");
@@ -59,12 +60,14 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   );
 
   const { chatData } = useSelector((state) => state.developerData);
+  const [page, setPage] = useState(1)
   const { approvedLoader } = useSelector((state) => state.adminData);
   const { allAdminEmployees } = useSelector(state => state.adminData)
   const [chatmessages, setChatMessages] = useState([])
   const { register, handleSubmit, reset, control, watch, formState: { errors } } = useForm();
   const socket = io(NOTIFICATIONBASEURL);
   const [adduserconversation, showAddUserConversation] = useState(false);
+  console.log(chatData, "chatData")
 
   useEffect(() => {
     setChatMessages(chatData)
@@ -80,16 +83,29 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     socket.on("connect", () => {
       console.log("Connected to Socket.IO server");
     });
-    socket.on(`new_message_received_${userId}`, (message) => {
-      if (message) {
-        setChatMessages(prevMessages => [...prevMessages, message]);
+    // socket.on(`new_message_received_${userId}`, (message) => {
+    //   console.log(message, "message ")
+    //   if (chatmessages) {
+    //     setChatMessages(prevMessages => [...prevMessages, message]);
+    //   }
+    // });
+
+    const handleMessage = (message) => {
+      console.log(chatmessages, "chatmessages");
+      console.log(message, "message");
+
+      if (chatmessages?.length>0) {
+      setChatMessages(prevMessages => [...prevMessages, message]);
       }
-    });
+    };
+
+    socket.on(`new_message_received_${userId}`, handleMessage);
+
 
     return () => {
       socket.disconnect();
     };
-  }, [])
+  }, [userId])
 
 
   const stripHtmlTags = (str) => {
@@ -120,7 +136,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       const payload = {
         type: "inbox",
         // developer_name : "pankaj_pundir",
-        page: "1",
+        page: page,
         per_page: "10"
       }
       dispatch(getAllMessages(userId, payload));
@@ -128,7 +144,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       const payload = {
         type: "unread",
         // developer_name : "pankaj_pundir",
-        page: "1",
+        page: page,
         per_page: "10"
       }
       dispatch(getAllMessages(userId, payload));
@@ -136,7 +152,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       const payload = {
         type: "archive",
         // developer_name : "pankaj_pundir",
-        page: "1",
+        page: page,
         per_page: "10"
       }
       dispatch(getAllMessages(userId, payload));
@@ -405,6 +421,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                 {chatmessages?.length > 0
                   ? chatmessages?.map((item, index) => {
                     let isReceiver = item?.sender_id == userId
+                    console.log(isReceiver, "isReceiver")
                     let data = item?.message_body
                     let file = item?.message_attachment_url
                     let file_type = item?.file_type
@@ -423,7 +440,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                           {isReceiver && showTime && <div className="sender-profile">
                             <img src={memberList[0]?.profile_picture} />
                           </div>
-
                           }
                           <div>
 
@@ -433,27 +449,32 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                           </div> */}
 
 
-                            {file_type && data ? (
-                              <div >
-                                {imageTypes?.includes(file_type) ?
-                                  <div className="preview-upload-imgwrapper">
-                                    <img src={file} className="upload-preview-img" alt="Preview" />
-                                  </div>
-                                  :
-                                  <a href={file} target="_blank" rel="noopener noreferrer">{file} </a>
-                                }
-                                <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
-                                {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
-                              </div>
-                            ) : (
-                              data && (
-                                <div>
+                            {/* {isReceiver && showTime && <div className="sender-profile">
+                              <img src={devImg} />
+                            </div>}
+                            <div>
+                              <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
+                              {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
+                            </div>
+                            {!isReceiver && showTime && <div className="sender-profile">
+                              <img src={devImg} />
+                            </div>} */}
+
+
+                            {file_type && data ?
+                              imageTypes?.includes(file_type) ?
+                                <div className="preview-upload-imgwrapper">
+                                  <img src={file} className="upload-preview-img" alt="Preview" />
+                                </div>
+                                :
+                                <a href={file} target="_blank" rel="noopener noreferrer">{file} </a>
+                              : (
+                                <div >
                                   <p className="message" dangerouslySetInnerHTML={{ __html: data }} />
                                   {showTime && <p className="message-time">{moment(item?.created_at).fromNow()}</p>}
                                 </div>
-                              )
-                            )}
-                          </div>
+                              )}
+                          </div >
                           {!isReceiver && showTime && <div className="sender-profile">
                             <img src={memberList[1]?.profile_picture} />
                           </div>}
@@ -485,7 +506,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                               <p className="message-time">1 hour ago</p>
                             </div>
                           </div>
-                          <div className="sender-message">
+                          <div   className="sender-message">
                             <div>
                               <div className="message">
                                 <p>
@@ -737,6 +758,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                               filteredName={filteredName}
                               setSelectedTab={setSelectedTab}
                             />
+                            <ListingPageScroller page={page} />
                           </Tab.Pane>
                         </Tab.Content>
                       </Tab.Container>
