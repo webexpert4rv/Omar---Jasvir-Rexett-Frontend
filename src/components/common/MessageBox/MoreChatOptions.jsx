@@ -61,7 +61,8 @@ const MoreChatOptions = ({ item, type, setCurrentTab }) => {
 
                             :
                             <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
-                                <span className="font-14" onClick={(e) => handleUnRead(e)}>Mark as unread</span>  </div>}
+                                <span className="font-14" onClick={(e) => handleUnRead(e)}>Mark as unread</span>
+                            </div>}
 
                         {/* <div className="d-flex align-items-center gap-2 employee-item cursor-pointer">
                             <span className="font-14">Reassign user</span>

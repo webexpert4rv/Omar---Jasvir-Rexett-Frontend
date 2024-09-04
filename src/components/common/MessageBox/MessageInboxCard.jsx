@@ -20,7 +20,8 @@ const MessageInboxCard = ({ type,chatRoom,stripHtmlTags ,messageWrapperVisible, 
           { chatRoomMessageList?.chatRooms?.length>0? (filteredName ? filteredName : chatRoomMessageList?.chatRooms)?.map((it)=>{
             return (
                 <>
-                <div className={messageWrapperVisible ? "chat-profile-wrapper position-relative active-chat py-2 px-3" : "chat-profile-wrapper position-relative py-2 px-3"} onClick={()=>handleChatProfileClick(it?.members[0]?.chatroom_id)}>
+                <div className='chat-wrapper'>
+                <div className={messageWrapperVisible ? "chat-profile-wrapper position-relative active-chat py-2 px-3 " : "chat-profile-wrapper position-relative py-2 px-3"} onClick={()=>handleChatProfileClick(it?.members[0]?.chatroom_id)}>
                 <MoreChatOptions  item={it} type={type} setSelectedTab={setSelectedTab}/>
                 <div className="chat-profile-img">
                     <img src={it?.members[0]?.user?.profile_picture} />
@@ -34,6 +35,7 @@ const MessageInboxCard = ({ type,chatRoom,stripHtmlTags ,messageWrapperVisible, 
                       {stripHtmlTags(it?.messages[0]?.message_body)}
                     </p>
                 </div>
+            </div>
             </div>
                 </>
             )
