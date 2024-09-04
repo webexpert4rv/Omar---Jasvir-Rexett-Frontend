@@ -11,6 +11,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 import logoRexett from '../assets/img/rexett-logo.png';
+import { toast } from 'react-toastify';
 import axios from "axios";
 const MeetingDetail = () => {
  const [meetingDetails,setMeetingDetails]=useState({});
@@ -38,7 +39,7 @@ const MeetingDetail = () => {
             "token": token
           }
         axios.post(`${process.env.REACT_APP_BASE_URL}/developer/interviews/accept`,payload).then((dat)=>{
-         console.log(dat.data)
+            toast.success("Interview accepted successfully", { position: "top-center" });
           });
     }
 

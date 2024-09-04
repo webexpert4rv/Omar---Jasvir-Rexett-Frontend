@@ -1231,7 +1231,7 @@ const SingleJobDetails = () => {
                                 </Row>
                             </div>
                         )}
-                        {/* {scheduledInterviews.length > 0 && (
+                        {scheduledInterviews.length > 0 && (
                             <>
                                 <h5 className="font-22 mb-4 fw-bold">Scheduled Interview</h5>
                                 <div className="interview-scheduled pt-2 mb-3">
@@ -1244,7 +1244,7 @@ const SingleJobDetails = () => {
                                     </Row>
                                 </div>
                             </>
-                        )} */}
+                        )}
 
                         {/* {needToSchedule.length > 0 && (
                             <>
