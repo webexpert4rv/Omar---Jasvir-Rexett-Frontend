@@ -399,27 +399,27 @@ const SingleDeveloper = ({ data, role }) => {
                     <div className="text-start mt-3 d-flex align-items-center gap-2 flex-wrap justify-content-center mb-3 personal-info-wrapper">
                       <div>
                         <p className="mb-0 font-14">
-                          <span><FaEnvelope /></span> robertjohnson@gmail.com</p>
+                          <span><FaEnvelope /></span>{data?.email}</p>
                       </div>
                       <div>
                         <p className="mb-0 font-14">
-                          <span><MdLocalPhone /></span> +91 123456789</p>
+                          <span><MdLocalPhone /></span>{data?.phone_number}</p>
                       </div>
                       <div>
                         <p className="mb-0 font-14">
-                          <span><MdWork /></span> 5 years</p>
+                          <span><MdWork /></span> {data?.developer_detail?.total_experience} years</p>
                       </div>
                       <div>
                         <p className="mb-0 font-14">
-                          <span><MdLocationOn /></span>India</p>
+                          <span><MdLocationOn /></span>{data?.country}</p>
                       </div>
                       <div>
                         <p className="mb-0 font-14">
-                          <span><MdWork /></span> Remote</p>
+                          <span><MdWork /></span>Remote</p>
                       </div>
                       <div>
                         <p className="mb-0 font-14">
-                          <span><GoClockFill /></span> GMT(+5:30) Kolkata</p>
+                          <span><GoClockFill /></span>{data?.time_zone}</p>
                       </div>
                     </div>
                     {data?.developer_detail ? (
@@ -895,7 +895,7 @@ const SingleDeveloper = ({ data, role }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="about-info px-4 pt-4">
+                  {/* <div className="about-info px-4 pt-4">
                     <div className="d-flex justify-content-between align-items-center cv-header-wrapper mb-xxl-4 mb-3">
                       <h3 className="subheading-resume text-center mb-0">
                         Screening Round
@@ -964,7 +964,7 @@ const SingleDeveloper = ({ data, role }) => {
                       <Button className="main-btn font-14 me-2 py-2"><span className="font-18 me-1"><MdOutlineOndemandVideo /></span> Playback</Button>
                       <Button className="main-btn font-14 py-2"><span className="font-18 me-1"><TbFileDownload /></span>Transcript</Button>
                     </div>
-                  </div>
+                  </div> */}
                 </Col>
               </Row>
             </div>

@@ -216,15 +216,13 @@ const Applications = () => {
 
     const completeSteps = localStorage.setItem("setActiveStep", item?.completed_steps + 1)
     const baseUrls = {
-      developer: process.env.REACT_APP_BASE_URL,
-      vendor: process.env.REACT_APP_BASE_URL,
-      client: process.env.REACT_APP_BASE_URL,
+      developer: process.env.REACT_APP_DEVELOPER,
+      vendor: process.env.REACT_APP_VENDOR,
+      client: process.env.REACT_APP_CLIENT,
     };
 
     const url = baseUrls[currentUser];
     let payload = {
-      // user_id: id,
-      // link : `${url}-registration`
       link: `${url}?user_id=${encrypted}`,
     };
 
@@ -522,7 +520,8 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                     "client",
                                                     item?.id,
                                                     item,
-                                                    // 3
+                                                    3
+                                                    
                                                   )
                                                 }
                                               >
@@ -1579,7 +1578,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                             onClick={() =>
                                               !smallLoader &&
                                               redirectToWebsiteForm(
-                                                "client",
+                                                "developer",
                                                 item?.id,
                                                 item,
                                                 3
