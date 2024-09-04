@@ -82,7 +82,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
   //   setValue("time_zone", value);
   //   clearErrors("time_zone");
   // };
-  console.log(watch("time_zone"),"time zone inside child");
+  console.log(watch("time_zone"), "time zone inside child");
   return (
     <div>
       <section className="job-post-section">
@@ -262,22 +262,21 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                   <Form.Label className="d-flex gap-2 align-items-center font-14 fw-medium">
                     {t("responseDate")}
                   </Form.Label>
-                  <p className="d-flex align-items-center gap-2">
-                    <Form.Control
-                      type="date"
-                      {...register("response_date", {
-                        required: "Response date is required",
-                      })}
-                      min={new Date().toISOString().split("T")[0]}
-                      className="common-field font-14"
-                      placeholder="Enter response time"
-                    />
-                  </p>
+                  <Form.Control
+                    type="date"
+                    {...register("response_date", {
+                      required: "Response date is required",
+                    })}
+                    min={new Date().toISOString().split("T")[0]}
+                    className="common-field font-14"
+                    placeholder="Enter response time"
+                  />
                   {errors?.response_date && (
                     <p className="error-message">{errors?.response_date?.message}</p>
                   )}
                 </Form.Group>
               </Col>
+
             </Row>
             <Form.Group className="mb-3">
               <Form.Label className="common-label font-14 fw-medium">
@@ -291,7 +290,7 @@ const JobPostStep1 = ({ register, errors, control, setValue, watch, setError, cl
                     {...field}
                     options={groupedTime}
                     placeholder={"Select Timezone"}
-                    // handleChange={handleDropDownChange}
+                  // handleChange={handleDropDownChange}
                   />
                 )}
               />

@@ -1093,11 +1093,12 @@ export function getSelectedEvent(id,callback){
 export function getMessageTemplate(payload){
     console.log(payload,"payload")
     return async (dispatch)=>{
-        // dispatch(setBtnLoader())
+        dispatch(setBtnLoader())
         try{
             let result = await clientInstance.post(`admin/message-templates`,{...payload})
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
+                dispatch(setSuccessAdminData());
             }
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
@@ -1111,7 +1112,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
       dispatch(setSmallLoader());
       try {
         let result = await clientInstance.post(`common/upload-file`, fileData);
-        // dispatch(setActionSuccessFully());
+        dispatch(setSuccessAdminData());
         return callback(result?.data?.data.Location);
       } catch (error) {
         const message = error.message || "Something went wrong";

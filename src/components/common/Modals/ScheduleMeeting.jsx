@@ -142,7 +142,6 @@ const Schedulemeeting = ({
   };
 
   const handleSecondSlotChange = (event) => {
-    console.log("secondSlot");
     setSecondSlot(event.target.value);
   };
 
@@ -197,8 +196,8 @@ const Schedulemeeting = ({
         time_zone: data?.time_zone?.label,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
-        type: "events",
-        event_link: meetingLink ?meetingLink : "" ,
+        type: "meeting",
+        event_link: meetingLink ? meetingLink : "string" ,
         developer_email: data?.select_candidate?.label,
       };
       dispatch(
@@ -213,11 +212,11 @@ const Schedulemeeting = ({
         developer_id: +data?.select_candidate?.value,
         developer_email: data?.select_candidate?.label,
         meeting_type: "instant",
-        meeting_date: "2024-07-14",
-        meeting_time: "15:00:00",
-        meeting_end_time: "16:00:00",
-        title: "Technical Interview",
-        meeting_platform: "google meet",
+        meeting_date: data?.meeting_date,
+        meeting_time: data?.meeting_start_time,
+        meeting_end_time: data?.meeting_end_time,
+        title: data?.title,
+        meeting_platform: data?.meeting_platform?.label,
         meeting_link: meetingLink,
         status: "pending",
         interviewers_list: "interviewer1@example.com,interviewer2@example.com",
@@ -313,7 +312,7 @@ const Schedulemeeting = ({
         <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
 
         <Modal.Body>
-          <h3 className="popup-heading">Schedule Meetings</h3>
+          <h3 className="popup-heading">{type==="events"? "Schedule Meetings" : "Schedule Interview"}</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <Row>
