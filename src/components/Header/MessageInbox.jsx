@@ -115,7 +115,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
 
 
   useEffect(() => {
-    dispatch(getAllAdminEmployees())
+    // dispatch(getAllAdminEmployees())
     dispatch(getAllMessages(userId));
     dispatch(getAllMessageTemplates());
 
@@ -280,7 +280,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       "assigned_member_role": emp?.role
     }
     dispatch(getReassign(payload))
-
 
   }
 

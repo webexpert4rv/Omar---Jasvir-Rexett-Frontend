@@ -26,7 +26,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
     if (jobListing?.length > 0) {
       setStateJob(jobListing)
     } else {
-      setStateJob(DUMMY_DATA)
+      setStateJob([])
     }
 
   }, [jobListing])
