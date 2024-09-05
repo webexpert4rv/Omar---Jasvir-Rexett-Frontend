@@ -66,6 +66,8 @@ const Schedulemeeting = ({
   const [secondSlot, setSecondSlot] = useState("");
   const [groupedTime, setGroupedTime] = useState([]);
   const { timeZoneList } = useSelector((state) => state.clientData);
+  const defaultInterview=localStorage.getItem("email")
+  console.log(defaultInterview,"defaultInterview")
 
   useEffect(() => {
     dispatch(getTimeZoneList());
@@ -178,6 +180,7 @@ const Schedulemeeting = ({
   useEffect(() => {
     const currentDate = moment().format("YYYY-MM-DD");
     setValue("instant_date", currentDate);
+    setValue("meeting_type","instant")
   }, []);
 
   const onSubmit = (data) => {
@@ -353,9 +356,9 @@ const Schedulemeeting = ({
                       name={"select_candidate"}
                       type={"select2"}
                       control={control}
-                      // selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
+                      selectOptions={[{ label: selectedDeveloper?.email ,value:selectedDeveloper?.id}]}
                       rules={{ required: "This field is required" }}
-                      selectOptions={getFormattedOptions()}
+                      
                       invalidFieldRequired={true}
                       placeholder="Select Candidate"
                     />
@@ -381,6 +384,7 @@ const Schedulemeeting = ({
                       rules={{ required: "This field is required" }}
                       invalidFieldRequired={true}
                       placeholder="Select Interviewer"
+
                     />
                     <p>{errors?.select_candidate?.message}</p>
                   </div>
@@ -403,6 +407,7 @@ const Schedulemeeting = ({
                         name="instant"
                         label="Instant Meeting"
                         id="instant_meeting"
+                        checked={true}
                         className="d-inline-block meeting-radio ps-0 me-2"
                         value="instant"
                         {...register("meeting_type")}

@@ -469,8 +469,8 @@ const SingleJobDetails = () => {
     }
 
     const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
-    const handleShowScheduleMeeting = (name, id) => {
-        setSelectedDeveloper({ name, id })
+    const handleShowScheduleMeeting = (name, id,email) => {
+        setSelectedDeveloper({ name, id,email })
         setShowScheduleMeet(!showScheduleMeeting);
     }
     const handleCloseScheduleMeeting = () => {
@@ -1217,7 +1217,7 @@ const SingleJobDetails = () => {
                                             </div>
                                             <div className="d-flex align-items-center justify-content-between align-self-end">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <button className="main-btn font-14 text-decoration-none" onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)}>
+                                                    <button className="main-btn font-14 text-decoration-none" onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id,item?.developer?.email)}>
                                                         Schedule Interview
                                                     </button>
                                                 </div>
