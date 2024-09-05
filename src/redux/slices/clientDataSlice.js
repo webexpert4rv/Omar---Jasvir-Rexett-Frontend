@@ -1205,12 +1205,11 @@ export function getStatesList(countryCode) {
     }
   };
 }
-export function getCitiesList(countryCode, stateName) {
-  console.log(stateName,"statename")
+export function getCitiesList(countryCode, stateCode) {
   return async (dispatch) => {
     // dispatch(setScreenLoader());
     try {
-      let result = await clientInstance.get(`web/countries/${countryCode}/states/${stateName}/cities`);
+      let result = await clientInstance.get(`web/countries/${countryCode}/states/${stateCode}/cities`);
       dispatch(setCitiesList(result?.data?.data));
     } catch (error) {
       const message = error?.message;

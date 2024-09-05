@@ -112,8 +112,7 @@ const VendorRegistrationStepper = () => {
             }else{
               setValue(key, data[key])
             } 
-          }
-          if (activeStep !== 1){
+          }else{
             setValue(key, data[key])
           }
         }
@@ -240,7 +239,7 @@ const VendorRegistrationStepper = () => {
     }
     dispatch(getAreaExpertise(payload))
     setIsRegistrationStepModal(true)
-    handleRedirect()
+    
     
   };
 
@@ -350,6 +349,7 @@ const VendorRegistrationStepper = () => {
        <RegistrationStepModal
         show={isRegistrationStepModal}
         handleClose={handleRegistrationModal}
+        // handleRedirect={handleRedirect}
         nextStep={decreaseStepCount}
         role={"vendor"}
       />
