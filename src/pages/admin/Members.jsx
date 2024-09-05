@@ -288,12 +288,15 @@ const Members = () => {
       )
     );
   };
-  const [assignemployee, showAssignEmployee] = useState(false);
-  const handleShowAssignEmployee = () => {
-    showAssignEmployee(!assignemployee);  
+  const [assignemployee, showAssignEmployee] = useState({show:false, id: true});
+  const handleShowAssignEmployee = (id) => {
+    showAssignEmployee({
+      show: true,
+      id: id
+    });  
   }
   const handleCloseAssignEmployee = () => {
-    showAssignEmployee(false);
+    showAssignEmployee({show:false, id: null});
   }
   const assignEmployeeText = (
     <Tooltip>Assign Team Member</Tooltip>
@@ -513,14 +516,14 @@ const Members = () => {
                                 <td>
                                   <div>
                                     <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
-                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto mb-1">
+                                      <Button variant="transparent" onClick={()=>handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
                                         <TiUserAdd />
                                       </Button>
                                     </OverlayTrigger>
                                     <span className="associate-text d-inline-flex align-items-center gap-2">
                                       <span className="associate white-nowrap">johndoe123@gmail.com</span>
                                       <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
-                                        <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
+                                        <span onClick={()=>handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
                                           <FaRotateRight />
                                         </span>
                                       </OverlayTrigger>
@@ -1623,7 +1626,7 @@ const Members = () => {
           />
         )}
       </div>
-      <AssignEmployee show={assignemployee} handleClose={handleCloseAssignEmployee} />
+      {assignemployee.show && <AssignEmployee show={assignemployee.show} handleClose={handleCloseAssignEmployee} id={assignemployee.id} />}
     </>
   );
 };
