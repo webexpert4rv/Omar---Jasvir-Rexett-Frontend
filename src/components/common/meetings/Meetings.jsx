@@ -56,6 +56,13 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   const currentTime = moment()
   console.log(currentTime,"currentTime")
 
+  useEffect(()=>{
+    if(allEvents?.events?.length>0){
+      setEvent(allEvents?.events)
+    }
+ 
+  },[allEvents])
+
 
 
   useEffect(() => {
@@ -77,6 +84,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     gapi.load('client:auth2', start);
     setLinkedCopied(false)
   }, []);
+
 
   
 
