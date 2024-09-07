@@ -244,8 +244,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       </header>
 
       <Meetings showMeetings={showMeetings} handleCloseMeetings={handleCloseMeetings} handleShowSchedule={handleShowSchedule} handleShowMeetingInfo={handleShowMeetingInfo} />
-
-      <MessageInbox showMessagesInfo={showMessagesInfo} setShowMessagesInfo={setShowMessagesInfo} />
+      {showMessagesInfo && <MessageInbox showMessagesInfo={showMessagesInfo} setShowMessagesInfo={setShowMessagesInfo} />}
       <ToDoComponent showToDo={showToDo} setShowToDo={setShowToDo} />
       <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} createdMeetings={createdMeetings} details={details} />
       <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} setCreatedMeetings={setCreatedMeetings} createdMeetings={createdMeetings} type={"events"} />

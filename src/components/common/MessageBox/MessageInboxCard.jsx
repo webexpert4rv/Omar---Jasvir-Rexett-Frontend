@@ -9,7 +9,6 @@ import moment from 'moment'
 const MessageInboxCard = ({ type, chatRoom, messageWrapperVisible, handleChatProfileClick, filteredName, setSelectedTab, onScroll, listInnerRef, userList }) => {
     const dispatch = useDispatch()
     const { chatRoomMessageList } = useSelector((state) => state.developerData)
-    console.log(type, "typeonmessage")
 
 
     // useEffect(()=>{
@@ -33,8 +32,9 @@ const MessageInboxCard = ({ type, chatRoom, messageWrapperVisible, handleChatPro
                     return (
                         <>
                             <div className='chat-wrapper'>
-                                <div className={messageWrapperVisible ? "chat-profile-wrapper position-relative active-chat py-2 px-3 " : "chat-profile-wrapper position-relative py-2 px-3"} onClick={() => handleChatProfileClick(it?.members[0]?.chatroom_id)}>
+                                <div className={`chat-profile-wrapper position-relative py-2 px-3 ${messageWrapperVisible ? "active-chat" : ""}`} >
                                     <MoreChatOptions item={it} type={type} setSelectedTab={setSelectedTab} />
+                                    <div onClick={() => handleChatProfileClick(it?.members[0]?.chatroom_id)} className='cursor-pointer'>
                                     <div className="chat-profile-img">
                                         <img src={it?.members[0]?.user?.profile_picture} />
                                     </div>
@@ -46,6 +46,7 @@ const MessageInboxCard = ({ type, chatRoom, messageWrapperVisible, handleChatPro
                                         <p className="chat-message mb-0">
                                             {(stripHtmlTags(it?.messages[0]?.message_body))}
                                         </p>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
