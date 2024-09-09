@@ -3,6 +3,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import GoogleLogin from "react-google-login";
 import { Link } from "react-router-dom";
 import { gapi } from 'gapi-script';
+import { msalInstance } from "../../../../services/msalConfig";
 
 const ConnectCalendar = ({ currentTab }) => {
     const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
@@ -10,6 +11,10 @@ const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
 const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
 const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+const loginRequest = {
+    scopes: ["user.read"]
+  };
 
 useEffect(() => {
     function start() {
@@ -42,6 +47,18 @@ const handleLoginSuccess = (response) => {
     setIsAuthenticated(false);
   };
 
+  const handleMicrosoftLogin = async () => {
+    console.log(msalInstance,'msalInstance');
+    try {
+      const loginResponse = await msalInstance.loginPopup(loginRequest);
+      console.log('Microsoft login success:', loginResponse);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Microsoft login failed:', error);
+      setIsAuthenticated(false);
+    }
+  };
+
     return (
         <>
 
@@ -61,6 +78,13 @@ const handleLoginSuccess = (response) => {
                             onFailure={handleLoginFailure}
                             cookiePolicy={'single_host_origin'}
                         />
+                        <Button
+                variant="outline-primary"
+                className="mt-2"
+                onClick={handleMicrosoftLogin}
+              >
+                Login with Microsoft
+              </Button>
                         <div className="d-flex align-items-center gap-2 mt-2">
                             <Button variant="transparent" className="main-btn font-14" disabled>Connected with google</Button>
                             <Button variant="transparent" className="cancel-btn font-14">Disconnect</Button>
