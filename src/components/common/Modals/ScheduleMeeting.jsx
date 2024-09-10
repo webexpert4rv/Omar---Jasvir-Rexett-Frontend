@@ -265,19 +265,19 @@ const Schedulemeeting = ({
         job_id: +id,
         developer_id: +data?.select_candidate?.value,
         developer_email: data?.select_candidate?.label,
-        meeting_type: "instant",
-        meeting_date: data?.meeting_date,
+        meeting_type: data?.meeting_type,
+        meeting_date: data?.instant_date,
         meeting_time: data?.meeting_start_time,
         meeting_end_time: data?.meeting_end_time,
         title: data?.title,
-        meeting_platform: data?.meeting_platform?.label,
+        meeting_platform: data?.meeting_platform?.value,
         meeting_link: meetingLink,
         status: "pending",
-        interviewers_list: "interviewer1@example.com,interviewer2@example.com",
+        interviewers_list: data?.interviewers_list?.map(item => item.value).join(', '),
         time_zone: data?.time_zone?.label,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
-        interview_duration: "string",
+        interview_duration: "1hr",
       };
       dispatch(postCandidateInterview(payload));
     }
@@ -406,7 +406,7 @@ const Schedulemeeting = ({
                 <Col lg={8} className="mb-3">
                   <div>
                     {/* <Select isMulti /> */}
-                    {/* <CommonInput
+                    <CommonInput
                       name={"select_candidate"}
                       type={"select2"}
                       control={control}
@@ -415,7 +415,7 @@ const Schedulemeeting = ({
                       
                       invalidFieldRequired={true}
                       placeholder="Select Candidate"
-                    /> */}
+                    />
                     <p className="error-message">{errors?.select_candidate?.message}</p>
                   </div>
                 </Col>
@@ -426,7 +426,7 @@ const Schedulemeeting = ({
                     <span>
                       <FaUsers />
                     </span>
-                    Interviewer's list
+                    Interviewer
                   </p>
                 </Col>
                 <Col lg={8} className="mb-3">

@@ -233,7 +233,7 @@ console.log(isMaxRequired,"ismax")
                     }`}
                     // isDisabled={readOnly}
                     // onChange={(selectedOption) => field.onChange(selectedOption)}
-                    value={["rexett_admin@yopmail.com"]}
+                    
                     placeholder={placeholder}
                     isMulti={true}
                   />
