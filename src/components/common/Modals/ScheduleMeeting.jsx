@@ -13,6 +13,9 @@ import { useForm } from "react-hook-form";
 import RexettButton from "../../atomic/RexettButton";
 import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
+import { MsalProvider, useMsal } from "@azure/msal-react";
+import { Client } from '@microsoft/microsoft-graph-client';
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import {
   getTimeZoneList,
   postCandidateInterview,
@@ -53,6 +56,21 @@ const Schedulemeeting = ({
   const {smallLoader } = useSelector((state) => state.clientData);
   const [thirdParty, setThirdParty] = useState(false);
   const [meetingLink, setMeetingLink] = useState(null);
+  const { instance, accounts } = useMsal();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [events, setEvents] = useState([]);
+
+
+  const [eventDetails, setEventDetails] = useState({
+    subject: '',
+    location: { displayName: '' },
+    body: { content: '' },
+    start: { dateTime: '', timeZone: 'UTC' },
+    end: { dateTime: '', timeZone: 'UTC' },
+     isOnlineMeeting: true,
+    onlineMeetingProvider: "teamsForBusiness"
+  });
+
 
   const getFormattedOptions = () => {
     const newOptions = developerList?.developers?.map((item) => {
@@ -78,6 +96,20 @@ const Schedulemeeting = ({
     setValue("candidate_reminder", true);
     setValue("interviewer_reminder", true);
   }, []);
+
+  useEffect(() => {
+    if (accounts.length > 0) {
+      setIsAuthenticated(true);
+    }
+  }, [accounts]);
+
+  const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(instance, {
+    account: accounts[0],
+    scopes: ["user.read", "Calendars.ReadWrite"],
+    prompt: "consent",
+  });
+
+
 
   useEffect(() => {
     if (timeZoneList.length > 0) {
@@ -114,6 +146,25 @@ const Schedulemeeting = ({
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${hours}:${minutes}`;
+  };
+
+
+  const fetchCalendarEvents = async () => {
+    if (!isAuthenticated) {
+      console.log('User not authenticated');
+      return;
+    }
+
+ 
+
+    const client = Client.initWithMiddleware({ authProvider });
+
+    try {
+      const response = await client.api('/me/events').get();
+      setEvents(response.value);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
   };
 
 
@@ -189,9 +240,9 @@ const Schedulemeeting = ({
     if (type === "events") {
       let payload = {
         title: data?.title,
-        developer_id: +data?.select_candidate?.value,
+        developer_id: 1350,
         attendees: "attendee1@example.com, attendee2@example.com",
-        event_platform: data?.meeting_platform?.label,
+        event_platform: "rexet_video_meeting",
         event_type: "scheduled",
         event_date: data?.meeting_date,
         event_time: data?.meeting_start_time,
@@ -200,8 +251,8 @@ const Schedulemeeting = ({
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         type: "meeting",
-        event_link: meetingLink ? meetingLink : "string" ,
-        developer_email: data?.select_candidate?.label,
+        event_link: null,
+        developer_email: "pankaj-dev@yopmail.com",
       };
       dispatch(
         postScheduleMeeting(payload, () => {
@@ -301,6 +352,9 @@ const Schedulemeeting = ({
   };
 
 
+
+
+
  
   return (
     <>
@@ -352,7 +406,7 @@ const Schedulemeeting = ({
                 <Col lg={8} className="mb-3">
                   <div>
                     {/* <Select isMulti /> */}
-                    <CommonInput
+                    {/* <CommonInput
                       name={"select_candidate"}
                       type={"select2"}
                       control={control}
@@ -361,7 +415,7 @@ const Schedulemeeting = ({
                       
                       invalidFieldRequired={true}
                       placeholder="Select Candidate"
-                    />
+                    /> */}
                     <p className="error-message">{errors?.select_candidate?.message}</p>
                   </div>
                 </Col>

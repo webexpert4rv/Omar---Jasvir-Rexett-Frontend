@@ -1006,7 +1006,7 @@ export function getAllEvents(){
     return async (dispatch)=>{
         dispatch(setBtnLoader())
         try{
-            let result = await clientInstance.get(`common/events?page=${1}&&limit=${10}`)
+            let result = await clientInstance.get(`common/events?page=${2}&&limit=${10}`)
             console.log(result.data,"eventinglist")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })

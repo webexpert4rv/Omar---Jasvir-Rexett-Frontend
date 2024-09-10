@@ -15,34 +15,6 @@ const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
 const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
 
-const eventDetails = [{
-  'summary': 'Google I/O 2015',
-      'location': '800 Howard St., San Francisco, CA 94103',
-      'description': 'A chance to hear more about Google\'s developer products.',
-      'start': {
-        'dateTime': '2025-08-01T09:31:20.142Z',
-        'timeZone': 'America/Los_Angeles',
-      },
-      'end': {
-        'dateTime': '2025-08-01T09:31:20.142Z' ,
-        'timeZone': 'America/Los_Angeles',
-      }
-    },
-    {
-      'summary': 'Google I/O 2015',
-          'location': '800 Howard St., San Francisco, CA 94103',
-          'description': 'A chance to hear more about Google\'s developer products.',
-          'start': {
-            'dateTime': '2025-08-01T09:31:20.142Z',
-            'timeZone': 'America/Los_Angeles',
-          },
-          'end': {
-            'dateTime': '2025-08-01T09:31:20.142Z' ,
-            'timeZone': 'America/Los_Angeles',
-          }
-        }
-]
-
 
 const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {
 
@@ -50,11 +22,16 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   const [event, setEvent] = useState([])
   const {allEvents} = useSelector(state=>state.adminData)
   const [linkCopied , setLinkedCopied] = useState(false)
-  console.log(allEvents,"allevents")
-  console.log(event,"event")
   const dispatch = useDispatch()
   const currentTime = moment()
   console.log(currentTime,"currentTime")
+
+  useEffect(()=>{
+    if(allEvents?.events?.length>0){
+      setEvent(allEvents?.events)
+    }
+ 
+  },[allEvents])
 
 
 
@@ -77,6 +54,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     gapi.load('client:auth2', start);
     setLinkedCopied(false)
   }, []);
+
 
   
 
@@ -251,41 +229,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                   </div>
                 </>
               )
-
             })}
-            {/* {createdMeetings ?  */}
-           
-            {/* :""} */}
-            {/* <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-            <div>
-              <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-              <p className="dev-name mb-2 font-14">
-                <div className="me-1">
-                  <img src={devImg} />
-                </div>
-                Pankaj Pundir
-              </p>
-              <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-            </div>
-            <div className="mb-2 status-interview">
-              <span className="status-upcoming">Upcoming in 3hr</span>
-            </div>
-          </div>
-          <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-            <div>
-              <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-              <p className="dev-name mb-2 font-14">
-                <div className="me-1">
-                  <img src={devImg} />
-                </div>
-                Pankaj Pundir
-              </p>
-              <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-            </div>
-            <div className="mb-2 status-interview">
-              <span className="status-upcoming">Upcoming in 5hr</span>
-            </div>
-          </div> */}
           </div>
         </div>
       </Offcanvas.Body>
