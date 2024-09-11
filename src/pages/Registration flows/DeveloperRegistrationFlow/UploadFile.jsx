@@ -76,6 +76,8 @@ const UploadFile = ({ label, placeholder,
 
   return (
     <>
+    {(label === "Resume" && !imageFile?.resume) ||
+      (label === "Intro Video" && !imageFile?.introVideo) ? (
       <div className="mb-3">
         <Form.Label className="font-14 fw-medium">{label} *</Form.Label>
 
@@ -93,6 +95,9 @@ const UploadFile = ({ label, placeholder,
         </Form.Label>
 
       </div>
+      ) : (
+        <></>
+      )}
       <Form.Control
         {...register(fieldName, {
           onChange: (e) => handleFileChange(e, fieldName),
@@ -110,6 +115,7 @@ const UploadFile = ({ label, placeholder,
           <p className="field-error">{errors[fieldName]?.message}</p>
         )}
         {label !== "Resume" ? (
+          imageFile?.introVideo ?
           <div className="profile-upload-preview position-relative preview_intro mb-3">
             <div className="profile-img-preview w-100 h-100">
               <video
@@ -129,11 +135,20 @@ const UploadFile = ({ label, placeholder,
             <Form.Label htmlFor="intro-video" className="profile-img-label">
               <FaUpload />
             </Form.Label>
-          </div>
+            <span
+              className="position-absolute top-0 end-0"
+              style={{cursor:'pointer'}}
+              onClick={() =>
+                setImageFile((prev) => ({ ...prev, introVideo: "" }))
+              }
+            >
+              <IoClose className="text-danger" />
+            </span>
+          </div> : <></>
         ) : (
           <>
             {/* Conditional rendering of the div */}
-            {imageFile?.resume && (
+            {imageFile?.resume ? (
               <div className="d-flex justify-content-between align-items-center gap-5 p-2 bg-light rounded-3 mb-3">
                 <span className="font-14 fw-medium">
                   {imageFile?.resume?.name ? imageFile?.resume?.name : stepData?.resume}
@@ -142,6 +157,8 @@ const UploadFile = ({ label, placeholder,
                   <IoClose onClick={() => setImageFile((prev) => ({ ...prev, resume: null }))} />
                 </span>
               </div>
+            ):(
+              <div></div>
             )}
           </>
         )}
