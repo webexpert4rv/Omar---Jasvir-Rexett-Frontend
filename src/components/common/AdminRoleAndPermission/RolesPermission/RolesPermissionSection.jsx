@@ -223,7 +223,7 @@ const RolesPermissionSection = () => {
                                                                         type="checkbox"
                                                                         className="permission-checkbox"
                                                                         onChange={() => handleCheckStatus(item?.id, role?.id, "active")}
-                                                                        checked={role?.name == name}
+                                                                        checked={role?.checked}
                                                                     />
                                                                 </td>
                                                             ))}

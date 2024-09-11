@@ -278,7 +278,7 @@ const SingleJobDetails = () => {
           const meetingStart = new Date(response.result.start.dateTime);
           if (meetingStart < now) {
             fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
-            alert('The meeting should have started or is over.');
+            // alert('The meeting should have started or is over.');
           } else {
             alert('The meeting is still scheduled.');
           }

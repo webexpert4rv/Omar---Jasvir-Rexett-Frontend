@@ -62,6 +62,11 @@ const Notification = ({ route, job, doc, timeReport }) => {
       setNewJobPost(jobPost);
     });
 
+    socket.on(`message_created_${userId}`, (message) => {
+      console.log(message,"message")
+      // setNewJobPost(message);
+    });
+
     socket.on("new_job_application_" + userId, (jobPost) => {
       setNewJobPost(jobPost);
     });
@@ -110,7 +115,7 @@ const Notification = ({ route, job, doc, timeReport }) => {
     if (data == "Documents") {
       navigate(`/${role}/${doc}`);
     } else if (data == "Jobs") {
-      navigate(`/${job}/${id}`);
+      navigate(`${role}/${job}/${id}`);
     } else if (data == "Time_reports") {
       navigate(`/${timeReport}`);
     } else if (data == "Users") {

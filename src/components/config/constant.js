@@ -61,17 +61,17 @@ export const CLIENT_SIDE_BAR_ITEMS = [
 ];
 
 export const ADMIN_SIDE_BAR_ITEMS= [
-    { to: "/admin/admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
-    { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications" },
-    { to: "/admin/members", icon: <PiUsersFourFill />, text: "members" },
-    { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing" },
+    { to: "/admin/admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard",slug:"dashboard-menu"},
+    { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications",slug:"new-applicants-menu"},
+    { to: "/admin/members", icon: <PiUsersFourFill />, text: "members",slug:"members-menu" },
+    { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing",slug:"job-listing-menu" },
     // { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
-    { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images" },
-    { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting" },
+    { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images", slug:"documents" },
+    { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting",slug:"admin-time-reporting" },
     // { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
-    { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice" },
-    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions" },
-    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration" },
+    { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice",slug:"invoice" },
+    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions",slug:"" },
+    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration",slug:"configuration" },
     // { to: "/admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
     // { to: "/admin/client-listing", icon: <FaUsers />, text: "Clients" },
   ]

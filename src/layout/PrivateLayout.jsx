@@ -20,6 +20,9 @@ const PrivateLayout = ({ children }) => {
      role = "superAdmin"
   }else{
      role = localStorage.getItem("role");
+     if(role=="sub-admin"){
+      role="subAdmin"
+     }
   }
 
   

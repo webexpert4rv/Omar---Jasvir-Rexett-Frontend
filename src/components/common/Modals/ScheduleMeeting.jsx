@@ -58,6 +58,7 @@ const Schedulemeeting = ({
   const [meetingLink, setMeetingLink] = useState(null);
   const { instance, accounts } = useMsal();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [gogleEventId,setGoogleEventID]=useState(null)
   const [events, setEvents] = useState([]);
 
 
@@ -108,6 +109,14 @@ const Schedulemeeting = ({
     scopes: ["user.read", "Calendars.ReadWrite"],
     prompt: "consent",
   });
+
+  useEffect(()=>{
+    if(selectedDeveloper){
+      setValue("select_candidate",[{label:selectedDeveloper?.email,value:selectedDeveloper?.email}])
+    }
+  
+
+  },[selectedDeveloper])
 
 
 
@@ -263,8 +272,8 @@ const Schedulemeeting = ({
     } else {
       let payload = {
         job_id: +id,
-        developer_id: +data?.select_candidate?.value,
-        developer_email: data?.select_candidate?.label,
+        developer_id:selectedDeveloper?.id ? selectedDeveloper?.id: +data?.select_candidate?.value,
+        developer_email: selectedDeveloper?.email?  selectedDeveloper?.email: data?.select_candidate?.label,
         meeting_type: data?.meeting_type,
         meeting_date: data?.instant_date,
         meeting_time: data?.meeting_start_time,
@@ -273,20 +282,21 @@ const Schedulemeeting = ({
         meeting_platform: data?.meeting_platform?.value,
         meeting_link: meetingLink,
         status: "pending",
-        interviewers_list: data?.interviewers_list?.map(item => item.value).join(', '),
+        interviewers_list:  data?.interviewers_list?.map(item => item.value).join(', '),
         time_zone: data?.time_zone?.label,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
+        event_id:gogleEventId
       };
-      dispatch(postCandidateInterview(payload));
+      // dispatch(postCandidateInterview(payload));
     }
     reset()
   };
 
   let r = watch("meeting_platform");
   useEffect(() => {
-    setThirdParty(r?.value == "google_meet" ? true : false);
+    setThirdParty(r?.value == "google_meet" || r?.value=="microsoft_team"  ? true : false);
   }, [r]);
 
   const handleCloseThirdPary = () => {
@@ -301,9 +311,6 @@ const Schedulemeeting = ({
 
   const syncCreatedMeetingsWithGoogle = (e) => {
     let summary = watch("title");
-
-    console.log(summary, "sum");
-
     e.stopPropagation();
     if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
       console.log("User not authenticated");
@@ -343,6 +350,7 @@ const Schedulemeeting = ({
         if (response.result.hangoutLink) {
           console.log("Google Meet link:", response.result.hangoutLink);
           setMeetingLink(response.result.hangoutLink);
+          setGoogleEventID(response?.result?.id)
         }
       })
       .catch((error) => {
@@ -410,7 +418,7 @@ const Schedulemeeting = ({
                       name={"select_candidate"}
                       type={"select2"}
                       control={control}
-                      selectOptions={[{ label: selectedDeveloper?.email ,value:selectedDeveloper?.id}]}
+                      selectOptions={getFormattedOptions()}
                       rules={{ required: "This field is required" }}
                       
                       invalidFieldRequired={true}

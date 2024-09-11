@@ -37,7 +37,8 @@ const initialAdminData = {
     allEvents:{},
     messageTemplates:{},
     allAdminEmployees:[],
-    chatRoom:{}
+    chatRoom:{},
+    allPermissionDetails:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -198,11 +199,15 @@ export const adminDataSlice = createSlice({
         setChatRoom:(state,action)=>{
             state.chatRoom =action.payload
             state.smallLoader = false
+        },
+        setAllPermissionDetails:(state,action)=>{
+            state.allPermissionDetails =action.payload
+            state.smallLoader = false
         }
     }
 })
 
-export const { setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -911,6 +916,22 @@ export function getUpdateRolePermission(payload){
         }
     }
 }
+
+export function getAllPermissionDetails(payload){
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.get(`admin/permissions-details`)
+            console.log(result.data,"oppen")
+             dispatch(setAllPermissionDetails(result.data))
+            
+        }catch(error){
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+
 export function getAdminCreateToDo(payload,callback){
     console.log(payload,"payload")
     return async (dispatch)=>{
@@ -1006,7 +1027,7 @@ export function getAllEvents(){
     return async (dispatch)=>{
         dispatch(setBtnLoader())
         try{
-            let result = await clientInstance.get(`common/events?page=${2}&&limit=${10}`)
+            let result = await clientInstance.get(`common/events?page=${1}&&limit=${10}`)
             console.log(result.data,"eventinglist")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })

@@ -20,7 +20,7 @@ import { FaCalendarDays } from "react-icons/fa6";
 import 'react-quill/dist/quill.snow.css';
 import Schedulemeeting from "../common/Modals/ScheduleMeeting";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvents, getConfigDetails, getToDoById } from "../../redux/slices/adminDataSlice";
+import { getAllEvents, getAllPermissionDetails, getConfigDetails, getToDoById } from "../../redux/slices/adminDataSlice";
 import { TbArrowBarToLeft } from "react-icons/tb";
 import ToDoComponent from "./ToDoComponent";
 import MessageInbox from "./MessageInbox";
@@ -67,6 +67,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     setDetails(item)
     setShowMeetingInfo(!showMeetingInfo)
   }
+
+  useEffect(()=>{
+     dispatch(getAllPermissionDetails())
+  },[])
 
   console.log(details, "details")
   const handleCloseMeetingInfo = () => {
