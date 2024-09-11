@@ -989,19 +989,19 @@ export function getAdminTodos(payload){
 }
 export function getEditToDo(payload,id,callback){
     return async (dispatch)=>{
-        dispatch(setApprovedLoader())
+        // dispatch(setApprovedLoader())
         try{
             let result = await clientInstance.put(`admin/todos/${id}`,{...payload})
             console.log(result.data,"resultdata")
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
-         dispatch( setSuccessAdminData())
+        //  dispatch( setSuccessAdminData())
             return callback();
         }catch(error){
             const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
-            dispatch(setFailAdminData())
+            // dispatch(setFailAdminData())
         }
     }
 }
