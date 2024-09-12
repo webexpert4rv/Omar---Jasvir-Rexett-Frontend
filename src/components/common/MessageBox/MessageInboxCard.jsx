@@ -19,6 +19,9 @@ const MessageInboxCard = ({ type, chatRoom, messageWrapperVisible, handleChatPro
     const stripHtmlTags = (str) => {
         return str?.replace(/<\/?[^>]+(>|$)/g, "");
       };
+
+
+    console.log(chatRoomMessageList?.chatRooms,"chatRooms")
     
     
 

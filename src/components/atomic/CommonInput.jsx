@@ -252,9 +252,9 @@ console.log(isMaxRequired,"ismax")
                     }`}
                     // value={new Date(watch("response_date")).toISOString().split("T")[0]}
                     // if date should not be less than current date
-                    min={
-                      isMinRequired && new Date().toISOString().split("T")[0]
-                    }
+                    // min={
+                    //   isMinRequired && new Date().toISOString().split("T")[0]
+                    // }
                     // if date should not be less than current date
                     max={
                       isMaxRequired && new Date().toISOString().split("T")[0]

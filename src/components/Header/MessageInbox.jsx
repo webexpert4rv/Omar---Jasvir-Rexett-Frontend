@@ -68,6 +68,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const socket = io(NOTIFICATIONBASEURL);
   const [adduserconversation, showAddUserConversation] = useState(false);
   console.log(chatData, "chatData")
+  console.log(page,"page")
 
   useEffect(() => {
     setChatMessages(chatData)
@@ -80,32 +81,24 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
 
 
   useEffect(() => {
+    const handleMessage = (message) => {
+      console.log(message,"messsages")
+      if (chatmessages) {
+        setChatMessages(prevMessages => [...prevMessages, message]);
+      }
+    };
+  
     socket.on("connect", () => {
       console.log("Connected to Socket.IO server");
     });
-    // socket.on(`new_message_received_${userId}`, (message) => {
-    //   console.log(message, "message ")
-    //   if (chatmessages) {
-    //     setChatMessages(prevMessages => [...prevMessages, message]);
-    //   }
-    // });
-
-    const handleMessage = (message) => {
-      console.log(chatmessages, "chatmessages");
-      console.log(message, "message");
-
-      if (chatmessages?.length>0) {
-      setChatMessages(prevMessages => [...prevMessages, message]);
-      }
-    };
-
-    socket.on(`new_message_received_${userId}`, handleMessage);
-
-
+  
+    socket.on(`message_created_${userId}`, handleMessage);
+  
     return () => {
-      socket.disconnect();
+      socket.off(`message_created_${userId}`, handleMessage);
     };
-  }, [userId])
+  }, [userId, socket, chatmessages]);
+  
 
 
   const stripHtmlTags = (str) => {
@@ -134,12 +127,12 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     }
     if (tab === "first") {
       const payload = {
-        type: "inbox",
+        // type: "inbox",
         // developer_name : "pankaj_pundir",
         page: page,
         per_page: "10"
       }
-      dispatch(getAllMessages(userId, payload));
+      dispatch(getAllMessages(userId));
     } else if (tab === "second") {
       const payload = {
         type: "unread",
@@ -182,7 +175,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       await dispatch(updateChatRoom(roomId, data, () => {
         let data = {
           type: "unread",
-          page: "1",
+          page: page,
           per_page: "10"
         }
         dispatch(getAllMessages(userId, data))
@@ -242,8 +235,10 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     setHasContent("")
     setSelectedImg("")
     setPreviewUrl("")
-    socket.on(`new_message_sent_${userId}`, (rmsg) => {
+    socket.on(`message_created_${userId}`, (newmeesg) => {
+      console.log(newmeesg,"newmeesg")
     })
+    
     reset()
   };
 
@@ -421,7 +416,6 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                 {chatmessages?.length > 0
                   ? chatmessages?.map((item, index) => {
                     let isReceiver = item?.sender_id == userId
-                    console.log(isReceiver, "isReceiver")
                     let data = item?.message_body
                     let file = item?.message_attachment_url
                     let file_type = item?.file_type
@@ -432,9 +426,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     const showTime =
                       index === chatmessages.length - 1 ||
                       chatmessages[index + 1].sender_id !== item.sender_id;
-
-
-                    return (
+                      return (
                       <>
                         <div className={isReceiver ? "receiver-message" : "sender-message"}>
                           {isReceiver && showTime && <div className="sender-profile">
@@ -456,7 +448,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                                 </div>
                               )}
                           {!isReceiver && showTime && <div className="sender-profile">
-                            <img src={memberList[1]?.profile_picture} />
+                            {/* <img src={memberList[1]?.profile_picture} /> */}
                           </div>}
                         </div>
                       </>

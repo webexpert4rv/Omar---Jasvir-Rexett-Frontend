@@ -122,7 +122,7 @@ const DeveloperRegistrationStepper = () => {
   const storedStep = localStorage.getItem("clientActiveStep");
   const stripHtmlTags = (str) => {
     return str?.replace(/<\/?[^>]+(>|$)/g, "");
-  };
+  }
 
   console.log(filteredStepData, "filteredStepDataDeveloperStepper")
   useEffect(() => {
@@ -185,7 +185,13 @@ const DeveloperRegistrationStepper = () => {
           } else if (key === "time_zone") {
             const newValue = { label: data[key], value: data[key] };
             setValue(key, newValue);
-          } else if (key === "profile_picture") {
+          } 
+          // else if(key === "resume"){
+          //   setImageFile({resume:data[key]})
+          // }else if(key === "intro_video_url"){
+          //   setImageFile({introVideo:data[key]})
+          // }
+          else if (key === "profile_picture") {
             setPreviewImage({ profile_picture: data?.profile_picture });
           } else if (key === "professional_title") {
             setValue("profession", data[key]);
@@ -1051,14 +1057,12 @@ const DeveloperRegistrationStepper = () => {
           developer_id: localStorage.getItem("developerId"),
           skills: output
         }
-
         dispatch(registerDeveloperSkills(payload))
         setNestedActiveStep(0);
         localStorage.setItem("nestedActiveStep", 0);
         increaseStepCount(false)
 
       } else if (nestedActiveStep == 1) {
-
         setNestedActiveStep((prev) => prev + 1);
         localStorage.setItem("nestedActiveStep", nestedActiveStep + 1);
         const transformData = (data) => {

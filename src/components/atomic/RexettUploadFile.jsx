@@ -38,7 +38,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole
                 "type": +values.category,
                 "s3_path": url,
             }
-            dispatch(createNewFolderAndFile(fileData, (parent_id) => {
+        dispatch(createNewFolderAndFile(fileData, (parent_id) => {
                 let data = {
                     parent_id: parent_id
                 }

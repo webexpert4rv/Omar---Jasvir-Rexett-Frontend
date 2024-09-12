@@ -32,8 +32,10 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
   }, [jobListing])
 
   const convertToArray = (arr) => {
+    if(arr){
     const skillsArray = arr?.split(",");
     return skillsArray;
+    }
   };
 
   const currentStatusCssClass = (status) => {
@@ -122,7 +124,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                         }}
                       ></p>
                       <Row>
-                        <Col md="12">
+                        {/* <Col md="12">
                           <div className="info-grid">
                             <h4 className="grid-heading">{t("skillsRequired")}</h4>
                             {item?.skills?.length > 0 ? <ul className="need-skill-list">
@@ -135,7 +137,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                               })}
                             </ul> : "Not Mentioned"}
                           </div>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </div>
                   </div>
@@ -191,7 +193,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                       </p>
                     </div>
                     <p className="font-15">
-                      Posted Date: <strong>{item.created_at.slice(0, 10)}</strong>
+                      Posted Date: <strong>{item?.created_at?.slice(0, 10)}</strong>
                     </p>
                     <p className="font-15"> 
                       Response Time: <strong>15 Days</strong>
