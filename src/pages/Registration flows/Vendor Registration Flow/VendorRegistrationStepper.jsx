@@ -40,7 +40,7 @@ const VendorRegistrationStepper = () => {
     setValue,
     clearErrors,
   } = useForm({});
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(2);
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);

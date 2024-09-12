@@ -207,7 +207,7 @@ const Applications = () => {
     currentUser,
     id,
     item,
-    verificationReminderCount
+    verificationReminderCount,
   ) => {
     console.log(item?.completed_steps + 1, "currentUser")
     setLoadingRow(id);
@@ -216,16 +216,14 @@ const Applications = () => {
 
     const completeSteps = localStorage.setItem("setActiveStep", item?.completed_steps + 1)
     const baseUrls = {
-      developer: process.env.REACT_APP_BASE_URL,
-      vendor: process.env.REACT_APP_BASE_URL,
-      client: process.env.REACT_APP_BASE_URL,
+      developer: process.env.REACT_APP_DEVELOPER,
+      vendor: process.env.REACT_APP_VENDOR,
+      client: process.env.REACT_APP_CLIENT,
     };
 
     const url = baseUrls[currentUser];
     let payload = {
-      // user_id: id,
-      // link : `${url}-registration`
-      link: `${url}?user_id=${encrypted}`,
+      link: `${url}?user_id=${encrypted}&steps=${item?.completed_steps}`,
     };
 
     if (verificationReminderCount < 2) {
@@ -239,7 +237,7 @@ const Applications = () => {
       );
     } else {
       if (url) {
-        window.open(`${url}?user_id=${encrypted}`, "_blank");
+        window.open(`${url}?user_id=${encrypted}&steps=${item?.completed_steps}`, "_blank");
       } else {
         console.error("Invalid user type");
       }
@@ -522,7 +520,8 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                     "client",
                                                     item?.id,
                                                     item,
-                                                    // 3
+                                                    3
+                                                    
                                                   )
                                                 }
                                               >
@@ -630,6 +629,16 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                             <Col md={3} className="mb-3">
                                               <div>
                                                 <h3 className="application-heading">
+                                                  Time Zone
+                                                </h3>
+                                                <p className="application-text">
+                                                  {item?.time_zone}
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
                                                   Send Email
                                                 </h3>
                                                 <div className="d-inline-flex gap-1 align-items-center">
@@ -646,21 +655,9 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                               <Col md={3} className="mb-3 ">
                                                 <div>
                                                   <h3 className="application-heading">
-                                                    Skillset Needed
+                                                    Unpublished Job Posted
                                                   </h3>
-                                                  <ul className="need-skill-list  mb-0">
-                                                    {convertToArray(
-                                                      item?.jobs[0]?.skills
-                                                    )?.map((item, index) => {
-                                                      return (
-                                                        <>
-                                                          <li key={index}>
-                                                            {item}
-                                                          </li>
-                                                        </>
-                                                      );
-                                                    })}
-                                                  </ul>
+                                                    1
                                                 </div>
                                               </Col>
                                             )}
@@ -799,8 +796,8 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                         <div className="user-imgbx application-userbx">
                                           <img
                                             src={
-                                              item?.profile_picture
-                                                ? item?.profile_picture
+                                              item?.company_logo
+                                                ? item?.company_logo
                                                 : "/demo-user.png"
                                             }
                                             className="user-img"
@@ -931,7 +928,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                             onClick={() =>
                                               !smallLoader &&
                                               redirectToWebsiteForm(
-                                                "client",
+                                                "vendor",
                                                 item?.id,
                                                 item,
                                                 3
@@ -1073,12 +1070,12 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                             <Col md={3} className="mb-3">
                                               <div>
                                                 <h3 className="application-heading">
-                                                  Type of establishment
+                                                  Total Recruiter
                                                 </h3>
                                                 <p className="application-text">
                                                   {
                                                     item?.company
-                                                      ?.type_of_establishment
+                                                      ?.total_it_recruiter
                                                   }
                                                 </p>
                                               </div>
@@ -1217,6 +1214,19 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                   {
                                                     item?.company
                                                       ?.proprietor_email
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                            <Col md={3} className="mb-3">
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Tax ID
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.tax_id
+                                                      
                                                   }
                                                 </p>
                                               </div>
@@ -1579,7 +1589,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                             onClick={() =>
                                               !smallLoader &&
                                               redirectToWebsiteForm(
-                                                "client",
+                                                "developer",
                                                 item?.id,
                                                 item,
                                                 3
@@ -1723,7 +1733,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                               </Col>
                                             )}
 
-                                            {item?.developer_language && (
+                                            {item?.language_preference && (
                                               <Col md={3} className="mb-3">
                                                 <div>
                                                   <h3 className="application-heading">
@@ -1731,8 +1741,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                   </h3>
                                                   <p className="application-text">
                                                     {
-                                                      item?.developer_language
-                                                        ?.language
+                                                      item?.language_preference  
                                                     }
                                                   </p>
                                                 </div>
@@ -1838,6 +1847,21 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                       {
                                                         item?.developer_detail
                                                           ?.total_experience
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                </Col>
+                                              )}
+                                               {(
+                                                <Col md={3}>
+                                                  <div>
+                                                    <h3 className="application-heading">
+                                                      Expertise Skills
+                                                    </h3>
+                                                    <p className="application-text">
+                                                      {
+                                                        item?.expertises[0]
+                                                          ?.skill
                                                       }
                                                     </p>
                                                   </div>

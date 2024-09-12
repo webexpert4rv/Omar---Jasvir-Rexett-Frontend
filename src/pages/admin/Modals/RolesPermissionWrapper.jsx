@@ -84,7 +84,16 @@ const RolesPermissionWrapper = ({
       time_zone: values?.time_zone?.value,
       role: values?.role
     };
-    await dispatch(newEmployeeCreate(payload));
+    if(modalName=="role"){
+      let data={
+        description:"ddd",
+        name: values?.role
+      }
+       await dispatch(newRoleCreate(data))
+    }else{
+      await dispatch(newEmployeeCreate(payload));
+    }
+  
     dispatch(getAllPermissionSeeder());
     handleClose();
     reset();
@@ -206,67 +215,6 @@ const RolesPermissionWrapper = ({
                       error={errors.role}
                     />
                   </Col>
-                  {/* <Col lg={4}>
-                    <Form.Group className="mb-2">
-                      <Form.Label className="font-14 fw-medium">
-                        Country *
-                      </Form.Label>
-                      <Form.Select className="common-field font-14">
-                        <option>Select country</option>
-                        <option>India</option>
-                        <option>Sweden</option>
-                        <option>USA</option>
-                        <option>UK</option>
-                        <option>UAE</option>
-                        <option>Russia</option>
-                        <option>Italy</option>
-                        <option>Germany</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col lg={4}>
-                    <Form.Group className="mb-2">
-                      <Form.Label className="font-14 fw-medium">
-                        State *
-                      </Form.Label>
-                      <Form.Select className="common-field font-14">
-                        <option>Select State</option>
-                        <option>Bohuslän</option>
-                        <option>Dalsland</option>
-                        <option>Västergötland</option>
-                        <option>Östergötland</option>
-                        <option>Småland</option>
-                        <option>Öland</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col lg={4}>
-                    <Form.Group className="mb-2">
-                      <Form.Label className="font-14 fw-medium">
-                        City *
-                      </Form.Label>
-                      <Form.Select className="common-field font-14">
-                        <option>Select City</option>
-                        <option>Stockholm</option>
-                        <option>Gothenburg</option>
-                        <option>Malmö</option>
-                        <option>Linköping</option>
-                        <option>Kiruna</option>
-                        <option>Ystad</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col lg={4}>
-                    <Form.Group className="mb-2">
-                      <Form.Label className="font-14 fw-medium">
-                        Postal code *
-                      </Form.Label>
-                      <Form.Control
-                        className="common-field font-14"
-                        placeholder="E.g. 11115"
-                      />
-                    </Form.Group>
-                  </Col> */}
                    <LocationSection
                       control={control}
                       errors={errors}
@@ -315,7 +263,7 @@ const RolesPermissionWrapper = ({
           <div className="text-center">
             <RexettButton
               type="submit"
-              text={modalName == "permission" ? "Submit" : "Send Invite"}
+              text={modalName == "permission" ? "Submit" : modalName=="role"? "Submit" : "Send Invite"}
               className="main-btn px-4 font-14 fw-semibold"
               variant="transparent"
               isLoading={smallLoader}

@@ -80,8 +80,9 @@ const DISCOVERY_DOCS = [
     "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
   ];
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
-const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
+const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+
+const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -278,7 +279,7 @@ const SingleJobDetails = () => {
           const meetingStart = new Date(response.result.start.dateTime);
           if (meetingStart < now) {
             fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
-            alert('The meeting should have started or is over.');
+            // alert('The meeting should have started or is over.');
           } else {
             alert('The meeting is still scheduled.');
           }
@@ -469,8 +470,8 @@ const SingleJobDetails = () => {
     }
 
     const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
-    const handleShowScheduleMeeting = (name, id) => {
-        setSelectedDeveloper({ name, id })
+    const handleShowScheduleMeeting = (name, id,email) => {
+        setSelectedDeveloper({ name, id,email })
         setShowScheduleMeet(!showScheduleMeeting);
     }
     const handleCloseScheduleMeeting = () => {
@@ -1217,7 +1218,7 @@ const SingleJobDetails = () => {
                                             </div>
                                             <div className="d-flex align-items-center justify-content-between align-self-end">
                                                 <div className="d-flex align-items-center gap-2">
-                                                    <button className="main-btn font-14 text-decoration-none" onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)}>
+                                                    <button className="main-btn font-14 text-decoration-none" onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id,item?.developer?.email)}>
                                                         Schedule Interview
                                                     </button>
                                                 </div>
@@ -1896,7 +1897,7 @@ const SingleJobDetails = () => {
                 />
             )}
             <AgreementDetails show={showagreement} handleClose={handleCloseAgreement} />
-            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers} />
+            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers}  jobId={id}/>
         </>
     );
 };

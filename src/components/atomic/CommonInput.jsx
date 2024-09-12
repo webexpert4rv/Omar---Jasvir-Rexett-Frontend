@@ -233,7 +233,7 @@ console.log(isMaxRequired,"ismax")
                     }`}
                     // isDisabled={readOnly}
                     // onChange={(selectedOption) => field.onChange(selectedOption)}
-                    // value={selectOptions?.find(option => option.value === field.value)}
+                    
                     placeholder={placeholder}
                     isMulti={true}
                   />

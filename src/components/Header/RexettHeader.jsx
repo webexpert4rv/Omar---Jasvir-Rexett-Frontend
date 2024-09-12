@@ -20,7 +20,7 @@ import { FaCalendarDays } from "react-icons/fa6";
 import 'react-quill/dist/quill.snow.css';
 import Schedulemeeting from "../common/Modals/ScheduleMeeting";
 import { useDispatch, useSelector } from "react-redux";
-import { getConfigDetails, getToDoById } from "../../redux/slices/adminDataSlice";
+import { getAllEvents, getAllPermissionDetails, getConfigDetails, getToDoById } from "../../redux/slices/adminDataSlice";
 import { TbArrowBarToLeft } from "react-icons/tb";
 import ToDoComponent from "./ToDoComponent";
 import MessageInbox from "./MessageInbox";
@@ -67,6 +67,10 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
     setDetails(item)
     setShowMeetingInfo(!showMeetingInfo)
   }
+
+  useEffect(()=>{
+     dispatch(getAllPermissionDetails())
+  },[])
 
   console.log(details, "details")
   const handleCloseMeetingInfo = () => {
@@ -117,6 +121,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
 
   useEffect(() => {
     dispatch(getConfigDetails())
+    dispatch(getAllEvents())
   }, [dispatch])
 
 
@@ -202,7 +207,11 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
               <ToolTip text="Create Job">
                 <button
                   className="main-btn add-new-job-btn"
-                  onClick={() => navigate(`/${role}/job-post`)}
+                  onClick={() =>
+                    {
+                      navigate(`/${role}/job-post`)
+                      localStorage.removeItem("jobId")
+                    } }
                 >
                   +
                 </button>
@@ -239,8 +248,7 @@ const RexettHeader = ({ role, handleCollapseSidebar, collapseLayout }) => {
       </header>
 
       <Meetings showMeetings={showMeetings} handleCloseMeetings={handleCloseMeetings} handleShowSchedule={handleShowSchedule} handleShowMeetingInfo={handleShowMeetingInfo} />
-
-      <MessageInbox showMessagesInfo={showMessagesInfo} setShowMessagesInfo={setShowMessagesInfo} />
+      {showMessagesInfo && <MessageInbox showMessagesInfo={showMessagesInfo} setShowMessagesInfo={setShowMessagesInfo} />}
       <ToDoComponent showToDo={showToDo} setShowToDo={setShowToDo} />
       <MeetingInfo show={showMeetingInfo} handleClose={handleCloseMeetingInfo} createdMeetings={createdMeetings} details={details} />
       <Schedulemeeting show={showschedulemeeting} handleClose={handleCloseSchdule} setCreatedMeetings={setCreatedMeetings} createdMeetings={createdMeetings} type={"events"} />

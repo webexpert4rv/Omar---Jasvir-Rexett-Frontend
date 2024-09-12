@@ -785,18 +785,18 @@ const DEVELOPER_STEP_1_FIELDS = [
     fieldName: "linkedin_url",
     type: "text",
     placeholder: "e.g. www.linkedin.com/profile/12345",
-    rules: { required: "Linked in is required" },
+    // rules: { required: "Linked in is required" },
     columnWidth: 6,
-    isRequired: true,
+    isRequired: false,
   },
   {
     label: "Github",
     fieldName: "github_url", 
     type: "text",
     placeholder: "e.g. www.github.com/profile/12345",
-    rules: { required: "GitHub in is required" },
+    // rules: { required: "GitHub in is required" },
     columnWidth: 6,
-    isRequired: true,
+    isRequired: false,
   },
 ]
 const NESTED_DEVELOPER_STEP_1_FIELDS = [

@@ -10,52 +10,35 @@ import rexettIcon from '../../../assets/img/favicon.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCopy } from 'react-icons/fa';
 import moment from 'moment';
+import { Client } from '@microsoft/microsoft-graph-client';
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
+import { useMsal } from '@azure/msal-react';
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
-const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
+const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
-const eventDetails = [{
-  'summary': 'Google I/O 2015',
-      'location': '800 Howard St., San Francisco, CA 94103',
-      'description': 'A chance to hear more about Google\'s developer products.',
-      'start': {
-        'dateTime': '2025-08-01T09:31:20.142Z',
-        'timeZone': 'America/Los_Angeles',
-      },
-      'end': {
-        'dateTime': '2025-08-01T09:31:20.142Z' ,
-        'timeZone': 'America/Los_Angeles',
-      }
-    },
-    {
-      'summary': 'Google I/O 2015',
-          'location': '800 Howard St., San Francisco, CA 94103',
-          'description': 'A chance to hear more about Google\'s developer products.',
-          'start': {
-            'dateTime': '2025-08-01T09:31:20.142Z',
-            'timeZone': 'America/Los_Angeles',
-          },
-          'end': {
-            'dateTime': '2025-08-01T09:31:20.142Z' ,
-            'timeZone': 'America/Los_Angeles',
-          }
-        }
-]
+const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
+
+
 
 
 const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {
-
+  const { instance, accounts } = useMsal();
   const [value, onChange] = useState(new Date());
   const [event, setEvent] = useState([])
   const {allEvents} = useSelector(state=>state.adminData)
   const [linkCopied , setLinkedCopied] = useState(false)
-  console.log(allEvents,"allevents")
-  console.log(event,"event")
   const dispatch = useDispatch()
-  const currentTime = moment()
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const currentTime = moment();
   console.log(currentTime,"currentTime")
 
+  useEffect(()=>{
+    if(allEvents?.events?.length>0){
+      setEvent(allEvents?.events)
+    }
+ 
+  },[allEvents])
 
 
   useEffect(() => {
@@ -78,10 +61,24 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
     setLinkedCopied(false)
   }, []);
 
+  useEffect(() => {
+    if (accounts.length > 0) {
+      setIsAuthenticated(true);
+    }
+  }, [accounts]);
+
+  const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(instance, {
+    account: accounts[0],
+    scopes: ["user.read", "Calendars.ReadWrite"],
+    prompt: "consent",
+  });
   
 
-  const fetchCalendarEvents = () => {
 
+  const fetchCalendarEvents = (e) => {
+    console.log(e.target.value,"er")
+    let val=e.target.value
+    if(val=="google"){
     const timeMin = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString(); // One year ago
     const timeMax = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(); // One year in the future
      const data = {
@@ -112,16 +109,38 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       const events = response.result.items;
       console.log(events,'Events:');
       setEvent([...events,...allEvents?.events])
-      // Update state with fetched events
     }).catch((error) => {
       console.error('Error fetching events:', error);
     });
+  }else if(val=="microsoft"){
+    getMicrosoftData()
+  }
+
   };
   console.log(event,"event")
 
     // const isEventDate = (date) => {
     //   return event.some(event => event.start?.dateTime.toDateString() === date.toDateString());
     // };
+
+   const getMicrosoftData=async()=>{
+    if (!isAuthenticated) {
+      console.log('User not authenticated');
+      return;
+    }
+    const client = Client.initWithMiddleware({ authProvider });
+
+    try {
+      const response = await client.api('/me/events').get();
+      setEvent(response.value);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+   } 
+
+
+
+   
 
   const isEventDate = (date) => {
     return event.some(event => new Date(event.start?.dateTime).toDateString() === date.toDateString());
@@ -193,7 +212,12 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
           <ToolTip text={"New Meeting"}>
             <Button onClick={handleShowSchedule} className="main-btn px-2 add-new-btn cursor-pointer upload-btn mb-0">+</Button>
           </ToolTip>
-          <button onClick={fetchCalendarEvents} className="main-btn font-14 py-1">Sync with Google</button>
+          {/* <button onClick={fetchCalendarEvents} className="main-btn font-14 py-1">Sync with Service</button> */}
+          <select onClick={fetchCalendarEvents}  className="main-btn font-14 py-1">
+            <option>Sync with Service</option>
+            <option value="google">Google</option>
+            <option value="microsoft">Microsoft</option>
+          </select>
         </div>
       </Offcanvas.Header>
       <Offcanvas.Body>
@@ -251,41 +275,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
                   </div>
                 </>
               )
-
             })}
-            {/* {createdMeetings ?  */}
-           
-            {/* :""} */}
-            {/* <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-            <div>
-              <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-              <p className="dev-name mb-2 font-14">
-                <div className="me-1">
-                  <img src={devImg} />
-                </div>
-                Pankaj Pundir
-              </p>
-              <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-            </div>
-            <div className="mb-2 status-interview">
-              <span className="status-upcoming">Upcoming in 3hr</span>
-            </div>
-          </div>
-          <div onClick={handleShowMeetingInfo} className="cursor-pointer interview-wrapper position-relative mb-3 pt-4 mt-4">
-            <div>
-              <p className="interview-title mb-2">Interview Call for Figma to UI Project</p>
-              <p className="dev-name mb-2 font-14">
-                <div className="me-1">
-                  <img src={devImg} />
-                </div>
-                Pankaj Pundir
-              </p>
-              <p className="interview-timing mb-2 font-14">Tuesday 22-06-24, 22:00 - 23:00</p>
-            </div>
-            <div className="mb-2 status-interview">
-              <span className="status-upcoming">Upcoming in 5hr</span>
-            </div>
-          </div> */}
           </div>
         </div>
       </Offcanvas.Body>

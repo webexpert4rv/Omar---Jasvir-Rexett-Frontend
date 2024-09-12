@@ -12,6 +12,7 @@ const initialAdminData = {
     jobListing: [],
     singleJobListing: {},
     allApplications: {},
+    assignEmployeeList: [],
     adminTimeReportingList: [],
     engagement: {},
     adminApproveReject: [],
@@ -36,7 +37,8 @@ const initialAdminData = {
     allEvents:{},
     messageTemplates:{},
     allAdminEmployees:[],
-    chatRoom:{}
+    chatRoom:{},
+    allPermissionDetails:{}
 }
 
 export const adminDataSlice = createSlice({
@@ -66,6 +68,11 @@ export const adminDataSlice = createSlice({
             state.smallLoader = false;
             state.screenLoader = false;
             state.allApplications = action.payload;
+        },
+        setSuccessAssignEmployeeList: (state, action) => {
+            state.smallLoader = false;
+            state.screenLoader = false;
+            state.assignEmployeeList = action.payload;
         },
         setSuccessProfileData: (state, action) => {
             state.smallLoader = false;
@@ -193,11 +200,15 @@ export const adminDataSlice = createSlice({
         setChatRoom:(state,action)=>{
             state.chatRoom =action.payload
             state.smallLoader = false
+        },
+        setAllPermissionDetails:(state,action)=>{
+            state.allPermissionDetails =action.payload
+            state.smallLoader = false
         }
     }
 })
 
-export const { setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -349,7 +360,7 @@ export function adminJobListing(payload, callback) {
     return async (dispatch) => {
         dispatch(setScreenLoader())
         try {
-            let result = await clientInstance.get(generateApiUrl(payload, `admin/job-list`))
+            let result = await clientInstance.get(generateApiUrl(payload, `common/job-list`))
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successfully", { position: "top-center" })
                 dispatch(setSuccessAdminJobListing(result.data))
@@ -428,6 +439,42 @@ export function allMemberList(payload) {
             if (result.status === 200) {
                 // toast.success("Profile is Updated Successful ly", { position: "top-center" })
                 dispatch(setSuccessApplicationList(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function allEmployeeList(searchText="") {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        dispatch(setScreenLoader())
+        try {
+            let result = await clientInstance.get(`admin/employees?search=${searchText}`)
+            if (result.status === 200) {
+                // toast.success("Profile is Updated Successful ly", { position: "top-center" })
+                dispatch(setSuccessAssignEmployeeList(result.data.data))
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function assignEmployee(payload, callback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader());
+        try {
+            let result = await clientInstance.post(`admin/assign-team-member`, {...payload})
+            if (result.status === 201) {
+                toast.success(result.data?.message, { position: "top-center" })
+                callback();
+                dispatch(setSuccessAdminData())
             }
         } catch (error) {
             const message = error.message || "Something went wrong";
@@ -870,6 +917,22 @@ export function getUpdateRolePermission(payload){
         }
     }
 }
+
+export function getAllPermissionDetails(payload){
+    return async (dispatch)=>{
+        try{
+            let result = await clientInstance.get(`admin/permissions-details`)
+            console.log(result.data,"oppen")
+             dispatch(setAllPermissionDetails(result.data))
+            
+        }catch(error){
+            const message = error?.response.data.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+
 export function getAdminCreateToDo(payload,callback){
     console.log(payload,"payload")
     return async (dispatch)=>{

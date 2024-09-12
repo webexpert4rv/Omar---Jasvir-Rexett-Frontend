@@ -528,12 +528,13 @@ export function getFolderData(payload, role) {
 }
 
 export function clientJobPost(payload, activeStep, id,callback) {
+
   const activeStepKey = ["", "step1", "step2", "step3"];
   return async (dispatch) => {
     // dispatch(setScreenLoader());
      dispatch(setSmallLoader());
     try {
-      let result = await authInstance.post(`common/post-job?user_id=359`, { ...payload });
+      let result = await authInstance.post(`common/post-job?user_id=${id}`, { ...payload });
       if (result?.data?.step1?.id) {
         localStorage.setItem("jobId", result?.data?.step1?.id);
       }
@@ -751,7 +752,7 @@ export function publishedPost(payload, status, callback) {
     dispatch(setApprovedLoader());
     try {
       let result = await clientInstance.put(
-        `client/jobs/${payload}/unpublish`,
+        `common/jobs/${payload}/unpublish`,
         { ...status }
       );
       if (result.status === 200) {

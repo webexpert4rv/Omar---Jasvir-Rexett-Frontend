@@ -73,7 +73,7 @@ useEffect(() => {
     <>
       {isRegistrationStep ? (
         <>
-          <Col md={4}>
+          <Col md={6}>
             <div className="mb-3">
               <CommonReactSelect
                 name="country_code"
@@ -89,7 +89,7 @@ useEffect(() => {
               />
             </div>
           </Col>
-          <Col md={4}>
+          {/* <Col md={4}>
             <div className="mb-3">
               <CommonReactSelect
                 name="state_iso_code"
@@ -120,8 +120,8 @@ useEffect(() => {
                 options={citiesList}
               />
             </div>
-          </Col>
-          <Col md={4}>
+          </Col> */}
+          <Col md={6}>
             <div className="mb-3">
               <CommonInput
                 label={t(`pincode`) + ` *`}
@@ -167,7 +167,7 @@ useEffect(() => {
             invalidFieldRequired={true}
           />
 
-          <CommonReactSelect
+          {/* <CommonReactSelect
             name="state_iso_code"
             errors={errors}
             handleChange={handleDropDownChange}
@@ -190,7 +190,7 @@ useEffect(() => {
             watch={watch}
             options={citiesList}
             invalidFieldRequired={true}
-          />
+          /> */}
           {/* may be need to verify name of timezone value */}
           {isTimeZoneRequired && (
             <CommonReactSelect

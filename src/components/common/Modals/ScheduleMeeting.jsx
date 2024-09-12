@@ -13,6 +13,9 @@ import { useForm } from "react-hook-form";
 import RexettButton from "../../atomic/RexettButton";
 import { VIDEO_MEETING } from "../../../helper/constant";
 import { useDispatch, useSelector } from "react-redux";
+import { MsalProvider, useMsal } from "@azure/msal-react";
+import { Client } from '@microsoft/microsoft-graph-client';
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import {
   getTimeZoneList,
   postCandidateInterview,
@@ -53,6 +56,28 @@ const Schedulemeeting = ({
   const {smallLoader } = useSelector((state) => state.clientData);
   const [thirdParty, setThirdParty] = useState(false);
   const [meetingLink, setMeetingLink] = useState(null);
+  const { instance, accounts } = useMsal();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [gogleEventId,setGoogleEventID]=useState(null)
+  const [events, setEvents] = useState([]);
+
+  const [eventDetails, setEventDetails] = useState({
+    subject: 'RETTNE',
+    location: { displayName: 'NEW TIO' },
+    body: { content: 'KLOR' },
+    start: { 
+      dateTime: '2024-09-11T14:00:00',  // Correct ISO 8601 format
+      timeZone: 'UTC' 
+    },
+    end: { 
+      dateTime: '2024-09-11T15:00:00',  // Correct ISO 8601 format
+      timeZone: 'UTC' 
+    },
+    isOnlineMeeting: true,
+    onlineMeetingProvider: "teamsForBusiness"
+  });
+  
+
 
   const getFormattedOptions = () => {
     const newOptions = developerList?.developers?.map((item) => {
@@ -66,6 +91,8 @@ const Schedulemeeting = ({
   const [secondSlot, setSecondSlot] = useState("");
   const [groupedTime, setGroupedTime] = useState([]);
   const { timeZoneList } = useSelector((state) => state.clientData);
+  const defaultInterview=localStorage.getItem("email")
+  console.log(defaultInterview,"defaultInterview")
 
   useEffect(() => {
     dispatch(getTimeZoneList());
@@ -76,6 +103,49 @@ const Schedulemeeting = ({
     setValue("candidate_reminder", true);
     setValue("interviewer_reminder", true);
   }, []);
+
+  useEffect(() => {
+    if (accounts.length > 0) {
+      setIsAuthenticated(true);
+    }
+  }, [accounts]);
+
+  const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(instance, {
+    account: accounts[0],
+    scopes: ["user.read", "Calendars.ReadWrite"],
+    prompt: "consent",
+  });
+
+  useEffect(()=>{
+    if(selectedDeveloper){
+      setValue("select_candidate",[{label:selectedDeveloper?.email,value:selectedDeveloper?.email}])
+    }
+  
+
+  },[selectedDeveloper])
+
+  const createCalendarEvent = async () => {
+    if (!isAuthenticated) {
+      console.log('User not authenticated');
+      return;
+    }
+
+  
+    const client = Client.initWithMiddleware({ authProvider });
+
+    try {
+     let response= await client.api('/me/events').post(eventDetails);
+      fetchCalendarEvents(); // Fetch the updated events list
+      if (response.onlineMeeting) {
+        console.log("Join Teams meeting at: ", response.onlineMeeting.joinUrl);
+      }
+
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
+  };
+
+
 
   useEffect(() => {
     if (timeZoneList.length > 0) {
@@ -112,6 +182,25 @@ const Schedulemeeting = ({
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${hours}:${minutes}`;
+  };
+
+
+  const fetchCalendarEvents = async () => {
+    if (!isAuthenticated) {
+      console.log('User not authenticated');
+      return;
+    }
+
+ 
+
+    const client = Client.initWithMiddleware({ authProvider });
+
+    try {
+      const response = await client.api('/me/events').get();
+      setEvents(response.value);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
   };
 
 
@@ -178,6 +267,7 @@ const Schedulemeeting = ({
   useEffect(() => {
     const currentDate = moment().format("YYYY-MM-DD");
     setValue("instant_date", currentDate);
+    setValue("meeting_type","instant")
   }, []);
 
   const onSubmit = (data) => {
@@ -186,9 +276,9 @@ const Schedulemeeting = ({
     if (type === "events") {
       let payload = {
         title: data?.title,
-        developer_id: +data?.select_candidate?.value,
+        developer_id: 1350,
         attendees: "attendee1@example.com, attendee2@example.com",
-        event_platform: data?.meeting_platform?.label,
+        event_platform: "rexet_video_meeting",
         event_type: "scheduled",
         event_date: data?.meeting_date,
         event_time: data?.meeting_start_time,
@@ -197,8 +287,8 @@ const Schedulemeeting = ({
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         type: "meeting",
-        event_link: meetingLink ? meetingLink : "string" ,
-        developer_email: data?.select_candidate?.label,
+        event_link: null,
+        developer_email: "pankaj-dev@yopmail.com",
       };
       dispatch(
         postScheduleMeeting(payload, () => {
@@ -209,30 +299,31 @@ const Schedulemeeting = ({
     } else {
       let payload = {
         job_id: +id,
-        developer_id: +data?.select_candidate?.value,
-        developer_email: data?.select_candidate?.label,
-        meeting_type: "instant",
-        meeting_date: data?.meeting_date,
+        developer_id:selectedDeveloper?.id ? selectedDeveloper?.id: +data?.select_candidate?.value,
+        developer_email: selectedDeveloper?.email?  selectedDeveloper?.email: data?.select_candidate?.label,
+        meeting_type: data?.meeting_type,
+        meeting_date: data?.instant_date,
         meeting_time: data?.meeting_start_time,
         meeting_end_time: data?.meeting_end_time,
         title: data?.title,
-        meeting_platform: data?.meeting_platform?.label,
+        meeting_platform: data?.meeting_platform?.value,
         meeting_link: meetingLink,
         status: "pending",
-        interviewers_list: "interviewer1@example.com,interviewer2@example.com",
+        interviewers_list:  data?.interviewers_list?.map(item => item.value).join(', '),
         time_zone: data?.time_zone?.label,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
-        interview_duration: "string",
+        interview_duration: "1hr",
+        event_id:gogleEventId
       };
-      dispatch(postCandidateInterview(payload));
+      // dispatch(postCandidateInterview(payload));
     }
     reset()
   };
 
   let r = watch("meeting_platform");
   useEffect(() => {
-    setThirdParty(r?.value == "google_meet" ? true : false);
+    setThirdParty(r?.value == "google_meet" || r?.value=="microsoft_team"  ? true : false);
   }, [r]);
 
   const handleCloseThirdPary = () => {
@@ -247,9 +338,6 @@ const Schedulemeeting = ({
 
   const syncCreatedMeetingsWithGoogle = (e) => {
     let summary = watch("title");
-
-    console.log(summary, "sum");
-
     e.stopPropagation();
     if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
       console.log("User not authenticated");
@@ -289,6 +377,7 @@ const Schedulemeeting = ({
         if (response.result.hangoutLink) {
           console.log("Google Meet link:", response.result.hangoutLink);
           setMeetingLink(response.result.hangoutLink);
+          setGoogleEventID(response?.result?.id)
         }
       })
       .catch((error) => {
@@ -296,6 +385,9 @@ const Schedulemeeting = ({
       });
     setThirdParty(false);
   };
+
+
+
 
 
  
@@ -353,9 +445,9 @@ const Schedulemeeting = ({
                       name={"select_candidate"}
                       type={"select2"}
                       control={control}
-                      // selectOptions={[{ label: selectedDeveloper?.name ,value:selectedDeveloper?.id}]}
-                      rules={{ required: "This field is required" }}
                       selectOptions={getFormattedOptions()}
+                      rules={{ required: "This field is required" }}
+                      
                       invalidFieldRequired={true}
                       placeholder="Select Candidate"
                     />
@@ -369,7 +461,7 @@ const Schedulemeeting = ({
                     <span>
                       <FaUsers />
                     </span>
-                    Interviewer's list
+                    Interviewer
                   </p>
                 </Col>
                 <Col lg={8} className="mb-3">
@@ -381,6 +473,7 @@ const Schedulemeeting = ({
                       rules={{ required: "This field is required" }}
                       invalidFieldRequired={true}
                       placeholder="Select Interviewer"
+
                     />
                     <p>{errors?.select_candidate?.message}</p>
                   </div>
@@ -403,6 +496,7 @@ const Schedulemeeting = ({
                         name="instant"
                         label="Instant Meeting"
                         id="instant_meeting"
+                        checked={true}
                         className="d-inline-block meeting-radio ps-0 me-2"
                         value="instant"
                         {...register("meeting_type")}
@@ -607,6 +701,7 @@ const Schedulemeeting = ({
         syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle}
         meetingLink={meetingLink}
       />
+      <Button onClick={createCalendarEvent}>Hlp</Button>
     </>
   );
 };
