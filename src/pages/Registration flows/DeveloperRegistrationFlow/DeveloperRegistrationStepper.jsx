@@ -869,6 +869,29 @@ const DeveloperRegistrationStepper = () => {
   };
 
   const onSubmit = (values) => {
+    let hasErrors = false;
+
+    if (!imageFile?.resume) {
+      setError('resume', {
+        type: 'manual',
+        message: 'Resume is required.',
+      });
+      hasErrors = true;
+    }
+    
+    if (!previewImage?.profile_picture) {
+      setError('profile_picture', {
+        type: 'manual',
+        message: 'Profile Picture is required.',
+      });
+      hasErrors = true;
+    }
+  
+    if (hasErrors && activeStep === 1) {
+      return;
+    }
+
+
     console.log(values, "project_description");
     const uploadFiles = (files) => {
       let uploadedUrls = {};
@@ -901,8 +924,8 @@ const DeveloperRegistrationStepper = () => {
           country: values?.country_code?.label,
           address: values?.address,
           password: values?.password,
-          city: values?.city.label,
-          state: values?.state_iso_code?.label,
+          // city: values?.city.label,
+          // state: values?.state_iso_code?.label,
           country_iso_code: values?.country_iso_code?.value,
           state_iso_code: values?.state_iso_code?.value,
           passcode: values?.passcode,
