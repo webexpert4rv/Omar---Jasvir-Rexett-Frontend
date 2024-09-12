@@ -61,16 +61,22 @@ const Schedulemeeting = ({
   const [gogleEventId,setGoogleEventID]=useState(null)
   const [events, setEvents] = useState([]);
 
-
   const [eventDetails, setEventDetails] = useState({
-    subject: '',
-    location: { displayName: '' },
-    body: { content: '' },
-    start: { dateTime: '', timeZone: 'UTC' },
-    end: { dateTime: '', timeZone: 'UTC' },
-     isOnlineMeeting: true,
+    subject: 'RETTNE',
+    location: { displayName: 'NEW TIO' },
+    body: { content: 'KLOR' },
+    start: { 
+      dateTime: '2024-09-11T14:00:00',  // Correct ISO 8601 format
+      timeZone: 'UTC' 
+    },
+    end: { 
+      dateTime: '2024-09-11T15:00:00',  // Correct ISO 8601 format
+      timeZone: 'UTC' 
+    },
+    isOnlineMeeting: true,
     onlineMeetingProvider: "teamsForBusiness"
   });
+  
 
 
   const getFormattedOptions = () => {
@@ -117,6 +123,27 @@ const Schedulemeeting = ({
   
 
   },[selectedDeveloper])
+
+  const createCalendarEvent = async () => {
+    if (!isAuthenticated) {
+      console.log('User not authenticated');
+      return;
+    }
+
+  
+    const client = Client.initWithMiddleware({ authProvider });
+
+    try {
+     let response= await client.api('/me/events').post(eventDetails);
+      fetchCalendarEvents(); // Fetch the updated events list
+      if (response.onlineMeeting) {
+        console.log("Join Teams meeting at: ", response.onlineMeeting.joinUrl);
+      }
+
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
+  };
 
 
 
@@ -674,6 +701,7 @@ const Schedulemeeting = ({
         syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle}
         meetingLink={meetingLink}
       />
+      <Button onClick={createCalendarEvent}>Hlp</Button>
     </>
   );
 };

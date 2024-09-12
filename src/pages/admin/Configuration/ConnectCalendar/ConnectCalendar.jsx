@@ -1,19 +1,30 @@
 import React,{useEffect,useState} from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import GoogleLogin from "react-google-login";
+import {GoogleLogin,GoogleLogout} from "react-google-login";
 import { Link } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import { msalInstance } from "../../../../services/msalConfig";
 
 const ConnectCalendar = ({ currentTab }) => {
-    const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
-const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
+  const DISCOVERY_DOCS = [
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+  ];
+  
+  const SCOPES = [
+    "https://www.googleapis.com/auth/admin.reports.usage.readonly",
+    "https://www.googleapis.com/auth/calendar.events"
+  ];
+  
+  const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+
+const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
 const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+
 const loginRequest = {
-    scopes: ["user.read"]
+  scopes: ["user.read", 'CallRecords.Read.All']
+  
   };
 
 useEffect(() => {
@@ -48,16 +59,36 @@ const handleLoginSuccess = (response) => {
   };
 
   const handleMicrosoftLogin = async () => {
-    console.log(msalInstance,'msalInstance');
     try {
       const loginResponse = await msalInstance.loginPopup(loginRequest);
       console.log('Microsoft login success:', loginResponse);
       setIsAuthenticated(true);
+      const accessTokenResponse = await msalInstance.acquireTokenSilent({
+        scopes: [ "User.Read",
+          "Calendars.ReadWrite",
+          "OnlineMeetings.Read",
+          "profile",
+          "OnlineMeetings.ReadWrite",
+          "OnlineMeetingRecording.Read.All"],
+        account: loginResponse.account
+      });
+      console.log(accessTokenResponse,"accessTokenResponse")
     } catch (error) {
       console.error('Microsoft login failed:', error);
       setIsAuthenticated(false);
     }
   };
+
+  const handleLogout = () => {
+    gapi.auth2.getAuthInstance().signOut().then(() => {
+      console.log('User signed out.');
+      setIsAuthenticated(false);
+    }).catch((error) => {
+      console.error('Error signing out:', error);
+    });
+  };
+
+
 
     return (
         <>
@@ -78,6 +109,11 @@ const handleLoginSuccess = (response) => {
                             onFailure={handleLoginFailure}
                             cookiePolicy={'single_host_origin'}
                         />
+                          <GoogleLogout
+  clientId={CLIENT_ID}
+  buttonText="Logout"
+  onLogoutSuccess={handleLogout}
+/>
                         <Button
                 variant="outline-primary"
                 className="mt-2"

@@ -4,12 +4,24 @@ import RexettSpinner from "../../atomic/RexettSpinner";
 import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
 const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCreatedMeetingsWithGoogle,meetingLink}) => {
-  const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-  const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-  const CLIENT_ID = "233781998008-qnnfc8310usfc8q0co9fvf4i40d98spe.apps.googleusercontent.com";
-  const API_KEY = 'AIzaSyAAD4NQiqnIRytiJw5ekZRomS1FcYMT8ik';
+
+  const DISCOVERY_DOCS = [
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+  ];
+  
+  const SCOPES = [
+    "https://www.googleapis.com/auth/admin.reports.usage.readonly",
+    "https://www.googleapis.com/auth/calendar.events"
+  ];
+  
+  const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+
+  const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';;
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     let authentication=localStorage.getItem("authentication")
+
+
 
     useEffect(() => {
         function start() {
@@ -40,6 +52,7 @@ const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCre
         console.error('Login failed:', response);
         setIsAuthenticated(false);
       };
+      
 
     return(
         <Modal show={show} onHide={handleClose} centered className="custom-modal" animation>
