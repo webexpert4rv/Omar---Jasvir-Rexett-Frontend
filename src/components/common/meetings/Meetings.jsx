@@ -13,13 +13,18 @@ import moment from 'moment';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { useMsal } from '@azure/msal-react';
-const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+// import { DISCOVERY_DOCS, SCOPES } from '../../../helper/utlis';
 
-const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
+ const DISCOVERY_DOCS = [
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+  "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+];
 
-
+ const SCOPES = [
+  "https://www.googleapis.com/auth/admin.reports.usage.readonly",
+  "https://www.googleapis.com/auth/calendar.events",
+  'https://www.googleapis.com/auth/admin.reports.audit.readonly',
+];
 
 
 const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {
@@ -44,10 +49,10 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   useEffect(() => {
     function start() {
       gapi.client.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES
+        apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+            clientId: "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
       }).then(() => {
         console.log('GAPI Initialized');
         const authInstance = gapi.auth2.getAuthInstance();
