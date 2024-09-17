@@ -926,7 +926,7 @@ export function getAllPermissionDetails(payload){
              dispatch(setAllPermissionDetails(result.data))
             
         }catch(error){
-            const message = error?.response.data.message || "Something went wrong";
+            const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }

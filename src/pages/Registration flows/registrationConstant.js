@@ -1009,7 +1009,7 @@ const NESTED_DEVELOPER_STEP_6_FIELDS=[
   {
     label: "Skill",
     fieldName: "tech_stacks_used",
-    type: "normal-select",
+    type: "multi-select",
     placeholder: "e.g. HTML",
     rules: { required: "Skill is required" },
     columnWidth: 6,

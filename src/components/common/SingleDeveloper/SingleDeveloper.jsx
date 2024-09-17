@@ -117,6 +117,7 @@ const SingleDeveloper = ({ data, role }) => {
     // startAppTour();
     // }
   }, []);
+  console.log(data?.skills,"newSkills")
 
   const splitSkills = (data) => {
     let skills = data?.skills?.split(",") || data?.split(",");
@@ -236,7 +237,6 @@ const SingleDeveloper = ({ data, role }) => {
   const handleCloseCertificateUpload = () => {
     setShowCertificateUpload(false);
   }
-
   return (
     <>
       {screenLoader ? (

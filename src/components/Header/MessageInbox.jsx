@@ -95,10 +95,9 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     socket.on(`message_created_${userId}`, (message) => setChatMessages((prevMessages) => Array.isArray(prevMessages) ? [...prevMessages, message] : [message]));
 
     return () => {
-      socket.off(`message_created_${userId}`, handleMessage);
+      socket.disconnect();
     };
-  }, [userId, socket, chatmessages]);
-
+  }, []);
 
 
   const stripHtmlTags = (str) => {

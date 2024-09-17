@@ -37,7 +37,8 @@ const initialDeveloperData = {
   developerRegistrationData:{},
   chatRoomMessageList:{},
   chatData:{},
-  memberList:[]
+  memberList:[],
+  jobList:{}
 };
 
 export const developerDataSlice = createSlice({
@@ -172,6 +173,9 @@ export const developerDataSlice = createSlice({
     },
     setMemberList:(state,action) =>{
       state.memberList = action.payload;
+    },
+    setJobListingData:(state,action) =>{
+      state.jobList = action.payload
     }
   },
 });
@@ -206,7 +210,8 @@ export const {
   setDeveloperRegistrationDetails,
   setMessageRoomList,
   setChatData,
-  setMemberList
+  setMemberList,
+  setJobListingData
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -378,6 +383,26 @@ export function applyLeave(payload) {
         toast.success("Leave Applied", { position: "top-center" });
         dispatch(setActionSuccessFully());
       }
+    } catch (error) {
+      const message = error.response?.data?.message || "Something went wrong";
+      toast.error(message, { position: "top-center" });
+      dispatch(setFailDeveloperData());
+    }
+  };
+}
+export function applyJob(payload,callback) {
+  console.log(payload,"payload")
+  return async (dispatch) => {
+    dispatch(setSmallLoader());
+    try {
+      let result = await clientInstance.post("/developer/apply-on-job", {
+        ...payload,
+      });
+      if (result.status === 200) {
+        toast.success("Job Applied", { position: "top-center" });
+        dispatch(setActionSuccessFully());
+      }
+      return callback()
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong";
       toast.error(message, { position: "top-center" });
@@ -1065,19 +1090,20 @@ export const addDeveloperExperience = (
 
 
 export function developerGetJobListing(payload) {
+  console.log(payload,"payloaddd")
   return async (dispatch) => {
-    dispatch(setSmallLoader());
+    // dispatch(setSmallLoader());
     try {
       let result = await clientInstance.get(
         generateApiUrl(payload, `developer/matching-jobs`)
       );
       if (result.status === 200) {
         // dispatch(setDeveloperTimeReports(result.data.data));
+        dispatch(setJobListingData(result.data))
       }
     } catch (error) {
       const message = error.message || "Something went wrong";
-      toast.error(message, { position: "top-center" });
-      dispatch(setFailDeveloperData());
+      // toast.error(message, { position: "top-center" });
     }
   };
 }
@@ -1348,7 +1374,7 @@ export function developerRegistrationBio(payload) {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.post("common/add-developer-bio",{...payload});
-      toast.success("Bio is creatd", { position: "top-center" });
+      toast.success("Bio is created", { position: "top-center" });
       dispatch(setActionSuccessFully());
     } catch (error) {
       const message = error.message || "Something went wrong";

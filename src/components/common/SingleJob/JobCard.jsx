@@ -40,7 +40,6 @@ const JobCard = ({
   const rejectedApply = (
     <Tooltip>Reject</Tooltip>
   )
-  console.log(screenLoader, "screenloader")
   const developerCardToolTip = (
     <Tooltip id="tooltip">
       {type === "Interviewing"
@@ -80,12 +79,15 @@ const JobCard = ({
   return (
     <>
       {screenLoader ? <ScreenLoader /> : <>
+        <h5>List of {type} Developers</h5>
         <div className="developers-list job-card pt-0">
           {data?.length > 0 ? (
             <>
               {data?.map((item, index) => {
+                console.log(item,"itemmmm")
                 return (
                   <>
+
                     <div
                       className={
                         item?.recommed
@@ -93,6 +95,7 @@ const JobCard = ({
                           : "developer-card p-0"
                       }
                     >
+
                       {/* <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div> */}
                       <div className="tag-developer">
                         {type && type === "Suggested" ? "Suggest" : type}
@@ -101,7 +104,7 @@ const JobCard = ({
                         <div
                           className="user-imgbx"
                           onClick={(e) =>
-                            handleDeveloperCard(e, item?.developer?.id)
+                            handleDeveloperCard(e, item?.id)
                           }
                         >
                           <img
@@ -117,23 +120,23 @@ const JobCard = ({
                         <div className="text-center">
                           <h3 className="user-name">{item?.developer?.name}</h3>
                           <div className="text-center mt-2">
-                            <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                            <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>{item?.matchPercentage}%</strong></span>
                           </div>
                           <div className="mb-2">
                             <span className="status-upcoming d-inline-flex align-items-center gap-1">
                               <FaStar /> 4.4
                             </span>
                           </div>
-                          <p className="designation-user">Software Developer</p>
-                          <p className="email-user">{item?.developer?.email}</p>
+                          {/* <p className="designation-user">{item?.name}</p> */}
+                          <p className="email-user">{item?.developer?.developer?.email}</p>
                           <ul className="social-icons">
                             <li>
-                              <Link to="#">
+                              <Link to={item?.developer?.developer_detail?.github_url}>
                                 <FaGithub />
                               </Link>
                             </li>
                             <li>
-                              <Link to="#">
+                              <Link to={item?.developer?.developer_detail?.linkedin_url}>
                                 <FaLinkedin />
                               </Link>
                             </li>
@@ -145,6 +148,7 @@ const JobCard = ({
                             {role !== "admin" &&
                               (type == "Shortlisted" ||
                                 type === "Suggested" ||
+                                 type === "Applied" ||
                                 type === "Interviewing") &&
                               type !== "Hired" ? (
                               <OverlayTrigger
@@ -157,7 +161,7 @@ const JobCard = ({
                                     jobStatus === "Ended" ? true : false
                                   }
                                   onClick={(e) =>{
-                                    handleJobStatusModal(e, item?.id, type)
+                                    handleJobStatusModal(e, item?.developer?.id, type,item?.id)
                                     console.log("hell")
                                   }
                                    
@@ -185,9 +189,8 @@ const JobCard = ({
                                   variant="danger"
                                   onClick={(e) =>
                                     handleJobStatusModal(
-                                      e,
-                                      item?.id,
-                                      "rejected"
+                                      e, item?.developer?.id,  "rejected",item?.id
+                                     
                                     )
                                   }
                                   disabled={
