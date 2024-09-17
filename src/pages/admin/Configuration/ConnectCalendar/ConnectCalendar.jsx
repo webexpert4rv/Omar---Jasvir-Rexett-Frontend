@@ -4,48 +4,42 @@ import {GoogleLogin,GoogleLogout} from "react-google-login";
 import { Link } from "react-router-dom";
 import { gapi } from 'gapi-script';
 import { msalInstance } from "../../../../services/msalConfig";
+import { DISCOVERY_DOCS, SCOPES } from "../../../../helper/utlis";
 
 const ConnectCalendar = ({ currentTab }) => {
-  const DISCOVERY_DOCS = [
-    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
-  ];
+
   
-  const SCOPES = [
-    "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-    "https://www.googleapis.com/auth/calendar.events"
-  ];
+
   
   const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
-const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
 const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
 const loginRequest = {
-  scopes: ["user.read", 'CallRecords.Read.All']
+  scopes: [
+    "User.Read",
+    "Calendars.ReadWrite",
+    "Calendars.Read.Shared",
+    "Calendars.ReadBasic",
+    "Calendars.ReadWrite",
+    "Calendars.ReadWrite.Shared",
+    "profile",
+    "User.Read",
+    "User.Read.All",
+    "User.ReadWrite",
+    "User.ReadWrite.All",
+    "OnlineMeetings.Read",
+    "profile",
+    "OnlineMeetings.ReadWrite",
+    "OnlineMeetingRecording.Read.All",
+     "Calendars.ReadWrite",
+     "Calendars.Read",
+  ],
   
   };
 
-useEffect(() => {
-    function start() {
-      gapi.client.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES
-      }).then(() => {
-        console.log('GAPI Initialized');
-        const authInstance = gapi.auth2.getAuthInstance();
-        authInstance.isSignedIn.listen(setIsAuthenticated);
-        setIsAuthenticated(authInstance.isSignedIn.get());
-        localStorage.setItem("authentication",authInstance.isSignedIn.get())
-      }).catch((error) => {
-        console.error('Error initializing GAPI:', error);
-      });
-    }
-    gapi.load('client:auth2', start);
-  }, []);
+
 
 console.log(isAuthenticated,"isAuthenticated")
 const handleLoginSuccess = (response) => {
@@ -63,16 +57,6 @@ const handleLoginSuccess = (response) => {
       const loginResponse = await msalInstance.loginPopup(loginRequest);
       console.log('Microsoft login success:', loginResponse);
       setIsAuthenticated(true);
-      const accessTokenResponse = await msalInstance.acquireTokenSilent({
-        scopes: [ "User.Read",
-          "Calendars.ReadWrite",
-          "OnlineMeetings.Read",
-          "profile",
-          "OnlineMeetings.ReadWrite",
-          "OnlineMeetingRecording.Read.All"],
-        account: loginResponse.account
-      });
-      console.log(accessTokenResponse,"accessTokenResponse")
     } catch (error) {
       console.error('Microsoft login failed:', error);
       setIsAuthenticated(false);

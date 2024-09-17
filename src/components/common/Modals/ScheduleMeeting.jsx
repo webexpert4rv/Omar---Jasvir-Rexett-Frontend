@@ -62,9 +62,9 @@ const Schedulemeeting = ({
   const [events, setEvents] = useState([]);
 
   const [eventDetails, setEventDetails] = useState({
-    subject: 'RETTNE',
-    location: { displayName: 'NEW TIO' },
-    body: { content: 'KLOR' },
+    subject: 'Koliyarl',
+    location: { displayName: 'Koliyal Truck' },
+    body: { content: 'Karosal' },
     start: { 
       dateTime: '2024-09-11T14:00:00',  // Correct ISO 8601 format
       timeZone: 'UTC' 
@@ -385,11 +385,6 @@ const Schedulemeeting = ({
       });
     setThirdParty(false);
   };
-
-
-
-
-
  
   return (
     <>

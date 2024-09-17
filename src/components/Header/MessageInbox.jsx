@@ -107,9 +107,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       dispatch(getAllMessages(userId)); // so that chatRoom message list also gets updated
     });
     return () => {
-      socket.disconnect();
+      socket.off(`message_created_${userId}`, handleMessage);
     };
-  }, []);
+  }, [userId, socket, chatmessages]);
+
+
 
   // for adding pagination for chat messages
 
@@ -165,17 +167,15 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     if (selectedTab === "unread") {
       let data = {
         type: "inbox",
-      };
-      await dispatch(
-        updateChatRoom(roomId, data, () => {
-          let data = {
-            type: "unread",
-            page: "1",
-            per_page: "10",
-          };
-          dispatch(getAllMessages(userId, data));
-        })
-      );
+      }
+      await dispatch(updateChatRoom(roomId, data, () => {
+        let data = {
+          type: "unread",
+          page: page,
+          per_page: "10"
+        }
+        dispatch(getAllMessages(userId, data))
+      }))
     }
   };
   const handleCloseMessages = () => {
@@ -313,9 +313,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       <Offcanvas
         show={showMessagesInfo}
         placement="end"
-        className={`message-offcanvas ${
-          messageWrapperVisible ? "visible" : ""
-        }`}
+        className={`message-offcanvas ${messageWrapperVisible ? "visible" : ""
+          }`}
         onHide={handleCloseMessages}
       >
         <div className="d-flex align-items-start">
@@ -575,9 +574,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="position-relative">
                   <div
-                    className={`custom-rich-editor message-field ${
-                      isEditorFocused || hasContent ? "focused" : ""
-                    }`}
+                    className={`custom-rich-editor message-field ${isEditorFocused || hasContent ? "focused" : ""
+                      }`}
                   >
                     <Controller
                       name="message"
@@ -597,9 +595,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     )}
                   </div>
                   <div
-                    className={`field-msg-options d-flex align-items-center gap-3 ${
-                      isEditorFocused || hasContent ? "focused" : ""
-                    }`}
+                    className={`field-msg-options d-flex align-items-center gap-3 ${isEditorFocused || hasContent ? "focused" : ""
+                      }`}
                   >
                     <div className="inner-field-msg-options">
                       <Dropdown className="assign-dropdown">

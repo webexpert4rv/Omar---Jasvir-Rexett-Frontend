@@ -1334,6 +1334,7 @@ export function registerDeveloperEducation(payload, id, callback) {
   };
 }
 export function registerDeveloperSkills(payload,id) {
+  console.log(payload,"payload")
   return async (dispatch) => {
     dispatch(setSmallLoader());
     try {

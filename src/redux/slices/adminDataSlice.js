@@ -102,6 +102,7 @@ export const adminDataSlice = createSlice({
         setFailAdminData: (state, action) => {
             state.smallLoader = false;
             state.screenLoader = false;
+            state.approvedLoader = false;
         },
         setAdminTimeReporting: (state, action) => {
             state.adminTimeReportingList = action.payload
