@@ -2,14 +2,9 @@ import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import FinalizeResume from "../../admin/ResumeSteps/FinalizeResume";
 import RexettButton from "../../../components/atomic/RexettButton";
-import { useNavigate } from "react-router-dom";
 
 const RegistrationStepModal = ({ show, role,handleClose, nextStep }) => {
-  console.log(role,"role")
-  console.log("tankyoummODAL")
-  const navigate = useNavigate()
   const redirectToLogin = () => {
-    console.log(role,"roleeeeeee")
     if(role==="vendor"){
       window.location.href = "https://rexett-frontend.rvtechnologies.info/vendor-login"
     }else{
@@ -42,11 +37,11 @@ const RegistrationStepModal = ({ show, role,handleClose, nextStep }) => {
         </Modal.Body>
         <div className="d-flex justify-content-end align-items-center p-3">
           <div className="me-3">
-            <RexettButton
-              onClick={redirectToLogin}
-              text="Login"
-              className="main-btn px-5 mr-2"
-            />
+          <RexettButton
+                onClick={redirectToLogin}
+                  text="Login"
+                  className="main-btn px-5 mr-2"
+                />
           </div>
           {/* {currentStep !== '7' &&
             <div>

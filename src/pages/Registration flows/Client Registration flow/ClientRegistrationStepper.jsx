@@ -118,45 +118,94 @@ const ClientRegistrationStepper = () => {
       dispatch(getProfile(user_id, (data) => {
         for (let key in data) {
           if (activeStep === 1) {
-            if (key === "country_code") {
-              const newValue = {
-                label: data["country"],
-                value: data[key],
-              };
-              setCountryCode(newValue?.value);
-              setValue(key, newValue);
-            } else if (key === "state_iso_code") {
-              const newValue = { label: data["state"], value: data[key] };
-              setValue(key, newValue);
-            } 
-            else if (key === "city") {
-              const newValue = {
-                label: data["city"],
-                value: data[key]
+            if (registrationType === "company") {
+              if (key === "company") {
+                for (let newKey in data.company) {
+                  if (newKey === "name") {
+                    setValue("company_name", data.company[newKey])
+                  } else if (newKey === "website") {
+                    setValue("website_url", data.company[newKey])
+                  } else if (newKey === "post_code") {
+                    setValue("passcode", data.company[newKey])
+                  } else if (newKey === "country_code" || newKey === "country") {
+                    const newValue = {
+                      label: data.company["country"],
+                      value: data.company["country_code"],
+                    };
+                    setCountryCode(newValue?.value);
+                    setValue("country_code", newValue);
+                  }
+                  else if (newKey === "state_iso_code" || newKey === "state") {
+                    const newValue = { label: data.company["state"], value: data.company[newKey] };
+                    setValue(newKey, newValue);
+                  } else if (newKey === "city") {
+                    const newValue = {
+                      label: data.company[newKey],
+                      value: data.company[newKey]
+                    }
+                    setValue(newKey, newValue)
+                  }
+                  else if (newKey === "time_zone") {
+                    const newValue = { label: data.company[newKey], value: data.company[newKey] };
+                    setValue(newKey, newValue);
+                  }
+                  else if (newKey === "logo") {
+                    setPreviewImage({ profile_picture: data?.company[newKey] })
+                  }
+                  else {
+                    setValue(newKey, data.company[newKey])
+                  }
+                }
+              } else {
+                if (key !== "address" && key !== "country_code" && key !== "city") {
+                  setValue(key, data[key])
+                }
               }
-              setValue(key, newValue)
-            }else if (key === "time_zone") {
-              const newValue = { label: data[key], value: data[key] };
-              setValue(key, newValue);
-            } else {
-              setValue(key, data[key]);
             }
-            if (key === "name") {
-              const [firstName, surname] = data[key]?.split(" ");
-              setValue("first_name", firstName);
-              setValue("last_name", surname);
-            }
-            if (key === "address") {
-              setValue("address", data[key]);
-            }
-            if (key === "tax_id") {
-              setValue("company_tax_id", data[key]);
-            }
-            if (key === "company_logo") {
-              setPreviewImage({ profile_picture: data?.profile_picture })
+            else {
+              if (key === "country_code") {
+                const newValue = {
+                  label: data["country"],
+                  value: data[key],
+                };
+                setCountryCode(newValue?.value);
+                setValue(key, newValue);
+              } else if (key === "state_iso_code") {
+                const newValue = { label: data["state"], value: data[key] };
+                setValue(key, newValue);
+              } else if (key === "city") {
+                const newValue = {
+                  label: data["city"],
+                  value: data[key]
+                }
+                setValue(key, newValue)
+              } else if (key === "time_zone") {
+                const newValue = { label: data[key], value: data[key] };
+                setValue(key, newValue);
+              } else if (key === "website") {
+                setValue("website_url", data?.company[key]);
+              } else {
+                setValue(key, data[key]);
+              }
+              if (key === "name") {
+                const [firstName, surname] = data[key]?.split(" ");
+                setValue("first_name", firstName);
+                setValue("last_name", surname);
+              }
+              if (key === "address") {
+                setValue("address", data[key]);
+              }
+              if (key === "tax_id") {
+                setValue("company_tax_id", data[key]);
+              }
+              if (key === "company_logo") {
+                setPreviewImage({ profile_picture: data?.profile_picture })
+              }
+
             }
           } else if (activeStep === 2) {
             const step1Data = data.jobs[0].step1;
+            console.log(step1Data, "step1Data")
             for (let step1Key in step1Data) {
               if (step1Key === "time_zone") {
                 const newValue = { label: step1Data[step1Key], value: step1Data[step1Key] };
@@ -169,32 +218,25 @@ const ClientRegistrationStepper = () => {
               }
             }
           } else if (activeStep === 3) {
-            const step2Data = data?.jobs[0]?.step2;
+            const step2Data = data.jobs[0].step2;
             for (let step2Key in step2Data) {
-              if (step2Data?.job_skills) {
-                const newSkills = [];
-                const newWeights = [];
-                step2Data?.job_skills?.forEach((item) => {
-                  newSkills.push({ label: item?.skill_name, value: item?.skill_name });
-                  newWeights.push({ label: item?.weight, value: item?.weight });
-                });
-                setSkillDetails({
-                  skillName: newSkills,
-                  skillWeight: newWeights
-                });
-              }
-              if (step2Key === "description") {
-                const desc = stripHtmlTags(step2Data[step2Key])
-                setValue(step2Key, desc)
+              if (step2Key === "job_skills") {
+                const convertedSkills = step2Data?.job_skills?.map(({skill_name,weight,skill_id})=>{
+                  return {title:{label:skill_name,value:skill_id},level:{label:weight,value:weight}}
+                })
+                setValue("skills", convertedSkills)
+              } else {
+                setValue(step2Key, step2Data[step2Key]);
               }
             }
           }
         }
       }));
     }
-  }, [activeStep, user_id, dispatch]);
+  }, [activeStep, user_id, dispatch, registrationType]);
 
-  const getActiveStepText = (values) => {
+
+  const getActiveStepText = () => {
     switch (activeStep) {
       case 1:
         return "Next : Setup Job";
@@ -209,9 +251,10 @@ const ClientRegistrationStepper = () => {
   const onSubmit = () => {
     if (activeStep == 1 || activeStep == 4) {
       setShowSetUpJobModal(true);
-    } else {
-      // increaseStepCount();
     }
+    //  else {
+      // increaseStepCount();
+    // }
     const buttonText = getActiveStepText();
     switch (buttonText) {
       case "Next : Setup Job":
@@ -413,30 +456,52 @@ const ClientRegistrationStepper = () => {
     fileData.append("file", imageFile?.profile_picture)
     setShowSetUpJobModal(false);
     dispatch(uploadFileToS3Bucket(fileData, (url) => {
-      const payload = {
-        // name :`${stepData?.first_name } ${stepData?.last_name}`,
-        first_name: stepData?.first_name,
-        last_name: stepData?.last_name,
-        password: stepData?.password,
-        profile_picture: url,
-        country_code: stepData?.country_code?.value,
-        state_iso_code: stepData?.state_iso_code?.value,
-        city:stepData?.city.label,
-        email: stepData?.email,
-        country_code: stepData?.country_code?.value,
-        yearly_revenue: stepData?.yearly_revenue,
-        tax_id: stepData?.company_tax_id,
-        address: stepData?.address,
-        country: stepData?.country_code?.label,
-        state: stepData?.state_iso_code?.label,
-        phone_number: stepData?.phone_number,
-        passcode: stepData?.passcode,
-        time_zone: stepData?.time_zone?.label
-
+      let payload;
+      if (registrationType === "company") {
+        payload = {
+          company_name: stepData?.company_name,
+          password: stepData?.password,
+          company_logo: url,
+          country_code: stepData?.country_code?.value,
+          state_iso_code: stepData?.state_iso_code?.value,
+          email: stepData?.email,
+          city: stepData?.city.label,
+          client_type: registrationType,
+          yearly_revenue: stepData?.yearly_revenue,
+          tax_id: stepData?.company_tax_id,
+          company_address: stepData?.address,
+          country: stepData?.country_code?.label,
+          state: stepData?.state_iso_code?.label,
+          phone_number: stepData?.phone_number,
+          passcode: stepData?.passcode,
+          time_zone: stepData?.time_zone?.label,
+          total_employees: stepData?.total_employees,
+          website: stepData?.website_url
+        };
+      } else {
+        payload = {
+          first_name: stepData?.first_name,
+          last_name: stepData?.last_name,
+          password: stepData?.password,
+          profile_picture: url,
+          country_code: stepData?.country_code?.value,
+          state_iso_code: stepData?.state_iso_code?.value,
+          email: stepData?.email,
+          city: stepData?.city.label,
+          client_type: registrationType,
+          yearly_revenue: stepData?.yearly_revenue,
+          tax_id: stepData?.company_tax_id,
+          address: stepData?.address,
+          country: stepData?.country_code?.label,
+          state: stepData?.state_iso_code?.label,
+          phone_number: stepData?.phone_number,
+          passcode: stepData?.passcode,
+          time_zone: stepData?.time_zone?.label,
+        };
       }
       dispatch(applyAsClient(payload, handleAfterApiSuccess));
-    })
-    );
+    }));
+
   };
   return (
     <>

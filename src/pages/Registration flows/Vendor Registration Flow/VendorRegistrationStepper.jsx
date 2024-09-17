@@ -40,7 +40,7 @@ const VendorRegistrationStepper = () => {
     setValue,
     clearErrors,
   } = useForm({});
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(2);
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [showSetUpModal, setShowSetUpJobModal] = useState(false);
@@ -112,8 +112,7 @@ const VendorRegistrationStepper = () => {
             }else{
               setValue(key, data[key])
             } 
-          }
-          if (activeStep !== 1){
+          }else{
             setValue(key, data[key])
           }
         }
@@ -240,7 +239,7 @@ const VendorRegistrationStepper = () => {
     }
     dispatch(getAreaExpertise(payload))
     setIsRegistrationStepModal(true)
-    handleRedirect()
+    
     
   };
 
@@ -350,6 +349,7 @@ const VendorRegistrationStepper = () => {
        <RegistrationStepModal
         show={isRegistrationStepModal}
         handleClose={handleRegistrationModal}
+        // handleRedirect={handleRedirect}
         nextStep={decreaseStepCount}
         role={"vendor"}
       />

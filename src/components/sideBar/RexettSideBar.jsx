@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import sidebarLogo from "../../assets/img/rexett-logo-white.png";
 import sidebarLogo2 from "../../assets/img/rexett-logo-white2.png";
 import { Link, NavLink } from "react-router-dom";
@@ -11,19 +11,36 @@ import { useSelector } from "react-redux";
 
 
 const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) => {
-    console.log(role, "role")
+    console.log(sidebarItems, "sidebarItems")
     const { t } = useTranslation();
-    const { configDetails } = useSelector(state => state.adminData)
+    const { configDetails,allPermissionDetails } = useSelector(state => state.adminData)
+    const [sidebarDataWithPermi,setSideBarDataWithPermi]=useState([])
     let currentRoute = role == "client" ? "/" : `/${role}-login`
+    let {rolesWithPermissions}=allPermissionDetails
 
     const logout = () => {
         localStorage.clear();
         window.location.href = currentRoute;
     };
+ console.log(rolesWithPermissions,"allPermissionDetails")
+   
     const [floatingShow, setFloatingShow] = useState(false);
     const handleFloating = () => {
         setFloatingShow(!floatingShow);
     }
+
+    // useEffect(()=>{
+    //     if(rolesWithPermissions && rolesWithPermissions?.length>0){
+
+    //     const updatedSecondArray = sidebarItems.map(item => {
+    //         const isActive = rolesWithPermissions[0]?.permissions?.some(firstItem => firstItem.slug === item.slug);
+    //         return { ...item, active: isActive };
+    //       });
+    //       setSideBarDataWithPermi(updatedSecondArray)
+    //     }
+        
+
+    // },[allPermissionDetails])
 
     return (
         <>
@@ -41,7 +58,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                         </div>
                         {sidebarItems.map((item, index) => (
                             <>
-                                {collapseActive ?
+                                { collapseActive ?
                                     <NavLink
                                         key={index}
                                         to={item.to}
@@ -71,7 +88,7 @@ const RexettSideBar = ({ sidebarItems, floatingOptions, role, collapseActive }) 
                                             </span>
                                         </NavLink>
                                     </OverlayTrigger>
-                                }
+                               }
                             </>
                         ))}
                     </div>
