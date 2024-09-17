@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Tabs from "../common/LeaveRequest/Tabs";
 import { MESSAGE_TAB_TEXT } from "../clients/TimeReporiting/constant";
 import { Button, Dropdown, Form, Offcanvas, Tab } from "react-bootstrap";
@@ -41,10 +41,14 @@ import PreviewModal from "../../pages/admin/ResumeSteps/Modals/PreviewResume";
 import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import RexettButton from "../atomic/RexettButton";
 import ListingPageScroller from "../common/ListingPageContainer/ListingPageScroller";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { reverseArray } from "../utils";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   let userId = localStorage.getItem("userId");
+  const scrollRef = useRef(null);
   const [selectedTab, setSelectedTab] = useState("inbox");
+  const [currentRoomId,setCurrentRoomId] = useState(null);
   const [currentTab, setCurrentTab] = useState();
   const [hasContent, setHasContent] = useState(false);
   const [isEditorFocused, setIsEditorFocused] = useState(true);
@@ -64,7 +68,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     (state) => state.adminData
   );
 
-  const { chatData } = useSelector((state) => state.developerData);
+  const { chatData, chatMessagesPaginationInfo} = useSelector((state) => state.developerData);
   const [page, setPage] = useState(1);
   const { approvedLoader } = useSelector((state) => state.adminData);
   const { allAdminEmployees } = useSelector((state) => state.adminData);
@@ -78,6 +82,10 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     formState: { errors },
   } = useForm();
   const [adduserconversation, showAddUserConversation] = useState(false);
+  // useEffect(()=>{
+  //   scrollToBottom();
+  // },[scrollRef,chatmessages])
+ 
 
   useEffect(() => {
     setChatMessages(chatData);
@@ -92,12 +100,18 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     socket.on("connect", () => {
       console.log("Connected to Socket.IO server chatmessages");
     });
-    socket.on(`message_created_${userId}`, (message) => setChatMessages((prevMessages) => Array.isArray(prevMessages) ? [...prevMessages, message] : [message]));
-
+    socket.on(`message_created_${userId}`, (message) => {
+      setChatMessages((prevMessages) =>
+        Array.isArray(prevMessages) ? [...prevMessages, message] : [message]
+      );
+      dispatch(getAllMessages(userId)); // so that chatRoom message list also gets updated
+    });
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  // for adding pagination for chat messages
 
   const stripHtmlTags = (str) => {
     return str?.replace(/<\/?[^>]+(>|$)/g, "");
@@ -145,6 +159,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     setSelectedChat(selectedChat);
     setChtRoomId(roomId);
     dispatch(getChatRoomData(roomId));
+    setCurrentRoomId(roomId);
     dispatch(getChatRoomMembers(roomId));
     setMessageWrapperVisible(true);
     if (selectedTab === "unread") {
@@ -285,6 +300,14 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     setSelectedImg();
   };
 
+  const fetchMoreData = () => {
+    const tempPage = page + 1; // creating separate variable because state value is not updated within the function immediately
+    setPage((prev) => prev + 1);
+    if (currentRoomId){
+      dispatch(getChatRoomData(currentRoomId,tempPage));
+      // adding new fetched data and previous data logic is written inside getRoomChatData
+    }
+  };
   return (
     <div>
       <Offcanvas
@@ -300,6 +323,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
             className={`message-wrapper ${
               messageWrapperVisible ? "visible" : ""
             }`}
+            // ref={scrollRef}
           >
             <div className="message-wrapper-header">
               <div className="about-chat">
@@ -410,72 +434,89 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                 <p className="msg-subject-name">
                   <span className="subject-name">Invited</span>
                 </p>
-                {chatmessages?.length > 0
-                  ? chatmessages?.map((item, index) => {
-                      let isReceiver = item?.sender_id == userId;
-                      console.log(isReceiver, "isReceiver");
-                      let data = item?.message_body;
-                      let file = item?.message_attachment_url;
-                      let file_type = item?.file_type;
+                <div
+                  id="scrollableDiv"
+                  style={{ height: "200px", overflow: "auto" }}
+                  ref={scrollRef}
+                >
+                  <InfiniteScroll
+                    dataLength={chatmessages?.length || 0}
+                    style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
+                    next={fetchMoreData}
+                    hasMore={chatMessagesPaginationInfo?.current_page !== chatMessagesPaginationInfo?.total_pages}
+                    loader={<h1>Loader....</h1>}
+                    scrollableTarget="scrollableDiv"
+                    height={200}
+                    inverse={true}
+                  >
+                    {chatmessages?.length > 0
+                      ? reverseArray(chatmessages)?.map((item, index) => {
+                          let isSender = item?.sender_id == userId;
+                          let data = item?.message_body;
+                          let file = item?.message_attachment_url;
+                          let file_type = item?.file_type;
+                          const showTime =
+                            index === chatmessages.length - 1 ||
+                            chatmessages[index + 1].sender_id !==
+                              item.sender_id;
 
-                      const showTime =
-                        index === chatmessages.length - 1 ||
-                        chatmessages[index + 1].sender_id !== item.sender_id;
-
-                      return (
-                        <>
-                          <div
-                            className={
-                              isReceiver ? "receiver-message" : "sender-message"
-                            }
-                          >
-                            {isReceiver && showTime && (
-                              <div className="sender-profile">
-                                <img src={memberList[0]?.profile_picture} />
-                              </div>
-                            )}
-                            {/* <p>helloworld</p> */}
-                            {file_type && data ? (
-                              imageTypes?.includes(file_type) ? (
-                                <div className="preview-upload-imgwrapper">
-                                  <img
-                                    src={file}
-                                    className="upload-preview-img"
-                                    alt="Preview"
-                                  />
-                                </div>
-                              ) : (
-                                <a
-                                  href={file}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  {file}{" "}
-                                </a>
-                              )
-                            ) : (
-                              <div>
-                                <p
-                                  className="message"
-                                  dangerouslySetInnerHTML={{ __html: data }}
-                                />
-                                {showTime && (
-                                  <p className="message-time">
-                                    {moment(item?.created_at).fromNow()}
-                                  </p>
+                          return (
+                            <>
+                              <div
+                                className={
+                                  isSender
+                                    ? "sender-message"
+                                    : "receiver-message"
+                                }
+                              >
+                                {isSender && showTime && (
+                                  <div className="sender-profile">
+                                    <img src={memberList[0]?.profile_picture} />
+                                  </div>
+                                )}
+                                {file_type && data ? (
+                                  imageTypes?.includes(file_type) ? (
+                                    <div className="preview-upload-imgwrapper">
+                                      <img
+                                        src={file}
+                                        className="upload-preview-img"
+                                        alt="Preview"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <a
+                                      href={file}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {file}{" "}
+                                    </a>
+                                  )
+                                ) : (
+                                  <div>
+                                    <p
+                                      className="message"
+                                      dangerouslySetInnerHTML={{ __html: data }}
+                                    />
+                                    {showTime && (
+                                      <p className="message-time">
+                                        {moment(item?.created_at).fromNow()}
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
+                                {!isSender && showTime && (
+                                  <div className="sender-profile">
+                                    <img src={memberList[1]?.profile_picture} />
+                                  </div>
                                 )}
                               </div>
-                            )}
-                            {!isReceiver && showTime && (
-                              <div className="sender-profile">
-                                <img src={memberList[1]?.profile_picture} />
-                              </div>
-                            )}
-                          </div>
-                        </>
-                      );
-                    })
-                  : ""}
+                            </>
+                          );
+                        })
+                      : ""}
+                  </InfiniteScroll>
+                </div>
               </div>
             </div>
             <div className="write-message-area">

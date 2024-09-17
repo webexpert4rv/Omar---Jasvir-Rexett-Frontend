@@ -45,3 +45,9 @@ export const validatePassword = (value) => {
       return ""
     }
   }
+  export const reverseArray = (arr) => {
+    if (arr.length){
+      return [...arr].reverse()
+    }
+
+  }

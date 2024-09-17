@@ -36,8 +36,9 @@ const initialDeveloperData = {
   projectDetail: {},
   developerRegistrationData:{},
   chatRoomMessageList:{},
-  chatData:{},
-  memberList:[]
+  chatData:[],
+  memberList:[],
+  chatMessagesPaginationInfo:{}
 };
 
 export const developerDataSlice = createSlice({
@@ -140,7 +141,6 @@ export const developerDataSlice = createSlice({
       state.screenLoader = false;
     },
     setPaySlips: (state, action) => {
-      console.log(action.payload.pagination, "payload inside setter");
       state.paySlips = action.payload.data;
       state.screenLoader = false;
       state.totalPaySlipPages = action?.payload?.pagination?.totalPages;
@@ -167,8 +167,14 @@ export const developerDataSlice = createSlice({
       state.screenLoader = false;
     },
     setChatData: (state, action) => {
-      state.chatData = action.payload;
+      // logic for appending newly fetched and previous data for pagination
+      const newPaginatedData = [...action.payload];
+      const previousChatData = [...state.chatData];
+      state.chatData = [...newPaginatedData,...previousChatData];
       state.screenLoader = false;
+    },
+    setChatMessagPaginationInfo:(state,action) => {
+      state.chatMessagesPaginationInfo = action.payload;
     },
     setMemberList:(state,action) =>{
       state.memberList = action.payload;
@@ -206,7 +212,8 @@ export const {
   setDeveloperRegistrationDetails,
   setMessageRoomList,
   setChatData,
-  setMemberList
+  setMemberList,
+  setChatMessagPaginationInfo
 } = developerDataSlice.actions;
 
 export default developerDataSlice.reducer;
@@ -387,7 +394,6 @@ export function applyLeave(payload) {
 }
 
 export function getLeaveHistory(id, payload) {
-  console.log(payload, "payload");
   return async (dispatch) => {
     try {
       let result = await clientInstance.get(
@@ -1424,13 +1430,23 @@ export function getAllMessages(id ,payload){
 }
 
 
-export function getChatRoomData(id) {
+export function getChatRoomData(id, page=1) {
+  // setting callback default value as empty function if this parameter is not passed
   return async (dispatch) => {
     // dispatch(setSmallLoader());
     try {
-      let result = await clientInstance.get(`messages/chatroom-messages/${id}`);
-      console.log(result,"...")
-      dispatch(setChatData(result?.data?.messages?.data))
+      let result = await clientInstance.get(`messages/chatroom-messages/${id}`,{
+        params:{
+          page:page
+        }
+      });
+      dispatch(setChatData(result?.data?.messages?.data));
+      const paginationInfo = {
+        total_count: result?.data?.messages?.total_count,
+        total_pages:result?.data?.messages?.total_pages,
+        current_page:result?.data?.messages?.current_page
+      };
+      dispatch(setChatMessagPaginationInfo(paginationInfo))
       // dispatch(setSuccessActionData());
     } catch (error) {
       const message = error.message || "Something went wrong";
