@@ -45,16 +45,18 @@ const Summary = ({
   };
   console.log(filteredStepData,"filteredStepData")
   const handleDelete = () => {
-    const tempArr = [...filteredStepData];
-    const indexToRemove = tempArr.findIndex(item => item.id === eduId);
-    if (indexToRemove !== -1) {
-      tempArr.splice(indexToRemove, 1);
+    if(filteredStepData.length>0){
+      const tempArr = [{...filteredStepData}];
+      const indexToRemove = tempArr.findIndex(item => item.id === eduId);
+      if (indexToRemove !== -1) {
+        tempArr.splice(indexToRemove, 1);
+      }
+  
+      setFilteredStepData(tempArr);
+      setShowSetUpJobModal({
+        isDelete: false,
+      });
     }
-
-    setFilteredStepData(tempArr);
-    setShowSetUpJobModal({
-      isDelete: false,
-    });
   };
   const tipstext = (
     <Popover id="popover-basic">

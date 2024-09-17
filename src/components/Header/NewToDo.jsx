@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAdminCreateToDo, getAdminList, getAdminTodos, getEditToDo } from '../../redux/slices/adminDataSlice'
 import moment from 'moment'
 
-function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stripHtmlTags,getSelectedCandidateDetails }) {
+function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stripHtmlTags, getSelectedCandidateDetails }) {
     const [value, onChange] = useState(new Date());
     const quillRef = useRef(null);
     const dispatch = useDispatch()
@@ -31,7 +31,6 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
     } = useForm({});
     const newDate = moment(value).format('YYYY-MM-DD');
     const { employeeList, approvedLoader } = useSelector((state) => state.adminData)
-    console.log(employeeList,"employlist")
 
     useEffect(() => {
         dispatch(getAdminList())
@@ -49,10 +48,15 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
         }
         dispatch(getAdminTodos(data));
     }, [])
+
+
+    const handleClear=()=>{
+        reset()
+    }
     const onSubmit = async (values) => {
-        console.log(values,"values")
+        console.log(values, "values")
         getSelectedCandidateDetails(values?.assignees)
-        console.log(isEdit,"isEdit")
+        console.log(isEdit, "isEdit")
         let payload;
         if (isEdit === true) {
             if (currentTab === "my_todo") {
@@ -110,10 +114,10 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                     status: "pending",
                     due_date: newDate,
                     type: "assigned_to_employees",
-                    assignees: [ values?.assignees],
+                    assignees: [values?.assignees],
                 };
             }
-             dispatch(getAdminCreateToDo(payload, () => {
+            dispatch(getAdminCreateToDo(payload, () => {
                 let data = {
                     tab: currentTab
                 }
@@ -180,8 +184,8 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                                         <Form.Select
                                             className="common-field font-12 mb-2"
                                             name="assignees"
-                                        // onChange={(e)=>handleSelectedOption(e.target.value)}
-                                        {...register("assignees", { required: "Please select candidate" })}
+                                            // onChange={(e)=>handleSelectedOption(e.target.value)}
+                                            {...register("assignees", { required: "Please select candidate" })}
                                         >
                                             <option value="">Search Employee</option>
                                             {employeeList?.map(emp => (
@@ -216,8 +220,8 @@ function NewToDo({ currentTab, isEdit, setIsEdit, selectedToDo, selectedId, stri
                                 variant="transparent"
                                 className="font-14 main-btn"
                                 text={"Cancel"}
-                                type="submit"
-                            // onClick={handleClose}
+                                type="button"
+                                onClick={handleClear}
                             // disabled={smallLoader}
                             // isLoading={smallLoader}
                             />
