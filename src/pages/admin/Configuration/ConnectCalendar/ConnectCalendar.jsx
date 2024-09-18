@@ -8,7 +8,7 @@ import { DISCOVERY_DOCS, SCOPES } from "../../../../helper/utlis";
 
 const ConnectCalendar = ({ currentTab }) => {
 
-const CLIENT_ID = "904487780052-sjeu9i0nd8r72hnv7gsu4blh9r5gdera.apps.googleusercontent.com";
+const CLIENT_ID = "388502538698-ele7s63bh5rjvv23n9hbqn2jn4su0gem.apps.googleusercontent.com";
 
 const [isAuthenticated, setIsAuthenticated] = useState(false);
 
