@@ -3,19 +3,10 @@ import { Modal, Button, Form } from "react-bootstrap";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
+import { DISCOVERY_DOCS, SCOPES } from "../../../helper/utlis";
 const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCreatedMeetingsWithGoogle,meetingLink}) => {
 
-  const DISCOVERY_DOCS = [
-    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
-  ];
-  
-  const SCOPES = [
-    "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-    "https://www.googleapis.com/auth/calendar.events"
-  ];
-  
-  const CLIENT_ID = "1044218423716-d5ulieefv87jqu0ti2q9opvtuo6ed8i2.apps.googleusercontent.com";
+  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 
   const API_KEY = 'AIzaSyCvwWpOjYlFNn8h77VjMJn_1il2fEPTRJY';
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,8 +17,8 @@ const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCre
     useEffect(() => {
         function start() {
           gapi.client.init({
-            apiKey: API_KEY,
-            clientId: CLIENT_ID,
+            apiKey: process.env.REACT_APP_API_KEY,
+            clientId: process.env.REACT_APP_CLIENT_ID,
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
           }).then(() => {

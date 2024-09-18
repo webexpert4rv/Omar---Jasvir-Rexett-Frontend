@@ -8,7 +8,9 @@ import { DISCOVERY_DOCS, SCOPES } from "../../../../helper/utlis";
 
 const ConnectCalendar = ({ currentTab }) => {
 
-const CLIENT_ID = "388502538698-ele7s63bh5rjvv23n9hbqn2jn4su0gem.apps.googleusercontent.com";
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+
+console.log(process.env,"proc")
 
 const [isAuthenticated, setIsAuthenticated] = useState(false);
 
