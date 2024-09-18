@@ -76,8 +76,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
     useEffect(() => {
         function start() {
           gapi.client.init({
-            apiKey: "AIzaSyAPGrNKe2qX_5votGfs57_N1QCEpiqPkB0",
-            clientId:"904487780052-sjeu9i0nd8r72hnv7gsu4blh9r5gdera.apps.googleusercontent.com",
+            apiKey: "AIzaSyCvwWpOjYlFNn8h77VjMJn_1il2fEPTRJY",
+            clientId:"1044218423716-d5ulieefv87jqu0ti2q9opvtuo6ed8i2.apps.googleusercontent.com",
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
           }).then(() => {

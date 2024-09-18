@@ -15,9 +15,9 @@ const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCre
     "https://www.googleapis.com/auth/calendar.events"
   ];
   
-  const CLIENT_ID = "904487780052-sjeu9i0nd8r72hnv7gsu4blh9r5gdera.apps.googleusercontent.com";
+  const CLIENT_ID = "1044218423716-d5ulieefv87jqu0ti2q9opvtuo6ed8i2.apps.googleusercontent.com";
 
-  const API_KEY = 'AIzaSyAPGrNKe2qX_5votGfs57_N1QCEpiqPkB0';
+  const API_KEY = 'AIzaSyCvwWpOjYlFNn8h77VjMJn_1il2fEPTRJY';
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     let authentication=localStorage.getItem("authentication")
 
