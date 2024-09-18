@@ -15,7 +15,7 @@ const Summary = ({
   filteredStepData,
   // handleDelete,
   setFilteredStepData,
-  handleCloseUploadFileModal,
+  handleClose,
   smallLoader,
   setShowSetUpJobModal,
   showSetUpModal,
@@ -23,41 +23,69 @@ const Summary = ({
   activeStep,
   type,
   editSummary,
-  objectKeys,
+  setFreeArray,
+  freeArray,
+  setEdit,
+  newArr,
+  setNewArr
+
 }) => {
 
   const dispatch = useDispatch();
-  let developerId=localStorage.getItem("developerId");
-  const[eduId , setEduId] = useState("")
-  useEffect(()=>{
-    if(developerId){
-        dispatch(getDeveloperProfileDetails(developerId));
-    }
-},[developerId])
+  let developerId = localStorage.getItem("developerId");
+  const [eduId, setEduId] = useState("")
 
+  console.log(filteredStepData, "filteredStepDataSummary")
+  console.log(freeArray, "freeArray")
+
+
+  useEffect(() => {
+    if (developerId) {
+      dispatch(getDeveloperProfileDetails(developerId));
+    }
+  }, [developerId])
 
   const handleDeleteModal = (id) => {
-    setEduId(id)
-    setShowSetUpJobModal({
+    setEduId(id);
+    setShowSetUpJobModal((prevState) => ({
+      ...prevState,
       isDelete: true,
       deletedId: id,
+    }));
+  };
+
+  console.log(filteredStepData,"filteredStepData")
+
+
+
+  const handleDelete = () => {
+    console.log("active3")
+    const tempArr = [...filteredStepData];
+    const indexToRemove = tempArr.findIndex(item => item.id === eduId);
+    console.log(indexToRemove, "indexToRemove")
+    if (indexToRemove !== -1) {
+      tempArr.splice(indexToRemove, 1);
+    }
+    console.log(tempArr, "tempArr after splice");
+    setFilteredStepData(tempArr);
+    setEdit(true)
+    if (tempArr?.length > 0) {
+      if (activeStep === 3 || activeStep) {
+        setFreeArray((prevFreeArray) => Array.isArray(prevFreeArray) ? [...prevFreeArray, ...tempArr] : [...tempArr]);
+        console.log(freeArray, "qwerty")
+
+      } else {
+        setFreeArray(Array.isArray(tempArr) ? tempArr : []);
+      }
+    }
+    setShowSetUpJobModal({
+      isDelete: false,
     });
   };
-  console.log(filteredStepData,"filteredStepData")
-  const handleDelete = () => {
-    if(filteredStepData.length>0){
-      const tempArr = [{...filteredStepData}];
-      const indexToRemove = tempArr.findIndex(item => item.id === eduId);
-      if (indexToRemove !== -1) {
-        tempArr.splice(indexToRemove, 1);
-      }
-  
-      setFilteredStepData(tempArr);
-      setShowSetUpJobModal({
-        isDelete: false,
-      });
-    }
-  };
+
+
+
+
   const tipstext = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">Expert Insights</Popover.Header>
@@ -101,10 +129,18 @@ const Summary = ({
           <span>{item?.project_link}</span>
         </span>
       );
-    }else if(item?.job_title){
-      return <span>{`${item?.job_location} | ${item?.start_date?.slice(0,10)} - ${item?.end_date?.slice(0,10)}`}</span> 
+    } else if (item?.job_title) {
+      return <span>{`${item?.job_location} | ${item?.start_date?.slice(0, 10)} - ${item?.end_date?.slice(0, 10)}`}</span>
     }
   };
+
+  const getArray = () => {
+    if (Array.isArray(filteredStepData)) {
+      return filteredStepData;
+    } else {
+      return Object.keys(filteredStepData);
+    }
+  }
 
   return (
     <>
@@ -131,7 +167,7 @@ const Summary = ({
               </div>
             </div>
           </div>
-          {filteredStepData?.map((item, index) => {
+          {filteredStepData?.length > 0 && getArray()?.map((item, index) => {
             return (
               <>
                 <div className="work-summary-wrapper mb-3 position-relative">
@@ -193,7 +229,7 @@ const Summary = ({
       <ConfirmationModal
         text={"Are you sure to delete this job?"}
         show={showSetUpModal?.isDelete}
-        handleClose={handleCloseUploadFileModal}
+        handleClose={handleClose}
         handleAction={handleDelete}
         smallLoader={smallLoader}
 

@@ -47,6 +47,7 @@ const initialClientData = {
   interviewDetails: {},
   feedbackDetails: {},
   feedbackApproval: {},
+  singleJobPost:{},
   approveFeedbackLoader: false,
 };
 
@@ -232,6 +233,10 @@ export const clientDataSlice = createSlice({
       state.smallLoader = false;
       state.approveFeedbackLoader = false;
     },
+    setSingleJobPostData: (state,action)=>{
+      state.singleJobPost = action.payload;
+      state. smallLoader = false
+    }
   }
 });
 
@@ -282,6 +287,7 @@ export const {
   setFeedbackApproval,
   setApproveFeedbackLoader,
   setApproveFeedback,
+  setSingleJobPostData,
 } = clientDataSlice.actions;
 
 
@@ -594,13 +600,13 @@ export function clientUpdatePost(
 }
 
 export function singleJobPostData(payload, callback) {
-  console.log(payload, "pp")
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {
       let result = await clientInstance.get(`common/job-detail/${payload}`);
+      console.log(result.data,"ressulteddddd")
       // toast.success("Job successfully Posted", { position: "top-center" })
-      dispatch(setJobPostedData(result.data));
+      dispatch(setSingleJobPostData(result.data));
       dispatch(setActionSuccessFully());
       return callback();
     } catch (error) {

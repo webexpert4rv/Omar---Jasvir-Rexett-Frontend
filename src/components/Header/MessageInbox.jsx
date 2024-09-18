@@ -107,10 +107,9 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       dispatch(getAllMessages(userId)); // so that chatRoom message list also gets updated
     });
     return () => {
-      socket.off(`message_created_${userId}`, handleMessage);
+      socket.disconnect();
     };
-  }, [userId, socket, chatmessages]);
-
+  }, []);
 
 
   // for adding pagination for chat messages

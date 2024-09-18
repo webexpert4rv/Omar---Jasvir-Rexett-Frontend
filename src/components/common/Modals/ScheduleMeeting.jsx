@@ -696,7 +696,7 @@ const Schedulemeeting = ({
         syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle}
         meetingLink={meetingLink}
       />
-      <Button onClick={createCalendarEvent}>Hlp</Button>
+      {/* <Button onClick={createCalendarEvent}>Hlp</Button> */}
     </>
   );
 };

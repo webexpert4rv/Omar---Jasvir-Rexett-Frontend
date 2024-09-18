@@ -76,8 +76,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
     useEffect(() => {
         function start() {
           gapi.client.init({
-            apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-            clientId: "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+            apiKey: "AIzaSyAPGrNKe2qX_5votGfs57_N1QCEpiqPkB0",
+            clientId:"904487780052-sjeu9i0nd8r72hnv7gsu4blh9r5gdera.apps.googleusercontent.com",
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
           }).then(() => {
@@ -96,8 +96,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
   
 
     const fetchMeetingDetails = async (meetingCode) => {
-     const response = await gapi.client.reports.activities.list({
-          userKey: '"Omar@rexett.onmicrosoft.com',
+     const response =  await gapi.client.reports.activities.list({
+          userKey: '"all',
           applicationName: 'meet',
           eventName: 'call_ended',
           filters: `meeting_code==${meetingCode}`,
@@ -157,7 +157,7 @@ const MeetingInfo = ({ show, handleClose,details }) => {
       
         try {
           // Fetch the online meeting details using the meeting ID
-          const meetingResponse = await client.api(`/me/onlineMeetings/040000008200E00074C5B7101A82E00800000000122A3F6AD304DB01000000000000000010000000B64738F0AABDE34788A44E685546C187`).get();
+          const meetingResponse = await client.api(`/me/onlineMeetings/AAMkADU2NjE0OWIwLWU1MjAtNGJlNi1hNjc0LTZlYzg0NDk5YzAzMwBGAAAAAACurO6i5qZvQIspx2LtckmfBwAw6FGqZi1CQY5xHP3TIqn7AAAAAAENAAAw6FGqZi1CQY5xHP3TIqn7AABcN3IGAAA=`).get();
       
           // Extract meeting details
           const subject = meetingResponse.subject;

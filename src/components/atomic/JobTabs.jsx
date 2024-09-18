@@ -11,16 +11,24 @@ import { PiChatsFill } from "react-icons/pi";
 import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import { DUMMY_DATA } from "../../helper/constant";
+import { applyJob, developerGetJobListing } from "../../redux/slices/developerDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import RexettButton from "./RexettButton";
 
-const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
+const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
   const role = localStorage.getItem("role")
+  const developer_id = localStorage.getItem("userId")
+  const { smallLoader } = useSelector(state => state.developerData)
   const { t } = useTranslation()
   const [stateJobs, setStateJob] = useState([])
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const getCategory = (cat) => {
     let data = jobCategoryList?.find((item) => item.id == cat);
     return data?.title;
   };
+
+  console.log(jobListing, "jobListing")
 
   useEffect(() => {
     if (jobListing?.length > 0) {
@@ -28,13 +36,12 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
     } else {
       setStateJob([])
     }
-
   }, [jobListing])
 
   const convertToArray = (arr) => {
-    if(arr){
-    const skillsArray = arr?.split(",");
-    return skillsArray;
+    if (arr) {
+      const skillsArray = arr?.split(",");
+      return skillsArray;
     }
   };
 
@@ -88,6 +95,32 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
   const handleViewRedirection = (id) => {
     navigate(`/${role}/${role}-single-job/${id}`)
   }
+  const getStatus = (status) => {
+    console.log(status, "stuasssss")
+    if (status <= 95) {
+      return "finished"
+    } else if (status <= 60) {
+      return "upcoming"
+    } else if (status <= 40) {
+      return "progress"
+    } else if (status <= 20)
+      return "rejected"
+  }
+
+  const handleApplyJob = (item) => {
+    let payload = {
+      job_id: item?.id,
+      developer_id: developer_id
+    }
+    dispatch(applyJob(payload, () => {
+      let payload = {
+        current_page: 1,
+        active_tab: "new_jobs",
+        developer_id: developer_id
+      }
+      dispatch(developerGetJobListing(payload))
+    }))
+  }
 
   return (
     <div className="job-posted-wrapper">
@@ -124,7 +157,7 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                         }}
                       ></p>
                       <Row>
-                        {/* <Col md="12">
+                        <Col md="12">
                           <div className="info-grid">
                             <h4 className="grid-heading">{t("skillsRequired")}</h4>
                             {item?.skills?.length > 0 ? <ul className="need-skill-list">
@@ -137,46 +170,49 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                               })}
                             </ul> : "Not Mentioned"}
                           </div>
-                        </Col> */}
+                        </Col>
                       </Row>
                     </div>
                   </div>
                   <div>
                     {role == "developer" &&
-                      <><div>
-                        <span className="status-finished w-auto d-inline-block mb-2">Matching with your profile - <strong>95%</strong></span>
-                      </div><div>
+                      <>
+                        <div>
+                          <span className={`status-${getStatus(item?.match_percentage)} w-auto d-inline-block mb-2`}>Matching with your profile - <strong>{item?.match_percentage}%</strong></span>
+                        </div>
+                        {/* <div>
                           <span className="status-upcoming w-auto d-inline-block mb-2">Matching with your profile - <strong>60%</strong></span>
                         </div><div>
                           <span className="status-progress w-auto d-inline-block mb-2">Matching with your profile - <strong>40%</strong></span>
                         </div><div>
                           <span className="status-rejected w-auto d-inline-block mb-2">Matching with your profile - <strong>20%</strong></span>
-                        </div></>
+                        </div> */}
+                      </>
                     }
                     <div className="mb-3 mt-xl-0 mt-3">
                       <h4 className="stage-heading mb-3">Stages</h4>
                       <div className="stage-wrapper">
                         <OverlayTrigger placement="bottom" overlay={suggestText}>
                           <div className="stage-indicator stage-suggest gap-1">
-                            <span className="stage-icon"><FaUsers /></span>4</div>
+                            <span className="stage-icon"><FaUsers /></span>{item?.stages?.suggested}</div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={shortlistText}>
                           <div className="stage-indicator stage-shortlist gap-1">
-                            <span className="stage-icon"><FaClipboardUser /></span> 1
+                            <span className="stage-icon"><FaClipboardUser /></span> {item?.stages?.shortlisted}
                           </div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={interviewText}>
                           <div className="stage-indicator stage-interview gap-1">
-                            <span className="stage-icon"> <PiChatsFill /> </span>2</div>
+                            <span className="stage-icon"> <PiChatsFill /> </span> {item?.stages?.interviewing}</div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={offerText}>
                           <div className="stage-indicator stage-offer gap-1">
-                            <span className="stage-icon"> <FaHandshake /> </span> 0
+                            <span className="stage-icon"> <FaHandshake /> </span> {item?.stages?.offered}
                           </div>
                         </OverlayTrigger>
                         <OverlayTrigger placement="bottom" overlay={hiredText}>
                           <div className="stage-indicator stage-hired gap-1">
-                            <span className="stage-icon"> <MdWorkHistory /> </span> 0
+                            <span className="stage-icon"> <MdWorkHistory /> </span> {item?.stages?.hired}
                           </div>
                         </OverlayTrigger>
                       </div>
@@ -189,20 +225,27 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader }) => {
                           item?.status
                         )}`}
                       >
-                        {item?.status.charAt(0).toUpperCase() + item?.status.slice(1)}
+                        {item?.status?.charAt(0).toUpperCase() + item?.status?.slice(1)}
                       </p>
                     </div>
                     <p className="font-15">
                       Posted Date: <strong>{item?.created_at?.slice(0, 10)}</strong>
                     </p>
-                    <p className="font-15"> 
+                    <p className="font-15">
                       Response Time: <strong>15 Days</strong>
                     </p>
                     <div className="d-flex align-items-center gap-3">
 
                       {role == "developer" &&
                         <div>
-                          <Button variant="transparent" className="main-btn font-14 mb-2">Apply this job</Button>
+                          <RexettButton
+                            variant="transparent"
+                            className="main-btn font-14 mb-2"
+                            onClick={currentTab == "new_jobs" ? () => handleApplyJob(item) : undefined}
+                            text={currentTab == "new_jobs" ? "Apply this job" : currentTab == "applied_jobs" ? "Applied" : "In progress"}
+                            isLoading={smallLoader}
+                            disabled={smallLoader}
+                          />
                         </div>
                       }
                       <span

@@ -78,7 +78,7 @@ import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 const DISCOVERY_DOCS = [
     "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
     "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
-  ];
+];
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
@@ -94,24 +94,27 @@ const SingleJobDetails = () => {
         isTrue: false,
         id: null,
     });
+    const { singleJobPost } = useSelector(state => state.clientData)
     const printRef = useRef();
     const [showMeetingInfo, setShowMeetingInfo] = useState({
         isMeeting: false,
         meetingDetails: {}
     });
-    const [singleJobDescription, setSingleJobDescription] = useState({});
+    const [singleJobDescription, setSingleJobDescription] = useState();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
     let id = location.pathname.split("/")[3];
+    const [devId , setDevId] = useState()
+    const[application,setApplicationId] =useState()
     const clientId = localStorage.getItem("userId")
     const [selectedDocument, setSelectedDocument] = useState('');
     const [documentOwner, setDocumentOwner] = useState('');
     const [isNewStepCompleted, setIsNewStepCompleted] = useState(false);
     const [detailsFilled, setDetailsFilled] = useState(false);
     const [documentSaved, setDocumentSaved] = useState(false);
-    const { configDetails,developerList } = useSelector(state => state.adminData)
-    const [manualSuggestion,showManualSuggestion]=useState(false)
+    const { configDetails, developerList } = useSelector(state => state.adminData)
+    const [manualSuggestion, showManualSuggestion] = useState(false)
 
     const {
         allJobPostedList,
@@ -122,26 +125,27 @@ const SingleJobDetails = () => {
         screenLoader
     } = useSelector((state) => state.clientData);
     const { t } = useTranslation();
-    console.log(singleJobDescription, "singleJobDescription")
+
+    console.log(singleJobPost, "singleJobPost")
 
     useEffect(() => {
         function start() {
-          gapi.client.init({
-            apiKey: API_KEY,
-            clientId: CLIENT_ID,
-            discoveryDocs: DISCOVERY_DOCS,
-            scope: SCOPES
-          }).then(() => {
-            console.log('GAPI Initialized');
-            const authInstance = gapi.auth2.getAuthInstance();
-            localStorage.setItem("authentication",authInstance.isSignedIn.get())
-          }).catch((error) => {
-            console.error('Error initializing GAPI:', error);
-          });
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).then(() => {
+                console.log('GAPI Initialized');
+                const authInstance = gapi.auth2.getAuthInstance();
+                localStorage.setItem("authentication", authInstance.isSignedIn.get())
+            }).catch((error) => {
+                console.error('Error initializing GAPI:', error);
+            });
         }
         gapi.load('client:auth2', start);
-      }, []);
-    
+    }, []);
+
     useEffect(() => {
         if (id) {
             dispatch(singleJobPostData(id, () => { }));
@@ -150,15 +154,18 @@ const SingleJobDetails = () => {
         dispatch(getJobCategoryList());
     }, []);
 
-    useEffect(()=>{
-      dispatch(getDeveloperList())
-      dispatch(getAdobeTemplate())
+    useEffect(() => {
+        dispatch(getDeveloperList())
+        dispatch(getAdobeTemplate())
 
-    },[])
+    }, [])
 
     useEffect(() => {
-        setSingleJobDescription(jobPostedData?.job);
-    }, [jobPostedData]);
+        setSingleJobDescription(singleJobPost?.job);
+    }, [singleJobPost]);
+
+    console.log(singleJobDescription, "singleJobDescription")
+
 
     const getCategory = (cat) => {
         let data = jobCategoryList.find((item) => item.value == cat);
@@ -176,9 +183,7 @@ const SingleJobDetails = () => {
             })
         );
     };
-    console.log(selectedTabsData, "selectedTabsData")
     const handleSelect = (key) => {
-        console.log(key, "key")
         setCurrentTab(key);
         setSelectedTabsData(singleJobDescription?.job_applications[key]);
         if (key == "suggested") {
@@ -238,57 +243,56 @@ const SingleJobDetails = () => {
 
     const fetchMeetingDetails = async (meetingCode) => {
         const response = await gapi.client.reports.activities.list({
-          userKey: 'all',
-          applicationName: 'meet',
-          eventName: 'call_ended',
-          filters: `meeting_code==${meetingCode}`,
+            userKey: 'all',
+            applicationName: 'meet',
+            eventName: 'call_ended',
+            filters: `meeting_code==${meetingCode}`,
         });
-    
+
         const activities = response.result.items || [];
         const participants = activities.flatMap(activity =>
-          activity.events.flatMap(event =>
-            event.parameters
-              .filter(param => param.name === 'user_email')
-              .map(param => param.value)
-          )
+            activity.events.flatMap(event =>
+                event.parameters
+                    .filter(param => param.name === 'user_email')
+                    .map(param => param.value)
+            )
         );
-    
-        const duration = activities.flatMap(activity =>
-          activity.events.flatMap(event =>
-            event.parameters
-              .filter(param => param.name === 'duration_seconds')
-              .map(param => parseInt(param.value, 10))
-          )
-        ).reduce((acc, val) => acc + val, 0);
-    
-        console.log(participants,"part");
-    console.log(duration,"duration");
-      };
 
-  
+        const duration = activities.flatMap(activity =>
+            activity.events.flatMap(event =>
+                event.parameters
+                    .filter(param => param.name === 'duration_seconds')
+                    .map(param => parseInt(param.value, 10))
+            )
+        ).reduce((acc, val) => acc + val, 0);
+    };
+
+
     const checkEventStatus = async (eventId) => {
         const response = await gapi.client.calendar.events.get({
-          calendarId: 'primary',
-          eventId: "688ebijbl636qsme6vi95maa8q",
+            calendarId: 'primary',
+            eventId: "688ebijbl636qsme6vi95maa8q",
         });
-    
+
         if (response.result.status === 'cancelled') {
-          alert('This meeting was cancelled.');
+            alert('This meeting was cancelled.');
         } else {
-          const now = new Date();
-          const meetingStart = new Date(response.result.start.dateTime);
-          if (meetingStart < now) {
-            fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
-            // alert('The meeting should have started or is over.');
-          } else {
-            alert('The meeting is still scheduled.');
-          }
+            const now = new Date();
+            const meetingStart = new Date(response.result.start.dateTime);
+            if (meetingStart < now) {
+                fetchMeetingDetails("688ebijbl636qsme6vi95maa8q");
+                // alert('The meeting should have started or is over.');
+            } else {
+                alert('The meeting is still scheduled.');
+            }
         }
-      };
+    };
 
 
-
+     console.log(devId,"devId")
     const handleJobStatusAction = (e, data) => {
+        console.log(statusModal?.id,"applnId")
+        console.log(data.status,"requireddata")
         e.preventDefault();
         if (data.status == "ended") {
             dispatch(
@@ -297,7 +301,8 @@ const SingleJobDetails = () => {
                     dispatch(singleJobPostData(id, () => { }));
                 })
             );
-        } else if (data.status == "application") {
+        }
+         else if (data.status == "application") {
             dispatch(
                 getDeleteJob(statusModal?.id, () => {
                     setStatusModal({});
@@ -305,10 +310,12 @@ const SingleJobDetails = () => {
                 })
             );
         } else {
-            let newData={
-                "applicationId": statusModal?.id,
-                "newStatus":data.status
-              }
+            let newData = {
+                "applicationId": application,
+                "newStatus": data.status,
+                "developerId":devId,
+                "jobId": +id,
+            }
             dispatch(
                 changeJobStatus(currentTab, newData, () => {
                     dispatch(
@@ -383,7 +390,9 @@ const SingleJobDetails = () => {
         }
     };
 
-    const handleJobStatusModal = (e, id, status) => {
+    const handleJobStatusModal = (e, id, status,aplnId) => {
+        setApplicationId(aplnId)
+        setDevId(id)
         if (e == undefined) {
             setStatusModal({
                 [status]: !statusModal.isTrue,
@@ -398,7 +407,6 @@ const SingleJobDetails = () => {
             });
         }
     };
-    console.log(statusModal, "statusModal")
     const endjob = <Tooltip id="tooltip">{t("endJob")}</Tooltip>;
     const deletejob = (
         <Tooltip id="tooltip">
@@ -470,8 +478,8 @@ const SingleJobDetails = () => {
     }
 
     const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
-    const handleShowScheduleMeeting = (name, id,email) => {
-        setSelectedDeveloper({ name, id,email })
+    const handleShowScheduleMeeting = (name, id, email) => {
+        setSelectedDeveloper({ name, id, email })
         setShowScheduleMeet(!showScheduleMeeting);
     }
     const handleCloseScheduleMeeting = () => {
@@ -562,9 +570,9 @@ const SingleJobDetails = () => {
         });
     };
 
-    const handleShowaddCandidate=()=>{
+    const handleShowaddCandidate = () => {
         navigate('/admin/register-developer')
-      }
+    }
 
     const handleShowManualSuggestion = () => {
         showManualSuggestion(!manualSuggestion);
@@ -587,9 +595,6 @@ const SingleJobDetails = () => {
         setSelectedInterviewId(null);
         setShowPopup(!showPopup);
     };
-
-
-    console.log(singleJobDescription?.job_applications?.interviews, 'singleJobDescription')
 
     const editPage = <Tooltip>Proceed</Tooltip>;
     const viewPage = <Tooltip>View</Tooltip>;
@@ -896,9 +901,16 @@ const SingleJobDetails = () => {
                                 disabled={approvedLoader}
                                 onClick={() => handleSuggestions()} /> */}
 
-<Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
-<Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
+                            <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
+                            <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
+                        <JobCard
+                            handleJobStatusModal={handleJobStatusModal}
+                            type="Applied"
+                            data={selectedTabsData?.applied}
+                            jobStatus={singleJobDescription?.status}
+                            role="client"
+                        />
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
                             type="Suggested"
@@ -1036,7 +1048,7 @@ const SingleJobDetails = () => {
                                                                     className="outline-main-btn font-14"
                                                                 >
                                                                     Show Feedback
-                                                                
+
                                                                 </Button>
                                                                 <Button
                                                                     onClick={() => checkEventStatus(item.interview.id)}
@@ -1044,7 +1056,7 @@ const SingleJobDetails = () => {
                                                                     className="outline-main-btn font-14"
                                                                 >
                                                                     Check Status
-                                                                
+
                                                                 </Button>
                                                             </>
                                                         )}
@@ -1175,60 +1187,60 @@ const SingleJobDetails = () => {
                                             </div>
                                         </Col>
                                     ))}
-                                   {needToSchedule?.map((item)=>{
-                                    return (
-                                        <>
-                                        <Col lg={4} className="mb-3">
-                                        <div className="interview-wrapper position-relative pt-4 h-100 d-flex justify-content-between flex-column">
-                                            <div>
-                                                <div>
-                                                    <p className="interview-title mb-2">
-                                                    {singleJobDescription?.title}
-                                                    </p>
-                                                    <div className="dev-name mb-2 font-14 d-flex align-items-center">
-                                                        <div className="me-1">
-                                                            <img src={item?.developer?.profile_picture} alt="developer-img" />
-                                                        </div>
+                                    {needToSchedule?.map((item) => {
+                                        return (
+                                            <>
+                                                <Col lg={4} className="mb-3">
+                                                    <div className="interview-wrapper position-relative pt-4 h-100 d-flex justify-content-between flex-column">
                                                         <div>
-                                                            {item?.developer?.name}
-                                                            <span className="font-14 fw-normal d-block">{item?.developer?.email}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <span className="associate-text">
-                                                            <span className="associate">Experience : <b>3 years</b></span>
-                                                        </span>
-                                                        <span className="associate-text">
-                                                            <span className="associate">Screening Rating : <b>4.4 <FaStar /> </b></span>
-                                                        </span>
-                                                    </div>
-                                                    <div className="mb-3">
-                                                        <span className="associate-text">
-                                                            {/* <span className="associate">
+                                                            <div>
+                                                                <p className="interview-title mb-2">
+                                                                    {singleJobDescription?.title}
+                                                                </p>
+                                                                <div className="dev-name mb-2 font-14 d-flex align-items-center">
+                                                                    <div className="me-1">
+                                                                        <img src={item?.developer?.profile_picture} alt="developer-img" />
+                                                                    </div>
+                                                                    <div>
+                                                                        {item?.developer?.name}
+                                                                        <span className="font-14 fw-normal d-block">{item?.developer?.email}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <span className="associate-text">
+                                                                        <span className="associate">Experience : <b>3 years</b></span>
+                                                                    </span>
+                                                                    <span className="associate-text">
+                                                                        <span className="associate">Screening Rating : <b>4.4 <FaStar /> </b></span>
+                                                                    </span>
+                                                                </div>
+                                                                <div className="mb-3">
+                                                                    <span className="associate-text">
+                                                                        {/* <span className="associate">
                                                                     Date: {item.interview.meeting_date}, Time: {item.interview.meeting_time} - {item.interview.meeting_end_time}
                                                                 </span> */}
-                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="mb-2 status-interview">
+                                                                <span className="status-upcoming">
+                                                                    Need to schedule
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="d-flex align-items-center justify-content-between align-self-end">
+                                                            <div className="d-flex align-items-center gap-2">
+                                                                <button className="main-btn font-14 text-decoration-none" onClick={() => handleShowScheduleMeeting(item?.developer?.name, item?.developer_id, item?.developer?.email)}>
+                                                                    Schedule Interview
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="mb-2 status-interview">
-                                                    <span className="status-upcoming">
-                                                        Need to schedule
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="d-flex align-items-center justify-content-between align-self-end">
-                                                <div className="d-flex align-items-center gap-2">
-                                                    <button className="main-btn font-14 text-decoration-none" onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id,item?.developer?.email)}>
-                                                        Schedule Interview
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Col>
-                                        </>
-                                    )
-                                   }) }
-                                    
+                                                </Col>
+                                            </>
+                                        )
+                                    })}
+
                                 </Row>
                             </div>
                         )}
@@ -1897,7 +1909,7 @@ const SingleJobDetails = () => {
                 />
             )}
             <AgreementDetails show={showagreement} handleClose={handleCloseAgreement} />
-            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers}  jobId={id}/>
+            <ManualSuggestions show={manualSuggestion} handleClose={handleShowManualSuggestion} developerList={developerList?.developers} jobId={id} />
         </>
     );
 };
