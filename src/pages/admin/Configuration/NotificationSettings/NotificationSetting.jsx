@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { FaDesktop, FaEnvelope } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllIntegrationData } from "../../../../redux/slices/adminDataSlice";
+import { changesStatus } from "../../../../redux/slices/adminDataSlice";
 const NotificationSetting = ({ currentTab }) => {
     const dispatch =useDispatch()
     const {allIntegrationData}=useSelector(state=>state.adminData)
@@ -14,15 +15,15 @@ const NotificationSetting = ({ currentTab }) => {
     console.log(allIntegrationData,"allIntegrationData")
 
     const handleChange=(data,item)=>{
-      console.log(data,"data")
-      console.log(item,"item")
-      let payload={}
-      if(item=="email"){
-        payload={
+      console.log(data,"data hello")
+      console.log(item,"item hello")
+    //   let payload={}
+    //   if(item=="email"){
+    //     payload={
             
-        }
-      }
-    //    dispatch(changesStatus())
+    //     }
+    //   }
+       dispatch(changesStatus())
     }
     return (
         <>
