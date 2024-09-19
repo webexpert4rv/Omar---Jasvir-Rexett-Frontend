@@ -599,7 +599,7 @@ export function clientUpdatePost(
   };
 }
 
-export function singleJobPostData(payload, callback) {
+export function singleJobPostData(payload,callback) {
   return async (dispatch) => {
     dispatch(setScreenLoader());
     try {

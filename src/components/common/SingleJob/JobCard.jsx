@@ -28,9 +28,11 @@ const JobCard = ({
   page,
 }) => {
   const navigate = useNavigate();
+  const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
   const { singleJobPagination, screenLoader } = useSelector(
     (state) => state.adminData
   );
+
   const scheduleInterview = (
     <Tooltip>Move to Interview</Tooltip>
   )
@@ -50,7 +52,6 @@ const JobCard = ({
     </Tooltip>
   );
 
-  const rejectedCardToolTip = <Tooltip id="tooltip">Reject</Tooltip>;
 
   const suggestedCardToolTip = (status) => {
     return (
@@ -68,13 +69,13 @@ const JobCard = ({
     }
   };
   
-  const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
   const handleShowScheduleMeeting = () => {
     setShowScheduleMeet(!showScheduleMeeting);
   }
   const handleCloseScheduleMeeting = () =>{
     setShowScheduleMeet(false);
   }
+  const rejectedCardToolTip = <Tooltip id="tooltip">Reject</Tooltip>;
 
   return (
     <>
@@ -84,7 +85,6 @@ const JobCard = ({
           {data?.length > 0 ? (
             <>
               {data?.map((item, index) => {
-                console.log(item,"itemmmm")
                 return (
                   <>
 
@@ -98,7 +98,7 @@ const JobCard = ({
 
                       {/* <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div> */}
                       <div className="tag-developer">
-                        {type && type === "Suggested" ? "Suggest" : type}
+                        {type && type === "suggested"  ? "Suggest" : type}
                       </div>
                       <div className="overflow-hidden inner-dev-card">
                         <div
@@ -145,10 +145,10 @@ const JobCard = ({
                                                 </li> */}
                           </ul>
                           <div className="job-card-btns">
-                            {role !== "admin" &&
+                            {role === "admin" &&
                               (type == "Shortlisted" ||
-                                type === "Suggested" ||
-                                 type === "Applied" ||
+                                type === "suggested" ||
+                                 type == "applied" ||
                                 type === "Interviewing") &&
                               type !== "Hired" ? (
                               <OverlayTrigger
@@ -161,8 +161,7 @@ const JobCard = ({
                                     jobStatus === "Ended" ? true : false
                                   }
                                   onClick={(e) =>{
-                                    handleJobStatusModal(e, item?.developer?.id, type,item?.id)
-                                    console.log("hell")
+                                    handleJobStatusModal(e, item?.developer?.id,"shortlisted", type,item?.id)
                                   }
                                    
                                   }
@@ -180,7 +179,7 @@ const JobCard = ({
                             ) : (
                               ""
                             )}
-                            {role !== "admin" && (
+                            {role === "admin" && (
                               <OverlayTrigger
                                 placement="bottom"
                                 overlay={rejectedCardToolTip}
@@ -189,8 +188,7 @@ const JobCard = ({
                                   variant="danger"
                                   onClick={(e) =>
                                     handleJobStatusModal(
-                                      e, item?.developer?.id,  "rejected",item?.id
-                                     
+                                      e, item?.developer?.id,  "rejected",type,item?.id
                                     )
                                   }
                                   disabled={
@@ -202,7 +200,7 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            {role === "admin" && (
+                            {role !== "admin" && (
                               <OverlayTrigger
                                 placement="top"
                                 overlay={suggestedCardToolTip(
@@ -231,14 +229,14 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            {role === "admin" && (
+                            {role !== "admin" && (
                             <OverlayTrigger placement="top" overlay={approvedApply}>
                               <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
                                 <FaCheck />
                               </Button>
                             </OverlayTrigger>
                             )}
-                            {role === "admin" && (
+                            {role !== "admin" && (
                             <OverlayTrigger placement="top" overlay={rejectedApply}>
                               <Button variant="danger" className="w-100">
                                 <FaTimes />
@@ -261,7 +259,7 @@ const JobCard = ({
 
         </div>
 
-        {role === "admin" && type === "Suggested" ? (
+        {role === "admin" && type === "suggested" ? (
           <div className="d-flex w-100 align-items-center justify-content-between my-4">
             <p className="mb-0">
               Showing {singleJobPagination?.data?.length} results

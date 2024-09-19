@@ -8,7 +8,7 @@ import UploadFiles from "./UploadFiles";
 import EmailTemplate from "../EmailTemplate/EmailTemplate";
 import CompanyDetails from "../CompanyDetails/CompanyDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { getConfigDetails } from "../../../../redux/slices/adminDataSlice";
+import { getAllIntegrationData, getConfigDetails } from "../../../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../../../components/atomic/ScreenLoader";
 import MessageTemplate from "../MessageTemplate/MessageTemplate";
 import NotificationSetting from "../NotificationSettings/NotificationSetting";
@@ -25,6 +25,8 @@ const Customization = () => {
 
     useEffect (()=>{
     dispatch(getConfigDetails())
+    dispatch(getAllIntegrationData())
+
     },[])
     const handleSelect = (selectedTab) => {
         setCurrentTab(selectedTab);
