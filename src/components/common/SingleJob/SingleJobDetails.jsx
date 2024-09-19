@@ -862,7 +862,8 @@ const SingleJobDetails = () => {
                             ></p>
                         </div>
                     </Tab>
-                    {role === "admin" && <Tab eventKey="suggestions" title={suggest}>
+                    {role === "admin" && 
+                    <Tab eventKey="suggestions" title={suggest}>
                         <div className="text-end">
                             {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
@@ -876,14 +877,14 @@ const SingleJobDetails = () => {
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
                             type="applied"
-                            data={appliedShortList === true ? appliedTabData : selectedTabsData?.applied}
+                            data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
                             jobStatus={singleJobDescription?.status}
                             role="admin"
                         />
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
                             type="suggested"
-                            data={suggestShortList ? suggestTabData : selectedTabsData?.suggested}
+                            data={suggestShortList ? suggestTabData : singleJobDescription?.job_applications?.suggestions?.suggested}
                             jobStatus={singleJobDescription?.status}
                             role="admin"
                         />
@@ -922,7 +923,7 @@ const SingleJobDetails = () => {
                                     <JobCard
                                         handleJobStatusModal={handleJobStatusModal}
                                         type="Shortlisted"
-                                        // data={selectedTabsData}
+                                        data={selectedTabsData}
                                         jobStatus={singleJobDescription?.status}
                                         role="client"
                                     />
@@ -1833,7 +1834,7 @@ const SingleJobDetails = () => {
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
                             type="Hired"
-                            // data={selectedTabsData}
+                            data={selectedTabsData}
                             jobStatus={singleJobDescription?.status}
                         />
                     </Tab>

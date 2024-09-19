@@ -1334,7 +1334,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     };
   }
 
-  export function suggestDevelopers(payload) {
+  export function suggestDevelopers(payload,callback) {
 
     return async (dispatch) => {
         dispatch(setScreenLoader())
@@ -1342,6 +1342,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
             let result = await clientInstance.post(`/admin/suggest-developers`,{...payload})
             dispatch(setSuccessAdminData())
             toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
+            return callback()
         } catch (error) {
             console.log(error,"errrrr")
         }
