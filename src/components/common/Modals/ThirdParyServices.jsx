@@ -3,21 +3,12 @@ import { Modal, Button, Form } from "react-bootstrap";
 import RexettSpinner from "../../atomic/RexettSpinner";
 import GoogleLogin from "react-google-login";
 import { gapi } from 'gapi-script';
+import { DISCOVERY_DOCS, SCOPES } from "../../../helper/utlis";
 const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCreatedMeetingsWithGoogle,meetingLink}) => {
 
-  const DISCOVERY_DOCS = [
-    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
-  ];
-  
-  const SCOPES = [
-    "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-    "https://www.googleapis.com/auth/calendar.events"
-  ];
-  
-  const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 
-  const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';;
+  const API_KEY = 'AIzaSyCvwWpOjYlFNn8h77VjMJn_1il2fEPTRJY';
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     let authentication=localStorage.getItem("authentication")
 
@@ -26,8 +17,8 @@ const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCre
     useEffect(() => {
         function start() {
           gapi.client.init({
-            apiKey: API_KEY,
-            clientId: CLIENT_ID,
+            apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
           }).then(() => {

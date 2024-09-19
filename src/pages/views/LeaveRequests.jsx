@@ -44,6 +44,7 @@ const LeaveRequest = () => {
   const { screenLoader, approvedLoader, smallLoader, clientLeaveHistory } =useSelector((state) => state.clientData);
   const [leaveId, setLeaveId] = useState();
   const [deleteShowModal, setDeleteShowModal] = useState(false);
+  const [showEvent, setShowEvent] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const handleSelect = (selectedTab) => {
@@ -51,7 +52,6 @@ const LeaveRequest = () => {
   };
 
  
-  console.log(deleteId, "deleteId");
   const handleCloseDeleteModal = () => {
     setDeleteShowModal(false);
   };
@@ -126,7 +126,6 @@ const LeaveRequest = () => {
     return HEADER;
   };
 
-  const [showEvent, setShowEvent] = useState(false);
   const handleShowEvent = (id, status) => {
     setShowEvent(!showEvent);
     setStatus({

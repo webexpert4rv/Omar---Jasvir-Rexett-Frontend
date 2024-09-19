@@ -92,7 +92,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       'timeMax': timeMax,
       'showDeleted': false,
       'singleEvents': true,
-      'maxResults': 10,
+      'maxResults': 20,
       'orderBy': 'startTime',
      }
 

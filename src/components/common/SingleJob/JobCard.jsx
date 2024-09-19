@@ -28,9 +28,11 @@ const JobCard = ({
   page,
 }) => {
   const navigate = useNavigate();
+  const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
   const { singleJobPagination, screenLoader } = useSelector(
     (state) => state.adminData
   );
+
   const scheduleInterview = (
     <Tooltip>Move to Interview</Tooltip>
   )
@@ -40,7 +42,6 @@ const JobCard = ({
   const rejectedApply = (
     <Tooltip>Reject</Tooltip>
   )
-  console.log(screenLoader, "screenloader")
   const developerCardToolTip = (
     <Tooltip id="tooltip">
       {type === "Interviewing"
@@ -51,7 +52,6 @@ const JobCard = ({
     </Tooltip>
   );
 
-  const rejectedCardToolTip = <Tooltip id="tooltip">Reject</Tooltip>;
 
   const suggestedCardToolTip = (status) => {
     return (
@@ -69,23 +69,25 @@ const JobCard = ({
     }
   };
   
-  const [ showScheduleMeeting , setShowScheduleMeet ] = useState(false);
   const handleShowScheduleMeeting = () => {
     setShowScheduleMeet(!showScheduleMeeting);
   }
   const handleCloseScheduleMeeting = () =>{
     setShowScheduleMeet(false);
   }
+  const rejectedCardToolTip = <Tooltip id="tooltip">Reject</Tooltip>;
 
   return (
     <>
       {screenLoader ? <ScreenLoader /> : <>
+        <h5>List of {type} Developers</h5>
         <div className="developers-list job-card pt-0">
           {data?.length > 0 ? (
             <>
               {data?.map((item, index) => {
                 return (
                   <>
+
                     <div
                       className={
                         item?.recommed
@@ -93,15 +95,16 @@ const JobCard = ({
                           : "developer-card p-0"
                       }
                     >
+
                       {/* <div className="tag-developer">{item?.recommed ? "Recommend" : "Suggest"}</div> */}
                       <div className="tag-developer">
-                        {type && type === "Suggested" ? "Suggest" : type}
+                        {type && type === "suggested"  ? "Suggest" : type}
                       </div>
                       <div className="overflow-hidden inner-dev-card">
                         <div
                           className="user-imgbx"
                           onClick={(e) =>
-                            handleDeveloperCard(e, item?.developer?.id)
+                            handleDeveloperCard(e, item?.id)
                           }
                         >
                           <img
@@ -117,23 +120,23 @@ const JobCard = ({
                         <div className="text-center">
                           <h3 className="user-name">{item?.developer?.name}</h3>
                           <div className="text-center mt-2">
-                            <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>95%</strong></span>
+                            <span className="status-finished w-auto d-inline-block mb-2">Profile Match - <strong>{item?.matchPercentage}%</strong></span>
                           </div>
                           <div className="mb-2">
                             <span className="status-upcoming d-inline-flex align-items-center gap-1">
                               <FaStar /> 4.4
                             </span>
                           </div>
-                          <p className="designation-user">Software Developer</p>
-                          <p className="email-user">{item?.developer?.email}</p>
+                          {/* <p className="designation-user">{item?.name}</p> */}
+                          <p className="email-user">{item?.developer?.developer?.email}</p>
                           <ul className="social-icons">
                             <li>
-                              <Link to="#">
+                              <Link to={item?.developer?.developer_detail?.github_url}>
                                 <FaGithub />
                               </Link>
                             </li>
                             <li>
-                              <Link to="#">
+                              <Link to={item?.developer?.developer_detail?.linkedin_url}>
                                 <FaLinkedin />
                               </Link>
                             </li>
@@ -142,9 +145,10 @@ const JobCard = ({
                                                 </li> */}
                           </ul>
                           <div className="job-card-btns">
-                            {role !== "admin" &&
+                            {role === "admin" &&
                               (type == "Shortlisted" ||
-                                type === "Suggested" ||
+                                type === "suggested" ||
+                                 type == "applied" ||
                                 type === "Interviewing") &&
                               type !== "Hired" ? (
                               <OverlayTrigger
@@ -157,8 +161,7 @@ const JobCard = ({
                                     jobStatus === "Ended" ? true : false
                                   }
                                   onClick={(e) =>{
-                                    handleJobStatusModal(e, item?.id, type)
-                                    console.log("hell")
+                                    handleJobStatusModal(e, item?.developer?.id,"shortlisted", type,item?.id)
                                   }
                                    
                                   }
@@ -176,7 +179,7 @@ const JobCard = ({
                             ) : (
                               ""
                             )}
-                            {role !== "admin" && (
+                            {role === "admin" && (
                               <OverlayTrigger
                                 placement="bottom"
                                 overlay={rejectedCardToolTip}
@@ -185,9 +188,7 @@ const JobCard = ({
                                   variant="danger"
                                   onClick={(e) =>
                                     handleJobStatusModal(
-                                      e,
-                                      item?.id,
-                                      "rejected"
+                                      e, item?.developer?.id,  "rejected",type,item?.id
                                     )
                                   }
                                   disabled={
@@ -199,7 +200,7 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            {role === "admin" && (
+                            {role !== "admin" && (
                               <OverlayTrigger
                                 placement="top"
                                 overlay={suggestedCardToolTip(
@@ -228,14 +229,14 @@ const JobCard = ({
                                 </Button>
                               </OverlayTrigger>
                             )}
-                            {role === "admin" && (
+                            {role !== "admin" && (
                             <OverlayTrigger placement="top" overlay={approvedApply}>
                               <Button className="w-100 mt-2 main-btn py-2 text-black mt-3 font-15">
                                 <FaCheck />
                               </Button>
                             </OverlayTrigger>
                             )}
-                            {role === "admin" && (
+                            {role !== "admin" && (
                             <OverlayTrigger placement="top" overlay={rejectedApply}>
                               <Button variant="danger" className="w-100">
                                 <FaTimes />
@@ -258,7 +259,7 @@ const JobCard = ({
 
         </div>
 
-        {role === "admin" && type === "Suggested" ? (
+        {role === "admin" && type === "suggested" ? (
           <div className="d-flex w-100 align-items-center justify-content-between my-4">
             <p className="mb-0">
               Showing {singleJobPagination?.data?.length} results

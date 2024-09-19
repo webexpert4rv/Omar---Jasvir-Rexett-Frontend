@@ -39,7 +39,7 @@ const Schedulemeeting = ({
   type,
 }) => {
   console.log(selectedDeveloper, "selectedDeveloper");
-  console.log(type,"type")
+  console.log(type, "type")
   const {
     handleSubmit,
     register,
@@ -53,30 +53,30 @@ const Schedulemeeting = ({
   const location = useLocation();
   const [data, setData] = useState();
   const { developerList } = useSelector((state) => state.adminData);
-  const {smallLoader } = useSelector((state) => state.clientData);
+  const { smallLoader } = useSelector((state) => state.clientData);
   const [thirdParty, setThirdParty] = useState(false);
   const [meetingLink, setMeetingLink] = useState(null);
   const { instance, accounts } = useMsal();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [gogleEventId,setGoogleEventID]=useState(null)
+  const [gogleEventId, setGoogleEventID] = useState(null)
   const [events, setEvents] = useState([]);
 
   const [eventDetails, setEventDetails] = useState({
     subject: 'Koliyarl',
     location: { displayName: 'Koliyal Truck' },
     body: { content: 'Karosal' },
-    start: { 
+    start: {
       dateTime: '2024-09-11T14:00:00',  // Correct ISO 8601 format
-      timeZone: 'UTC' 
+      timeZone: 'UTC'
     },
-    end: { 
+    end: {
       dateTime: '2024-09-11T15:00:00',  // Correct ISO 8601 format
-      timeZone: 'UTC' 
+      timeZone: 'UTC'
     },
     isOnlineMeeting: true,
     onlineMeetingProvider: "teamsForBusiness"
   });
-  
+
 
 
   const getFormattedOptions = () => {
@@ -88,11 +88,11 @@ const Schedulemeeting = ({
   let id = location.pathname.split("/")[3];
 
   const [firstSlot, setFirstSlot] = useState("");
+  const [meetingStatus, setMeetingStatus] = useState()
   const [secondSlot, setSecondSlot] = useState("");
   const [groupedTime, setGroupedTime] = useState([]);
   const { timeZoneList } = useSelector((state) => state.clientData);
-  const defaultInterview=localStorage.getItem("email")
-  console.log(defaultInterview,"defaultInterview")
+  const defaultInterview = localStorage.getItem("email")
 
   useEffect(() => {
     dispatch(getTimeZoneList());
@@ -116,13 +116,13 @@ const Schedulemeeting = ({
     prompt: "consent",
   });
 
-  useEffect(()=>{
-    if(selectedDeveloper){
-      setValue("select_candidate",[{label:selectedDeveloper?.email,value:selectedDeveloper?.email}])
+  useEffect(() => {
+    if (selectedDeveloper) {
+      setValue("select_candidate", [{ label: selectedDeveloper?.email, value: selectedDeveloper?.email }])
     }
-  
 
-  },[selectedDeveloper])
+
+  }, [selectedDeveloper])
 
   const createCalendarEvent = async () => {
     if (!isAuthenticated) {
@@ -130,11 +130,11 @@ const Schedulemeeting = ({
       return;
     }
 
-  
+
     const client = Client.initWithMiddleware({ authProvider });
 
     try {
-     let response= await client.api('/me/events').post(eventDetails);
+      let response = await client.api('/me/events').post(eventDetails);
       fetchCalendarEvents(); // Fetch the updated events list
       if (response.onlineMeeting) {
         console.log("Join Teams meeting at: ", response.onlineMeeting.joinUrl);
@@ -178,11 +178,38 @@ const Schedulemeeting = ({
   const currentTime = new Date();
   const oneHourLater = new Date(currentTime.getTime() + 60 * 60 * 1000); // Adds 1 hour
 
+
+
+
   const formatTime = (date) => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${hours}:${minutes}`;
   };
+
+  // const newTime = formatTime(oneHourLater)
+  // const newCurrent = formatTime(currentTime)
+  // console.log(newTime,"newwwww")
+  // const duration = moment().duration( newCurrent.diff(newTime) );
+  // console.log(duration,"duration")
+
+
+
+
+  const newTime = formatTime(oneHourLater);
+  const newCurrent = formatTime(currentTime);
+  console.log(newTime, "newTime");
+  console.log(newCurrent, "newCurrent");
+
+  // const duration = moment.duration(newCurrent.diff(newTime)); 
+  // console.log(duration.asHours(), "duration in hours"); 
+  const currentMoment = moment(newCurrent, 'HH:mm'); // current time
+  const newMoment = moment(newTime, 'HH:mm'); // new time
+
+  // Calculate the difference in minutes
+  const duration = newMoment.diff(currentMoment, 'hours');
+  console.log(duration,"duration")
+
 
 
   const fetchCalendarEvents = async () => {
@@ -191,7 +218,7 @@ const Schedulemeeting = ({
       return;
     }
 
- 
+
 
     const client = Client.initWithMiddleware({ authProvider });
 
@@ -204,7 +231,7 @@ const Schedulemeeting = ({
   };
 
 
- 
+
 
   const handleFirstSlotChange = (event) => {
     const selectedTime = event.target.value;
@@ -263,32 +290,33 @@ const Schedulemeeting = ({
   );
 
   const meetingTypeValue = watch("meeting_type");
+  console.log(meetingTypeValue, "meetingTypeValue")
 
   useEffect(() => {
     const currentDate = moment().format("YYYY-MM-DD");
     setValue("instant_date", currentDate);
-    setValue("meeting_type","instant")
+    setValue("meeting_type", "instant")
   }, []);
 
   const onSubmit = (data) => {
     // setCreatedMeetings(data)
-    console.log(data, "dat");
+    console.log(data, "valuesss");
     if (type === "events") {
       let payload = {
         title: data?.title,
-        developer_id: 1350,
+        developer_id: data?.select_candidate?.value,
         attendees: "attendee1@example.com, attendee2@example.com",
-        event_platform: "rexet_video_meeting",
-        event_type: "scheduled",
-        event_date: data?.meeting_date,
+        event_platform: data?.meeting_platform?.value,
+        event_type: data?.meeting_type,
+        event_date: data?.instant_date,
         event_time: data?.meeting_start_time,
         event_end_time: data?.meeting_end_time,
         time_zone: data?.time_zone?.label,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         type: "meeting",
-        event_link: null,
-        developer_email: "pankaj-dev@yopmail.com",
+        event_link: "",
+        developer_email: data?.select_candidate?.label,
       };
       dispatch(
         postScheduleMeeting(payload, () => {
@@ -299,8 +327,8 @@ const Schedulemeeting = ({
     } else {
       let payload = {
         job_id: +id,
-        developer_id:selectedDeveloper?.id ? selectedDeveloper?.id: +data?.select_candidate?.value,
-        developer_email: selectedDeveloper?.email?  selectedDeveloper?.email: data?.select_candidate?.label,
+        developer_id: selectedDeveloper?.id ? selectedDeveloper?.id : +data?.select_candidate?.value,
+        developer_email: selectedDeveloper?.email ? selectedDeveloper?.email : data?.select_candidate?.label,
         meeting_type: data?.meeting_type,
         meeting_date: data?.instant_date,
         meeting_time: data?.meeting_start_time,
@@ -309,12 +337,12 @@ const Schedulemeeting = ({
         meeting_platform: data?.meeting_platform?.value,
         meeting_link: meetingLink,
         status: "pending",
-        interviewers_list:  data?.interviewers_list?.map(item => item.value).join(', '),
+        interviewers_list: data?.interviewers_list?.map(item => item.value).join(', '),
         time_zone: data?.time_zone?.label,
         candidate_reminder: data?.candidate_reminder,
         attendees_reminder: data?.interviewer_reminder,
         interview_duration: "1hr",
-        event_id:gogleEventId
+        event_id: gogleEventId
       };
       // dispatch(postCandidateInterview(payload));
     }
@@ -322,13 +350,20 @@ const Schedulemeeting = ({
   };
 
   let r = watch("meeting_platform");
+  console.log(r, "meetiingVideo")
   useEffect(() => {
-    setThirdParty(r?.value == "google_meet" || r?.value=="microsoft_team"  ? true : false);
+    setThirdParty(r?.value == "google_meet" || r?.value == "microsoft_team" ? true : false);
   }, [r]);
 
   const handleCloseThirdPary = () => {
     setThirdParty(false);
   };
+
+  console.log(meetingStatus, "meeting status")
+  const handleMeeting = (status) => {
+    console.log(status, "statusss")
+    setMeetingStatus(status)
+  }
 
   const generateRequestId = () => {
     return `request_${new Date().getTime()}_${Math.floor(
@@ -385,7 +420,7 @@ const Schedulemeeting = ({
       });
     setThirdParty(false);
   };
- 
+
   return (
     <>
       <Modal
@@ -399,7 +434,7 @@ const Schedulemeeting = ({
         <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
 
         <Modal.Body>
-          <h3 className="popup-heading">{type==="events"? "Schedule Meetings" : "Schedule Interview"}</h3>
+          <h3 className="popup-heading">{type === "events" ? "Schedule Meetings" : "Schedule Interview"}</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <Row>
@@ -442,38 +477,38 @@ const Schedulemeeting = ({
                       control={control}
                       selectOptions={getFormattedOptions()}
                       rules={{ required: "This field is required" }}
-                      
+
                       invalidFieldRequired={true}
                       placeholder="Select Candidate"
                     />
                     <p className="error-message">{errors?.select_candidate?.message}</p>
                   </div>
                 </Col>
-               { type === "events" ? ""
-               : <>
-               <Col lg={4} className="mb-lg-3 mb-1">
-                  <p className="font-14 schedule-heading">
-                    <span>
-                      <FaUsers />
-                    </span>
-                    Interviewer
-                  </p>
-                </Col>
-                <Col lg={8} className="mb-3">
-                  <div>
-                    <CommonInput
-                      name={"interviewers_list"}
-                      type={"creatable"}
-                      control={control}
-                      rules={{ required: "This field is required" }}
-                      invalidFieldRequired={true}
-                      placeholder="Select Interviewer"
+                {type === "events" ? ""
+                  : <>
+                    <Col lg={4} className="mb-lg-3 mb-1">
+                      <p className="font-14 schedule-heading">
+                        <span>
+                          <FaUsers />
+                        </span>
+                        Interviewer
+                      </p>
+                    </Col>
+                    <Col lg={8} className="mb-3">
+                      <div>
+                        <CommonInput
+                          name={"interviewers_list"}
+                          type={"creatable"}
+                          control={control}
+                          rules={{ required: "This field is required" }}
+                          invalidFieldRequired={true}
+                          placeholder="Select Interviewer"
 
-                    />
-                    <p>{errors?.select_candidate?.message}</p>
-                  </div>
-                </Col>
-                </>}
+                        />
+                        <p>{errors?.select_candidate?.message}</p>
+                      </div>
+                    </Col>
+                  </>}
 
                 <Col lg={4} className="mb-lg-3 mb-1">
                   <p className="font-14 schedule-heading">
@@ -485,29 +520,29 @@ const Schedulemeeting = ({
                 </Col>
                 <Col lg={8} className="mb-3">
                   <div>
-                    <div className="mb-2">
+                    <div className="mb-2" onChange={(e) => handleMeeting(e.target.value)}>
                       <Form.Check
                         type="radio"
                         name="instant"
                         label="Instant Meeting"
                         id="instant_meeting"
-                        checked={true}
+                        checked={meetingStatus === "instant"} // Use state to control checked
                         className="d-inline-block meeting-radio ps-0 me-2"
                         value="instant"
                         {...register("meeting_type")}
                       />
-
                       <Form.Check
                         type="radio"
                         name="scheduled"
                         label="Scheduled Date & Time"
                         id="scheduled"
+                        checked={meetingStatus === "scheduled"}
                         className="d-inline-block meeting-radio ps-0"
                         value="scheduled"
                         {...register("meeting_type")}
                       />
                     </div>
-                    {meetingTypeValue === "instant" && (
+                    {meetingTypeValue === "instant" ? (
                       <>
                         {/* <Form.Control type="date" className="common-field font-14"  value={"2024-01-02"} /> */}
 
@@ -526,12 +561,12 @@ const Schedulemeeting = ({
                             </span>
                             <p className="font-14 mb-0">{formatTime(oneHourLater)}</p>
                             <p className="mb-0 font-14">Duration</p>
-                            <span className="font-14">1 hr</span>
+                            <span className="font-14">{duration} hr</span>
                           </div>
                         </div>
                       </>
-                    )}
-                    {meetingTypeValue === "scheduled" && (
+                    ) :
+                      // meetingTypeValue === "scheduled" && (
                       <div className="specific-datetime">
                         <div className="d-flex align-items-center gap-3">
                           <CommonInput
@@ -575,7 +610,7 @@ const Schedulemeeting = ({
                             control={control}
                             rules={{ required: "This field is required" }}
                             invalidFieldRequired={true}
-                          />{" "}
+                          />
                         </div>
                         <div>
                           <CommonInput
@@ -589,7 +624,8 @@ const Schedulemeeting = ({
                           />
                         </div>
                       </div>
-                    )}
+                      // )
+                    }
                   </div>
                 </Col>
                 <Col lg={4} className="mb-lg-3 mb-1">
@@ -696,7 +732,7 @@ const Schedulemeeting = ({
         syncCreatedMeetingsWithGoogle={syncCreatedMeetingsWithGoogle}
         meetingLink={meetingLink}
       />
-      <Button onClick={createCalendarEvent}>Hlp</Button>
+      {/* <Button onClick={createCalendarEvent}>Hlp</Button> */}
     </>
   );
 };

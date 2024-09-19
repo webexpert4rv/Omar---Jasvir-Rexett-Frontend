@@ -38,7 +38,8 @@ const initialAdminData = {
     messageTemplates:{},
     allAdminEmployees:[],
     chatRoom:{},
-    allPermissionDetails:{}
+    allPermissionDetails:{},
+    allIntegrationData:[]
 }
 
 export const adminDataSlice = createSlice({
@@ -102,6 +103,7 @@ export const adminDataSlice = createSlice({
         setFailAdminData: (state, action) => {
             state.smallLoader = false;
             state.screenLoader = false;
+            state.approvedLoader = false;
         },
         setAdminTimeReporting: (state, action) => {
             state.adminTimeReportingList = action.payload
@@ -142,6 +144,10 @@ export const adminDataSlice = createSlice({
         setSingleClient: (state, action) => {
             state.screenLoader = false;
             state.singleClient = action.payload
+        },
+        setAllIntegration: (state, action) => {
+            state.screenLoader = false;
+            state.allIntegrationData = action.payload
         },
         setAccountEnableDisable:(state, action) =>{
             state.screenLoader = false;
@@ -207,7 +213,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const {setAllIntegration, setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -739,6 +745,23 @@ export function getInvoiceDetails (query) {
     }
 }
 
+export function getAllIntegrationData () {
+    return async(dispatch) => {
+        dispatch(setScreenLoader());
+        try{
+            let result = await clientInstance.get(`admin/notification-settings/list`)
+
+                dispatch(setAllIntegration(result?.data?.data))
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+
+    }
+}
+
 export function rejectEditAction(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
@@ -775,7 +798,7 @@ export function addToFeature(query,closeModal,data,toastMessage) {
     };
 }
 
-export function sendMailForCompleteProfile(payload,data) {
+export function sendMailForCompleteProfile(payload,data,callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
@@ -783,11 +806,14 @@ export function sendMailForCompleteProfile(payload,data) {
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
-                dispatch(allApplicationsList(data))
+                if(data){
+                    dispatch(allApplicationsList(data))
+                }
+                return callback()
             }
         } catch (error) {
-            const message = error?.response.data.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response?.data?.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };
@@ -925,7 +951,7 @@ export function getAllPermissionDetails(payload){
              dispatch(setAllPermissionDetails(result.data))
             
         }catch(error){
-            const message = error?.response.data.message || "Something went wrong";
+            const message = error?.response?.data?.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
@@ -1046,6 +1072,24 @@ export function getDeveloperList(){
         // dispatch(setBtnLoader())
         try{
             let result = await clientInstance.get("common/developers-list")
+            if (result.status === 200) {
+                toast.success(result.data?.message, { position: "top-center" })
+            }
+            dispatch(setDeveloperList(result.data))
+            // return callback();
+        }catch(error){
+            const message = error?.response?.data?.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+    }
+}
+
+export function changesStatus(payload){
+    return async (dispatch)=>{
+        // dispatch(setBtnLoader())
+        try{
+            let result = await clientInstance.get(`admin/notifications/settings`)
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }
@@ -1186,7 +1230,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
   export function getAllMessageTemplates() {
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+    //   dispatch(setSmallLoader());
       try {
         let result = await clientInstance.get("common/message-templates");
         dispatch(setMessageTemplates(result.data));
@@ -1213,7 +1257,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
   export function getTemplateById(id,callback) {
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+    //   dispatch(setSmallLoader());
       try {
         let result = await clientInstance.get(`common/message-templates/${id}`);
         return callback(result.data?.template)
@@ -1290,7 +1334,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
     };
   }
 
-  export function suggestDevelopers(payload) {
+  export function suggestDevelopers(payload,callback) {
 
     return async (dispatch) => {
         dispatch(setScreenLoader())
@@ -1298,6 +1342,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
             let result = await clientInstance.post(`/admin/suggest-developers`,{...payload})
             dispatch(setSuccessAdminData())
             toast.success(result?.data?.message ? result.data?.message : result?.message, { position: "top-center" })
+            return callback()
         } catch (error) {
             console.log(error,"errrrr")
         }

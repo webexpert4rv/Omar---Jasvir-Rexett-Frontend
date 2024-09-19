@@ -48,7 +48,12 @@ const AddEducation = ({
   skillOptions,
   name
 }) => {
+
+  console.log("step6")
+  console.log(name, "name")
+  console.log(watch("tech_stacks_used"), "tech_stacks_used")
   const [formattedSkillOptions, setFormattedSkillOptions] = useState([]);
+  console.log(selectedRecommend, "selectedRecommend")
   useEffect(() => {
     if (skillOptions?.length) {
       const formattedSkillOptions = createOptionsForReactSelect(
@@ -59,8 +64,12 @@ const AddEducation = ({
       setFormattedSkillOptions(formattedSkillOptions);
     }
   }, [skillOptions]);
+  console.log(formattedSkillOptions, "formattedSkillOptions")
 
-  console.log(watch(),'watchwatchkk')
+  useEffect(() => {
+    setValue(name, selectedRecommend)
+
+  }, [selectedRecommend])
 
   const tipstext = (
     <Popover id="popover-basic">
@@ -110,35 +119,34 @@ const AddEducation = ({
       </div>
 
       <Row>
-        <Col md={6}>
+        <Col md={6} className="px-md-3 px-0">
           <div>
-          <RecommendationAI control={control} setSelectedRecommend={setSelectedRecommend}/>
+            <RecommendationAI control={control} setRecommend={setSelectedRecommend} />
           </div>
         </Col>
-        <Col md={6}>
+        <Col md={6} className="px-md-3 px-0 mt-md-0 mt-4">
           <div id="custom-ck">
-          <p className="font-14 fw-medium mb-1">Description</p>
-          <Controller
-            name={name}
-            control={control}
-            rules={{ required: "Job description is required" }}
-           
-            render={({ field }) => (
-              <ReactQuill
-                {...field}
-                value={field.value ? field.value : selectedRecommend}
-                className={`common-field ${
-                  errors.description?.message && "invalid-field"
-                }`}
-                theme="snow"
-                onChange={(content, delta, source, editor) => field.onChange(content)}
-              />
+            <label className="font-14 fw-medium mb-1">Description</label>
+            <Controller
+              name={name}
+              control={control}
+              rules={{ required: "Job description is required" }}
+
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  value={field.value}
+                  className={`common-field ${errors.description?.message && "invalid-field"
+                    }`}
+                  theme="snow"
+                  onChange={(content, delta, source, editor) => field.onChange(content)}
+                />
+              )}
+            />
+            {errors?.description && (
+              <p className="field-error">{errors.description?.message}</p>
             )}
-          />
-          {errors?.description && (
-            <p className="field-error">{errors.description?.message}</p>
-          )}
-        </div>
+          </div>
         </Col>
       </Row>
     </>

@@ -75,7 +75,8 @@ export function getToken(tokenKey) {
 
 export const DISCOVERY_DOCS = [
   "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-  "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+  "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest",
+  'https://admin.googleapis.com/$discovery/rest?version=reports_v1'
 ];
 
 export const SCOPES = [

@@ -4,6 +4,7 @@ import devImg from '../../../assets/img/user-img.jpg';
 import { FaStar } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { suggestDevelopers } from "../../../redux/slices/adminDataSlice";
+import { singleJobPostData } from "../../../redux/slices/clientDataSlice";
 
 const ManualSuggestions = ({ show, handleClose,developerList,jobId }) => {
     const [selectedItems, setSelectedItems] = useState({});
@@ -34,7 +35,9 @@ const ManualSuggestions = ({ show, handleClose,developerList,jobId }) => {
             "job_id": Number(jobId),
             "developer_ids": selectedDevelopersIds
           }
-        await dispatch(suggestDevelopers(payload));
+        await dispatch(suggestDevelopers(payload,()=>(
+            dispatch(singleJobPostData(jobId, () => { }))
+        )));
         setSelectedItems({});
         setSelectAll(false);
         handleClose();

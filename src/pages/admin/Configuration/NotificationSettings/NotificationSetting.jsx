@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { FaDesktop, FaEnvelope } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllIntegrationData } from "../../../../redux/slices/adminDataSlice";
+import { changesStatus } from "../../../../redux/slices/adminDataSlice";
 const NotificationSetting = ({ currentTab }) => {
+    const dispatch =useDispatch()
+    const {allIntegrationData}=useSelector(state=>state.adminData)
+
+    // useEffect(()=>{
+    //   dispatch(getAllIntegrationData())
+    // },[])
+
+    console.log(allIntegrationData,"allIntegrationData")
+
+    const handleChange=(data,item)=>{
+      console.log(data,"data hello")
+      console.log(item,"item hello")
+    //   let payload={}
+    //   if(item=="email"){
+    //     payload={
+            
+    //     }
+    //   }
+       dispatch(changesStatus())
+    }
     return (
         <>
 
@@ -27,94 +50,28 @@ const NotificationSetting = ({ currentTab }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                {
+                                    allIntegrationData.settings.map((item)=>{
+                                        return (
+                                            <>
+                                               <tr>
                                     <td className="align-middle">
-                                        New Job Posted
+                                       {item?.name}
                                     </td>
                                     <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
+                                        <Form.Check type="checkbox" className="primary-checkbox" checked={item?.is_email_notification} onChange={()=>handleChange(item,"email")} />
                                     </td>
                                     <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
+                                        <Form.Check type="checkbox" className="primary-checkbox" checked={item?.is_desktop_notification} onChange={()=>handleChange(item,"desk")} />
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td className="align-middle">
-                                        Shortlisted Candidate
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="align-middle">
-                                        Interview Scheduled
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="align-middle">
-                                        Interview Feedback
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="align-middle">
-                                        Candidate Hired
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="align-middle">
-                                        Invoice Received
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="align-middle">
-                                        Invoice Approved
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="align-middle">
-                                        Invoice Received
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                    <td className="text-center align-middle">
-                                        <Form.Check type="checkbox" className="primary-checkbox" checked />
-                                    </td>
-                                </tr>
+
+                                            </>
+                                        )
+                                    })
+                                }
+                             
+
                             </tbody>
                         </table>
                     </div>

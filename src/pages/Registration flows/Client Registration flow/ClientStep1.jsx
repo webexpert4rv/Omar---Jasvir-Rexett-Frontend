@@ -45,6 +45,7 @@ const ClientStep1 = ({
   console.log(stepFields,"fieldname")
   let isStillWorking=watch("is_still_working")
   console.log(skillOptions,"skillOptions")
+  console.log(watch("tech_stacks_used"),"labeels")
   // let isStillWorking=true
   return (
     <>
@@ -84,6 +85,7 @@ const ClientStep1 = ({
                   isMaxRequired,
                   readOnly,
                 }) =>
+
                   isPasswordSection ? (
                     <PasswordSection
                       control={control}
@@ -151,7 +153,12 @@ const ClientStep1 = ({
                               rules={{ ...rules }}
                               error={errors?.[fieldName]}
                               type={type}
-                              options={companyTypeOptions ? companyTypeOptions:skillOptions && label=="Skill" ?skillOptions: fieldName=="time_zone"? skillOptions :options}//get options
+                             options = {companyTypeOptions
+                              ? companyTypeOptions
+                              : (label === "Skill" || fieldName === "time_zone")
+                              ? skillOptions
+                              : options}
+                            
                               defaultOption={defaultOption}
                               placeholder={placeholder}
                               isMaxRequired={isMaxRequired}

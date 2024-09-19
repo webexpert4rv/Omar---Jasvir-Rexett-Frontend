@@ -78,9 +78,7 @@ const RecommendationAI = ({
       let currentStep = localStorage.getItem('clientActiveStep');
 
       const handleRecommendation=(item)=>{
-        console.log(item,"kk")
         const itemToSet = currentStep === '4' ? {label: item.text, value: item.text} : item.text
-        console.log(itemToSet,"itemToSet")
         setSelectedRecommend(itemToSet);
       }
 

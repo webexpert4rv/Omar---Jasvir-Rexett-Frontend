@@ -8,10 +8,8 @@ import { DISCOVERY_DOCS, SCOPES } from "../../../../helper/utlis";
 
 const ConnectCalendar = ({ currentTab }) => {
 
-  
+const CLIENT_ID = '574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com';
 
-  
-  const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
 const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -33,8 +31,8 @@ const loginRequest = {
     "profile",
     "OnlineMeetings.ReadWrite",
     "OnlineMeetingRecording.Read.All",
-     "Calendars.ReadWrite",
-     "Calendars.Read",
+    "Calendars.ReadWrite",
+    "Calendars.Read",
   ],
   
   };
