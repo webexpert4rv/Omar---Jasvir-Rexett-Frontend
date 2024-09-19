@@ -22,7 +22,7 @@ const SCREENING_OPTIONS = [
     label: "Education",
     question_type: "Degree",
     title: "",
-    question: "Have you completed the following level of education: [Degree]",
+    question: "et",
     ideal_answer: "Yes",
     uniqueId: "2",
   },
