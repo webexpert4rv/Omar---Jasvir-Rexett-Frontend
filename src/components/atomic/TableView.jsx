@@ -4,9 +4,11 @@ import devImg from '../../assets/img/user-img.jpg'
 import { FaStar, FaTimes } from 'react-icons/fa'
 import { LuMessagesSquare } from 'react-icons/lu'
 import NoDataFound from './NoDataFound'
+import { PiUserRectangleFill } from 'react-icons/pi'
 
 const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,listing,handleJobStatusModal,type}) => {
   console.log(listing,"listing")
+  console.log(type,"gridviewType")
 
   return (
     <>
@@ -87,12 +89,12 @@ const TableView = ({handleShowScheduleMeeting,scheduleInterview,rejectedApply,li
                                 <div className="d-flex align-items-center gap-2 job-action-btns">
                                   <OverlayTrigger placement="top" overlay={scheduleInterview}>
                                     {/* <Button onClick={()=>handleShowScheduleMeeting(item?.developer?.name,item?.developer_id)} className="main-btn py-2 text-black font-15"> */}
-                                    <Button onClick={(e)=>handleJobStatusModal(e, item?.id, type)} className="main-btn py-2 text-black font-15">
-                                      <LuMessagesSquare />
+                                    <Button onClick={(e)=>handleJobStatusModal(e, item?.developer?.id,"interviewing", type,item?.id)} className="main-btn py-2 text-black font-15">
+                                    <PiUserRectangleFill />
                                     </Button>
                                   </OverlayTrigger>
                                   <OverlayTrigger placement="top" overlay={rejectedApply}>
-                                    <Button variant="danger">
+                                    <Button onClick={(e)=>handleJobStatusModal(e, item?.developer?.id,"rejected", type,item?.id)} variant="danger">
                                       <FaTimes />
                                     </Button>
                                   </OverlayTrigger>
