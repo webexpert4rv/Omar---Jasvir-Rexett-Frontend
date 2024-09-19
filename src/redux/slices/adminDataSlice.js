@@ -798,7 +798,7 @@ export function addToFeature(query,closeModal,data,toastMessage) {
     };
 }
 
-export function sendMailForCompleteProfile(payload,data) {
+export function sendMailForCompleteProfile(payload,data,callback) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
         try {
@@ -806,11 +806,14 @@ export function sendMailForCompleteProfile(payload,data) {
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
                 dispatch(setSuccessAdminData())
-                dispatch(allApplicationsList(data))
+                if(data){
+                    dispatch(allApplicationsList(data))
+                }
+                return callback()
             }
         } catch (error) {
-            const message = error?.response.data.message || "Something went wrong";
-            toast.error(message, { position: "top-center" })
+            // const message = error?.response?.data?.message || "Something went wrong";
+            // toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
         }
     };
@@ -1227,7 +1230,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
   export function getAllMessageTemplates() {
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+    //   dispatch(setSmallLoader());
       try {
         let result = await clientInstance.get("common/message-templates");
         dispatch(setMessageTemplates(result.data));
@@ -1254,7 +1257,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
   export function getTemplateById(id,callback) {
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+    //   dispatch(setSmallLoader());
       try {
         let result = await clientInstance.get(`common/message-templates/${id}`);
         return callback(result.data?.template)

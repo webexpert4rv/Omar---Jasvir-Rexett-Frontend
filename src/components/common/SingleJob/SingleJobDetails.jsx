@@ -1858,7 +1858,7 @@ const SingleJobDetails = () => {
             <ConfirmationModal
                 text={jobPostConfirmMessage(currentTab)}
                 show={
-                    statusModal?.Shortlisted ||
+                    statusModal?.shortlisted ||
                     statusModal?.Interviewing ||
                     statusModal?.suggested ||
                     statusModal?.applied ||
