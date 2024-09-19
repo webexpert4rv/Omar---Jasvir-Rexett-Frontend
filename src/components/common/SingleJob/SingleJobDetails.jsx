@@ -253,6 +253,7 @@ const SingleJobDetails = () => {
 
 
     const handleJobStatusAction = (e, data) => {
+        console.log(devId,"devid")
         console.log(data?.status, "status")
         e.preventDefault();
         if (data.status == "ended") {
@@ -361,6 +362,7 @@ const SingleJobDetails = () => {
     };
 
     const handleJobStatusModal = (e, id, status, type, aplnId) => {
+        console.log(id,"helloId")
         setDevType(type)
         setApplicationId(aplnId)
         setDevId(id)
@@ -879,14 +881,14 @@ const SingleJobDetails = () => {
                             type="applied"
                             data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
                             jobStatus={singleJobDescription?.status}
-                            role="admin"
+                            // role="admin"
                         />
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
                             type="suggested"
                             data={suggestShortList ? suggestTabData : singleJobDescription?.job_applications?.suggestions?.suggested}
                             jobStatus={singleJobDescription?.status}
-                            role="admin"
+                            // role="admin"
                         />
                     </Tab>}
                     <Tab eventKey="shortlisted" title={shortlist}>
@@ -916,16 +918,16 @@ const SingleJobDetails = () => {
                                 <Tab.Pane eventKey="list-view">
                                     <div className="">
 
-                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} type={'Interviewing'} handleJobStatusModal={handleJobStatusModal} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.shortlisted} />
+                                        <TableView handleShowScheduleMeeting={handleShowScheduleMeeting} type={'interviewing'} handleJobStatusModal={handleJobStatusModal} scheduleInterview={scheduleInterview} rejectedApply={rejectedApply} listing={singleJobDescription?.job_applications?.shortlisted} />
                                     </div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="grid-view">
                                     <JobCard
                                         handleJobStatusModal={handleJobStatusModal}
                                         type="Shortlisted"
-                                        data={selectedTabsData}
+                                        data={singleJobDescription?.job_applications?.shortlisted }
                                         jobStatus={singleJobDescription?.status}
-                                        role="client"
+                                        // role="client"
                                     />
                                 </Tab.Pane>
                             </Tab.Content>
@@ -1834,7 +1836,7 @@ const SingleJobDetails = () => {
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
                             type="Hired"
-                            data={selectedTabsData}
+                            data={singleJobDescription?.job_applications?.hired}
                             jobStatus={singleJobDescription?.status}
                         />
                     </Tab>
@@ -1860,7 +1862,7 @@ const SingleJobDetails = () => {
                 text={jobPostConfirmMessage(currentTab)}
                 show={
                     statusModal?.shortlisted ||
-                    statusModal?.Interviewing ||
+                    statusModal?.interviewing ||
                     statusModal?.suggested ||
                     statusModal?.applied ||
                     statusModal?.application
