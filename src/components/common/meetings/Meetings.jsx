@@ -13,18 +13,7 @@ import moment from 'moment';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { useMsal } from '@azure/msal-react';
-// import { DISCOVERY_DOCS, SCOPES } from '../../../helper/utlis';
-
- const DISCOVERY_DOCS = [
-  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-  "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
-];
-
- const SCOPES = [
-  "https://www.googleapis.com/auth/admin.reports.usage.readonly",
-  "https://www.googleapis.com/auth/calendar.events",
-  'https://www.googleapis.com/auth/admin.reports.audit.readonly',
-];
+import { DISCOVERY_DOCS, SCOPES } from '../../../helper/utlis';
 
 
 const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handleShowMeetingInfo, createdMeetings }) => {
@@ -49,8 +38,8 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   useEffect(() => {
     function start() {
       gapi.client.init({
-        apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
-            clientId: "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+            apiKey: process.env.REACT_APP_API_KEY,
+            clientId: process.env.REACT_APP_CLIENT_ID,
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
       }).then(() => {

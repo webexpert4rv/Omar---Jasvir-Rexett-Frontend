@@ -85,13 +85,16 @@ const COLUMNS = {
 };
 const Applications = () => {
   const targetRef = useRef();
+  const [screeninginfo, showScreeningInfo] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { allApplications, approvedLoader, screenLoader, smallLoader } =
-    useSelector((state) => state.adminData);
+  const { allApplications, approvedLoader, screenLoader, smallLoader } = useSelector((state) => state.adminData);
   const [search, setSearch] = useState("");
   const [timerValue, setTimerValue] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
+  const [schedulescreeening, showScheduleScreening] = useState(false);
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [arrowactive, setArrowActive] = useState(null);
   const [currentTab, setCurrentTab] = useState("clients");
   const [application, setApplication] = useState([]);
@@ -99,6 +102,7 @@ const Applications = () => {
   const [selectedRejectedBtn, setSelectedRejectedBtn] = useState(null);
   const [page, setPage] = useState(1);
   const [loadingRow, setLoadingRow] = useState(null);
+  const [loading, setLoading] = useState(false)
   const { t } = useTranslation();
   const [showScreening, setScreeningShow] = useState(false);
   const [filters, setFilters] = useState({
@@ -111,8 +115,12 @@ const Applications = () => {
 
   const handleScreeningClose = () => setScreeningShow(false);
   const handleScreeningShow = () => setScreeningShow(true);
-
   const [selectedTimeslot, setSelectedTimeslot] = useState("");
+  const [emailNum, setEmailNum] = useState()
+  const [emailIndx, setEmailIndx] = useState()
+  console.log(emailIndx, "emailIndx")
+  console.log(allApplications, "allApplications")
+  console.log(loading, "loading")
 
   const handleTimeslotChange = (e) => {
     setSelectedTimeslot(e.target.id);
@@ -203,13 +211,41 @@ const Applications = () => {
   };
   const rescheduleText = <Tooltip>Reschedule</Tooltip>;
 
+  console.log(emailNum, "emailNum")
+  const handleSendEmail = async (id, email, verificationReminderCount, index) => {
+    console.log(verificationReminderCount, "verificationReminderCount")
+    setEmailIndx(index)
+    setEmailNum(verificationReminderCount)
+    setLoading(true)
+    if (verificationReminderCount < 3) {
+      const data = {
+        user_id: id,
+        link: email,
+        page: page,
+        active_tab: currentTab,
+        // ...filters
+      }
+      await dispatch(sendMailForCompleteProfile(data, () => {
+        let data = {
+          ...filters,
+          page: page,
+          active_tab: currentTab,
+        };
+        dispatch(allApplicationsList(data));
+      })).finally(() =>
+        setLoadingRow(null)
+      );
+      setLoading(false)
+
+    }
+  }
+
   const redirectToWebsiteForm = (
     currentUser,
     id,
     item,
     verificationReminderCount,
   ) => {
-    console.log(item?.completed_steps + 1, "currentUser")
     setLoadingRow(id);
     // const encrypted = encrypt(id);
     const encrypted = id;
@@ -243,15 +279,14 @@ const Applications = () => {
       }
     }
   };
+
   const sendEmail = (
-    <Tooltip>Send Email</Tooltip>
+    <Tooltip>{emailNum === 2 ? "Max Limit Reached" : "Send Email"}</Tooltip>
   )
   const alreadysendEmail = (
     <Tooltip>Already sent</Tooltip>
   )
-  const [schedulescreeening, showScheduleScreening] = useState(false);
-  const [selectedEmail, setSelectedEmail] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
+
 
   const handleShowScheduleScreening = (email, id) => {
     setSelectedEmail(email);
@@ -265,7 +300,6 @@ const Applications = () => {
     setSelectedId(null);
   };
 
-  const [screeninginfo, showScreeningInfo] = useState(false);
   const handleShowScreeningInfo = () => {
     showScreeningInfo(!screeninginfo);
   }
@@ -278,20 +312,18 @@ const Applications = () => {
   const rescheduleBtn = (
     <Tooltip>Reschedule</Tooltip>
   )
-  console.log(allApplications?.developers?.completed_steps, "allApplications")
 
   const handleFeedbackClick = (interviewId) => {
     navigate('/client/interview-feedback', {
-        state: { interviewId },
+      state: { interviewId },
     });
   };
 
   const handleInterviewReport = (interviewId) => {
     navigate('/client/interview-detail', {
-        state: { interviewId },
+      state: { interviewId },
     });
   };
-console.log(allApplications?.developers?.completed_steps,"allApplications")
   return (
     <>
       {screenLoader ? (
@@ -330,7 +362,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
               <Nav variant="pills" className="application-pills">
                 <Nav.Item className="application-item">
                   <Nav.Link eventKey="clients" className="application-link">
-                    {t("clients")}{" "}
+                    {t("clients")}
                     <span className="new-app">
                       {allApplications?.clients?.length}
                     </span>
@@ -385,7 +417,8 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                           <>
                             {currentTab == "clients" &&
                               application?.length > 0 ? (
-                              application?.map((item, index) => (
+                              application?.map((item, index) =>
+                              (
                                 <React.Fragment key={index}>
                                   <tr
                                     className="application-row"
@@ -521,7 +554,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                     item?.id,
                                                     item,
                                                     3
-                                                    
+
                                                   )
                                                 }
                                               >
@@ -643,10 +676,24 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                 </h3>
                                                 <div className="d-inline-flex gap-1 align-items-center">
                                                   <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                                    <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
-                                                      <span className="email_shot">1</span>
+                                                    <span className="status-email position-relative"
+                                                      onClick={() => {
+                                                        if (!loading && item?.verification_reminder_count < 3) {
+                                                          handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                        }
+                                                      }}
+                                                    >
+                                                      <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}
+                                                      </span>
+                                                      {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                                     </span>
                                                   </OverlayTrigger>
+                                                  {/* <OverlayTrigger placement="bottom" overlay={sendEmail}>
+                                                    <div >
+                                                      <RexettButton  onClick={() => handleSendEmail(item?.id, item?.email, item?.verification_reminder_count)} disabled={item?.verification_reminder_count == 2 ? true : false} icon={<FaEnvelope />}  isLoading={item?.verification_reminder_count == 2 ? false  : smallLoader }/>
+                                                      <span className="email_shot">{item?.verification_reminder_count}</span>
+                                                    </div>
+                                                  </OverlayTrigger> */}
                                                 </div>
                                               </div>
                                             </Col>
@@ -657,7 +704,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                   <h3 className="application-heading">
                                                     Unpublished Job Posted
                                                   </h3>
-                                                    1
+                                                  1
                                                 </div>
                                               </Col>
                                             )}
@@ -827,13 +874,20 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                           ? "Completed"
                                           : "Incomplete"}
                                       </span>
-                                    </td>{" "}
+                                    </td>
                                     <td>
                                       <div className="d-flex align-items-center justify-content-center gap-3">
                                         <div className="d-inline-flex gap-1 align-items-center">
                                           <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                            <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
-                                              <span className="email_shot">1</span>
+                                            <span className="status-email position-relative"
+                                              onClick={() => {
+                                                if (!loading && item?.verification_reminder_count < 3) {
+                                                  handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                }
+                                              }}
+                                            >
+                                              <span className="email_count">{emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                              {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                             </span>
                                           </OverlayTrigger>
                                         </div>
@@ -1226,7 +1280,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                 <p className="application-text">
                                                   {
                                                     item?.tax_id
-                                                      
+
                                                   }
                                                 </p>
                                               </div>
@@ -1434,7 +1488,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                           // Sort interviews by created_at in descending order to get the latest interview first
                                           const sortedInterviews = [...item.interviews].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                                           const latestInterview = sortedInterviews[0];
-                                          
+
                                           // Calculate average rating if there is feedback
                                           const feedbacks = latestInterview.shareFeedbacks || [];
                                           const skillRatingsMap = {};
@@ -1462,7 +1516,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                           return (
                                             <>
                                               {/* Show Invite accepted status if the latest interview is accepted */}
-                                              {latestInterview?.status === "accepted" && latestInterview?.is_accepted &&  (
+                                              {latestInterview?.status === "accepted" && latestInterview?.is_accepted && (
                                                 <div>
                                                   <span className="status-finished">Invite accepted</span>
                                                 </div>
@@ -1741,7 +1795,7 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                   </h3>
                                                   <p className="application-text">
                                                     {
-                                                      item?.language_preference  
+                                                      item?.language_preference
                                                     }
                                                   </p>
                                                 </div>
@@ -1852,21 +1906,21 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                   </div>
                                                 </Col>
                                               )}
-                                               {(
-                                                <Col md={3}>
-                                                  <div>
-                                                    <h3 className="application-heading">
-                                                      Expertise Skills
-                                                    </h3>
-                                                    <p className="application-text">
-                                                      {
-                                                        item?.expertises[0]
-                                                          ?.skill
-                                                      }
-                                                    </p>
-                                                  </div>
-                                                </Col>
-                                              )}
+                                            {(
+                                              <Col md={3}>
+                                                <div>
+                                                  <h3 className="application-heading">
+                                                    Expertise Skills
+                                                  </h3>
+                                                  <p className="application-text">
+                                                    {
+                                                      item?.expertises[0]
+                                                        ?.skill
+                                                    }
+                                                  </p>
+                                                </div>
+                                              </Col>
+                                            )}
                                             {item?.developer_detail && (
                                               <Col md={3}>
                                                 <div>
@@ -1973,8 +2027,15 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
                                                 </h3>
                                                 <div className="d-inline-flex gap-1 align-items-center">
                                                   <OverlayTrigger placement="bottom" overlay={sendEmail}>
-                                                    <span className="status-email position-relative"><span className="email_count"><FaEnvelope /></span>
-                                                      <span className="email_shot">1</span>
+                                                    <span className="status-email position-relative"
+                                                      onClick={() => {
+                                                        if (!loading && item?.verification_reminder_count < 3) {
+                                                          handleSendEmail(item?.id, item?.email, item?.verification_reminder_count, index);
+                                                        }
+                                                      }}
+                                                    >
+                                                      <span className="email_count"> {emailIndx === index && loading ? <RexettSpinner /> : <FaEnvelope />}</span>
+                                                      {item?.verification_reminder_count > 0 ? <span className="email_shot">{item?.verification_reminder_count}</span> : ""}
                                                     </span>
                                                   </OverlayTrigger>
                                                 </div>
@@ -2152,10 +2213,10 @@ console.log(allApplications?.developers?.completed_steps,"allApplications")
               </div>
             </Offcanvas.Body>
           </Offcanvas>
-          <ScheduleScreening 
-            show={schedulescreeening} 
-            handleClose={handleCloseScheduleScreening} 
-            selectedEmail={selectedEmail} 
+          <ScheduleScreening
+            show={schedulescreeening}
+            handleClose={handleCloseScheduleScreening}
+            selectedEmail={selectedEmail}
             selectedId={selectedId}
           />
           <MeetingInfo show={screeninginfo} handleClose={handleCloseScreeningInfo} />
