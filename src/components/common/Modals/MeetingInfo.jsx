@@ -68,8 +68,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
             "profile",
             "OnlineMeetings.ReadWrite",
             "OnlineMeetingRecording.Read.All",
-             "Calendars.ReadWrite",
-             "Calendars.Read",
+            "Calendars.ReadWrite",
+            "Calendars.Read",
           ],
         prompt: "consent",
       });
@@ -171,7 +171,7 @@ const MeetingInfo = ({ show, handleClose,details }) => {
       
         try {
           // Fetch the online meeting details using the meeting ID
-          const meetingResponse = await client.api(`/me/onlineMeetings/AAMkADU2NjE0OWIwLWU1MjAtNGJlNi1hNjc0LTZlYzg0NDk5YzAzMwBGAAAAAACurO6i5qZvQIspx2LtckmfBwAw6FGqZi1CQY5xHP3TIqn7AAAAAAENAAAw6FGqZi1CQY5xHP3TIqn7AABa3yFmAAA=`).get();
+          const meetingResponse = await client.api(`/me/onlineMeetings/MCMxOTptZWV0aW5nX1ltVTVOV00zTkdFdFpqTXlNaTAwWkRnNExUazRPR1V0TWpVek1HSmtaalJoTURobUB0aHJlYWQudjIjMA==`).get();
       
           // Extract meeting details
           const subject = meetingResponse.subject;

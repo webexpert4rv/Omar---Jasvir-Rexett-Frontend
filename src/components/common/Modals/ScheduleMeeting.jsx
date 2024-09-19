@@ -434,7 +434,7 @@ const Schedulemeeting = ({
         <Modal.Header closeButton className="border-0 pb-3"></Modal.Header>
 
         <Modal.Body>
-          <h3 className="popup-heading">{type === "events" ? "Schedule Meetings" : "Schedule Interview"}</h3>
+          <h3 className="popup-heading">{type === "events" ? "Schedule Meetings" : type=="screen"? "Schedule Screening" : "Schedule Interview"}</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <Row>
