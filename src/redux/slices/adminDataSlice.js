@@ -1230,7 +1230,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
   export function getAllMessageTemplates() {
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+    //   dispatch(setSmallLoader());
       try {
         let result = await clientInstance.get("common/message-templates");
         dispatch(setMessageTemplates(result.data));
@@ -1257,7 +1257,7 @@ export function filePreassignedUrlGenerate(fileData, callback) {
   }
   export function getTemplateById(id,callback) {
     return async (dispatch) => {
-      dispatch(setSmallLoader());
+    //   dispatch(setSmallLoader());
       try {
         let result = await clientInstance.get(`common/message-templates/${id}`);
         return callback(result.data?.template)
