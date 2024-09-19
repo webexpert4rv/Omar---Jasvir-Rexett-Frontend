@@ -137,8 +137,6 @@ const MeetingInfo = ({ show, handleClose,details }) => {
     console.log(duration,"duration");
       };
 
-
-
     const checkEventStatus = async (eventId) => {
         const response = await gapi.client.calendar.events.get({
           calendarId: 'primary',
