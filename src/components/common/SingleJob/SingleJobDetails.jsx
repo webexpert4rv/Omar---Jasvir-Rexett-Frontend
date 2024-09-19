@@ -31,7 +31,7 @@ import {
     approveFeedback,
 } from "../../../redux/slices/clientDataSlice";
 
-import { jobPostConfirmMessage } from "../../../helper/utlis";
+import { DISCOVERY_DOCS, jobPostConfirmMessage, SCOPES } from "../../../helper/utlis";
 import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
 import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
@@ -76,14 +76,7 @@ import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
 import DeveloperRegistrationStepper from "../../../pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 
-const DISCOVERY_DOCS = [
-    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
-];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
-const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
@@ -139,8 +132,8 @@ const SingleJobDetails = () => {
     useEffect(() => {
         function start() {
             gapi.client.init({
-                apiKey: API_KEY,
-                clientId: CLIENT_ID,
+                apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
                 discoveryDocs: DISCOVERY_DOCS,
                 scope: SCOPES
             }).then(() => {
@@ -163,7 +156,7 @@ const SingleJobDetails = () => {
 
     useEffect(() => {
         dispatch(getDeveloperList())
-        dispatch(getAdobeTemplate())
+        // dispatch(getAdobeTemplate())
 
     }, [dispatch])
 
@@ -367,10 +360,7 @@ const SingleJobDetails = () => {
         }
     };
 
-    console.log(statusModal,"statusModal")
     const handleJobStatusModal = (e, id, status, type, aplnId) => {
-        console.log(status,"status")
-        
         setDevType(type)
         setApplicationId(aplnId)
         setDevId(id)
@@ -932,7 +922,7 @@ const SingleJobDetails = () => {
                                     <JobCard
                                         handleJobStatusModal={handleJobStatusModal}
                                         type="Shortlisted"
-                                        data={selectedTabsData}
+                                        // data={selectedTabsData}
                                         jobStatus={singleJobDescription?.status}
                                         role="client"
                                     />

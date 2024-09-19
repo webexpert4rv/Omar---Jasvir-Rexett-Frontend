@@ -12,7 +12,7 @@ const ClientSettings = () => {
                     <table className="table table-ui-custom">
                         <thead>
                             <tr>
-                                <th className="align-middle">General Settings</th>
+                                <th className="align-middle">General Settingssss</th>
                                 <th className="text-center align-middle">
                                     <span><FaEnvelope /></span>
                                     <p className="mb-0 font-14">

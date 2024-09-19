@@ -38,7 +38,8 @@ const initialAdminData = {
     messageTemplates:{},
     allAdminEmployees:[],
     chatRoom:{},
-    allPermissionDetails:{}
+    allPermissionDetails:{},
+    allIntegrationData:[]
 }
 
 export const adminDataSlice = createSlice({
@@ -144,6 +145,10 @@ export const adminDataSlice = createSlice({
             state.screenLoader = false;
             state.singleClient = action.payload
         },
+        setAllIntegration: (state, action) => {
+            state.screenLoader = false;
+            state.allIntegrationData = action.payload
+        },
         setAccountEnableDisable:(state, action) =>{
             state.screenLoader = false;
             state.accountDeletionList = action.payload
@@ -208,7 +213,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const {setAllIntegration, setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -740,6 +745,23 @@ export function getInvoiceDetails (query) {
     }
 }
 
+export function getAllIntegrationData () {
+    return async(dispatch) => {
+        dispatch(setScreenLoader());
+        try{
+            let result = await clientInstance.get(`admin/notification-settings/list`)
+
+                dispatch(setAllIntegration(result?.data?.data))
+            
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+        }
+
+    }
+}
+
 export function rejectEditAction(payload) {
     return async (dispatch) => {
         dispatch(setBtnLoader())
@@ -1062,6 +1084,24 @@ export function getDeveloperList(){
         }
     }
 }
+
+// export function changesStatus(payload){
+//     return async (dispatch)=>{
+//         // dispatch(setBtnLoader())
+//         try{
+//             let result = await clientInstance.get(`admin/notifications/settings/${id}`)
+//             if (result.status === 200) {
+//                 toast.success(result.data?.message, { position: "top-center" })
+//             }
+//             dispatch(setDeveloperList(result.data))
+//             // return callback();
+//         }catch(error){
+//             const message = error?.response?.data?.message || "Something went wrong";
+//             toast.error(message, { position: "top-center" })
+//             dispatch(setFailAdminData())
+//         }
+//     }
+// }
 
 export function postScheduleMeeting(payload,callback){
     return async (dispatch)=>{

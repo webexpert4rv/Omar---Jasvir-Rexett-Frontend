@@ -14,24 +14,24 @@ const ThirdPartyServices = ({ show, handleClose,onClick,smallLoader,text,syncCre
 
 
 
-    // useEffect(() => {
-    //     function start() {
-    //       gapi.client.init({
-    //         apiKey: process.env.REACT_APP_API_KEY,
-    //         clientId: process.env.REACT_APP_CLIENT_ID,
-    //         discoveryDocs: DISCOVERY_DOCS,
-    //         scope: SCOPES
-    //       }).then(() => {
-    //         console.log('GAPI Initialized');
-    //         const authInstance = gapi.auth2.getAuthInstance();
-    //         authInstance.isSignedIn.listen(setIsAuthenticated);
-    //         setIsAuthenticated(authInstance?.isSignedIn?.get());
-    //       }).catch((error) => {
-    //         console.error('Error initializing GAPI:', error);
-    //       });
-    //     }
-    //     gapi.load('client:auth2', start);
-    //   }, []);
+    useEffect(() => {
+        function start() {
+          gapi.client.init({
+            apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+          }).then(() => {
+            console.log('GAPI Initialized');
+            const authInstance = gapi.auth2.getAuthInstance();
+            authInstance.isSignedIn.listen(setIsAuthenticated);
+            setIsAuthenticated(authInstance.isSignedIn.get());
+          }).catch((error) => {
+            console.error('Error initializing GAPI:', error);
+          });
+        }
+        gapi.load('client:auth2', start);
+      }, []);
     
     console.log(isAuthenticated,"isAuthenticated")
     const handleLoginSuccess = (response) => {

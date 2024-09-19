@@ -25,7 +25,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   const dispatch = useDispatch()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const currentTime = moment();
-  console.log(currentTime,"currentTime")
+  console.log(SCOPES,"SCOPES")
 
   useEffect(()=>{
     if(allEvents?.events?.length>0){
@@ -38,8 +38,8 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   useEffect(() => {
     function start() {
       gapi.client.init({
-            apiKey: process.env.REACT_APP_API_KEY,
-            clientId: process.env.REACT_APP_CLIENT_ID,
+        apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
       }).then(() => {
