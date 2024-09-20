@@ -5,6 +5,7 @@ import clientInstance from '../../services/client.instance';
 
 const initialAdminData = {
     screenLoader: false,
+    isChatOpen:false,
     smallLoader: false,
     listOfClients: [],
     assignedDeveloper: [],
@@ -52,6 +53,14 @@ export const adminDataSlice = createSlice({
         },
         setSmallLoader: (state, action) => {
             state.smallLoader = true;
+        },
+        setIsChatOpen:(state,action) => {
+         state.isChatOpen = action.payload
+        const isChatOpenAlreadyPresent = localStorage.getItem("isChatOpen");
+        if(isChatOpenAlreadyPresent){
+            localStorage.removeItem("isChatOpen");
+        }
+        localStorage.setItem("isChatOpen",action.payload);
         },
         setBtnLoader: (state, action) => {
             state.smallLoader = true;
@@ -213,7 +222,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const {setAllIntegration, setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const {setAllIntegration,setIsChatOpen, setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
@@ -673,6 +682,26 @@ export function deleteFaq(payload) {
             const message = error.message || "Something went wrong";
             toast.error(message, { position: "top-center" })
             dispatch(setFailAdminData())
+        }
+    };
+}
+
+export function deleteJob(id,successCallback, failureCallback) {
+    return async (dispatch) => {
+        dispatch(setBtnLoader())
+        try {
+            let result = await clientInstance.delete(`common/delete-job/${id}`)
+            if (result.status === 200) {
+                toast.success("Job has been deleted successfully", { position: "top-center" })
+              dispatch(setSuccessAdminData())
+              return successCallback()
+            }
+        } catch (error) {
+            const message = error.message || "Something went wrong";
+            toast.error(message, { position: "top-center" })
+            dispatch(setFailAdminData())
+            return failureCallback()
+
         }
     };
 }

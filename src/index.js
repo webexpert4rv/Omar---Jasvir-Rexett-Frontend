@@ -18,6 +18,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
      <Provider store={store}>
      <I18nextProvider i18n={i18n}>
+
      <TourProvider steps={steps}
      badgeContent={({ totalSteps, currentStep }) => currentStep + 1 + "/" + totalSteps}
      >

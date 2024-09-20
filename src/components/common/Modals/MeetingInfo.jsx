@@ -168,7 +168,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
       
         try {
           // Fetch the online meeting details using the meeting ID
-          const meetingResponse = await client.api(`/communications/onlineMeetings/?filter=joinWebUrl%20eq%20'${"https://teams.microsoft.com/l/meetup-join/19%3ameeting_NDRhMjZmNGYtNGNmMy00OTY4LWJkNDktZmU5ZGFiNjUwYzFk%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d"}'`).get();
+          const id = 'https://teams.microsoft.com/l/meetup-join/19%3ameeting_NDRhMjZmNGYtNGNmMy00OTY4LWJkNDktZmU5ZGFiNjUwYzFk%40thread.v2/0?context={"Tid"%3a"24c55e21-ebf8-4b04-90e6-158d4790c5f3"%2c"Oid"%3a"b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53}'
+          const meetingResponse = await client.api(`/me/onlineMeetings?$filter=JoinWebUrl+eq+'${id}'`).get();
           
 
       

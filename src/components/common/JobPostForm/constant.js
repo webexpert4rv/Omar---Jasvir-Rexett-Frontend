@@ -10,7 +10,7 @@ export const step1keys = [
   "state_iso_code",
   "country_code",
   "city",
-  "time_zone"
+  "time_zone",
 ];
 export const step2keys = ["skills", "description", "optional_skills"];
 export const step3keys = ["screening_questions", "qualification_filter_out"];
@@ -59,7 +59,7 @@ export const LANGUAGE_PREFERENCES_OPTIONS = [
     value: "english",
     label: "English",
   },
-  {    
+  {
     value: "swedish",
     label: "Swedish",
   },
@@ -68,8 +68,6 @@ export const LANGUAGE_PREFERENCES_OPTIONS = [
     label: "Norwegian",
   },
 ];
-
-
 
 export const MONTH_YEAR = [
   { label: "January", value: "January" },
@@ -83,61 +81,59 @@ export const MONTH_YEAR = [
   { label: "September", value: "September" },
   { label: "October", value: "October" },
   { label: "November", value: "November" },
-  { label: "December", value: "December" }
+  { label: "December", value: "December" },
 ];
 
 const currentYear = new Date().getFullYear();
 const last30Years = Array.from({ length: 31 }, (_, i) => {
-    const year = currentYear - i;
-    return { label: `${year}`, value: `${year}` };
+  const year = currentYear - i;
+  return { label: `${year}`, value: `${year}` };
 });
 
 export const YEAR_OPTIONS = last30Years;
 
 const range = Array.from({ length: 15 }, (_, i) => ({
   value: i + 1,
-  label: `${i + 1} year`
+  label: `${i + 1} year`,
 }));
 
-export const EXPERIENCE_YEAR=range
+export const EXPERIENCE_YEAR = range;
 
-export const WORK_TYPE=[
-  {label:"Remote",value:"remote"},
-  {label:"OnSite",value:"onsite"},
-  {label:"OffSite",value:"offsite"}
-]
-
-
-export const EDUCATION_LEVEL= [
-  { label: 'Secondary School' },
-  { label: 'Vocational Certificate or Diploma' },
-  { label: 'Apprenticeship or Internship Training' },
-  { label: 'Associates' },
-  { label: 'Bachelors' },
-  { label: 'Masters' },
-  { label: 'Doctorate or Ph. D' }
+export const WORK_TYPE = [
+  { label: "Remote", value: "remote" },
+  { label: "OnSite", value: "onsite" },
+  { label: "OffSite", value: "offsite" },
 ];
 
-
-export const PROJECT_TYPE= [
-  { label: 'Health Care' },
-  { label: 'Artificial Intelligence' },
-  { label: 'Social Media' },
-  { label: 'E-commerce' },
-  { label: 'Gaming' },
-  { label: 'Stocks' },
-  { label: 'Real State' },
-  {label:'Booking'}
+export const EDUCATION_LEVEL = [
+  { label: "Secondary School" },
+  { label: "Vocational Certificate or Diploma" },
+  { label: "Apprenticeship or Internship Training" },
+  { label: "Associates" },
+  { label: "Bachelors" },
+  { label: "Masters" },
+  { label: "Doctorate or Ph. D" },
 ];
 
-export const TEAM_SIZE=[
-  {label:2},
-  {label:5},
-  {label:10},
-  {label:15},
-  {label:20},
-  {label:30},
-  {label:50},
-  {label:"100+"}
+export const PROJECT_TYPE = [
+  { label: "Health Care" },
+  { label: "Artificial Intelligence" },
+  { label: "Social Media" },
+  { label: "E-commerce" },
+  { label: "Gaming" },
+  { label: "Stocks" },
+  { label: "Real State" },
+  { label: "Booking" },
+];
 
-]
+export const TEAM_SIZE = [
+  { label: 2 },
+  { label: 5 },
+  { label: 10 },
+  { label: 15 },
+  { label: 20 },
+  { label: 30 },
+  { label: 50 },
+  { label: "100+" },
+];
+export const WEIGHT_OPTIONS = ["Beginner", "Intermediate", "Expert"];

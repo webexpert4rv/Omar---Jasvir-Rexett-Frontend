@@ -7,29 +7,39 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { getSkillList } from "../../../redux/slices/clientDataSlice";
-import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
 import { BsCloudLightning } from "react-icons/bs";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import SkillAndWeightSection from "./SkillAndWeightSection";
+import { removeDuplicateBasedOnLabels } from "../../utils";
 
 const MAX_CHARACTER_LIMIT = 10000;
 
-const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, setTraitSkill }) => {
+const JobPostStep2 = ({
+  register,
+  errors,
+  watch,
+  setValue,
+  control,
+  traitSkill,
+  setTraitSkill,
+}) => {
   const dispatch = useDispatch();
   const quillRef = useRef(null);
-  const [selectedLevel, setSelectedLevel] = useState()
-  const [newId, setNewId] = useState()
+  const [selectedLevel, setSelectedLevel] = useState();
+  const [newId, setNewId] = useState();
   const [descriptionText, setDescriptionText] = useState("");
-  const [selectedSkill, setSelectedSkill] = useState()
+  const [selectedSkill, setSelectedSkill] = useState();
   const [skills, setSkills] = useState([]);
   const [goodToSkills, setGoodToSkills] = useState([]);
   const { smallLoader, skillList } = useSelector((state) => state.clientData);
   const MAX_LENGTH = 10000;
-
+  const [count, setCount] = useState(0);
+  
   const skillListMapped = skillList.map((item) => {
     return { value: item.id, label: item.title };
   });
-
 
   useEffect(() => {
     dispatch(getSkillList());
@@ -37,37 +47,42 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
 
   useEffect(() => {
     setSkills(skillListMapped);
-    setGoodToSkills(skillListMapped)
+    setGoodToSkills(skillListMapped);
+    handleFilterOppositeFieldOptions(watch("skills"), "skills");
+    handleFilterOppositeFieldOptions(watch("optional_skills"), "optional_skills");
   }, [skillList]);
+
+
+  
   const getPlainText = (string) => {
     if (string) {
-      const plainText = string.replace(/(<([^>]+)>)/ig, '');
-      return plainText
+      const plainText = string.replace(/(<([^>]+)>)/gi, "");
+      return plainText;
     } else {
       return "";
     }
-  }
+  };
   const handleSkillLevel = (event, skill, index, name, inx) => {
     // const skillId = (event.target.id)?.split("-")[1];
-    let updatedSkills = traitSkill.map((s, idx) => {
-      if (idx === index) {
-        return {
-          ...s,
-          level: s.level.map((level, lIdx) => ({
-            ...level,
-            isTrue: lIdx === inx,
-          })),
-          currentLevel: name, 
-          percentage: name === "Beginner" ? "25%" : name === "Intermediate" ? "50%" : "100%",
-        };
-      } else {
-        return {
-          ...s,
-          percentage: s.currentLevel ? (s.currentLevel === "Beginner" ? "25%" : s.currentLevel === "Intermediate" ? "50%" : "100%") : "0%",
-        };
-      }
-    });
-    setTraitSkill(updatedSkills);
+    // let updatedSkills = traitSkill.map((s, idx) => {
+    //   if (idx === index) {
+    //     return {
+    //       ...s,
+    //       level: s.level.map((level, lIdx) => ({
+    //         ...level,
+    //         isTrue: lIdx === inx,
+    //       })),
+    //       currentLevel: name,
+    //       percentage: name === "Beginner" ? "25%" : name === "Intermediate" ? "50%" : "100%",
+    //     };
+    //   } else {
+    //     return {
+    //       ...s,
+    //       percentage: s.currentLevel ? (s.currentLevel === "Beginner" ? "25%" : s.currentLevel === "Intermediate" ? "50%" : "100%") : "0%",
+    //     };
+    //   }
+    // });
+    // setTraitSkill(updatedSkills);
   };
   const handleChange = (html, field) => {
     const editor = quillRef?.current?.getEditor();
@@ -82,8 +97,56 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
       }
     }
   };
-  console.log(traitSkill,"traitskill")
+  console.log(watch("skills"), "log skills");
+  console.log(watch("optional_skills"), "log optional_skills");
+  const handleAppend = (fieldValue) => {
+    if (traitSkill?.length) {
+      const traitSkillsLabels = traitSkill.map(({ label }) => label);
+      let elementToAppend = fieldValue.find(
+        (curElem) => !traitSkillsLabels.includes(curElem.label)
+      );
+      delete elementToAppend?.weight;
+      if (elementToAppend) {
+        setTraitSkill((prev) => [...prev, elementToAppend]);
+      }
+    } else {
+      setTraitSkill(fieldValue);
+    }
+  };
 
+  const findElementToDelete = (newValue, oldValue) => {
+    const newValueLabels = newValue?.map(({ label }) => label);
+    const elemToDelete = oldValue.find(
+      (curElem) => !newValueLabels.includes(curElem.label)
+    );
+    if (elemToDelete) {
+      return elemToDelete?.label;
+    }
+  };
+  const handleDeleteItem = (labelToDelete) => {
+    setTraitSkill((prev) =>
+      prev.filter((curElem) => curElem?.label !== labelToDelete)
+    );
+  };
+
+  const handleFilterOppositeFieldOptions = (
+    currentFieldValue,
+    currentFieldValueName
+  ) => {
+    if (currentFieldValue?.length) {
+      const currentFieldLabels = currentFieldValue?.map(({ label }) => label);
+      const filteredItems = skillListMapped?.filter(
+        (curElem) => !currentFieldLabels?.includes(curElem?.label)
+      );
+      if (filteredItems?.length) {
+        if (currentFieldValueName === "skills") {
+          setGoodToSkills(filteredItems);
+        } else {
+          setSkills(filteredItems);
+        }
+      }
+    }
+  };
   return (
     <div>
       <section className="job-post-section">
@@ -109,7 +172,11 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
                   )}
                 />
 
-                <p className="text-end text-muted font-14 mt-1">{`${getPlainText(watch("description"))?.length ? getPlainText(watch("description")).length : 0}/10,000`}</p>
+                <p className="text-end text-muted font-14 mt-1">{`${
+                  getPlainText(watch("description"))?.length
+                    ? getPlainText(watch("description")).length
+                    : 0
+                }/10,000`}</p>
               </div>
               {errors?.description && (
                 <p className="error-message ">{errors.description?.message}</p>
@@ -124,64 +191,50 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
                 control={control}
                 rules={{ required: "Skills are required" }}
                 render={({ field }) => (
-                  <CreatableSelect
+                  <Select
                     {...field}
                     isClearable
                     isMulti
                     options={skills}
                     onChange={(newValue) => {
-                      field.onChange(newValue);
-                      if (traitSkill?.length > 0) {
-                        let lastValue = newValue[newValue.length - 1]
-                        if (lastValue) {
-                          lastValue.level = [
-                            { name: "Beginner", isTrue: false },
-                            { name: "Intermediate", isTrue: false },
-                            { name: "Expert", isTrue: false }
-                          ];
-                        }
-
-
-                        const deletedItems = newValue.filter(
-                          oldItem => !traitSkill.some(newItem => newItem.value === oldItem.value)
-                        );
-
-                        if (deletedItems.length == 0) {
-                          const updatedValue = newValue.map(skill => ({
-                            ...skill,
-                            level: [
-                              { name: "Beginner", isTrue: false },
-                              { name: "Intermediate", isTrue: false },
-                              { name: "Expert", isTrue: false }
-                            ]
-                          }));
-                          setTraitSkill(updatedValue)
-                        } else {
-                          let cpyTraits = [...traitSkill, lastValue]
-                          setTraitSkill(cpyTraits)
-                        }
+                      if (
+                        watch("skills")?.length < newValue.length ||
+                        !watch("skills")
+                      ) {
+                        field.onChange(newValue);
+                        handleAppend(newValue);
                       } else {
-                        const updatedValue = newValue.map(skill => ({
-                          ...skill,
-                          level: [
-                            { name: "Beginner", isTrue: false },
-                            { name: "Intermediate", isTrue: false },
-                            { name: "Expert", isTrue: false }
-                          ]
-                        }));
+                        const elementToDelete = findElementToDelete(
+                          newValue,
+                          watch("skills")
+                        );
+                        field.onChange(newValue);
 
-                        setTraitSkill(updatedValue)
+                        if (elementToDelete) {
+                          handleDeleteItem(elementToDelete);
+                        }
                       }
-                      setSelectedSkill(newValue)
-                      let valuesToRemove = newValue.map(item => item.value);
+                      handleFilterOppositeFieldOptions(
+                        newValue,
+                        "skills"
+                      );
 
-                      let updatedArr = goodToSkills.filter(item => !valuesToRemove.includes(item.value));
-                      setGoodToSkills(updatedArr)
+                      setSelectedSkill(newValue);
+
+                      // const traitSkillLabels = traitSkill?.map(({label}) => label)
+                      // const optionalSkills = watch("optional_skills");
+                      // const tempOptionalSkills =  optionalSkills.filter((curElem) => !traitSkillLabels.includes(curElem?.label))
+                      // const tempSkills = newValue.filter((curElem) => !traitSkillLabels.includes(curElem?.label))
+
+                      // const combined = [...tempOptionalSkills, ...tempSkills];
+                      // const unique = removeDuplicateBasedOnLabels(combined);
+                      // const uniqueLables = unique.map(({label}) => label);
+                      // console.log(unique,"unique")
+                      // setTraitSkill((prev)=>[...prev,...unique ])
                     }}
                   />
                 )}
               />
-
             </Form.Group>
             {errors?.skills && (
               <p className="error-message ">{errors.skills?.message}</p>
@@ -195,75 +248,53 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
                 control={control}
                 rules={{ required: "Good to have skills are required" }}
                 render={({ field }) => (
-                  <CreatableSelect
+                  <Select
                     {...field}
                     isClearable
                     isMulti
                     options={goodToSkills}
                     onChange={(newValue) => {
-                      field.onChange(newValue);
-
-                      if (traitSkill?.length > 0) {
-                        let lastValue = newValue[newValue.length - 1]
-                        if (lastValue) {
-                          lastValue.level = [
-                            { name: "Beginner", isTrue: false },
-                            { name: "Intermediate", isTrue: false },
-                            { name: "Expert", isTrue: false }
-                          ];
-                        }
-                        const deletedItems = newValue.filter(
-                          oldItem => !traitSkill.some(newItem => newItem.value === oldItem.value)
-                        );
-
-                        if (deletedItems.length == 0) {
-                          const updatedValue = newValue.map(skill => ({
-                            ...skill,
-                            level: [
-                              { name: "Beginner", isTrue: false },
-                              { name: "Intermediate", isTrue: false },
-                              { name: "Expert", isTrue: false }
-                            ]
-                          }));
-                          setTraitSkill(updatedValue)
-                        } else {
-                          let cpyTraits = [...traitSkill, lastValue]
-                          setTraitSkill(cpyTraits)
-                        }
-
-
+                      if (
+                        watch("optional_skills")?.length < newValue.length ||
+                        !watch("optional_skills")
+                      ) {
+                        field.onChange(newValue);
+                        handleAppend(newValue);
                       } else {
-                        const updatedValue = newValue.map(skill => ({
-                          ...skill,
-                          level: [
-                            { name: "Beginner", isTrue: false },
-                            { name: "Intermediate", isTrue: false },
-                            { name: "Expert", isTrue: false }
-                          ]
-                        }));
-                        setTraitSkill(updatedValue)
+                        const elementToDelete = findElementToDelete(
+                          newValue,
+                          watch("optional_skills")
+                        );
+                        field.onChange(newValue);
+
+                        if (elementToDelete) {
+                          handleDeleteItem(elementToDelete);
+                        }
                       }
-                      setSelectedSkill(newValue)
-                      let valuesToRemove = newValue.map(item => item.value);
-
-                      let updatedArr = skills.filter(item => !valuesToRemove.includes(item.value));
-                      setSkills(updatedArr)
+                      handleFilterOppositeFieldOptions(
+                        newValue,
+                        "optional_skills"
+                      );
+                      setSelectedSkill(newValue);
                     }}
-
-
                   />
                 )}
               />
             </Form.Group>
             {errors?.optional_skills && (
-              <p className="error-message">
-                {errors.optional_skills?.message}
-              </p>
+              <p className="error-message">{errors.optional_skills?.message}</p>
             )}
           </Col>
         </Row>
         <div className="skill-weight-wrapper mb-3">
-          <Row>
+          <SkillAndWeightSection
+            skills={watch("skills")}
+            optional_skills={watch("optional_skills")}
+            traitSkill={traitSkill}
+            setTraitSkills={setTraitSkill}
+            setValue={setValue}
+          />
+          {/* <Row>
             <Col md={8}>
               <div>
                 <h4 className="font-18 fw-medium">Skills and traits</h4>
@@ -280,15 +311,15 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
               </div>
             </Col>
             {traitSkill?.map((skill, index) => (
-              <Row key={skill?.value} >
+              <Row key={skill?.value}>
                 <Col md={8} className="mb-3">
                   <div>
-                    <div className={`skill-progress low-skill${skill?.currentLevel}`}>
+                    <div
+                      className={`skill-progress low-skill${skill?.currentLevel}`}
+                    >
                       <span className="skill-progress-name fw-semibold">
                         {skill?.label}
                       </span>
-                      {/* <span className="skill-percent">{selectedLevel }</span> */}
-                      {/* <span className="skill-percent">{skillId === skill?.value ?  skillLvl?.name === "Beginner" ? "25%" : skillLvl?.name === "Intermediate" ? "50%" : "100%"  : "0%" }</span> */}
                       <span className="skill-percent">
                         {skill?.percentage || "0%"}
                       </span>
@@ -297,29 +328,34 @@ const JobPostStep2 = ({ register, errors, watch, setValue, control, traitSkill, 
                 </Col>
                 <Col md={4} className="align-self-center mb-3">
                   <div className="d-flex justify-content-center gap-3">
-                    {
-                      skill?.level?.map(((lvl, inx) => {
-                        return (
-                          <>
-                            <div className="low-wrapper" key={inx}>
-                                <Form.Check type="radio" id={`${inx}-${skill?.value}`} onChange={(e) =>handleSkillLevel(e, skill, index, lvl?.name, inx)} className="weight-radio" checked={lvl?.isTrue} />
-                            </div>
-                          </>
-                        )
-                      }))
-                    }
-
-                    {/* <div className="medium-wrapper">
-                  <Form.Check type="radio" name="react-skill-weight" id ={`intermediate-${skill?.value}` }value={"50%"}  onChange = {(e)=>handleSkillLevel(e,skill,index,"intermediate" )} className="weight-radio" checked={skill?.weight=="intermediate"} />
-                </div>
-                <div className="high-wrapper">
-                  <Form.Check type="radio" name="react-skill-weight" id={`expert-${skill?.value}` } value={"100%" }  onChange = {(e )=>handleSkillLevel(e,skill,index,"expert")} className="weight-radio" checked={skill?.weight=="expert"} />
-                </div> */}
+                    {skill?.level?.map((lvl, inx) => {
+                      return (
+                        <>
+                          <div className="low-wrapper" key={inx}>
+                            <Form.Check
+                              type="radio"
+                              id={`${inx}-${skill?.value}`}
+                              onChange={(e) =>
+                                handleSkillLevel(
+                                  e,
+                                  skill,
+                                  index,
+                                  lvl?.name,
+                                  inx
+                                )
+                              }
+                              className="weight-radio"
+                              checked={lvl?.isTrue}
+                            />
+                          </div>
+                        </>
+                      );
+                    })}
                   </div>
                 </Col>
               </Row>
             ))}
-          </Row>
+          </Row> */}
         </div>
       </section>
     </div>
