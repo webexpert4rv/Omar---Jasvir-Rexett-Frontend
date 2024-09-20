@@ -46,11 +46,7 @@ console.log(role,"role")
   )
   const developerCardToolTip = (
     <Tooltip id="tooltip">
-      {type === "interviewing"
-        ? "Hire"
-        : type === "Shortlisted"
-          ? " Move to Interview"
-          : "Shortlist"}
+      {type === "interviewing" ? "Hire" : type === "Shortlisted" ? " Move to Interview" : "Shortlist"}
     </Tooltip>
   );
 
@@ -147,7 +143,7 @@ console.log(role,"role")
                                                 </li> */}
                           </ul>
                           <div className="job-card-btns">
-                            {role === "admin" ||   "client" &&
+                            {role === "admin" || role === "client" &&
                               (type == "Shortlisted" ||
                                 type === "suggested" ||
                                  type == "applied" ||
@@ -181,7 +177,7 @@ console.log(role,"role")
                             ) : (
                               ""
                             )}
-                            {role === "admin"  || "client" && (
+                            {/* {role === "admin"    && ( */}
                               <OverlayTrigger
                                 placement="bottom"
                                 overlay={rejectedCardToolTip}
@@ -201,7 +197,7 @@ console.log(role,"role")
                                   <ImUserMinus />
                                 </Button>
                               </OverlayTrigger>
-                            )}
+                            {/* )} */}
                             {/* {role !== "admin" && (
                               <OverlayTrigger
                                 placement="top"
