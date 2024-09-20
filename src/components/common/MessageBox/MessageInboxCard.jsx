@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { messageChatRoomList } from "../../../redux/slices/developerDataSlice";
 import NoDataFound from "../../atomic/NoDataFound";
 import moment from "moment";
+import { useChat } from "../../../Contexts/ChatProvider";
+import { setIsChatOpen } from "../../../redux/slices/adminDataSlice";
 
 const MessageInboxCard = ({
   type,
@@ -18,6 +20,7 @@ const MessageInboxCard = ({
   userList,
 }) => {
   const dispatch = useDispatch();
+
   const { chatRoomMessageList } = useSelector((state) => state.developerData);
 
   const stripHtmlTags = (str) => {
@@ -35,7 +38,9 @@ const MessageInboxCard = ({
         return moment(lastMessage?.created_at).fromNow();
       } else {
         // for displaying last messages
-        return stripHtmlTags(lastMessage?.message_body);
+        return ` ${lastMessage?.sender?.name} : ${stripHtmlTags(
+          lastMessage?.message_body
+        )}`;
       }
     }
   };
@@ -64,9 +69,10 @@ const MessageInboxCard = ({
                         setSelectedTab={setSelectedTab}
                       />
                       <div
-                        onClick={() =>
-                          handleChatProfileClick(it?.members[0]?.chatroom_id)
-                        }
+                        onClick={() => {
+                          handleChatProfileClick(it?.members[0]?.chatroom_id);
+                          dispatch(setIsChatOpen(true));
+                        }}
                         className="cursor-pointer"
                       >
                         <div className="chat-profile-img">

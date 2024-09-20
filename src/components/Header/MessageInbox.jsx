@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Tabs from "../common/LeaveRequest/Tabs";
 import { MESSAGE_TAB_TEXT } from "../clients/TimeReporiting/constant";
+import EmojiPicker from "emoji-picker-react";
 import { Button, Dropdown, Form, Offcanvas, Tab } from "react-bootstrap";
 import devImg from "../../assets/img/user-img.jpg";
 import { HiOutlineDotsVertical, HiOutlineLink } from "react-icons/hi";
@@ -26,6 +27,7 @@ import {
   getTemplateById,
   getUnreadMessages,
   messageSendFunc,
+  setIsChatOpen,
   updateChatRoom,
 } from "../../redux/slices/adminDataSlice";
 import {
@@ -42,13 +44,17 @@ import { filePreassignedUrlGenerate } from "../../redux/slices/clientDataSlice";
 import RexettButton from "../atomic/RexettButton";
 import ListingPageScroller from "../common/ListingPageContainer/ListingPageScroller";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { reverseArray } from "../utils";
+import { reverseArray, shouldShowTime } from "../utils";
 
 function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
+
   let userId = localStorage.getItem("userId");
   const scrollRef = useRef(null);
+  const quillRef = useRef(null);
+  const emojiPickerRefEdit = useRef(null);
   const [selectedTab, setSelectedTab] = useState("inbox");
-  const [currentRoomId,setCurrentRoomId] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [currentRoomId, setCurrentRoomId] = useState(null);
   const [currentTab, setCurrentTab] = useState();
   const [hasContent, setHasContent] = useState(false);
   const [isEditorFocused, setIsEditorFocused] = useState(true);
@@ -68,24 +74,69 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     (state) => state.adminData
   );
 
-  const { chatData, chatMessagesPaginationInfo} = useSelector((state) => state.developerData);
+  const { chatData, chatMessagesPaginationInfo } = useSelector(
+    (state) => state.developerData
+  );
   const [page, setPage] = useState(1);
   const { approvedLoader } = useSelector((state) => state.adminData);
   const { allAdminEmployees } = useSelector((state) => state.adminData);
   const [chatmessages, setChatMessages] = useState([]);
+  const [adduserconversation, showAddUserConversation] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     control,
     watch,
     formState: { errors },
   } = useForm();
-  const [adduserconversation, showAddUserConversation] = useState(false);
-  // useEffect(()=>{
-  //   scrollToBottom();
-  // },[scrollRef,chatmessages])
- 
+
+  // logic to close emoji picker on clicking outside
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClickOutsideEdit);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutsideEdit);
+  //   };
+  // }, []);
+
+  // const handleClickOutsideEdit = (event) => {
+  //   if (
+  //     emojiPickerRefEdit.current &&
+  //     !emojiPickerRefEdit.current.contains(event.target)
+  //   ) {
+  //     setShowEmojiPicker(false);
+  //   }
+  // };
+  // logic to close emoji picker on clicking outside
+  {
+    /* commented for future use */
+  }
+
+  // const handleEmojiCick = (emojiObject, _event) => {
+  //   const messageFormValue = watch("message");
+  //   // Replace all consecutive spaces with non-breaking spaces (&nbsp;) to preserve them
+  //   const messageWithNbsp = messageFormValue?.replace(/ /g, "&nbsp;");
+
+  //   // Check if the message is empty or just a placeholder like <p><br></p>
+  //   if (messageWithNbsp === "<p><br></p>" || !messageWithNbsp) {
+  //     // If empty, just insert the emoji in a new <p> tag
+  //     const resultHtml = `<p>${emojiObject.emoji}</p>`;
+  //     setValue("message", resultHtml);
+  //   } else {
+  //     // Insert the emoji into the existing message without removing the structure
+  //     const textWithEmoji = messageWithNbsp.replace(
+  //       /<\/p>$/,
+  //       emojiObject.emoji + "</p>"
+  //     );
+  //     console.log(textWithEmoji, "textWithEmoji");
+
+  //     // Instead of stripping <p> tags, just update the message HTML with the emoji
+  //     setValue("message", textWithEmoji);
+  //   }
+  // };
 
   useEffect(() => {
     setChatMessages(chatData);
@@ -101,16 +152,16 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       console.log("Connected to Socket.IO server chatmessages");
     });
     socket.on(`message_created_${userId}`, (message) => {
+      console.log(message, "inside socket");
       setChatMessages((prevMessages) =>
         Array.isArray(prevMessages) ? [...prevMessages, message] : [message]
       );
       dispatch(getAllMessages(userId)); // so that chatRoom message list also gets updated
     });
     return () => {
-      socket.disconnect();
+      socket.off(`message_created_${userId}`);
     };
-  }, []);
-
+  }, [userId, chatmessages]);
 
   // for adding pagination for chat messages
 
@@ -127,6 +178,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const handleShowUserConversation = () => {
     showAddUserConversation(!adduserconversation);
   };
+  console.log(valuemessga, "valuemessga");
 
   const handleSelect = (tab) => {
     let tempSelectedTab;
@@ -148,6 +200,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   };
   const handleCloseMessageWrapper = () => {
     setMessageWrapperVisible(false);
+    dispatch(setIsChatOpen(false));
   };
   const handleCloseUserConversation = () => {
     showAddUserConversation(false);
@@ -166,15 +219,17 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
     if (selectedTab === "unread") {
       let data = {
         type: "inbox",
-      }
-      await dispatch(updateChatRoom(roomId, data, () => {
-        let data = {
-          type: "unread",
-          page: page,
-          per_page: "10"
-        }
-        dispatch(getAllMessages(userId, data))
-      }))
+      };
+      await dispatch(
+        updateChatRoom(roomId, data, () => {
+          let data = {
+            type: "unread",
+            page: page,
+            per_page: "10",
+          };
+          dispatch(getAllMessages(userId, data));
+        })
+      );
     }
   };
   const handleCloseMessages = () => {
@@ -302,8 +357,8 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
   const fetchMoreData = () => {
     const tempPage = page + 1; // creating separate variable because state value is not updated within the function immediately
     setPage((prev) => prev + 1);
-    if (currentRoomId){
-      dispatch(getChatRoomData(currentRoomId,tempPage));
+    if (currentRoomId) {
+      dispatch(getChatRoomData(currentRoomId, tempPage));
       // adding new fetched data and previous data logic is written inside getRoomChatData
     }
   };
@@ -312,8 +367,9 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
       <Offcanvas
         show={showMessagesInfo}
         placement="end"
-        className={`message-offcanvas ${messageWrapperVisible ? "visible" : ""
-          }`}
+        className={`message-offcanvas ${
+          messageWrapperVisible ? "visible" : ""
+        }`}
         onHide={handleCloseMessages}
       >
         <div className="d-flex align-items-start">
@@ -441,7 +497,10 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     dataLength={chatmessages?.length || 0}
                     style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
                     next={fetchMoreData}
-                    hasMore={chatMessagesPaginationInfo?.current_page !== chatMessagesPaginationInfo?.total_pages}
+                    hasMore={
+                      chatMessagesPaginationInfo?.current_page !==
+                      chatMessagesPaginationInfo?.total_pages
+                    }
                     loader={<h1>Loader....</h1>}
                     scrollableTarget="scrollableDiv"
                     height={200}
@@ -453,11 +512,11 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                           let data = item?.message_body;
                           let file = item?.message_attachment_url;
                           let file_type = item?.file_type;
-                          const showTime =
-                            index === chatmessages.length - 1 ||
-                            chatmessages[index + 1].sender_id !==
-                              item.sender_id;
-
+                          // if index == 0 (means last message then show time and when the time difference between two messages is greater than 2 minutes )
+                          const showTime = shouldShowTime(index,item?.created_at,reverseArray(chatmessages)?.[index - 1]?.created_at);
+                            // index === 0 ||
+                            // reverseArray(chatmessages)?.[index - 1]
+                            //   ?.sender_id !== item.sender_id;
                           return (
                             <>
                               <div
@@ -496,11 +555,31 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                                       className="message"
                                       dangerouslySetInnerHTML={{ __html: data }}
                                     />
-                                    {showTime && (
+                                    {/* for showing sender name with  time ago box */}
+                                    {console.log(
+                                      showTime,
+                                      "index:",
+                                      index,
+                                      "inside the code",
+                                      item,
+                                      moment(item?.created_at).fromNow(),
+                                      item?.created_at
+                                    )}
+                                    {/* {!isSender && (
+                                      <p className="senderName message-time">
+                                        {item?.sender?.name} {""}
+                                       
+                                        {showTime &&
+                                          moment(item?.created_at).fromNow()}
+                                      </p> // remove message-time class and add for sender name
+                                    )} */}
+                                    {showTime && !isSender ? (
                                       <p className="message-time">
+                                        {item?.sender?.name &&
+                                          item?.sender?.name}{" "}
                                         {moment(item?.created_at).fromNow()}
                                       </p>
-                                    )}
+                                    ) : null}
                                   </div>
                                 )}
                                 {!isSender && showTime && (
@@ -573,8 +652,9 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="position-relative">
                   <div
-                    className={`custom-rich-editor message-field ${isEditorFocused || hasContent ? "focused" : ""
-                      }`}
+                    className={`custom-rich-editor message-field ${
+                      isEditorFocused || hasContent ? "focused" : ""
+                    }`}
                   >
                     <Controller
                       name="message"
@@ -582,6 +662,7 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                       rules={{ required: "This field is required" }}
                       render={({ field: { onChange, value } }) => (
                         <ReactQuill
+                          ref={quillRef}
                           value={valuemessga ? valuemessga : value}
                           onChange={onChange}
                         />
@@ -594,8 +675,9 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                     )}
                   </div>
                   <div
-                    className={`field-msg-options d-flex align-items-center gap-3 ${isEditorFocused || hasContent ? "focused" : ""
-                      }`}
+                    className={`field-msg-options d-flex align-items-center gap-3 ${
+                      isEditorFocused || hasContent ? "focused" : ""
+                    }`}
                   >
                     <div className="inner-field-msg-options">
                       <Dropdown className="assign-dropdown">
@@ -689,12 +771,23 @@ function MessageInbox({ showMessagesInfo, setShowMessagesInfo }) {
                       <span>
                         <MdGifBox />
                       </span>
-                    </ToolTip>
-                    <ToolTip text={"Add emoji"}>
-                      <span>
-                        <MdEmojiEmotions />
-                      </span>
                     </ToolTip> */}
+                      {/* commented for future use */}
+                      {/* <div
+                        className="emoji"
+                        onClick={() => setShowEmojiPicker(true)}
+                      >
+                        <ToolTip text={"Add emoji"}>
+                          <span>
+                            <MdEmojiEmotions />
+                          </span>
+                        </ToolTip>
+                      </div>
+                      {showEmojiPicker && (
+                        <div className="emojiPicker" ref={emojiPickerRefEdit}>
+                          <EmojiPicker onEmojiClick={handleEmojiCick} />
+                        </div>
+                      )} */}
                     </div>
                     <RexettButton
                       type={"submit"}

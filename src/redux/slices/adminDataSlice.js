@@ -5,6 +5,7 @@ import clientInstance from '../../services/client.instance';
 
 const initialAdminData = {
     screenLoader: false,
+    isChatOpen:false,
     smallLoader: false,
     listOfClients: [],
     assignedDeveloper: [],
@@ -51,6 +52,14 @@ export const adminDataSlice = createSlice({
         },
         setSmallLoader: (state, action) => {
             state.smallLoader = true;
+        },
+        setIsChatOpen:(state,action) => {
+         state.isChatOpen = action.payload
+        const isChatOpenAlreadyPresent = localStorage.getItem("isChatOpen");
+        if(isChatOpenAlreadyPresent){
+            localStorage.removeItem("isChatOpen");
+        }
+        localStorage.setItem("isChatOpen",action.payload);
         },
         setBtnLoader: (state, action) => {
             state.smallLoader = true;
@@ -208,7 +217,7 @@ export const adminDataSlice = createSlice({
     }
 })
 
-export const { setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
+export const { setIsChatOpen,setAllPermissionDetails,setTimeReportDetails,setAdminEmployees,setSmallLoader,setChatRoom,setConfigDetails,setTodoData,setMessageTemplates ,setAllEvents,setAllPermissionList,setDeveloperList,setEmployeeList,setDeveloperTimeReport,setInvoiceDetails , setSuggestedDeveloper,setAccountEnableDisable ,setAdminClientList , setSingleClient, setPagination, setNotificationList, setScreenLoader, setApprovedLoader, setAdminDashboard, setApproveReject, setAdminEngagment, setSingleJobListing, setAdminTimeReporting, setSuccessApplicationList,setSuccessAssignEmployeeList, setFailAdminData, setSuccessAdminData, setSuccessProfileData, setSuccessAdminJobListing, setSuccessAdminListClient, setSuccessAdminAssignedDeveloper, setBtnLoader } = adminDataSlice.actions
 
 export default adminDataSlice.reducer
 
