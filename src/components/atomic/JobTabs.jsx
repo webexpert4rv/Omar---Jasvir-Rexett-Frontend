@@ -12,11 +12,13 @@ import { FaHandshake } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import { DUMMY_DATA } from "../../helper/constant";
 import { applyJob, developerGetJobListing } from "../../redux/slices/developerDataSlice";
+import { IoCheckmark } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import RexettButton from "./RexettButton";
 
 const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
   const role = localStorage.getItem("role")
+  const [approveIndex , setApproveIndex] =  useState(null)
   const developer_id = localStorage.getItem("userId")
   const { smallLoader } = useSelector(state => state.developerData)
   const { t } = useTranslation()
@@ -28,7 +30,6 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
     return data?.title;
   };
 
-  console.log(jobListing, "jobListing")
 
   useEffect(() => {
     if (jobListing?.length > 0) {
@@ -46,7 +47,6 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
   };
 
   const currentStatusCssClass = (status) => {
-    console.log(status, "status")
     switch (status) {
       case "ended":
         return "status-rejected";
@@ -96,7 +96,6 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
     navigate(`/${role}/${role}-single-job/${id}`)
   }
   const getStatus = (status) => {
-    console.log(status, "stuasssss")
     if (status <= 95) {
       return "finished"
     } else if (status <= 60) {
@@ -107,7 +106,8 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
       return "rejected"
   }
 
-  const handleApplyJob = (item) => {
+  const handleApplyJob = (item,index) => {
+    setApproveIndex(index);
     let payload = {
       job_id: item?.id,
       developer_id: developer_id
@@ -241,10 +241,12 @@ const JobTabs = ({ jobListing, jobCategoryList, screenLoader, currentTab }) => {
                           <RexettButton
                             variant="transparent"
                             className="main-btn font-14 mb-2"
-                            onClick={currentTab == "new_jobs" ? () => handleApplyJob(item) : undefined}
+                            onClick={currentTab == "new_jobs" ? () => handleApplyJob(item,index) : undefined}
+                            // icon={approveIndex == index ? smallLoader :  <IoCheckmark />}
                             text={currentTab == "new_jobs" ? "Apply this job" : currentTab == "applied_jobs" ? "Applied" : "In progress"}
-                            isLoading={smallLoader}
-                            disabled={smallLoader}
+                            // isLoading={smallLoader}
+                            isLoading = {approveIndex == index ? smallLoader : false } 
+                            // disabled={smallLoader}
                           />
                         </div>
                       }

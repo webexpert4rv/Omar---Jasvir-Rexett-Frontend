@@ -36,7 +36,6 @@ const FinalizeResume = ({skillOptions,watch}) => {
       }
   },[developerId])
 
-  console.log(developerRegistrationData?.tech_stacks_used,"techstac")
 
 
   // const getSkill=()=>{

@@ -451,6 +451,7 @@ const ClientRegistrationStepper = () => {
     reset();
   };
   const handleProceed = () => {
+    console.log(registrationType,"registrationType")
     const stepData = watch();
     let fileData = new FormData();
     fileData.append("file", imageFile?.profile_picture)

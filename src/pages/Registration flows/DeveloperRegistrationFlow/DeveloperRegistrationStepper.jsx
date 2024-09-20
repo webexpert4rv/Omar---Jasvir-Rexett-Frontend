@@ -340,7 +340,6 @@ const DeveloperRegistrationStepper = () => {
       title: selectedRecommend ? selectedRecommend : stepData ? stepData[0]?.description : null
     })));
   }, [selectedRecommend])
-  console.log(watch("tech_stacks_used"), "tech stacks used");
 
   const increaseStepCount = (isNested) => {
 
@@ -941,8 +940,6 @@ const DeveloperRegistrationStepper = () => {
   };
 
   const onSubmit = (values) => {
-
-    console.log(values, "valuesssss")
     setIsAdd(false)
     let hasErrors = false;
     if (!imageFile?.resume) {
@@ -1023,7 +1020,6 @@ const DeveloperRegistrationStepper = () => {
     };
 
 
-    console.log(newArr, "newArr")
     if (activeStep == 2) {
       let developer_experience = [];
       if (edit) {
@@ -1107,8 +1103,6 @@ const DeveloperRegistrationStepper = () => {
         increaseStepCount(false);
       }
     } else if (activeStep === 3) {
-      console.log(freeArray, "freeArray")
-
       if (edit) {
         if (freeArray) {
           const payloads = freeArray?.map((itm) => ({
@@ -1149,7 +1143,6 @@ const DeveloperRegistrationStepper = () => {
 
             return updatedVal;
           });
-          console.log(newData, 'hibye', stepData)
           let developer_education = [
             ...newData,
             {
@@ -1174,10 +1167,8 @@ const DeveloperRegistrationStepper = () => {
         }
       }
     } else if (activeStep == 4) {
-      console?.log(values?.good_skills, "skilllll")
       if (nestedActiveStep == 2) {
         const transformData = (data) => {
-          console.log(data, "adat")
           return data?.map(item => ({
             skill: item?.title?.label,
             skill_weight: item?.level?.value
@@ -1240,7 +1231,6 @@ const DeveloperRegistrationStepper = () => {
     else if (activeStep == 6) {
       if(nestedActiveStep == 2){
       if (edit) {
-        console.log("inside")
         if (freeArray) {
           const payloads = freeArray?.map((itm) => ({
             "project_title": itm?.project_title,
@@ -1301,7 +1291,6 @@ const DeveloperRegistrationStepper = () => {
       setIsRegistrationStepModal(true);
     }
     else {
-      console.log(values, "these are values");
       uploadFiles({
         resume: imageFile.resume,
         introVideo: imageFile.introVideo,

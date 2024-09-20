@@ -31,7 +31,7 @@ import {
     approveFeedback,
 } from "../../../redux/slices/clientDataSlice";
 
-import { jobPostConfirmMessage } from "../../../helper/utlis";
+import { DISCOVERY_DOCS, jobPostConfirmMessage, SCOPES } from "../../../helper/utlis";
 import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
 import ManualSuggestions from "../../../pages/admin/Modals/ManualSuggestion";
@@ -74,22 +74,20 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { gapi } from 'gapi-script';
 import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 import { getAdobeTemplate } from "../../../redux/slices/adobeDataSlice";
+import DeveloperRegistrationStepper from "../../../pages/Registration flows/DeveloperRegistrationFlow/DeveloperRegistrationStepper";
 
-const DISCOVERY_DOCS = [
-    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
-];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
 
-const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';
 
 const SingleJobDetails = () => {
     const role = localStorage.getItem("role")
+    const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
     const [selectedTabsData, setSelectedTabsData] = useState([]);
+    const [suggestShortList, setSuggestShortList] = useState(false)
+    const [appliedShortList, setAppliedShortList] = useState(false)
     const [currentTabsStatus, setCurrnetTabsStatus] = useState("shortlisted");
     const [currentTab, setCurrentTab] = useState("application");
     const [selectedDeveloper, setSelectedDeveloper] = useState({});
+    const [devType, setDevType] = useState()
     const [statusModal, setStatusModal] = useState({
         isTrue: false,
         id: null,
@@ -105,8 +103,9 @@ const SingleJobDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let id = location.pathname.split("/")[3];
-    const [devId , setDevId] = useState()
-    const[application,setApplicationId] =useState()
+    const job_id = localStorage.setItem("jobId",id)
+    const [devId, setDevId] = useState()
+    const [application, setApplicationId] = useState()
     const clientId = localStorage.getItem("userId")
     const [selectedDocument, setSelectedDocument] = useState('');
     const [documentOwner, setDocumentOwner] = useState('');
@@ -114,7 +113,11 @@ const SingleJobDetails = () => {
     const [detailsFilled, setDetailsFilled] = useState(false);
     const [documentSaved, setDocumentSaved] = useState(false);
     const { configDetails, developerList } = useSelector(state => state.adminData)
+    const [suggestTabData, setSuggestTabData] = useState()
+    const [appliedTabData, setAppliedTabData] = useState()
     const [manualSuggestion, showManualSuggestion] = useState(false)
+    const { t } = useTranslation();
+
 
     const {
         allJobPostedList,
@@ -124,19 +127,16 @@ const SingleJobDetails = () => {
         smallLoader,
         screenLoader
     } = useSelector((state) => state.clientData);
-    const { t } = useTranslation();
 
-    console.log(singleJobPost, "singleJobPost")
 
     useEffect(() => {
         function start() {
             gapi.client.init({
-                apiKey: API_KEY,
-                clientId: CLIENT_ID,
+                apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+            clientId:"574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
                 discoveryDocs: DISCOVERY_DOCS,
                 scope: SCOPES
             }).then(() => {
-                console.log('GAPI Initialized');
                 const authInstance = gapi.auth2.getAuthInstance();
                 localStorage.setItem("authentication", authInstance.isSignedIn.get())
             }).catch((error) => {
@@ -152,19 +152,18 @@ const SingleJobDetails = () => {
             // dispatch(getShortListInterview(id))
         }
         dispatch(getJobCategoryList());
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         dispatch(getDeveloperList())
-        dispatch(getAdobeTemplate())
+        // dispatch(getAdobeTemplate())
 
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         setSingleJobDescription(singleJobPost?.job);
     }, [singleJobPost]);
 
-    console.log(singleJobDescription, "singleJobDescription")
 
 
     const getCategory = (cat) => {
@@ -199,42 +198,6 @@ const SingleJobDetails = () => {
             setCurrnetTabsStatus("application");
         }
     };
-    // const handleJobStatusAction = (e, data) => {
-    //     e.preventDefault();
-    //     if (data.status == "ended") {
-    //         dispatch(
-    //             publishedPost(singleJobDescription?.id, data, () => {
-    //                 setStatusModal({});
-    //                 dispatch(singleJobPostData(id, () => { }));
-    //             })
-    //         );
-    //     } else if (data.status == "application") {
-    //         dispatch(
-    //             getDeleteJob(statusModal?.id, () => {
-    //                 setStatusModal({});
-    //                 navigate("/client/job-posted");
-    //             })
-    //         );
-    //     } else {
-    //         dispatch(
-    //             changeJobStatus(currentTab, statusModal?.id, data, () => {
-    //                 dispatch(
-    //                     singleJobPostData(id, () => {
-    //                         setStatusModal({});
-    //                         let prevData = { ...jobPostedData?.job?.job_applications };
-    //                         let d = prevData[currentTab]?.filter(
-    //                             (item) => item.id !== statusModal?.id
-    //                         );
-    //                         prevData[currentTab] = d;
-    //                         setSelectedTabsData(prevData[currentTab]);
-
-    //                     })
-    //                 );
-    //             })
-    //         );
-    //     }
-    // };
-
     // const handleEdit = () => {
     //     if (singleJobDescription?.status == "Unpublished") {
     //         navigate(`/job-edit-post/${id}`);
@@ -289,10 +252,8 @@ const SingleJobDetails = () => {
     };
 
 
-     console.log(devId,"devId")
     const handleJobStatusAction = (e, data) => {
-        console.log(statusModal?.id,"applnId")
-        console.log(data.status,"requireddata")
+        console.log(data?.status, "status")
         e.preventDefault();
         if (data.status == "ended") {
             dispatch(
@@ -302,7 +263,7 @@ const SingleJobDetails = () => {
                 })
             );
         }
-         else if (data.status == "application") {
+        else if (data.status == "application") {
             dispatch(
                 getDeleteJob(statusModal?.id, () => {
                     setStatusModal({});
@@ -313,28 +274,37 @@ const SingleJobDetails = () => {
             let newData = {
                 "applicationId": application,
                 "newStatus": data.status,
-                "developerId":devId,
+                "developerId": devId,
                 "jobId": +id,
             }
+
             dispatch(
                 changeJobStatus(currentTab, newData, () => {
-                    dispatch(
-                        singleJobPostData(id, () => {
-                            setStatusModal({});
-                            let prevData = { ...jobPostedData?.job?.job_applications };
-                            let d = prevData[currentTab]?.filter(
-                                (item) => item.id !== statusModal?.id
-                            );
+                    dispatch(singleJobPostData(id, () => {
+                        setStatusModal({});
+                        let prevData = { ...singleJobPost?.job?.job_applications?.suggestions };
 
-                            prevData[currentTab] = d;
-                            setSelectedTabsData(prevData[currentTab]);
-                        })
-                    );
+                        // Separate logic for suggested and applied
+                        if (data.status === "rejected" || data.status === "shortlisted") {
+                            if (devType === "suggested") {
+                                let suggestedData = prevData.suggested?.filter(item =>
+                                    item?.developer?.id !== statusModal?.id
+                                );
+                                setSuggestShortList(true);
+                                setSuggestTabData(suggestedData);
+                            } else if (devType === "applied") {
+                                let appliedData = prevData.applied?.filter(item =>
+                                    item?.developer?.id !== statusModal?.id
+                                );
+                                setAppliedShortList(true);
+                                setAppliedTabData(appliedData);
+                            }
+                        }
+                    }));
                 })
             );
         }
     };
-
     const handleDocumentSelect = (e) => {
         setSelectedDocument(e.target.value);
         setDocumentOwner('');
@@ -390,7 +360,8 @@ const SingleJobDetails = () => {
         }
     };
 
-    const handleJobStatusModal = (e, id, status,aplnId) => {
+    const handleJobStatusModal = (e, id, status, type, aplnId) => {
+        setDevType(type)
         setApplicationId(aplnId)
         setDevId(id)
         if (e == undefined) {
@@ -400,7 +371,6 @@ const SingleJobDetails = () => {
             });
         } else {
             e.stopPropagation();
-
             setStatusModal({
                 [status]: !statusModal.isTrue,
                 id: id,
@@ -461,7 +431,6 @@ const SingleJobDetails = () => {
             jobId: id,
             message: "Suggest Developer"
         }
-        console.log(payload, "payload")
         dispatch(getSuggestedDeveloper(payload))
 
     }
@@ -477,7 +446,6 @@ const SingleJobDetails = () => {
         setShowMeetingInfo(false)
     }
 
-    const [showScheduleMeeting, setShowScheduleMeet] = useState(false);
     const handleShowScheduleMeeting = (name, id, email) => {
         setSelectedDeveloper({ name, id, email })
         setShowScheduleMeet(!showScheduleMeeting);
@@ -570,7 +538,8 @@ const SingleJobDetails = () => {
         });
     };
 
-    const handleShowaddCandidate = () => {
+    const handleShowaddCandidate = (role) => {
+        localStorage.setItem("job",role)
         navigate('/admin/register-developer')
     }
 
@@ -893,7 +862,8 @@ const SingleJobDetails = () => {
                             ></p>
                         </div>
                     </Tab>
-                    {role !== "client" && <Tab eventKey="suggestions" title={suggest}>
+                    {role === "admin" && 
+                    <Tab eventKey="suggestions" title={suggest}>
                         <div className="text-end">
                             {/* <RexettButton className="main-btn px-4 py-2 font-14 mb-3"
                                 text="Make Suggestion Request"
@@ -902,21 +872,21 @@ const SingleJobDetails = () => {
                                 onClick={() => handleSuggestions()} /> */}
 
                             <Button variant="transparent" onClick={handleShowManualSuggestion} className="main-btn font-14 me-2">Add Manual Suggestion</Button>
-                            <Button variant="transparent" onClick={handleShowaddCandidate} className="outline-main-btn font-14">+ Add Candidate</Button>
+                            <Button variant="transparent" onClick={()=>handleShowaddCandidate('Add Candidate')} className="outline-main-btn font-14">+ Add Candidate</Button>
                         </div>
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
-                            type="Applied"
-                            data={selectedTabsData?.applied}
+                            type="applied"
+                            data={appliedShortList === true ? appliedTabData : singleJobDescription?.job_applications?.suggestions?.applied}
                             jobStatus={singleJobDescription?.status}
-                            role="client"
+                            role="admin"
                         />
                         <JobCard
                             handleJobStatusModal={handleJobStatusModal}
-                            type="Suggested"
-                            data={selectedTabsData?.suggested}
+                            type="suggested"
+                            data={suggestShortList ? suggestTabData : singleJobDescription?.job_applications?.suggestions?.suggested}
                             jobStatus={singleJobDescription?.status}
-                            role="client"
+                            role="admin"
                         />
                     </Tab>}
                     <Tab eventKey="shortlisted" title={shortlist}>
@@ -1889,9 +1859,10 @@ const SingleJobDetails = () => {
             <ConfirmationModal
                 text={jobPostConfirmMessage(currentTab)}
                 show={
-                    statusModal?.Shortlisted ||
+                    statusModal?.shortlisted ||
                     statusModal?.Interviewing ||
-                    statusModal?.Suggested ||
+                    statusModal?.suggested ||
+                    statusModal?.applied ||
                     statusModal?.application
                 }
                 onClick={handleJobStatusAction}

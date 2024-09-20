@@ -49,8 +49,8 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
   useEffect(() => {
     function start() {
       gapi.client.init({
-        apiKey: "AIzaSyCvwWpOjYlFNn8h77VjMJn_1il2fEPTRJY",
-            clientId: "1044218423716-d5ulieefv87jqu0ti2q9opvtuo6ed8i2.apps.googleusercontent.com",
+        apiKey: "AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g",
+            clientId: "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com",
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
       }).then(() => {
@@ -92,7 +92,7 @@ const Meetings = ({ showMeetings, handleCloseMeetings, handleShowSchedule, handl
       'timeMax': timeMax,
       'showDeleted': false,
       'singleEvents': true,
-      'maxResults': 10,
+      'maxResults': 20,
       'orderBy': 'startTime',
      }
 

@@ -17,7 +17,23 @@ import { gapi } from 'gapi-script';
 import { Client } from '@microsoft/microsoft-graph-client';
 import { useMsal } from "@azure/msal-react";
 import { AuthCodeMSALBrowserAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
-import { DISCOVERY_DOCS, SCOPES } from "../../../helper/utlis";
+
+const DISCOVERY_DOCS = [
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+    "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest"
+  ];
+  
+  const SCOPES = [
+    "https://www.googleapis.com/auth/admin.reports.usage.readonly",
+    "https://www.googleapis.com/auth/calendar",
+    "https://www.googleapis.com/auth/calendar.events",
+    "https://www.googleapis.com/auth/calendar.events.readonly",
+    'https://www.googleapis.com/auth/admin.reports.audit.readonly',
+  ];
+  
+//   const CLIENT_ID = "574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com";
+
+//   const API_KEY = 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g';;
 
 
 const MeetingInfo = ({ show, handleClose,details }) => {
@@ -33,7 +49,6 @@ const MeetingInfo = ({ show, handleClose,details }) => {
         setCancelModal({isTrue:true})
      
     }
-
 
     const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(instance, {
         account: accounts[0],
@@ -53,8 +68,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
             "profile",
             "OnlineMeetings.ReadWrite",
             "OnlineMeetingRecording.Read.All",
-             "Calendars.ReadWrite",
-             "Calendars.Read",
+            "Calendars.ReadWrite",
+            "Calendars.Read",
           ],
         prompt: "consent",
       });
@@ -76,8 +91,8 @@ const MeetingInfo = ({ show, handleClose,details }) => {
     useEffect(() => {
         function start() {
           gapi.client.init({
-            apiKey: "AIzaSyCvwWpOjYlFNn8h77VjMJn_1il2fEPTRJY",
-            clientId:"1044218423716-d5ulieefv87jqu0ti2q9opvtuo6ed8i2.apps.googleusercontent.com",
+            apiKey: 'AIzaSyCA-pKaniZ4oeXOpk34WX5CMZ116zBvy-g',
+            clientId: '574761927488-fo96b4voamfvignvub9oug40a9a6m48c.apps.googleusercontent.com',
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
           }).then(() => {
@@ -96,8 +111,9 @@ const MeetingInfo = ({ show, handleClose,details }) => {
   
 
     const fetchMeetingDetails = async (meetingCode) => {
-     const response =  await gapi.client.reports.activities.list({
-          userKey: '"all',
+        alert(meetingCode)
+        const response = await gapi.client.reports.activities.list({
+          userKey: 'all',
           applicationName: 'meet',
           eventName: 'call_ended',
           filters: `meeting_code==${meetingCode}`,
@@ -124,12 +140,10 @@ const MeetingInfo = ({ show, handleClose,details }) => {
     console.log(duration,"duration");
       };
 
-
-
-    const checkEventStatus = async (eventId) => {
+    const checkEventStatus = async () => {
         const response = await gapi.client.calendar.events.get({
           calendarId: 'primary',
-          eventId: "tr15vl4n86kjsv47bq97443qes",
+          eventId: "siq7ht5c512mukvjqag7qgb84k",
         });
     
         if (response.result.status === 'cancelled') {
@@ -138,7 +152,7 @@ const MeetingInfo = ({ show, handleClose,details }) => {
           const now = new Date();
           const meetingStart = new Date(response.result.start.dateTime);
           if (meetingStart < now) {
-            fetchMeetingDetails("tr15vl4n86kjsv47bq97443qes");
+            fetchMeetingDetails("siq7ht5c512mukvjqag7qgb84k");
             // alert('The meeting should have started or is over.');
           } else {
             alert('The meeting is still scheduled.');
@@ -157,7 +171,7 @@ const MeetingInfo = ({ show, handleClose,details }) => {
       
         try {
           // Fetch the online meeting details using the meeting ID
-          const meetingResponse = await client.api(`/me/onlineMeetings/AAMkADU2NjE0OWIwLWU1MjAtNGJlNi1hNjc0LTZlYzg0NDk5YzAzMwBGAAAAAACurO6i5qZvQIspx2LtckmfBwAw6FGqZi1CQY5xHP3TIqn7AAAAAAENAAAw6FGqZi1CQY5xHP3TIqn7AABcN3IGAAA=`).get();
+          const meetingResponse = await client.api(`/me/onlineMeetings/MCMxOTptZWV0aW5nX1ltVTVOV00zTkdFdFpqTXlNaTAwWkRnNExUazRPR1V0TWpVek1HSmtaalJoTURobUB0aHJlYWQudjIjMA==`).get();
       
           // Extract meeting details
           const subject = meetingResponse.subject;
@@ -179,46 +193,6 @@ const MeetingInfo = ({ show, handleClose,details }) => {
           console.error('Error fetching meeting details:', error);
         }
       };
-
-
-    // const getMeetingDetails = async (userId, joinWebUrl) => {
-    //     if (!isAuthenticated) {
-    //       console.log('User not authenticated');
-    //       return;
-    //     }
-      
-    //     const client = Client.initWithMiddleware({ authProvider });
-      
-    //     try {
-    //       // Fetch the online meeting details using userId and joinWebUrl
-    //       const encodedJoinWebUrl = encodeURIComponent("https://teams.microsoft.com/l/meetup-join/19%3ameeting_Zjk4NTExM2ItMjIyMC00NWQ4LWEyMmYtYzA3NmVmMmEyYzky%40thread.v2/0?context=%7b%22Tid%22%3a%2224c55e21-ebf8-4b04-90e6-158d4790c5f3%22%2c%22Oid%22%3a%22b7dc33e0-f0b9-42cc-ae32-96b7cbcc6c53%22%7d"); // Ensure the URL is properly encoded
-    //       const meetingResponse = await client
-    //         .api(`/users/${"Omar@rexett.onmicrosoft.com"}/onlineMeetings?$filter=joinWebUrl eq '${encodedJoinWebUrl}'`)
-    //         .get();
-      
-    //       // If no meeting found, handle it
-    //       if (!meetingResponse.value || meetingResponse.value.length === 0) {
-    //         console.log('No meeting found with the provided join URL');
-    //         return;
-    //       }
-      
-    //       // Extract meeting details from the first result
-    //       const meeting = meetingResponse.value[0]; // Assuming the first meeting is the relevant one
-    //       const subject = meeting.subject;
-    //       const startTime = meeting.start.dateTime; // Correct field access
-    //       const endTime = meeting.end.dateTime;     // Correct field access
-    //       const duration = endTime ? new Date(endTime) - new Date(startTime) : 0; // Duration in milliseconds
-      
-    //       console.log(`Meeting: ${subject}`);
-    //       console.log(`Start Time: ${startTime}`);
-    //       console.log(`End Time: ${endTime}`);
-    //       console.log(`Duration: ${duration / 60000} minutes`); // Duration in minutes
-      
-    //     } catch (error) {
-    //       console.error('Error fetching meeting details:', error);
-    //     }
-    //   };
-      
       
       // Call the function with a specific meeting ID
       // getMeetingDetails('your-meeting-id-here');
