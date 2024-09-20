@@ -29,11 +29,15 @@ import { IoCheckmark } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import userImg from "../../assets/img/user-img.jpg";
-import ConfirmationModal from "../views/Modals/ConfirmationModal";
-import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import CommonFilterSection from "../../components/atomic/CommonFilterSection";
 import { MEMBERS_FILTER_FIELDS, buildQueryFromObjects } from "./adminConstant";
+import { TiUserAdd } from "react-icons/ti";
+import AssignEmployee from "./Modals/AssignEmployee";
+import { FaRotateRight } from "react-icons/fa6";
+import { FaInfoCircle } from "react-icons/fa";
 
 let STATUS = [
   {
@@ -104,7 +108,7 @@ const Members = () => {
       isTrustedTech: checked,
     });
   };
-
+  
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
     setArrowActive(index == arrowactive ? null : index);
@@ -134,7 +138,8 @@ const Members = () => {
       let filterStatus = copied.filter(
         (item) => item.approval_status == currentStatus
       );
-      setApplication(filterStatus);
+      // setApplication(filterStatus);
+      setApplication(copied);
     } else {
       setApplication([]);
     }
@@ -253,8 +258,8 @@ const Members = () => {
     };
     const query = `${featureModalDetails?.userId}?isFeaturedMember=${featureModalDetails?.isFeaturedMember}`;
     const toastMessage = featureModalDetails?.isFeaturedMember
-    ? "Developer added to featured members successfully"
-    : "Developer removed to featured members successfully";
+      ? "Developer added to featured members successfully"
+      : "Developer removed from featured members successfully";
     dispatch(
       addToFeature(
         query,
@@ -283,10 +288,28 @@ const Members = () => {
       )
     );
   };
-
+  const [assignemployee, showAssignEmployee] = useState({show:false, id: true});
+  const handleShowAssignEmployee = (id) => {
+    showAssignEmployee({
+      show: true,
+      id: id
+    });  
+  }
+  const handleCloseAssignEmployee = () => {
+    showAssignEmployee({show:false, id: null});
+  }
+  const assignEmployeeText = (
+    <Tooltip>Assign Team Member</Tooltip>
+  )
   const handleCloseFeature = () => setShowFeatureModal(!showFeatureModal);
   const handleCloseTrustedModal = () => setShowTrustedModal(!showTrustedModal);
+  const reassignEmployee = (
+    <Tooltip>Reassign Team Member</Tooltip>
+  )
 
+  const featuredMember = (
+    <Tooltip>Feature developer on website</Tooltip>
+  )
   return (
     <>
       <CommonFilterSection
@@ -366,7 +389,7 @@ const Members = () => {
             </Nav.Item>
             <Nav.Item className="application-item">
               <Nav.Link eventKey="vendors" className="application-link">
-                {t("vendors")}{" "}
+                Partners{" "}
                 <span className="new-app">
                   {allApplications?.vendors?.length}
                 </span>
@@ -374,7 +397,7 @@ const Members = () => {
             </Nav.Item>
             <Nav.Item className="application-item">
               <Nav.Link eventKey="developers" className="application-link">
-                {t("developers")}{" "}
+                Candidates{" "}
                 <span className="new-app">
                   {allApplications?.developers?.length}
                 </span>
@@ -402,13 +425,17 @@ const Members = () => {
                 <table className="table w-100 engagement-table table-ui-custom">
                   <thead>
                     <tr>
-                      <th>{t("clientName")}</th>
+                      <th>Name</th>
                       <th>
-                        {t("email")} {t("address")}
+                        {t("email")}
                       </th>
-                      <th>{t("phoneNumber")}</th>
+                      <th>Phone Number</th>
+                      <th>Company Type</th>
+                      <th>Tax Id</th>
+                      <th>Applied on</th>
                       <th>{t("status")}</th>
-                      <th>Disabled/Enabled</th>
+                      <th className="text-center">Action</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -428,7 +455,7 @@ const Members = () => {
                                     <span
                                       className={
                                         arrowactive == index &&
-                                        currentTab == "clients"
+                                          currentTab == "clients"
                                           ? "row-arrow active"
                                           : "row-arrow"
                                       }
@@ -457,25 +484,27 @@ const Members = () => {
                                   </span>
                                 </td>
                                 <td>{item?.phone_number}</td>
+                                <td className="text-capitalize">{item?.client_type}</td>
+                                <td>{item?.company_tax_id}</td>
+                                <td>{item?.created_at?.slice(0, 10)}</td>
                                 <td>
                                   <span
-                                    className={`${
-                                      item?.approval_status == "approved"
-                                        ? "status-finished text-capitalize"
-                                        : "status-rejected text-capitalize"
-                                    }`}
+                                    className={`${item?.approval_status == "approved"
+                                      ? "status-finished text-capitalize"
+                                      : "status-rejected text-capitalize"
+                                      }`}
                                   >
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom"
+                                        class="form-check-input toggle-switch-custom mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         checked={item?.status == "active"}
@@ -484,14 +513,30 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
+                                <td>
+                                  <div>
+                                    <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                      <Button variant="transparent" onClick={()=>handleShowAssignEmployee(item.id)} className="arrow-btn primary-arrow mx-auto mb-1">
+                                        <TiUserAdd />
+                                      </Button>
+                                    </OverlayTrigger>
+                                    <span className="associate-text d-inline-flex align-items-center gap-2">
+                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
+                                      <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
+                                        <span onClick={()=>handleShowAssignEmployee(item.id)} className="reschedule-btn flex-none">
+                                          <FaRotateRight />
+                                        </span>
+                                      </OverlayTrigger>
+                                    </span>
+                                  </div>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
-                                  className={`collapsible-row ${
-                                    expandedRow === index ? "open" : ""
-                                  }`}
+                                  className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                    }`}
                                 >
-                                  <td colSpan="8">
+                                  <td colSpan="9">
                                     <div>
                                       <Row>
                                         {/* {item?.client_type == "company" && ( */}
@@ -681,7 +726,7 @@ const Members = () => {
                 </table>
               </div>
               {allApplications?.totalClientPages > 1 &&
-              application.length > 0 ? (
+                application.length > 0 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "clients" && (
                     <p className="showing-result">
@@ -705,9 +750,9 @@ const Members = () => {
                 <table className="table w-100 engagement-table table-ui-custom">
                   <thead>
                     <tr>
-                      <th>{t("clientName")}</th>
+                      <th>Vendor Name</th>
                       <th>
-                        {t("email")} {t("address")}
+                        {t("email")}
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("typeOfCompany")}</th>
@@ -716,7 +761,8 @@ const Members = () => {
                         {t("engagements")} {t("last")}
                       </th>
                       <th>{t("status")}</th>
-                      <th>Enable/Disable</th>
+                      <th className="text-center">Action</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -736,7 +782,7 @@ const Members = () => {
                                     <span
                                       className={
                                         arrowactive == index &&
-                                        currentTab == "vendors"
+                                          currentTab == "vendors"
                                           ? "row-arrow active"
                                           : "row-arrow"
                                       }
@@ -764,26 +810,25 @@ const Members = () => {
                                 <td>{item?.phone_number}</td>
                                 <td>{item?.company?.type_of_company}</td>
                                 <td>{item?.company?.total_employees}</td>
-                                <td>{item?.company?.website}</td>
+                                <td><p className="application-mail mb-0">{item?.company?.website}</p></td>
                                 <td>
                                   <span
-                                    className={`${
-                                      item?.approval_status == "approved"
-                                        ? "status-finished text-capitalize"
-                                        : "status-rejected text-capitalize"
-                                    }`}
+                                    className={`${item?.approval_status == "approved"
+                                      ? "status-finished text-capitalize"
+                                      : "status-rejected text-capitalize"
+                                      }`}
                                   >
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper d-inline-block ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom"
+                                        class="form-check-input toggle-switch-custom mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
@@ -792,14 +837,30 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
+                                <td>
+                                  <div>
+                                    <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto mb-1">
+                                        <TiUserAdd />
+                                      </Button>
+                                    </OverlayTrigger>
+                                    <span className="associate-text d-inline-flex align-items-center gap-2">
+                                      <span className="associate white-nowrap">johndoe123@gmail.com</span>
+                                      <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
+                                        <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
+                                          <FaRotateRight />
+                                        </span>
+                                      </OverlayTrigger>
+                                    </span>
+                                  </div>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
-                                  className={`collapsible-row ${
-                                    expandedRow === index ? "open" : ""
-                                  }`}
+                                  className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                    }`}
                                 >
-                                  <td colSpan="8">
+                                  <td colSpan="9">
                                     <div>
                                       <Row>
                                         <Col md={3} className="mb-3">
@@ -870,7 +931,7 @@ const Members = () => {
                                             </div>
                                           </Col>
                                         )}
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("phoneNumber")}
@@ -880,7 +941,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("typeOfCompany")}
@@ -890,7 +951,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Type of establishment
@@ -904,7 +965,7 @@ const Members = () => {
                                           </div>
                                         </Col>
 
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Website
@@ -915,7 +976,7 @@ const Members = () => {
                                           </div>
                                         </Col>
 
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Service offering
@@ -925,7 +986,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               company Email
@@ -935,7 +996,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               company Yearly revenue
@@ -945,7 +1006,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               company GST number
@@ -955,7 +1016,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Turn around time to close contract
@@ -969,7 +1030,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Turn around time to close
@@ -983,7 +1044,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Proprietor contact number
@@ -996,7 +1057,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Proprietor contact person email
@@ -1009,7 +1070,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Proprietor contact person name
@@ -1022,7 +1083,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               Proprietor email
@@ -1032,7 +1093,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        {/* <Col md={3}>
+                                        {/* <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("status")}
@@ -1042,7 +1103,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col> */}
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("city")}
@@ -1052,7 +1113,7 @@ const Members = () => {
                                             </p>
                                           </div>
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className="mb-3">
                                           <div>
                                             <h3 className="application-heading">
                                               {t("country")}
@@ -1080,7 +1141,7 @@ const Members = () => {
                 </table>
               </div>
               {allApplications?.totalVendorPages > 1 &&
-              application.length > 0 ? (
+                application.length > 0 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "vendors" && (
                     <p className="showing-result">
@@ -1109,9 +1170,12 @@ const Members = () => {
                       </th>
                       <th>{t("phoneNumber")}</th>
                       <th>{t("status")}</th>
-                      <th>Enable/Disable</th>
-                      <th>Featured On Website</th>
+                      <th>Action</th>
+                      <th><span className="d-flex align-items-center gap-1">Featured 
+                      <OverlayTrigger placement="bottom" overlay={featuredMember}>
+                      <span><FaInfoCircle /></span></OverlayTrigger></span> </th>
                       <th>Trusted Tech Expert</th>
+                      <th className="text-center">Assign Team Member</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1120,7 +1184,7 @@ const Members = () => {
                     ) : (
                       <>
                         {currentTab == "developers" &&
-                        application?.length > 0 ? (
+                          application?.length > 0 ? (
                           application?.map((item, index) => (
                             <React.Fragment key={index}>
                               <tr
@@ -1132,7 +1196,7 @@ const Members = () => {
                                     <span
                                       className={
                                         arrowactive == index &&
-                                        currentTab == "developers"
+                                          currentTab == "developers"
                                           ? "row-arrow active"
                                           : "row-arrow"
                                       }
@@ -1165,23 +1229,22 @@ const Members = () => {
                                 <td>{item?.phone_number}</td>
                                 <td>
                                   <span
-                                    className={`${
-                                      item?.approval_status == "approved"
-                                        ? "status-finished text-capitalize"
-                                        : "status-rejected text-capitalize"
-                                    }`}
+                                    className={`${item?.approval_status == "approved"
+                                      ? "status-finished text-capitalize"
+                                      : "status-rejected text-capitalize"
+                                      }`}
                                   >
                                     {item?.approval_status}
                                   </span>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={deleteApplication}
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom"
+                                        class="form-check-input toggle-switch-custom mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         onClick={(e) => handleToggle(e, item)}
@@ -1190,7 +1253,7 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={
@@ -1199,9 +1262,9 @@ const Members = () => {
                                         : addToFeaturedMembers
                                     }
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom pointer"
+                                        class="form-check-input mx-auto toggle-switch-custom pointer"
                                         type="checkbox"
                                         role="switch"
                                         checked={item?.featured_member}
@@ -1212,7 +1275,7 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
-                                <td>
+                                <td className="text-center">
                                   <OverlayTrigger
                                     placement="bottom"
                                     overlay={
@@ -1221,9 +1284,9 @@ const Members = () => {
                                         : addToTrustedTech
                                     }
                                   >
-                                    <div class="form-check form-switch toggle-switch-wrapper">
+                                    <div class="form-check form-switch toggle-switch-wrapper ps-0 d-inline-block">
                                       <input
-                                        class="form-check-input toggle-switch-custom pointer"
+                                        class="form-check-input toggle-switch-custom pointer mx-auto"
                                         type="checkbox"
                                         role="switch"
                                         checked={item?.trusted_tech_expert}
@@ -1234,12 +1297,28 @@ const Members = () => {
                                     </div>
                                   </OverlayTrigger>
                                 </td>
+                                <td>
+                                  <div>
+                                    <OverlayTrigger placement="bottom" overlay={assignEmployeeText}>
+                                      <Button variant="transparent" onClick={handleShowAssignEmployee} className="arrow-btn primary-arrow mx-auto mb-1">
+                                        <TiUserAdd />
+                                      </Button>
+                                    </OverlayTrigger>
+                                    <span className="associate-text d-inline-flex gap-2 align-items-center">
+                                      <span className="associate white-nowrap">johndoe123gmail.com</span>
+                                      <OverlayTrigger placement="bottom" overlay={reassignEmployee}>
+                                        <span onClick={handleShowAssignEmployee} className="reschedule-btn flex-none">
+                                          <FaRotateRight />
+                                        </span>
+                                      </OverlayTrigger>
+                                    </span>
+                                  </div>
+                                </td>
                               </tr>
                               {expandedRow === index && (
                                 <tr
-                                  className={`collapsible-row ${
-                                    expandedRow === index ? "open" : ""
-                                  }`}
+                                  className={`collapsible-row ${expandedRow === index ? "open" : ""
+                                    }`}
                                 >
                                   <td colSpan="8">
                                     <div>
@@ -1418,37 +1497,37 @@ const Members = () => {
 
                                         {item?.developer_detail
                                           ?.professional_title && (
-                                          <Col md={3}>
-                                            <div>
-                                              <h3 className="application-heading">
-                                                Designation
-                                              </h3>
-                                              <p className="application-text">
-                                                {
-                                                  item?.developer_detail
-                                                    ?.professional_title
-                                                }
-                                              </p>
-                                            </div>
-                                          </Col>
-                                        )}
+                                            <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Designation
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.developer_detail
+                                                      ?.professional_title
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )}
 
                                         {item?.developer_detail
                                           ?.how_did_you_hear_about_rexett && (
-                                          <Col md={3}>
-                                            <div>
-                                              <h3 className="application-heading">
-                                                How Did you hear about rexett?
-                                              </h3>
-                                              <p className="application-text">
-                                                {
-                                                  item?.developer_detail
-                                                    ?.how_did_you_hear_about_rexett
-                                                }
-                                              </p>
-                                            </div>
-                                          </Col>
-                                        )}
+                                            <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  How Did you hear about rexett?
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.developer_detail
+                                                      ?.how_did_you_hear_about_rexett
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )}
                                         {item?.created_at && (
                                           <Col md={3}>
                                             <div>
@@ -1465,20 +1544,20 @@ const Members = () => {
                                         )}
                                         {item?.developer_detail
                                           ?.total_experience && (
-                                          <Col md={3}>
-                                            <div>
-                                              <h3 className="application-heading">
-                                                Experience
-                                              </h3>
-                                              <p className="application-text">
-                                                {
-                                                  item?.developer_detail
-                                                    ?.total_experience
-                                                }
-                                              </p>
-                                            </div>
-                                          </Col>
-                                        )}
+                                            <Col md={3}>
+                                              <div>
+                                                <h3 className="application-heading">
+                                                  Experience
+                                                </h3>
+                                                <p className="application-text">
+                                                  {
+                                                    item?.developer_detail
+                                                      ?.total_experience
+                                                  }
+                                                </p>
+                                              </div>
+                                            </Col>
+                                          )}
                                       </Row>
                                     </div>
                                   </td>
@@ -1497,7 +1576,7 @@ const Members = () => {
                 </table>
               </div>
               {allApplications?.totalDeveloperPages > 1 &&
-              application?.length > 0 ? (
+                application?.length > 0 ? (
                 <div className="d-flex justify-content-between align-items-center mt-3 mb-4">
                   {currentTab == "developers" && (
                     <p className="showing-result">
@@ -1524,9 +1603,8 @@ const Members = () => {
           handleClose={handleClose}
           onClick={handleDeleteAction}
           header={"Delete Developer"}
-          text={`Are you sure ,you want to ${
-            details.active == "active" ? "enable" : "disable"
-          } this account?`}
+          text={`Are you sure ,you want to ${details.active == "active" ? "enable" : "disable"
+            } this account?`}
           smallLoader={screenLoader}
         />
         {showFeatureModal && (
@@ -1548,6 +1626,7 @@ const Members = () => {
           />
         )}
       </div>
+      {assignemployee.show && <AssignEmployee show={assignemployee.show} handleClose={handleCloseAssignEmployee} id={assignemployee.id} />}
     </>
   );
 };

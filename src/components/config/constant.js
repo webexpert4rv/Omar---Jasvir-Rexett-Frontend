@@ -1,6 +1,6 @@
 
 import { MdDesignServices, MdSpaceDashboard } from "react-icons/md";
-import { FaListUl, FaUserLarge } from "react-icons/fa6";
+import { FaGear, FaListUl, FaUserClock, FaUserLarge, FaUsers } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
 import { BsClockFill } from "react-icons/bs";
@@ -11,6 +11,7 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { PiCoinsFill, PiUsersFourFill, PiUsersThreeFill } from "react-icons/pi";
 import { RiFileCopy2Fill } from "react-icons/ri";
 import { IoIosLaptop } from "react-icons/io";
+import { TbReportMoney } from "react-icons/tb";
 import { FaList } from "react-icons/fa6";
 
 
@@ -24,6 +25,7 @@ export const DEVELOPER_SIDE_BAR_ITEMS = [
     { to: "/developer/project-history", icon: <FaList />, text: "Project History" },
     { to: "/developer/leave-plan", icon: <GiPalmTree />, text: "Apply Leave/Holiday" },
     { to: "/developer/developer-invoice", icon: <FaFileInvoice />, text: "pay_slip" },
+    { to: "/developer/developer-settings", icon: <FaGear />, text: "Settings" },
 
 
 ];
@@ -53,28 +55,41 @@ export const CLIENT_SIDE_BAR_ITEMS = [
     { to: "/client/time-reporting", icon: <BsClockFill />, text: "timeReporting" },
     { to: "/client/leave-request", icon: <GiPalmTree />, text: "leaveRequests" },
     { to: "/client/job-posted", icon: <FaListUl />, text: "jobs" },
-    { to: "/client/earned-back", icon: <PiCoinsFill />, text: "earnedBack" },
+    // { to: "/client/earned-back", icon: <PiCoinsFill />, text: "earnedBack" },
     { to: "/client/invoice", icon: <FaFileInvoice />, text: "invoice" },
+    { to: "/client/client-settings", icon: <FaGear />, text: "Settings" },
 ];
 
 export const ADMIN_SIDE_BAR_ITEMS= [
-    { to: "/admin/admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
-    { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications" },
-    { to: "/admin/members", icon: <PiUsersFourFill />, text: "members" },
-    { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing" },
-    { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
-    { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images" },
-    { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting" },
-    { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
-    { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice" },
-    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Roles & Permissions" },
-    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration" },
+    { to: "/admin/admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard",slug:"dashboard-menu"},
+    { to: "/admin/applications", icon: <RiFileCopy2Fill />, text: "applications",slug:"new-applicants-menu"},
+    { to: "/admin/members", icon: <PiUsersFourFill />, text: "members",slug:"members-menu" },
+    { to: "/admin/admin-job-listing", icon: <FaListUl />, text: "jobListing",slug:"job-listing-menu" },
+    // { to: "/admin/edit-admin-profile", icon: <IoIosSettings />, text: "editProfile" },
+    { to: "/admin/admin-documents", icon: <IoDocuments />, text: "Documents/images", slug:"documents" },
+    { to: "/admin/admin-time-reporting", icon: <BsClockFill />, text:"timeReporting",slug:"admin-time-reporting" },
+    // { to: "/admin/interviews", icon: <IoIosLaptop />, text:"Interviews" },
+    { to: "/admin/admin-invoice", icon: <PiCoinsFill />, text: "Invoice",slug:"invoice" },
+    { to: "/admin/roles-permissions", icon: <PiUsersThreeFill />, text: "Employees & Permissions",slug:"" },
+    { to: "/admin/customization", icon: <MdDesignServices />, text: "Configuration",slug:"configuration" },
+    // { to: "/admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
+    // { to: "/admin/client-listing", icon: <FaUsers />, text: "Clients" },
   ]
 
  export const VENDOR_SIDE_BAR_ITEMS=[
     { to: "/vendor-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
+    { to: "/list-all-developers", icon:  <FaUserLarge />, text: "List of Developers" },
     { to: "/edit-vendor-profile", icon: <IoIosSettings />, text: "editProfile" },
     { to: "/vendor-documents", icon: <IoDocuments />, text: "documents" },
     { to: "/vendor-upload-invoice", icon: <FaFileInvoice />, text: "Invoice" },
     { to: "/vendor-time-reporting", icon: <BsClockFill />, text: "timeReporting" },
+    { to: "/vendor/vendor-settings", icon: <FaGear />, text: "Settings" },
+  ];
+  
+  export const SUPERADMIN_SIDE_BAR_ITEMS=[
+    { to: "/super-admin-dashboard", icon: <MdSpaceDashboard />, text: "dashboard" },
+    { to: "/super-admin/subscription-plan", icon: <TbReportMoney />, text: "Subscriptions" },
+    { to: "/super-admin/client-listing", icon: <FaUsers />, text: "Clients" },
+    { to: "/super-admin/support-agents", icon: <FaUsers />, text: "Support Agents" },
+    { to: "/super-admin/manage-shift", icon: <FaUserClock />, text: "Manage Agent Shift" },
   ]; 

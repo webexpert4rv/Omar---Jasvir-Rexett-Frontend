@@ -167,7 +167,7 @@ const TimeReportingDetail = () => {
                         ACTIVE_TABS_2.raisedByDevAndVendor && (
                         <div>
                           <RaisedToClientTable
-                            columns={RAISED_BY_DEVS_COLUMNS}A
+                            columns={RAISED_BY_DEVS_COLUMNS}
                             data={
                               timeReportDetails?.invoices_time_reporting
                                 ?.raised_by_dev_vendor

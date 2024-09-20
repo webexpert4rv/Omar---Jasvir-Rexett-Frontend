@@ -16,7 +16,7 @@ import {
 } from "../../redux/slices/clientDataSlice";
 import { HEADER } from "../../components/clients/TimeReporiting/constant";
 import { tabText } from "../../components/clients/TimeReporiting/constant";
-import RejectModal from "./Modals/EndJob";
+import RejectModal from "../../components/common/Modals/EndJob";
 import ScreenLoader from "../../components/atomic/ScreenLoader";
 import {
   getApproveDisapprove,
@@ -28,7 +28,7 @@ import NewEvent from "./Modals/NewEvent";
 import ListOfHolidays from "../../components/common/LeaveRequest/ListOfHolidays";
 import ToolTip from "../../components/common/Tooltip/ToolTip";
 import moment from "moment";
-import ConfirmationModal from "./Modals/ConfirmationModal";
+import ConfirmationModal from "../../components/common/Modals/ConfirmationModal";
 
 const LeaveRequest = () => {
   const dispatch = useDispatch();
@@ -44,6 +44,7 @@ const LeaveRequest = () => {
   const { screenLoader, approvedLoader, smallLoader, clientLeaveHistory } =useSelector((state) => state.clientData);
   const [leaveId, setLeaveId] = useState();
   const [deleteShowModal, setDeleteShowModal] = useState(false);
+  const [showEvent, setShowEvent] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const handleSelect = (selectedTab) => {
@@ -51,7 +52,6 @@ const LeaveRequest = () => {
   };
 
  
-  console.log(deleteId, "deleteId");
   const handleCloseDeleteModal = () => {
     setDeleteShowModal(false);
   };
@@ -126,7 +126,6 @@ const LeaveRequest = () => {
     return HEADER;
   };
 
-  const [showEvent, setShowEvent] = useState(false);
   const handleShowEvent = (id, status) => {
     setShowEvent(!showEvent);
     setStatus({

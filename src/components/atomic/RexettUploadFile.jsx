@@ -25,8 +25,6 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole
         setDetails(values)
         let formData = new FormData();
         formData.append("file", values.file_name[0]);
-        console.log(selectedFile , "selectedFile")
-        
         if (values?.category === "3" && values?.file_name[0]?.type !== "application/pdf") {
             alert("Only PDF files are allowed for Invoices category.");
             return; 
@@ -40,7 +38,7 @@ const RexettUploadFile = ({ show, handleClose, currentFolderDetails, currentRole
                 "type": +values.category,
                 "s3_path": url,
             }
-            dispatch(createNewFolderAndFile(fileData, (parent_id) => {
+        dispatch(createNewFolderAndFile(fileData, (parent_id) => {
                 let data = {
                     parent_id: parent_id
                 }

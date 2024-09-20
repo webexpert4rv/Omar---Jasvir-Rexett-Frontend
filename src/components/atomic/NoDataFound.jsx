@@ -4,7 +4,7 @@ const NoDataFound = ({data}) => {
   return (
     <div className='no-data-container'>
       <div className='no-data'>
-        <img src={errorImg} />{data?data:"No Data Found"}
+        {data?data:"🤔 We Couldn't Find Anything"}
       </div>
     </div>
   )

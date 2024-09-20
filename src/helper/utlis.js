@@ -35,7 +35,7 @@ export function getToken(tokenKey) {
 
   export const jobPostConfirmMessage=(key)=>{
    let message={
-    "suggested":"Want to shortlist this developer?",
+    "suggestions":"Want to shortlist this developer?",
     "shortlisted":"Want to interview this developer?",
     "interviewing":"Want to hire this developer?",
     "application":"Are you sure you want to Delete this job?"
@@ -71,4 +71,20 @@ export function getToken(tokenKey) {
     ];
 
 
-    
+    // googleApi.js
+
+export const DISCOVERY_DOCS = [
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+  "https://www.googleapis.com/discovery/v1/apis/admin/reports_v1/rest",
+  'https://admin.googleapis.com/$discovery/rest?version=reports_v1'
+];
+
+export const SCOPES = [
+  "https://www.googleapis.com/auth/admin.reports.usage.readonly",
+  "https://www.googleapis.com/auth/calendar.events",
+  'https://www.googleapis.com/auth/admin.reports.audit.readonly',
+];
+
+
+
+

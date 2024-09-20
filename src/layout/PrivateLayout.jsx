@@ -7,12 +7,25 @@ import roleConfig from "../components/config/roleConfig";
 
 const PrivateLayout = ({ children }) => {
   const token = getToken("token");
-  const role = localStorage.getItem("role");
-
   const { pathname } = useLocation();
-
   const basePath = pathname.split("-")[0];
   const derivedRole = basePath.split("/")[1];
+  const [collapseLayout , showCollapseLayout] = useState(false);
+  const handleShowCollpaseLayout = () => {
+    showCollapseLayout(!collapseLayout);
+  }
+
+  let role;
+  if (derivedRole == "super"){
+     role = "superAdmin"
+  }else{
+     role = localStorage.getItem("role");
+     if(role=="employee"){
+      role="subAdmin"
+     }
+  }
+
+  
   const {
     sidebarItems,
     floatingOptions,
@@ -25,20 +38,20 @@ const PrivateLayout = ({ children }) => {
   if (!token || !roleConfig[role]) {
     return <Navigate to={`${redirectPath}`} />;
   }
-  console.log(basePath, "basePath")
+ 
 
   return (
     <div className="dashboard-layout">
       {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
-        <RexettSideBar sidebarItems={sidebarItems} floatingOptions={floatingOptions} role={role} />
+        <RexettSideBar collapseActive={collapseLayout} sidebarItems={sidebarItems} floatingOptions={floatingOptions} role={role} />
       ) : (
         <Outlet />
       )}
 
-      <main className="main-wrapper">
+      <main className={collapseLayout ? "main-wrapper" : "main-wrapper collapsable-active"}>
         {basePath !== "/admin/video" && basePath !== "/admin/meeting" ? (
           <>
-            <RexettHeader {...headerProps} />
+            <RexettHeader collapseLayout={collapseLayout} handleCollapseSidebar={handleShowCollpaseLayout} {...headerProps} />
             <Outlet />
           </>
         ) : (

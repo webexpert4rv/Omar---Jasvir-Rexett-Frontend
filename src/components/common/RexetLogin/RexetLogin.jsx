@@ -54,7 +54,8 @@ const RexetLogin = ({userType}) => {
             client:"client",
             developer:"developer",
             admin:"admin",
-            vendor:"vendor"
+            vendor:"vendor",
+            subAdmin:"employee"
         }
         let data={
             email:values.email,

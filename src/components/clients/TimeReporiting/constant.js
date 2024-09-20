@@ -17,13 +17,12 @@ function showMonthDates() {
 var dates = showMonthDates();
 
 export function weeklyTimeReports(data, currentPeriod) {
-  console.log(data,"data inside weekly time reports");
- if (currentPeriod === "weekly") {
-     let start_date = new Date(data?.startDate);
-     var dayIndex = start_date.getDay();
-     let end_date = new Date(data?.end_date);
+  if (currentPeriod === "weekly") {
+    let start_date = new Date(data?.startDate);
+    var dayIndex = start_date.getDay();
+    let end_date = new Date(data?.end_date);
     let dayWithDate = [];
-    let dayName = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let dayName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     data?.timeReports?.map((item, index) => {
       if (item?.report_date) {
         dayWithDate.push(dayName[(dayIndex + index) % 7] + item?.report_date.slice(7, 10));
@@ -57,7 +56,7 @@ export function weeklyTimeReports(data, currentPeriod) {
     return dateWithMonth;
   }
 
-  if(currentPeriod === "monthly"){
+  if (currentPeriod === "monthly") {
     let dateWithYearly = [];
     data?.timeReports?.map((item, index) => {
       dateWithYearly.push(item.week);
@@ -66,13 +65,13 @@ export function weeklyTimeReports(data, currentPeriod) {
   }
 }
 
-export const getCurrentPeriodFromAPi=(period)=>{
-  if(period[0]?.year){
+export const getCurrentPeriodFromAPi = (period) => {
+  if (period[0]?.year) {
     return "yearly"
-  }else if(period[0]?.month){
+  } else if (period[0]?.month) {
     return "monthly"
-  }else{
-     return "weekly"    
+  } else {
+    return "weekly"
   }
 
 }
@@ -92,45 +91,92 @@ export const HEADER = [
   "Reason",
   "Action",
 ];
-export const tabText= [
+export const MESSAGE_TAB_TEXT = [
   {
-    key:"first",
-    value:"Applied Leave Request"
-  },
-  { 
-    key:"second",
-    value: "Leaves Rejected"
-   },
-   {
-    key:"third",
-    value:"Leave History"
+    key: "first",
+    value: "Inbox"
+
   },
   {
-    key:"fourth",
-    value:"Cancelled Leaves"
+    key: "second",
+    value: "Unread"
+  },
+  {
+    key: "third",
+    value: "Archive"
   }
 ]
 
 
-export const planLeaveTabs= [
+
+
+
+
+
+
+export const tabText = [
   {
-    key:"first",
-    value:"Apply Leave"
+    key: "first",
+    value: "Applied Leave Request"
   },
-  { 
-    key:"second",
+  {
+    key: "second",
+    value: "Leaves Rejected"
+  },
+  {
+    key: "third",
+    value: "Leave History"
+  },
+  {
+    key: "fourth",
+    value: "Cancelled Leaves"
+  }
+]
+export const Todo_tabText = [
+  {
+    key: "my_todo",
+    value: "My To-Dos"
+  },
+  {
+    key: "assigned_to",
+    value: "Assigned To-Dos"
+  }
+]
+
+
+
+
+export const timeReportTabText = [
+  {
+    key: "first",
+    value: "Developers"
+  },
+  {
+    key: "second",
+    value: "Timesheet"
+  },
+]
+
+
+export const planLeaveTabs = [
+  {
+    key: "first",
+    value: "Apply Leave"
+  },
+  {
+    key: "second",
     value: "Leaves History"
-   },
-  ]
+  },
+]
 export const generateLeave = (item) => {
   switch (item) {
     case "full-day":
-    return "Full Day"
-      case "half-day":
+      return "Full Day"
+    case "half-day":
       return "Half Day"
-      case "short-leave" :
+    case "short-leave":
       return " Short Leave"
-    }
+  }
 };
 export const LEAVE_TYPE = [
   {
@@ -154,18 +200,18 @@ export const MONTH_NAME = [
   'All', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ]
 export const SELECT_YEAR = [
- "2024",
- "2025",
- "2026",
- "2027",
- "2028",
- "2029"
+  "2024",
+  "2025",
+  "2026",
+  "2027",
+  "2028",
+  "2029"
 ]
-export const HOLIDAY_GUIDE_LINES =[
+export const HOLIDAY_GUIDE_LINES = [
   " All full-time and part-time developers are entitled to apply for leave. Types of leave include sick leave, personal leave, and emergency leave",
   "If you need to cancel your applied leave, submit a leave cancellation request before the start date of the leave.",
   "All leave requests, including approved, cancelled, and not approved leaves, will be recorded and shown in your leave history.",
- 
+
 ]
 export const TIME_REPORTING = [
   "All developers must check in before starting their workday.",
@@ -176,7 +222,7 @@ export const TIME_REPORTING = [
   "The timesheet for all developers will be submitted automatically every Friday at 12:00 AM."
 ]
 
-export  const monthOptions = [
+export const monthOptions = [
   { label: "January", value: 1 },
   { label: "Feburary", value: 2 },
   { label: "March", value: 3 },
@@ -208,19 +254,80 @@ export const yearOption = [
 
 export const configurationTabText = [
   {
-    key:"first",
-    value:"CRM"
+    key: "first",
+    value: "CRM"
   },
-  { 
-    key:"second",
+  {
+    key: "second",
     value: "Email Template"
-   },
-   {
-    key:"third",
-    value:"Company Details"
   },
- 
+  {
+    key: "third",
+    value: "Company Details"
+  },
+  {
+    key: "four",
+    value: "Message Template"
+  },
+  {
+    key:"five",
+    value:"Integrations"
+  },
+  {
+    key: "six",
+    value: "Connect with calendar"
+  },
+  {
+    key: "seven",
+    value: "Payment setup"
+  },
+
 ]
 
+export const companyType = [
+  {
+    key: "Sole_Proprietorship",
+    value: "Sole Proprietorship"
+  },
+  {
+    key: "Partnership",
+    value: "Partnership"
+  },
+  {
+    key: "Limited_Liability",
+    value: "Limited Liability"
+  },
+  {
+    key: "Corporation",
+    value: "Corporation"
+  },
+  {
+    key: "Non_Profit_Organization",
+    value: "Non Profit Organization"
+  },
+  {
+    key: "Cooperative",
+    value: "Cooperative"
+  },
+  {
+    key: "Franchise",
+    value: "Franchise"
+  },
+  {
+    key: "Joint_Venture",
+    value: "Joint Venture"
+  }
 
-export const GOOGLE_AUTOCOMPLETE_API_KEY="AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"
+]
+export const permissionTabText = [
+  {
+    key: "first",
+    value: "Manage Employees"
+  },
+  {
+    key: "second",
+    value: "Roles & Permissions"
+  },
+
+]
+export const GOOGLE_AUTOCOMPLETE_API_KEY = "AIzaSyABX4LTqTLQGg_b3jFOH8Z6_H5CDqn8tbc"

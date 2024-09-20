@@ -8,10 +8,16 @@ import UploadFiles from "./UploadFiles";
 import EmailTemplate from "../EmailTemplate/EmailTemplate";
 import CompanyDetails from "../CompanyDetails/CompanyDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { getConfigDetails } from "../../../../redux/slices/adminDataSlice";
+import { getAllIntegrationData, getConfigDetails } from "../../../../redux/slices/adminDataSlice";
 import ScreenLoader from "../../../../components/atomic/ScreenLoader";
+import MessageTemplate from "../MessageTemplate/MessageTemplate";
+import NotificationSetting from "../NotificationSettings/NotificationSetting";
+import ConnectCalendar from "../ConnectCalendar/ConnectCalendar";
+import PaymentSetup from "../PaymentSetup/PaymentSetup";
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 const Customization = () => {
+    
     const [previewUrl, setPreviewUrl] = useState('');
     const [currentTab, setCurrentTab] = useState("first")
     const dispatch =  useDispatch()
@@ -19,6 +25,8 @@ const Customization = () => {
 
     useEffect (()=>{
     dispatch(getConfigDetails())
+    dispatch(getAllIntegrationData())
+
     },[])
     const handleSelect = (selectedTab) => {
         setCurrentTab(selectedTab);
@@ -46,13 +54,17 @@ const Customization = () => {
                             <div>
                                 <Row>
                                     <UploadFiles previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} />
-                                    <ColorScheme previewUrl={previewUrl} />
-                                    <Typography previewUrl={previewUrl} />
+                                    <ColorScheme previewUrl={previewUrl} setPreviewUrl={setPreviewUrl}/>
+                                    <Typography previewUrl={previewUrl} setPreviewUrl={setPreviewUrl} />
                                 </Row>
                             </div>
                         }
                         <EmailTemplate currentTab={currentTab} previewUrl={previewUrl} />
                         <CompanyDetails currentTab={currentTab} />
+                        <MessageTemplate currentTab={currentTab} />
+                        <NotificationSetting currentTab={currentTab} />
+                        <ConnectCalendar currentTab={currentTab} />
+                        <PaymentSetup currentTab={currentTab} />
                     </Tab.Content>
                 </Tab.Container>
             </div>

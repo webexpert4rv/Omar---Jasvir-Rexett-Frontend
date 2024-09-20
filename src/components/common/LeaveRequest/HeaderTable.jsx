@@ -20,8 +20,6 @@ function HeaderTable({
   screenLoader,
 
 }) {
-  console.log(approveIndex , "approveINdex")
-  console.log(tableData , "tableData")
   return (
     <div>
       {screenLoader ? <ScreenLoader/> : 
@@ -110,9 +108,7 @@ function HeaderTable({
           </tbody>
         </table>
       ) : (
-        <td colSpan={8}>
-          <NoDataFound />
-        </td>
+        <div className="simple-no-data"><NoDataFound /></div> 
       )}
     </div> 
   );

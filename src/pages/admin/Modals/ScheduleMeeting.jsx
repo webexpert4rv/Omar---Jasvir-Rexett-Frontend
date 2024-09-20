@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BiFont } from "react-icons/bi";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -14,6 +14,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { toast } from 'react-toastify'
 import CreatableSelect from 'react-select/creatable';
+import { getDeveloperList } from "../../../redux/slices/adminDataSlice";
 const Schedulemeeting = ({ show, handleClose }) => {
     const [value, onChange] = useState(new Date());
     const [firstSlot, setFirstSlot] = useState("");
@@ -116,6 +117,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
 
     const [meetingType, setMeetingType] = useState('instant'); // initial state set to 'instant'
 
+   
     const handleMeetingTypeChange = (e) => {
         setMeetingType(e.target.id);
     };
@@ -199,9 +201,23 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                 onChange={handleMeetingTypeChange}
                                             />
                                         </div>
+                                        {meetingType === 'instant_meeting' &&(
+                                            <>
+                                                <Form.Control type="date" className="common-field font-14" />
+                                                <div className="d-flex align-items-center gap-2 associate p-3">
+                                                    <p className="font-14 mb-0">11:30AM</p>
+                                                    <span className="arrow-icon">
+                                                        <FaArrowRightLong />
+                                                    </span>
+                                                    <p className="font-14 mb-0">12:30PM</p>
+                                                    <p className="mb-0">Duration</p>
+                                                    <span className="font-14">1 hr</span>
+                                                </div>
+                                            </>
+                                        )}
                                         {meetingType === 'specific_meeting' && (
                                             <div className="specific-datetime">
-                                                <div className="d-flex align-items-center gap-3 mb-2">
+                                                <div className="d-flex align-items-center gap-3">
                                                     <Form.Select
                                                         className="common-field font-14 w-auto"
                                                         value={firstSlot}
@@ -214,7 +230,7 @@ const Schedulemeeting = ({ show, handleClose }) => {
                                                             </option>
                                                         ))}
                                                     </Form.Select>
-                                                    <span className="arrow-icon">
+                                                    <span className="arrow-icon mb-3">
                                                         <FaArrowRightLong />
                                                     </span>
                                                     <Form.Select

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { BiFont } from "react-icons/bi";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -9,9 +9,40 @@ import rexettLogo from '../assets/img/favicon.png';
 import devImg from '../assets/img/demo-img.jpg'
 import { FaRegCopy } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logoRexett from '../assets/img/rexett-logo.png';
+import { toast } from 'react-toastify';
+import axios from "axios";
 const MeetingDetail = () => {
+ const [meetingDetails,setMeetingDetails]=useState({});
+ const [isAcceptorReject,setAcceptReject]=useState("accept")
+  const {search}=useLocation()
+  let id=search.split("=")[2];
+  let tokenEmp=search.split("=")[1]
+  let token=tokenEmp.split("&")[0]
+
+
+
+    useEffect(()=>{
+      axios.get(`${process.env.REACT_APP_BASE_URL}/common/interview/${id}`).then((dat)=>{
+        setMeetingDetails(dat?.data?.data)
+      });
+    },[])
+
+    const handleAcceptReject=(status)=>{
+        setAcceptReject(status)
+    }
+
+    const handleSubmit=()=>{
+        let payload={
+            "interview_id": id,
+            "token": token
+          }
+        axios.post(`${process.env.REACT_APP_BASE_URL}/developer/interviews/accept`,payload).then((dat)=>{
+            toast.success("Interview accepted successfully", { position: "top-center" });
+          });
+    }
+
     return (
         <>
             <div className="header-single">
@@ -29,7 +60,7 @@ const MeetingDetail = () => {
                                     </Col>
                                     <Col lg={8} className="mb-3">
                                         <div>
-                                            Interview Call for Figma to UI Project
+                                        {meetingDetails?.title}
                                         </div>
                                     </Col>
                                     <Col lg={4} className="mb-lg-3 mb-1">
@@ -38,7 +69,7 @@ const MeetingDetail = () => {
                                     <Col lg={8} className="mb-3">
                                         <div className="d-flex align-items-center gap-3 client-imgbx">
                                             <img src={devImg} />
-                                            <p className="font-14 mb-0">Rohit Sharma</p>
+                                            <p className="font-14 mb-0">{meetingDetails?.developer_name}</p>
                                         </div>
                                     </Col>
                                     <Col lg={4} className="mb-lg-3 mb-1">
@@ -49,10 +80,10 @@ const MeetingDetail = () => {
                                             <div className="associate-text d-inline-block">
                                                 <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                                     <img src={devImg} />
-                                                    <p className="mb-0">robingautam@gmail.com</p>
+                                                    <p className="mb-0">{meetingDetails?.interviewers_list}</p>
                                                 </div>
                                             </div>
-                                            <div className="associate-text d-inline-block">
+                                            {/* <div className="associate-text d-inline-block">
                                                 <div className="associate p-2 rounded-full d-inline-flex align-items-center gap-3 interview-imgbx">
                                                     <span className="prefix-latter">RG</span>
                                                     <p className="mb-0">robingautam@gmail.com</p>
@@ -75,7 +106,7 @@ const MeetingDetail = () => {
                                                     <span className="prefix-latter">RG</span>
                                                     <p className="mb-0">robingautam@gmail.com</p>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </Col>
                                     {/* <Col lg={4} className="mb-lg-3 mb-1">
@@ -113,15 +144,15 @@ const MeetingDetail = () => {
                                     <Col lg={8} className="mb-3 associate-text">
                                         <div className="d-inline-flex align-items-center gap-2">
                                             <div className="datefield-wrapper associate">
-                                                <p className="font-14 mb-0">19-06-2024</p>
+                                                <p className="font-14 mb-0">{meetingDetails?.meeting_date}</p>
                                             </div>
                                             <div className="d-flex align-items-center gap-2 associate">
-                                                <p className="font-14 mb-0">18:30</p>
-                                                <span className="arrow-icon">
+                                                <p className="font-14 mb-0">{meetingDetails?.meeting_time}</p>
+                                                {/* <span className="arrow-icon">
                                                     <FaArrowRightLong />
                                                 </span>
                                                 <p className="font-14 mb-0">19:30</p>
-                                                <span className="font-14">1h</span>
+                                                <span className="font-14">1h</span> */}
                                             </div>
                                         </div>
                                     </Col>
@@ -130,19 +161,24 @@ const MeetingDetail = () => {
                             <div className="d-flex justify-content-center gap-3 align-items-center">
                                 <p className="mb-0">Attend Meeting</p>
                                 <div>
-                                    <Button variant="transparent" className="cancel-btn font-14 px-4">No</Button>
+                                    <Button variant="transparent" className="cancel-btn font-14 px-4" onClick={()=>handleAcceptReject("reject")}>No</Button>
                                 </div>
                                 <div>
-                                    <Button variant="transparent" className="main-btn font-14 px-4">Yes</Button>
+                                    <Button variant="transparent" className="main-btn font-14 px-4"  onClick={()=>handleAcceptReject("accept")}>Yes</Button>
                                 </div>
                             </div>
                             <div>
-                                <Form.Label className="font-14">Reason</Form.Label>
+                           {  
+                           isAcceptorReject=="reject"?
+                           <>
+                           
+                            <Form.Label className="font-14">Reason</Form.Label>
                                 <Form.Control type="text" className="common-field font-14 mb-2" />
                                 <Form.Label className="font-14">Select Date for next availability</Form.Label>
                                 <Form.Control type="date" className="common-field font-14 mb-2" />
+                           </>:""  }
                                 <div className="mt-3">
-                                    <Button variant="transparent" className="main-btn font-14">Submit</Button>
+                                    <Button variant="transparent" className="main-btn font-14" onClick={handleSubmit}>Submit</Button>
                                 </div>
                             </div>
                         </div>

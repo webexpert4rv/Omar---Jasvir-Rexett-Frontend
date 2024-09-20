@@ -4,7 +4,7 @@ import JobPostStepContainer from '../../components/common/JobPostForm/JobPostSte
 const AdminJobPost = () => {
   return (
     <>
-    <JobPostStepContainer/>
+    <JobPostStepContainer role="admin"/>
     </>
   )
 }

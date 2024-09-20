@@ -291,3 +291,21 @@ export const APPLICANT_FILTER_FIELDS = {
   ],
   searchFilter: { key: "search", placeholder: "Enter search keywords" },
 };
+
+export const ASSIGNED_FILTER_FIELDS = {
+  selectFilters: [
+
+    {
+      filterLabel: "Sort by name",
+      key:"order_alphabetically",
+      options:ORDER_OPTIONS,
+      defaultValueRequired:true
+    },
+    {
+      filterLabel: "Select Date",
+      key:"created_at",
+      isDate:true
+    },
+  ],
+  searchFilter: { key: "search", placeholder: "Enter search keywords" },
+};

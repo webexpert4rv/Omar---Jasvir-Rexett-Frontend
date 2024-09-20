@@ -25,6 +25,8 @@ import { FaCircleCheck, FaLink } from "react-icons/fa6";
 import { FaCalendarDays } from "react-icons/fa6";
 import MeetingInfo from "./Modals/MeetingInfo";
 import Calendar from 'react-calendar';
+import { BsFillHandThumbsDownFill, BsFillHandThumbsUpFill } from "react-icons/bs";
+import { GiHandOk } from "react-icons/gi";
 
 
 
@@ -459,6 +461,72 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
                         </Col>
+                        {/* <Col xxl={6} lg={12} className="mb-4">
+                            <div className="card-box">
+                                <div className="d-flex align-items-center justify-content-between mb-3">
+                                    <h3 className="heading-section mb-0">Customer Satisfaction</h3>
+                                    <Link to={'/customer-feedback'} className="main-btn font-14">View Feedbacks</Link>
+                                </div>
+                                <div>
+                                    <Row>
+                                        <Col md={6}>
+                                            <div>
+                                                <h4 className="subheading-card">Total Received</h4>
+                                                <h3 className="mainheading-card total-text">753</h3>
+                                            </div>
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="feedback-wrapper positive-wrapper">
+                                                <div className="d-flex align-items-center gap-3">
+                                                    <div className="feedback-icon">
+                                                        <BsFillHandThumbsUpFill />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="subheading-card">Great</h4>
+                                                        <h3 className="mainheading-card">89%</h3>
+                                                    </div>
+                                                </div>
+                                                <div className="feedback-progressbar positive">
+                                                    <div className="feedback-progress"></div>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="feedback-wrapper neutral-wrapper">
+                                                <div className="d-flex align-items-center gap-3">
+                                                    <div className="feedback-icon">
+                                                        <GiHandOk />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="subheading-card">Neutral</h4>
+                                                        <h3 className="mainheading-card">18%</h3>
+                                                    </div>
+                                                </div>
+                                                <div className="feedback-progressbar neutral">
+                                                    <div className="feedback-progress"></div>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="feedback-wrapper negative-wrapper">
+                                                <div className="d-flex align-items-center gap-3">
+                                                    <div className="feedback-icon">
+                                                        <BsFillHandThumbsDownFill />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="subheading-card">Poor</h4>
+                                                        <h3 className="mainheading-card">5%</h3>
+                                                    </div>
+                                                </div>
+                                                <div className="feedback-progressbar negative">
+                                                    <div className="feedback-progress"></div>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </div>
+                        </Col> */}
                         <Col xxl={6} lg={12} className="mb-4">
                             <div className="card-box">
                                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -625,7 +693,7 @@ const AdminDashboard = () => {
                         </Col>
                         <Col lg={6} className="mb-4">
                             <div className="card-box h-100">
-                                <h3 className="section-head pb-0 border-0 mb-4">Upcoming Events</h3>
+                                <h3 className="section-head pb-0 border-0 mb-4">Upcoming Meetings</h3>
                                 <div className="meeting-booking">
                                     <Calendar onChange={onChange} value={value} />
                                 </div>

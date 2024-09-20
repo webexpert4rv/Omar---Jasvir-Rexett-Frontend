@@ -28,6 +28,8 @@ const CommonFilterSection = ({
     setValue: setSearchValue,
   } = useForm();
 
+  console.log(filters,"filters")
+
   useEffect(() => {
     for (let key in filters) {
         setValue(key, filters[key]);

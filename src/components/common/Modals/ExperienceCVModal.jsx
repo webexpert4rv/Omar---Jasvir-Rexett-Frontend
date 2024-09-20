@@ -20,7 +20,7 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
     handleSubmit,
     reset,
     trigger,
-    setError, 
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -72,7 +72,7 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
     };
     if (role === "vendor") {
       if (onSubmitVendor) {
-        console.log(data,"newDat")
+        console.log(data, "newDat")
         onSubmitVendor(data);
       }
       handleClose();
@@ -128,17 +128,16 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
 
   return (
     <>
-      <h3 className="popup-heading">{t("experience")} CV {t("section")}</h3>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {fields?.map((item, index) => (
           <div className="experience-container mb-3" key={item.id}>
             <Row>
-              <Col md="12">
+              <Col md="6">
                 <Form.Group className="mb-4">
-                  <Form.Label className="font-14">{t("companyName")}</Form.Label>
+                  <Form.Label className="font-14 fw-medium">{t("companyName")}</Form.Label>
                   <Form.Control
                     type="text"
-                    className="common-field"
+                    className="common-field font-14"
                     name="company_name"
                     placeholder="Enter Company Name"
                     {...register(`test[${index}].company_name`, {
@@ -152,10 +151,10 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
               </Col>
               <Col md="6">
                 <Form.Group className="mb-4">
-                  <Form.Label className="font-14">{t("jobPosition")}</Form.Label>
+                  <Form.Label className="font-14 fw-medium">{t("jobPosition")}</Form.Label>
                   <Form.Control
                     type="text"
-                    className="common-field"
+                    className="common-field font-14"
                     name="job_title"
                     placeholder="Enter Job Position"
                     {...register(`test[${index}].job_title`, {
@@ -169,28 +168,10 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
               </Col>
               <Col md="6">
                 <Form.Group className="mb-4">
-                  <Form.Label className="font-14">{t("jobDescription")}</Form.Label>
-                  <Form.Control
-                    type="text"
-                    as="textarea"
-                    rows={3}
-                    className="common-field"
-                    placeholder="Enter Job Description"
-                    {...register(`test[${index}].description`, {
-                      required: "Description is required",
-                    })}
-                  />
-                  {errors?.test?.[index]?.description && (
-                    <p className="error-message">{errors.test[index].description.message}</p>
-                  )}
-                </Form.Group>
-              </Col>
-              <Col md="6">
-                <Form.Group className="mb-4">
-                  <Form.Label className="font-14">{t("startDate")}</Form.Label>
+                  <Form.Label className="font-14 fw-medium">{t("startDate")}</Form.Label>
                   <Form.Control
                     type="date"
-                    className="common-field"
+                    className="common-field font-14"
                     placeholder="Enter Start Date"
                     max={new Date().toISOString().split("T")[0]}
                     {...register(`test[${index}].start_date`, {
@@ -213,10 +194,10 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
               </Col>
               <Col md="6">
                 <Form.Group className="mb-4">
-                  <Form.Label className="font-14">{t("endDate")}</Form.Label>
+                  <Form.Label className="font-14 fw-medium">{t("endDate")}</Form.Label>
                   <Form.Control
                     type="date"
-                    className="common-field"
+                    className="common-field font-14"
                     placeholder="Enter End Date"
                     max={new Date().toISOString().split("T")[0]}
                     {...register(`test[${index}].end_date`, {
@@ -256,6 +237,24 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
                   )}
                 </div>
               </Col>
+              <Col md="12">
+                <Form.Group className="mb-4">
+                  <Form.Label className="font-14 fw-medium">{t("jobDescription")}</Form.Label>
+                  <Form.Control
+                    type="text"
+                    as="textarea"
+                    rows={3}
+                    className="common-field font-14"
+                    placeholder="Enter Job Description"
+                    {...register(`test[${index}].description`, {
+                      required: "Description is required",
+                    })}
+                  />
+                  {errors?.test?.[index]?.description && (
+                    <p className="error-message">{errors.test[index].description.message}</p>
+                  )}
+                </Form.Group>
+              </Col>
             </Row>
           </div>
         ))}
@@ -266,7 +265,7 @@ const ExperienceCVModal = ({ show, handleClose, data, id, role, onSubmitVendor }
             </Button>
           </OverlayTrigger>
         </div>
-       {role!=="vendor" && <div className="text-center">
+        {role !== "vendor" && <div className="text-center">
           <RexettButton
             type="submit"
             text="Submit"

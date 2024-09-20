@@ -13,7 +13,7 @@ import { FiCalendar } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa6";
 import moment from "moment";
 import SingleTimeReporting from "./SingleTimeReporting";
-import ConfirmationModal from "../../../pages/views/Modals/ConfirmationModal";
+import ConfirmationModal from "../../common/Modals/ConfirmationModal";
 import {
   getReconciliationData,
   timeReporting,
@@ -24,7 +24,7 @@ import TimeReportRemark from "./TimeReportRemark";
 import Guidelines from "../../common/Guidelines/Guidelines";
 import { TIME_REPORTING } from "./constant";
 
-const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
+const RexettTable = ({ selectedPeriod, headerColumn, data, role, page,flag }) => {
   const [show, setShow] = useState(false);
   const [contractId, setContractID] = useState(null);
   const [isAnyReportEmpty, setIsAnyReportEmpty] = useState(false);
@@ -212,10 +212,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                 { role=="developer" &&<th className="time-table-head">
                   <span>Timesheet</span>
                 </th>}
-                <th className="time-table-head">
+              {flag!=="vendor" && <th className="time-table-head">
                   <span>Reconciliation</span>
-                </th>
-                {selectedPeriod == "weekly" && role!=="developer" ? (
+                </th>}
+                {selectedPeriod == "weekly" && role!=="developer" && flag!=="vendor" ? (
                   <th className="time-table-head">
                     <span>Submit</span>
                   </th>
@@ -223,7 +223,6 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                   ""
                 )}
               </thead>
-
               <tbody>
                 {data?.length > 0 ? (
                   data?.map((item, index) => {
@@ -353,9 +352,9 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                               {item?.isApproved ? "Reviewed" : "Under Review"}
                             </span>
                           </td>}
-                          <td className="time-table-data">
+                          {flag!=="vendor" &&<td className="time-table-data">
                             <button
-                              // disabled={item?.isApproved || !isTodayFriday()}
+                              disabled={item?.isApproved || !isTodayFriday()}
                               onClick={() => {
                                 handleremarkShow(item, index);
                               }}
@@ -374,11 +373,10 @@ const RexettTable = ({ selectedPeriod, headerColumn, data, role, page }) => {
                                   />
                                 </OverlayTrigger>
                               )}{" "}
-                              {/* <span className="number-count overlay">1</span> */}
                             </button>
-                          </td>
+                          </td>}
 
-                          {selectedPeriod == "weekly" && role!=="developer" ? (
+                          {selectedPeriod == "weekly" && role!=="developer" && flag!=="vendor" ? (
                             <td className="time-table-data">
                               {item?.isApproved ? (
                                 <span className="status-finished">

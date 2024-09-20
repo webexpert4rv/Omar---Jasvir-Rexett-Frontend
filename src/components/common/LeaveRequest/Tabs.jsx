@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 
 const Tabs = ({ handleSelect, tabText ,currentTab }) => {
-  console.log(currentTab,"currentTab")
   return (
     <div>
      
@@ -18,8 +17,8 @@ const Tabs = ({ handleSelect, tabText ,currentTab }) => {
                 {item.value}
               </Nav.Link>
             </Nav.Item>
-          </Nav> ))}
-
+          </Nav> 
+        ))}
         </Tab.Container>
      
     </div>
