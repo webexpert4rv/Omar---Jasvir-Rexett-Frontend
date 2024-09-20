@@ -1085,11 +1085,11 @@ export function getDeveloperList(){
     }
 }
 
-export function changesStatus(payload){
+export function changesStatus(payload,id){
     return async (dispatch)=>{
         // dispatch(setBtnLoader())
         try{
-            let result = await clientInstance.get(`admin/notifications/settings`)
+            let result = await clientInstance.put(`admin/notifications/settings/${id}`,{...payload})
             if (result.status === 200) {
                 toast.success(result.data?.message, { position: "top-center" })
             }

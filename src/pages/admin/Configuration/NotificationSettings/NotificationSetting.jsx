@@ -17,13 +17,19 @@ const NotificationSetting = ({ currentTab }) => {
     const handleChange=(data,item)=>{
       console.log(data,"data hello")
       console.log(item,"item hello")
-    //   let payload={}
-    //   if(item=="email"){
-    //     payload={
-            
-    //     }
-    //   }
-       dispatch(changesStatus())
+      let payload={}
+      if(item=="email"){
+        payload={
+        "is_desktop_notification":data?.is_desktop_notification,
+        "is_email_notification":data?.is_email_notification==true?false:true
+        }
+      }else{
+        payload={
+            "is_desktop_notification":data?.is_desktop_notification==true?false:true,
+            "is_email_notification":data?.is_email_notification
+            }
+      }
+       dispatch(changesStatus(payload,item?.id))
     }
     return (
         <>
